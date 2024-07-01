@@ -205,7 +205,6 @@ export class DiceHM3 {
             title: rollData.label,
             origTarget: rollData.target,
             modifier: roll.modifier,
-            plusMinus: roll.modifier < 0 ? "-" : "+",
             modifiedTarget: roll.target,
             isSuccess: roll.isSuccess,
             rollValue: roll.rollObj.total,
