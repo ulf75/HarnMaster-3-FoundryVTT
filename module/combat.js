@@ -361,7 +361,11 @@ async function attackDialog(options) {
 
     const dialogOptions = {
         weapon: options.weapon.name,
-        aimLocations: ['Low', 'Mid', 'High'],
+        aimLocations: [
+            {key: 'Low', label: 'Low (-10)'},
+            {key: 'Mid', label: 'Mid (+0)'},
+            {key: 'High', label: 'High (-10)'}
+        ],
         defaultAim: 'Mid',
         defaultModifier: options.defaultModifier || 0
     };
@@ -386,10 +390,10 @@ async function attackDialog(options) {
         const longDesc = `Long (${weaponData.range.long})`;
         const extremeDesc = `Extreme (${weaponData.range.extreme})`;
         dialogOptions.ranges = {};
-        dialogOptions.ranges[shortDesc] = weaponData.impact.short;
-        dialogOptions.ranges[mediumDesc] = weaponData.impact.medium;
-        dialogOptions.ranges[longDesc] = weaponData.impact.long;
-        dialogOptions.ranges[extremeDesc] = weaponData.impact.extreme;
+        dialogOptions.ranges[{key: shortDesc}] = weaponData.impact.short;
+        dialogOptions.ranges[{key: mediumDesc}] = weaponData.impact.medium;
+        dialogOptions.ranges[{key: longDesc}] = weaponData.impact.long;
+        dialogOptions.ranges[{key: extremeDesc}] = weaponData.impact.extreme;
         dialogOptions.rangeExceedsExtreme = false;
 
         // Set range based on distance
