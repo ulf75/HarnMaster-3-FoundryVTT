@@ -16,19 +16,19 @@
 
 /* Styles limited to hm3 sheets */
 .hm3 {
-	@import 'components/top';
-	@import 'components/facade';
-	@import 'components/forms';
-	@import 'components/resource';
-	@import 'components/tabs';
-	@import 'components/items';
-	@import 'components/combat';
-	@import 'components/inv';
-	@import 'components/profile';
-	@import 'components/injuries';
-	@import 'components/skills';
-	@import 'components/spell';
-	@import 'components/armorloc';
-	@import 'components/gear';
-	@import 'components/effects';
+    @import 'components/top';
+    @import 'components/facade';
+    @import 'components/forms';
+    @import 'components/resource';
+    @import 'components/tabs';
+    @import 'components/items';
+    @import 'components/combat';
+    @import 'components/inv';
+    @import 'components/profile';
+    @import 'components/injuries';
+    @import 'components/skills';
+    @import 'components/spell';
+    @import 'components/armorloc';
+    @import 'components/gear';
+    @import 'components/effects';
 }

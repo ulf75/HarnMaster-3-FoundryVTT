@@ -1,69 +1,69 @@
 .injuries-list {
-	list-style: none;
-	margin: 7px 0;
-	padding: 0;
-	overflow-y: hidden;
+    list-style: none;
+    margin: 7px 0;
+    padding: 0;
+    overflow-y: hidden;
 
-	.injury-header {
-		font-weight: bold;
-	}
+    .injury-header {
+        font-weight: bold;
+    }
 
-	.injury {
-		border-bottom: 1px solid #bbb;
+    .injury {
+        border-bottom: 1px solid #bbb;
 
-		.injury-image {
-			flex: 0 0 24px;
-			margin-right: 5px;
-		}
+        .injury-image {
+            flex: 0 0 24px;
+            margin-right: 5px;
+        }
 
-		img {
-			display: block;
-		}
-	}
+        img {
+            display: block;
+        }
+    }
 
-	.injury-name {
-		flex: 0 0 200px;
-	}
+    .injury-name {
+        flex: 0 0 200px;
+    }
 
-	.injury-location {
-		flex: 0 0 40px;
-		text-align: right;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
-	}
+    .injury-location {
+        flex: 0 0 40px;
+        text-align: right;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
 
-	.injury-healrate {
-		flex: 0 0 30px;
-		text-align: center;
+    .injury-healrate {
+        flex: 0 0 30px;
+        text-align: center;
 
-		&.active:hover {
-			background-image: url('../../../icons/svg/d20-grey.svg') !important;
-			background-size: 27px;
-			color: black;
-		}
-	}
+        &.active:hover {
+            background-image: url('../../../icons/svg/d20-grey.svg') !important;
+            background-size: 27px;
+            color: black;
+        }
+    }
 
-	.injury-severity {
-		flex: 0 0 50px;
-		text-align: center;
-	}
+    .injury-severity {
+        flex: 0 0 50px;
+        text-align: center;
+    }
 
-	.injury-level {
-		flex: 1 0 40px;
-		text-align: center;
-	}
+    .injury-level {
+        flex: 1 0 40px;
+        text-align: center;
+    }
 
-	.injury-notes {
-		flex: 1 0 200px;
-		padding-left: 10px;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
-	}
+    .injury-notes {
+        flex: 1 0 200px;
+        padding-left: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
 
-	.item-controls {
-		flex: 0 0 45px;
-		text-align: right;
-	}
+    .item-controls {
+        flex: 0 0 45px;
+        text-align: right;
+    }
 }
