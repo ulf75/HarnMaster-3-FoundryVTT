@@ -1,2 +1,5 @@
 module/config.js
 module/settings.js
+
+# Ignore all HTML files:
+**/*.html
