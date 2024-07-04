@@ -15,7 +15,7 @@
     {{#if distance}}
     <div class="form-group">
         <label>Distance:</label>
-        <span>{{distance}}</span>
+        <span>{{distance}} ft</span>
     </div>
     {{/if}}
 
@@ -30,7 +30,7 @@
     <div class="form-group">
         <label>Range (Max Distance):</label>
         <select name="range">
-            {{selectOptions ranges selected=defaultRange valueAttr="key" labelAttr="key"}}
+            {{selectOptions ranges selected=defaultRange valueAttr="key" labelAttr="label"}}
         </select>
     </div>
     {{/if}}

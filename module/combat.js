@@ -46,7 +46,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     const range = rangeToTarget(attackToken, defendToken);
 
     const options = {
-        distance: range,
+        distance: Math.round(range),
         type: 'Attack',
         attackerName: attackToken.name,
         defenderName: defendToken.name
@@ -106,7 +106,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         rangeExceedsExtreme: dialogResult.rangeExceedsExtreme,
         rangeModSign: dialogResult.rangeMod < 0 ? '-' : '+',
         rangeModifierAbs: Math.abs(dialogResult.rangeMod),
-        rangeDist: range,
+        rangeDist: Math.round(range),
         aim: dialogResult.aim,
         aspect: dialogResult.aspect,
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
@@ -385,35 +385,41 @@ async function attackDialog(options) {
         dialogOptions.aspects[weaponData.weaponAspect] = -1;
         dialogOptions.defaultAspect = weaponData.weaponAspect;
 
-        const shortDesc = `Short (${weaponData.range.short})`;
-        const mediumDesc = `Medium (${weaponData.range.medium})`;
-        const longDesc = `Long (${weaponData.range.long})`;
-        const extremeDesc = `Extreme (${weaponData.range.extreme})`;
-        dialogOptions.ranges = {};
-        dialogOptions.ranges[{key: shortDesc}] = weaponData.impact.short;
-        dialogOptions.ranges[{key: mediumDesc}] = weaponData.impact.medium;
-        dialogOptions.ranges[{key: longDesc}] = weaponData.impact.long;
-        dialogOptions.ranges[{key: extremeDesc}] = weaponData.impact.extreme;
+        const shortDesc = `Short (${weaponData.range.short} ft/+0)`;
+        const mediumDesc = `Medium (${weaponData.range.medium} ft/-20)`;
+        const longDesc = `Long (${weaponData.range.long} ft/-40)`;
+        const extremeDesc = `Extreme (${weaponData.range.extreme} ft/-80)`;
+        dialogOptions.ranges = [
+            {key: 'Short', label: shortDesc, impact: weaponData.impact.short},
+            {key: 'Medium', label: mediumDesc, impact: weaponData.impact.medium},
+            {key: 'Long', label: longDesc, impact: weaponData.impact.long},
+            {key: 'Extreme', label: extremeDesc, impact: weaponData.impact.extreme}
+        ];
+        // dialogOptions.ranges = {};
+        // dialogOptions.ranges[{key: shortDesc, label: shortDesc}] = weaponData.impact.short;
+        // dialogOptions.ranges[{key: mediumDesc, label: mediumDesc}] = weaponData.impact.medium;
+        // dialogOptions.ranges[{key: longDesc, label: longDesc}] = weaponData.impact.long;
+        // dialogOptions.ranges[{key: extremeDesc, label: extremeDesc}] = weaponData.impact.extreme;
         dialogOptions.rangeExceedsExtreme = false;
 
         // Set range based on distance
         if (options.distance) {
             dialogOptions.distance = options.distance;
             if (options.distance <= weaponData.range.short) {
-                dialogOptions.defaultRange = shortDesc;
+                dialogOptions.defaultRange = 'Short';
             } else if (options.distance <= weaponData.range.medium) {
-                dialogOptions.defaultRange = mediumDesc;
+                dialogOptions.defaultRange = 'Medium';
             } else if (options.distance <= weaponData.range.long) {
-                dialogOptions.defaultRange = longDesc;
+                dialogOptions.defaultRange = 'Long';
             } else if (options.distance <= weaponData.range.extreme) {
-                dialogOptions.defaultRange = extremeDesc;
+                dialogOptions.defaultRange = 'Extreme';
             } else {
-                dialogOptions.defaultRange = extremeDesc;
+                dialogOptions.defaultRange = 'Extreme';
                 dialogOptions.rangeExceedsExtreme = true;
             }
         } else {
             // Distance not specified, set it to extreme by default
-            dialogOptions.defaultRange = extremeDesc;
+            dialogOptions.defaultRange = 'Extreme';
         }
     } else {
         // Not a weapon!!
@@ -460,7 +466,10 @@ async function attackDialog(options) {
                     result.range = 'Extreme';
                     result.rangeMod = -80;
                 }
-                result.impactMod = dialogOptions.ranges[formRange] || 0;
+                result.impactMod =
+                    dialogOptions.ranges.filter((r) => {
+                        return r.key === result.range;
+                    })[0].impact || 0;
             } else {
                 // Grab impact mod (from selected aspect) for melee weapon
                 result.impactMod = dialogOptions.aspects[result.aspect] || 0;
