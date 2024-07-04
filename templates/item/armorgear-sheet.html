@@ -6,11 +6,11 @@
             <div class="flexrow">
                 <label>In Container:</label>
                 <select name="system.container">
-                    {{#selectOptions idata.container}}
+                    {{#select idata.container}}
                         {{#each containers as |cid cname|}}
                             <option value="{{cid}}">{{cname}}</option>
                         {{/each}}
-                    {{/selectOptions}}
+                    {{/select}}
                 </select>
             </div>
         </div>
@@ -95,13 +95,13 @@
                 <div class="armorgear-location flexrow" id="armorgear-location-select">
                     <label class="label">Location:</label>
                     <select class="value" name="system.targetLocation">
-                        {{#selectOptions idata.targetLocation}}
+                        {{#select idata.targetLocation}}
                             {{#each config.injuryLocations as |value key|}}
                                 {{#if (ne key "Custom")}}
                                     <option value="{{key}}">{{key}}</option>
                                 {{/if}}
                             {{/each}}
-                        {{/selectOptions}}
+                        {{/select}}
                     </select>
                     <a class="armorgear-location-add" data-location="{{idata.targetLocation}}"><i
                             class="fas fa-plus"></i> Add</a>

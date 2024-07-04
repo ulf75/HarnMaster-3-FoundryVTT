@@ -4,11 +4,11 @@
     <div class="form-group">
         <label>Weapon:</label>
         <select name="weapon">
-            {{#selectOptions defaultWeapon}}
+            {{#select defaultWeapon}}
             {{#each weapons}}
                 <option value="{{this}}">{{this}}</option>
             {{/each}}
-            {{/selectOptions}}
+            {{/select}}
         </select>
     </div>
 

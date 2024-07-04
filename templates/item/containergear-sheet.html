@@ -6,11 +6,11 @@
             <div class="flexrow">
                 <label>In Container:</label>
                 <select name="system.container">
-                    {{#selectOptions idata.container}}
+                    {{#select idata.container}}
                         {{#each containers as |cid cname|}}
                             <option value="{{cid}}">{{cname}}</option>
                         {{/each}}
-                    {{/selectOptions}}
+                    {{/select}}
                 </select>
             </div>
         </div>
