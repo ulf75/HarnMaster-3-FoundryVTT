@@ -89,7 +89,7 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
             roll: roll.rollObj
         };
@@ -224,7 +224,7 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
             roll: roll.rollObj
         };
@@ -313,7 +313,7 @@ export class DiceHM3 {
             speaker: speaker,
             content: html.trim(),
             user: game.user.id,
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
             roll: roll
         };
@@ -384,7 +384,7 @@ export class DiceHM3 {
             speaker: speaker,
             content: html.trim(),
             user: game.user.id,
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            type: CONST.CHAT_MESSAGE_STYLES.OTHER,
             sound: CONFIG.sounds.notify
         };
 
@@ -395,7 +395,7 @@ export class DiceHM3 {
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions);
         if (game.settings.get('hm3', 'combatAudio')) {
-            AudioHelper.play({src: 'systems/hm3/audio/grunt1.ogg', autoplay: true, loop: false}, true);
+            foundry.audio.AudioHelper.play({src: 'systems/hm3/audio/grunt1.ogg', autoplay: true, loop: false}, true);
         }
         return chatTemplateData;
     }
@@ -786,7 +786,7 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
             roll: roll.rollObj
         };
@@ -955,7 +955,7 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
             roll: roll.rollObj
         };
@@ -1121,7 +1121,7 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
             roll: roll.rollObj
         };

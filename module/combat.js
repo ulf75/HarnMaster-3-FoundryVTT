@@ -127,7 +127,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         user: game.user.id,
         speaker: speaker,
         content: html.trim(),
-        type: CONST.CHAT_MESSAGE_TYPES.OTHER
+        type: CONST.CHAT_MESSAGE_STYLES.OTHER
     };
 
     const messageOptions = {};
@@ -135,7 +135,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions);
     if (game.settings.get('hm3', 'combatAudio')) {
-        AudioHelper.play({src: 'sounds/drums.wav', autoplay: true, loop: false}, true);
+        foundry.audio.AudioHelper.play({src: 'sounds/drums.wav', autoplay: true, loop: false}, true);
     }
 
     return chatTemplateData;
@@ -262,7 +262,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
         user: game.user.id,
         speaker: speaker,
         content: html.trim(),
-        type: CONST.CHAT_MESSAGE_TYPES.OTHER
+        type: CONST.CHAT_MESSAGE_STYLES.OTHER
     };
 
     const messageOptions = {};
@@ -270,7 +270,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions);
     if (game.settings.get('hm3', 'combatAudio')) {
-        AudioHelper.play({src: 'sounds/drums.wav', autoplay: true, loop: false}, true);
+        foundry.audio.AudioHelper.play({src: 'sounds/drums.wav', autoplay: true, loop: false}, true);
     }
 
     return chatTemplateData;
@@ -697,11 +697,11 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         content: html.trim()
     };
     if (combatResult.outcome.atkDice) {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+        messageData.type = CONST.CHAT_MESSAGE_STYLES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
         messageData.roll = atkImpactRoll;
     } else {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
+        messageData.type = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
 
     const messageOptions = {};
@@ -720,11 +720,11 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         content: html.trim()
     };
     if (combatResult.outcome.defDice) {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+        messageData.type = CONST.CHAT_MESSAGE_STYLES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
         messageData.roll = csImpactRoll;
     } else {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
+        messageData.type = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
 
     // Create a chat message
@@ -843,11 +843,11 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         content: html.trim()
     };
     if (combatResult.outcome.atkDice) {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+        messageData.type = CONST.CHAT_MESSAGE_STYLES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
         messageData.roll = atkImpactRoll;
     } else {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
+        messageData.type = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
 
     const messageOptions = {};
@@ -855,7 +855,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions);
     if (!combatResult.outcome.atkDice && game.settings.get('hm3', 'combatAudio')) {
-        AudioHelper.play({src: 'systems/hm3/audio/swoosh1.ogg', autoplay: true, loop: false}, true);
+        foundry.audio.AudioHelper.play({src: 'systems/hm3/audio/swoosh1.ogg', autoplay: true, loop: false}, true);
     }
 
     return chatData;
@@ -1078,11 +1078,11 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         content: html.trim()
     };
     if (combatResult.outcome.atkDice) {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+        messageData.type = CONST.CHAT_MESSAGE_STYLES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
         messageData.roll = atkImpactRoll;
     } else {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
+        messageData.type = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
 
     const messageOptions = {};
@@ -1090,7 +1090,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions);
     if (!combatResult.outcome.atkDice && game.settings.get('hm3', 'combatAudio')) {
-        AudioHelper.play({src: 'systems/hm3/audio/shield-bash.ogg', autoplay: true, loop: false}, true);
+        foundry.audio.AudioHelper.play({src: 'systems/hm3/audio/shield-bash.ogg', autoplay: true, loop: false}, true);
     }
 
     return chatData;
@@ -1134,7 +1134,7 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
 
     const messageData = {
         user: game.user.id,
-        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        type: CONST.CHAT_MESSAGE_STYLES.ROLL,
         sound: CONFIG.sounds.dice
     };
 
@@ -1273,11 +1273,11 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         content: html.trim()
     };
     if (combatResult.outcome.atkDice) {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+        messageData.type = CONST.CHAT_MESSAGE_STYLES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
         messageData.roll = atkImpactRoll;
     } else {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
+        messageData.type = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
 
     const messageOptions = {};
