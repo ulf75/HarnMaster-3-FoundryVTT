@@ -331,7 +331,38 @@ export function stringReplacer(template, values) {
 export function romanize(num) {
     if (isNaN(num)) return NaN;
     var digits = String(+num).split(''),
-        key = ['', 'C', 'CC', 'CCC', 'CD', 'D', 'DC', 'DCC', 'DCCC', 'CM', '', 'X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC', '', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'],
+        key = [
+            '',
+            'C',
+            'CC',
+            'CCC',
+            'CD',
+            'D',
+            'DC',
+            'DCC',
+            'DCCC',
+            'CM',
+            '',
+            'X',
+            'XX',
+            'XXX',
+            'XL',
+            'L',
+            'LX',
+            'LXX',
+            'LXXX',
+            'XC',
+            '',
+            'I',
+            'II',
+            'III',
+            'IV',
+            'V',
+            'VI',
+            'VII',
+            'VIII',
+            'IX'
+        ],
         roman = '',
         i = 3;
     while (i--) roman = (key[+digits.pop() + i * 10] || '') + roman;
@@ -392,7 +423,11 @@ export function aeDuration(effect) {
         const remaining = remainingRounds + remainingTurns / 100;
 
         // Remaining label
-        const label = [remainingRounds > 0 ? `${remainingRounds} Rounds` : null, remainingTurns > 0 ? `${remainingTurns} Turns` : null, remainingRounds + remainingTurns === 0 ? 'None' : null].filterJoin(', ');
+        const label = [
+            remainingRounds > 0 ? `${remainingRounds} Rounds` : null,
+            remainingTurns > 0 ? `${remainingTurns} Turns` : null,
+            remainingRounds + remainingTurns === 0 ? 'None' : null
+        ].filterJoin(', ');
         return {
             type: 'turns',
             duration: duration,

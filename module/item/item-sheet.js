@@ -152,7 +152,10 @@ export class HarnMasterItemSheet extends ItemSheet {
         });
 
         html.find('.effect-control').click((ev) => {
-            if (this.item.isOwned) return ui.notifications.warn("You cannot change an Item's Effects after it is associated with an Actor. To modify this Effect, go to the Actor's Effects tab.");
+            if (this.item.isOwned)
+                return ui.notifications.warn(
+                    "You cannot change an Item's Effects after it is associated with an Actor. To modify this Effect, go to the Actor's Effects tab."
+                );
             onManageActiveEffect(ev, this.item);
         });
 

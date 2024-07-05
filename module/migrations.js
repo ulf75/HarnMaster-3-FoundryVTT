@@ -3,7 +3,10 @@
  * @return {Promise}      A Promise which resolves once the migration is completed
  */
 export const migrateWorld = async function () {
-    ui.notifications.info(`Applying HM3 System Migration for version ${game.system.data.version}. Please be patient and do not close your game or shut down your server.`, {permanent: true});
+    ui.notifications.info(
+        `Applying HM3 System Migration for version ${game.system.data.version}. Please be patient and do not close your game or shut down your server.`,
+        {permanent: true}
+    );
     console.log(`HM3 | Starting Migration`);
 
     // Migrate World Actors

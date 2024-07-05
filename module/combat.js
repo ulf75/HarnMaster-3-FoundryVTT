@@ -907,7 +907,9 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
         if (highVelocityMissile) {
             if (!shields.length) {
-                ui.notifications.warn(`${weaponName} is a high-velocity missile that can only be blocked with a shield, and you don't have a shield equipped. Block defense refused.`);
+                ui.notifications.warn(
+                    `${weaponName} is a high-velocity missile that can only be blocked with a shield, and you don't have a shield equipped. Block defense refused.`
+                );
                 return null;
             } else {
                 defAvailWeapons = shields;
@@ -1479,7 +1481,9 @@ export async function getItem(itemName, type, actor) {
         const lcItemName = itemName.toLowerCase();
         const items = actor ? actor.items.filter((i) => i.type === type && i.name.toLowerCase() === lcItemName) : [];
         if (items.length > 1) {
-            ui.notifications.warn(`Your controlled Actor ${actor.name} has more than one ${type} with name ${itemName}. The first matched ${type} will be chosen.`);
+            ui.notifications.warn(
+                `Your controlled Actor ${actor.name} has more than one ${type} with name ${itemName}. The first matched ${type} will be chosen.`
+            );
         } else if (items.length === 0) {
             ui.notifications.warn(`Your controlled Actor does not have a ${type} named ${itemName}`);
             return null;

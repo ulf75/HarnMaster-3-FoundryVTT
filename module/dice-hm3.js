@@ -281,7 +281,9 @@ export class DiceHM3 {
     static async sdrRoll(item) {
         const speaker = ChatMessage.getSpeaker();
 
-        let roll = await new Roll(`1d100 + @sb`, {sb: item.system.skillBase.value}).evaluate({async: true});
+        let roll = await new Roll(`1d100 + @sb`, {
+            sb: item.system.skillBase.value
+        }).evaluate({async: true});
 
         const isSuccess = roll.total > item.system.masteryLevel;
 
@@ -355,7 +357,14 @@ export class DiceHM3 {
             // Create the Roll instance
             result = await DiceHM3.injuryDialog(dialogOptions);
         } else {
-            result = DiceHM3._calcInjury('Random', rollData.impact, rollData.aspect, game.settings.get('hm3', 'addInjuryToActorSheet') !== 'disable', rollData.aim, rollData);
+            result = DiceHM3._calcInjury(
+                'Random',
+                rollData.impact,
+                rollData.aspect,
+                game.settings.get('hm3', 'addInjuryToActorSheet') !== 'disable',
+                rollData.aim,
+                rollData
+            );
         }
 
         // If user cancelled the roll, then return immediately
@@ -395,7 +404,14 @@ export class DiceHM3 {
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions);
         if (game.settings.get('hm3', 'combatAudio')) {
-            foundry.audio.AudioHelper.play({src: 'systems/hm3/audio/grunt1.ogg', autoplay: true, loop: false}, true);
+            foundry.audio.AudioHelper.play(
+                {
+                    src: 'systems/hm3/audio/grunt1.ogg',
+                    autoplay: true,
+                    loop: false
+                },
+                true
+            );
         }
         return chatTemplateData;
     }

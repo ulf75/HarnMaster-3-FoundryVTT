@@ -285,7 +285,9 @@ export class HarnMasterItem extends Item {
             {temporary: true}
         );
         if (!macro) {
-            console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${this.system.macros.type}, command='${this.system.macros.command}'`);
+            console.error(
+                `HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${this.system.macros.type}, command='${this.system.macros.command}'`
+            );
             return null;
         }
 

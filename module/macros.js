@@ -100,25 +100,45 @@ function askWeaponMacro(weaponUuid, slot, img) {
                 enhAttackButton: {
                     label: 'Automated Combat',
                     callback: async (html) => {
-                        return await applyMacro(`${item.name} Automated Combat`, `await game.hm3.macros.weaponAttack("${weaponUuid}");`, slot, img, {'hm3.itemMacro': false});
+                        return await applyMacro(`${item.name} Automated Combat`, `await game.hm3.macros.weaponAttack("${weaponUuid}");`, slot, img, {
+                            'hm3.itemMacro': false
+                        });
                     }
                 },
                 attackButton: {
                     label: 'Attack',
                     callback: async (html) => {
-                        return await applyMacro(`${actorName}${item.name} Attack Roll`, `await game.hm3.macros.weaponAttackRoll("${weaponUuid}");`, slot, img, {'hm3.itemMacro': false});
+                        return await applyMacro(
+                            `${actorName}${item.name} Attack Roll`,
+                            `await game.hm3.macros.weaponAttackRoll("${weaponUuid}");`,
+                            slot,
+                            img,
+                            {'hm3.itemMacro': false}
+                        );
                     }
                 },
                 defendButton: {
                     label: 'Defend',
                     callback: async (html) => {
-                        return await applyMacro(`${actorName}${item.name} Defend Roll`, `await game.hm3.macros.weaponDefendRoll("${weaponUuid}");`, slot, img, {'hm3.itemMacro': false});
+                        return await applyMacro(
+                            `${actorName}${item.name} Defend Roll`,
+                            `await game.hm3.macros.weaponDefendRoll("${weaponUuid}");`,
+                            slot,
+                            img,
+                            {'hm3.itemMacro': false}
+                        );
                     }
                 },
                 damageButton: {
                     label: 'Damage',
                     callback: async (html) => {
-                        return await applyMacro(`${actorName}${item.name} Damage Roll`, `await game.hm3.macros.weaponDamageRoll("${weaponUuid}");`, slot, img, {'hm3.itemMacro': false});
+                        return await applyMacro(
+                            `${actorName}${item.name} Damage Roll`,
+                            `await game.hm3.macros.weaponDamageRoll("${weaponUuid}");`,
+                            slot,
+                            img,
+                            {'hm3.itemMacro': false}
+                        );
                     }
                 }
             },
@@ -140,19 +160,33 @@ function askMissileMacro(name, slot, img, actorSuffix) {
                 enhAttackButton: {
                     label: 'Automated Combat',
                     callback: async (html) => {
-                        return await applyMacro(`${name} Automated Combat`, `game.hm3.macros.missileAttack("${name}");`, slot, img, {'hm3.itemMacro': false});
+                        return await applyMacro(`${name} Automated Combat`, `game.hm3.macros.missileAttack("${name}");`, slot, img, {
+                            'hm3.itemMacro': false
+                        });
                     }
                 },
                 attackButton: {
                     label: 'Attack',
                     callback: async (html) => {
-                        return await applyMacro(`${actorName}'s ${name} Attack Roll`, `game.hm3.macros.missileAttackRoll("${name}"${actorSuffix});`, slot, img, {'hm3.itemMacro': false});
+                        return await applyMacro(
+                            `${actorName}'s ${name} Attack Roll`,
+                            `game.hm3.macros.missileAttackRoll("${name}"${actorSuffix});`,
+                            slot,
+                            img,
+                            {'hm3.itemMacro': false}
+                        );
                     }
                 },
                 damageButton: {
                     label: 'Damage',
                     callback: async (html) => {
-                        return await applyMacro(`${actorName}'s ${name} Damage Roll`, `game.hm3.macros.missileDamageRoll("${name}"${actorSuffix});`, slot, img, {'hm3.itemMacro': false});
+                        return await applyMacro(
+                            `${actorName}'s ${name} Damage Roll`,
+                            `game.hm3.macros.missileDamageRoll("${name}"${actorSuffix});`,
+                            slot,
+                            img,
+                            {'hm3.itemMacro': false}
+                        );
                     }
                 }
             },
@@ -170,9 +204,13 @@ async function getItemAndActor(itemName, myActor, type) {
 
         if (result.item?.type !== type) {
             if (result.item) {
-                ui.notifications.warn(`Ignoring ${HM3.ITEM_TYPE_LABEL[type].singular} test because ${result.item.name} is not a ${HM3.ITEM_TYPE_LABEL[type].singular}`);
+                ui.notifications.warn(
+                    `Ignoring ${HM3.ITEM_TYPE_LABEL[type].singular} test because ${result.item.name} is not a ${HM3.ITEM_TYPE_LABEL[type].singular}`
+                );
             } else {
-                ui.notifications.warn(`Ignoring ${HM3.ITEM_TYPE_LABEL[type].singular} test because no ${HM3.ITEM_TYPE_LABEL[type].singular} found for '${itemName}'`);
+                ui.notifications.warn(
+                    `Ignoring ${HM3.ITEM_TYPE_LABEL[type].singular} test because no ${HM3.ITEM_TYPE_LABEL[type].singular} found for '${itemName}'`
+                );
             }
             return null;
         }

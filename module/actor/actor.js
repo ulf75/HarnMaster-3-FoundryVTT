@@ -938,19 +938,54 @@ export class HarnMasterActor extends Actor {
                 break;
 
             case 'dodge':
-                macros.dodgeResume(atkToken.id, defToken.id, button.dataset.weaponType, button.dataset.weapon, button.dataset.effAml, button.dataset.aim, button.dataset.aspect, button.dataset.impactMod);
+                macros.dodgeResume(
+                    atkToken.id,
+                    defToken.id,
+                    button.dataset.weaponType,
+                    button.dataset.weapon,
+                    button.dataset.effAml,
+                    button.dataset.aim,
+                    button.dataset.aspect,
+                    button.dataset.impactMod
+                );
                 break;
 
             case 'ignore':
-                macros.ignoreResume(atkToken.id, defToken.id, button.dataset.weaponType, button.dataset.weapon, button.dataset.effAml, button.dataset.aim, button.dataset.aspect, button.dataset.impactMod);
+                macros.ignoreResume(
+                    atkToken.id,
+                    defToken.id,
+                    button.dataset.weaponType,
+                    button.dataset.weapon,
+                    button.dataset.effAml,
+                    button.dataset.aim,
+                    button.dataset.aspect,
+                    button.dataset.impactMod
+                );
                 break;
 
             case 'block':
-                macros.blockResume(atkToken.id, defToken.id, button.dataset.weaponType, button.dataset.weapon, button.dataset.effAml, button.dataset.aim, button.dataset.aspect, button.dataset.impactMod);
+                macros.blockResume(
+                    atkToken.id,
+                    defToken.id,
+                    button.dataset.weaponType,
+                    button.dataset.weapon,
+                    button.dataset.effAml,
+                    button.dataset.aim,
+                    button.dataset.aspect,
+                    button.dataset.impactMod
+                );
                 break;
 
             case 'counterstrike':
-                macros.meleeCounterstrikeResume(atkToken.id, defToken.id, button.dataset.weapon, button.dataset.effAml, button.dataset.aim, button.dataset.aspect, button.dataset.impactMod);
+                macros.meleeCounterstrikeResume(
+                    atkToken.id,
+                    defToken.id,
+                    button.dataset.weapon,
+                    button.dataset.effAml,
+                    button.dataset.aim,
+                    button.dataset.aspect,
+                    button.dataset.impactMod
+                );
                 break;
 
             case 'shock':
@@ -1263,7 +1298,9 @@ export class HarnMasterActor extends Actor {
             {temporary: true}
         );
         if (!macro) {
-            console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${actorData.system.macros.type}, command='${actorData.system.macros.command}'`);
+            console.error(
+                `HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${actorData.system.macros.type}, command='${actorData.system.macros.command}'`
+            );
             return null;
         }
 

@@ -163,7 +163,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const destContainer = closestContainer?.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';
 
         // Dropping an item into the same actor (Token or Linked)
-        if ((droppedItem.parent.isToken && this.actor.token?.id === droppedItem.parent.token.id) || (!droppedItem.parent.isToken && !this.actor.isToken && droppedItem.parent.id === this.actor.id)) {
+        if (
+            (droppedItem.parent.isToken && this.actor.token?.id === droppedItem.parent.token.id) ||
+            (!droppedItem.parent.isToken && !this.actor.isToken && droppedItem.parent.id === this.actor.id)
+        ) {
             // If the item is some type of gear (other than containergear), then
             // make sure we set the container to the same as the dropped location
             // (this allows people to move items into containers easily)
@@ -507,7 +510,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     ui.notifications.warn(`There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`);
                     return null;
                 } else if (tokens.length > 1) {
-                    ui.notifications.warn(`There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`);
+                    ui.notifications.warn(
+                        `There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`
+                    );
                     return null;
                 }
                 token = tokens[0];
@@ -529,7 +534,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     ui.notifications.warn(`There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`);
                     return null;
                 } else if (tokens.length > 1) {
-                    ui.notifications.warn(`There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`);
+                    ui.notifications.warn(
+                        `There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`
+                    );
                     return null;
                 }
                 token = tokens[0];
