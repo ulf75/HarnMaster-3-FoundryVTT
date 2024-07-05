@@ -2,7 +2,7 @@
 
 The compendium source files are located in the `/packs` directory. If you make any changes to them, the database files must be recreated.
 
-Information about this can be found here `https://foundryvtt.com/article/v11-leveldb-packs/` and here `https://github.com/foundryvtt/foundryvtt-cli`.
+Information about this can be found here https://foundryvtt.com/article/v11-leveldb-packs/ and here https://github.com/foundryvtt/foundryvtt-cli.
 
 ## Step 1: Install CLI
 
