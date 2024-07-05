@@ -1,84 +1,84 @@
 {
-    "id": "hm3",
-    "name": "hm3",
-    "title": "HarnMaster 3",
-    "description": "The HarnMaster system for FoundryVTT!",
-    "version": "12.0.0-beta.5",
-    "authors": [
-        {
-            "name": "Toasty",
-            "discord": "toasty#8538"
-        }
-    ],
-    "download": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/releases/download/v12.0.0-beta.5/system.zip",
-    "manifest": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/releases/latest/download/system.json",
-    "url": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/",
-    "license": "LICENSE",
-    "readme": "README.md",
-    "bugs": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/issues",
-    "flags": {
-        "allowBugReporter": true
+  "id": "hm3",
+  "name": "hm3",
+  "title": "HarnMaster 3",
+  "description": "The HarnMaster system for FoundryVTT!",
+  "version": "12.0.0-beta.5",
+  "authors": [
+    {
+      "name": "Toasty",
+      "discord": "toasty#8538"
+    }
+  ],
+  "download": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/releases/download/v12.0.0-beta.5/system.zip",
+  "manifest": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/releases/latest/download/system.json",
+  "url": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/",
+  "license": "LICENSE",
+  "readme": "README.md",
+  "bugs": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/issues",
+  "flags": {
+    "allowBugReporter": true
+  },
+  "minimumCoreVersion": "12",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12.328"
+  },
+  "esmodules": ["module/hm3.js"],
+  "styles": ["css/hm3.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "HârnMaster 3 System",
+      "sorting": "m",
+      "packs": ["character", "possessions", "esoteric", "system-help"]
+    }
+  ],
+  "packs": [
+    {
+      "label": "Character",
+      "type": "Item",
+      "name": "character",
+      "system": "hm3",
+      "path": "packs/character",
+      "private": false
     },
-    "minimumCoreVersion": "12",
-    "compatibility": {
-        "minimum": "12",
-        "verified": "12.328"
+    {
+      "label": "Possessions",
+      "type": "Item",
+      "name": "possessions",
+      "system": "hm3",
+      "path": "packs/possessions",
+      "private": false
     },
-    "esmodules": ["module/hm3.js"],
-    "styles": ["css/hm3.css"],
-    "languages": [
-        {
-            "lang": "en",
-            "name": "English",
-            "path": "lang/en.json"
-        }
-    ],
-    "packFolders": [
-        {
-            "name": "HârnMaster 3 System",
-            "sorting": "m",
-            "packs": ["character", "possessions", "esoteric", "system-help"]
-        }
-    ],
-    "packs": [
-        {
-            "label": "Character",
-            "type": "Item",
-            "name": "character",
-            "system": "hm3",
-            "path": "packs/character",
-            "private": false
-        },
-        {
-            "label": "Possessions",
-            "type": "Item",
-            "name": "possessions",
-            "system": "hm3",
-            "path": "packs/possessions",
-            "private": false
-        },
-        {
-            "label": "Esoteric",
-            "type": "Item",
-            "name": "esoteric",
-            "system": "hm3",
-            "path": "packs/esoteric",
-            "private": false
-        },
-        {
-            "label": "System Help",
-            "name": "system-help",
-            "path": "packs/system-help",
-            "system": "hm3",
-            "type": "JournalEntry",
-            "private": false
-        }
-    ],
-    "socket": true,
+    {
+      "label": "Esoteric",
+      "type": "Item",
+      "name": "esoteric",
+      "system": "hm3",
+      "path": "packs/esoteric",
+      "private": false
+    },
+    {
+      "label": "System Help",
+      "name": "system-help",
+      "path": "packs/system-help",
+      "system": "hm3",
+      "type": "JournalEntry",
+      "private": false
+    }
+  ],
+  "socket": true,
 
-    "grid": {
-        "distance": 5,
-        "units": "ft"
-    },
-    "primaryTokenAttribute": "shockIndex"
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  },
+  "primaryTokenAttribute": "shockIndex"
 }

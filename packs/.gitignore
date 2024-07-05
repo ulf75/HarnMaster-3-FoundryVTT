@@ -1,4 +1,4 @@
-*.ldb
+# *.ldb
 *.log
 CURRENT
 LOCK
