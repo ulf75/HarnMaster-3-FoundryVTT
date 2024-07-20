@@ -3,14 +3,14 @@
   "name": "hm3",
   "title": "HarnMaster 3",
   "description": "The HarnMaster system for FoundryVTT!",
-  "version": "12.0.0-beta.6",
+  "version": "0.0.0",
   "authors": [
     {
       "name": "Toasty",
       "discord": "toasty#8538"
     }
   ],
-  "download": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/releases/download/v12.0.0-beta.6/system.zip",
+  "download": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/releases/download/v0.0.0/system.zip",
   "manifest": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/releases/latest/download/system.json",
   "url": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/",
   "license": "LICENSE",
