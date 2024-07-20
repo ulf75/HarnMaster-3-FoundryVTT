@@ -1,0 +1,51 @@
+{
+  "name": "Farthing",
+  "type": "miscgear",
+  "img": "systems/hm3/images/icons/svg/cash.svg",
+  "system": {
+    "notes": "1/4th of a Penny",
+    "description": "",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 0,
+    "value": 0.25,
+    "weight": 0.001,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    }
+  },
+  "effects": [],
+  "folder": "F942jQieSSl65G9g",
+  "ownership": {
+    "default": 0,
+    "uWIcxMD0zdnOha1B": 3
+  },
+  "flags": {
+    "scene-packer": {
+      "hash": "1b8181aec8eed9911fcbb874dbc3a27247fedbad",
+      "sourceId": "Item.Ko8IoqVKfTklS78a"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.328",
+    "systemId": "hm3",
+    "systemVersion": "1.6.1",
+    "createdTime": 1721483941376,
+    "modifiedTime": 1721484093492,
+    "lastModifiedBy": "uWIcxMD0zdnOha1B"
+  },
+  "_id": "pNrFHyQVP4vkNk8D",
+  "sort": 100000,
+  "_key": "!items!pNrFHyQVP4vkNk8D"
+}

@@ -1,0 +1,51 @@
+{
+  "name": "Gold Penny",
+  "type": "miscgear",
+  "img": "systems/hm3/images/icons/svg/cash.svg",
+  "system": {
+    "notes": "Gold Penny (Wgt: 1 dram)",
+    "description": "",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 0,
+    "value": 20,
+    "weight": 0.004,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    }
+  },
+  "effects": [],
+  "folder": "F942jQieSSl65G9g",
+  "ownership": {
+    "default": 0,
+    "uWIcxMD0zdnOha1B": 3
+  },
+  "flags": {
+    "scene-packer": {
+      "hash": "54e1756a4db248a8d283165239ba2b913964a45c",
+      "sourceId": "Item.I6HW8C0gYxk4RZSH"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.328",
+    "systemId": "hm3",
+    "systemVersion": "1.6.1",
+    "createdTime": 1721484222045,
+    "modifiedTime": 1721484222045,
+    "lastModifiedBy": "uWIcxMD0zdnOha1B"
+  },
+  "_id": "8VdbA8uYPk2NVhhR",
+  "sort": 0,
+  "_key": "!items!8VdbA8uYPk2NVhhR"
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Misc",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "F942jQieSSl65G9g",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {
+    "scene-packer": {
+      "hash": "a78b50d4c5e3a15a27788741755de911bc2d5a3e"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.328",
+    "systemId": "hm3",
+    "systemVersion": "1.6.1",
+    "createdTime": 1721483932156,
+    "modifiedTime": 1721483932156,
+    "lastModifiedBy": "uWIcxMD0zdnOha1B"
+  },
+  "_key": "!folders!F942jQieSSl65G9g"
+}
