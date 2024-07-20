@@ -22,7 +22,7 @@
   "minimumCoreVersion": "12",
   "compatibility": {
     "minimum": "12",
-    "verified": "12.328"
+    "verified": "12.329"
   },
   "esmodules": ["module/hm3.js"],
   "styles": ["css/hm3.css"],
