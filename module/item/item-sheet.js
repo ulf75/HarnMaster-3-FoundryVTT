@@ -38,7 +38,10 @@ export class HarnMasterItemSheet extends ItemSheet {
         data.hasRitualSkills = false;
         data.hasMagicSkills = false;
 
-        data.macroTypes = foundry.utils.deepClone(game.system.documentTypes.Macro);
+        data.macroTypes = [
+            {key: 'chat', label: 'Chat'},
+            {key: 'script', label: 'Script'}
+        ];
 
         data.containers = {'On Person': 'on-person'};
         // Containers are not allowed in other containers.  So if this item is a container,
