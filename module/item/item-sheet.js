@@ -43,14 +43,14 @@ export class HarnMasterItemSheet extends ItemSheet {
             {key: 'script', label: 'Script'}
         ];
 
-        data.containers = {'On Person': 'on-person'};
+        data.containers = [{value: 'On Person', key: 'on-person'}];
         // Containers are not allowed in other containers.  So if this item is a container,
         // don't show any other containers.
 
         if (this.actor && this.item.type !== 'containergear') {
             this.actor.items.forEach((it) => {
                 if (it.type === 'containergear') {
-                    data.containers[it.name] = it.id;
+                    data.containers.push({value: it.name, key: it.id});
                 }
             });
         }
