@@ -12,7 +12,7 @@
     },
     "quantity": 0,
     "value": 1,
-    "weight": 0.004,
+    "weight": 0.00390625,
     "isCarried": true,
     "isEquipped": true,
     "container": "on-person",
