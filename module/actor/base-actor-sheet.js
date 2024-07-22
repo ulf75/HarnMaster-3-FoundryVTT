@@ -1,9 +1,50 @@
-import {HarnMasterActor} from './actor.js';
-//import { ImportArmorGear } from "../import-armor.js";
-//import { ImportFFF } from "../import-char.js";
 import {onManageActiveEffect} from '../effect.js';
+import {ItemTypes} from '../item-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
+import {HarnMasterActor} from './actor.js';
+
+function handleQtyInput(id, newValue) {
+    const oldValue = globalThis.items[id].system.quantity;
+    console.log('oldValue: ' + oldValue);
+
+    if (newValue.length === 0) {
+        globalThis.items[id].system.quantity = oldValue;
+        document.getElementById(globalThis.items[id].id).value = globalThis.items[id].system.quantity;
+        return;
+    }
+
+    const firstChar = Array.from(newValue)[0];
+
+    console.log('firstChar: ' + firstChar);
+
+    let isPlus = false;
+    let isMinus = false;
+    if (firstChar === '+') isPlus = true;
+    if (firstChar === '-') isMinus = true;
+    if (isPlus || isMinus) newValue = newValue.slice(1);
+
+    if (newValue.length === 0 || isNaN(newValue)) {
+        globalThis.items[id].system.quantity = oldValue;
+        document.getElementById(globalThis.items[id].id).value = globalThis.items[id].system.quantity;
+        return;
+    }
+
+    console.log('newValue: ' + Number(newValue));
+
+    if (isPlus) {
+        globalThis.items[id].system.quantity = oldValue + Number(newValue);
+        console.log('Total (+): ' + globalThis.items[id].system.quantity);
+    } else if (isMinus) {
+        globalThis.items[id].system.quantity = Math.max(oldValue - Number(newValue), 0);
+        console.log('Total (-): ' + globalThis.items[id].system.quantity);
+    } else {
+        globalThis.items[id].system.quantity = Number(newValue);
+        console.log('Total: ' + globalThis.items[id].system.quantity);
+    }
+
+    document.getElementById(globalThis.items[id].id).value = globalThis.items[id].system.quantity;
+}
 
 /**
  * Extend the basic ActorSheet with some common capabilities
@@ -28,10 +69,16 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.customSunSign = game.settings.get('hm3', 'customSunSign');
         data.actor = foundry.utils.deepClone(this.actor);
         data.items = this.actor.items.map((i) => {
-            //i.data.labels = i.labels;
+            // A new, truncated number is created so that weights with many decimal places (e.g. dram) are also displayed nicely.
+            if ([ItemTypes.MISCGEAR, ItemTypes.ARMORGEAR, ItemTypes.WEAPONGEAR, ItemTypes.MISSILEGEAR, ItemTypes.CONTAINERGEAR].includes(i.type)) {
+                i.system.weightT = utility.truncate(i.system.weight, 3);
+            }
+
             return i;
         });
         data.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
+        globalThis.items = data.items;
+
         data.adata = data.actor.system;
         data.labels = this.actor.labels || {};
         data.filters = this._filters;

@@ -1,3 +1,47 @@
+<script>
+function handleQtyInput(id, newValue) {
+    const oldValue = globalThis.items[id].system.quantity;
+    console.log('oldValue: ' + oldValue);
+
+    if (newValue.length === 0) {
+        globalThis.items[id].system.quantity = oldValue;
+        document.getElementById(globalThis.items[id].id).value = globalThis.items[id].system.quantity;
+        return;
+    }
+
+    const firstChar = Array.from(newValue)[0];
+
+    console.log('firstChar: ' + firstChar);
+
+    let isPlus = false;
+    let isMinus = false;
+    if (firstChar === '+') isPlus = true;
+    if (firstChar === '-') isMinus = true;
+    if (isPlus || isMinus) newValue = newValue.slice(1);
+
+    if (newValue.length === 0 || isNaN(newValue)) {
+        globalThis.items[id].system.quantity = oldValue;
+        document.getElementById(globalThis.items[id].id).value = globalThis.items[id].system.quantity;
+        return;
+    }
+
+    console.log('newValue: ' + Number(newValue));
+
+    if (isPlus) {
+        globalThis.items[id].system.quantity = oldValue + Number(newValue);
+        console.log('Total (+): ' + globalThis.items[id].system.quantity);
+    } else if (isMinus) {
+        globalThis.items[id].system.quantity = Math.max(oldValue - Number(newValue), 0);
+        console.log('Total (-): ' + globalThis.items[id].system.quantity);
+    } else {
+        globalThis.items[id].system.quantity = Number(newValue);
+        console.log('Total: ' + globalThis.items[id].system.quantity);
+    }
+
+    document.getElementById(globalThis.items[id].id).value = globalThis.items[id].system.quantity;
+}
+</script>
+
 <form class="{{cssClass}} sheet flexcol" autocomplete="off">
     {{!-- Sheet Header --}}
     <header class="sheet-header sheet-header-character">
@@ -1192,8 +1236,8 @@
                                         <h4>{{item.name}}</h4>
                                     </div>
                                     <div class="item-detail gear-type">{{lookup ../../gearTypes item.type}}</div>
-                                    <div class="item-detail gear-qty">{{system.quantity}}</div>
-                                    <div class="item-detail gear-weight">{{system.weight}}</div>
+                                    <div class="item-detail gear-qty"><input type="text" id="{{item.id}}" value="{{item.system.quantity}}" data-dtype="Number" onchange="handleQtyInput({{@key}}, event.target.value)"/></div>
+                                    <div class="item-detail gear-weight">{{system.weightT}}</div>
                                     <div class="item-detail gear-notes">{{system.notes}}</div>
                                     <div class="item-controls-wide">
                                         {{#if (eq cid "on-person")}}

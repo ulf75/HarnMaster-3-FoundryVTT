@@ -563,3 +563,13 @@ export function parseAEValue(string) {
     const postString = string.slice(lastColon + 1).trim();
     return [preString, postString];
 }
+
+/**
+ * Truncates the decimal places of a number.
+ * @param {number} value - The actual number to be truncated.
+ * @param {number} digits - The number of decimal places to be truncated to (defaults to 2).
+ * @returns {number} The truncated number.
+ */
+export function truncate(value, digits = 2) {
+    return Math.round((value + Number.EPSILON) * 10 ** digits) / 10 ** digits;
+}
