@@ -1,9 +1,8 @@
-import {HarnMasterActor} from './actor.js';
-//import { ImportArmorGear } from "../import-armor.js";
-//import { ImportFFF } from "../import-char.js";
 import {onManageActiveEffect} from '../effect.js';
+import {ItemTypes} from '../item-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
+import {HarnMasterActor} from './actor.js';
 
 /**
  * Extend the basic ActorSheet with some common capabilities
@@ -28,10 +27,15 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.customSunSign = game.settings.get('hm3', 'customSunSign');
         data.actor = foundry.utils.deepClone(this.actor);
         data.items = this.actor.items.map((i) => {
-            //i.data.labels = i.labels;
+            // A new, truncated number is created so that weights with many decimal places (e.g. dram) are also displayed nicely.
+            if ([ItemTypes.MISCGEAR, ItemTypes.ARMORGEAR, ItemTypes.WEAPONGEAR, ItemTypes.MISSILEGEAR, ItemTypes.CONTAINERGEAR].includes(i.type)) {
+                i.system.weightT = utility.truncate(i.system.weight, 3);
+            }
+
             return i;
         });
         data.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
+
         data.adata = data.actor.system;
         data.labels = this.actor.labels || {};
         data.filters = this._filters;
@@ -378,9 +382,20 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Active Effect management
         html.find('.effect-control').click((ev) => onManageActiveEffect(ev, this.document));
 
+        // Ensure all text is selected when entering number input field
+        html.on('click', "input[type='number']", (ev) => {
+            ev.currentTarget.select();
+        });
+
         // Ensure all text is selected when entering text input field
         html.on('click', "input[type='text']", (ev) => {
             ev.currentTarget.select();
+        });
+
+        html.on('change', "input[type='text']", (ev) => {
+            if (ev.target.name === 'item-quantity-special') {
+                this._handleQtyInput(ev.target.id, ev.target.value);
+            }
         });
 
         // Filter on name for Skills
@@ -982,5 +997,51 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 return ChatMessage.create(messageData);
             }
         }
+    }
+
+    /**
+     * Handles the quantity input field. You can also write + or - in front of the number
+     * and everything will be calculated accordingly.
+     * @param {string} itemId - The item id.
+     * @param {string} newValue - The newly entered value.
+     */
+    async _handleQtyInput(itemId, newValue) {
+        const item = this.actor.items.find((i) => i.id === itemId);
+
+        // Ensure that at least something has been entered
+        if (newValue.length === 0) {
+            document.getElementById(itemId).value = item.system.quantity;
+            return;
+        }
+
+        const firstChar = Array.from(newValue)[0];
+
+        let isPlus = false;
+        let isMinus = false;
+        if (firstChar === '+') isPlus = true;
+        if (firstChar === '-') isMinus = true;
+        if (isPlus || isMinus) newValue = newValue.slice(1);
+
+        // Ensure that something meaningful has been entered
+        if (newValue.length === 0 || isNaN(newValue)) {
+            document.getElementById(itemId).value = item.system.quantity;
+            return;
+        }
+
+        // Only integer quantities allowed
+        newValue = utility.truncate(Number(newValue), 0);
+
+        if (isPlus) {
+            item.system.quantity = item.system.quantity + newValue;
+        } else if (isMinus) {
+            item.system.quantity = Math.max(item.system.quantity - newValue);
+        } else {
+            item.system.quantity = newValue;
+        }
+
+        document.getElementById(itemId).value = item.system.quantity;
+
+        // Update the quantity on the server
+        item.update({'system.quantity': item.system.quantity});
     }
 }

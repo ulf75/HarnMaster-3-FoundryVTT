@@ -521,7 +521,7 @@ export class HarnMasterActor extends Actor {
         });
 
         // Normalize weight to two decimal points
-        totalWeight = Math.round((totalWeight + Number.EPSILON) * 100) / 100;
+        totalWeight = utility.truncate(totalWeight);
 
         actorData.totalWeight = totalWeight;
 
@@ -594,7 +594,7 @@ export class HarnMasterActor extends Actor {
                 if (cid && cid != 'on-person') {
                     const container = this.items.get(cid);
                     if (container) {
-                        container.system.capacity.value = Math.round((container.system.capacity.value + tempWeight + Number.EPSILON) * 100) / 100;
+                        container.system.capacity.value = utility.truncate(container.system.capacity.value + tempWeight);
                     } else {
                         // If container is set and is not 'on-person', but if we can't find the container,
                         // move the item back to 'on-person'.
@@ -607,13 +607,13 @@ export class HarnMasterActor extends Actor {
         // It seems whenever doing math on floating point numbers, very small
         // amounts get introduced creating very long decimal values.
         // Correct any math weirdness; keep to two decimal points
-        eph.totalArmorWeight = Math.round((eph.totalArmorWeight + Number.EPSILON) * 100) / 100;
-        eph.totalWeaponWeight = Math.round((eph.totalWeaponWeight + Number.EPSILON) * 100) / 100;
-        eph.totalMissileWeight = Math.round((eph.totalMissileWeight + Number.EPSILON) * 100) / 100;
-        eph.totalMiscGearWeight = Math.round((eph.totalMiscGearWeight + Number.EPSILON) * 100) / 100;
+        eph.totalArmorWeight = utility.truncate(eph.totalArmorWeight);
+        eph.totalWeaponWeight = utility.truncate(eph.totalWeaponWeight);
+        eph.totalMissileWeight = utility.truncate(eph.totalMissileWeight);
+        eph.totalMiscGearWeight = utility.truncate(eph.totalMiscGearWeight);
 
         eph.totalGearWeight = eph.totalWeaponWeight + eph.totalMissileWeight + eph.totalArmorWeight + eph.totalMiscGearWeight;
-        eph.totalGearWeight = Math.round((eph.totalGearWeight + Number.EPSILON) * 100) / 100;
+        eph.totalGearWeight = utility.truncate(eph.totalGearWeight);
     }
 
     _setupEffectiveAbilities(actorData) {
