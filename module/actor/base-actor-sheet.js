@@ -4,48 +4,6 @@ import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 import {HarnMasterActor} from './actor.js';
 
-function handleQtyInput(id, newValue) {
-    const oldValue = globalThis.items[id].system.quantity;
-    console.log('oldValue: ' + oldValue);
-
-    if (newValue.length === 0) {
-        globalThis.items[id].system.quantity = oldValue;
-        document.getElementById(globalThis.items[id].id).value = globalThis.items[id].system.quantity;
-        return;
-    }
-
-    const firstChar = Array.from(newValue)[0];
-
-    console.log('firstChar: ' + firstChar);
-
-    let isPlus = false;
-    let isMinus = false;
-    if (firstChar === '+') isPlus = true;
-    if (firstChar === '-') isMinus = true;
-    if (isPlus || isMinus) newValue = newValue.slice(1);
-
-    if (newValue.length === 0 || isNaN(newValue)) {
-        globalThis.items[id].system.quantity = oldValue;
-        document.getElementById(globalThis.items[id].id).value = globalThis.items[id].system.quantity;
-        return;
-    }
-
-    console.log('newValue: ' + Number(newValue));
-
-    if (isPlus) {
-        globalThis.items[id].system.quantity = oldValue + Number(newValue);
-        console.log('Total (+): ' + globalThis.items[id].system.quantity);
-    } else if (isMinus) {
-        globalThis.items[id].system.quantity = Math.max(oldValue - Number(newValue), 0);
-        console.log('Total (-): ' + globalThis.items[id].system.quantity);
-    } else {
-        globalThis.items[id].system.quantity = Number(newValue);
-        console.log('Total: ' + globalThis.items[id].system.quantity);
-    }
-
-    document.getElementById(globalThis.items[id].id).value = globalThis.items[id].system.quantity;
-}
-
 /**
  * Extend the basic ActorSheet with some common capabilities
  * @extends {ActorSheet}
@@ -77,7 +35,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             return i;
         });
         data.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
-        globalThis.items = data.items;
 
         data.adata = data.actor.system;
         data.labels = this.actor.labels || {};
@@ -425,9 +382,20 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Active Effect management
         html.find('.effect-control').click((ev) => onManageActiveEffect(ev, this.document));
 
+        // Ensure all text is selected when entering number input field
+        html.on('click', "input[type='number']", (ev) => {
+            ev.currentTarget.select();
+        });
+
         // Ensure all text is selected when entering text input field
         html.on('click', "input[type='text']", (ev) => {
             ev.currentTarget.select();
+        });
+
+        html.on('change', "input[type='text']", (ev) => {
+            if (ev.target.name === 'item-quantity-special') {
+                this._handleQtyInput(ev.target.id, ev.target.value);
+            }
         });
 
         // Filter on name for Skills
@@ -1029,5 +997,51 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 return ChatMessage.create(messageData);
             }
         }
+    }
+
+    /**
+     * Handles the quantity input field. You can also write + or - in front of the number
+     * and everything will be calculated accordingly.
+     * @param {string} itemId - The item id.
+     * @param {string} newValue - The newly entered value.
+     */
+    async _handleQtyInput(itemId, newValue) {
+        const item = this.actor.items.find((i) => i.id === itemId);
+
+        // Ensure that at least something has been entered
+        if (newValue.length === 0) {
+            document.getElementById(itemId).value = item.system.quantity;
+            return;
+        }
+
+        const firstChar = Array.from(newValue)[0];
+
+        let isPlus = false;
+        let isMinus = false;
+        if (firstChar === '+') isPlus = true;
+        if (firstChar === '-') isMinus = true;
+        if (isPlus || isMinus) newValue = newValue.slice(1);
+
+        // Ensure that something meaningful has been entered
+        if (newValue.length === 0 || isNaN(newValue)) {
+            document.getElementById(itemId).value = item.system.quantity;
+            return;
+        }
+
+        // Only integer quantities allowed
+        newValue = utility.truncate(Number(newValue), 0);
+
+        if (isPlus) {
+            item.system.quantity = item.system.quantity + newValue;
+        } else if (isMinus) {
+            item.system.quantity = Math.max(item.system.quantity - newValue);
+        } else {
+            item.system.quantity = newValue;
+        }
+
+        document.getElementById(itemId).value = item.system.quantity;
+
+        // Update the quantity on the server
+        item.update({'system.quantity': item.system.quantity});
     }
 }
