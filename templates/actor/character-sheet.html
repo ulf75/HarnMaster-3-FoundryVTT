@@ -1103,7 +1103,7 @@
                 </li>
                 <ol class="item-list spell-list">
                     {{#each items as | item |}}
-                        {{#if (eq item.type "psionic")}}
+                        {{#if (and (eq item.type "psionic") (eq item.system.visible "true"))}}
                             <li class="item psionic flexrow" data-item-id="{{item.id}}" data-item-name="{{item.name}}">
                                 <div class="item-name psionic-name psionic-roll flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>

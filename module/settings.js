@@ -64,7 +64,7 @@ export const registerSystemSettings = function () {
     });
 
     game.settings.register('hm3', 'addInjuryToActorSheet', {
-        name: 'Weapon Damage',
+        name: 'Add Injuries',
         hint: 'Automatically add injuries to actor sheet',
         scope: 'world',
         config: true,
@@ -106,5 +106,14 @@ export const registerSystemSettings = function () {
             'scene': 'Scene Units (e.g. feet)',
             'grid': 'Grid Units (e.g. hexes or squares)'
         }
+    });
+
+    game.settings.register('hm3', 'dormantPsionicTalents', {
+        name: 'NEW Dormant Psionic Talents',
+        hint: 'Activate to make dormant psionic talents (ML20 or less) invisible to the players. GM still sees the dormant talents (Psionics 3)',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean
     });
 };

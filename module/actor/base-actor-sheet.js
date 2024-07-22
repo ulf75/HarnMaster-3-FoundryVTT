@@ -31,6 +31,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             if ([ItemTypes.MISCGEAR, ItemTypes.ARMORGEAR, ItemTypes.WEAPONGEAR, ItemTypes.MISSILEGEAR, ItemTypes.CONTAINERGEAR].includes(i.type)) {
                 i.system.weightT = utility.truncate(i.system.weight, 3);
             }
+            // Dormant psionic talents may be invisible for players (ML20 or less (Psionics 3))
+            if (i.type === ItemTypes.PSIONIC) {
+                i.system.visible = String(!game.settings.get('hm3', 'dormantPsionicTalents') || i.system.masteryLevel > 20 || game.user.isGM);
+            }
 
             return i;
         });
