@@ -367,7 +367,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.item-create').click(this._onItemCreate.bind(this));
 
         // Update Inventory Item
-        html.find('.item-edit').click((ev) => {
+        html.find('.item-edit, .gear-name').click((ev) => {
             const li = $(ev.currentTarget).parents('.item');
             const item = this.actor.items.get(li.data('itemId'));
             item.sheet.render(true);
