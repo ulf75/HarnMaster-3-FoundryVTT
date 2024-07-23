@@ -388,6 +388,7 @@ HM3.activeEffectKey = {
     'system.eph.meleeDMLMod': 'Melee Defenses',
     'system.eph.missileAMLMod': 'Missile Attacks',
     'system.eph.outnumbered': 'Outnumbered',
+    'system.eph.prone': 'Prone',
     'system.eph.itemAMLMod': 'Weapon Attack ML',
     'system.eph.itemDMLMod': 'Weapon Defense ML',
     'system.eph.itemEMLMod': 'Skill EML',

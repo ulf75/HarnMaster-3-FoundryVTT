@@ -95,4 +95,15 @@
             {{/if}}
         </div>
     </div>
+
+    {{#if hasActiveEffects}}
+    <header class="card-header flexcol">
+      <h4 class="subtitle">Applicable Effects</h4>
+    </header>    
+    {{#each activeEffects as |activeEffect|}}
+    <div class="card-content flex-group-left">
+      <span class="value">{{activeEffect}}</span>
+    </div>
+    {{/each}}
+    {{/if}}
 </div>
