@@ -234,13 +234,20 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
     // Applicable active effects
     const activeEffects = [];
     {
+        // Outnumbered (Combat 11)
+        const isOutnumbered = defendToken.actor?.system?.eph?.outnumbered > 1;
+        if (isOutnumbered) {
+            const out = defendToken.actor.system.eph.outnumbered;
+            activeEffects.push(`Defender is outnumbered 1:${out} (DML -${(out - 1) * 10})`);
+        }
+    }
+    {
         // Prone (Combat 11)
         const isDefProne = !!defendToken.actor.effects.contents.find(
             (effect) => effect.active && !!effect.changes.find((change) => change.key === 'system.eph.prone')
         );
-
         if (isDefProne) {
-            activeEffects.push('Defender is prone (+20)');
+            activeEffects.push('Defender is prone (AML +20)');
             dialogResult.addlModifier += isDefProne ? 20 : 0;
         }
     }
