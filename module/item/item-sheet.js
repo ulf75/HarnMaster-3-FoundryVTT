@@ -37,6 +37,9 @@ export class HarnMasterItemSheet extends ItemSheet {
         data.hasCombatSkills = false;
         data.hasRitualSkills = false;
         data.hasMagicSkills = false;
+        data.isGM = game.user.isGM;
+        data.strictMode = game.settings.get('hm3', 'strictGmMode');
+        data.hasRwPermission = data.isGM || !data.strictMode;
 
         data.macroTypes = [
             {key: 'chat', label: 'Chat'},
