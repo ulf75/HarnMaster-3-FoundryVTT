@@ -31,26 +31,49 @@
                 </div>
                 <div class="resource">
                     <label class="resource-label">Weight</label>
-                    <input type="number" name="system.weight" value="{{idata.weight}}" data-dtype="Number" />
+                    <input type="number" name="system.weight" value="{{idata.weight}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
                 </div>
                 <div class="resource">
                     <label class="resource-label">Value</label>
+                    {{#if hasRwPermission}}
                     <input type="number" name="system.value" value="{{idata.value}}" data-dtype="Number" />
+                    {{else}}
+                    {{#if idata.unknownValue}}
+                    <input type="text" value="Unknown" data-dtype="String" disabled />
+                    {{else}}
+                    <input type="number" name="system.value" value="{{idata.value}}" data-dtype="Number" disabled />
+                    {{/if}}
+                    {{/if}}
                 </div>
             </div>
             <div class="resource">
                 <label class="resource-label">Source</label>
-                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" />
+                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" {{#unless hasRwPermission}}disabled{{/unless}} />
             </div>
             <div class="resource">
                 <label class="resource-label">Note</label>
                 <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
+            {{#if isGM}}
+            <div class="resource artifact flexrow">
+                {{#if strictMode}}
+                <input type="checkbox" name="system.unknownValue" value="{{idata.unknownValue}}"
+                    data-dtype="Boolean" {{checked idata.unknownValue}} />
+                <label class="resource-label">Unknown Value</label>If checked, the value is not displayed to the players.
+                {{else}}
+                <input type="checkbox" name="system.unknownValue" value="{{idata.unknownValue}}"
+                    data-dtype="Boolean" {{checked idata.unknownValue}} disabled />
+                <label class="resource-label">Unknown Value</label>Only available, if strict mode is turned  on.
+                {{/if}}
+            </div>
+            {{/if}}
+            {{#if hasRwPermission}}
             <div class="resource artifact flexrow">
                 <input type="checkbox" name="system.arcane.isArtifact" value="{{idata.arcane.isArtifact}}"
                     data-dtype="Boolean" {{checked idata.arcane.isArtifact}} />
                 <label class="resource-label">Artifact</label>
             </div>
+            {{/if}}
             {{#if idata.arcane.isArtifact}}
                 <fieldset>
                     <legend>Artifact Properties</legend>

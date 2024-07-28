@@ -116,4 +116,13 @@ export const registerSystemSettings = function () {
         default: false,
         type: Boolean
     });
+
+    game.settings.register('hm3', 'strictGmMode', {
+        name: 'NEW Strict GM Mode',
+        hint: 'If selected, players will no longer be able to change various data, such as weight, value and other aspects of the gear items. The GM can still change everything. In addition, the GM can hide the value of individual items from the players.',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean
+    });
 };
