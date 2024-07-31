@@ -146,6 +146,10 @@ export class HarnMasterItemSheet extends ItemSheet {
 
         // Roll handlers, click handlers, etc. go here.
 
+        html.on('click', "input[type='number']", (ev) => {
+            ev.currentTarget.select();
+        });
+
         html.on('click', "input[type='text']", (ev) => {
             ev.currentTarget.select();
         });
