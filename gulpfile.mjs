@@ -1,7 +1,9 @@
-const gulp = require('gulp');
-const prefix = require('gulp-autoprefixer');
-const sourcemaps = require('gulp-sourcemaps');
-const sass = require('gulp-sass');
+import gulp from 'gulp';
+import autoPrefixer from 'gulp-autoprefixer';
+import gulpSass from 'gulp-sass';
+import nodeSass from 'node-sass';
+
+const sass = gulpSass(nodeSass);
 
 /* ----------------------------------------- */
 /*  Compile Sass
@@ -20,16 +22,17 @@ function compileScss() {
         outputStyle: 'expanded'
     };
     return gulp
+
         .src(SYSTEM_SCSS)
         .pipe(sass(options).on('error', handleError))
         .pipe(
-            prefix({
+            autoPrefixer({
                 cascade: false
             })
         )
         .pipe(gulp.dest('./css'));
 }
-const css = gulp.series(compileScss);
+export const css = gulp.series(compileScss);
 
 /* ----------------------------------------- */
 /*  Watch Updates
@@ -43,5 +46,5 @@ function watchUpdates() {
 /*  Export Tasks
 /* ----------------------------------------- */
 
-exports.default = gulp.series(compileScss, watchUpdates);
-exports.css = css;
+// exports.default = gulp.series(compileScss, watchUpdates);
+// exports.css = css;
