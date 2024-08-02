@@ -24,6 +24,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             config: CONFIG.HM3
         };
 
+        data.isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
         data.customSunSign = game.settings.get('hm3', 'customSunSign');
         data.actor = foundry.utils.deepClone(this.actor);
         data.items = this.actor.items.map((i) => {
@@ -34,6 +35,17 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             // Dormant psionic talents may be invisible for players (ML20 or less (Psionics 3))
             if (i.type === ItemTypes.PSIONIC) {
                 i.system.visible = String(!game.settings.get('hm3', 'dormantPsionicTalents') || i.system.masteryLevel > 20 || game.user.isGM);
+            }
+            // The range can also be displayed in grids (hex). Can be changed in the settings.
+            if (i.type === ItemTypes.MISSILEGEAR) {
+                if (data.isGridDistanceUnits) {
+                    i.system.rangeGrid = {
+                        short: i.system.range.short / canvas.dimensions.distance,
+                        medium: i.system.range.medium / canvas.dimensions.distance,
+                        long: i.system.range.long / canvas.dimensions.distance,
+                        extreme: i.system.range.extreme / canvas.dimensions.distance
+                    };
+                }
             }
 
             return i;

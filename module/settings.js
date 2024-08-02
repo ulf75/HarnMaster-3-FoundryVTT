@@ -98,7 +98,7 @@ export const registerSystemSettings = function () {
     game.settings.register('hm3', 'distanceUnits', {
         name: 'Distance Units',
         hint: "What units should be used for a missile weapon's short/medium/long/extreme range attributes?",
-        scope: 'world',
+        scope: 'client',
         config: true,
         default: 'scene',
         type: String,

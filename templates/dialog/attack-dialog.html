@@ -15,7 +15,11 @@
     {{#if distance}}
     <div class="form-group">
         <label>Distance:</label>
+        {{#if isGridDistanceUnits}}
+        <span>{{distanceGrid}} hex</span>
+        {{else}}
         <span>{{distance}} ft</span>
+        {{/if}}
     </div>
     {{/if}}
 

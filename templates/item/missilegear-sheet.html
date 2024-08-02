@@ -66,11 +66,7 @@
                     <label class="resource-label" for="system.assocSkill">Associated Skill</label>
                     {{#if hasCombatSkills}}
                         <select class="resource-value" name="system.assocSkill" data-dtype="String">
-                            {{#select idata.assocSkill}}
-                                {{#each combatSkills}}
-                                    <option value="{{this}}">{{this}}</option>
-                                {{/each}}
-                            {{/select}}
+                            {{selectOptions combatSkills selected=idata.assocSkill valueAttr="key" labelAttr="key"}}
                         </select>
                     {{else}}
                         <input type="text" name="system.assocSkill" value="{{idata.assocSkill}}" data-dtype="String" />
@@ -94,19 +90,39 @@
                     <div class="range-value">Extreme</div>
                 </li>
                 <li class="flexrow" id="missilegear-range-values">
-                    <div class="range-label">Range</div>
+                    {{#if isGridDistanceUnits}}
+                    <div class="range-label">Range (hex)</div>
+                    {{else}}
+                    <div class="range-label">Range (ft)</div>
+                    {{/if}}
                     <div class="range-value" id="missilegear-range-short">
-                        <input type="text" name="system.range.short" 
-                        value="{{idata.range.short}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} /></div>
+                        {{#if isGridDistanceUnits}}
+                        <input type="text" name="system.range.short" value="{{rangeGrid.short}}" data-dtype="Number" disabled />
+                        {{else}}
+                        <input type="text" name="system.range.short" value="{{idata.range.short}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        {{/if}}
+                    </div>
                     <div class="range-value" id="missilegear-range-medium">
-                        <input type="text" name="system.range.medium" 
-                        value="{{idata.range.medium}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} /></div>
+                        {{#if isGridDistanceUnits}}
+                        <input type="text" name="system.range.medium" value="{{rangeGrid.medium}}" data-dtype="Number" disabled />
+                        {{else}}
+                        <input type="text" name="system.range.medium" value="{{idata.range.medium}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        {{/if}}
+                    </div>
                     <div class="range-value" id="missilegear-range-long">
-                        <input type="text" name="system.range.long" 
-                        value="{{idata.range.long}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} /></div>
+                        {{#if isGridDistanceUnits}}
+                        <input type="text" name="system.range.long" value="{{rangeGrid.long}}" data-dtype="Number" disabled />
+                        {{else}}
+                        <input type="text" name="system.range.long" value="{{idata.range.long}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        {{/if}}
+                    </div>
                     <div class="range-value" id="missilegear-range-extreme">
-                        <input type="text" name="system.range.extreme" 
-                        value="{{idata.range.extreme}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} /></div>
+                        {{#if isGridDistanceUnits}}
+                        <input type="text" name="system.range.extreme" value="{{rangeGrid.extreme}}" data-dtype="Number" disabled />
+                        {{else}}
+                        <input type="text" name="system.range.extreme" value="{{idata.range.extreme}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        {{/if}}
+                    </div>
                 </li>
                 <li class="flexrow" id="missilegear-impact-values">
                     <div class="range-label">Impact</div>
