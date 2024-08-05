@@ -30,14 +30,7 @@
     },
     "material": "Quilt",
     "armorQuality": 0,
-    "locations": [
-      "Hip",
-      "Groin",
-      "Thigh",
-      "Knee",
-      "Calf",
-      "Foot"
-    ],
+    "locations": ["Hip", "Groin", "Thigh", "Knee", "Calf", "Foot"],
     "protection": {
       "blunt": 5,
       "edged": 3,

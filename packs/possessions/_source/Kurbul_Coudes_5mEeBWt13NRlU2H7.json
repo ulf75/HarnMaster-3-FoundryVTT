@@ -30,9 +30,7 @@
     },
     "material": "Kurbul",
     "armorQuality": 0,
-    "locations": [
-      "Elbow"
-    ],
+    "locations": ["Elbow"],
     "protection": {
       "blunt": 4,
       "edged": 5,

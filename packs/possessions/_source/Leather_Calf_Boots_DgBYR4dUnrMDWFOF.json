@@ -30,10 +30,7 @@
     },
     "material": "Leather",
     "armorQuality": 0,
-    "locations": [
-      "Foot",
-      "Calf"
-    ],
+    "locations": ["Foot", "Calf"],
     "protection": {
       "blunt": 2,
       "edged": 4,

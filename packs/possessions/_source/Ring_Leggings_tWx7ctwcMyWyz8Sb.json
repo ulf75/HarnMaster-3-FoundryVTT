@@ -30,14 +30,7 @@
     },
     "material": "Ring",
     "armorQuality": 0,
-    "locations": [
-      "Hip",
-      "Groin",
-      "Thigh",
-      "Knee",
-      "Calf",
-      "Foot"
-    ],
+    "locations": ["Hip", "Groin", "Thigh", "Knee", "Calf", "Foot"],
     "protection": {
       "blunt": 3,
       "edged": 6,

@@ -30,11 +30,7 @@
     },
     "material": "Plate",
     "armorQuality": 0,
-    "locations": [
-      "Skull",
-      "Face",
-      "Neck"
-    ],
+    "locations": ["Skull", "Face", "Neck"],
     "protection": {
       "blunt": 6,
       "edged": 10,

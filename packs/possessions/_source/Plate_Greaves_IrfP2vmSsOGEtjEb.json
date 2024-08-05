@@ -30,9 +30,7 @@
     },
     "material": "Plate",
     "armorQuality": 0,
-    "locations": [
-      "Calf"
-    ],
+    "locations": ["Calf"],
     "protection": {
       "blunt": 6,
       "edged": 10,

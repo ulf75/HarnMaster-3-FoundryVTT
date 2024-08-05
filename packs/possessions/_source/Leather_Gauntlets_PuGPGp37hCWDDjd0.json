@@ -30,9 +30,7 @@
     },
     "material": "Leather",
     "armorQuality": 0,
-    "locations": [
-      "Hand"
-    ],
+    "locations": ["Hand"],
     "protection": {
       "blunt": 2,
       "edged": 4,

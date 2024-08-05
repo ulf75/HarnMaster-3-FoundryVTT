@@ -30,9 +30,7 @@
     },
     "material": "Plate",
     "armorQuality": 0,
-    "locations": [
-      "Upper Arm"
-    ],
+    "locations": ["Upper Arm"],
     "protection": {
       "blunt": 6,
       "edged": 10,

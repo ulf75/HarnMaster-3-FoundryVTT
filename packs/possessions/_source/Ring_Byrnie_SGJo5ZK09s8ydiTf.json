@@ -30,14 +30,7 @@
     },
     "material": "Ring",
     "armorQuality": 0,
-    "locations": [
-      "Upper Arm",
-      "Shoulder",
-      "Thorax",
-      "Abdomen",
-      "Hip",
-      "Groin"
-    ],
+    "locations": ["Upper Arm", "Shoulder", "Thorax", "Abdomen", "Hip", "Groin"],
     "protection": {
       "blunt": 3,
       "edged": 6,

@@ -30,19 +30,7 @@
     },
     "material": "Cloth",
     "armorQuality": 0,
-    "locations": [
-      "Upper Arm",
-      "Shoulder",
-      "Thorax",
-      "Abdomen",
-      "Hip",
-      "Groin",
-      "Forearm",
-      "Elbow",
-      "Thigh",
-      "Knee",
-      "Calf"
-    ],
+    "locations": ["Upper Arm", "Shoulder", "Thorax", "Abdomen", "Hip", "Groin", "Forearm", "Elbow", "Thigh", "Knee", "Calf"],
     "protection": {
       "blunt": 1,
       "edged": 1,

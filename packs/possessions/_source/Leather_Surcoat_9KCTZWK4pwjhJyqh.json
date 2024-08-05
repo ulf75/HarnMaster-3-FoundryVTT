@@ -30,14 +30,7 @@
     },
     "material": "Leather",
     "armorQuality": 0,
-    "locations": [
-      "Shoulder",
-      "Thorax",
-      "Abdomen",
-      "Hip",
-      "Groin",
-      "Thigh"
-    ],
+    "locations": ["Shoulder", "Thorax", "Abdomen", "Hip", "Groin", "Thigh"],
     "protection": {
       "blunt": 2,
       "edged": 4,
