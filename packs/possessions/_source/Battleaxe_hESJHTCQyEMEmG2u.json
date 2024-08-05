@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A single- or double-bladed axe mounted on a shaft about 48” in length. The battleaxe is a hand-and-a-half weapon with considerable blunt and edge impact.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

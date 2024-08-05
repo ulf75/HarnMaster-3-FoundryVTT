@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A rectangular shield as much as 5' high, usually made of composite woods faced with light metal plate. They are often curved along their length, partially wrapping around the holder. Tower shields are designed for mass infantry defense and are particularly effective where they can be interlocked. They are quite encumbering in individual combat. Outside the Thardic Republic, no regular Hârnic units are equipped with tower shields.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

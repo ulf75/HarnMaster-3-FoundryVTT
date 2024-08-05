@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A two-handed club or mace with a 4-6 foot shaft. Most mauls have wooden heads, sometimes reinforced with metal studs. Mauls are primarily used as mallets to embed stakes as a defense against cavalry, but being struck by one certainly hurts.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

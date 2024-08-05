@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A sword with a narrow, tapered blade 36-48” in length. This weapon is specifically designed for puncturing mail and is known as the thruster. Most knights consider it a dishonorable weapon and will not be gentle with anyone foolish enough to carry one in their sight. Estocs are rare on Hârn.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

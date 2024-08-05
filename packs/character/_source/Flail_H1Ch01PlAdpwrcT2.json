@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Any articulated weapon with one or more balls or short staves affixed to a shaft-handle by rope, leather, or chain. Flails use centrifugal force to increase impact and can be used to strangle or to tangle an opponent’s limbs or weapons. The chain weaves a complex path; flails are difficult to use safely. The most common varieties of flail are Warflail, Nachakas, Grainflail, and Ball and Chain.</p>",
     "source": "HM3 Skills 19",
     "macros": {
       "type": "script",

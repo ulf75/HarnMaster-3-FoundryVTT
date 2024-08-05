@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Any large, two-handed sword. Most battleswords have broad, straight blades 48-60” in length, but there are regional variations. They are chivalric weapons and somewhat uncommon.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

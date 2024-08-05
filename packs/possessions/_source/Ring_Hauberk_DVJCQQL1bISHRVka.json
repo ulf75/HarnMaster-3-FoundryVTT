@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A coat made of ring, scale, or mail. Hauberks cover the shoulders, thorax, abdomen, hips, groin and thighs. They may be lengthened to cover the knees or, more rarely, down to the calves. The skirt is usually split for mounted use. Hauberks are either half-sleeved or full-sleeved.</p><h4>Ring Armour</h4><p>Armour made of heavy cloth or leather reinforced with intermittent metal bezants, rings, or strips. This improves defense against edged weapons but has little other effect.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",

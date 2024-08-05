@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>The triple-pointed spear is a novelty weapon. It attacks no better, and sometimes worse, than a spear, but its three prongs enable its user to catch, block, and break enemy weapons, giving it better defensive capacity. The trident is best used two-handed. It is primarily used in gladiatorial bouts in the Pamesani arenas, although some eccentric warriors also use them. A pitchfork would be classed as an inferior trident.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

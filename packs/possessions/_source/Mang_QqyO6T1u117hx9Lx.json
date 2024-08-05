@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "Gargun weapon",
-    "description": "",
+    "description": "<p>The mang is a form of falchion made and used almost exclusively by gargun. Unlike its human counterpart, the mang is a hand-and-a-half sword. The mang uses wood in its construction and is sometimes called a bladed club. The broad blade and heavy lumber make it an awkward but deadly weapon.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

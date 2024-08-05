@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Many different types of bows are used on Hârn. The shape of a bow is a cultural matter. What really matters is the bow's size, which determines its range and accuracy. In general, the larger the bow, the more powerful it is. Bows are generally used as hunting weapons or employed en masse by foot archers to break up enemy formations. (See Longbow, Shortbow, Crossbow, Hartbow.)</p>",
     "source": "HM3 Skills 19",
     "macros": {
       "type": "script",

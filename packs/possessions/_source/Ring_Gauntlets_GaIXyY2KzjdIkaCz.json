@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Any heavy glove, generally made of leather or reinforced leather.</p><h4>Ring Armour</h4><p>Armour made of heavy cloth or leather reinforced with intermittent metal bezants, rings, or strips. This improves defense against edged weapons but has little other effect.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",

@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A reinforced club. Most have metal heads, often with elaborate patterns of knobs and ridges, affixed to wooden shafts 24-36 inches long. Some maces have metal shafts.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

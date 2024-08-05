@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>The most common type of shield used on Hârn. They are typically 20-30” in diameter and often feature a central metal boss, which may be spiked. The rim is often bound with metal or thick leather, but some warriors leave the edge unprotected so the bare wood can catch and break the enemy's weapon.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "Flexible armour covering hips, groin, thighs, knees, calves, and feet. Common materials are cloth, leather, quilt, scale, and mail. Wealthy feudal lords often wear mail over quilt leggings. Mail leggings are called chausses.",
+    "description": "<p>Flexible armour covering hips, groin, thighs, knees, calves, and feet. Common materials are cloth, leather, quilt, scale, and mail. Wealthy feudal lords often wear mail over quilt leggings. Mail leggings are called chausses.</p><h4>Ring Armour</h4><p>Armour made of heavy cloth or leather reinforced with intermittent metal bezants, rings, or strips. This improves defense against edged weapons but has little other effect.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",

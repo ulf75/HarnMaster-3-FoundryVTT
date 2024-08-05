@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Longbows are more powerful than shortbows and generally the same height as the archer. The defining characteristic of the classic longbow is its method of construction, with yew staves carefully crafted so the heartwood and sapwood form a natural composite. The longbow has amazing power and accuracy when used by skilled archers, but it takes years of training to become proficient; such archers are not common on Hârn. The effective range is 300-400 yards. A skilled archer can fire 5-7 arrows per minute in combat and as many as 20 per minute have been seen in tournaments. The time, effort, and skill required to craft a longbow makes them largely the purview of the Weaponcrafters' Guild.",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

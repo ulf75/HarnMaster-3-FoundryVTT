@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A small shield, usually strapped to the secondary wrist or held in the fist. Bucklers are generally of light construction, allowing them to move faster than larger shields, but they are less durable.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

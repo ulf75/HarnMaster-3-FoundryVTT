@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "A small bow mounted horizontally on a wooden stock with a trigger device to release a short arrow called a bolt or quarrel. Unlike other bows, they may be carried loaded and ready to fire, but this advantage is offset by their longer time to reload. Crossbows are used almost exclusively for hunting. In many kingdoms, the use of a crossbow in combat (against people) is strictly forbidden by church and secular law (the penalty is death). Anyone carrying a crossbow in these realms is regarded with suspicion unless part of a hunting party.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

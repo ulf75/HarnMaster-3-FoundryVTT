@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A single-edged, heavy-bladed cutting sword usually with a curved leading edge. A falchion has good cutting power and is usually 30-36” in length. It is not considered a chivalric weapon.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",
