@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "The ability to use Tarot for contemplation and/or divination. The GM secretly tests Tarotry to determine the accuracy of a reading.",
     "source": "HM3 Skills 17",
     "macros": {
       "type": "script",

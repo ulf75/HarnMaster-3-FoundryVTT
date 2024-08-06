@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Stealth is tested when a character attempts to move without being detected. It can only be applied in situations where an observer would not automatically see the sneaker. The attempt presumes reasonable cover and/or poor light. EML is modified for distance to the target, available cover, etc. Rolling any failure indicates detection, although with MF it may be reasonable to test Awareness of potential observers.",
     "source": "HM3 Skills 9",
     "macros": {
       "type": "script",

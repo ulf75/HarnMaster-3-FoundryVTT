@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Tested when a character attempts to climb a difficult obstacle. The GM assesses a climb as Easy, Hard, or Very Hard. If the character has good climbing gear (rope and grappling hook) increase EML by 10-20 points.",
     "source": "HM3 Skills 8",
     "macros": {
       "type": "script",

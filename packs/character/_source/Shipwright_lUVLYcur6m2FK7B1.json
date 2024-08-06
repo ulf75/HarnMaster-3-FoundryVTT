@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Used to determine how well the character constructs a ship, boat, or its fittings.",
     "source": "HM3 Skills 17",
     "macros": {
       "type": "script",

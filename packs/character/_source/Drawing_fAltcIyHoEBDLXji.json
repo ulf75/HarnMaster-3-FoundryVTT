@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>The ability to produce a likeness, or to assess the artistic quality or realism of a drawing or painting. Different styles and media (such as painting, fresco, pen and ink, woodcut, etc.) may be considered specialties.</p><p>Cartography is a specialty of Drawing used to produce poetic maps. The quality of a map is limited by the information available to its maker. Poetic maps are more often judged by the attractiveness of the cherubs in the margins than by their accuracy. Characters with Drawing skill may be allowed to copy their memory maps in poetic style to sell or show to other PCs.</p>",
     "source": "HM3 Skills 13",
     "macros": {
       "type": "script",

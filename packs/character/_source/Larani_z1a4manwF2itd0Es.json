@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Most characters know something about their own religion, at least enough to attend and participate in church services without seeming too ignorant. For this reason, Ritual is treated as an “automatic skill” with an OML of SBx1. If the character's culture, social class, or family is irreligious, then Ritual may not (GM discretion) be automatic.</p><p>There is a separate skill, with its own Skill Base, for each religion. Appropriate training, divine revelation, or study materials are needed to earn development rolls. Most aspects of Ritual are dealt with in HârnMaster Religion. Language may be a limiting factor when the skill is used to communicate with a congregation.</p>",
     "source": "HM Religion, Larani 1",
     "macros": {
       "type": "script",

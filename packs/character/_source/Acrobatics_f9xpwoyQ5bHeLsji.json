@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Acrobatic Skill is tested when a character attempts a gymnastic feat that is more than a simple matter of native Agility/Dodge. These include vaults, somersaults, backflips, twisting in mid-air to land on one's feet, etc. GMs may modify EML according to the difficulty of the feat being attempted. Acrobatics may be used as a substitute for Dodge in combat.",
     "source": "HM3 Skills 8",
     "macros": {
       "type": "script",

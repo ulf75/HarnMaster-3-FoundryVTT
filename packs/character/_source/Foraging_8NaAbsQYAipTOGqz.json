@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Finding (vegetarian) food in the wilderness. Tested when a character spends a watch (four hours) looking for edible plants, etc. The GM assesses conditions depending on season and locale, and uses the table (below) to determine the mandays of food found.",
     "source": "HM3 Skills 15",
     "macros": {
       "type": "script",

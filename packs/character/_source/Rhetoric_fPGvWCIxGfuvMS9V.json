@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Rhetoric has many uses, from the apprehended thief trying to fast-talk his way out of a visit to the dungeon, to a friar explaining the mysteries of faith to a child.</p><p>All uses of Rhetoric are highly discretionary. When used to persuade people to do something not in their interest, the GM may reduce Rhetoric EML by multiples of the target's Intelligence. Conversely, if the attempt is obviously in the target's best interest, EML may be increased by the target's Intelligence.</p><p>MF/CF on any use of Rhetoric suggests the character has made a fool of himself and may have annoyed the intended target.</p><p>Rhetoric EML cannot exceed either party's EML in the Language being used.</p><h4>Command</h4><p>Command is a specialty of RHETORIC. It is used in situations where a character seeks to convince subordinates to accept the user's leadership.</p><h4>Diplomacy</h4><p>Diplomacy is a specialty of RHETORIC that is useful for determining if a speaker is bluffing or lying, and for communication between people of different cultures. This specialty is important to heralds and other negotiators.</p><h4>Intimidation</h4><p>Intimidation is a specialty of RHETORIC used to establish dominance. This is useful in muggings, assaults, and making sure everyone knows who is boss.</p>",
     "source": "HM3 Skills 12",
     "macros": {
       "type": "script",

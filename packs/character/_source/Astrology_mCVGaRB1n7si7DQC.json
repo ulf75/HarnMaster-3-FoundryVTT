@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>The ability to chart the stars, cast horoscopes, and make predictions based on astrological knowledge. Astrology includes knowledge of astronomy. The art of using astrology to make predictions is called Astromancy; it may serve as an oracle or divination skill.</p><p>PCs may find it beneficial to visit an astromancer to learn the portents before undertaking a major adventure. Such efforts take several hours, at least, to prepare.</p>",
     "source": "HM3 Skills 13",
     "macros": {
       "type": "script",

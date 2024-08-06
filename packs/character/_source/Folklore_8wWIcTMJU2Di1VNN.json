@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Knowledge of myths, legends, and history. This is an oral tradition in most cultures. Successful use of the skill means the character remembers information relevant to the subject being inquired about. EML is reduced if detailed or obscure information is desired.",
     "source": "HM3 Skills 15",
     "macros": {
       "type": "script",

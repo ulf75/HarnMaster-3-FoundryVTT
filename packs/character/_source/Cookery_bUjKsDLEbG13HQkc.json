@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Determines the appeal and nutritional value of meals. Marginal Failure results in poorly-prepared and/or bad-tasting food. Critical failure may cause food poisoning.",
     "source": "HM3 Skills 13",
     "macros": {
       "type": "script",

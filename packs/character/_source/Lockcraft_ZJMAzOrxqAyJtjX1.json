@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>The ability to analyze and pick locks. Lockcraft is tested after each one-minute attempt. Locks are rated on a complexity scale of one to nine; reduce EML by 10 times lock complexity. This may make a lock almost impossible for some lockpickers to open. The GM makes the roll secretly and informs the picker whether or not the lock has opened. The skill may also be used to appraise the complexity of a lock and/or to see if it is trapped.</p><p>Lockcraft is averaged with Metalcraft to construct locks and other small/complex/delicate mechanisms.</p>",
     "source": "HM3 Skills 16",
     "macros": {
       "type": "script",

@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Knowledge of local law. Litigants use this skill to determine which law applies to a particular situation. Enfoeffed knights use the skill to settle tenant disputes; success indicates a fair and just decision is made. If used to prepare a writ or other legal document, the skill is averaged with the appropriate Language and Script.",
     "source": "HM3 Skills 16",
     "macros": {
       "type": "script",

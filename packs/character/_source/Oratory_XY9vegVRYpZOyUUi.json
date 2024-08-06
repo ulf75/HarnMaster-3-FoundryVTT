@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>The ability to impress or persuade crowds by logic, eloquence, or charisma. This is something of a shortcut skill and highly discretionary; some players have more fun actually making speeches. The GM should always require an orating PC to define the audience; mobs may be stupider than individuals, but they cannot be persuaded to step off a cliff.</p><p>Oratory EML cannot exceed the orator's or the audience's EML in the Language being used.</p>",
     "source": "HM3 Skills 12",
     "macros": {
       "type": "script",
