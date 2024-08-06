@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<p>Flexible armour covering hips, groin, thighs, knees, calves, and feet. Common materials are cloth, leather, quilt, scale, and mail. Wealthy feudal lords often wear mail over quilt leggings. Mail leggings are called chausses.</p><h4>Mail Armour</h4><p>Flexible armour made by “knitting” together steel links in various patterns. Mail may be butted or riveted. Both are pretty well impervious to edged weapons but the latter is more resistant to point-penetration. A problem with mail is that a non-penetrating strike may drive the links into the flesh, without damaging the mail. Consequently, mail is nearly always worn with thick undergarments.</p>",
+    "description": "<p>Flexible armour covering hips, groin, thighs, knees, calves, and feet. Common materials are cloth, leather, quilt, scale, and mail. Wealthy feudal lords often wear mail over quilt leggings. Mail leggings are called chausses.</p><h3>Mail Armour</h3><p>Flexible armour made by “knitting” together steel links in various patterns. Mail may be butted or riveted. Both are pretty well impervious to edged weapons but the latter is more resistant to point-penetration. A problem with mail is that a non-penetrating strike may drive the links into the flesh, without damaging the mail. Consequently, mail is nearly always worn with thick undergarments.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",

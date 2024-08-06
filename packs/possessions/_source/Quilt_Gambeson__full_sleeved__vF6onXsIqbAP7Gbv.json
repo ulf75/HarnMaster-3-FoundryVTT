@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<p>A quilt undercoat commonly worn under a hauberk. Gambesons cover shoulders, thorax, abdomen, hips, groin, and thighs. They may be lengthened to cover the knees and may be half- or full-sleeved. The skirt is split to facilitate mounted use. Some gambesons include high collars to protect the neck. Impoverished knights sometimes wear gambesons by themselves, preferably reinforced with ring or scale.</p><h4>Quilt Armour</h4><p>Made from layers of thick cloth with tightly packed straw, linen, or wool wadding sewn between them. Usually worn under mail or worn alone by light foot troops.</p>",
+    "description": "<p>A quilt undercoat commonly worn under a hauberk. Gambesons cover shoulders, thorax, abdomen, hips, groin, and thighs. They may be lengthened to cover the knees and may be half- or full-sleeved. The skirt is split to facilitate mounted use. Some gambesons include high collars to protect the neck. Impoverished knights sometimes wear gambesons by themselves, preferably reinforced with ring or scale.</p><h3>Quilt Armour</h3><p>Made from layers of thick cloth with tightly packed straw, linen, or wool wadding sewn between them. Usually worn under mail or worn alone by light foot troops.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",

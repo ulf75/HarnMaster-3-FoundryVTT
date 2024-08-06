@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<p>An armoured shirt or hauberk.</p><h4>Scale Armour</h4><p>Leather or heavy cloth reinforced by a continuous layer of overlapping metal plates. Superior scale is equivalent to lamellar.</p>",
+    "description": "<p>An armoured shirt or hauberk.</p><h3>Scale Armour</h3><p>Leather or heavy cloth reinforced by a continuous layer of overlapping metal plates. Superior scale is equivalent to lamellar.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",

@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<h4>Leather Armour</h4><p>Armour made by weaponcrafters from thick rawhide, to be worn alone or as a base for ring or scale. Leather garments, typically made by clothiers, used for everyday wear are thinner and not designed for protection.</p>",
+    "description": "<h3>Leather Armour</h3><p>Armour made by weaponcrafters from thick rawhide, to be worn alone or as a base for ring or scale. Leather garments, typically made by clothiers, used for everyday wear are thinner and not designed for protection.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",

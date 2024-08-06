@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<p>Flexible armour of cloth, leather, quilt, or mail covering the skull and neck (short cowl) and sometimes the shoulders (long cowl). Cowls may be body armour extensions or separate garments. A quilt cowl is always worn under a great helm.</p><h4>Quilt Armour</h4><p>Made from layers of thick cloth with tightly packed straw, linen, or wool wadding sewn between them. Usually worn under mail or worn alone by light foot troops.</p>",
+    "description": "<p>Flexible armour of cloth, leather, quilt, or mail covering the skull and neck (short cowl) and sometimes the shoulders (long cowl). Cowls may be body armour extensions or separate garments. A quilt cowl is always worn under a great helm.</p><h3>Quilt Armour</h3><p>Made from layers of thick cloth with tightly packed straw, linen, or wool wadding sewn between them. Usually worn under mail or worn alone by light foot troops.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",
@@ -30,7 +30,7 @@
     },
     "material": "Quilt",
     "armorQuality": 0,
-    "locations": ["Skull", "Neck"],
+    "locations": ["Skull", "Neck", "Shoulder"],
     "protection": {
       "blunt": 5,
       "edged": 3,

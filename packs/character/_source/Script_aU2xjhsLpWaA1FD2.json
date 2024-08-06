@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<p>A script is a system for symbolizing language sounds. Most languages may be written in multiple scripts. For example, English is usually written in the Roman script, but it is possible to use Cyrillic to convey the same sounds.</p><h4>Native Script</h4><p>On Hârn, most scholars, clerics, guildsmen, and nobles know the locally-used script, generally <i>Lakise</i>. <i>Runic</i> is the script of the Khuzdul and Ivinians. A third script (<i>Selenian</i>) is used by the Sindarin. Each script is treated as a separate skill. Any Native Script is opened at 70 + SB.</p>",
+    "description": "<p>A script is a system for symbolizing language sounds. Most languages may be written in multiple scripts. For example, English is usually written in the Roman script, but it is possible to use Cyrillic to convey the same sounds.</p><h3>Native Script</h3><p>On Hârn, most scholars, clerics, guildsmen, and nobles know the locally-used script, generally <i>Lakise</i>. <i>Runic</i> is the script of the Khuzdul and Ivinians. A third script (<i>Selenian</i>) is used by the Sindarin. Each script is treated as a separate skill. Any Native Script is opened at 70 + SB.</p>",
     "source": "HM3 Skills 11",
     "macros": {
       "type": "script",
