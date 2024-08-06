@@ -30,7 +30,7 @@
     },
     "material": "Plate",
     "armorQuality": 0,
-    "locations": [],
+    "locations": ["Elbow"],
     "protection": {
       "blunt": 6,
       "edged": 10,
