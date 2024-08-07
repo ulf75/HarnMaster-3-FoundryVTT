@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Determines the quality of pottery items produced. Results are limited by the quality of materials and equipment.",
     "source": "HM3 Skills 13",
     "macros": {
       "type": "script",

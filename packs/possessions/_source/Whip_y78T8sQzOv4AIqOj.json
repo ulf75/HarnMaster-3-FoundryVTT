@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>The only whip commonly carried into battle is the Isagra, or Reksyni Knut, a 15-foot whip whose tip is reinforced by extra leather and wire. A skillful user can break a man's spine, but even the Reksyni do not use the whip as a primary weapon.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

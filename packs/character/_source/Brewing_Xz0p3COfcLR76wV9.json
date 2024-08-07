@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "The ability to prepare alcoholic and other beverages. Used to determine the quality of brewed ale, beer, cider, etc. Basic materials are necessary. Depending on cultural background, this may include the ability to make wines and spirits. Brewing for public consumption is closely controlled by the Innkeepers Guild, although it is legal to brew for personal use. Ales do not travel well and most inns produce their own brews.",
     "source": "HM3 Skills 13",
     "macros": {
       "type": "script",

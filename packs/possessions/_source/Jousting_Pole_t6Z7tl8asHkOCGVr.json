@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A medium-length (8-10') spear designed to be used on horseback, either couched under one arm when charging or carried overhand to stab downwards at warriors afoot. They can be something of a liability in a skirmish and are often discarded. A special type is used for jousting. The jousting pole is longer (10-12 feet) and generally has a padded point and a flared hand and arm guard called a vamplate. They are designed primarily to unhorse opponents, but injury, especially from being unhorsed, is common. Most knights have skill with the lance.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

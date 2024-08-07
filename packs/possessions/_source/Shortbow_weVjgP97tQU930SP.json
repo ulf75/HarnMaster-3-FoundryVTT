@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>The most common classification of bow encompasses basic bows used by hunters and garrison soldiers as well as horsebows used by some tribesmen. A shortbow can be straight or recurved and made from a single stave of wood or a composite of horn, metal, and hardwoods. Most are 4' or shorter. Maximum effective range is 200- 300 yards. Shortbows are made by unguilded bowyers as well as weaponcrafters.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

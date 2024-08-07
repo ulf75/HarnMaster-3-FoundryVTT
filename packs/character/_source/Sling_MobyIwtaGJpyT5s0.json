@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Any leather or rope weapon designed to cast a stone. Expert slingers, who are rare, can cast stones 100-200 yards with amazing accuracy. A normal stone is the size and shape of a chicken egg. Stones may be scavenged from stream beds, or lead shots may be made. The latter are a little smaller and, with less wind resistance, can travel farther. The sling requires a fair amount of room to use.</p>",
     "source": "HM3 Skills 19",
     "macros": {
       "type": "script",

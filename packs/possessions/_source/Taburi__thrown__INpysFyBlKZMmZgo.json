@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A knife balanced for throwing. The taburi has a sharp point but no edge or hilt. They are popular weapons among the Lia-Kavair.</p>",
     "source": "HM3 Combat 16",
     "macros": {
       "type": "script",

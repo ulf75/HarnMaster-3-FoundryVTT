@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "The ability to predict the weather. Characters with this skill may attempt to predict the weather once each watch. The GM predetermines the weather as necessary.",
     "source": "HM3 Skills 17",
     "macros": {
       "type": "script",

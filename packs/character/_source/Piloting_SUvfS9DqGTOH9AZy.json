@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "The ability to navigate a ship.",
     "source": "HM3 Skills 17",
     "macros": {
       "type": "script",

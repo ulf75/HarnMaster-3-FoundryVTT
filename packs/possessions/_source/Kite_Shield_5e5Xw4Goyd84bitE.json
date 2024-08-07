@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A chivalric shield with a long tapered navel point. They are somewhat heavy but offer superior protection to the legs, especially for mounted warriors. The kite shield is made of wood, often several layers, generally faced with metal or leather plate.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

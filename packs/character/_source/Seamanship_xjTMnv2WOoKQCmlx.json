@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Seamanship is tested when a character attempts a difficult task having to do with the handling of a ship or boat, such as setting sails in high seas. Seamanship does not include navigational skills.",
     "source": "HM3 Skills 17",
     "macros": {
       "type": "script",

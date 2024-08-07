@@ -1,0 +1,56 @@
+{
+  "_id": "m51oNQWvJ5W1fyxK",
+  "name": "Mail Cowl (long)",
+  "type": "armorgear",
+  "img": "systems/hm3/images/icons/svg/hood.svg",
+  "effects": [],
+  "folder": "JD5aWyIFHJQTSkqB",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>Flexible armour of cloth, leather, quilt, or mail covering the skull and neck (short cowl) and sometimes the shoulders (long cowl). Cowls may be body armour extensions or separate garments. A quilt cowl is always worn under a great helm.</p><h3>Mail Armour</h3><p>Flexible armour made by “knitting” together steel links in various patterns. Mail may be butted or riveted. Both are pretty well impervious to edged weapons but the latter is more resistant to point-penetration. A problem with mail is that a non-penetrating strike may drive the links into the flesh, without damaging the mail. Consequently, mail is nearly always worn with thick undergarments.</p>",
+    "source": "HM3 Combat 4",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 180,
+    "weight": 6,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Mail",
+    "armorQuality": 0,
+    "locations": ["Skull", "Neck", "Shoulder"],
+    "protection": {
+      "blunt": 2,
+      "edged": 8,
+      "piercing": 5,
+      "fire": 1
+    },
+    "size": 6
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284239471,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!m51oNQWvJ5W1fyxK"
+}

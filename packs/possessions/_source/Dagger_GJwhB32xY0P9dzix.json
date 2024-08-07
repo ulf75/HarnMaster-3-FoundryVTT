@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A knife designed for combat. The term includes a variety of single- and double-edged weapons, most of which have at least a minimal guard to protect the hand. Few exceed a foot in length or a pound in weight. The balance is far from perfect for throwing. See Keltan and Taburi.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

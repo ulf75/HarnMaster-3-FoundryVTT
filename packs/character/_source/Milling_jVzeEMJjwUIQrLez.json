@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Used to determine efficiency and/or yield when milling grain, etc. Milling is primarily a way to earn money. It is usually not a very exciting activity nor a useful skill for adventurers.",
     "source": "HM3 Skills 16",
     "macros": {
       "type": "script",

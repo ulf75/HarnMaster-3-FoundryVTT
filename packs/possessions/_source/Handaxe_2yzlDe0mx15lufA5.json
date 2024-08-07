@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Any combat axe designed to be used in one hand. Most handaxes are single-bladed, with one or more spikes to make the thrust and/or backhand more dangerous.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

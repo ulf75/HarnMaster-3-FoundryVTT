@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Used for the analysis and/or production of chemical or alchemical compounds. Alchemists devise (or otherwise acquire) recipes for their craft. Use of this skill requires access to the necessary equipment, texts, and materials.",
     "source": "HM3 Skills 13",
     "macros": {
       "type": "script",

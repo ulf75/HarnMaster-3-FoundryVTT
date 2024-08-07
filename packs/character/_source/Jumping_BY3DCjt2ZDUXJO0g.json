@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Jumping is tested when a character attempts to leap for height or distance. Results assume a running start; for standing jumps, halve heights/distances. Clearances (the distance and/or height jumped) are given as percentages of the character's height; they may be randomly varied at GM discretion.",
     "source": "HM3 Skills 9",
     "macros": {
       "type": "script",

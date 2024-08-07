@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Riding is used to determine the ability to ride/control a steed in combat. The skill may also be used for other difficult mounted maneuvers at GM discretion. The skill is opened at SBx1 on the first attempt to mount a steed, generally a horse.</p><p>The relationship between rider and steed is significant. Riding EML is always averaged with STEED INITIATIVE. That means, effectively, that a separate Riding skill exists for each steed.</p>",
     "source": "HM3 Skills 18",
     "macros": {
       "type": "script",

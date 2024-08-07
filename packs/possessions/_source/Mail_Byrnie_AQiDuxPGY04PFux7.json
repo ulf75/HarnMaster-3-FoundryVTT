@@ -10,15 +10,15 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>An armoured shirt or hauberk.</p><h3>Mail Armour</h3><p>Flexible armour made by “knitting” together steel links in various patterns. Mail may be butted or riveted. Both are pretty well impervious to edged weapons but the latter is more resistant to point-penetration. A problem with mail is that a non-penetrating strike may drive the links into the flesh, without damaging the mail. Consequently, mail is nearly always worn with thick undergarments.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",
       "command": ""
     },
     "quantity": 1,
-    "value": 660,
-    "weight": 22,
+    "value": 765,
+    "weight": 25.5,
     "isCarried": true,
     "isEquipped": true,
     "container": "on-person",
@@ -30,14 +30,7 @@
     },
     "material": "Mail",
     "armorQuality": 0,
-    "locations": [
-      "Upper Arm",
-      "Shoulder",
-      "Thorax",
-      "Abdomen",
-      "Hip",
-      "Groin"
-    ],
+    "locations": ["Elbow", "Forearm", "Upper Arm", "Shoulder", "Thorax", "Abdomen", "Hip", "Groin"],
     "protection": {
       "blunt": 2,
       "edged": 8,

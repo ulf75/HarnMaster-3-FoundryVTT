@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A light spear designed for throwing.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

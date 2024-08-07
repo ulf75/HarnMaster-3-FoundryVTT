@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Many different shields are used on Lythia, all perform similarly in combat, although quality varies with the manner of construction. Most are made of wood and often faced with metal or leather. Tribal shields are often made by stretching treated hide over wooden frames. See Buckler, Kite Shield, Knight Shield, Tower Shield.</p>",
     "source": "HM3 Skills 19",
     "macros": {
       "type": "script",

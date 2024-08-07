@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A readily available weapon used by peasants, priests, and eccentric warriors throughout Lythia. As a twohanded weapon in competent hands, the staff attacks and parries quickly, but in one hand it is reduced to a crude thrusting stick. Most staves are plain wood, but some are reinforced with metal bands.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

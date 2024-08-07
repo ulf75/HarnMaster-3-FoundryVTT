@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Legerdemain (sleight of hand) is tested when a character attempts to perform a feat of manual dexterity without being detected by observers or victims. Examples include cutting a victim's moneypurse from behind or moving shells in a shell game.</p><p>Once Legerdemain success level is determined, the victim tests AWARENESS to detect the attempt. If the victim is not paying attention, half Awareness is appropriate. If the victim's level of success is greater, the legerdemain is detected. Awareness rolls should also be made for any/all potential witnesses.</p>",
     "source": "HM3 Skills 9",
     "macros": {
       "type": "script",

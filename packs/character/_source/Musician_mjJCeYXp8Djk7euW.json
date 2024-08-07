@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Each type of musical instrument is a separate skill. Among the most common are Drum, Flute, Harp, Horn, Pipes, and Lute. The availability of musical instruments and skills depends on culture. EML is modified by instrument quality.",
     "source": "HM3 Skills 12",
     "macros": {
       "type": "script",

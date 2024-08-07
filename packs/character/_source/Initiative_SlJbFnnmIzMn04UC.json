@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "An automatic combat skill. Initiative reflects battle experience, discipline, and morale. Once opened, Development Rolls are made only for Combat Experience. Initiative determines the order in which characters take turns in combat (characters with higher INI move sooner).",
     "source": "HM3 Skills 18",
     "macros": {
       "type": "script",

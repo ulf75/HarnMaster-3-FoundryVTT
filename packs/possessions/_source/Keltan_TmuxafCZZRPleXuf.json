@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A dagger with a forward-thrusting guard designed to catch an opponent's blade. The keltan is usually a secondary weapon, useful for holding an opponent's sword or delivering a riposte. It is relatively rare because the weight of most primary weapons makes it dangerous to use and because it requires great skill to be effective.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

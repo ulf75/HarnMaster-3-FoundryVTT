@@ -10,15 +10,15 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<h3>Cloth Armour</h3><p>Heavy, coarse cloth can be worn alone or as an additional layer over or under other armour. Armourers make cloth armour designed for combat. Clothing for everyday wear offers negligible armour protection.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",
       "command": ""
     },
     "quantity": 1,
-    "value": 88,
-    "weight": 4.4,
+    "value": 118,
+    "weight": 5.9,
     "isCarried": true,
     "isEquipped": true,
     "container": "on-person",
@@ -30,14 +30,7 @@
     },
     "material": "Cloth",
     "armorQuality": 0,
-    "locations": [
-      "Upper Arm",
-      "Shoulder",
-      "Thorax",
-      "Abdomen",
-      "Hip",
-      "Groin"
-    ],
+    "locations": ["Upper Arm", "Shoulder", "Thorax", "Abdomen", "Hip", "Groin", "Thigh"],
     "protection": {
       "blunt": 1,
       "edged": 1,

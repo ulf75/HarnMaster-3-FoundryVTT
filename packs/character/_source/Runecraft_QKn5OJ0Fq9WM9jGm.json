@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "A popular art in regions influenced by Ivinian or Khuzan culture, this is the ability to divine, read portents, and cast fortunes by means of runestones or runic symbology. The GM secretly tests Runecraft to determine the accuracy of a reading.",
     "source": "HM3 Skills 17",
     "macros": {
       "type": "script",

@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Used to determine success/quality when producing commonplace metallic goods. This skill may not be used to produce jewelry, weapons, or armour. Specialties are based on types of metal: copper, iron/steel, bronze, brass, pewter, lead, tin, etc. Metalcrafters (mostly blacksmiths) are found in most settlements.</p><p>Metalcraft is averaged with Lockcraft to construct locks, secret compartments, and other small, complex, and/or delicate mechanisms. Larger machinery is usually built by millwrights (engineers).</p>",
     "source": "HM3 Skills 16",
     "macros": {
       "type": "script",

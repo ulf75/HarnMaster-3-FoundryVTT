@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>The ability to domesticate, breed, and train animals. Animalcraft also includes basic veterinary medicine.</p><p>Test Animalcraft when breaking or domesticating animals, and for each trick/task to be taught. The time required for various efforts is at GM discretion. More willful and older animals are harder to train, and few animals tolerate more than two hours training daily.</p>",
     "source": "HM3 Skills 13",
     "macros": {
       "type": "script",

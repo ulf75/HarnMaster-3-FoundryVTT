@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A common threshing tool favored as a peasant weapon, basically an articulated staff. Grainflails consist of two 18-36 inch wooden staves joined together by a leather thong. The handle staff is usually longer than the impact staff.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>The Sindarin shortbow, constructed from wood, bone, and sinew. The hartbow has the size and weight of a shortbow, but its range and impact exceed those of the longbow. Hartbows are typically inlaid with gems and silver or gold designs.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Automatic Physical Skill that indicates a character's overall state of physical well being. CONDITION SB is the same as ENDURANCE, and has an OML of SBx5.</p><p>CONDITION may be improved to a maximum of SBx7 with regular, strenuous exercise, provided the character is healthy.</p><p>CONDITION determines the character's resistance to physical trauma, illness, injury, etc. When divided by five it has has the same function as ENDURANCE, but can also be used directly for physical skill tests such as LIFTING and CARRYING.</p>",
     "source": "HM3 Skills 9",
     "macros": {
       "type": "script",

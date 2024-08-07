@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Any one-handed sword 30-40” in length. Broadswords are usually double-edged with broad, straight blades, but there are various regional variants. The broadsword is by far the most popular weapon of the feudal nobility of western Lythia.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",
