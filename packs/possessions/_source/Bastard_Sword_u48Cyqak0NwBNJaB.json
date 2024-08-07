@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Any hand-and-a-half sword between 40” and 48” in length. Bastard swords have longer hilts than broadswords and their name derives from the fact that they may be used either one or two handed.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

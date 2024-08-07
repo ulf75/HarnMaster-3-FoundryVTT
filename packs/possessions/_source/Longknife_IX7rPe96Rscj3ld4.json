@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "Sindarin weapon",
-    "description": "",
+    "description": "<p>A straight, doubleedged, thin-bladed shortsword. The longknife is the preferred weapon of Sindarin warriors. Other races make copies that lack resilience. It is light enough to be used as a secondary weapon but most people find it too long for this purpose.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

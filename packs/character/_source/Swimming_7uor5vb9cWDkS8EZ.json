@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "This skill may be opened at SBx1 the first time a character enters water 3 feet or more in depth, and must be opened if a character is in water exceeding their height. Difficulty of swimming conditions is rated on a scale from calm waters [0] to stormy waters [4] with large waves.",
     "source": "HM3 Skills 9",
     "macros": {
       "type": "script",

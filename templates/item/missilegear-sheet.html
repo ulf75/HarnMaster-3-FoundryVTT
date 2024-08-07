@@ -31,18 +31,26 @@
                 </div>
                 <div class="resource" id="missilegear-weight">
                     <label class="resource-label">Weight</label>
-                    <input type="number" name="system.weight" value="{{idata.weight}}" data-dtype="Number" />
+                    <input type="number" name="system.weight" value="{{idata.weight}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
                 </div>
                 <div class="resource" id="missilegear-value">
                     <label class="resource-label">Value</label>
+                    {{#if hasRwPermission}}
                     <input type="number" name="system.value" value="{{idata.value}}" data-dtype="Number" />
+                    {{else}}
+                    {{#if idata.unknownValue}}
+                    <input type="text" value="Unknown" data-dtype="String" disabled />
+                    {{else}}
+                    <input type="number" name="system.value" value="{{idata.value}}" data-dtype="Number" disabled />
+                    {{/if}}
+                    {{/if}}
                 </div>
                 <div></div>
                 <div></div>
                 <div></div>
                 <div class="resource" id="missilegear-quality">
                     <label class="resource-label">Weapon Quality</label>
-                    <input type="number" name="system.weaponQuality" value="{{idata.weaponQuality}}" data-dtype="Number" />
+                    <input type="number" name="system.weaponQuality" value="{{idata.weaponQuality}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
                 </div>
                 <div class="resource" id="missilegear=weaponaspect">
                     <label class="resource-label" for="system.weaponAspect">Weapon Aspect</label>
@@ -58,11 +66,7 @@
                     <label class="resource-label" for="system.assocSkill">Associated Skill</label>
                     {{#if hasCombatSkills}}
                         <select class="resource-value" name="system.assocSkill" data-dtype="String">
-                            {{#select idata.assocSkill}}
-                                {{#each combatSkills}}
-                                    <option value="{{this}}">{{this}}</option>
-                                {{/each}}
-                            {{/select}}
+                            {{selectOptions combatSkills selected=idata.assocSkill valueAttr="key" labelAttr="key"}}
                         </select>
                     {{else}}
                         <input type="text" name="system.assocSkill" value="{{idata.assocSkill}}" data-dtype="String" />
@@ -71,7 +75,7 @@
             </div>
             <div class="resource" id="missilegear-source">
                 <label class="resource-label">Source</label>
-                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" />
+                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" {{#unless hasRwPermission}}disabled{{/unless}} />
             </div>
             <div class="resource" id="missilegear-notes">
                 <label class="resource-label">Note</label>
@@ -86,41 +90,76 @@
                     <div class="range-value">Extreme</div>
                 </li>
                 <li class="flexrow" id="missilegear-range-values">
-                    <div class="range-label">Range</div>
+                    {{#if isGridDistanceUnits}}
+                    <div class="range-label">Range (hex)</div>
+                    {{else}}
+                    <div class="range-label">Range (ft)</div>
+                    {{/if}}
                     <div class="range-value" id="missilegear-range-short">
-                        <input type="text" name="system.range.short" 
-                        value="{{idata.range.short}}" data-dtype="Number" /></div>
+                        {{#if isGridDistanceUnits}}
+                        <input type="text" name="system.range.short" value="{{rangeGrid.short}}" data-dtype="Number" disabled />
+                        {{else}}
+                        <input type="text" name="system.range.short" value="{{idata.range.short}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        {{/if}}
+                    </div>
                     <div class="range-value" id="missilegear-range-medium">
-                        <input type="text" name="system.range.medium" 
-                        value="{{idata.range.medium}}" data-dtype="Number" /></div>
+                        {{#if isGridDistanceUnits}}
+                        <input type="text" name="system.range.medium" value="{{rangeGrid.medium}}" data-dtype="Number" disabled />
+                        {{else}}
+                        <input type="text" name="system.range.medium" value="{{idata.range.medium}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        {{/if}}
+                    </div>
                     <div class="range-value" id="missilegear-range-long">
-                        <input type="text" name="system.range.long" 
-                        value="{{idata.range.long}}" data-dtype="Number" /></div>
+                        {{#if isGridDistanceUnits}}
+                        <input type="text" name="system.range.long" value="{{rangeGrid.long}}" data-dtype="Number" disabled />
+                        {{else}}
+                        <input type="text" name="system.range.long" value="{{idata.range.long}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        {{/if}}
+                    </div>
                     <div class="range-value" id="missilegear-range-extreme">
-                        <input type="text" name="system.range.extreme" 
-                        value="{{idata.range.extreme}}" data-dtype="Number" /></div>
+                        {{#if isGridDistanceUnits}}
+                        <input type="text" name="system.range.extreme" value="{{rangeGrid.extreme}}" data-dtype="Number" disabled />
+                        {{else}}
+                        <input type="text" name="system.range.extreme" value="{{idata.range.extreme}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        {{/if}}
+                    </div>
                 </li>
                 <li class="flexrow" id="missilegear-impact-values">
                     <div class="range-label">Impact</div>
                     <div class="range-value" id="missilegear-impact-short">
                         <input type="text" name="system.impact.short" 
-                        value="{{idata.impact.short}}" data-dtype="Number" /></div>
+                        value="{{idata.impact.short}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} /></div>
                     <div class="range-value" id="missilegear-impact-medium">
                         <input type="text" name="system.impact.medium" 
-                        value="{{idata.impact.medium}}" data-dtype="Number" /></div>
+                        value="{{idata.impact.medium}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} /></div>
                     <div class="range-value" id="missilegear-impact-long">
                         <input type="text" name="system.impact.long" 
-                        value="{{idata.impact.long}}" data-dtype="Number" /></div>
+                        value="{{idata.impact.long}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} /></div>
                     <div class="range-value" id="missilegear-impact-extreme">
                         <input type="text" name="system.impact.extreme"
-                        value="{{idata.impact.extreme}}" data-dtype="Number" /></div>
+                        value="{{idata.impact.extreme}}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} /></div>
                 </li>
             </ol>
+            {{#if isGM}}
+            <div class="resource artifact flexrow">
+                {{#if strictMode}}
+                <input type="checkbox" name="system.unknownValue" value="{{idata.unknownValue}}"
+                    data-dtype="Boolean" {{checked idata.unknownValue}} />
+                <label class="resource-label">Unknown Value</label>If checked, the value is not displayed to the players.
+                {{else}}
+                <input type="checkbox" name="system.unknownValue" value="{{idata.unknownValue}}"
+                    data-dtype="Boolean" {{checked idata.unknownValue}} disabled />
+                <label class="resource-label">Unknown Value</label>Only available, if strict mode is turned  on.
+                {{/if}}
+            </div>
+            {{/if}}
+            {{#if hasRwPermission}}
             <div class="resource artifact flexrow" id="missilegear-isartifact">
                 <input type="checkbox" name="system.arcane.isArtifact" value="{{idata.arcane.isArtifact}}"
                     data-dtype="Boolean" {{checked idata.arcane.isArtifact}} />
                 <label class="resource-label">Artifact</label>
             </div>
+            {{/if}}
             {{#if idata.arcane.isArtifact}}
                 <fieldset id="missilegear-artifact">
                     <legend>Artifact Properties</legend>

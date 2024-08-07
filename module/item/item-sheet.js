@@ -37,6 +37,10 @@ export class HarnMasterItemSheet extends ItemSheet {
         data.hasCombatSkills = false;
         data.hasRitualSkills = false;
         data.hasMagicSkills = false;
+        data.isGM = game.user.isGM;
+        data.strictMode = game.settings.get('hm3', 'strictGmMode');
+        data.hasRwPermission = data.isGM || !data.strictMode;
+        data.isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
 
         data.macroTypes = [
             {key: 'chat', label: 'Chat'},
@@ -86,12 +90,12 @@ export class HarnMasterItemSheet extends ItemSheet {
                 if (this.item.type === 'weapongear') {
                     // For weapons, we add a "None" item to the front of the list
                     // as a default (in case no other combat skill applies)
-                    data.combatSkills.push('None');
+                    data.combatSkills.push({key: 'None'});
                 } else {
                     // For missiles, we add the "Throwing" skill to the front
                     // of the list as a default (in case no other combat
                     // skill applies)
-                    data.combatSkills.push('Throwing');
+                    data.combatSkills.push({key: 'Throwing'});
                 }
 
                 this.actor.itemTypes.skill.forEach((it) => {
@@ -100,12 +104,21 @@ export class HarnMasterItemSheet extends ItemSheet {
                         // Ignore the 'Dodge' and 'Initiative' skills,
                         // since you never want a weapon based on those skills.
                         if (!(lcName === 'initiative' || lcName === 'dodge')) {
-                            data.combatSkills.push(it.name);
+                            data.combatSkills.push({key: it.name});
                             data.hasCombatSkills = true;
                         }
                     }
                 });
             }
+        }
+
+        if (data.isGridDistanceUnits && !!data.idata.range) {
+            data.rangeGrid = {
+                short: data.idata.range.short / canvas.dimensions.distance,
+                medium: data.idata.range.medium / canvas.dimensions.distance,
+                long: data.idata.range.long / canvas.dimensions.distance,
+                extreme: data.idata.range.extreme / canvas.dimensions.distance
+            };
         }
 
         data.effects = {};
@@ -142,6 +155,10 @@ export class HarnMasterItemSheet extends ItemSheet {
         if (!this.options.editable) return;
 
         // Roll handlers, click handlers, etc. go here.
+
+        html.on('click', "input[type='number']", (ev) => {
+            ev.currentTarget.select();
+        });
 
         html.on('click', "input[type='text']", (ev) => {
             ev.currentTarget.select();

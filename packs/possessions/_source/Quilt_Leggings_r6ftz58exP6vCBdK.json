@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Flexible armour covering hips, groin, thighs, knees, calves, and feet. Common materials are cloth, leather, quilt, scale, and mail. Wealthy feudal lords often wear mail over quilt leggings. Mail leggings are called chausses.</p><h3>Quilt Armour</h3><p>Made from layers of thick cloth with tightly packed straw, linen, or wool wadding sewn between them. Usually worn under mail or worn alone by light foot troops.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",
@@ -30,14 +30,7 @@
     },
     "material": "Quilt",
     "armorQuality": 0,
-    "locations": [
-      "Hip",
-      "Groin",
-      "Thigh",
-      "Knee",
-      "Calf",
-      "Foot"
-    ],
+    "locations": ["Hip", "Groin", "Thigh", "Knee", "Calf", "Foot"],
     "protection": {
       "blunt": 5,
       "edged": 3,

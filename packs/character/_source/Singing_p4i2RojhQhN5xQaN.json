@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "A character's ability to carry a tune. Value Enhancement may be used to assess the quality of a performance, 1.5 being considered fair, and higher scores ascending to virtuosity. The quality of a performance may not be appreciated.",
     "source": "HM3 Skills 12",
     "macros": {
       "type": "script",

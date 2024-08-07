@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Throwing for accuracy is covered under Missile Combat (COMBAT 15). When throwing for distance, an “ideal” throwing object is spherical, weighs one quarter of the thrower's Strength (in ounces) and fits comfortably in the hand. An ideal situation is one where the target is stationary and clearly visible, and the thrower has room to swing arms, good footing, and no distractions. Heavier objects reduce EML; for each doubling in weight, halve EML. Do not increase EML for lighter than ideal objects. When throwing with little/no attempt at accuracy, the Throwing table indicates the distance an ideal object carries.",
     "source": "HM3 Skills 10",
     "macros": {
       "type": "script",

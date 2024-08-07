@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A weapon designed to crush or puncture plate armour. Warhammers concentrate the force of a mace into a smaller area and are more difficult to use (the technique is similar to that of a handaxe). As plate armour is rare, so is the warhammer. They are more common among Khuzdul warriors.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

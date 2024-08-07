@@ -2,7 +2,7 @@
   "_id": "pAemW6ipvVrRPKWB",
   "name": "Plate Vambraces",
   "type": "armorgear",
-  "img": "systems/hm3/images/icons/svg/breastplate.svg",
+  "img": "systems/hm3/images/icons/svg/bracer.svg",
   "effects": [],
   "folder": "JD5aWyIFHJQTSkqB",
   "flags": {
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Plate or kurbul armour for the forearms. The vambrace is sometimes used as a kind of buckler.</p><h3>Plate Armour</h3><p>Any metal (usually iron or steel) that forms a rigid continuous covering. Plate armour is the pinnacle of the armourer’s craft. It is expensive and used mainly for helms and spot protection such as breastplates. It offers good to excellent defense against all strikes. Plate armour is relatively rare and articulated plate is unknown in Lythia.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",
@@ -30,9 +30,7 @@
     },
     "material": "Plate",
     "armorQuality": 0,
-    "locations": [
-      "Forearm"
-    ],
+    "locations": ["Forearm"],
     "protection": {
       "blunt": 6,
       "edged": 10,

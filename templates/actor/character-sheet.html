@@ -767,6 +767,7 @@
                             data-journal-entry="Sheet - Combat Tab"><i
                                 class="far fa-question-circle"></i></a></h3>
                     <div class="item-detail weapon-qty">Qty</div>
+                    <div class="item-detail weapon-skill">Skill</div>
                     <div class="item-detail weapon-quality">WQ</div>
                     <div class="item-detail weapon-atkdef">A/D</div>
                     <div class="item-detail weapon-atkmod">Mod</div>
@@ -788,6 +789,7 @@
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="item-detail weapon-qty">{{system.quantity}}</div>
+                                <div class="item-detail weapon-skill">{{system.assocSkill}}</div>
                                 <div class="item-detail weapon-quality">{{system.weaponQuality}}</div>
                                 <div class="item-detail weapon-atkdef">{{system.attack}}/{{system.defense}}</div>
                                 <div class="item-detail weapon-atkmod">{{system.attackModifier}}</div>
@@ -870,43 +872,59 @@
                                 {{else}}
                                     <div
                                         class="item-detail missile-short {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                                        {{#if (and system.isEquipped system.isCarried)}}<a class="missile-damage-roll"
+                                        {{#if (and system.isEquipped system.isCarried)}}
+                                        <a class="missile-damage-roll"
                                                 title="{{item.name}} Short-Range Damage Roll"
                                                 data-weapon="{{item.name}}"
-                                                data-range="Short">{{system.range.short}}/{{system.impact.short}}</a>
-                                        {{else}}{{system.range.short}}/{{system.impact.short}}{{/if}}</div>
+                                                data-range="Short">{{#if ../isGridDistanceUnits}}{{system.rangeGrid.short}}{{else}}{{system.range.short}}{{/if}}/{{system.impact.short}}</a>
+                                        {{else}}
+                                        {{system.range.short}}/{{system.impact.short}}
+                                        {{/if}}
+                                    </div>
                                 {{/if}}
                                 {{#if (lt system.range.medium 0)}}
                                     <div class="item-detail missile-medium"><i class="fas fa-times"></i></div>
                                 {{else}}
                                     <div
                                         class="item-detail missile-medium {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                                        {{#if (and system.isEquipped system.isCarried)}}<a class="missile-damage-roll"
+                                        {{#if (and system.isEquipped system.isCarried)}}
+                                        <a class="missile-damage-roll"
                                                 title="{{item.name}} Medium-Range Damage Roll"
                                                 data-weapon="{{item.name}}"
-                                                data-range="Medium">{{system.range.medium}}/{{system.impact.medium}}</a>
-                                        {{else}}{{system.range.medium}}/{{system.impact.medium}}{{/if}}</div>
+                                                data-range="Medium">{{#if ../isGridDistanceUnits}}{{system.rangeGrid.medium}}{{else}}{{system.range.medium}}{{/if}}/{{system.impact.medium}}</a>
+                                        {{else}}
+                                        {{system.range.medium}}/{{system.impact.medium}}
+                                        {{/if}}
+                                    </div>
                                 {{/if}}
                                 {{#if (lt system.range.long 0)}}
                                     <div class="item-detail missile-long"><i class="fas fa-times"></i></div>
                                 {{else}}
                                     <div
                                         class="item-detail missile-long {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                                        {{#if (and system.isEquipped system.isCarried)}}<a class="missile-damage-roll"
+                                        {{#if (and system.isEquipped system.isCarried)}}
+                                        <a class="missile-damage-roll"
                                                 title="{{item.name}} Long-Range Damage Roll" data-weapon="{{item.name}}"
-                                                data-range="Long">{{system.range.long}}/{{system.impact.long}}</a>
-                                        {{else}}{{system.range.long}}/{{system.impact.long}}{{/if}}</div>
+                                                data-range="Long">{{#if ../isGridDistanceUnits}}{{system.rangeGrid.long}}{{else}}{{system.range.long}}{{/if}}/{{system.impact.long}}</a>
+                                        {{else}}
+                                        {{system.range.long}}/{{system.impact.long}}
+                                        {{/if}}
+                                    </div>
                                 {{/if}}
                                 {{#if (lt system.range.extreme 0)}}
                                     <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
                                 {{else}}
                                     <div
                                         class="item-detail missile-extreme {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                                        {{#if (and system.isEquipped system.isCarried)}}<a class="missile-damage-roll"
+                                        {{#if (and system.isEquipped system.isCarried)}}
+                                        <a class="missile-damage-roll"
                                                 title="{{item.name}} Extreme-Range Damage Roll"
                                                 data-weapon="{{item.name}}"
-                                                data-range="Extreme">{{system.range.extreme}}/{{system.impact.extreme}}</a>
-                                        {{else}}{{system.range.extreme}}/{{system.impact.extreme}}{{/if}}</div>
+                                                data-range="Extreme">{{#if ../isGridDistanceUnits}}{{system.rangeGrid.extreme}}{{else}}{{system.range.extreme}}{{/if}}/{{system.impact.extreme}}</a>
+                                        {{else}}
+                                        {{system.range.extreme}}/{{system.impact.extreme}}
+                                        {{/if}}
+                                    </div>
                                 {{/if}}
                                 <div
                                     class="item-detail missile-attack {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">

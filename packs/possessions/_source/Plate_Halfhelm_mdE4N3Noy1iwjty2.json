@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Any helmet made of kurbul, ring (leather mounted in a metal frame), or plate that covers the skull. Helmets may have nasals, cheek-pieces, neck guards, or eye guards for additional protection. Typical helmet types include the skullcap, conical cap, pothelm, or kettle hat.</p><h3>Plate Armour</h3><p>Any metal (usually iron or steel) that forms a rigid continuous covering. Plate armour is the pinnacle of the armourer’s craft. It is expensive and used mainly for helms and spot protection such as breastplates. It offers good to excellent defense against all strikes. Plate armour is relatively rare and articulated plate is unknown in Lythia.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",
@@ -30,9 +30,7 @@
     },
     "material": "Plate",
     "armorQuality": 0,
-    "locations": [
-      "Skull"
-    ],
+    "locations": ["Skull"],
     "protection": {
       "blunt": 6,
       "edged": 10,

@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Used to determine success at inventing and producing perfumes, soap, incense, etc. Appropriate materials are necessary. Perfumers deal mainly in organic alchemy, but most know some Embalming. Many temples employ perfumers.",
     "source": "HM3 Skills 16",
     "macros": {
       "type": "script",

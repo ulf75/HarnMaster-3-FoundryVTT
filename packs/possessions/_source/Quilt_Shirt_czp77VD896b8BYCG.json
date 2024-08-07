@@ -1,0 +1,56 @@
+{
+  "_id": "czp77VD896b8BYCG",
+  "name": "Quilt Shirt",
+  "type": "armorgear",
+  "img": "systems/hm3/images/icons/svg/armor.svg",
+  "effects": [],
+  "folder": "JD5aWyIFHJQTSkqB",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<h3>Quilt Armour</h3><p>Made from layers of thick cloth with tightly packed straw, linen, or wool wadding sewn between them. Usually worn under mail or worn alone by light foot troops.</p>",
+    "source": "HM3 Combat 4",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 176,
+    "weight": 13.2,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Quilt",
+    "armorQuality": 0,
+    "locations": ["Upper Arm", "Shoulder", "Thorax", "Abdomen", "Hip", "Groin"],
+    "protection": {
+      "blunt": 5,
+      "edged": 3,
+      "piercing": 2,
+      "fire": 4
+    },
+    "size": 6
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284239471,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!czp77VD896b8BYCG"
+}

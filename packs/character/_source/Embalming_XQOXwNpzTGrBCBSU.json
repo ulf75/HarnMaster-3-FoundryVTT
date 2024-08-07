@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Determines success when embalming a corpse against deterioration, and when preparing a corpse for burial/cremation. The skill also includes familiarity with local rituals; since journeymen embalmers need to travel widely, this can result in quite an accumulation of knowledge. Religious and/or cultural differences may be treated as specialties. Civilized cultures take great care with their dead—embalming is a sign of respect and honor, and has serious emotional and religious overtones. Most temples use master embalmers (either bonded or free) to oversee their burial rituals.</p><p>Embalming includes limited knowledge of practical Alchemy and Perfumery. Embalmers know how to make incense and soap, for example.</p>",
     "source": "HM3 Skills 14",
     "macros": {
       "type": "script",

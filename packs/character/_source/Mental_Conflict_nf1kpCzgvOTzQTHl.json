@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "A character's ability to withstand mental domination.",
     "source": "HM3 Skills 12",
     "macros": {
       "type": "script",

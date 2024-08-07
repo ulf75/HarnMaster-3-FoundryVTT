@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Any infantry weapon with a shaft exceeding six feet in length. Polearms are mainly designed as anti-cavalry weapons; their effective use requires superb training and morale. All polearms are two-handed weapons. They may be a liability in crowded melees.</p>",
     "source": "HM3 Skills 19",
     "macros": {
       "type": "script",

@@ -1,0 +1,56 @@
+{
+  "_id": "o1wcnGMM0SFU208x",
+  "name": "Ring Collar",
+  "type": "armorgear",
+  "img": "systems/hm3/images/icons/svg/armor.svg",
+  "effects": [],
+  "folder": "JD5aWyIFHJQTSkqB",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<h3>Ring Armour</h3><p>Armour made of heavy cloth or leather reinforced with intermittent metal bezants, rings, or strips. This improves defense against edged weapons but has little other effect.</p>",
+    "source": "HM3 Combat 4",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 28,
+    "weight": 1.6,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Ring",
+    "armorQuality": 0,
+    "locations": ["Neck"],
+    "protection": {
+      "blunt": 3,
+      "edged": 6,
+      "piercing": 4,
+      "fire": 3
+    },
+    "size": 6
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284239471,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!o1wcnGMM0SFU208x"
+}

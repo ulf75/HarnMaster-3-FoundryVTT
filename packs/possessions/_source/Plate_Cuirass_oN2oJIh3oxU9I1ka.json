@@ -1,0 +1,56 @@
+{
+  "_id": "oN2oJIh3oxU9I1ka",
+  "name": "Plate Cuirass",
+  "type": "armorgear",
+  "img": "systems/hm3/images/icons/svg/abdominal-armor.svg",
+  "effects": [],
+  "folder": "JD5aWyIFHJQTSkqB",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<h3>Plate Armour</h3><p>Any metal (usually iron or steel) that forms a rigid continuous covering. Plate armour is the pinnacle of the armourer’s craft. It is expensive and used mainly for helms and spot protection such as breastplates. It offers good to excellent defense against all strikes. Plate armour is relatively rare and articulated plate is unknown in Lythia.</p>",
+    "source": "HM3 Combat 4",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 600,
+    "weight": 19.2,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Plate",
+    "armorQuality": 0,
+    "locations": ["Thorax", "Abdomen"],
+    "protection": {
+      "blunt": 6,
+      "edged": 10,
+      "piercing": 6,
+      "fire": 2
+    },
+    "size": 6
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284239471,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!oN2oJIh3oxU9I1ka"
+}

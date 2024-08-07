@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "Gargun weapon",
-    "description": "",
+    "description": "<p>A short, single-edged scimitar made by gargun. The mankar is relatively heavy for its length, which is rarely more than two feet, and is often considered to be a short falchion.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

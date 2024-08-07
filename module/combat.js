@@ -57,7 +57,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         if (missileItem.system.isEquipped) {
             options['weapon'] = missileItem;
         } else {
-            ui.notification.warn(`${missileItem.name} is not equipped.`);
+            ui.notifications.warn(`${missileItem.name} is not equipped.`);
             return null;
         }
     } else {
@@ -80,7 +80,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
 
     if (game.settings.get('hm3', 'missileTracking') && attackToken.actor) {
         if (missileItem.system.quantity <= 0) {
-            ui.notification.warn(`No more ${missileItem.name} left, attack denied.`);
+            ui.notifications.warn(`No more ${missileItem.name} left, attack denied.`);
             return null;
         }
 
@@ -202,7 +202,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
         if (weaponItem.system.isEquipped) {
             options['weapon'] = weaponItem;
         } else {
-            ui.notification.warn(`For ${attackToken.name} ${weaponItem.name} is not equipped.`);
+            ui.notifications.warn(`For ${attackToken.name} ${weaponItem.name} is not equipped.`);
             return null;
         }
     } else {
@@ -410,26 +410,25 @@ async function attackDialog(options) {
         dialogOptions.aspects[weaponData.weaponAspect] = -1;
         dialogOptions.defaultAspect = weaponData.weaponAspect;
 
-        const shortDesc = `Short (${weaponData.range.short} ft/+0)`;
-        const mediumDesc = `Medium (${weaponData.range.medium} ft/-20)`;
-        const longDesc = `Long (${weaponData.range.long} ft/-40)`;
-        const extremeDesc = `Extreme (${weaponData.range.extreme} ft/-80)`;
+        const isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
+        const dist = canvas.dimensions.distance;
+        const shortDesc = `Short (${isGridDistanceUnits ? weaponData.range.short / dist + ' hex' : weaponData.range.short + ' ft'}/+0)`;
+        const mediumDesc = `Medium (${isGridDistanceUnits ? weaponData.range.medium / dist + ' hex' : weaponData.range.medium + ' ft'}/-20)`;
+        const longDesc = `Long (${isGridDistanceUnits ? weaponData.range.long / dist + ' hex' : weaponData.range.long + ' ft'}/-40)`;
+        const extremeDesc = `Extreme (${isGridDistanceUnits ? weaponData.range.extreme / dist + ' hex' : weaponData.range.extreme + ' ft'}/-80)`;
         dialogOptions.ranges = [
             {key: 'Short', label: shortDesc, impact: weaponData.impact.short},
             {key: 'Medium', label: mediumDesc, impact: weaponData.impact.medium},
             {key: 'Long', label: longDesc, impact: weaponData.impact.long},
             {key: 'Extreme', label: extremeDesc, impact: weaponData.impact.extreme}
         ];
-        // dialogOptions.ranges = {};
-        // dialogOptions.ranges[{key: shortDesc, label: shortDesc}] = weaponData.impact.short;
-        // dialogOptions.ranges[{key: mediumDesc, label: mediumDesc}] = weaponData.impact.medium;
-        // dialogOptions.ranges[{key: longDesc, label: longDesc}] = weaponData.impact.long;
-        // dialogOptions.ranges[{key: extremeDesc, label: extremeDesc}] = weaponData.impact.extreme;
         dialogOptions.rangeExceedsExtreme = false;
 
         // Set range based on distance
         if (options.distance) {
+            dialogOptions.isGridDistanceUnits = isGridDistanceUnits;
             dialogOptions.distance = options.distance;
+            dialogOptions.distanceGrid = options.distance / dist;
             if (options.distance <= weaponData.range.short) {
                 dialogOptions.defaultRange = 'Short';
             } else if (options.distance <= weaponData.range.medium) {
@@ -465,7 +464,7 @@ async function attackDialog(options) {
             const form = html[0].querySelector('form');
             const formRange = form.range ? form.range.value : null;
 
-            const addlModifier = (form.addlModifier ? parseInt(form.addlModifier.value) : 0) + (form.aim?.value !== 'Mid' ? -10 : 0);
+            // const addlModifier = (form.addlModifier ? parseInt(form.addlModifier.value) : 0) + (form.aim?.value !== 'Mid' ? -10 : 0);
             const result = {
                 weapon: options.weapon,
                 aspect: form.weaponAspect ? form.weaponAspect.value : null,

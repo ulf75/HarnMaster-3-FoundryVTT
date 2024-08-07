@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "The knack of surviving in the wilderness, used for outdoor activities not covered by Foraging, Tracking, or Herblore. May be used to establish the quality of a leanto, build fires under difficult circumstances, and so on.",
     "source": "HM3 Skills 17",
     "macros": {
       "type": "script",

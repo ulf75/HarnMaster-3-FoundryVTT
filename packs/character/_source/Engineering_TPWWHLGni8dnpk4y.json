@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "The ability to construct and maintain mills, drawbridges, siege and castle engines, and the like. This skill does not include the ability to make small, delicate mechanisms such as locks (for which see Lockcraft). Good engineers are very useful people and can earn good money in many fields. Engineering skill is not a skill monopolized by any guild—military sappers, millers/millwrights, and masons all study engineering.",
     "source": "HM3 Skills 14",
     "macros": {
       "type": "script",

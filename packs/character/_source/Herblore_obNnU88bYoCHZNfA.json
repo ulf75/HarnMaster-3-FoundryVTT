@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>The ability to find and identify individual types of plant; an important skill for alchemists, physicians, and apothecaries. Skilled gatherers earn a reasonable living.</p><p>When trying to find and gather specific plants in the natural environment, test Herblore once per watch (four hours) of searching. EML is modified according to the plant's rarity. Seeking a plant in an inappropriate locale should further reduce EML, perhaps to zero.</p>",
     "source": "HM3 Skills 15",
     "macros": {
       "type": "script",

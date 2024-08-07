@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "An automatic combat skill. Unarmed Combat is used to punch or kick an opponent, applying hand or foot impact to determine damage. The impact of an unarmed strike may be enhanced with items such as gauntlets, spurs, etc. The skill is also used to wrestle an opponent when grappling.",
     "source": "HM3 Skills 18",
     "macros": {
       "type": "script",

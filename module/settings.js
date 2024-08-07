@@ -98,7 +98,7 @@ export const registerSystemSettings = function () {
     game.settings.register('hm3', 'distanceUnits', {
         name: 'Distance Units',
         hint: "What units should be used for a missile weapon's short/medium/long/extreme range attributes?",
-        scope: 'world',
+        scope: 'client',
         config: true,
         default: 'scene',
         type: String,
@@ -111,6 +111,15 @@ export const registerSystemSettings = function () {
     game.settings.register('hm3', 'dormantPsionicTalents', {
         name: 'NEW Dormant Psionic Talents',
         hint: 'Activate to make dormant psionic talents (ML20 or less) invisible to the players. GM still sees the dormant talents (Psionics 3)',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean
+    });
+
+    game.settings.register('hm3', 'strictGmMode', {
+        name: 'NEW Strict GM Mode',
+        hint: 'If selected, players will no longer be able to change various data, such as weight, value and other aspects of the gear items. The GM can still change everything. In addition, the GM can hide the value of individual items from the players.',
         scope: 'world',
         config: true,
         default: false,

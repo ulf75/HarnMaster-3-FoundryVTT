@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Used to analyze/construct stonework. Masons use Masonry averaged with Engineering to construct buildings, bridges, etc. Specialties include quarrying, architecture, construction, stonelaying, stonecarving, etc. This is a highly respected art and talented masons are very well paid.",
     "source": "HM3 Skills 16",
     "macros": {
       "type": "script",

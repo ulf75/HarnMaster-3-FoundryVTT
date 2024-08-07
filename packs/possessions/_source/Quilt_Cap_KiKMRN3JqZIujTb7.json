@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<h3>Quilt Armour</h3><p>Made from layers of thick cloth with tightly packed straw, linen, or wool wadding sewn between them. Usually worn under mail or worn alone by light foot troops.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",
@@ -30,9 +30,7 @@
     },
     "material": "Quilt",
     "armorQuality": 0,
-    "locations": [
-      "Skull"
-    ],
+    "locations": ["Skull"],
     "protection": {
       "blunt": 5,
       "edged": 3,

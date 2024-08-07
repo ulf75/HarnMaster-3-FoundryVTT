@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Determines quality of furs or hides cured, and the quality of leather goods produced. EML is modified by the quality and availability of tools and materials. Roughcuring (removing a hide from a carcass and preparing it for transport and proper tanning) can be done in the wilderness with only some crude tools. Specialties: leatherworker, furrier, etc.",
     "source": "HM3 Skills 15",
     "macros": {
       "type": "script",

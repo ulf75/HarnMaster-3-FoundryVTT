@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Many areas of knowledge can be learned through reading. Where a skill is listed as a Lore skill (for instance, Lore: Kubora), it is treated as an individual skill.",
     "source": "HM3 Skills 16",
     "macros": {
       "type": "script",

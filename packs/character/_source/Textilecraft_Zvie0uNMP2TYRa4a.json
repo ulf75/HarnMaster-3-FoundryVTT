@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Used to determine the quality of textile goods produced by the character. Task complexity, and quality and availability of tools and materials affect results. Specialties: embroidery, spinning, tailoring, and weaving.",
     "source": "HM3 Skills 17",
     "macros": {
       "type": "script",

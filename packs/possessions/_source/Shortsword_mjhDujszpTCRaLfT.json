@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>Any double- or single-edged, straight-bladed sword averaging 24 inches in length. This is a popular mass infantry weapon.</p>",
     "source": "HM3 Combat 3",
     "macros": {
       "type": "script",

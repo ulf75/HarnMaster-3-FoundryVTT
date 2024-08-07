@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "The ability to make calculations with numbers, keep books of account, and so on. An ML above 70 would imply some knowledge of geometry, etc. The skill is useful in many different fields.",
     "source": "HM3 Skills 16",
     "macros": {
       "type": "script",

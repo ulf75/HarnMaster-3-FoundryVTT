@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "The ability to grow crops. It determines the quality/quantity of crops produced. Results depend on land quality, weather, etc. Agriculture is also crop management ability, useful for running a farm or fief.",
     "source": "HM3 Skills 13",
     "macros": {
       "type": "script",

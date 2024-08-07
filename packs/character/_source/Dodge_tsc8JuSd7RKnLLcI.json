@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "A multi-purpose, quasi-skill used to avoid falling objects, weapon and missile attacks, and other situations requiring Agility. Dodge is frequently used in combat. Dodge equals Agility x5, and is subject to Physical Penalty. Dodge may be improved by training.",
     "source": "HM3 Skills 21",
     "macros": {
       "type": "script",

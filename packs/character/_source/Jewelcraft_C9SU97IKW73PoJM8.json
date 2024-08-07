@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Determines the quality of jewelry and/or fine metal work made by the character. EML depends on the complexity of the task attempted. Materials are necessary and failure can be expensive. This skill is also used to appraise gems, fine metalwork, and/or jewelry. Specialties: gemcutter, goldsmith, silversmith.",
     "source": "HM3 Skills 16",
     "macros": {
       "type": "script",

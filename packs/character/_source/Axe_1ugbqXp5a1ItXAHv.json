@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "The ability to use hafted, edged weapons. Specialties include Battleaxe, Handaxe, Hatchet, Shorkana (throwing axe), Sickle (peasant weapon), and Warhammer. Poleaxes are treated as Polearms (a separate skill).",
     "source": "HM3 Skills 19",
     "macros": {
       "type": "script",

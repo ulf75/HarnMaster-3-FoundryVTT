@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "<p>A light throwing-axe. The weapon originated in Shorkyne, and is now used throughout northwest Lythia.</p>",
     "source": "HM3 Combat 16",
     "macros": {
       "type": "script",

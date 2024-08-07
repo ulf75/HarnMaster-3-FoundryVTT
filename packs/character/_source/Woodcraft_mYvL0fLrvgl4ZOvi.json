@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Used to determine the quality of a wooden item made by the character. Appropriate tools and materials are necessary, and the quality and complexity of an item affects the result.",
     "source": "HM3 Skills 17",
     "macros": {
       "type": "script",

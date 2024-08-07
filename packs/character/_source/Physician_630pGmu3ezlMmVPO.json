@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "The ability to diagnose and treat medical ailments, wounds, etc. Usually the physician first tests EML to diagnose the ailment.",
     "source": "HM3 Skills 17",
     "macros": {
       "type": "script",

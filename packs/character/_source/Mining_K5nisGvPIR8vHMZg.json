@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "",
+    "description": "Knowledge of geology and ability at prospecting, mineworking, and ore-refining. Prospecting is a complex issue, depending on the terrain surveyed and the minerals sought. These include mythral, gold, silver, copper, tin, lead, zinc, coal, salt, iron, and a large variety of gemstones.",
     "source": "HM3 Skills 16",
     "macros": {
       "type": "script",

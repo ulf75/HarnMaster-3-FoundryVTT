@@ -4,7 +4,7 @@
   "img": "systems/hm3/images/icons/svg/cash.svg",
   "system": {
     "notes": "Standard Penny (Wgt: 1 dram)",
-    "description": "",
+    "description": "<p>The standard unit of currency is the silver penny, which is abbreviated as “d”. A penny weighs one dram (a sixteenth of an ounce) and can vary in value from one region to another as a result of its silver content. Copper coins are not minted on Hârn. The silver penny is often divided into two halves (ha'penny) or four quarters (farthings). Gold coins are rare. A gold penny (one dram) would be worth 20d, although gold coins generally come as ounce coins.</p>",
     "source": "",
     "macros": {
       "type": "script",
