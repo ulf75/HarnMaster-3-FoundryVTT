@@ -1,0 +1,56 @@
+{
+  "_id": "pKyDkC19aN0yS53i",
+  "name": "Mail Hauberk (long)",
+  "type": "armorgear",
+  "img": "systems/hm3/images/icons/svg/chain-mail.svg",
+  "effects": [],
+  "folder": "JD5aWyIFHJQTSkqB",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A coat made of ring, scale, or mail. Hauberks cover the shoulders, thorax, abdomen, hips, groin and thighs. They may be lengthened to cover the knees or, more rarely, down to the calves. The skirt is usually split for mounted use. Hauberks are either half-sleeved or full-sleeved.</p><h3>Mail Armour</h3><p>Flexible armour made by “knitting” together steel links in various patterns. Mail may be butted or riveted. Both are pretty well impervious to edged weapons but the latter is more resistant to point-penetration. A problem with mail is that a non-penetrating strike may drive the links into the flesh, without damaging the mail. Consequently, mail is nearly always worn with thick undergarments.</p>",
+    "source": "HM3 Combat 4",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 1035,
+    "weight": 34.5,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Mail",
+    "armorQuality": 0,
+    "locations": ["Forearm", "Elbow", "Upper Arm", "Shoulder", "Thorax", "Abdomen", "Hip", "Groin", "Thigh", "Knee"],
+    "protection": {
+      "blunt": 2,
+      "edged": 8,
+      "piercing": 5,
+      "fire": 1
+    },
+    "size": 6
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284239471,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!pKyDkC19aN0yS53i"
+}

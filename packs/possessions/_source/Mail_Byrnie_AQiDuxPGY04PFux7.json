@@ -17,8 +17,8 @@
       "command": ""
     },
     "quantity": 1,
-    "value": 660,
-    "weight": 22,
+    "value": 765,
+    "weight": 25.5,
     "isCarried": true,
     "isEquipped": true,
     "container": "on-person",
@@ -30,7 +30,7 @@
     },
     "material": "Mail",
     "armorQuality": 0,
-    "locations": ["Upper Arm", "Shoulder", "Thorax", "Abdomen", "Hip", "Groin"],
+    "locations": ["Elbow", "Forearm", "Upper Arm", "Shoulder", "Thorax", "Abdomen", "Hip", "Groin"],
     "protection": {
       "blunt": 2,
       "edged": 8,

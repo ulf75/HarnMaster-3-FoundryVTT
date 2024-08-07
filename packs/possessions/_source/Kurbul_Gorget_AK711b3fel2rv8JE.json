@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<h3>Kurbul Armour</h3><p>A hard, resilient, but lightweight armour made by boiling pieces of leather in oil or wax and shaping them in molds while still hot. The style is of Azeryani origin.</p>",
+    "description": "<p>Neck armour made of plate or kurbul, often secured by leather thongs.</p><h3>Kurbul Armour</h3><p>A hard, resilient, but lightweight armour made by boiling pieces of leather in oil or wax and shaping them in molds while still hot. The style is of Azeryani origin.</p>",
     "source": "HM3 Combat 4",
     "macros": {
       "type": "script",
