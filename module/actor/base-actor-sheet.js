@@ -274,7 +274,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // Render modal dialog
-        let dlgTemplate = 'systems/hmk/templates/dialog/item-qty.html';
+        let dlgTemplate = 'systems/hm3/templates/dialog/item-qty.html';
         let dialogData = {
             itemName: item.name,
             sourceName: item.parent.name,
