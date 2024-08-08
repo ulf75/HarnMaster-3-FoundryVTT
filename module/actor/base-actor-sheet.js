@@ -292,7 +292,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             callback: async (html) => {
                 const form = html.querySelector('#items-to-move');
                 const fd = new FormDataExtended(form);
-                const formdata = fd.toObject();
+                const formdata = fd.object;
                 let formQtyToMove = parseInt(formdata.itemstomove);
 
                 if (formQtyToMove <= 0) {
