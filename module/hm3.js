@@ -142,6 +142,24 @@ Hooks.once('init', async function () {
         'Runic': {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Harn-Runic-Normal.otf']}]},
         'Lankorian Blackhand': {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Lankorian-Blackhand.otf']}]}
     });
+
+    // Actors also have a Bio image
+    Hooks.on('getActorDirectoryEntryContext', (html, menuItems) => {
+        menuItems.unshift({
+            name: 'View Bio Artwork',
+            icon: `<i class="fas fa-image"></i>`,
+            callback: async (html) => {
+                const actor = game.actors.get(html.data('documentId'));
+                new ImagePopout(actor.system.bioImage, {
+                    title: actor.name,
+                    uuid: actor.uuid
+                }).render(true);
+            },
+            condition: (html) => {
+                return game.user.isGM;
+            }
+        });
+    });
 });
 
 Hooks.on('renderChatMessage', (app, html, data) => {
@@ -184,7 +202,9 @@ Hooks.once('ready', function () {
     }
 
     Hooks.on('hotbarDrop', (bar, data, slot) => macros.createHM3Macro(data, slot));
+
     HM3.ready = true;
+
     if (game.settings.get('hm3', 'showWelcomeDialog')) {
         welcomeDialog().then((showAgain) => {
             game.settings.set('hm3', 'showWelcomeDialog', showAgain);
