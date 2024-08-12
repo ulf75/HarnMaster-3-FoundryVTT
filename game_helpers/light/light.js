@@ -1,3 +1,8 @@
+if (canvas.tokens.controlled.length !== 1) {
+    ui.notifications.error('Please select ONE token!');
+    return null;
+}
+
 let dialogEditor = new Dialog({
     title: `Light Picker`,
     buttons: {
