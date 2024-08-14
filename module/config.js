@@ -18,9 +18,9 @@ HM3.allowedAspects = ['Edged', 'Piercing', 'Blunt'];
 
 HM3.allowedRanges = ['Short', 'Medium', 'Long', 'Extreme'];
 
-HM3.skillTypes = ['Craft', 'Physical', 'Communication', 'Combat', 'Magic', 'Ritual'];
+HM3.skillTypes = [{key: 'Craft'}, {key: 'Physical'}, {key: 'Communication'}, {key: 'Combat'}, {key: 'Magic'}, {key: 'Ritual'}];
 
-HM3.traitTypes = ['Physical', 'Psyche'];
+HM3.traitTypes = [{key: 'Physical'}, {key: 'Psyche'}];
 
 HM3.ITEM_TYPE_LABEL = {
     skill: {singular: 'Skill', plural: 'Skills'},
