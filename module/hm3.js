@@ -18,6 +18,8 @@ import {registerSystemSettings} from './settings.js';
 Hooks.once('init', async function () {
     console.log(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
 
+    // CONFIG.debug.hooks = true;
+
     game.hm3 = {
         HarnMasterActor,
         HarnMasterItem,
@@ -156,7 +158,8 @@ Hooks.once('init', async function () {
                 }).render(true);
             },
             condition: (html) => {
-                return game.user.isGM;
+                const actor = game.actors.get(html.data('documentId'));
+                return game.user.isGM && actor?.system?.bioImage;
             }
         });
     });
@@ -165,8 +168,20 @@ Hooks.once('init', async function () {
 Hooks.on('renderChatMessage', (app, html, data) => {
     // Display action buttons
     combat.displayChatActionButtons(app, html, data);
+
+    console.log('visible: ' + app.isContentVisible + ' ' + app.visible);
+    if (html[0].innerHTML.includes('hm3 chat-card') && app.blind && !game.user.isGM) {
+        const nodes = html[0].childNodes[3].childNodes[1];
+        nodes.childNodes[3].innerText = app.blind ? 'Blind GM Roll' : 'GM Roll';
+        nodes.childNodes[5].remove();
+        nodes.childNodes[5].remove();
+        nodes.childNodes[5].remove();
+        nodes.childNodes[5].remove();
+    }
 });
+
 Hooks.on('renderChatLog', (app, html, data) => HarnMasterActor.chatListeners(html));
+
 Hooks.on('renderChatPopout', (app, html, data) => HarnMasterActor.chatListeners(html));
 
 /**

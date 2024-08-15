@@ -1334,3 +1334,5 @@ HM3.itemLabels = {
     armorlocation: 'Armor Location',
     trait: 'Trait'
 };
+
+HM3.blindRolls = ['Awareness', 'Eyesight', 'Hearing', 'Smell', 'Weatherlore'];

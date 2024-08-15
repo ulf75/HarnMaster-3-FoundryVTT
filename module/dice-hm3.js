@@ -1,3 +1,4 @@
+import {HM3} from './config.js';
 import * as utility from './utility.js';
 
 export class DiceHM3 {
@@ -26,6 +27,7 @@ export class DiceHM3 {
      */
     static async d100StdRoll(rollData) {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
+        const {blind, rollMode, whisper} = this.getModes(rollData.skill);
 
         const dialogOptions = {
             type: rollData.type,
@@ -89,13 +91,14 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            blind: blind,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            roll: roll.rollObj,
+            whisper
         };
 
         const messageOptions = {
-            rollMode: game.settings.get('core', 'rollMode')
+            rollMode
         };
 
         // Create a chat message
@@ -165,6 +168,7 @@ export class DiceHM3 {
      */
     static async d6Roll(rollData) {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
+        const {blind, rollMode, whisper} = this.getModes(rollData.skill);
 
         const dialogOptions = {
             type: rollData.type,
@@ -224,13 +228,14 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            blind,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            roll: roll.rollObj,
+            whisper
         };
 
         const messageOptions = {
-            rollMode: game.settings.get('core', 'rollMode')
+            rollMode
         };
 
         // Create a chat message
@@ -1284,5 +1289,21 @@ export class DiceHM3 {
         });
 
         return result;
+    }
+
+    static getModes(skill) {
+        // publicroll, gmroll, blindroll & selfroll (CONST.DICE_ROLL_MODES.BLIND)
+        const blind =
+            game.settings.get('core', 'rollMode') === CONST.DICE_ROLL_MODES.BLIND ||
+            (HM3.blindRolls.includes(skill) && game.settings.get('hm3', 'blindGmMode'));
+        const rollMode = blind ? CONST.DICE_ROLL_MODES.BLIND : game.settings.get('core', 'rollMode');
+        const whisper = new Set();
+        if (blind) whisper.add(game.users.activeGM.id);
+        else {
+            if (rollMode === CONST.DICE_ROLL_MODES.SELF) whisper.add(game.users.current.id);
+            if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE) whisper.add(game.users.activeGM.id);
+            if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE) whisper.add(game.users.current.id);
+        }
+        return {blind, rollMode, whisper: Array.from(whisper)};
     }
 }
