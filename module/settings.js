@@ -125,4 +125,13 @@ export const registerSystemSettings = function () {
         default: false,
         type: Boolean
     });
+
+    game.settings.register('hm3', 'blindGmMode', {
+        name: 'NEW Blind GM Mode',
+        hint: 'If selected, some skill rolls (such as Awareness, Hearing, Weatherlore, ...) are handled as Blind GM Roll regardless of the Roll Mode setting.',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean
+    });
 };
