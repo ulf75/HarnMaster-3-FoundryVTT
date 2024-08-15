@@ -169,10 +169,10 @@ Hooks.on('renderChatMessage', (app, html, data) => {
     // Display action buttons
     combat.displayChatActionButtons(app, html, data);
 
-    console.log('visible: ' + app.isContentVisible + ' ' + app.visible);
+    // if blind Roll Mode, remove info from Chat Card
     if (html[0].innerHTML.includes('hm3 chat-card') && app.blind && !game.user.isGM) {
         const nodes = html[0].childNodes[3].childNodes[1];
-        nodes.childNodes[3].innerText = app.blind ? 'Blind GM Roll' : 'GM Roll';
+        nodes.childNodes[3].innerText = 'Blind GM Roll';
         nodes.childNodes[5].remove();
         nodes.childNodes[5].remove();
         nodes.childNodes[5].remove();
