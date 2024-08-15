@@ -160,6 +160,23 @@ Hooks.once('init', async function () {
             }
         });
     });
+
+    Hooks.on('getJournalSheetEntryContext', (html, menuItems) => {
+        const idx = menuItems.findIndex((value) => value.name === 'JOURNAL.ActionShow');
+        menuItems.splice(idx >= 0 ? idx + 1 : menuItems.length, 0, {
+            name: 'Show Players Parchment',
+            icon: `<i class="fas fa-eye"></i>`,
+            callback: async (html) => {
+                const id = html.data('page-id');
+                const page = game.journal.contents[11].pages.get(id); // TODO
+                const sheet = page.sheet;
+                if (page) return Journal.show(page, {force: true});
+            },
+            condition: (html) => {
+                return game.user.isGM;
+            }
+        });
+    });
 });
 
 Hooks.on('renderChatMessage', (app, html, data) => {
