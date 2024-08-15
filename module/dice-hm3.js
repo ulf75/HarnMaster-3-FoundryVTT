@@ -33,7 +33,10 @@ export class DiceHM3 {
             type: rollData.type,
             target: rollData.target,
             label: rollData.label,
-            modifier: rollData.modifier || 0
+            modifier: rollData.modifier || 0,
+            skill: rollData.skill,
+            ability: rollData.ability,
+            base: rollData.base
         };
 
         // Create the Roll instance
@@ -118,8 +121,20 @@ export class DiceHM3 {
         // Render modal dialog
         let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/standard-test-dialog.html';
         let dialogData = {
+            ability: dialogOptions.ability,
+            base: dialogOptions.base,
             target: dialogOptions.target,
-            modifier: dialogOptions.modifier
+            modifier: dialogOptions.modifier,
+            multiplier: 5,
+            multipliers: [
+                {key: 1, label: `${dialogOptions.skill} x1 (${dialogOptions.base * 1})`},
+                {key: 2, label: `${dialogOptions.skill} x2 (${dialogOptions.base * 2})`},
+                {key: 3, label: `${dialogOptions.skill} x3 (${dialogOptions.base * 3})`},
+                {key: 4, label: `${dialogOptions.skill} x4 (${dialogOptions.base * 4})`},
+                {key: 5, label: `${dialogOptions.skill} x5 (${dialogOptions.base * 5})`},
+                {key: 6, label: `${dialogOptions.skill} x6 (${dialogOptions.base * 6})`},
+                {key: 7, label: `${dialogOptions.skill} x7 (${dialogOptions.base * 7})`}
+            ]
         };
         const html = await renderTemplate(dlgTemplate, dialogData);
 
@@ -129,10 +144,12 @@ export class DiceHM3 {
             content: html.trim(),
             label: 'Roll',
             callback: (html) => {
-                const formModifier = html[0].querySelector('form').modifier.value;
+                const form = html[0].querySelector('form');
+                const multiplier = form.multipliers?.selectedIndex + 1;
+                const formModifier = form.modifier.value;
                 return DiceHM3.rollTest({
                     type: dialogOptions.type,
-                    target: dialogOptions.target,
+                    target: dialogOptions.ability ? dialogOptions.base * multiplier : dialogOptions.target,
                     data: null,
                     diceSides: 100,
                     diceNum: 1,

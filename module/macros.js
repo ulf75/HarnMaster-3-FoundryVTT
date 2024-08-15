@@ -462,11 +462,13 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
         type: `${ability}-d100`,
         skill: `${ability[0].toUpperCase()}${ability.slice(1)}`,
         label: `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
+        base: Math.max(1, actorInfo.actor.system.abilities[ability].effective),
         target: Math.max(5, actorInfo.actor.system.abilities[ability].effective * multiplier),
         notesData: {},
         speaker: actorInfo.speaker,
         fastforward: noDialog,
-        notes: ''
+        notes: '',
+        ability: true
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;

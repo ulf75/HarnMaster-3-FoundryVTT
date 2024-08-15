@@ -110,7 +110,7 @@ export const registerSystemSettings = function () {
 
     game.settings.register('hm3', 'dormantPsionicTalents', {
         name: 'NEW Dormant Psionic Talents',
-        hint: 'Activate to make dormant psionic talents (ML20 or less) invisible to the players. GM still sees the dormant talents (Psionics 3)',
+        hint: 'Activate to make dormant psionic talents (ML20 or less) invisible to the players. GM still sees the dormant talents. (Psionics 3)',
         scope: 'world',
         config: true,
         default: false,
@@ -128,7 +128,7 @@ export const registerSystemSettings = function () {
 
     game.settings.register('hm3', 'blindGmMode', {
         name: 'NEW Blind GM Mode',
-        hint: 'If selected, some skill rolls (such as Awareness, Hearing, Weatherlore, ...) are handled as Blind GM Roll regardless of the Roll Mode setting.',
+        hint: 'If selected, some skill rolls (such as Awareness, Hearing, Weatherlore, etc. (in cases where success or failure may not be obvious)) are handled as Blind GM Roll regardless of the Roll Mode setting. (Skills 5)',
         scope: 'world',
         config: true,
         default: false,
