@@ -275,6 +275,60 @@ Hooks.on('closeSceneConfig', (app, html, data) => {
     }
 });
 
+Hooks.once('dragRuler.ready', (SpeedProvider) => {
+    class HarnMaster3SpeedProvider extends SpeedProvider {
+        get colors() {
+            return [
+                {
+                    id: 'walk',
+                    default: 0x6aa84f,
+                    name: 'hm3.speed-provider.walk'
+                },
+                {
+                    id: 'jog',
+                    default: 0x1e88e5,
+                    name: 'hm3.speed-provider.jog'
+                },
+                {
+                    id: 'run',
+                    default: 0xffc107,
+                    name: 'hm3.speed-provider.run'
+                },
+                {
+                    id: 'sprint',
+                    default: 0xd81b60,
+                    name: 'hm3.speed-provider.sprint'
+                }
+            ];
+        }
+
+        get defaultUnreachableColor() {
+            return 0xff0000;
+        }
+
+        /** @param token {Token} The token to check movement */
+        getRanges(token) {
+            const actor = token.actor;
+            const move = actor.system.eph.move;
+            const stunned = false;
+            const prone = false;
+
+            if (stunned) return [{range: -1, color: 'walk'}];
+
+            const ranges = [
+                {range: Math.round(move / 2) * 5, color: 'walk'},
+                {range: move * 5, color: 'jog'},
+                {range: 2 * move * 5, color: 'run'},
+                {range: 2 * move * 5, color: 'sprint'}
+            ];
+
+            return ranges;
+        }
+    }
+
+    dragRuler.registerSystem('hm3', HarnMaster3SpeedProvider);
+});
+
 async function welcomeDialog() {
     const dlgTemplate = 'systems/hm3/templates/dialog/welcome.html';
     const html = await renderTemplate(dlgTemplate, {});
