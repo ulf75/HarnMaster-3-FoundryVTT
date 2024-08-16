@@ -296,7 +296,7 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
                 },
                 {
                     id: 'sprint',
-                    default: 0xd81b60,
+                    default: 0xff9900,
                     name: 'hm3.speed-provider.sprint'
                 }
             ];
@@ -309,7 +309,7 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
         /** @param token {Token} The token to check movement */
         getRanges(token) {
             const actor = token.actor;
-            const move = actor.system.eph.move;
+            const move = actor.system.move.effective;
             const stunned = false;
             const prone = false;
 
