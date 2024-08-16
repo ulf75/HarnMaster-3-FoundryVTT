@@ -296,20 +296,21 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
                 },
                 {
                     id: 'sprint',
-                    default: 0xff9900,
+                    default: 0xd81b60,
                     name: 'hm3.speed-provider.sprint'
                 }
             ];
         }
 
         get defaultUnreachableColor() {
-            return 0xff0000;
+            return 0x000000;
         }
 
         /** @param token {Token} The token to check movement */
         getRanges(token) {
             const actor = token.actor;
-            const move = actor.system.move.effective;
+            let move = actor.system.move.effective;
+            if (actor.system.eph.move > 25) move /= 5;
             const stunned = false;
             const prone = false;
 
@@ -319,7 +320,7 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
                 {range: Math.round(move / 2) * 5, color: 'walk'},
                 {range: move * 5, color: 'jog'},
                 {range: 2 * move * 5, color: 'run'},
-                {range: 2 * move * 5, color: 'sprint'}
+                {range: 3 * move * 5, color: 'sprint'}
             ];
 
             return ranges;
