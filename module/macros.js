@@ -245,7 +245,9 @@ export async function skillRoll(itemName, noDialog = false, myActor = null) {
         },
         speaker: speaker,
         fastforward: noDialog,
-        notes: item.system.notes
+        notes: item.system.notes,
+        effSkillBase: item.system.skillBase.value,
+        isCraftOrLore: ['Craft', 'Lore'].includes(item.system.type)
     };
     if (actor.isToken) {
         stdRollData.token = actor.token.id;
@@ -462,13 +464,13 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
         type: `${ability}-d100`,
         skill: `${ability[0].toUpperCase()}${ability.slice(1)}`,
         label: `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
-        base: Math.max(1, actorInfo.actor.system.abilities[ability].effective),
+        effSkillBase: Math.max(1, actorInfo.actor.system.abilities[ability].effective),
         target: Math.max(5, actorInfo.actor.system.abilities[ability].effective * multiplier),
         notesData: {},
         speaker: actorInfo.speaker,
         fastforward: noDialog,
         notes: '',
-        ability: true
+        isAbility: true
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;
