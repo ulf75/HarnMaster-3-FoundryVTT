@@ -1,5 +1,5 @@
 import {onManageActiveEffect} from '../effect.js';
-import {ItemTypes} from '../item-types.js';
+import {ItemTypes} from '../hm3-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 import {HarnMasterActor} from './actor.js';

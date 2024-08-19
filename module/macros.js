@@ -1,6 +1,7 @@
 import * as combat from './combat.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
+import {SkillTypes} from './hm3-types.js';
 import * as utility from './utility.js';
 
 /**
@@ -247,7 +248,7 @@ export async function skillRoll(itemName, noDialog = false, myActor = null) {
         fastforward: noDialog,
         notes: item.system.notes,
         effSkillBase: item.system.skillBase.value,
-        isCraftOrLore: ['Craft', 'Lore'].includes(item.system.type)
+        isCraftOrLore: [SkillTypes.CRAFT, 'Lore'].includes(item.system.type)
     };
     if (actor.isToken) {
         stdRollData.token = actor.token.id;
