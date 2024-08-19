@@ -1,6 +1,7 @@
 import gulp from 'gulp';
 import autoPrefixer from 'gulp-autoprefixer';
 import gulpSass from 'gulp-sass';
+import sourcemaps from 'gulp-sourcemaps';
 import nodeSass from 'node-sass';
 
 const sass = gulpSass(nodeSass);
@@ -33,6 +34,20 @@ function compileScss() {
         .pipe(gulp.dest('./css'));
 }
 export const css = gulp.series(compileScss);
+
+gulp.task('sass', function () {
+    return gulp
+        .src(SYSTEM_SCSS)
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(sass())
+        .pipe(sourcemaps.write('.', {addComment: false, includeContent: false}))
+        .pipe(gulp.dest('./css'));
+    // .pipe(
+    //     bs.reload({
+    //         stream: true
+    //     })
+    // );
+});
 
 /* ----------------------------------------- */
 /*  Watch Updates
