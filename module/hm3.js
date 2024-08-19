@@ -9,6 +9,7 @@ import {DiceHM3} from './dice-hm3.js';
 import * as effect from './effect.js';
 import {HM3ActiveEffectConfig} from './hm3-active-effect-config.js';
 import {HarnMasterCombat} from './hm3-combat.js';
+import {AspectTypes, HookTypes, ItemTypes, LocationTypes, RangeTypes, SkillTypes} from './hm3-types.js';
 import {HarnMasterItemSheet} from './item/item-sheet.js';
 import {HarnMasterItem} from './item/item.js';
 import * as macros from './macros.js';
@@ -26,7 +27,8 @@ Hooks.once('init', async function () {
         DiceHM3,
         config: HM3,
         macros: macros,
-        migrations: migrations
+        migrations: migrations,
+        enums: {AspectTypes, HookTypes, ItemTypes, LocationTypes, RangeTypes, SkillTypes}
     };
 
     /**
