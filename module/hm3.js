@@ -332,6 +332,19 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
     dragRuler.registerSystem('hm3', HarnMaster3SpeedProvider);
 });
 
+Hooks.on('preCreateToken', (token, data, options, id) => {
+    console.log(token);
+    console.log(data);
+    console.log(options);
+    console.log(id);
+});
+
+Hooks.on('preDeleteToken', (token, options, id) => {
+    console.log(token);
+    console.log(options);
+    console.log(id);
+});
+
 async function welcomeDialog() {
     const dlgTemplate = 'systems/hm3/templates/dialog/welcome.html';
     const html = await renderTemplate(dlgTemplate, {});

@@ -1,0 +1,38 @@
+<form class="hm3 sheet item" spellcheck="false" autocomplete="off">
+  <header class="sheet-header">
+    <div class="flexrow">
+      <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+      <div class="header-fields flexcol">
+        <h1 class="charname"><input name="name" type="text" value="{{data.name}}" placeholder="Name" /></h1>
+      </div>
+    </div>
+  </header>
+
+  <div class="form-group">
+    <label>Scope</label>
+    <select name="scope" disabled>
+      {{selectOptions macroScopes selected=data.scope}}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Type</label>
+    <select name="type">
+      {{selectOptions macroTypes selected=data.type}}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Trigger</label>
+    <select name="trigger">
+      {{selectOptions triggerTypes selected=trigger}}
+    </select>
+  </div>
+
+  <div class="form-group stacked command">
+    <label>Command</label>
+    <textarea style="width: 100%; height: 300px; resize: both; box-sizing: border-box;"
+      name="command">{{data.command}}</textarea>
+  </div>
+
+</form>

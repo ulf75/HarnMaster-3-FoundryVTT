@@ -1,5 +1,6 @@
 import {onManageActiveEffect} from '../effect.js';
 import {ItemTypes} from '../hm3-types.js';
+import {onManageMacro} from '../macro.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 import {HarnMasterActor} from './actor.js';
@@ -58,6 +59,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.adata = data.actor.system;
         data.labels = this.actor.labels || {};
         data.filters = this._filters;
+
+        data.actor.system.macrolist.map((m) => {
+            m.trigger = game.macros.get(m._id).getFlag('hm3', 'trigger');
+        });
+        data.adata.macrolist.sort((a, b) => (a?.name > b?.name ? 1 : b?.name > a?.name ? -1 : 0));
 
         data.macroTypes = [
             {key: 'chat', label: 'Chat'},
@@ -400,6 +406,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Active Effect management
         html.find('.effect-control').click((ev) => onManageActiveEffect(ev, this.document));
+
+        // Macro management
+        html.find('.macro-control').click((ev) => onManageMacro(ev, this.document));
 
         // Ensure all text is selected when entering number input field
         html.on('click', "input[type='number']", (ev) => {
