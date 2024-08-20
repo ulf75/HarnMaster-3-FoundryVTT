@@ -30,14 +30,9 @@
     "uWIcxMD0zdnOha1B": 3
   },
   "flags": {
-    "scene-packer": {
-      "hash": "1b8181aec8eed9911fcbb874dbc3a27247fedbad",
-      "sourceId": "Item.Ko8IoqVKfTklS78a"
-    }
+    "core": {}
   },
   "_stats": {
-    "compendiumSource": null,
-    "duplicateSource": null,
     "coreVersion": "12.328",
     "systemId": "hm3",
     "systemVersion": "1.6.1",
@@ -46,6 +41,6 @@
     "lastModifiedBy": "uWIcxMD0zdnOha1B"
   },
   "_id": "pNrFHyQVP4vkNk8D",
-  "sort": 100000,
+  "sort": 0,
   "_key": "!items!pNrFHyQVP4vkNk8D"
 }
