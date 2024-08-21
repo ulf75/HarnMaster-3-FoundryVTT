@@ -1,3 +1,5 @@
+const supportedHooks = ['hm3.onInjuryRoll'];
+
 /**
  * Manage Macro instances through the Actor Sheet via macro control buttons.
  * @param {MouseEvent} event      The left-click event on the effect control
@@ -75,34 +77,25 @@ async function renderMacroDialog(title, macro, owner) {
                 save: {
                     icon: '<i class="fas fa-save"></i>',
                     label: 'Save Macro',
-                    callback: async (html) => {
-                        const form = html[0].querySelector('form');
-                        const formdata = new FormDataExtended(form).object;
-
-                        // update macro
-                        await macro.setFlag('hm3', 'trigger', formdata.trigger);
-                        await macro.update({
-                            'command': formdata.command,
-                            'img': formdata.img,
-                            'name': formdata.name,
-                            'type': formdata.type
-                        });
-
-                        // update macrolist
-                        const filteredArray = owner.system.macrolist.filter((m) => m._id !== macro.id);
-                        filteredArray.push(macro);
-                        await owner.update({'system.macrolist': filteredArray});
-                    }
+                    callback: async (html) => save(html, macro, owner)
                 },
                 execute: {
                     icon: '<i class="fas fa-dice-d20"></i>',
                     label: 'Execute Macro',
-                    disabled: true,
-                    callback: async (html) => {}
+                    disabled: !(macro.getFlag('hm3', 'trigger') === 'manual' && macro.canExecute),
+                    callback: async (html) => {
+                        await save(html, macro, owner);
+                        if (macro.canExecute) macro.execute();
+                    }
                 }
             },
-            default: 'save'
-            // render: (html) => console.log('Register interactivity in the rendered dialog'),
+            default: 'save',
+            render: (html) => {
+                // only manual macros can be executed
+                html[0].childNodes[1][3].onchange = () => {
+                    html[2].childNodes[3].disabled = !(html[0].childNodes[1][3].value === 'manual' && macro.canExecute);
+                };
+            }
             // close: (html) => console.log('This always is logged no matter which option is chosen')
         },
         {
@@ -112,4 +105,45 @@ async function renderMacroDialog(title, macro, owner) {
             resizable: true
         }
     ).render(true);
+}
+
+async function save(html, macro, owner) {
+    const form = html[0].querySelector('form');
+    const formdata = new FormDataExtended(form).object;
+
+    // update macro
+    await macro.setFlag('hm3', 'trigger', formdata.trigger);
+    await macro.update({
+        'command': formdata.command,
+        'img': formdata.img,
+        'name': formdata.name,
+        'type': formdata.type
+    });
+
+    // update macrolist
+    const filteredArray = owner.system.macrolist.filter((m) => m._id !== macro.id);
+    filteredArray.push(macro);
+    await owner.update({'system.macrolist': filteredArray});
+}
+
+export async function registerHooks() {
+    supportedHooks.forEach((hook) => {
+        Hooks.on(hook, (...args) => executeHooks(...args, hook));
+    });
+}
+
+function executeHooks(...args) {
+    const hook = args.pop();
+
+    canvas.scene?.tokens?.contents?.forEach((token) => {
+        token.actor?.system?.macrolist?.forEach((m) => {
+            const macro = game.macros.get(m._id);
+            const trigger = macro?.getFlag('hm3', 'trigger');
+            if (trigger === hook) {
+                if (macro.canExecute) {
+                    macro.execute({token});
+                }
+            }
+        });
+    });
 }

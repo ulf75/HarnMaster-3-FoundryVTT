@@ -61,7 +61,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.filters = this._filters;
 
         data.actor.system.macrolist.map((m) => {
-            m.trigger = game.macros.get(m._id).getFlag('hm3', 'trigger');
+            m.trigger = game.macros.get(m._id)?.getFlag('hm3', 'trigger');
         });
         data.adata.macrolist.sort((a, b) => (a?.name > b?.name ? 1 : b?.name > a?.name ? -1 : 0));
 

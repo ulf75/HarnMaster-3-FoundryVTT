@@ -12,6 +12,7 @@ import {HarnMasterCombat} from './hm3-combat.js';
 import {AspectTypes, HookTypes, ItemTypes, LocationTypes, RangeTypes, SkillTypes} from './hm3-types.js';
 import {HarnMasterItemSheet} from './item/item-sheet.js';
 import {HarnMasterItem} from './item/item.js';
+import {registerHooks} from './macro.js';
 import * as macros from './macros.js';
 import * as migrations from './migrations.js';
 import {registerSystemSettings} from './settings.js';
@@ -165,6 +166,8 @@ Hooks.once('init', async function () {
             }
         });
     });
+
+    await registerHooks();
 });
 
 Hooks.on('renderChatMessage', (app, html, data) => {
@@ -330,19 +333,6 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
     }
 
     dragRuler.registerSystem('hm3', HarnMaster3SpeedProvider);
-});
-
-Hooks.on('preCreateToken', (token, data, options, id) => {
-    console.log(token);
-    console.log(data);
-    console.log(options);
-    console.log(id);
-});
-
-Hooks.on('preDeleteToken', (token, options, id) => {
-    console.log(token);
-    console.log(options);
-    console.log(id);
 });
 
 async function welcomeDialog() {
