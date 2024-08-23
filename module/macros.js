@@ -1361,3 +1361,99 @@ export function callOnHooks(hook, actor, result, rollData, item = null) {
         return Hooks.call(hook, actor, rollResult, rollData);
     }
 }
+
+/**
+ * Calculates the distance between two tokens.
+ * @param {number} sourceTokenId The id of token #1.
+ * @param {number} destTokenId The id of token #2.
+ * @returns
+ */
+export function distanceBtwnTwoTokens(sourceTokenId, destTokenId) {
+    const source = canvas.tokens.get(sourceTokenId).center;
+    const dest = canvas.tokens.get(destTokenId).center;
+
+    return canvas.grid.measurePath([source, dest]).distance;
+}
+
+/**
+ * TODO
+ * @param {*} options
+ * @returns
+ */
+export function getAllTokens(options) {
+    options = foundry.utils.mergeObject({friendly: true, neutral: true, secret: true, hostile: true}, options);
+    return canvas.scene.tokens.contents.filter(
+        (t) =>
+            (t.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY && options.friendly) ||
+            (t.disposition === CONST.TOKEN_DISPOSITIONS.NEUTRAL && options.neutral) ||
+            (t.disposition === CONST.TOKEN_DISPOSITIONS.SECRET && options.secret) ||
+            (t.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE && options.hostile)
+    );
+}
+
+/**
+ * TODO
+ * @param {*} options
+ * @returns
+ */
+export function getSpecificTokens(options) {
+    options = foundry.utils.mergeObject({friendly: false, neutral: false, secret: false, hostile: false}, options);
+    return getAllTokens(options);
+}
+
+/**
+ * TODO
+ * Kudos: https://stackoverflow.com/questions/37224912/circle-line-segment-collision
+ * @param {*} circle
+ * @param {*} line
+ * @returns
+ */
+export function pathIntersectsCircle(circle, line) {
+    const size = canvas.grid.size / canvas.grid.distance;
+    const radius = circle.radius * size;
+
+    var a, b, c, d, u1, u2, ret, retP1, retP2, v1, v2;
+    v1 = {};
+    v2 = {};
+    v1.x = line.p2.x - line.p1.x;
+    v1.y = line.p2.y - line.p1.y;
+    v2.x = line.p1.x - circle.center.x;
+    v2.y = line.p1.y - circle.center.y;
+    b = v1.x * v2.x + v1.y * v2.y;
+    c = 2 * (v1.x * v1.x + v1.y * v1.y);
+    b *= -2;
+    d = Math.sqrt(b * b - 2 * c * (v2.x * v2.x + v2.y * v2.y - radius * radius));
+
+    if (isNaN(d)) {
+        // no intercept
+        return null;
+    }
+
+    u1 = (b - d) / c; // these represent the unit distance of point one and two on the line
+    u2 = (b + d) / c;
+    retP1 = {}; // return points
+    retP2 = {};
+    ret = []; // return array
+
+    if (u1 <= 1 && u1 >= 0) {
+        // add point if on the line segment
+        retP1.x = line.p1.x + v1.x * u1;
+        retP1.y = line.p1.y + v1.y * u1;
+        ret[0] = retP1;
+    }
+
+    if (u2 <= 1 && u2 >= 0) {
+        // second add point if on the line segment
+        retP2.x = line.p1.x + v1.x * u2;
+        retP2.y = line.p1.y + v1.y * u2;
+        ret[ret.length] = retP2;
+    }
+
+    if (ret.length === 0) return null;
+    else if (ret.length === 1) return ret[0];
+    else {
+        const d0 = (line.p1.x - ret[0].x) ** 2 + (line.p1.y - ret[0].y) ** 2;
+        const d1 = (line.p1.x - ret[1].x) ** 2 + (line.p1.y - ret[1].y) ** 2;
+        return d0 <= d1 ? ret[0] : ret[1];
+    }
+}

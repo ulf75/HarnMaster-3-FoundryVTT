@@ -8,7 +8,8 @@
     {
       "name": "Toasty",
       "discord": "toasty#8538"
-    }
+    },
+    {"name": "ulf75"}
   ],
   "download": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/releases/download/v0.0.0/system.zip",
   "manifest": "https://github.com/ulf75/HarnMaster-3-FoundryVTT/releases/latest/download/system.json",
@@ -22,7 +23,7 @@
   "minimumCoreVersion": "12",
   "compatibility": {
     "minimum": "12",
-    "verified": "12.330"
+    "verified": "12"
   },
   "esmodules": ["module/hm3.js"],
   "styles": ["css/hm3.css"],

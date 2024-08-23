@@ -1,4 +1,4 @@
-const supportedHooks = ['hm3.onInjuryRoll'];
+const supportedHooks = ['preUpdateToken', 'hm3.onInjuryRoll', 'refreshToken'];
 
 /**
  * Manage Macro instances through the Actor Sheet via macro control buttons.
@@ -63,7 +63,9 @@ async function renderMacroDialog(title, macro, owner) {
         triggerTypes: [
             {value: 'legacy', label: 'Legacy'},
             {value: 'manual', label: 'Manual'},
-            {value: 'hm3.onInjuryRoll', label: 'On Injury Roll'}
+            {value: 'hm3.onInjuryRoll', label: 'On Injury Roll'},
+            {value: 'preUpdateToken', label: 'Pre Update Token'},
+            {value: 'refreshToken', label: 'Refresh Token'}
         ],
         trigger: macro.getFlag('hm3', 'trigger')
     });
@@ -135,13 +137,25 @@ export async function registerHooks() {
 function executeHooks(...args) {
     const hook = args.pop();
 
+    const actors = new Set();
     canvas.scene?.tokens?.contents?.forEach((token) => {
-        token.actor?.system?.macrolist?.forEach((m) => {
+        actors.add(token.actor.id);
+    });
+    Array.from(actors).forEach((actorId) => {
+        game.actors.get(actorId).system?.macrolist?.forEach(async (m) => {
             const macro = game.macros.get(m._id);
             const trigger = macro?.getFlag('hm3', 'trigger');
             if (trigger === hook) {
                 if (macro.canExecute) {
-                    macro.execute({token});
+                    const asyncFunction = macro.command.includes('await') ? 'async' : ''; // TODO
+                    const users = game.users.contents[1];
+                    await macro.execute({
+                        actorTokens: canvas.scene.tokens.contents.filter((t) => t.actor.id === actorId),
+                        allOtherTokens: canvas.scene.tokens.contents.filter((t) => t.actor.id !== actorId),
+                        playerTokens: canvas.scene.tokens.contents.filter((t) => t.actor.id !== actorId),
+                        triggerArgs: args,
+                        macros: game.hm3.macros
+                    });
                 }
             }
         });
