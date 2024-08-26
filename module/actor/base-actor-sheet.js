@@ -60,7 +60,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.labels = this.actor.labels || {};
         data.filters = this._filters;
 
-        data.actor.system.macrolist.map((m) => {
+        data.adata.macrolist.map((m) => {
             m.trigger = game.macros.get(m._id)?.getFlag('hm3', 'trigger');
         });
         data.adata.macrolist.sort((a, b) => (a?.name > b?.name ? 1 : b?.name > a?.name ? -1 : 0));
@@ -123,6 +123,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             data.effects[effect.id] = {
                 'id': effect.id,
                 'label': effect.name,
+                'img': effect.img,
                 'sourceName': effect.sourceName,
                 'duration': utility.aeDuration(effect),
                 'source': effect,
