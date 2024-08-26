@@ -9,6 +9,7 @@ import {DiceHM3} from './dice-hm3.js';
 import * as effect from './effect.js';
 import {HM3ActiveEffectConfig} from './hm3-active-effect-config.js';
 import {HarnMasterCombat} from './hm3-combat.js';
+import {HM3MacroConfig} from './hm3-macro-config.js';
 import {AspectTypes, HookTypes, ItemTypes, LocationTypes, RangeTypes, SkillTypes} from './hm3-types.js';
 import {HarnMasterItemSheet} from './item/item-sheet.js';
 import {HarnMasterItem} from './item/item.js';
@@ -108,6 +109,12 @@ Hooks.once('init', async function () {
     DocumentSheetConfig.registerSheet(ActiveEffect, 'hm3', HM3ActiveEffectConfig, {
         makeDefault: true,
         label: 'Default HarnMaster Active Effect Sheet'
+    });
+
+    DocumentSheetConfig.unregisterSheet(Macro, 'core', MacroConfig);
+    DocumentSheetConfig.registerSheet(Macro, 'hm3', HM3MacroConfig, {
+        makeDefault: true,
+        label: 'Default HarnMaster Macro Sheet'
     });
 
     Items.unregisterSheet('core', ItemSheet);
