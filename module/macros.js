@@ -1406,54 +1406,101 @@ export function getSpecificTokens(options) {
  * Kudos: https://stackoverflow.com/questions/37224912/circle-line-segment-collision
  * @param {*} circle
  * @param {*} line
+ * @param {*} centerToCenter
  * @returns
  */
-export function pathIntersectsCircle(circle, line) {
+export function pathIntersectsCircle(circle, line, centerToCenter = true) {
     const size = canvas.grid.size / canvas.grid.distance;
-    const radius = circle.radius * size;
+    const radius = (centerToCenter ? circle.radius : circle.radius + canvas.grid.distance) * size;
+    const c = new PIXI.Circle(circle.center.x, circle.center.y, radius);
+    const ixs = c.segmentIntersections(line.p1, line.p2);
+    if (ixs.length === 0) return null;
+    else if (ixs.length === 1) return ixs[0];
+    else {
+        const d0 = (line.p1.x - ixs[0].x) ** 2 + (line.p1.y - ixs[0].y) ** 2;
+        const d1 = (line.p1.x - ixs[1].x) ** 2 + (line.p1.y - ixs[1].y) ** 2;
+        return d0 <= d1 ? ixs[0] : ixs[1];
+    }
+}
 
-    var a, b, c, d, u1, u2, ret, retP1, retP2, v1, v2;
-    v1 = {};
-    v2 = {};
-    v1.x = line.p2.x - line.p1.x;
-    v1.y = line.p2.y - line.p1.y;
-    v2.x = line.p1.x - circle.center.x;
-    v2.y = line.p1.y - circle.center.y;
-    b = v1.x * v2.x + v1.y * v2.y;
-    c = 2 * (v1.x * v1.x + v1.y * v1.y);
-    b *= -2;
-    d = Math.sqrt(b * b - 2 * c * (v2.x * v2.x + v2.y * v2.y - radius * radius));
+/**
+ * TODO
+ * @param {*} actor
+ * @param {*} name
+ * @returns
+ */
+export function hasActiveEffect(actor, name) {
+    return !!getActiveEffect(actor, name);
+}
 
-    if (isNaN(d)) {
-        // no intercept
+/**
+ * TODO
+ * @param {*} actor
+ * @param {*} name
+ * @returns
+ */
+export function getActiveEffect(actor, name) {
+    return actor.effects.contents.find((v) => v.name === name);
+}
+
+/**
+ * TODO
+ * @param {*} options
+ * @returns
+ */
+export async function createActiveEffect(options) {
+    // mandatory
+    if (!options.label || !options.owner || !options.type) {
+        console.error('HM3 Macro "createActiveEffect" needs label, owner & type as mandatory input!');
         return null;
     }
 
-    u1 = (b - d) / c; // these represent the unit distance of point one and two on the line
-    u2 = (b + d) / c;
-    retP1 = {}; // return points
-    retP2 = {};
-    ret = []; // return array
+    const icon = options.icon || 'icons/svg/aura.svg';
 
-    if (u1 <= 1 && u1 >= 0) {
-        // add point if on the line segment
-        retP1.x = line.p1.x + v1.x * u1;
-        retP1.y = line.p1.y + v1.y * u1;
-        ret[0] = retP1;
+    const aeData = {
+        label: options.label,
+        icon,
+        origin: options.owner.uuid
+    };
+
+    if (options.type === 'GameTime') {
+        const postpone = options.postpone || 0;
+        const startTime = options.startTime || game.time.worldTime + postpone;
+        const seconds = options.seconds || 1;
+
+        aeData['duration.startTime'] = startTime;
+        aeData['duration.seconds'] = seconds;
+    } else if (options.type === 'Combat' && !!game.combats.active?.current) {
+        const startRound = options.startRound || game.combats.active.current.round || 1;
+        const startTurn = options.startTurn || game.combats.active.current.turn || 0;
+        const rounds = options.rounds || 1;
+        const turns = options.turns || 0;
+
+        aeData['duration.combat'] = game.combats.active.id;
+        aeData['duration.startRound'] = startRound;
+        aeData['duration.startTurn'] = startTurn;
+        aeData['duration.rounds'] = rounds;
+        aeData['duration.turns'] = turns;
+    } else {
+        return null;
     }
 
-    if (u2 <= 1 && u2 >= 0) {
-        // second add point if on the line segment
-        retP2.x = line.p1.x + v1.x * u2;
-        retP2.y = line.p1.y + v1.y * u2;
-        ret[ret.length] = retP2;
-    }
+    return ActiveEffect.create(aeData, {parent: options.owner});
+}
 
-    if (ret.length === 0) return null;
-    else if (ret.length === 1) return ret[0];
-    else {
-        const d0 = (line.p1.x - ret[0].x) ** 2 + (line.p1.y - ret[0].y) ** 2;
-        const d1 = (line.p1.x - ret[1].x) ** 2 + (line.p1.y - ret[1].y) ** 2;
-        return d0 <= d1 ? ret[0] : ret[1];
-    }
+var g;
+export async function drawDebugPoint(p) {
+    // g = new PIXI.Graphics();
+    // game.canvas.addChild(g);
+    // g.zIndex = -1;
+    // g.beginFill(0xff0000, 1.0).drawCircle(p.x, p.y, 16);
+    // const c = new PIXI.Circle(p.x, p.y, 6);
+    // const dl = game.canvas.getLayerByEmbeddedName('Drawing');
+    // const shape = new foundry.data.RectangleShapeData({x: p.x, y: p.y, width: 5, height: 5});
+    // const rs = foundry.canvas.regios.RegionShape.create({data: shape});
+    // // const shape = new foundry.data.CircleShapeData({x: p.x, y: p.y, radius: 5});
+    // const data = [{x: p.x, y: p.y, fillColor: '#ffffff', shape}];
+    // const dd = await DrawingDocument.create(data);
+    // const d = dl.createObject(dd);
+    return;
 }
