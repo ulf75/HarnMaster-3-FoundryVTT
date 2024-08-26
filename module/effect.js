@@ -9,8 +9,10 @@ export async function onManageActiveEffect(event, owner) {
     event.preventDefault();
     const a = event.currentTarget;
     const li = a.closest('li');
+    const clickOnName = !!li.firstElementChild?.className?.includes('effect-name');
+    const action = clickOnName ? 'edit' : a.dataset.action;
     const effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
-    switch (a.dataset.action) {
+    switch (action) {
         case 'create':
             const dlgTemplate = 'systems/hm3/templates/dialog/active-effect-start.html';
             const dialogData = {

@@ -405,10 +405,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.item-dumpdesc').click(this._onDumpEsotericDescription.bind(this));
 
         // Active Effect management
-        html.find('.effect-control').click((ev) => onManageActiveEffect(ev, this.document));
+        html.find('.effect-control, .effect-name').click((ev) => onManageActiveEffect(ev, this.document));
 
         // Macro management
-        html.find('.macro-control').click((ev) => onManageMacro(ev, this.document));
+        html.find('.macro-control, .macro-name').click((ev) => onManageMacro(ev, this.document));
 
         // Ensure all text is selected when entering number input field
         html.on('click', "input[type='number']", (ev) => {

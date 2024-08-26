@@ -9,8 +9,10 @@ export async function onManageMacro(event, owner) {
     event.preventDefault();
     const a = event.currentTarget;
     const li = a.closest('li');
+    const clickOnName = !!li.firstElementChild?.className?.includes('macro-name');
+    const action = clickOnName ? 'edit' : a.dataset.action;
     let macro = li.dataset.macroId ? game.macros.get(li.dataset.macroId) : null;
-    switch (a.dataset.action) {
+    switch (action) {
         case 'create':
             if (!owner.system.macrolist) owner.system.macrolist = [];
 
@@ -51,6 +53,12 @@ export async function onManageMacro(event, owner) {
     }
 }
 
+/**
+ * TODO
+ * @param {*} title
+ * @param {*} macro
+ * @param {*} owner
+ */
 async function renderMacroDialog(title, macro, owner) {
     const html = await renderTemplate('systems/hm3/templates/dialog/macro-config.html', {
         macroScopes: CONST.MACRO_SCOPES.map((s) => ({value: s, label: s})),
@@ -109,6 +117,12 @@ async function renderMacroDialog(title, macro, owner) {
     ).render(true);
 }
 
+/**
+ * TODO
+ * @param {*} html
+ * @param {*} macro
+ * @param {*} owner
+ */
 async function save(html, macro, owner) {
     const form = html[0].querySelector('form');
     const formdata = new FormDataExtended(form).object;
@@ -128,12 +142,19 @@ async function save(html, macro, owner) {
     await owner.update({'system.macrolist': filteredArray});
 }
 
+/**
+ * TODO
+ */
 export async function registerHooks() {
     supportedHooks.forEach((hook) => {
         Hooks.on(hook, (...args) => executeHooks(...args, hook));
     });
 }
 
+/**
+ * TODO
+ * @param  {...any} args
+ */
 function executeHooks(...args) {
     const hook = args.pop();
 
@@ -148,11 +169,11 @@ function executeHooks(...args) {
             if (trigger === hook) {
                 if (macro.canExecute) {
                     const asyncFunction = macro.command.includes('await') ? 'async' : ''; // TODO
-                    const users = game.users.contents[1];
+                    const macroTokens = canvas.scene.tokens.contents.filter((t) => t.actor.id === actorId);
                     await macro.execute({
-                        actorTokens: canvas.scene.tokens.contents.filter((t) => t.actor.id === actorId),
+                        macroActor: macroTokens[0].actor,
+                        macroTokens,
                         allOtherTokens: canvas.scene.tokens.contents.filter((t) => t.actor.id !== actorId),
-                        playerTokens: canvas.scene.tokens.contents.filter((t) => t.actor.id !== actorId),
                         triggerArgs: args,
                         macros: game.hm3.macros
                     });
