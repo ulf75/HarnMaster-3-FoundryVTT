@@ -1,4 +1,29 @@
-const supportedHooks = ['preUpdateToken', 'hm3.onInjuryRoll'];
+const supportedHooks = [
+    'combatRound',
+    'combatStart',
+    'combatTurn',
+    'combatTurnChange',
+    'hm3.onAbilityRollD100',
+    'hm3.onAbilityRollD6',
+    'hm3.onActorPrepareBaseData',
+    'hm3.onActorPrepareDerivedData',
+    'hm3.onBlockResume',
+    'hm3.onDamageRoll',
+    'hm3.onDodgeResume',
+    'hm3.onDodgeRoll',
+    'hm3.onFumbleRoll',
+    'hm3.onHealingRoll',
+    'hm3.onIgnoreResume',
+    'hm3.onInjuryRoll',
+    'hm3.onShockRoll',
+    'hm3.onStumbleRoll',
+    'hm3.preInjuryRoll',
+    'pauseGame',
+    'preUpdateToken',
+    'targetToken',
+    'updateToken',
+    'updateWorldTime'
+];
 
 /**
  * Manage Macro instances through the Actor Sheet via macro control buttons.

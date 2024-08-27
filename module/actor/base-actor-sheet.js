@@ -128,7 +128,16 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         });
 
         // get macros
-        if (!data.adata.macrolist) data.adata.macrolist = [];
+        if (!data.adata.macrolist) {
+            data.adata.macrolist = [];
+        }
+        if (!data.adata.macrolist.find((m) => game.macros.get(m._id).getFlag('hm3', 'trigger') === 'legacy')) {
+            if (data.adata.macros.command.length > 0) {
+                // TODO migrate lagacy macro
+                // const macro = Macro.create({name: `New macro`, type: data.adata.macros.type, scope: 'global'});
+                // macro.setFlag('hm3', 'trigger', 'lagacy');
+            }
+        }
         data.adata.macrolist.map((m) => {
             m.name = game.macros.get(m._id)?.name;
             m.img = game.macros.get(m._id)?.img;
