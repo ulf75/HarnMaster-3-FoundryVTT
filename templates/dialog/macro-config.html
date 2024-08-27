@@ -1,22 +1,18 @@
-<form class="hm3 sheet item" spellcheck="false" autocomplete="off">
+<form class="{{cssClass}} flexcol" spellcheck="false" autocomplete="off">
   <header class="sheet-header">
-    <div class="flexrow">
-      <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
-      <div class="header-fields flexcol">
-        <h1 class="charname"><input name="name" type="text" value="{{data.name}}" placeholder="Name" /></h1>
-      </div>
-    </div>
+    <img src="{{data.img}}" data-edit="img" title="{{data.name}}" height="64" width="64" />
+    <h1><input name="name" type="text" value="{{data.name}}" placeholder="{{ localize 'Name' }}" /></h1>
   </header>
 
   <div class="form-group">
-    <label>Scope</label>
+    <label>{{ localize "Scope" }}</label>
     <select name="scope" disabled>
       {{selectOptions macroScopes selected=data.scope}}
     </select>
   </div>
 
   <div class="form-group">
-    <label>Type</label>
+    <label>{{ localize "Type" }}</label>
     <select name="type">
       {{selectOptions macroTypes selected=data.type}}
     </select>
@@ -30,9 +26,13 @@
   </div>
 
   <div class="form-group stacked command">
-    <label>Command</label>
-    <textarea style="width: 100%; height: 300px; resize: both; box-sizing: border-box;"
-      name="command">{{data.command}}</textarea>
+    <label>{{ localize "Command" }}</label>
+    <textarea name="command">{{data.command}}</textarea>
   </div>
+
+  <footer class="sheet-footer flexrow">
+    <button type="submit"><i class="fas fa-save"></i> {{ localize "MACRO.Save" }}</button>
+    <button class="execute" type="button"><i class="fas fa-dice-d20"></i> {{ localize "MACRO.Execute" }}</button>
+  </footer>
 
 </form>

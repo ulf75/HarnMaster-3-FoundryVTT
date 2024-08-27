@@ -60,11 +60,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.labels = this.actor.labels || {};
         data.filters = this._filters;
 
-        data.adata.macrolist.map((m) => {
-            m.trigger = game.macros.get(m._id)?.getFlag('hm3', 'trigger');
-        });
-        data.adata.macrolist.sort((a, b) => (a?.name > b?.name ? 1 : b?.name > a?.name ? -1 : 0));
-
         data.macroTypes = [
             {key: 'chat', label: 'Chat'},
             {key: 'script', label: 'Script'}
@@ -117,7 +112,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             'containergear': 'Container'
         };
 
-        // get active effects.
+        // get active effects
         data.effects = {};
         this.actor.effects.forEach((effect) => {
             data.effects[effect.id] = {
@@ -131,6 +126,18 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             };
             data.effects[effect.id].disabled = effect.disabled;
         });
+
+        // get macros
+        if (!data.adata.macrolist) data.adata.macrolist = [];
+        data.adata.macrolist.map((m) => {
+            m.name = game.macros.get(m._id)?.name;
+            m.img = game.macros.get(m._id)?.img;
+            m.command = game.macros.get(m._id)?.command;
+            m.type = game.macros.get(m._id)?.type;
+            m.scope = game.macros.get(m._id)?.scope;
+            m.trigger = game.macros.get(m._id)?.getFlag('hm3', 'trigger');
+        });
+        data.adata.macrolist.sort((a, b) => (a?.name > b?.name ? 1 : b?.name > a?.name ? -1 : 0));
 
         return data;
     }

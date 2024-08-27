@@ -9,7 +9,11 @@ export async function onManageActiveEffect(event, owner) {
     event.preventDefault();
     const a = event.currentTarget;
     const li = a.closest('li');
-    const clickOnName = !!li.firstElementChild?.className?.includes('effect-name');
+    const clickOnName = !!(
+        li.firstElementChild?.className?.includes('effect-name') &&
+        a.dataset.action !== 'create' &&
+        a.dataset.action !== 'delete'
+    );
     const action = clickOnName ? 'edit' : a.dataset.action;
     const effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
     switch (action) {
@@ -55,10 +59,31 @@ export async function onManageActiveEffect(event, owner) {
                 },
                 options: {jQuery: false}
             });
+
         case 'edit':
             return effect.sheet.render(true);
+
         case 'delete':
-            return effect.delete();
+            return new Dialog({
+                title: 'Delete Active Effect',
+                content: '<p>Are you sure?</p><p>This active effect will be permanently deleted and cannot be recovered.</p>',
+                buttons: {
+                    yes: {
+                        icon: '<i class="fas fa-check"></i>',
+                        label: 'Yes',
+                        callback: async (html) => {
+                            await effect.delete();
+                        }
+                    },
+                    no: {
+                        icon: '<i class="fas fa-times"></i>',
+                        label: 'No',
+                        callback: async (html) => {}
+                    }
+                },
+                default: 'yes'
+            }).render(true);
+
         case 'toggle':
             const updateData = {};
             if (effect.disabled) {

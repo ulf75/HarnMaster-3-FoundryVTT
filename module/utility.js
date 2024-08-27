@@ -575,3 +575,12 @@ export function parseAEValue(string) {
 export function truncate(value, digits = 2) {
     return Math.round((value + Number.EPSILON) * 10 ** digits) / 10 ** digits;
 }
+
+/**
+ * Returns the actor of the given macro id.
+ * @param {string} macroId ID of the macro
+ * @returns {Actor} actor
+ */
+export function getActorFromMacroId(macroId) {
+    return game.actors.contents.find((a) => a.system?.macrolist?.find((m) => m._id === macroId));
+}

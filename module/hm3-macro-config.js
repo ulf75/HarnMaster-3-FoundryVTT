@@ -1,3 +1,5 @@
+import * as utility from './utility.js';
+
 /**
  * A form designed for creating and editing an Macro on an Actor or Item.
  * @implements {FormApplication}
@@ -9,16 +11,45 @@ export class HM3MacroConfig extends MacroConfig {
     /** @override */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            template: 'systems/hm3/templates/dialog/macro-config.html'
+            template: 'systems/hm3/templates/dialog/macro-config.html',
+            height: 575,
+            jQuery: false
         });
     }
 
-    /* ----------------------------------------- */
-
     /** @override */
     async getData(options = {}) {
-        const context = await super.getData(options);
-        // context.keyChoices = HM3.activeEffectKey;
-        return context;
+        const data = super.getData();
+
+        data.macroTypes = game.documentTypes.Macro.map((t) => ({
+            value: t,
+            label: game.i18n.localize(CONFIG.Macro.typeLabels[t]),
+            disabled: t === 'script' && !game.user.can('MACRO_SCRIPT')
+        }));
+        data.macroScopes = CONST.MACRO_SCOPES.map((s) => ({value: s, label: s}));
+        data.triggerTypes = [
+            {value: 'legacy', label: 'Legacy'},
+            {value: 'manual', label: 'Manual'},
+            {value: 'hm3.onInjuryRoll', label: 'On Injury Roll'},
+            {value: 'preUpdateToken', label: 'Pre Update Token'}
+        ];
+        const macro = game.macros.get(data.data._id);
+        data.trigger = macro.getFlag('hm3', 'trigger');
+
+        return data;
+    }
+
+    /** @override */
+    async _updateObject(event, formData) {
+        event.preventDefault();
+        if (event instanceof SubmitEvent) {
+            const macroId = event.currentTarget
+                ? event.currentTarget[0].offsetParent.id.substring(21)
+                : event.target[0].offsetParent.id.substring(21);
+            const macro = game.macros.get(macroId);
+            macro.setFlag('hm3', 'trigger', formData.trigger);
+            await super._updateObject(event, formData);
+            utility.getActorFromMacroId(macroId)?.sheet.render();
+        }
     }
 }
