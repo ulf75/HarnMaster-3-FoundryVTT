@@ -1445,36 +1445,39 @@ export function getActiveEffect(actor, name) {
 
 /**
  * TODO
+ * @param {*} efffectData
  * @param {*} options
  * @returns
  */
-export async function createActiveEffect(options) {
+export async function createActiveEffect(efffectData, options = {}) {
+    options = foundry.utils.mergeObject({selfDestroy: false}, options);
+
     // mandatory
-    if (!options.label || !options.owner || !options.type) {
+    if (!efffectData.label || !efffectData.owner || !efffectData.type) {
         console.error('HM3 Macro "createActiveEffect" needs label, owner & type as mandatory input!');
         return null;
     }
 
-    const icon = options.icon || 'icons/svg/aura.svg';
+    const icon = efffectData.icon || 'icons/svg/aura.svg';
 
     const aeData = {
-        label: options.label,
+        label: efffectData.label,
         icon,
-        origin: options.owner.uuid
+        origin: efffectData.owner.uuid
     };
 
-    if (options.type === 'GameTime') {
-        const postpone = options.postpone || 0;
-        const startTime = options.startTime || game.time.worldTime + postpone;
-        const seconds = options.seconds || 1;
+    if (efffectData.type === 'GameTime') {
+        const postpone = efffectData.postpone || 0;
+        const startTime = efffectData.startTime || game.time.worldTime + postpone;
+        const seconds = efffectData.seconds || 1;
 
         aeData['duration.startTime'] = startTime;
         aeData['duration.seconds'] = seconds;
-    } else if (options.type === 'Combat' && !!game.combats.active?.current) {
-        const startRound = options.startRound || game.combats.active.current.round || 1;
-        const startTurn = options.startTurn || game.combats.active.current.turn || 0;
-        const rounds = options.rounds || 1;
-        const turns = options.turns || 0;
+    } else if (efffectData.type === 'Combat' && !!game.combats.active?.current) {
+        const startRound = efffectData.startRound || game.combats.active.current.round || 1;
+        const startTurn = efffectData.startTurn || game.combats.active.current.turn || 0;
+        const rounds = efffectData.rounds || 1;
+        const turns = efffectData.turns || 0;
 
         aeData['duration.combat'] = game.combats.active.id;
         aeData['duration.startRound'] = startRound;
@@ -1485,7 +1488,13 @@ export async function createActiveEffect(options) {
         return null;
     }
 
-    return ActiveEffect.create(aeData, {parent: options.owner});
+    const effect = await ActiveEffect.create(aeData, {parent: efffectData.owner});
+
+    if (options.selfDestroy) {
+        effect.setFlag('effectmacro', 'onDisable.script', `game.actors.get('${efffectData.owner.id}').effects.get('${effect.id}').delete();`);
+    }
+
+    return effect;
 }
 
 var g;

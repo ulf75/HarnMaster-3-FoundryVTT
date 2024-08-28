@@ -45,12 +45,15 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
         const tl = canvas.grid.getTopLeftPoint(stops[0]);
         const pos = token.getSnappedPosition(stops[0], {mode: CONST.GRID_SNAPPING_MODES.CENTER});
         await canvas.tokens.get(token.id).document.update(pos);
-        await macros.createActiveEffect({
-            owner: token.actor,
-            label: STENCH_OF_CORRUPTION,
-            type: 'GameTime',
-            seconds: 20 * 60,
-            icon: 'systems/hm3/images/icons/svg/distraction.svg'
-        });
+        await macros.createActiveEffect(
+            {
+                owner: token.actor,
+                label: STENCH_OF_CORRUPTION,
+                type: 'GameTime',
+                seconds: 20 * 60,
+                icon: 'systems/hm3/images/icons/svg/distraction.svg'
+            },
+            {selfDestroy: true}
+        );
     }
 }

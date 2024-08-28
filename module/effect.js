@@ -12,6 +12,7 @@ export async function onManageActiveEffect(event, owner) {
     const clickOnName = !!(
         li.firstElementChild?.className?.includes('effect-name') &&
         a.dataset.action !== 'create' &&
+        a.dataset.action !== 'toggle' &&
         a.dataset.action !== 'delete'
     );
     const action = clickOnName ? 'edit' : a.dataset.action;
