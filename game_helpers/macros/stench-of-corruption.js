@@ -33,26 +33,32 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
     const isMacroTokenMoving = !!macroTokens.find((t) => t.id === token.id);
     const isFriendlyTokenMoving = !!friendlyTokens.find((t) => t.id === token.id);
 
+    if (!(isMacroTokenMoving || isFriendlyTokenMoving)) return;
+
+    let victimToken;
     const stops = [];
-    macroTokens.forEach((t) => {
-        console.log('to: ' + t.name);
-
-        if (isFriendlyTokenMoving) {
+    if (isFriendlyTokenMoving) {
+        console.log('to: ' + token.name);
+        victimToken = token;
+        const stop = macros.pathIntersectsCircle({center: canvas.tokens.get(token.id).center, radius: RADIUS}, {p1, p2}, true);
+        if (!!stop) stops.push(stop);
+    } else {
+        friendlyTokens.forEach((t) => {
+            console.log('to: ' + t.name);
             const stop = macros.pathIntersectsCircle({center: canvas.tokens.get(t.id).center, radius: RADIUS}, {p1, p2}, true);
-
-            console.log(stop);
             if (!!stop) stops.push(stop);
-        }
-    });
+        });
+    }
 
     if (stops.length > 0 && !game.paused && !macros.hasActiveEffect(token.actor, STENCH_OF_CORRUPTION)) {
+        const victimActor = victimToken.actor;
         game.togglePause(true);
         stops.sort((a, b) => (p1.x - a.x) ** 2 + (p1.y - a.y) ** 2 - ((p1.x - b.x) ** 2 + (p1.y - b.y) ** 2));
         const tl = canvas.grid.getTopLeftPoint(stops[0]);
         const pos = token.getSnappedPosition(stops[0], {mode: CONST.GRID_SNAPPING_MODES.CENTER});
-        await canvas.tokens.get(token.id).document.update(pos);
+        await canvas.tokens.get(victimToken.id).document.update(pos);
 
-        const result = await macros.testAbilityD100RollAlt({ability: 'will', noDialog: true, myActor: actor, multiplier: 4});
+        const result = await macros.testAbilityD100RollAlt({ability: 'will', noDialog: true, myActor: victimActor, multiplier: 4});
 
         let seconds = 0;
         let value = 0;
@@ -74,7 +80,7 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
 
         await macros.createActiveEffect(
             {
-                owner: token.actor,
+                owner: victimActor,
                 label: STENCH_OF_CORRUPTION,
                 type: 'GameTime',
                 seconds,
