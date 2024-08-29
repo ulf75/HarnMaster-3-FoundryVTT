@@ -35,53 +35,57 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
 
     if (!(isMacroTokenMoving || isFriendlyTokenMoving)) return;
 
-    let victimToken;
     const stops = [];
     if (isFriendlyTokenMoving) {
         console.log('to: ' + token.name);
         victimToken = token;
         const stop = macros.pathIntersectsCircle({center: canvas.tokens.get(token.id).center, radius: RADIUS}, {p1, p2}, true);
-        if (!!stop) stops.push(stop);
+        if (!!stop) stops.push({stop, victimToken: token});
     } else {
         friendlyTokens.forEach((t) => {
             console.log('to: ' + t.name);
             const stop = macros.pathIntersectsCircle({center: canvas.tokens.get(t.id).center, radius: RADIUS}, {p1, p2}, true);
-            if (!!stop) stops.push(stop);
+            if (!!stop) stops.push({stop, victimToken: t});
         });
     }
 
     if (stops.length > 0 && !game.paused && !macros.hasActiveEffect(token.actor, STENCH_OF_CORRUPTION)) {
-        const victimActor = victimToken.actor;
         game.togglePause(true);
-        stops.sort((a, b) => (p1.x - a.x) ** 2 + (p1.y - a.y) ** 2 - ((p1.x - b.x) ** 2 + (p1.y - b.y) ** 2));
-        const tl = canvas.grid.getTopLeftPoint(stops[0]);
-        const pos = token.getSnappedPosition(stops[0], {mode: CONST.GRID_SNAPPING_MODES.CENTER});
-        await canvas.tokens.get(victimToken.id).document.update(pos);
+        stops.sort((a, b) => (p1.x - a.stop.x) ** 2 + (p1.y - a.stop.y) ** 2 - ((p1.x - b.stop.x) ** 2 + (p1.y - b.stop.y) ** 2));
+        const tl = canvas.grid.getTopLeftPoint(stops[0].stop);
+        const pos = token.getSnappedPosition(stops[0].stop, {mode: CONST.GRID_SNAPPING_MODES.CENTER});
+        await token.document.update(pos);
 
+        const victimActor = stops[0].victimToken.actor;
         const result = await macros.testAbilityD100RollAlt({ability: 'will', noDialog: true, myActor: victimActor, multiplier: 4});
 
-        let seconds = 0;
-        let value = 0;
+        let seconds, value, addon;
         if (result.isSuccess && result.isCritical) {
             // critical success - all good!
+            seconds = 10 * MINUTE;
+            value = 0;
+            addon = ' (CS)';
         } else if (result.isSuccess && !result.isCritical) {
             // marginal success
             seconds = macros.d6(4) * MINUTE;
             value = -2;
+            addon = ' (MS)';
         } else if (!result.isSuccess && !result.isCritical) {
             // marginal failure
             seconds = macros.d6(8) * MINUTE;
             value = -4;
+            addon = ' (MF)';
         } else {
             // critical failure
             seconds = macros.d6(16) * MINUTE;
             value = -4;
+            addon = ' (CF)';
         }
 
         await macros.createActiveEffect(
             {
                 owner: victimActor,
-                label: STENCH_OF_CORRUPTION,
+                label: STENCH_OF_CORRUPTION + addon,
                 type: 'GameTime',
                 seconds,
                 icon: STENCH_OF_CORRUPTION_ICON

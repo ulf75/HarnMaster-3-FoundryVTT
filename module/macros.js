@@ -466,7 +466,7 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
 export async function testAbilityD100RollAlt(options) {
     options = foundry.utils.mergeObject({noDialog: false, myActor: null, multiplier: 5, blind: false}, options);
 
-    const actorInfo = getActor({actor: options.myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    const actorInfo = getActor({actor: options.myActor, item: null, speaker: ChatMessage.getSpeaker({actor: options.myActor})});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
