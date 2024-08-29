@@ -59,6 +59,7 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
         const victimActor = stops[0].victimToken.actor;
         const result = await macros.testAbilityD100RollAlt({ability: 'will', noDialog: true, myActor: victimActor, multiplier: 4});
 
+        const changes = [];
         let seconds, value, addon;
         if (result.isSuccess && result.isCritical) {
             // critical success - all good!
@@ -80,7 +81,9 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
             seconds = macros.d6(16) * MINUTE;
             value = -4;
             addon = ' (CF)';
+            changes.push({key: 'universalPenalty', value: 2});
         }
+        changes.push({key: 'eph.smell', value});
 
         await macros.createActiveEffect(
             {
@@ -90,7 +93,7 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
                 seconds,
                 icon: STENCH_OF_CORRUPTION_ICON
             },
-            [{key: 'smell', value}],
+            changes,
             {selfDestroy: true}
         );
     }
