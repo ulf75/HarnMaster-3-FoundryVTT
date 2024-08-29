@@ -1482,7 +1482,8 @@ export async function createActiveEffect(efffectData, changes = [], options = {}
     options = foundry.utils.mergeObject({selfDestroy: false}, options);
     changes = changes.map((change) => {
         change = foundry.utils.mergeObject({key: '', value: 0, mode: 2, priority: null}, change);
-        if (!change.key.startsWith('system.eph.')) change.key = 'system.eph.' + change.key;
+        const keys = getObjectKeys(efffectData.owner.system);
+        change.key = 'system.' + keys.find((v) => v.includes(change.key));
         return change;
     });
 
@@ -1524,6 +1525,29 @@ export async function createActiveEffect(efffectData, changes = [], options = {}
     }
 
     return effect;
+}
+
+/**
+ *
+ * @param {*} obj
+ * @param {string} prefix
+ * @returns
+ */
+export function getObjectKeys(obj, prefix) {
+    var isobject = function (x) {
+        return Object.prototype.toString.call(x) === '[object Object]';
+    };
+
+    var keys = Object.keys(obj);
+    prefix = prefix ? prefix + '.' : '';
+    return keys.reduce(function (result, key) {
+        if (isobject(obj[key])) {
+            result = result.concat(getObjectKeys(obj[key], prefix + key));
+        } else {
+            result.push(prefix + key);
+        }
+        return result;
+    }, []);
 }
 
 /**
