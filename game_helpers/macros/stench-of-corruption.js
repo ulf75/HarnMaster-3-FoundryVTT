@@ -9,7 +9,13 @@
 // triggerArgs    : The original arguments from the hook
 // macros         : Short for game.hm3.macros
 
+const SECOND = 1;
+const MINUTE = 60 * SECOND;
+const HOUR = 60 * MINUTE;
+const DAY = 24 * HOUR;
+
 const STENCH_OF_CORRUPTION = 'Stench of Corruption';
+const STENCH_OF_CORRUPTION_ICON = 'systems/hm3/images/icons/svg/distraction.svg';
 const RADIUS = 11; // [ft]
 
 const p1 = canvas.tokens.get(triggerArgs[0].id).center;
@@ -45,14 +51,36 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
         const tl = canvas.grid.getTopLeftPoint(stops[0]);
         const pos = token.getSnappedPosition(stops[0], {mode: CONST.GRID_SNAPPING_MODES.CENTER});
         await canvas.tokens.get(token.id).document.update(pos);
+
+        const result = await macros.testAbilityD100RollAlt({ability: 'will', noDialog: true, myActor: actor, multiplier: 4});
+
+        let seconds = 0;
+        let value = 0;
+        if (result.isSuccess && result.isCritical) {
+            // critical success - all good!
+        } else if (result.isSuccess && !result.isCritical) {
+            // marginal success
+            seconds = macros.d6(4) * MINUTE;
+            value = -2;
+        } else if (!result.isSuccess && !result.isCritical) {
+            // marginal failure
+            seconds = macros.d6(8) * MINUTE;
+            value = -4;
+        } else {
+            // critical failure
+            seconds = macros.d6(16) * MINUTE;
+            value = -4;
+        }
+
         await macros.createActiveEffect(
             {
                 owner: token.actor,
                 label: STENCH_OF_CORRUPTION,
                 type: 'GameTime',
-                seconds: 20 * 60,
-                icon: 'systems/hm3/images/icons/svg/distraction.svg'
+                seconds,
+                icon: STENCH_OF_CORRUPTION_ICON
             },
+            [{key: 'smell', value}],
             {selfDestroy: true}
         );
     }

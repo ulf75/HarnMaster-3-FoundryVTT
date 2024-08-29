@@ -71,8 +71,9 @@ export class DiceHM3 {
         });
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : '';
 
+        const multiplier = roll.preData.multiplier || rollData.multiplier || 5;
         let title = rollData.label;
-        if (rollData.isAbility) title = rollData.label.replace(`${rollData.skill} Roll`, `${rollData.skill} x${roll.preData.multiplier} Roll`);
+        if (rollData.isAbility) title = rollData.label.replace(`${rollData.skill} Roll`, `${rollData.skill} x${multiplier} Roll`);
         if (roll.preData.isAppraisal) title = rollData.label.replace('Skill Test', 'Appraisal Test');
         const chatTemplateData = {
             type: roll.type,

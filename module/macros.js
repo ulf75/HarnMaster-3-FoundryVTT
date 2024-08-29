@@ -397,7 +397,18 @@ export async function usePsionicRoll(itemName, noDialog = false, myActor = null)
 }
 
 export async function testAbilityD6Roll(ability, noDialog = false, myActor = null) {
-    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    return testAbilityD6RollAlt({ability, noDialog, myActor});
+}
+
+/**
+ * Alternative implementation.
+ * @param {*} options
+ * @returns
+ */
+export async function testAbilityD6RollAlt(options) {
+    options = foundry.utils.mergeObject({noDialog: false, myActor: null, blind: false}, options);
+
+    const actorInfo = getActor({actor: options.myActor, item: null, speaker: ChatMessage.getSpeaker()});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
@@ -412,17 +423,17 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor = nul
         ui.notifications.warn(`${actorInfo.name} does not have ability scores.`);
         return null;
     }
-    if (!ability || !abilities.includes(ability)) return null;
+    if (!options.ability || !abilities.includes(options.ability)) return null;
 
     const stdRollData = {
-        type: `${ability}-d6`,
-        skill: `${ability[0].toUpperCase()}${ability.slice(1)}`,
-        label: `d6 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
-        target: actorInfo.actor.system.abilities[ability].effective,
+        type: `${options.ability}-d6`,
+        skill: `${options.ability[0].toUpperCase()}${options.ability.slice(1)}`,
+        label: `d6 ${options.ability[0].toUpperCase()}${options.ability.slice(1)} Roll`,
+        target: actorInfo.actor.system.abilities[options.ability].effective,
         numdice: 3,
         notesData: {},
         speaker: actorInfo.speaker,
-        fastforward: noDialog,
+        fastforward: options.noDialog,
         notes: ''
     };
     if (actorInfo.actor.isToken) {
@@ -435,7 +446,7 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor = nul
     if (hooksOk) {
         const result = await DiceHM3.d6Roll(stdRollData);
         if (result) {
-            result.runCustomMacro(result);
+            actorInfo.actor.runCustomMacro(result);
             callOnHooks('hm3.onAbilityRollD6', result, result, stdRollData);
         }
         return result;
@@ -444,7 +455,18 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor = nul
 }
 
 export async function testAbilityD100Roll(ability, noDialog = false, myActor = null, multiplier = 5) {
-    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    return testAbilityD100RollAlt({ability, noDialog, myActor, multiplier});
+}
+
+/**
+ * Alternative implementation.
+ * @param {*} options
+ * @returns
+ */
+export async function testAbilityD100RollAlt(options) {
+    options = foundry.utils.mergeObject({noDialog: false, myActor: null, multiplier: 5, blind: false}, options);
+
+    const actorInfo = getActor({actor: options.myActor, item: null, speaker: ChatMessage.getSpeaker()});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
@@ -459,19 +481,20 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
         ui.notifications.warn(`${actorInfo.actor.name} does not have ability scores.`);
         return null;
     }
-    if (!ability || !abilities.includes(ability)) return null;
+    if (!options.ability || !abilities.includes(options.ability)) return null;
 
     const stdRollData = {
-        type: `${ability}-d100`,
-        skill: `${ability[0].toUpperCase()}${ability.slice(1)}`,
-        label: `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
-        effSkillBase: Math.max(1, actorInfo.actor.system.abilities[ability].effective),
-        target: Math.max(5, actorInfo.actor.system.abilities[ability].effective * multiplier),
+        type: `${options.ability}-d100`,
+        skill: `${options.ability[0].toUpperCase()}${options.ability.slice(1)}`,
+        label: `d100 ${options.ability[0].toUpperCase()}${options.ability.slice(1)} Roll`,
+        effSkillBase: Math.max(1, actorInfo.actor.system.abilities[options.ability].effective),
+        target: Math.max(5, actorInfo.actor.system.abilities[options.ability].effective * options.multiplier),
         notesData: {},
         speaker: actorInfo.speaker,
-        fastforward: noDialog,
+        fastforward: options.noDialog,
         notes: '',
-        isAbility: true
+        isAbility: true,
+        multiplier: options.multiplier
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;
@@ -1449,21 +1472,27 @@ export function getActiveEffect(actor, name) {
  * @param {*} options
  * @returns
  */
-export async function createActiveEffect(efffectData, options = {}) {
-    options = foundry.utils.mergeObject({selfDestroy: false}, options);
-
+export async function createActiveEffect(efffectData, changes = [], options = {}) {
     // mandatory
     if (!efffectData.label || !efffectData.owner || !efffectData.type) {
         console.error('HM3 Macro "createActiveEffect" needs label, owner & type as mandatory input!');
         return null;
     }
 
+    options = foundry.utils.mergeObject({selfDestroy: false}, options);
+    changes = changes.map((change) => {
+        change = foundry.utils.mergeObject({key: '', value: 0, mode: 2, priority: null}, change);
+        if (!change.key.startsWith('system.eph.')) change.key = 'system.eph.' + change.key;
+        return change;
+    });
+
     const icon = efffectData.icon || 'icons/svg/aura.svg';
 
     const aeData = {
         label: efffectData.label,
         icon,
-        origin: efffectData.owner.uuid
+        origin: efffectData.owner.uuid,
+        changes
     };
 
     if (efffectData.type === 'GameTime') {
@@ -1495,6 +1524,45 @@ export async function createActiveEffect(efffectData, options = {}) {
     }
 
     return effect;
+}
+
+/**
+ * Rolls an arbitrary number of d6.
+ * @param {number} count - number of dice
+ * @returns
+ */
+export function d6(count = 1) {
+    return dx(6, count);
+}
+
+/**
+ * Rolls an arbitrary number of d20.
+ * @param {number} count - number of dice
+ * @returns
+ */
+export function d20(count = 1) {
+    return dx(20, count);
+}
+
+/**
+ * Rolls an arbitrary number of d100.
+ * @param {number} count - number of dice
+ * @returns
+ */
+export function d100(count = 1) {
+    return dx(100, count);
+}
+
+/**
+ * Rolls an arbitrary die.
+ * @param {number} x - number of sides of the die
+ * @param {number} count - number of dice
+ * @returns
+ */
+export function dx(x, count = 1) {
+    let val = 0;
+    for (let i = 0; i < count; i++) val += Math.round(x * foundry.dice.MersenneTwister.random());
+    return val;
 }
 
 var g;
