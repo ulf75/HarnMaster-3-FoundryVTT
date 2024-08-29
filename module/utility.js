@@ -578,9 +578,9 @@ export function truncate(value, digits = 2) {
 
 /**
  * Returns the actor of the given macro id.
- * @param {string} macroId ID of the macro
- * @returns {Actor} actor
+ * @param {Macro} macro - The macro
+ * @returns {Actor} - actor
  */
-export function getActorFromMacroId(macroId) {
-    return game.actors.contents.find((a) => a.system?.macrolist?.find((m) => m._id === macroId));
+export function getActorFromMacro(macro) {
+    return game.actors.contents.find((a) => macro.getFlag('hm3', 'ownerId') === a.id);
 }

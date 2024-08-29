@@ -61,7 +61,7 @@ export class HM3MacroConfig extends MacroConfig {
             const macro = game.macros.get(macroId);
             macro.setFlag('hm3', 'trigger', formData.trigger);
             await super._updateObject(event, formData);
-            utility.getActorFromMacroId(macroId)?.sheet.render();
+            utility.getActorFromMacro(macro)?.sheet.render();
         }
     }
 }

@@ -1,3 +1,5 @@
+import * as utility from './utility.js';
+
 const supportedHooks = [
     'combatRound',
     'combatStart',
@@ -39,13 +41,10 @@ export async function onManageMacro(event, owner) {
     let macro = li.dataset.macroId ? game.macros.get(li.dataset.macroId) : null;
     switch (action) {
         case 'create':
-            if (!owner.system.macrolist) owner.system.macrolist = [];
-
             const mdata = {name: `New macro`, type: 'script', scope: 'global'};
             macro = await Macro.create(mdata);
             await macro.setFlag('hm3', 'trigger', 'manual');
-            owner.system.macrolist.push(macro);
-            await owner.update({'system.macrolist': owner.system.macrolist});
+            await macro.setFlag('hm3', 'ownerId', owner.id);
 
             return macro.sheet.render(true);
 
@@ -61,11 +60,8 @@ export async function onManageMacro(event, owner) {
                         icon: '<i class="fas fa-check"></i>',
                         label: 'Yes',
                         callback: async (html) => {
-                            // update macrolist
-                            const filteredArray = owner.system.macrolist.filter((m) => m._id !== macro.id);
-                            await owner.update({'system.macrolist': filteredArray});
-
                             await macro.delete();
+                            utility.getActorFromMacro(macro)?.sheet.render();
                         }
                     },
                     no: {
@@ -100,7 +96,7 @@ function executeHooks(...args) {
         actors.add(token.actor.id);
     });
     Array.from(actors).forEach((actorId) => {
-        game.actors.get(actorId).system?.macrolist?.forEach(async (m) => {
+        game.actors.get(actorId).macrolist?.forEach(async (m) => {
             const macro = game.macros.get(m._id);
             const trigger = macro?.getFlag('hm3', 'trigger');
             if (trigger === hook) {

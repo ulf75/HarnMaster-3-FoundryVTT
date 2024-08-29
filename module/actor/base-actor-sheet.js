@@ -128,10 +128,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         });
 
         // get macros
-        if (!data.adata.macrolist) {
-            data.adata.macrolist = [];
-        }
-        if (!data.adata.macrolist.find((m) => game.macros.get(m._id).getFlag('hm3', 'trigger') === 'legacy')) {
+        data.adata.macrolist = this.actor.macrolist;
+        if (!data.adata.macrolist.find((m) => m.getFlag('hm3', 'trigger') === 'legacy')) {
             if (data.adata.macros.command.length > 0) {
                 // TODO migrate lagacy macro
                 // const macro = Macro.create({name: `New macro`, type: data.adata.macros.type, scope: 'global'});
@@ -139,14 +137,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
         }
         data.adata.macrolist.map((m) => {
-            m.name = game.macros.get(m._id)?.name;
-            m.img = game.macros.get(m._id)?.img;
-            m.command = game.macros.get(m._id)?.command;
-            m.type = game.macros.get(m._id)?.type;
-            m.scope = game.macros.get(m._id)?.scope;
             m.trigger = game.macros.get(m._id)?.getFlag('hm3', 'trigger');
+            m.ownerId = game.macros.get(m._id)?.getFlag('hm3', 'ownerId'); // currently not needed
         });
-        data.adata.macrolist.sort((a, b) => (a?.name > b?.name ? 1 : b?.name > a?.name ? -1 : 0));
+        data.adata.macrolist.sort((a, b) =>
+            a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : b?.name.toLowerCase() > a?.name.toLowerCase() ? -1 : 0
+        );
 
         return data;
     }
