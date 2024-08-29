@@ -130,7 +130,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // get macros
         data.adata.macrolist = this.actor.macrolist;
         if (!data.adata.macrolist.find((m) => m.getFlag('hm3', 'trigger') === 'legacy')) {
-            if (data.adata.macros.command.length > 0) {
+            if (data.adata.macros?.command?.length > 0) {
                 // TODO migrate lagacy macro
                 // const macro = Macro.create({name: `New macro`, type: data.adata.macros.type, scope: 'global'});
                 // macro.setFlag('hm3', 'trigger', 'lagacy');

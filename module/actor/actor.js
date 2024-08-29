@@ -9,7 +9,7 @@ import * as utility from '../utility.js';
  */
 export class HarnMasterActor extends Actor {
     get macrolist() {
-        return game.macros.contents.filter((m) => m.getFlag('hm3', 'ownerId') === this.id);
+        return game.macros.contents.filter((m) => m.getFlag('hm3', 'ownerId') === this.id) || [];
     }
 
     static defaultName({type, parent, pack} = {}) {
