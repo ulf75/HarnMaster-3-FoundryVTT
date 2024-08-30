@@ -12,6 +12,10 @@ export class HarnMasterActor extends Actor {
         return game.macros.contents.filter((m) => m.getFlag('hm3', 'ownerId') === this.id) || [];
     }
 
+    get macrofolder() {
+        return game.folders.get(game.settings.get('hm3', 'actorMacrosFolderId')) || null;
+    }
+
     static defaultName({type, parent, pack} = {}) {
         const documentName = this.metadata.name;
         let collection;

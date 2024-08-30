@@ -214,18 +214,18 @@ Hooks.on('updateCombat', async (combat, updateData) => {
  * Once the entire VTT framework is initialized, check to see if
  * we should perform a data migration.
  */
-Hooks.once('ready', function () {
+Hooks.once('ready', async function () {
     // Determine whether a system migration is required
     const currentMigrationVersion = game.settings.get('hm3', 'systemMigrationVersion');
-    const NEEDS_MIGRATION_VERSION = '1.2.19'; // Anything older than this must be migrated
+    const NEEDS_MIGRATION_VERSION = '12.0.14'; // Anything older than this must be migrated
 
     if (currentMigrationVersion) {
         let needMigration = foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentMigrationVersion);
         if (needMigration && game.user.isGM) {
-            migrations.migrateWorld();
+            await migrations.migrateWorldAsync();
         }
     } else {
-        game.settings.set('hm3', 'systemMigrationVersion', game.system.data.version);
+        game.settings.set('hm3', 'systemMigrationVersion', game.system.version);
     }
 
     Hooks.on('hotbarDrop', (bar, data, slot) => macros.createHM3Macro(data, slot));

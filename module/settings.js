@@ -1,12 +1,19 @@
 export const registerSystemSettings = function () {
     // Track the system version which a migration was last applied
-
     game.settings.register('hm3', 'systemMigrationVersion', {
         name: 'System Migration Version',
         scope: 'world',
         config: false,
         type: String,
         default: 0
+    });
+
+    game.settings.register('hm3', 'actorMacrosFolderId', {
+        name: 'ID of Actor Folder',
+        scope: 'world',
+        config: false,
+        type: String,
+        default: null
     });
 
     game.settings.register('hm3', 'showWelcomeDialog', {

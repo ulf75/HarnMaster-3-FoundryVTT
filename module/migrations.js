@@ -2,9 +2,9 @@
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @return {Promise}      A Promise which resolves once the migration is completed
  */
-export const migrateWorld = async function () {
+export async function migrateWorldAsync() {
     ui.notifications.info(
-        `Applying HM3 System Migration for version ${game.system.data.version}. Please be patient and do not close your game or shut down your server.`,
+        `Applying HM3 System Migration for version ${game.system.version}. Please be patient and do not close your game or shut down your server.`,
         {permanent: true}
     );
     console.log(`HM3 | Starting Migration`);
@@ -12,10 +12,11 @@ export const migrateWorld = async function () {
     // Migrate World Actors
     for (let a of game.actors.contents) {
         try {
-            const updateData = migrateActorData(a.data);
-            if (!foundry.utils.isObjectEmpty(updateData)) {
+            const updateData = await migrateActorDataAsync(a);
+            if (!foundry.utils.isEmpty(updateData)) {
                 console.log(`HM3 | Migrating Actor ${a.name}`);
                 await a.update(updateData, {enforceTypes: false});
+                console.log(`HM3 | Actor ${a.name} was successfully migrated`);
             }
         } catch (err) {
             err.message = `Failed HM3 system migration for Actor ${a.name}: ${err.message}`;
@@ -26,10 +27,11 @@ export const migrateWorld = async function () {
     // Migrate World Items
     for (let i of game.items.contents) {
         try {
-            const updateData = migrateItemData(i.data);
-            if (!foundry.utils.isObjectEmpty(updateData)) {
+            const updateData = migrateItemData(i);
+            if (!foundry.utils.isEmpty(updateData)) {
                 console.log(`HM3 | Migrating Item ${i.name}`);
                 await i.update(updateData, {enforceTypes: false});
+                console.log(`HM3 | Item ${i.name} was successfully migrated`);
             }
         } catch (err) {
             err.message = `Failed HM3 system migration for Item ${i.name}: ${err.message}`;
@@ -40,10 +42,11 @@ export const migrateWorld = async function () {
     // Migrate Actor Override Tokens
     for (let s of game.scenes.contents) {
         try {
-            const updateData = migrateSceneData(s.data);
-            if (!foundry.utils.ObjectEmpty(updateData)) {
+            const updateData = await migrateSceneDataAsync(s);
+            if (!foundry.utils.isEmpty(updateData)) {
                 console.log(`HM3 | Migrating Scene ${s.name}`);
                 await s.update(updateData, {enforceTypes: false});
+                console.log(`HM3 | Scene ${s.name} was successfully migrated`);
             }
         } catch (err) {
             err.message = `Failed HM3 system migration for Scene ${s.name}: ${err.message}`;
@@ -57,14 +60,14 @@ export const migrateWorld = async function () {
         if (p.metadata.package !== 'world') continue;
         if (!['Actor', 'Item', 'Scene'].includes(p.documentName)) continue;
         console.log(`HM3 | Starting Migration for Pack ${p.metadata.label}`);
-        await migrateCompendium(p);
+        await migrateCompendiumAsync(p);
     }
 
     // Set the migration as complete
-    game.settings.set('hm3', 'systemMigrationVersion', game.system.data.version);
+    game.settings.set('hm3', 'systemMigrationVersion', game.system.version);
     console.log(`HM3 | Migration Complete`);
-    ui.notifications.info(`HM3 System Migration to version ${game.system.data.version} completed!`, {permanent: true});
-};
+    ui.notifications.info(`HM3 System Migration to version ${game.system.version} completed!`, {permanent: true});
+}
 
 /* -------------------------------------------- */
 
@@ -73,7 +76,7 @@ export const migrateWorld = async function () {
  * @param pack
  * @return {Promise}
  */
-export const migrateCompendium = async function (pack) {
+export async function migrateCompendiumAsync(pack) {
     const doc = pack.documentName;
     if (!['Actor', 'Item', 'Scene'].includes(doc)) return;
 
@@ -91,18 +94,18 @@ export const migrateCompendium = async function (pack) {
         try {
             switch (doc) {
                 case 'Actor':
-                    updateData = migrateActorData(doc.data);
+                    updateData = await migrateActorDataAsync(doc.data);
                     break;
                 case 'Item':
                     updateData = migrateItemData(doc.toObject());
                     break;
                 case 'Scene':
-                    updateData = migrateSceneData(doc.data);
+                    updateData = await migrateSceneDataAsync(doc.data);
                     break;
             }
 
             // Save the entry, if data was changed
-            if (foundry.utils.isObjectEmpty(updateData)) continue;
+            if (foundry.utils.isEmpty(updateData)) continue;
             await doc.update(updateData);
             console.log(`Migrated ${doc} ${doc.name} in Compendium ${pack.collection}`);
         } catch (err) {
@@ -115,7 +118,7 @@ export const migrateCompendium = async function (pack) {
     // Apply the original locked status for the pack
     await pack.configure({locked: wasLocked});
     console.log(`Migrated all ${doc} entities from Compendium ${pack.collection}`);
-};
+}
 
 /* -------------------------------------------- */
 /*  Document Type Migration Helpers               */
@@ -127,91 +130,91 @@ export const migrateCompendium = async function (pack) {
  * @param {Actor} actor   The actor to Update
  * @return {Object}       The updateData to apply
  */
-export const migrateActorData = function (actor) {
+export async function migrateActorDataAsync(actor) {
     const updateData = {};
-    const actorData = actor.data;
+    const actorData = actor.system;
 
     // Actor Data Updates
     /*
      * -------- ACTOR UPDATES GO HERE -------------
      */
 
-    if (actorData.abilities.strength.hasOwnProperty('effective')) {
+    if (actorData.abilities?.strength.hasOwnProperty('effective')) {
         updateData['system.abilities.strength.-=effective'] = null;
     }
 
-    if (actorData.abilities.stamina.hasOwnProperty('effective')) {
+    if (actorData.abilities?.stamina.hasOwnProperty('effective')) {
         updateData['system.abilities.stamina.-=effective'] = null;
     }
 
-    if (actorData.abilities.dexterity.hasOwnProperty('effective')) {
+    if (actorData.abilities?.dexterity.hasOwnProperty('effective')) {
         updateData['system.abilities.dexterity.-=effective'] = null;
     }
 
-    if (actorData.abilities.agility.hasOwnProperty('effective')) {
+    if (actorData.abilities?.agility.hasOwnProperty('effective')) {
         updateData['system.abilities.agility.-=effective'] = null;
     }
 
-    if (actorData.abilities.intelligence.hasOwnProperty('effective')) {
+    if (actorData.abilities?.intelligence.hasOwnProperty('effective')) {
         updateData['system.abilities.intelligence.-=effective'] = null;
     }
 
-    if (actorData.abilities.aura.hasOwnProperty('effective')) {
+    if (actorData.abilities?.aura.hasOwnProperty('effective')) {
         updateData['system.abilities.aura.-=effective'] = null;
     }
 
-    if (actorData.abilities.will.hasOwnProperty('effective')) {
+    if (actorData.abilities?.will.hasOwnProperty('effective')) {
         updateData['system.abilities.will.-=effective'] = null;
     }
 
-    if (actorData.abilities.eyesight.hasOwnProperty('effective')) {
+    if (actorData.abilities?.eyesight.hasOwnProperty('effective')) {
         updateData['system.abilities.eyesight.-=effective'] = null;
     }
 
-    if (actorData.abilities.hearing.hasOwnProperty('effective')) {
+    if (actorData.abilities?.hearing.hasOwnProperty('effective')) {
         updateData['system.abilities.hearing.-=effective'] = null;
     }
 
-    if (actorData.abilities.smell.hasOwnProperty('effective')) {
+    if (actorData.abilities?.smell.hasOwnProperty('effective')) {
         updateData['system.abilities.smell.-=effective'] = null;
     }
 
-    if (actorData.abilities.voice.hasOwnProperty('effective')) {
+    if (actorData.abilities?.voice.hasOwnProperty('effective')) {
         updateData['system.abilities.voice.-=effective'] = null;
     }
 
-    if (actorData.abilities.hasOwnProperty('comliness')) {
+    if (actorData.abilities?.hasOwnProperty('comliness')) {
         // Rename 'comliness' to 'comeliness'
         updateData['system.abilities.comeliness.base'] = actorData.abilities.comliness.base;
         updateData['system.abilities.-=comliness'] = null;
     }
 
-    if (actorData.abilities.morality.hasOwnProperty('effective')) {
+    if (actorData.abilities?.morality.hasOwnProperty('effective')) {
         updateData['system.abilities.morality.-=effective'] = null;
     }
 
-    if (actorData.abilities.hasOwnProperty('endurance')) {
+    if (actorData.abilities?.hasOwnProperty('endurance')) {
         if (actorData.abilities.endurance.base) {
             updateData['flags.hm-gold.ability-endurance'] = actorData.abilities.endurance.base;
         }
         updateData['system.abilities.-=endurance'] = null;
     }
 
-    if (actorData.abilities.hasOwnProperty('speed')) {
+    if (actorData.abilities?.hasOwnProperty('speed')) {
         if (actorData.abilities.speed.base) {
             updateData['flags.hm-gold.ability-speed'] = actorData.abilities.speed.base;
         }
         updateData['system.abilities.-=speed'] = null;
     }
 
-    if (actorData.abilities.hasOwnProperty('touch')) {
+    if (actorData.abilities?.hasOwnProperty('touch')) {
         if (actorData.abilities.touch.base) {
             updateData['flags.hm-gold.ability-touch'] = actorData.abilities.touch.base;
         }
         updateData['system.abilities.-=touch'] = null;
     }
 
-    if (actorData.abilities.hasOwnProperty('frame')) {
+    if (actorData.abilities?.hasOwnProperty('frame')) {
         if (actorData.abilities.frame.base) {
             updateData['flags.hm-gold.ability-frame'] = actorData.abilities.frame.base;
         }
@@ -234,7 +237,7 @@ export const migrateActorData = function (actor) {
         updateData['system.-=endurance'] = null;
     }
 
-    if (actorData.move.hasOwnProperty('effective')) {
+    if (actorData.move?.hasOwnProperty('effective')) {
         updateData['system.move.-=effective'] = null;
     }
 
@@ -280,16 +283,42 @@ export const migrateActorData = function (actor) {
         let itemUpdate = migrateItemData(itemData);
 
         // Update the Owned Item
-        if (!isObjectEmpty(itemUpdate)) {
+        if (!foundry.utils.isEmpty(itemUpdate)) {
             itemUpdate._id = itemData._id;
-            arr.push(expandObject(itemUpdate));
+            arr.push(foundry.utils.expandObject(itemUpdate));
         }
 
         return arr;
     }, []);
     if (items.length > 0) updateData.items = items;
+
+    const folderId = game.settings.get('hm3', 'actorMacrosFolderId');
+    if ((!folderId || !actor.macrofolder) && actor.macrofolder !== undefined) {
+        const folder = await Folder.create({
+            name: 'Actor Macros (DO NOT DELETE)',
+            type: 'Macro',
+            color: 0x006400
+        });
+        await game.settings.set('hm3', 'actorMacrosFolderId', folder.id);
+    }
+
+    if (actor.macrolist && actor.system?.macros) {
+        let macro = actor.macrolist.find((m) => m.getFlag('hm3', 'trigger') === 'legacy');
+        if (!macro) {
+            macro = await Macro.create({
+                name: `${actor.name} Legacy Macro`,
+                type: actor.system.macros.type,
+                img: Macro.DEFAULT_ICON,
+                command: actor.system.macros.command,
+                folder: actor.macrofolder
+            });
+            await macro.setFlag('hm3', 'trigger', 'legacy');
+            await macro.setFlag('hm3', 'ownerId', actor.id);
+        }
+    }
+
     return updateData;
-};
+}
 
 /* -------------------------------------------- */
 
@@ -322,106 +351,106 @@ function cleanActorData(actorData) {
  * Migrate a single Item to incorporate latest data model changes
  * @param itemData
  */
-export const migrateItemData = function (item) {
+export function migrateItemData(item) {
     const updateData = {};
 
     /*
      * -------- ITEM UPDATES GO HERE -------------
      */
-    if (!item.data.macros?.hasOwnProperty('type')) {
+    if (!item.system.macros?.hasOwnProperty('type')) {
         updateData['system.macros.command'] = '';
         updateData['system.macros.type'] = 'script';
     }
 
     if (item.type === 'weapongear') {
-        if (item.data.hasOwnProperty('squeeze')) {
-            if (item.data.squeeze) {
-                updateData['flags.hm-gold.squeeze-impact'] = item.data.squeeze;
+        if (item.system.hasOwnProperty('squeeze')) {
+            if (item.system.squeeze) {
+                updateData['flags.hm-gold.squeeze-impact'] = item.system.squeeze;
             }
             updateData['system.-=squeeze'] = null;
         }
 
-        if (item.data.hasOwnProperty('tear')) {
-            if (item.data.squeeze) {
-                updateData['flags.hm-gold.tear-impact'] = item.data.tear;
+        if (item.system.hasOwnProperty('tear')) {
+            if (item.system.squeeze) {
+                updateData['flags.hm-gold.tear-impact'] = item.system.tear;
             }
             updateData['system.-=tear'] = null;
         }
     }
 
     if (item.type === 'missilegear') {
-        if (item.data.range.hasOwnProperty('extreme64')) {
+        if (item.system.range.hasOwnProperty('extreme64')) {
             updateData['system.range.-=extreme64'] = null;
         }
 
-        if (item.data.range.hasOwnProperty('extreme128')) {
+        if (item.system.range.hasOwnProperty('extreme128')) {
             updateData['system.range.-=extreme128'] = null;
         }
 
-        if (item.data.range.hasOwnProperty('extreme256')) {
+        if (item.system.range.hasOwnProperty('extreme256')) {
             updateData['system.range.-=extreme256'] = null;
         }
 
-        if (item.data.impact.hasOwnProperty('extreme64')) {
-            if (item.data.impact.extreme64) {
-                updateData['flags.hm-gold.range4-impact'] = item.data.impact.short;
-                updateData['flags.hm-gold.range8-impact'] = item.data.impact.medium;
-                updateData['flags.hm-gold.range16-impact'] = item.data.impact.long;
-                updateData['flags.hm-gold.range32-impact'] = item.data.impact.extreme;
-                updateData['flags.hm-gold.range64-impact'] = item.data.impact.extreme64;
+        if (item.system.impact.hasOwnProperty('extreme64')) {
+            if (item.system.impact.extreme64) {
+                updateData['flags.hm-gold.range4-impact'] = item.system.impact.short;
+                updateData['flags.hm-gold.range8-impact'] = item.system.impact.medium;
+                updateData['flags.hm-gold.range16-impact'] = item.system.impact.long;
+                updateData['flags.hm-gold.range32-impact'] = item.system.impact.extreme;
+                updateData['flags.hm-gold.range64-impact'] = item.system.impact.extreme64;
             }
             updateData['system.impact.-=extreme64'] = null;
         }
 
-        if (item.data.impact.hasOwnProperty('extreme128')) {
-            if (item.data.impact.extreme128) {
-                updateData['flags.hm-gold.range128-impact'] = item.data.impact.extreme128;
+        if (item.system.impact.hasOwnProperty('extreme128')) {
+            if (item.system.impact.extreme128) {
+                updateData['flags.hm-gold.range128-impact'] = item.system.impact.extreme128;
             }
             updateData['system.impact.-=extreme128'] = null;
         }
 
-        if (item.data.impact.hasOwnProperty('extreme256')) {
-            if (item.data.impact.extreme256) {
-                updateData['flags.hm-gold.range256-impact'] = item.data.impact.extreme256;
+        if (item.system.impact.hasOwnProperty('extreme256')) {
+            if (item.system.impact.extreme256) {
+                updateData['flags.hm-gold.range256-impact'] = item.system.impact.extreme256;
             }
             updateData['system.impact.-=extreme256'] = null;
         }
     }
 
     if (item.type === 'armorgear') {
-        if (!item.data.protection.hasOwnProperty('squeeze')) {
-            if (item.data.protection.squeeze) {
-                updateData['flags.hm-gold.squeeze'] = item.data.protection.squeeze;
+        if (!item.system.protection.hasOwnProperty('squeeze')) {
+            if (item.system.protection.squeeze) {
+                updateData['flags.hm-gold.squeeze'] = item.system.protection.squeeze;
             }
             updateData['system.protection.-=squeeze'] = null;
         }
 
-        if (item.data.protection.hasOwnProperty('tear')) {
-            if (item.data.protection.tear) {
-                updateData['flags.hm-gold.tear'] = item.data.protection.tear;
+        if (item.system.protection.hasOwnProperty('tear')) {
+            if (item.system.protection.tear) {
+                updateData['flags.hm-gold.tear'] = item.system.protection.tear;
             }
             updateData['system.protection.-=tear'] = null;
         }
     }
 
     if (item.type === 'armorlocation') {
-        if (item.data.hasOwnProperty('squeeze')) {
-            if (item.data.squeeze) {
-                updateData['flags.hm-gold.squeeze'] = item.data.squeeze;
+        if (item.system.hasOwnProperty('squeeze')) {
+            if (item.system.squeeze) {
+                updateData['flags.hm-gold.squeeze'] = item.system.squeeze;
             }
             updateData['system.-=squeeze'] = null;
         }
 
-        if (item.data.hasOwnProperty('tear')) {
-            if (item.data.tear) {
-                updateData['flags.hm-gold.tear'] = item.data.tear;
+        if (item.system.hasOwnProperty('tear')) {
+            if (item.system.tear) {
+                updateData['flags.hm-gold.tear'] = item.system.tear;
             }
             updateData['system.-=tear'] = null;
         }
 
-        if (item.data.probWeight.hasOwnProperty('arms')) {
-            if (item.data.probWeight.arms) {
-                updateData['flags.hm-gold.probweight-arms'] = item.data.probWeight.arms;
+        if (item.system.probWeight.hasOwnProperty('arms')) {
+            if (item.system.probWeight.arms) {
+                updateData['flags.hm-gold.probweight-arms'] = item.system.probWeight.arms;
             }
             updateData['system.probWeight.-=arms'] = null;
         }
@@ -432,7 +461,7 @@ export const migrateItemData = function (item) {
 
     // Return the migrated update data
     return updateData;
-};
+}
 
 /* -------------------------------------------- */
 
@@ -442,34 +471,36 @@ export const migrateItemData = function (item) {
  * @param {Object} scene  The Scene data to Update
  * @return {Object}       The updateData to apply
  */
-export const migrateSceneData = function (scene) {
-    const tokens = scene.tokens.map((token) => {
-        const t = token.toJSON();
-        if (!t.actorId || t.actorLink) {
-            t.actorData = {};
-        } else if (!game.actors.has(t.actorId)) {
-            t.actorId = null;
-            t.actorData = {};
-        } else if (!t.actorLink) {
-            const actorData = duplicate(t.actorData);
-            actorData.type = token.actor?.type;
-            const update = migrateActorData(actorData);
-            ['items', 'effects'].forEach((embeddedName) => {
-                if (!update[embeddedName]?.length) return;
-                const updates = new Map(update[embeddedName].map((u) => [u._id, u]));
-                t.actorData[embeddedName].forEach((original) => {
-                    const update = updates.get(original._id);
-                    if (update) foundry.utils.mergeObject(original, update);
+export async function migrateSceneDataAsync(scene) {
+    const tokens = await Promise.all(
+        scene.tokens.map(async (token) => {
+            const t = token.toJSON();
+            if (!t.actorId || t.actorLink) {
+                t.actorData = {};
+            } else if (!game.actors.has(t.actorId)) {
+                t.actorId = null;
+                t.actorData = {};
+            } else if (!t.actorLink) {
+                const actorData = foundry.utils.duplicate(t.actorData);
+                actorData.type = token.actor?.type;
+                const update = await migrateActorDataAsync(actorData);
+                ['items', 'effects'].forEach((embeddedName) => {
+                    if (!update[embeddedName]?.length) return;
+                    const updates = new Map(update[embeddedName].map((u) => [u._id, u]));
+                    t.actorData[embeddedName].forEach((original) => {
+                        const update = updates.get(original._id);
+                        if (update) foundry.utils.mergeObject(original, update);
+                    });
+                    delete update[embeddedName];
                 });
-                delete update[embeddedName];
-            });
 
-            foundry.utils.mergeObject(t.actorData, update);
-        }
-        return t;
-    });
+                foundry.utils.mergeObject(t.actorData, update);
+            }
+            return t;
+        })
+    );
     return {tokens};
-};
+}
 
 /* -------------------------------------------- */
 /*  Low level migration utilities
@@ -493,8 +524,8 @@ export const migrateSceneData = function (scene) {
  * A general migration to remove all fields from the data model which are flagged with a _deprecated tag
  * @private
  */
-const _migrateRemoveDeprecated = function (ent, updateData) {
-    const flat = flattenObject(ent.data);
+function _migrateRemoveDeprecated(ent, updateData) {
+    const flat = foundry.utils.flattenObject(ent.system);
 
     const toPreDep = Object.entries(updateData).filter((e) => e[0]);
     // Identify objects to deprecate
@@ -512,7 +543,7 @@ const _migrateRemoveDeprecated = function (ent, updateData) {
         parts[parts.length - 1] = '-=' + parts[parts.length - 1];
         updateData[`data.${parts.join('.')}`] = null;
     }
-};
+}
 
 /* -------------------------------------------- */
 
@@ -521,7 +552,7 @@ const _migrateRemoveDeprecated = function (ent, updateData) {
  * @param {Compendium} pack   The compendium pack to clean
  * @private
  */
-export async function purgeFlags(pack) {
+async function purgeFlagsAsync(pack) {
     const cleanFlags = (flags) => {
         const flagshm3 = flags.hm3 || null;
         return flagshm3 ? {hm3: flagshm3} : {};
