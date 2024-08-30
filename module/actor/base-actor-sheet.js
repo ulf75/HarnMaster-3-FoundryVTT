@@ -133,7 +133,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             if (data.adata.macros?.command?.length > 0) {
                 // TODO migrate lagacy macro
                 // const macro = Macro.create({name: `New macro`, type: data.adata.macros.type, scope: 'global'});
-                // macro.setFlag('hm3', 'trigger', 'lagacy');
+                // await macro.setFlag('hm3', 'trigger', 'lagacy');
             }
         }
         data.adata.macrolist.map((m) => {

@@ -29,6 +29,7 @@ export class HM3MacroConfig extends MacroConfig {
         data.macroScopes = CONST.MACRO_SCOPES.map((s) => ({value: s, label: s}));
         data.triggerTypes = [
             {value: 'manual', label: 'Manual'},
+            {value: 'hm3.onDamageRoll', label: 'On Damage Roll'},
             {value: 'hm3.onFumbleRoll', label: 'On Fumble Roll'},
             {value: 'hm3.onHealingRoll', label: 'On Healing Roll'},
             {value: 'hm3.onInjuryRoll', label: 'On Injury Roll'},
@@ -59,7 +60,7 @@ export class HM3MacroConfig extends MacroConfig {
                 ? event.currentTarget[0].offsetParent.id.substring(21)
                 : event.target[0].offsetParent.id.substring(21);
             const macro = game.macros.get(macroId);
-            macro.setFlag('hm3', 'trigger', formData.trigger);
+            await macro.setFlag('hm3', 'trigger', formData.trigger);
             await super._updateObject(event, formData);
             utility.getActorFromMacro(macro)?.sheet.render();
         }

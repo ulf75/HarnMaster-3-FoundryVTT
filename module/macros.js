@@ -1521,7 +1521,7 @@ export async function createActiveEffect(efffectData, changes = [], options = {}
     const effect = await ActiveEffect.create(aeData, {parent: efffectData.owner});
 
     if (options.selfDestroy) {
-        effect.setFlag('effectmacro', 'onDisable.script', `game.actors.get('${efffectData.owner.id}').effects.get('${effect.id}').delete();`);
+        await effect.setFlag('effectmacro', 'onDisable.script', `game.actors.get('${efffectData.owner.id}').effects.get('${effect.id}').delete();`);
     }
 
     return effect;
