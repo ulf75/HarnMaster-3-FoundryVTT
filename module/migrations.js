@@ -292,31 +292,6 @@ export async function migrateActorDataAsync(actor) {
     }, []);
     if (items.length > 0) updateData.items = items;
 
-    const folderId = game.settings.get('hm3', 'actorMacrosFolderId');
-    if ((!folderId || !actor.macrofolder) && actor.macrofolder !== undefined) {
-        const folder = await Folder.create({
-            name: 'Actor Macros (DO NOT DELETE)',
-            type: 'Macro',
-            color: 0x006400
-        });
-        await game.settings.set('hm3', 'actorMacrosFolderId', folder.id);
-    }
-
-    if (actor.macrolist && actor.system?.macros) {
-        let macro = actor.macrolist.find((m) => m.getFlag('hm3', 'trigger') === 'legacy');
-        if (!macro) {
-            macro = await Macro.create({
-                name: `${actor.name} Legacy Macro`,
-                type: actor.system.macros.type,
-                img: Macro.DEFAULT_ICON,
-                command: actor.system.macros.command,
-                folder: actor.macrofolder
-            });
-            await macro.setFlag('hm3', 'trigger', 'legacy');
-            await macro.setFlag('hm3', 'ownerId', actor.id);
-        }
-    }
-
     return updateData;
 }
 

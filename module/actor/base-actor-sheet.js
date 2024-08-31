@@ -127,18 +127,28 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             data.effects[effect.id].disabled = effect.disabled;
         });
 
+        // migrate legacy macro
+        let macro = this.actor.macrolist.find((m) => m.getFlag('hm3', 'trigger') === 'legacy');
+        if (!macro) {
+            (async () => {
+                macro = await Macro.create({
+                    name: `${this.actor.name} Legacy Macro`,
+                    type: this.actor.system.macros.type,
+                    img: Macro.DEFAULT_ICON,
+                    command: this.actor.system.macros.command,
+                    folder: this.actor.macrofolder
+                });
+                await macro.setFlag('hm3', 'trigger', 'legacy');
+                await macro.setFlag('hm3', 'ownerId', this.actor.id);
+                this.actor.sheet.render();
+            })();
+        }
+
         // get macros
         data.adata.macrolist = this.actor.macrolist;
-        if (!data.adata.macrolist.find((m) => m.getFlag('hm3', 'trigger') === 'legacy')) {
-            if (data.adata.macros?.command?.length > 0) {
-                // TODO migrate lagacy macro
-                // const macro = Macro.create({name: `New macro`, type: data.adata.macros.type, scope: 'global'});
-                // await macro.setFlag('hm3', 'trigger', 'lagacy');
-            }
-        }
         data.adata.macrolist.map((m) => {
-            m.trigger = game.macros.get(m._id)?.getFlag('hm3', 'trigger');
-            m.ownerId = game.macros.get(m._id)?.getFlag('hm3', 'ownerId'); // currently not needed
+            m.trigger = game.macros.get(m.id)?.getFlag('hm3', 'trigger');
+            m.ownerId = game.macros.get(m.id)?.getFlag('hm3', 'ownerId'); // currently not needed
         });
         data.adata.macrolist.sort((a, b) =>
             a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : b?.name.toLowerCase() > a?.name.toLowerCase() ? -1 : 0
