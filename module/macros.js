@@ -1465,7 +1465,7 @@ export function hasActiveEffect(actor, name, strict = false) {
 export function getActiveEffect(actor, name, strict = false) {
     return strict
         ? actor.effects.contents.find((v) => v.name === name)
-        : actor.effects.contents.find((v) => v.name.toLowerCase().includes(name.toLowerCase()));
+        : actor.effects.contents.find((v) => v.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(v.name.toLowerCase()));
 }
 
 /**
