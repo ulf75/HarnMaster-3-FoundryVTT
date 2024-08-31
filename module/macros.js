@@ -1452,8 +1452,8 @@ export function pathIntersectsCircle(circle, line, centerToCenter = true) {
  * @param {*} name
  * @returns
  */
-export function hasActiveEffect(actor, name) {
-    return !!getActiveEffect(actor, name);
+export function hasActiveEffect(actor, name, strict = false) {
+    return !!getActiveEffect(actor, name, strict);
 }
 
 /**
@@ -1462,8 +1462,10 @@ export function hasActiveEffect(actor, name) {
  * @param {*} name
  * @returns
  */
-export function getActiveEffect(actor, name) {
-    return actor.effects.contents.find((v) => v.name === name);
+export function getActiveEffect(actor, name, strict = false) {
+    return strict
+        ? actor.effects.contents.find((v) => v.name === name)
+        : actor.effects.contents.find((v) => v.name.toLowerCase().includes(name.toLowerCase()));
 }
 
 /**
