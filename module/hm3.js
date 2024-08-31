@@ -173,8 +173,6 @@ Hooks.once('init', async function () {
             }
         });
     });
-
-    await registerHooks();
 });
 
 Hooks.on('renderChatMessage', (app, html, data) => {
@@ -239,6 +237,8 @@ Hooks.once('ready', async function () {
         });
         await game.settings.set('hm3', 'actorMacrosFolderId', folder.id);
     }
+
+    await registerHooks();
 
     HM3.ready = true;
 
