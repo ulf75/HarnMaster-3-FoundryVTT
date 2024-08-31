@@ -1,25 +1,13 @@
+import {HookTypes} from './hm3-types.js';
 import * as utility from './utility.js';
 
-const supportedHooks = [
+const supportedHMHooks = Object.values(HookTypes);
+
+const supportedFoundryHooks = [
     'combatRound',
     'combatStart',
     'combatTurn',
     'combatTurnChange',
-    'hm3.onAbilityRollD100',
-    'hm3.onAbilityRollD6',
-    'hm3.onActorPrepareBaseData',
-    'hm3.onActorPrepareDerivedData',
-    'hm3.onBlockResume',
-    'hm3.onDamageRoll',
-    'hm3.onDodgeResume',
-    'hm3.onDodgeRoll',
-    'hm3.onFumbleRoll',
-    'hm3.onHealingRoll',
-    'hm3.onIgnoreResume',
-    'hm3.onInjuryRoll',
-    'hm3.onShockRoll',
-    'hm3.onStumbleRoll',
-    'hm3.preInjuryRoll',
     'pauseGame',
     'preUpdateToken',
     'targetToken',
@@ -79,7 +67,7 @@ export async function onManageMacro(event, owner) {
  * TODO
  */
 export async function registerHooks() {
-    supportedHooks.forEach((hook) => {
+    [...supportedFoundryHooks, ...supportedHMHooks].forEach((hook) => {
         Hooks.on(hook, (...args) => executeHooks(...args, hook));
     });
 }

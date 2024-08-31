@@ -43,7 +43,7 @@ export const HookTypes = Object.freeze({
      */
     ON_INJURY_ROLL: 'hm3.onInjuryRoll',
     ON_INVOCATION_ROLL: 'hm3.onInvocationRoll',
-    ON_item_PREPARE_DATA: 'hm3.onITEMPrepareData',
+    ON_item_PREPARE_DATA: 'hm3.onItemPrepareData',
     ON_MELEE_ATTACK: 'hm3.onMeleeAttack',
     ON_MELEE_COUNTERSTRIKE_RESUME: 'hm3.onMeleeCounterstrikeResume',
     ON_MISSILE_ATTACK_ROLL: 'hm3.onMissileAttackRoll',
