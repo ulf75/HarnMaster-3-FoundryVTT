@@ -81,4 +81,16 @@ export class HM3MacroConfig extends MacroConfig {
             utility.getActorFromMacro(macro)?.sheet.render();
         }
     }
+
+    /** @override */
+    async _activateCoreListeners(...args) {
+        const ret = await super._activateCoreListeners(...args);
+
+        if (this.object.limited) {
+            this.form[5].disabled = true;
+            this.form[6].disabled = true;
+        }
+
+        return ret;
+    }
 }
