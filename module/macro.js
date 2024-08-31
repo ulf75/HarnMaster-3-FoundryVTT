@@ -29,8 +29,8 @@ export async function onManageMacro(event, owner) {
     let macro = li.dataset.macroId ? game.macros.get(li.dataset.macroId) : null;
     switch (action) {
         case 'create':
-            const mdata = {name: `New macro`, type: 'script', scope: 'global'};
-            macro = await Macro.create(mdata);
+            macro = await Macro.create({name: `New macro`, type: 'script', scope: 'global', folder: owner.macrofolder});
+            await macro.update({'ownership.default': 1});
             await macro.setFlag('hm3', 'trigger', 'manual');
             await macro.setFlag('hm3', 'ownerId', owner.id);
 

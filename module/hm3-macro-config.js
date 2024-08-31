@@ -11,10 +11,18 @@ export class HM3MacroConfig extends MacroConfig {
     /** @override */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            template: 'systems/hm3/templates/dialog/macro-config.html',
             height: 575,
             jQuery: false
         });
+    }
+
+    /** @override */
+    get template() {
+        if (this.object.limited) {
+            return 'systems/hm3/templates/dialog/macro-config-limited.html';
+        } else {
+            return 'systems/hm3/templates/dialog/macro-config.html';
+        }
     }
 
     /** @override */
@@ -52,6 +60,9 @@ export class HM3MacroConfig extends MacroConfig {
         if (data.trigger === 'legacy') {
             data.triggerTypes.push({value: 'legacy', label: 'Legacy'});
             data.isLegacy = true;
+        }
+        if (this.object.limited) {
+            data.triggerTypes.push({value: 'confidential', label: 'Confidential'});
         }
 
         return data;
