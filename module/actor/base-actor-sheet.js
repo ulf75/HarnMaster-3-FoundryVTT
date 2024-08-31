@@ -134,7 +134,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 macro = await Macro.create({
                     name: `${this.actor.name} Legacy Macro`,
                     type: this.actor.system.macros.type,
-                    img: Macro.DEFAULT_ICON,
                     command: this.actor.system.macros.command,
                     folder: this.actor.macrofolder
                 });

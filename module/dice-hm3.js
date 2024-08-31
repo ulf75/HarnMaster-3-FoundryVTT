@@ -95,7 +95,7 @@ export class DiceHM3 {
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
-        const {blind, rollMode, whisper} = this.getRollMode(rollData.skill, roll.preData.isAppraisal);
+        const {blind, rollMode, whisper} = this.getRollMode(rollData.skill, roll.preData.isAppraisal, rollData.blind, rollData.private);
         const messageData = {
             user: game.user.id,
             speaker,
@@ -1321,12 +1321,21 @@ export class DiceHM3 {
         return result;
     }
 
-    static getRollMode(skillName, isAppraisal) {
+    /**
+     *
+     * @param {string} skillName
+     * @param {boolean} isAppraisal
+     * @param {boolean} blind
+     * @param {boolean} pr1vate
+     * @returns
+     */
+    static getRollMode(skillName, isAppraisal = false, blind = false, pr1vate = false) {
         // publicroll, gmroll, blindroll & selfroll (CONST.DICE_ROLL_MODES.BLIND)
-        let blind =
+        blind =
+            blind ||
             game.settings.get('core', 'rollMode') === CONST.DICE_ROLL_MODES.BLIND ||
             ((HM3.blindRolls.includes(skillName) || isAppraisal) && game.settings.get('hm3', 'blindGmMode'));
-        const rollMode = blind ? CONST.DICE_ROLL_MODES.BLIND : game.settings.get('core', 'rollMode');
+        const rollMode = blind ? CONST.DICE_ROLL_MODES.BLIND : pr1vate ? CONST.DICE_ROLL_MODES.PRIVATE : game.settings.get('core', 'rollMode');
         const whisper = new Set();
         if (blind) whisper.add(game.users.activeGM.id);
         else {

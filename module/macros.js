@@ -498,6 +498,8 @@ export async function testAbilityD100RollAlt(options) {
         notes: '',
         isAbility: true,
         multiplier: options.multiplier,
+        blind: options.blind,
+        private: options.private,
         fluff: options.fluff
     };
     if (actorInfo.actor.isToken) {
