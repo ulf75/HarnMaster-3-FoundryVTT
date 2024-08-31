@@ -2,7 +2,7 @@
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @return {Promise}      A Promise which resolves once the migration is completed
  */
-export async function migrateWorldAsync() {
+export async function migrateWorld() {
     ui.notifications.info(
         `Applying HM3 System Migration for version ${game.system.version}. Please be patient and do not close your game or shut down your server.`,
         {permanent: true}
@@ -12,7 +12,7 @@ export async function migrateWorldAsync() {
     // Migrate World Actors
     for (let a of game.actors.contents) {
         try {
-            const updateData = await migrateActorDataAsync(a);
+            const updateData = await migrateActorData(a);
             if (!foundry.utils.isEmpty(updateData)) {
                 console.log(`HM3 | Migrating Actor ${a.name}`);
                 await a.update(updateData, {enforceTypes: false});
@@ -42,7 +42,7 @@ export async function migrateWorldAsync() {
     // Migrate Actor Override Tokens
     for (let s of game.scenes.contents) {
         try {
-            const updateData = await migrateSceneDataAsync(s);
+            const updateData = await migrateSceneData(s);
             if (!foundry.utils.isEmpty(updateData)) {
                 console.log(`HM3 | Migrating Scene ${s.name}`);
                 await s.update(updateData, {enforceTypes: false});
@@ -60,7 +60,7 @@ export async function migrateWorldAsync() {
         if (p.metadata.package !== 'world') continue;
         if (!['Actor', 'Item', 'Scene'].includes(p.documentName)) continue;
         console.log(`HM3 | Starting Migration for Pack ${p.metadata.label}`);
-        await migrateCompendiumAsync(p);
+        await migrateCompendium(p);
     }
 
     // Set the migration as complete
@@ -76,7 +76,7 @@ export async function migrateWorldAsync() {
  * @param pack
  * @return {Promise}
  */
-export async function migrateCompendiumAsync(pack) {
+export async function migrateCompendium(pack) {
     const doc = pack.documentName;
     if (!['Actor', 'Item', 'Scene'].includes(doc)) return;
 
@@ -94,13 +94,13 @@ export async function migrateCompendiumAsync(pack) {
         try {
             switch (doc) {
                 case 'Actor':
-                    updateData = await migrateActorDataAsync(doc.data);
+                    updateData = await migrateActorData(doc.data);
                     break;
                 case 'Item':
                     updateData = migrateItemData(doc.toObject());
                     break;
                 case 'Scene':
-                    updateData = await migrateSceneDataAsync(doc.data);
+                    updateData = await migrateSceneData(doc.data);
                     break;
             }
 
@@ -130,7 +130,7 @@ export async function migrateCompendiumAsync(pack) {
  * @param {Actor} actor   The actor to Update
  * @return {Object}       The updateData to apply
  */
-export async function migrateActorDataAsync(actor) {
+export async function migrateActorData(actor) {
     const updateData = {};
     const actorData = actor.system;
 
@@ -446,7 +446,7 @@ export function migrateItemData(item) {
  * @param {Object} scene  The Scene data to Update
  * @return {Object}       The updateData to apply
  */
-export async function migrateSceneDataAsync(scene) {
+export async function migrateSceneData(scene) {
     const tokens = await Promise.all(
         scene.tokens.map(async (token) => {
             const t = token.toJSON();
@@ -458,7 +458,7 @@ export async function migrateSceneDataAsync(scene) {
             } else if (!t.actorLink) {
                 const actorData = foundry.utils.duplicate(t.actorData);
                 actorData.type = token.actor?.type;
-                const update = await migrateActorDataAsync(actorData);
+                const update = await migrateActorData(actorData);
                 ['items', 'effects'].forEach((embeddedName) => {
                     if (!update[embeddedName]?.length) return;
                     const updates = new Map(update[embeddedName].map((u) => [u._id, u]));
@@ -527,7 +527,7 @@ function _migrateRemoveDeprecated(ent, updateData) {
  * @param {Compendium} pack   The compendium pack to clean
  * @private
  */
-async function purgeFlagsAsync(pack) {
+async function purgeFlags(pack) {
     const cleanFlags = (flags) => {
         const flagshm3 = flags.hm3 || null;
         return flagshm3 ? {hm3: flagshm3} : {};

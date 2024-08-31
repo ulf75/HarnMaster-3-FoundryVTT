@@ -222,7 +222,7 @@ Hooks.once('ready', async function () {
     if (currentMigrationVersion) {
         let needMigration = foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentMigrationVersion);
         if (needMigration && game.user.isGM) {
-            await migrations.migrateWorldAsync();
+            await migrations.migrateWorld();
         }
     } else {
         game.settings.set('hm3', 'systemMigrationVersion', game.system.version);
