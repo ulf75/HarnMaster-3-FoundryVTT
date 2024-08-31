@@ -20,7 +20,7 @@
 
   <div class="form-group">
     <label>Trigger</label>
-    <select name="trigger">
+    <select name="trigger" {{#if isLegacy}}disabled{{/if}} >
       {{selectOptions triggerTypes selected=trigger}}
     </select>
   </div>

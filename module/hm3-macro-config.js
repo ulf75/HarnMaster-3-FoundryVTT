@@ -49,6 +49,11 @@ export class HM3MacroConfig extends MacroConfig {
         const macro = game.macros.get(data.data._id);
         data.trigger = macro.getFlag('hm3', 'trigger');
 
+        if (data.trigger === 'legacy') {
+            data.triggerTypes.push({value: 'legacy', label: 'Legacy'});
+            data.isLegacy = true;
+        }
+
         return data;
     }
 
