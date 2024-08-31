@@ -89,7 +89,8 @@ export class DiceHM3 {
             showResult: false,
             description: roll.description,
             notes: renderedNotes,
-            roll
+            roll,
+            fluff: rollData.fluff
         };
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);

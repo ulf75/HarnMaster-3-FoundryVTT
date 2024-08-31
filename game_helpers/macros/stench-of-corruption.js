@@ -57,7 +57,13 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
         await token.document.update(pos);
 
         const victimActor = stops[0].victimToken.actor;
-        const result = await macros.testAbilityD100RollAlt({ability: 'will', noDialog: true, myActor: victimActor, multiplier: 4});
+        const result = await macros.testAbilityD100RollAlt({
+            ability: 'will',
+            noDialog: true,
+            myActor: victimActor,
+            multiplier: 4,
+            fluff: 'A foul stench of death and decay creeps into your nostrils, forcing you to fight the urge to vomit.'
+        });
 
         const changes = [];
         let seconds, value, addon;
