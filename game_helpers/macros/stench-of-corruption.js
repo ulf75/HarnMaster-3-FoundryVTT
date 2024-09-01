@@ -63,7 +63,8 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
             myActor: victimActor,
             multiplier: 4,
             private: true,
-            fluff: 'A foul stench of death and decay creeps into your nostrils, forcing you to fight the urge to vomit.'
+            fluff: 'A foul stench of death and decay creeps into your nostrils, forcing you to fight the urge to vomit.',
+            fluffResult: {CS: 'CS', MS: 'MS', MF: 'MF', CF: 'CF'}
         });
 
         const changes = [];

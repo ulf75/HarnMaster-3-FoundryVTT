@@ -465,7 +465,7 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
  */
 export async function testAbilityD100RollAlt(options) {
     options = foundry.utils.mergeObject(
-        {ability: null, noDialog: false, myActor: null, multiplier: 5, blind: false, private: false, fluff: null},
+        {ability: null, noDialog: false, myActor: null, multiplier: 5, blind: false, private: false, fluff: null, fluffResult: null},
         options
     );
 
@@ -500,7 +500,8 @@ export async function testAbilityD100RollAlt(options) {
         multiplier: options.multiplier,
         blind: options.blind,
         private: options.private,
-        fluff: options.fluff
+        fluff: options.fluff,
+        fluffResult: options.fluffResult
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;

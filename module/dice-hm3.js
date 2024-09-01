@@ -75,6 +75,12 @@ export class DiceHM3 {
         let title = rollData.label;
         if (rollData.isAbility) title = rollData.label.replace(`${rollData.skill} Roll`, `${rollData.skill} x${multiplier} Roll`);
         if (roll.preData.isAppraisal) title = rollData.label.replace('Skill Test', 'Appraisal Test');
+        let fluffResult = null;
+        if (rollData.fluffResult) {
+            if (roll.isCritical) fluffResult = roll.isSuccess ? rollData.fluffResult.CS : rollData.fluffResult.CF;
+            else fluffResult = roll.isSuccess ? rollData.fluffResult.MS : rollData.fluffResult.MF;
+        }
+
         const chatTemplateData = {
             type: roll.type,
             title,
@@ -90,7 +96,8 @@ export class DiceHM3 {
             description: roll.description,
             notes: renderedNotes,
             roll,
-            fluff: rollData.fluff
+            fluff: rollData.fluff,
+            fluffResult
         };
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
