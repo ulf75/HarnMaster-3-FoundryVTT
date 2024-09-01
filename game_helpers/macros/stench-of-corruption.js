@@ -51,10 +51,12 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
 
     if (stops.length > 0 && !game.paused && !macros.hasActiveEffect(token.actor, STENCH_OF_CORRUPTION)) {
         game.togglePause(true);
-        stops.sort((a, b) => (p1.x - a.stop.x) ** 2 + (p1.y - a.stop.y) ** 2 - ((p1.x - b.stop.x) ** 2 + (p1.y - b.stop.y) ** 2));
-        const tl = canvas.grid.getTopLeftPoint(stops[0].stop);
-        const pos = token.getSnappedPosition(stops[0].stop, {mode: CONST.GRID_SNAPPING_MODES.CENTER});
-        await token.document.update(pos);
+        if (isFriendlyTokenMoving) {
+            stops.sort((a, b) => (p1.x - a.stop.x) ** 2 + (p1.y - a.stop.y) ** 2 - ((p1.x - b.stop.x) ** 2 + (p1.y - b.stop.y) ** 2));
+            const tl = canvas.grid.getTopLeftPoint(stops[0].stop);
+            const pos = token.getSnappedPosition(stops[0].stop, {mode: CONST.GRID_SNAPPING_MODES.CENTER});
+            await token.document.update(pos);
+        }
 
         const victimActor = stops[0].victimToken.actor;
         const result = await macros.testAbilityD100RollAlt({
@@ -64,10 +66,14 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
             multiplier: 4,
             private: true,
             fluff: 'A foul stench of death and decay creeps into your nostrils, forcing you to fight the urge to vomit.',
-            fluffResult: {CS: 'CS', MS: 'MS', MF: 'MF', CF: 'CF'}
+            fluffResult: {
+                CS: `Fortunately, the disgusting stench can't do you much harm.`,
+                MS: 'The disgusting stench overwhelms your senses.',
+                MF: 'The brutal stench heavily overwhelms your senses.',
+                CF: 'The foul odor triggers violent retching, rendering you almost incapable of action.'
+            }
         });
 
-        const changes = [];
         let seconds, value, addon;
         if (result.isSuccess && result.isCritical) {
             // critical success - all good!
@@ -89,9 +95,18 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
             seconds = macros.d6(16) * MINUTE;
             value = -4;
             addon = ' (CF)';
-            changes.push({key: 'universalPenalty', value: 2});
+            await macros.createActiveEffect(
+                {
+                    owner: victimActor,
+                    label: STENCH_OF_CORRUPTION + ' (Violent Retching)',
+                    type: 'GameTime',
+                    seconds: 20 * SECOND,
+                    icon: STENCH_OF_CORRUPTION_ICON
+                },
+                [{key: 'universalPenalty', value: 4}],
+                {selfDestroy: true}
+            );
         }
-        changes.push({key: 'eph.smell', value});
 
         await macros.createActiveEffect(
             {
@@ -101,7 +116,7 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
                 seconds,
                 icon: STENCH_OF_CORRUPTION_ICON
             },
-            changes,
+            [{key: 'eph.smell', value}],
             {selfDestroy: true}
         );
     }
