@@ -89,6 +89,8 @@ export class HM3MacroConfig extends MacroConfig {
         if (this.object.limited) {
             this.form[5].disabled = true;
             this.form[6].disabled = true;
+        } else if (!['legacy', 'manual'].includes(this.object.getFlag('hm3', 'trigger'))) {
+            this.form[6].disabled = true;
         }
 
         return ret;

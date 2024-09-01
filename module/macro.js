@@ -16,6 +16,22 @@ const supportedFoundryHooks = [
 ];
 
 /**
+ * Extend the base Macro.
+ * @extends {Macro}
+ */
+export class HarnMasterMacro extends Macro {
+    /**
+     * Overrides the original implementation by allowing
+     * to execute actor macros w/o limited ownership.
+     * @returns True, if the user can execute this macro.
+     * @override
+     */
+    get canExecute() {
+        return super.canExecute || !!this.getFlag('hm3', 'ownerId');
+    }
+}
+
+/**
  * Manage Macro instances through the Actor Sheet via macro control buttons.
  * @param {MouseEvent} event      The left-click event on the effect control
  * @param {Actor|Item} owner      The owning document which manages this effect
@@ -30,7 +46,6 @@ export async function onManageMacro(event, owner) {
     switch (action) {
         case 'create':
             macro = await Macro.create({name: `New macro`, type: 'script', scope: 'global', folder: owner.macrofolder});
-            await macro.update({'ownership.default': 1});
             await macro.setFlag('hm3', 'trigger', 'manual');
             await macro.setFlag('hm3', 'ownerId', owner.id);
 

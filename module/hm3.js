@@ -13,7 +13,7 @@ import {HM3MacroConfig} from './hm3-macro-config.js';
 import {AspectTypes, HookTypes, ItemTypes, LocationTypes, RangeTypes, SkillTypes} from './hm3-types.js';
 import {HarnMasterItemSheet} from './item/item-sheet.js';
 import {HarnMasterItem} from './item/item.js';
-import {registerHooks} from './macro.js';
+import {HarnMasterMacro, registerHooks} from './macro.js';
 import * as macros from './macros.js';
 import * as migrations from './migrations.js';
 import {registerSystemSettings} from './settings.js';
@@ -86,6 +86,8 @@ Hooks.once('init', async function () {
         classes: 'highlight',
         wrapper: true
     });
+
+    CONFIG.Macro.documentClass = HarnMasterMacro;
 
     // Register sheet application classes
     Actors.unregisterSheet('core', ActorSheet);
