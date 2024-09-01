@@ -220,7 +220,9 @@ export function calcSkillBase(item) {
             ssBonus = ssBonus > Number.MIN_SAFE_INTEGER ? ssBonus : 0;
             sb.value = Math.round(sumModifiedAbilities / 3 + Number.EPSILON) + ssBonus + modifier;
             if (sumBaseAbilities !== sumModifiedAbilities) {
-                sb.delta = sumModifiedAbilities / 3 - sumBaseAbilities / 3;
+                // typically the effective master level is increased/reduced by 5 for one attribute change
+                // sb.delta = sumModifiedAbilities / 3 - sumBaseAbilities / 3;
+                sb.delta = sumModifiedAbilities - sumBaseAbilities;
             }
         }
     }

@@ -30,14 +30,9 @@
     "uWIcxMD0zdnOha1B": 3
   },
   "flags": {
-    "scene-packer": {
-      "hash": "54e1756a4db248a8d283165239ba2b913964a45c",
-      "sourceId": "Item.I6HW8C0gYxk4RZSH"
-    }
+    "core": {}
   },
   "_stats": {
-    "compendiumSource": null,
-    "duplicateSource": null,
     "coreVersion": "12.328",
     "systemId": "hm3",
     "systemVersion": "1.6.1",

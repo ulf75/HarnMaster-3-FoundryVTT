@@ -1,5 +1,5 @@
 import {onManageActiveEffect} from '../effect.js';
-import {ItemTypes} from '../item-types.js';
+import {ItemTypes} from '../hm3-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 import {HarnMasterActor} from './actor.js';
@@ -24,6 +24,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             config: CONFIG.HM3
         };
 
+        data.isGM = game.user.isGM;
+        data.strictMode = game.settings.get('hm3', 'strictGmMode');
+        data.hasRwPermission = data.isGM || !data.strictMode;
         data.isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
         data.customSunSign = game.settings.get('hm3', 'customSunSign');
         data.actor = foundry.utils.deepClone(this.actor);
@@ -274,7 +277,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // Render modal dialog
-        let dlgTemplate = 'systems/hmk/templates/dialog/item-qty.html';
+        let dlgTemplate = 'systems/hm3/templates/dialog/item-qty.html';
         let dialogData = {
             itemName: item.name,
             sourceName: item.parent.name,
@@ -292,7 +295,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             callback: async (html) => {
                 const form = html.querySelector('#items-to-move');
                 const fd = new FormDataExtended(form);
-                const formdata = fd.toObject();
+                const formdata = fd.object;
                 let formQtyToMove = parseInt(formdata.itemstomove);
 
                 if (formQtyToMove <= 0) {

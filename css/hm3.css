@@ -3014,3 +3014,200 @@ section.highlight {
     border: 2px groove #eeede0;
     margin-top: 5px;
 }
+
+.hm3 .macros .disabled {
+    color: #9a998f;
+}
+
+.hm3 .macros .macros-list {
+    list-style: none;
+    margin: 7px 0;
+    padding: 0;
+    overflow-y: hidden;
+}
+
+.hm3 .macros .macros-list .macros-header {
+    margin: 2px 0;
+    padding: 0;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px groove #eeede0;
+    font-weight: bold;
+    line-height: 24px;
+}
+
+.hm3 .macros .macros-list .macros-header h3 {
+    margin: 0;
+    padding-left: 5px;
+    font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
+    font-size: 20px;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.hm3 .macros .macros-list .macros-header .macro-name {
+    color: #191813;
+    border-right: 1px solid #c9c7b8;
+}
+
+.hm3 .macros .macros-list .macros-header .macro-name i {
+    font-size: 12px;
+    padding-left: 5px;
+}
+
+.hm3 .macros .macros-list .macros-header .macro-controls {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 45px;
+    flex: 0 0 45px;
+    text-align: right;
+    padding-right: 5px;
+    color: #9a998f;
+}
+
+.hm3 .macros .macros-list .macros-header .macro-controls .active {
+    color: #4b4a44;
+}
+
+.hm3 .macros .macros-list .macro-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.hm3 .macros .macros-list .macro {
+    line-height: 30px;
+    padding: 0 2px;
+    border-bottom: 1px solid #c9c7b8;
+}
+
+.hm3 .macros .macros-list .macro .macro-image {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 30px;
+    flex: 0 0 30px;
+    background-size: 30px;
+    margin-right: 5px;
+}
+
+.hm3 .macros .macros-list .macro img {
+    display: block;
+}
+
+.hm3 .macros .macros-list .macro .macro-name {
+    cursor: pointer;
+    max-height: 30px;
+    overflow: hidden;
+    border-right: 1px solid #c9c7b8;
+}
+
+.hm3 .macros .macros-list .macro .macro-name h4 {
+    margin: 0;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+.hm3 .macros .macros-list .macro:last-child {
+    border-bottom: none;
+}
+
+.hm3 .macros .macros-list .macro-detail {
+    font-size: 12px;
+    color: #7a7971;
+    border-right: 1px solid #c9c7b8;
+    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.hm3 .macros .macros-list .macro-ele {
+    padding-left: 5px;
+    border-right: 1px solid #c9c7b8;
+}
+
+.hm3 .macros .macros-list .macro-duration {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100px;
+    flex: 0 0 100px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.hm3 .macros .macros-list .macro-source {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100px;
+    flex: 0 0 100px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.hm3 .macros .macros-list .macro-changes {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 0 60px;
+    flex: 1 0 60px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.hm3 .macros .macros-list .macro-controls {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 45px;
+    flex: 0 0 45px;
+    text-align: right;
+}
+
+.hm3 .macros .macros-list .macro-controls .macro-control {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 22px;
+    flex: 0 0 22px;
+    font-size: 12px;
+    text-align: right;
+    color: #9a998f;
+}
+
+.hm3 .macros .macros-list .macro-controls .macro-equip {
+    color: #9a998f;
+}
+
+.hm3 .macros .macros-list .macro-controls .active {
+    color: #4b4a44;
+}
+
+.hm3 .macros .macros-list .macro-controls-wide {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 65px;
+    flex: 0 0 65px;
+    text-align: right;
+}
+
+.hm3 .macros .macros-list .macro-controls-wide .macro-control {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 22px;
+    flex: 0 0 22px;
+    font-size: 12px;
+    text-align: right;
+    color: #9a998f;
+}
+
+.hm3 .macros .macros-list .macro-controls-wide .macro-equip {
+    color: #9a998f;
+}
+
+.hm3 .macros .macros-list .macro-controls-wide .active {
+    color: #4b4a44;
+}
+
+.hm3 .macros input[type='text'].macros-name-filter {
+    background-image: url('../images/png/searchicon.png');
+    background-size: contain;
+    background-position: 5px -1px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 15px;
+    padding: 5px 0px 5px 40px;
+    border: 2px groove #eeede0;
+    margin-top: 5px;
+}

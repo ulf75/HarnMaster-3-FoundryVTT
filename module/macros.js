@@ -1,6 +1,7 @@
 import * as combat from './combat.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
+import {SkillTypes} from './hm3-types.js';
 import * as utility from './utility.js';
 
 /**
@@ -230,6 +231,7 @@ export async function skillRoll(itemName, noDialog = false, myActor = null) {
 
     const stdRollData = {
         type: `skill-${item.name}`,
+        skill: `${item.name}`,
         label: `${item.name} Skill Test`,
         target: item.system.effectiveMasteryLevel,
         notesData: {
@@ -244,7 +246,9 @@ export async function skillRoll(itemName, noDialog = false, myActor = null) {
         },
         speaker: speaker,
         fastforward: noDialog,
-        notes: item.system.notes
+        notes: item.system.notes,
+        effSkillBase: item.system.skillBase.value,
+        isCraftOrLore: [SkillTypes.CRAFT, 'Lore'].includes(item.system.type)
     };
     if (actor.isToken) {
         stdRollData.token = actor.token.id;
@@ -269,6 +273,7 @@ export async function castSpellRoll(itemName, noDialog = false, myActor = null) 
 
     const stdRollData = {
         type: `spell-${item.name}`,
+        skill: `${item.name}`,
         label: `Casting ${item.name}`,
         target: item.system.effectiveMasteryLevel,
         notesData: {
@@ -311,6 +316,7 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
 
     const stdRollData = {
         type: `invocation-${item.name}`,
+        skill: `${item.name}`,
         label: `Invoking ${item.name} Ritual`,
         target: item.system.effectiveMasteryLevel,
         notesData: {
@@ -353,6 +359,7 @@ export async function usePsionicRoll(itemName, noDialog = false, myActor = null)
 
     const stdRollData = {
         type: `psionic-${item.name}`,
+        skill: `${item.name}`,
         label: `Using ${item.name} Talent`,
         target: item.system.effectiveMasteryLevel,
         notesData: {
@@ -409,6 +416,7 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor = nul
 
     const stdRollData = {
         type: `${ability}-d6`,
+        skill: `${ability[0].toUpperCase()}${ability.slice(1)}`,
         label: `d6 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
         target: actorInfo.actor.system.abilities[ability].effective,
         numdice: 3,
@@ -455,12 +463,15 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
 
     const stdRollData = {
         type: `${ability}-d100`,
+        skill: `${ability[0].toUpperCase()}${ability.slice(1)}`,
         label: `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
+        effSkillBase: Math.max(1, actorInfo.actor.system.abilities[ability].effective),
         target: Math.max(5, actorInfo.actor.system.abilities[ability].effective * multiplier),
         notesData: {},
         speaker: actorInfo.speaker,
         fastforward: noDialog,
-        notes: ''
+        notes: '',
+        isAbility: true
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;

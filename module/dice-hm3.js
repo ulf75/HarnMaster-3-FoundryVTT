@@ -1,3 +1,4 @@
+import {HM3} from './config.js';
 import * as utility from './utility.js';
 
 export class DiceHM3 {
@@ -31,7 +32,11 @@ export class DiceHM3 {
             type: rollData.type,
             target: rollData.target,
             label: rollData.label,
-            modifier: rollData.modifier || 0
+            modifier: rollData.modifier || 0,
+            skill: rollData.skill,
+            isAbility: rollData.isAbility || false,
+            isCraftOrLore: rollData.isCraftOrLore || false,
+            effSkillBase: rollData.effSkillBase
         };
 
         // Create the Roll instance
@@ -66,9 +71,12 @@ export class DiceHM3 {
         });
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : '';
 
+        let title = rollData.label;
+        if (rollData.isAbility) title = rollData.label.replace(`${rollData.skill} Roll`, `${rollData.skill} x${roll.preData.multiplier} Roll`);
+        if (roll.preData.isAppraisal) title = rollData.label.replace('Skill Test', 'Appraisal Test');
         const chatTemplateData = {
             type: roll.type,
-            title: rollData.label,
+            title,
             origTarget: rollData.target,
             modifier: Math.abs(roll.modifier),
             plusMinus: roll.modifier < 0 ? '-' : '+',
@@ -80,22 +88,24 @@ export class DiceHM3 {
             showResult: false,
             description: roll.description,
             notes: renderedNotes,
-            roll: roll
+            roll
         };
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
+        const {blind, rollMode, whisper} = this.getRollMode(rollData.skill, roll.preData.isAppraisal);
         const messageData = {
             user: game.user.id,
-            speaker: speaker,
+            speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            blind,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            roll: roll.rollObj,
+            whisper
         };
 
         const messageOptions = {
-            rollMode: game.settings.get('core', 'rollMode')
+            rollMode
         };
 
         // Create a chat message
@@ -115,8 +125,21 @@ export class DiceHM3 {
         // Render modal dialog
         let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/standard-test-dialog.html';
         let dialogData = {
+            isAbility: dialogOptions.isAbility || false,
+            isCraftOrLore: dialogOptions.isCraftOrLore || false,
+            effSkillBase: dialogOptions.effSkillBase,
             target: dialogOptions.target,
-            modifier: dialogOptions.modifier
+            modifier: dialogOptions.modifier,
+            multiplier: 5,
+            multipliers: [
+                {key: 1, label: `${dialogOptions.skill} x1 (EML ${dialogOptions.effSkillBase * 1})`},
+                {key: 2, label: `${dialogOptions.skill} x2 (EML ${dialogOptions.effSkillBase * 2})`},
+                {key: 3, label: `${dialogOptions.skill} x3 (EML ${dialogOptions.effSkillBase * 3})`},
+                {key: 4, label: `${dialogOptions.skill} x4 (EML ${dialogOptions.effSkillBase * 4})`},
+                {key: 5, label: `${dialogOptions.skill} x5 (EML ${dialogOptions.effSkillBase * 5})`},
+                {key: 6, label: `${dialogOptions.skill} x6 (EML ${dialogOptions.effSkillBase * 6})`},
+                {key: 7, label: `${dialogOptions.skill} x7 (EML ${dialogOptions.effSkillBase * 7})`}
+            ]
         };
         const html = await renderTemplate(dlgTemplate, dialogData);
 
@@ -126,14 +149,22 @@ export class DiceHM3 {
             content: html.trim(),
             label: 'Roll',
             callback: (html) => {
-                const formModifier = html[0].querySelector('form').modifier.value;
+                const form = html[0].querySelector('form');
+                const multiplier = form.multipliers?.selectedIndex + 1 || -1;
+                const formModifier = form.modifier.value;
+                const isAppraisal = form.appraisal?.checked || false;
+                let target = dialogOptions.target;
+                if (dialogOptions.isAbility) target = dialogOptions.effSkillBase * multiplier;
+                if (isAppraisal) target = Math.max(dialogOptions.target + dialogOptions.effSkillBase, 5 * dialogOptions.effSkillBase);
                 return DiceHM3.rollTest({
                     type: dialogOptions.type,
-                    target: dialogOptions.target,
+                    target,
                     data: null,
                     diceSides: 100,
                     diceNum: 1,
-                    modifier: formModifier
+                    modifier: formModifier,
+                    multiplier,
+                    isAppraisal
                 });
             }
         });
@@ -165,6 +196,7 @@ export class DiceHM3 {
      */
     static async d6Roll(rollData) {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
+        const {blind, rollMode, whisper} = this.getRollMode(rollData.skill);
 
         const dialogOptions = {
             type: rollData.type,
@@ -224,13 +256,14 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            blind,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            roll: roll.rollObj,
+            whisper
         };
 
         const messageOptions = {
-            rollMode: game.settings.get('core', 'rollMode')
+            rollMode
         };
 
         // Create a chat message
@@ -702,7 +735,7 @@ export class DiceHM3 {
             // roll to get a random number.
             let rollWeight = 0;
             if (totalWeight > 0) {
-                rollWeight = Math.floor(MersenneTwister.random() * totalWeight) + 1;
+                rollWeight = Math.floor(foundry.dice.MersenneTwister.random() * totalWeight) + 1;
             }
 
             // find the location that meets that number
@@ -1284,5 +1317,21 @@ export class DiceHM3 {
         });
 
         return result;
+    }
+
+    static getRollMode(skillName, isAppraisal) {
+        // publicroll, gmroll, blindroll & selfroll (CONST.DICE_ROLL_MODES.BLIND)
+        let blind =
+            game.settings.get('core', 'rollMode') === CONST.DICE_ROLL_MODES.BLIND ||
+            ((HM3.blindRolls.includes(skillName) || isAppraisal) && game.settings.get('hm3', 'blindGmMode'));
+        const rollMode = blind ? CONST.DICE_ROLL_MODES.BLIND : game.settings.get('core', 'rollMode');
+        const whisper = new Set();
+        if (blind) whisper.add(game.users.activeGM.id);
+        else {
+            if (rollMode === CONST.DICE_ROLL_MODES.SELF) whisper.add(game.users.current.id);
+            if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE) whisper.add(game.users.activeGM.id);
+            if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE) whisper.add(game.users.current.id);
+        }
+        return {blind, rollMode, whisper: Array.from(whisper)};
     }
 }

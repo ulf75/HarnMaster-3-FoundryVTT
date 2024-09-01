@@ -9,6 +9,7 @@ import {DiceHM3} from './dice-hm3.js';
 import * as effect from './effect.js';
 import {HM3ActiveEffectConfig} from './hm3-active-effect-config.js';
 import {HarnMasterCombat} from './hm3-combat.js';
+import {AspectTypes, HookTypes, ItemTypes, LocationTypes, RangeTypes, SkillTypes} from './hm3-types.js';
 import {HarnMasterItemSheet} from './item/item-sheet.js';
 import {HarnMasterItem} from './item/item.js';
 import * as macros from './macros.js';
@@ -18,13 +19,16 @@ import {registerSystemSettings} from './settings.js';
 Hooks.once('init', async function () {
     console.log(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
 
+    // CONFIG.debug.hooks = true;
+
     game.hm3 = {
         HarnMasterActor,
         HarnMasterItem,
         DiceHM3,
         config: HM3,
         macros: macros,
-        migrations: migrations
+        migrations: migrations,
+        enums: {AspectTypes, HookTypes, ItemTypes, LocationTypes, RangeTypes, SkillTypes}
     };
 
     /**
@@ -142,13 +146,44 @@ Hooks.once('init', async function () {
         'Runic': {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Harn-Runic-Normal.otf']}]},
         'Lankorian Blackhand': {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Lankorian-Blackhand.otf']}]}
     });
+
+    // Actors also have a Bio image
+    Hooks.on('getActorDirectoryEntryContext', (html, menuItems) => {
+        menuItems.unshift({
+            name: 'View Bio Artwork',
+            icon: `<i class="fas fa-image"></i>`,
+            callback: async (html) => {
+                const actor = game.actors.get(html.data('documentId'));
+                new ImagePopout(actor.system.bioImage, {
+                    title: actor.name,
+                    uuid: actor.uuid
+                }).render(true);
+            },
+            condition: (html) => {
+                const actor = game.actors.get(html.data('documentId'));
+                return game.user.isGM && actor?.system?.bioImage;
+            }
+        });
+    });
 });
 
 Hooks.on('renderChatMessage', (app, html, data) => {
     // Display action buttons
     combat.displayChatActionButtons(app, html, data);
+
+    // if blind Roll Mode, remove info from Chat Card
+    if (html[0].innerHTML.includes('hm3 chat-card') && app.blind && !game.user.isGM) {
+        const nodes = html[0].childNodes[3].childNodes[1];
+        nodes.childNodes[3].innerText = 'Blind GM Roll';
+        nodes.childNodes[5].remove();
+        nodes.childNodes[5].remove();
+        nodes.childNodes[5].remove();
+        nodes.childNodes[5].remove();
+    }
 });
+
 Hooks.on('renderChatLog', (app, html, data) => HarnMasterActor.chatListeners(html));
+
 Hooks.on('renderChatPopout', (app, html, data) => HarnMasterActor.chatListeners(html));
 
 /**
@@ -184,7 +219,9 @@ Hooks.once('ready', function () {
     }
 
     Hooks.on('hotbarDrop', (bar, data, slot) => macros.createHM3Macro(data, slot));
+
     HM3.ready = true;
+
     if (game.settings.get('hm3', 'showWelcomeDialog')) {
         welcomeDialog().then((showAgain) => {
             game.settings.set('hm3', 'showWelcomeDialog', showAgain);
@@ -238,6 +275,61 @@ Hooks.on('closeSceneConfig', (app, html, data) => {
     if (!scene.compendium) {
         scene.setFlag('hm3', 'isTotm', html.find("input[name='hm3Totm']").is(':checked'));
     }
+});
+
+Hooks.once('dragRuler.ready', (SpeedProvider) => {
+    class HarnMaster3SpeedProvider extends SpeedProvider {
+        get colors() {
+            return [
+                {
+                    id: 'walk',
+                    default: 0x6aa84f,
+                    name: 'hm3.speed-provider.walk'
+                },
+                {
+                    id: 'jog',
+                    default: 0x1e88e5,
+                    name: 'hm3.speed-provider.jog'
+                },
+                {
+                    id: 'run',
+                    default: 0xffc107,
+                    name: 'hm3.speed-provider.run'
+                },
+                {
+                    id: 'sprint',
+                    default: 0xd81b60,
+                    name: 'hm3.speed-provider.sprint'
+                }
+            ];
+        }
+
+        get defaultUnreachableColor() {
+            return 0x000000;
+        }
+
+        /** @param token {Token} The token to check movement */
+        getRanges(token) {
+            const actor = token.actor;
+            let move = actor.system.move.effective;
+            if (actor.system.eph.move > 25) move /= 5;
+            const stunned = false;
+            const prone = false;
+
+            if (stunned) return [{range: -1, color: 'walk'}];
+
+            const ranges = [
+                {range: Math.round(move / 2) * 5, color: 'walk'},
+                {range: move * 5, color: 'jog'},
+                {range: 2 * move * 5, color: 'run'},
+                {range: 3 * move * 5, color: 'sprint'}
+            ];
+
+            return ranges;
+        }
+    }
+
+    dragRuler.registerSystem('hm3', HarnMaster3SpeedProvider);
 });
 
 async function welcomeDialog() {
