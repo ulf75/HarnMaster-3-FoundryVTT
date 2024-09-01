@@ -50,7 +50,7 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
     }
 
     if (stops.length > 0 && !game.paused && !macros.hasActiveEffect(token.actor, STENCH_OF_CORRUPTION)) {
-        game.togglePause(true);
+        game.togglePause(true, true);
         if (isFriendlyTokenMoving) {
             stops.sort((a, b) => (p1.x - a.stop.x) ** 2 + (p1.y - a.stop.y) ** 2 - ((p1.x - b.stop.x) ** 2 + (p1.y - b.stop.y) ** 2));
             const tl = canvas.grid.getTopLeftPoint(stops[0].stop);

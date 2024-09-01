@@ -102,7 +102,13 @@ export class DiceHM3 {
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
-        const {blind, rollMode, whisper} = this.getRollMode(rollData.skill, roll.preData.isAppraisal, rollData.blind, rollData.private);
+        const {blind, rollMode, whisper} = this.getRollMode({
+            skill: rollData.skill,
+            isAppraisal: roll.preData.isAppraisal,
+            blind: rollData.blind,
+            private: rollData.private,
+            userId: game.users.players.find((p) => p.character.id === rollData.actor)?.id
+        });
         const messageData = {
             user: game.user.id,
             speaker,
@@ -205,7 +211,7 @@ export class DiceHM3 {
      */
     static async d6Roll(rollData) {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
-        const {blind, rollMode, whisper} = this.getRollMode(rollData.skill);
+        const {blind, rollMode, whisper} = this.getRollMode({skill: rollData.skill});
 
         const dialogOptions = {
             type: rollData.type,
@@ -1330,26 +1336,30 @@ export class DiceHM3 {
 
     /**
      *
-     * @param {string} skillName
-     * @param {boolean} isAppraisal
-     * @param {boolean} blind
-     * @param {boolean} pr1vate
+     * @param {*} options
      * @returns
      */
-    static getRollMode(skillName, isAppraisal = false, blind = false, pr1vate = false) {
+    static getRollMode(options) {
+        options = foundry.utils.mergeObject({skill: null, isAppraisal: false, blind: false, private: false, userId: null}, options);
         // publicroll, gmroll, blindroll & selfroll (CONST.DICE_ROLL_MODES.BLIND)
-        blind =
-            blind ||
+        const blind =
+            options.blind ||
             game.settings.get('core', 'rollMode') === CONST.DICE_ROLL_MODES.BLIND ||
-            ((HM3.blindRolls.includes(skillName) || isAppraisal) && game.settings.get('hm3', 'blindGmMode'));
-        const rollMode = blind ? CONST.DICE_ROLL_MODES.BLIND : pr1vate ? CONST.DICE_ROLL_MODES.PRIVATE : game.settings.get('core', 'rollMode');
+            ((HM3.blindRolls.includes(options.skill) || options.isAppraisal) && !!game.settings.get('hm3', 'blindGmMode'));
+        const rollMode = blind
+            ? CONST.DICE_ROLL_MODES.BLIND
+            : options.private
+            ? CONST.DICE_ROLL_MODES.PRIVATE
+            : game.settings.get('core', 'rollMode');
         const whisper = new Set();
         if (blind) whisper.add(game.users.activeGM.id);
         else {
             if (rollMode === CONST.DICE_ROLL_MODES.SELF) whisper.add(game.users.current.id);
             if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE) whisper.add(game.users.activeGM.id);
             if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE) whisper.add(game.users.current.id);
+            if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE && options.userId) whisper.add(options.userId);
         }
+
         return {blind, rollMode, whisper: Array.from(whisper)};
     }
 }
