@@ -1,7 +1,7 @@
-import {HookTypes} from './hm3-types.js';
+import {Hook} from './hm3-types.js';
 import * as utility from './utility.js';
 
-const supportedHMHooks = Object.values(HookTypes);
+const supportedHMHooks = Object.values(Hook);
 
 const supportedFoundryHooks = [
     'combatRound',

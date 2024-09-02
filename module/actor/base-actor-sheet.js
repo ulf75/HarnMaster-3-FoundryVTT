@@ -1,5 +1,5 @@
 import {onManageActiveEffect} from '../effect.js';
-import {ItemTypes} from '../hm3-types.js';
+import {ActorType, ItemType} from '../hm3-types.js';
 import {onManageMacro} from '../macro.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
@@ -33,15 +33,15 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.actor = foundry.utils.deepClone(this.actor);
         data.items = this.actor.items.map((i) => {
             // A new, truncated number is created so that weights with many decimal places (e.g. dram) are also displayed nicely.
-            if ([ItemTypes.MISCGEAR, ItemTypes.ARMORGEAR, ItemTypes.WEAPONGEAR, ItemTypes.MISSILEGEAR, ItemTypes.CONTAINERGEAR].includes(i.type)) {
+            if ([ItemType.MISCGEAR, ItemType.ARMORGEAR, ItemType.WEAPONGEAR, ItemType.MISSILEGEAR, ItemType.CONTAINERGEAR].includes(i.type)) {
                 i.system.weightT = utility.truncate(i.system.weight, 3);
             }
             // Dormant psionic talents may be invisible for players (ML20 or less (Psionics 3))
-            if (i.type === ItemTypes.PSIONIC) {
+            if (i.type === ItemType.PSIONIC) {
                 i.system.visible = String(!game.settings.get('hm3', 'dormantPsionicTalents') || i.system.masteryLevel > 20 || game.user.isGM);
             }
             // The range can also be displayed in grids (hex). Can be changed in the settings.
-            if (i.type === ItemTypes.MISSILEGEAR) {
+            if (i.type === ItemType.MISSILEGEAR) {
                 if (data.isGridDistanceUnits) {
                     i.system.rangeGrid = {
                         short: i.system.range.short / canvas.dimensions.distance,
@@ -68,17 +68,17 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.dtypes = ['String', 'Number', 'Boolean'];
         let capacityMax = 0;
         let capacityVal = 0;
-        if (this.actor.type === 'character') {
+        if (this.actor.type === ActorType.CHARACTER) {
             capacityMax = data.adata.endurance * 10;
             if (data.adata.eph) {
                 capacityVal = data.adata.eph.totalGearWeight;
             }
-        } else if (this.actor.type === 'creature') {
+        } else if (this.actor.type === ActorType.CREATURE) {
             capacityMax = data.adata.loadRating + data.adata.endurance * 10;
             if (data.adata.eph) {
                 capacityVal = data.adata.eph.totalGearWeight;
             }
-        } else if (this.actor.type === 'container') {
+        } else if (this.actor.type === ActorType.CONTAINER) {
             capacityMax = data.adata.capacity.max;
             capacityVal = data.adata.capacity.value;
         }
@@ -87,7 +87,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.containers = {
             'on-person': {
                 'name': 'On Person',
-                'type': 'containergear',
+                'type': ItemType.CONTAINERGEAR,
                 'system': {
                     'container': 'on-person',
                     'capacity': {
@@ -99,7 +99,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         };
 
         this.actor.items.forEach((it) => {
-            if (it.type === 'containergear') {
+            if (it.type === ItemType.CONTAINERGEAR) {
                 data.containers[it.id] = it;
             }
         });

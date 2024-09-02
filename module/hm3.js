@@ -10,7 +10,7 @@ import * as effect from './effect.js';
 import {HM3ActiveEffectConfig} from './hm3-active-effect-config.js';
 import {HarnMasterCombat} from './hm3-combat.js';
 import {HM3MacroConfig} from './hm3-macro-config.js';
-import {AspectTypes, HookTypes, ItemTypes, LocationTypes, RangeTypes, SkillTypes} from './hm3-types.js';
+import {ActorType, Aspect, Hook, ItemType, Location, Range, SkillType} from './hm3-types.js';
 import {HarnMasterItemSheet} from './item/item-sheet.js';
 import {HarnMasterItem} from './item/item.js';
 import {HarnMasterMacro, registerHooks} from './macro.js';
@@ -30,7 +30,7 @@ Hooks.once('init', async function () {
         config: HM3,
         macros: macros,
         migrations: migrations,
-        enums: {AspectTypes, HookTypes, ItemTypes, LocationTypes, RangeTypes, SkillTypes}
+        enums: {ActorType, Aspect, Hook, ItemType, Location, Range, SkillType}
     };
 
     /**

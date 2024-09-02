@@ -1,7 +1,16 @@
 /**
+ * Actor types enum.
+ */
+export const ActorType = Object.freeze({
+    CHARACTER: 'character',
+    CREATURE: 'creature',
+    CONTAINER: 'container'
+});
+
+/**
  * Aspect types enum.
  */
-export const AspectTypes = Object.freeze({
+export const Aspect = Object.freeze({
     BLUNT: 'Blunt',
     EDGED: 'Edged',
     FIRE: 'Fire',
@@ -11,7 +20,7 @@ export const AspectTypes = Object.freeze({
 /**
  * Hook types enum.
  */
-export const HookTypes = Object.freeze({
+export const Hook = Object.freeze({
     /**
      * @constant {string} Is triggered when a 1d100 ability roll has been executed.
      * @param actor       The actor who owns the ability.
@@ -94,7 +103,7 @@ export const HookTypes = Object.freeze({
 /**
  * Item types enum.
  */
-export const ItemTypes = Object.freeze({
+export const ItemType = Object.freeze({
     ARMORGEAR: 'armorgear',
     ARMORLOCATION: 'armorlocation',
     CONTAINERGEAR: 'containergear',
@@ -112,7 +121,7 @@ export const ItemTypes = Object.freeze({
 /**
  * Location types enum.
  */
-export const LocationTypes = Object.freeze({
+export const Location = Object.freeze({
     ABDOMEN: 'Abdomen',
     CALF: 'Calf',
     CUSTOM: 'Custom',
@@ -138,7 +147,7 @@ export const LocationTypes = Object.freeze({
 /**
  * Range types enum.
  */
-export const RangeTypes = Object.freeze({
+export const Range = Object.freeze({
     EXTREME: 'Extreme',
     LONG: 'Long',
     MEDIUM: 'Medium',
@@ -148,7 +157,7 @@ export const RangeTypes = Object.freeze({
 /**
  * Skill types enum.
  */
-export const SkillTypes = Object.freeze({
+export const SkillType = Object.freeze({
     COMBAT: 'Combat',
     COMMUNICATION: 'Communication',
     CRAFT: 'Craft',
