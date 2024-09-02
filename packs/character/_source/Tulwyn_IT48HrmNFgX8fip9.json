@@ -1,0 +1,46 @@
+{
+  "_id": "IT48HrmNFgX8fip9",
+  "name": "Tulwyn",
+  "type": "skill",
+  "img": "systems/hm3/images/icons/svg/ceremonial-mask.svg",
+  "effects": [],
+  "folder": "ehEs3IXsjATxYb8d",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>Most characters know something about their own religion, at least enough to attend and participate in church services without seeming too ignorant. For this reason, Ritual is treated as an “automatic skill” with an OML of SBx1 (Tribal SBx2). If the character's culture, social class, or family is irreligious, then Ritual may not (GM discretion) be automatic.</p><p>There is a separate skill, with its own Skill Base, for each religion. Appropriate training, divine revelation, or study materials are needed to earn development rolls. Most aspects of Ritual are dealt with in HârnMaster Religion. Language may be a limiting factor when the skill is used to communicate with a congregation.</p>",
+    "source": "HM Barbarians 8",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "type": "Ritual",
+    "skillBase": {
+      "value": 0,
+      "formula": "@voi, @int, @str, Hirin:2, Angberelius, Skorus",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "ritual": {
+      "piety": 0
+    },
+    "improveFlag": false
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284353454,
+    "modifiedTime": 1689285072117,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!IT48HrmNFgX8fip9"
+}
