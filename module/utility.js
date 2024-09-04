@@ -378,14 +378,17 @@ export function aeDuration(effect) {
     if (Number.isNumeric(d.seconds)) {
         const start = d.startTime || game.time.worldTime;
         const elapsed = game.time.worldTime - start;
-        const remaining = Math.max(d.seconds - elapsed, 0);
+        const remaining = elapsed < 0 ? d.seconds : Math.max(d.seconds - elapsed, 0);
         //const normDuration = toNormTime(d.seconds);
         const normRemaining = toNormTime(remaining);
+        const normStart = elapsed < 0 ? toNormTime(-elapsed) : 'Started';
         return {
             type: 'seconds',
             duration: d.seconds,
             remaining: remaining,
-            label: normRemaining
+            label: normRemaining,
+            start,
+            startLabel: normStart
             //normDuration: normDuration,
             //normRemaining: normRemaining
         };

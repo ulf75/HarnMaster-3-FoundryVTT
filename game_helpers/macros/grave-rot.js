@@ -16,12 +16,31 @@ const DAY = 24 * HOUR;
 
 const GRAVE_ROT = 'Grave Rot';
 const GRAVE_ROT_ICON = 'systems/hm3/images/icons/svg/arm-bandage.svg';
+const CONTAGION_INDEX = 4;
 
-console.log('Grave Rot Macro start');
+if (triggerArgs[3].effectiveImpact > 0) {
+    const victimActor = triggerArgs[0];
 
-console.log(speaker);
-console.log(actor);
-console.log(token);
-console.log(triggerArgs[2].impact);
+    // only friendly tokens are affected
+    const friendlyTokens = macros.getSpecificTokens({friendly: true});
 
-console.log('Grave Rot Macro end');
+    console.log(`${GRAVE_ROT} from ${macroActor.name} to ${victimActor.name}`);
+
+    // make a secret roll against CI x END
+    const save = macros.HM100Check(CONTAGION_INDEX * victimActor.system.endurance);
+    const d100 = macros.d100();
+    if (d100 > save) {
+        await macros.createActiveEffect(
+            {
+                owner: victimActor,
+                label: GRAVE_ROT,
+                type: 'GameTime',
+                postpone: macros.d6(2) * HOUR,
+                seconds: 1,
+                icon: GRAVE_ROT_ICON
+            },
+            [],
+            {unique: true}
+        );
+    }
+}

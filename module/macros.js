@@ -1386,9 +1386,9 @@ export function callOnHooks(hook, actor, result, rollData, item = null) {
     }
 
     if (item) {
-        return Hooks.call(hook, actor, rollResult, rollData, item);
+        return Hooks.call(hook, actor, rollResult, rollData, item, result);
     } else {
-        return Hooks.call(hook, actor, rollResult, rollData);
+        return Hooks.call(hook, actor, rollResult, rollData, result);
     }
 }
 
@@ -1488,13 +1488,17 @@ export async function createActiveEffect(efffectData, changes = [], options = {}
         return null;
     }
 
-    options = foundry.utils.mergeObject({selfDestroy: false}, options);
+    options = foundry.utils.mergeObject({selfDestroy: false, unique: false}, options);
     changes = changes.map((change) => {
         change = foundry.utils.mergeObject({key: '', value: 0, mode: 2, priority: null}, change);
         const keys = getObjectKeys(efffectData.owner.system);
         change.key = 'system.' + keys.find((v) => v.includes(change.key));
         return change;
     });
+
+    if (options.unique && hasActiveEffect(efffectData.owner, efffectData.label)) {
+        return null;
+    }
 
     const icon = efffectData.icon || 'icons/svg/aura.svg';
 
@@ -1508,7 +1512,7 @@ export async function createActiveEffect(efffectData, changes = [], options = {}
     if (efffectData.type === 'GameTime') {
         const postpone = efffectData.postpone || 0;
         const startTime = efffectData.startTime || game.time.worldTime + postpone;
-        const seconds = efffectData.seconds || 1;
+        const seconds = efffectData.seconds === null ? null : efffectData.seconds || 1;
 
         aeData['duration.startTime'] = startTime;
         aeData['duration.seconds'] = seconds;
@@ -1594,8 +1598,17 @@ export function d100(count = 1) {
  */
 export function dx(x, count = 1) {
     let val = 0;
-    for (let i = 0; i < count; i++) val += Math.round(x * foundry.dice.MersenneTwister.random());
+    for (let i = 0; i < count; i++) val += Math.floor(x * foundry.dice.MersenneTwister.random()) + 1;
     return val;
+}
+
+/**
+ * Returns the between 5 (always success) and 95 (always a failure) clamped value.
+ * @param {number} value - The value to be clamped.
+ * @returns The clamped value.
+ */
+export function HM100Check(value) {
+    return Math.max(Math.min(Math.round(value), 95), 5);
 }
 
 var g;
