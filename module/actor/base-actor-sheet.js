@@ -236,7 +236,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // At this point we know this dropped item is Gear coming from an actor,
 
         // Containers are a special case, and they need to be processed specially
-        if (droppedItem.type === 'containergear') return await this._moveContainer(event, droppedItem);
+        if (droppedItem.type === ItemType.CONTAINERGEAR) return await this._moveContainer(event, droppedItem);
 
         // Set the destination container to the closest drop containerid
         droppedItem.system.container = destContainer;
@@ -380,7 +380,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (!actor.isOwner) return false;
 
         if (!itemData.type.endsWith('gear')) {
-            if (actor.type === 'container') {
+            if (actor.type === ActorType.CONTAINER) {
                 ui.notifications.warn(`You may only place physical objects in a container; drop of ${itemData.name} refused.`);
                 return false;
             }
