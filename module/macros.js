@@ -1,7 +1,7 @@
 import * as combat from './combat.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
-import {SkillTypes} from './hm3-types.js';
+import {SkillType} from './hm3-types.js';
 import * as utility from './utility.js';
 
 /**
@@ -248,7 +248,7 @@ export async function skillRoll(itemName, noDialog = false, myActor = null) {
         fastforward: noDialog,
         notes: item.system.notes,
         effSkillBase: item.system.skillBase.value,
-        isCraftOrLore: [SkillTypes.CRAFT, 'Lore'].includes(item.system.type)
+        isCraftOrLore: [SkillType.CRAFT, 'Lore'].includes(item.system.type)
     };
     if (actor.isToken) {
         stdRollData.token = actor.token.id;
@@ -397,7 +397,18 @@ export async function usePsionicRoll(itemName, noDialog = false, myActor = null)
 }
 
 export async function testAbilityD6Roll(ability, noDialog = false, myActor = null) {
-    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    return testAbilityD6RollAlt({ability, noDialog, myActor});
+}
+
+/**
+ * Alternative implementation.
+ * @param {*} options
+ * @returns
+ */
+export async function testAbilityD6RollAlt(options) {
+    options = foundry.utils.mergeObject({noDialog: false, myActor: null, blind: false}, options);
+
+    const actorInfo = getActor({actor: options.myActor, item: null, speaker: ChatMessage.getSpeaker()});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
@@ -412,17 +423,17 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor = nul
         ui.notifications.warn(`${actorInfo.name} does not have ability scores.`);
         return null;
     }
-    if (!ability || !abilities.includes(ability)) return null;
+    if (!options.ability || !abilities.includes(options.ability)) return null;
 
     const stdRollData = {
-        type: `${ability}-d6`,
-        skill: `${ability[0].toUpperCase()}${ability.slice(1)}`,
-        label: `d6 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
-        target: actorInfo.actor.system.abilities[ability].effective,
+        type: `${options.ability}-d6`,
+        skill: `${options.ability[0].toUpperCase()}${options.ability.slice(1)}`,
+        label: `d6 ${options.ability[0].toUpperCase()}${options.ability.slice(1)} Roll`,
+        target: actorInfo.actor.system.abilities[options.ability].effective,
         numdice: 3,
         notesData: {},
         speaker: actorInfo.speaker,
-        fastforward: noDialog,
+        fastforward: options.noDialog,
         notes: ''
     };
     if (actorInfo.actor.isToken) {
@@ -435,7 +446,7 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor = nul
     if (hooksOk) {
         const result = await DiceHM3.d6Roll(stdRollData);
         if (result) {
-            result.runCustomMacro(result);
+            actorInfo.actor.runCustomMacro(result);
             callOnHooks('hm3.onAbilityRollD6', result, result, stdRollData);
         }
         return result;
@@ -444,7 +455,21 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor = nul
 }
 
 export async function testAbilityD100Roll(ability, noDialog = false, myActor = null, multiplier = 5) {
-    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    return testAbilityD100RollAlt({ability, noDialog, myActor, multiplier});
+}
+
+/**
+ * Alternative implementation.
+ * @param {*} options
+ * @returns
+ */
+export async function testAbilityD100RollAlt(options) {
+    options = foundry.utils.mergeObject(
+        {ability: null, noDialog: false, myActor: null, multiplier: 5, blind: false, private: false, fluff: null, fluffResult: null},
+        options
+    );
+
+    const actorInfo = getActor({actor: options.myActor, item: null, speaker: ChatMessage.getSpeaker({actor: options.myActor})});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
@@ -459,19 +484,24 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
         ui.notifications.warn(`${actorInfo.actor.name} does not have ability scores.`);
         return null;
     }
-    if (!ability || !abilities.includes(ability)) return null;
+    if (!options.ability || !abilities.includes(options.ability)) return null;
 
     const stdRollData = {
-        type: `${ability}-d100`,
-        skill: `${ability[0].toUpperCase()}${ability.slice(1)}`,
-        label: `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
-        effSkillBase: Math.max(1, actorInfo.actor.system.abilities[ability].effective),
-        target: Math.max(5, actorInfo.actor.system.abilities[ability].effective * multiplier),
+        type: `${options.ability}-d100`,
+        skill: `${options.ability[0].toUpperCase()}${options.ability.slice(1)}`,
+        label: `d100 ${options.ability[0].toUpperCase()}${options.ability.slice(1)} Roll`,
+        effSkillBase: Math.max(1, actorInfo.actor.system.abilities[options.ability].effective),
+        target: Math.max(5, actorInfo.actor.system.abilities[options.ability].effective * options.multiplier),
         notesData: {},
         speaker: actorInfo.speaker,
-        fastforward: noDialog,
+        fastforward: options.noDialog,
         notes: '',
-        isAbility: true
+        isAbility: true,
+        multiplier: options.multiplier,
+        blind: options.blind,
+        private: options.private,
+        fluff: options.fluff,
+        fluffResult: options.fluffResult
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;
@@ -1356,8 +1386,244 @@ export function callOnHooks(hook, actor, result, rollData, item = null) {
     }
 
     if (item) {
-        return Hooks.call(hook, actor, rollResult, rollData, item);
+        return Hooks.call(hook, actor, rollResult, rollData, item, result);
     } else {
-        return Hooks.call(hook, actor, rollResult, rollData);
+        return Hooks.call(hook, actor, rollResult, rollData, result);
     }
+}
+
+/**
+ * Calculates the distance between two tokens.
+ * @param {number} sourceTokenId The id of token #1.
+ * @param {number} destTokenId The id of token #2.
+ * @returns
+ */
+export function distanceBtwnTwoTokens(sourceTokenId, destTokenId) {
+    const source = canvas.tokens.get(sourceTokenId).center;
+    const dest = canvas.tokens.get(destTokenId).center;
+
+    return canvas.grid.measurePath([source, dest]).distance;
+}
+
+/**
+ * TODO
+ * @param {*} options
+ * @returns
+ */
+export function getAllTokens(options) {
+    options = foundry.utils.mergeObject({friendly: true, neutral: true, secret: true, hostile: true}, options);
+    return canvas.scene.tokens.contents.filter(
+        (t) =>
+            (t.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY && options.friendly) ||
+            (t.disposition === CONST.TOKEN_DISPOSITIONS.NEUTRAL && options.neutral) ||
+            (t.disposition === CONST.TOKEN_DISPOSITIONS.SECRET && options.secret) ||
+            (t.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE && options.hostile)
+    );
+}
+
+/**
+ * TODO
+ * @param {*} options
+ * @returns
+ */
+export function getSpecificTokens(options) {
+    options = foundry.utils.mergeObject({friendly: false, neutral: false, secret: false, hostile: false}, options);
+    return getAllTokens(options);
+}
+
+/**
+ * TODO
+ * Kudos: https://stackoverflow.com/questions/37224912/circle-line-segment-collision
+ * @param {*} circle
+ * @param {*} line
+ * @param {*} centerToCenter
+ * @returns
+ */
+export function pathIntersectsCircle(circle, line, centerToCenter = true) {
+    const size = canvas.grid.size / canvas.grid.distance;
+    const radius = (centerToCenter ? circle.radius : circle.radius + canvas.grid.distance) * size;
+    const c = new PIXI.Circle(circle.center.x, circle.center.y, radius);
+    const ixs = c.segmentIntersections(line.p1, line.p2);
+    if (ixs.length === 0) return null;
+    else if (ixs.length === 1) return ixs[0];
+    else {
+        const d0 = (line.p1.x - ixs[0].x) ** 2 + (line.p1.y - ixs[0].y) ** 2;
+        const d1 = (line.p1.x - ixs[1].x) ** 2 + (line.p1.y - ixs[1].y) ** 2;
+        return d0 <= d1 ? ixs[0] : ixs[1];
+    }
+}
+
+/**
+ * TODO
+ * @param {*} actor
+ * @param {*} name
+ * @returns
+ */
+export function hasActiveEffect(actor, name, strict = false) {
+    return !!getActiveEffect(actor, name, strict);
+}
+
+/**
+ * TODO
+ * @param {*} actor
+ * @param {*} name
+ * @returns
+ */
+export function getActiveEffect(actor, name, strict = false) {
+    return strict
+        ? actor.effects.contents.find((v) => v.name === name)
+        : actor.effects.contents.find((v) => v.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(v.name.toLowerCase()));
+}
+
+/**
+ * TODO
+ * @param {*} efffectData
+ * @param {*} options
+ * @returns
+ */
+export async function createActiveEffect(efffectData, changes = [], options = {}) {
+    // mandatory
+    if (!efffectData.label || !efffectData.owner || !efffectData.type) {
+        console.error('HM3 Macro "createActiveEffect" needs label, owner & type as mandatory input!');
+        return null;
+    }
+
+    options = foundry.utils.mergeObject({selfDestroy: false, unique: false}, options);
+    changes = changes.map((change) => {
+        change = foundry.utils.mergeObject({key: '', value: 0, mode: 2, priority: null}, change);
+        const keys = getObjectKeys(efffectData.owner.system);
+        change.key = 'system.' + keys.find((v) => v.includes(change.key));
+        return change;
+    });
+
+    if (options.unique && hasActiveEffect(efffectData.owner, efffectData.label)) {
+        return null;
+    }
+
+    const icon = efffectData.icon || 'icons/svg/aura.svg';
+
+    const aeData = {
+        label: efffectData.label,
+        icon,
+        origin: efffectData.owner.uuid,
+        changes
+    };
+
+    if (efffectData.type === 'GameTime') {
+        const postpone = efffectData.postpone || 0;
+        const startTime = efffectData.startTime || game.time.worldTime + postpone;
+        const seconds = efffectData.seconds === null ? null : efffectData.seconds || 1;
+
+        aeData['duration.startTime'] = startTime;
+        aeData['duration.seconds'] = seconds;
+    } else if (efffectData.type === 'Combat' && !!game.combats.active?.current) {
+        const startRound = efffectData.startRound || game.combats.active.current.round || 1;
+        const startTurn = efffectData.startTurn || game.combats.active.current.turn || 0;
+        const rounds = efffectData.rounds || 1;
+        const turns = efffectData.turns || 0;
+
+        aeData['duration.combat'] = game.combats.active.id;
+        aeData['duration.startRound'] = startRound;
+        aeData['duration.startTurn'] = startTurn;
+        aeData['duration.rounds'] = rounds;
+        aeData['duration.turns'] = turns;
+    } else {
+        return null;
+    }
+
+    const effect = await ActiveEffect.create(aeData, {parent: efffectData.owner});
+
+    if (options.selfDestroy) {
+        await effect.setFlag('effectmacro', 'onDisable.script', `game.actors.get('${efffectData.owner.id}').effects.get('${effect.id}').delete();`);
+    }
+
+    return effect;
+}
+
+/**
+ *
+ * @param {*} obj
+ * @param {string} prefix
+ * @returns
+ */
+export function getObjectKeys(obj, prefix) {
+    var isobject = function (x) {
+        return Object.prototype.toString.call(x) === '[object Object]';
+    };
+
+    var keys = Object.keys(obj);
+    prefix = prefix ? prefix + '.' : '';
+    return keys.reduce(function (result, key) {
+        if (isobject(obj[key])) {
+            result = result.concat(getObjectKeys(obj[key], prefix + key));
+        } else {
+            result.push(prefix + key);
+        }
+        return result;
+    }, []);
+}
+
+/**
+ * Rolls an arbitrary number of d6.
+ * @param {number} count - number of dice
+ * @returns
+ */
+export function d6(count = 1) {
+    return dx(6, count);
+}
+
+/**
+ * Rolls an arbitrary number of d20.
+ * @param {number} count - number of dice
+ * @returns
+ */
+export function d20(count = 1) {
+    return dx(20, count);
+}
+
+/**
+ * Rolls an arbitrary number of d100.
+ * @param {number} count - number of dice
+ * @returns
+ */
+export function d100(count = 1) {
+    return dx(100, count);
+}
+
+/**
+ * Rolls an arbitrary die.
+ * @param {number} x - number of sides of the die
+ * @param {number} count - number of dice
+ * @returns
+ */
+export function dx(x, count = 1) {
+    let val = 0;
+    for (let i = 0; i < count; i++) val += Math.floor(x * foundry.dice.MersenneTwister.random()) + 1;
+    return val;
+}
+
+/**
+ * Returns the between 5 (always success) and 95 (always a failure) clamped value.
+ * @param {number} value - The value to be clamped.
+ * @returns The clamped value.
+ */
+export function HM100Check(value) {
+    return Math.max(Math.min(Math.round(value), 95), 5);
+}
+
+var g;
+export async function drawDebugPoint(p) {
+    // g = new PIXI.Graphics();
+    // game.canvas.addChild(g);
+    // g.zIndex = -1;
+    // g.beginFill(0xff0000, 1.0).drawCircle(p.x, p.y, 16);
+    // const c = new PIXI.Circle(p.x, p.y, 6);
+    // const dl = game.canvas.getLayerByEmbeddedName('Drawing');
+    // const shape = new foundry.data.RectangleShapeData({x: p.x, y: p.y, width: 5, height: 5});
+    // const rs = foundry.canvas.regios.RegionShape.create({data: shape});
+    // // const shape = new foundry.data.CircleShapeData({x: p.x, y: p.y, radius: 5});
+    // const data = [{x: p.x, y: p.y, fillColor: '#ffffff', shape}];
+    // const dd = await DrawingDocument.create(data);
+    // const d = dl.createObject(dd);
+    return;
 }

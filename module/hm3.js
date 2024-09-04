@@ -9,9 +9,11 @@ import {DiceHM3} from './dice-hm3.js';
 import * as effect from './effect.js';
 import {HM3ActiveEffectConfig} from './hm3-active-effect-config.js';
 import {HarnMasterCombat} from './hm3-combat.js';
-import {AspectTypes, HookTypes, ItemTypes, LocationTypes, RangeTypes, SkillTypes} from './hm3-types.js';
+import {HM3MacroConfig} from './hm3-macro-config.js';
+import {ActorType, Aspect, Hook, ItemType, Location, Range, SkillType} from './hm3-types.js';
 import {HarnMasterItemSheet} from './item/item-sheet.js';
 import {HarnMasterItem} from './item/item.js';
+import {HarnMasterMacro, registerHooks} from './macro.js';
 import * as macros from './macros.js';
 import * as migrations from './migrations.js';
 import {registerSystemSettings} from './settings.js';
@@ -28,7 +30,7 @@ Hooks.once('init', async function () {
         config: HM3,
         macros: macros,
         migrations: migrations,
-        enums: {AspectTypes, HookTypes, ItemTypes, LocationTypes, RangeTypes, SkillTypes}
+        enums: {ActorType, Aspect, Hook, ItemType, Location, Range, SkillType}
     };
 
     /**
@@ -85,6 +87,8 @@ Hooks.once('init', async function () {
         wrapper: true
     });
 
+    CONFIG.Macro.documentClass = HarnMasterMacro;
+
     // Register sheet application classes
     Actors.unregisterSheet('core', ActorSheet);
     Actors.registerSheet('hm3', HarnMasterCharacterSheet, {
@@ -107,6 +111,12 @@ Hooks.once('init', async function () {
     DocumentSheetConfig.registerSheet(ActiveEffect, 'hm3', HM3ActiveEffectConfig, {
         makeDefault: true,
         label: 'Default HarnMaster Active Effect Sheet'
+    });
+
+    DocumentSheetConfig.unregisterSheet(Macro, 'core', MacroConfig);
+    DocumentSheetConfig.registerSheet(Macro, 'hm3', HM3MacroConfig, {
+        makeDefault: true,
+        label: 'Default HarnMaster Macro Sheet'
     });
 
     Items.unregisterSheet('core', ItemSheet);
@@ -204,7 +214,7 @@ Hooks.on('updateCombat', async (combat, updateData) => {
  * Once the entire VTT framework is initialized, check to see if
  * we should perform a data migration.
  */
-Hooks.once('ready', function () {
+Hooks.once('ready', async function () {
     // Determine whether a system migration is required
     const currentMigrationVersion = game.settings.get('hm3', 'systemMigrationVersion');
     const NEEDS_MIGRATION_VERSION = '1.2.19'; // Anything older than this must be migrated
@@ -212,13 +222,25 @@ Hooks.once('ready', function () {
     if (currentMigrationVersion) {
         let needMigration = foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentMigrationVersion);
         if (needMigration && game.user.isGM) {
-            migrations.migrateWorld();
+            await migrations.migrateWorld();
         }
     } else {
-        game.settings.set('hm3', 'systemMigrationVersion', game.system.data.version);
+        game.settings.set('hm3', 'systemMigrationVersion', game.system.version);
     }
 
     Hooks.on('hotbarDrop', (bar, data, slot) => macros.createHM3Macro(data, slot));
+
+    // if not exists, create and set
+    if (!game.settings.get('hm3', 'actorMacrosFolderId') || (game.actors.contents.length > 0 && !game.actors.contents[0].macrofolder)) {
+        const folder = await Folder.create({
+            name: 'Actor Macros (DO NOT DELETE)',
+            type: 'Macro',
+            color: 0x999999
+        });
+        await game.settings.set('hm3', 'actorMacrosFolderId', folder.id);
+    }
+
+    await registerHooks();
 
     HM3.ready = true;
 

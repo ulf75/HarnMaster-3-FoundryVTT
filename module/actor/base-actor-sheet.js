@@ -1,5 +1,6 @@
 import {onManageActiveEffect} from '../effect.js';
-import {ItemTypes} from '../hm3-types.js';
+import {ActorType, ItemType} from '../hm3-types.js';
+import {onManageMacro} from '../macro.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 import {HarnMasterActor} from './actor.js';
@@ -32,15 +33,15 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.actor = foundry.utils.deepClone(this.actor);
         data.items = this.actor.items.map((i) => {
             // A new, truncated number is created so that weights with many decimal places (e.g. dram) are also displayed nicely.
-            if ([ItemTypes.MISCGEAR, ItemTypes.ARMORGEAR, ItemTypes.WEAPONGEAR, ItemTypes.MISSILEGEAR, ItemTypes.CONTAINERGEAR].includes(i.type)) {
+            if ([ItemType.MISCGEAR, ItemType.ARMORGEAR, ItemType.WEAPONGEAR, ItemType.MISSILEGEAR, ItemType.CONTAINERGEAR].includes(i.type)) {
                 i.system.weightT = utility.truncate(i.system.weight, 3);
             }
             // Dormant psionic talents may be invisible for players (ML20 or less (Psionics 3))
-            if (i.type === ItemTypes.PSIONIC) {
+            if (i.type === ItemType.PSIONIC) {
                 i.system.visible = String(!game.settings.get('hm3', 'dormantPsionicTalents') || i.system.masteryLevel > 20 || game.user.isGM);
             }
             // The range can also be displayed in grids (hex). Can be changed in the settings.
-            if (i.type === ItemTypes.MISSILEGEAR) {
+            if (i.type === ItemType.MISSILEGEAR) {
                 if (data.isGridDistanceUnits) {
                     i.system.rangeGrid = {
                         short: i.system.range.short / canvas.dimensions.distance,
@@ -67,17 +68,17 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.dtypes = ['String', 'Number', 'Boolean'];
         let capacityMax = 0;
         let capacityVal = 0;
-        if (this.actor.type === 'character') {
+        if (this.actor.type === ActorType.CHARACTER) {
             capacityMax = data.adata.endurance * 10;
             if (data.adata.eph) {
                 capacityVal = data.adata.eph.totalGearWeight;
             }
-        } else if (this.actor.type === 'creature') {
+        } else if (this.actor.type === ActorType.CREATURE) {
             capacityMax = data.adata.loadRating + data.adata.endurance * 10;
             if (data.adata.eph) {
                 capacityVal = data.adata.eph.totalGearWeight;
             }
-        } else if (this.actor.type === 'container') {
+        } else if (this.actor.type === ActorType.CONTAINER) {
             capacityMax = data.adata.capacity.max;
             capacityVal = data.adata.capacity.value;
         }
@@ -86,7 +87,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.containers = {
             'on-person': {
                 'name': 'On Person',
-                'type': 'containergear',
+                'type': ItemType.CONTAINERGEAR,
                 'system': {
                     'container': 'on-person',
                     'capacity': {
@@ -98,7 +99,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         };
 
         this.actor.items.forEach((it) => {
-            if (it.type === 'containergear') {
+            if (it.type === ItemType.CONTAINERGEAR) {
                 data.containers[it.id] = it;
             }
         });
@@ -111,12 +112,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             'containergear': 'Container'
         };
 
-        // get active effects.
+        // get active effects
         data.effects = {};
         this.actor.effects.forEach((effect) => {
             data.effects[effect.id] = {
                 'id': effect.id,
                 'label': effect.name,
+                'img': effect.img,
                 'sourceName': effect.sourceName,
                 'duration': utility.aeDuration(effect),
                 'source': effect,
@@ -124,6 +126,32 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             };
             data.effects[effect.id].disabled = effect.disabled;
         });
+
+        // migrate legacy macro
+        let macro = this.actor.macrolist.find((m) => m.getFlag('hm3', 'trigger') === 'legacy');
+        if (!macro) {
+            (async () => {
+                macro = await Macro.create({
+                    name: `${this.actor.name} Legacy Macro`,
+                    type: this.actor.system.macros.type,
+                    command: this.actor.system.macros.command,
+                    folder: this.actor.macrofolder
+                });
+                await macro.setFlag('hm3', 'trigger', 'legacy');
+                await macro.setFlag('hm3', 'ownerId', this.actor.id);
+                this.actor.sheet.render();
+            })();
+        }
+
+        // get macros
+        data.adata.macrolist = this.actor.macrolist;
+        data.adata.macrolist.map((m) => {
+            m.trigger = game.macros.get(m.id)?.getFlag('hm3', 'trigger');
+            m.ownerId = game.macros.get(m.id)?.getFlag('hm3', 'ownerId'); // currently not needed
+        });
+        data.adata.macrolist.sort((a, b) =>
+            a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : b?.name.toLowerCase() > a?.name.toLowerCase() ? -1 : 0
+        );
 
         return data;
     }
@@ -208,7 +236,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // At this point we know this dropped item is Gear coming from an actor,
 
         // Containers are a special case, and they need to be processed specially
-        if (droppedItem.type === 'containergear') return await this._moveContainer(event, droppedItem);
+        if (droppedItem.type === ItemType.CONTAINERGEAR) return await this._moveContainer(event, droppedItem);
 
         // Set the destination container to the closest drop containerid
         droppedItem.system.container = destContainer;
@@ -352,7 +380,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (!actor.isOwner) return false;
 
         if (!itemData.type.endsWith('gear')) {
-            if (actor.type === 'container') {
+            if (actor.type === ActorType.CONTAINER) {
                 ui.notifications.warn(`You may only place physical objects in a container; drop of ${itemData.name} refused.`);
                 return false;
             }
@@ -399,7 +427,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.item-dumpdesc').click(this._onDumpEsotericDescription.bind(this));
 
         // Active Effect management
-        html.find('.effect-control').click((ev) => onManageActiveEffect(ev, this.document));
+        html.find('.effect-control, .effect-name').click((ev) => onManageActiveEffect(ev, this.document));
+
+        // Macro management
+        html.find('.macro-control, .macro-name').click((ev) => onManageMacro(ev, this.document));
 
         // Ensure all text is selected when entering number input field
         html.on('click', "input[type='number']", (ev) => {

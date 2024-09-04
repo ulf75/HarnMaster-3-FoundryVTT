@@ -1,4 +1,10 @@
 <div class="hm3 chat-card item-card" data-actor-id="{{actorId}}">
+    {{#if fluff}}
+    <div class="fluff">
+        <p class="fluff">{{fluff}}</p>
+    </div>
+    {{/if}}
+
     <header class="card-header flexrow">
         <h3 class="title">{{title}}</h3>
     </header>
@@ -62,4 +68,10 @@
         {{/if}}
     {{/if}}
     </footer>
+
+    {{#if fluffResult}}
+    <div class="fluff">
+        <p class="fluff">{{fluffResult}}</p>
+    </div>
+    {{/if}}
 </div>

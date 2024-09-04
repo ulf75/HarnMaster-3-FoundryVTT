@@ -9,8 +9,15 @@ export async function onManageActiveEffect(event, owner) {
     event.preventDefault();
     const a = event.currentTarget;
     const li = a.closest('li');
+    const clickOnName = !!(
+        li.firstElementChild?.className?.includes('effect-name') &&
+        a.dataset.action !== 'create' &&
+        a.dataset.action !== 'toggle' &&
+        a.dataset.action !== 'delete'
+    );
+    const action = clickOnName ? 'edit' : a.dataset.action;
     const effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
-    switch (a.dataset.action) {
+    switch (action) {
         case 'create':
             const dlgTemplate = 'systems/hm3/templates/dialog/active-effect-start.html';
             const dialogData = {
@@ -53,10 +60,31 @@ export async function onManageActiveEffect(event, owner) {
                 },
                 options: {jQuery: false}
             });
+
         case 'edit':
             return effect.sheet.render(true);
+
         case 'delete':
-            return effect.delete();
+            return new Dialog({
+                title: 'Delete Active Effect',
+                content: '<p>Are you sure?</p><p>This active effect will be permanently deleted and cannot be recovered.</p>',
+                buttons: {
+                    yes: {
+                        icon: '<i class="fas fa-check"></i>',
+                        label: 'Yes',
+                        callback: async (html) => {
+                            await effect.delete();
+                        }
+                    },
+                    no: {
+                        icon: '<i class="fas fa-times"></i>',
+                        label: 'No',
+                        callback: async (html) => {}
+                    }
+                },
+                default: 'yes'
+            }).render(true);
+
         case 'toggle':
             const updateData = {};
             if (effect.disabled) {
@@ -86,6 +114,7 @@ export async function checkExpiredActiveEffects() {
     for (let actor of game.actors.values()) {
         if (actor.isOwner && actor.effects?.size) {
             await disableExpiredAE(actor);
+            actor.sheet.render();
         }
     }
 

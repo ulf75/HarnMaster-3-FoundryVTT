@@ -378,14 +378,17 @@ export function aeDuration(effect) {
     if (Number.isNumeric(d.seconds)) {
         const start = d.startTime || game.time.worldTime;
         const elapsed = game.time.worldTime - start;
-        const remaining = Math.max(d.seconds - elapsed, 0);
+        const remaining = elapsed < 0 ? d.seconds : Math.max(d.seconds - elapsed, 0);
         //const normDuration = toNormTime(d.seconds);
         const normRemaining = toNormTime(remaining);
+        const normStart = elapsed < 0 ? toNormTime(-elapsed) : 'Started';
         return {
             type: 'seconds',
             duration: d.seconds,
             remaining: remaining,
-            label: normRemaining
+            label: normRemaining,
+            start,
+            startLabel: normStart
             //normDuration: normDuration,
             //normRemaining: normRemaining
         };
@@ -574,4 +577,13 @@ export function parseAEValue(string) {
  */
 export function truncate(value, digits = 2) {
     return Math.round((value + Number.EPSILON) * 10 ** digits) / 10 ** digits;
+}
+
+/**
+ * Returns the actor of the given macro id.
+ * @param {Macro} macro - The macro
+ * @returns {Actor} - actor
+ */
+export function getActorFromMacro(macro) {
+    return game.actors.contents.find((a) => macro.getFlag('hm3', 'ownerId') === a.id);
 }

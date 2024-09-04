@@ -51,7 +51,7 @@
         <a class="item" data-tab="esoteric">Esoterics</a>
         <a class="item" data-tab="inventory">Gear</a>
         {{#if hasRwPermission}}
-        <a class="item" data-tab="macro">Macro</a>
+        <a class="item" data-tab="macros">Macros</a>
         <a class="item" data-tab="effects">Effects</a>
         {{/if}}
     </nav>
@@ -1237,19 +1237,43 @@
             {{/each}}
         </div>
 
-        {{!-- Macro Tab --}}
-        <div class="tab macro" data-group="primary" data-tab="macro">
-            <div class="form-group">
-                <label>Type</label>
-                <select name="system.macros.type">
-                    {{selectOptions macroTypes selected=adata.macros.type valueAttr="key" labelAttr="label"}}
-                </select>
-            </div>
-        
-            <div class="form-group stacked command">
-                <label>Command</label>
-                <textarea name="system.macros.command">{{adata.macros.command}}</textarea>
-            </div>
+        {{!-- Macros Tab --}}
+        <div class="tab macros" data-group="primary" data-tab="macros">
+            <div class="flexrow">
+                <input class="macros-name-filter" type="text" name="system.macrosNameFilter"
+                    placeholder="Filter macros by name..." data-dtype="String" />
+            </div>    
+            <ol class="macros-list">
+              <li class="macros-header flexrow">
+                  <h3 class="macro-name flexrow">Macro<a class="more-info"
+                      data-journal-entry="Sheet - Macro Tab"><i
+                          class="far fa-question-circle"></i></a></h3>
+                  <div class="macro-source">Type</div>
+                  <!-- <div class="macro-duration">Trigger</div> -->
+                  <div class="macro-changes">Trigger</div>
+                  <a class="macro-controls macro-control" title="Add Macro" data-action="create"><span class="active"><i
+                      class="fas fa-plus"></i> Add</span></a>
+              </li>
+              <ol class="macro-list item-list">
+              {{#each adata.macrolist as |macro|}}
+                  <li class="macro {{#if macro.disabled}}disabled{{/if}} flexrow" data-macro-name="{{macro.name}}"
+                      data-macro-id="{{macro._id}}">
+                      <div class="macro-name flexrow">
+                          <div class="macro-image" style="background-image: url('{{macro.img}}')"></div>
+                          <h4>{{macro.name}}</h4>
+                      </div>
+                      <div class="macro-ele macro-source">{{macro.type}}</div>
+                      <!-- <div class="macro-ele macro-duration">{{macro.trigger}}</div> -->
+                      <div class="macro-ele macro-changes">{{macro.trigger}}</div>
+                      <div class="macro-controls">
+                          <!-- <a class="macro-control" data-action="toggle"><i class="{{#unless macro.disabled}}active{{/unless}} fas fa-circle-notch"></i></a> -->
+                          <a class="macro-control" data-action="edit"><i class="active fas fa-edit"></i></a>
+                          <a class="macro-control" data-action="delete"><i class="active fas fa-trash"></i></a>
+                      </div>
+                  </li>
+              {{/each}}
+              </ol>
+          </ol>
         </div>
 
         {{!-- Effects Tab --}}
@@ -1263,7 +1287,8 @@
                     <h3 class="effect-name flexrow">Effect<a class="more-info"
                         data-journal-entry="Sheet - Effect Tab"><i
                             class="far fa-question-circle"></i></a></h3>
-                    <div class="effect-source">Source</div>
+                    <!-- <div class="effect-source">Source</div> -->
+                    <div class="effect-source">Start</div>
                     <div class="effect-duration">Remaining</div>
                     <div class="effect-changes">Changes</div>
                     <a class="effect-controls effect-control" title="Add Effect" data-action="create"><span class="active"><i
@@ -1277,7 +1302,8 @@
                             <div class="effect-image" style="background-image: url('{{effect.img}}')"></div>
                             <h4>{{effect.label}}</h4>
                         </div>
-                        <div class="effect-ele effect-source">{{effect.sourceName}}</div>
+                        <!-- <div class="effect-ele effect-source">{{effect.sourceName}}</div> -->
+                        <div class="effect-ele effect-duration">{{effect.duration.startLabel}}</div>
                         <div class="effect-ele effect-duration">{{#if (eq effect.duration.label "None")}}Indefinite{{else}}{{effect.duration.label}}{{/if}}</div>
                         <div class="effect-ele effect-changes">{{effect.changes}}</div>
                         <div class="effect-controls">

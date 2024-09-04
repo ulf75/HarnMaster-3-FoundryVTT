@@ -71,9 +71,16 @@ export class DiceHM3 {
         });
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : '';
 
+        const multiplier = roll.preData.multiplier || rollData.multiplier || 5;
         let title = rollData.label;
-        if (rollData.isAbility) title = rollData.label.replace(`${rollData.skill} Roll`, `${rollData.skill} x${roll.preData.multiplier} Roll`);
+        if (rollData.isAbility) title = rollData.label.replace(`${rollData.skill} Roll`, `${rollData.skill} x${multiplier} Roll`);
         if (roll.preData.isAppraisal) title = rollData.label.replace('Skill Test', 'Appraisal Test');
+        let fluffResult = null;
+        if (rollData.fluffResult) {
+            if (roll.isCritical) fluffResult = roll.isSuccess ? rollData.fluffResult.CS : rollData.fluffResult.CF;
+            else fluffResult = roll.isSuccess ? rollData.fluffResult.MS : rollData.fluffResult.MF;
+        }
+
         const chatTemplateData = {
             type: roll.type,
             title,
@@ -88,12 +95,20 @@ export class DiceHM3 {
             showResult: false,
             description: roll.description,
             notes: renderedNotes,
-            roll
+            roll,
+            fluff: rollData.fluff,
+            fluffResult
         };
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
-        const {blind, rollMode, whisper} = this.getRollMode(rollData.skill, roll.preData.isAppraisal);
+        const {blind, rollMode, whisper} = this.getRollMode({
+            skill: rollData.skill,
+            isAppraisal: roll.preData.isAppraisal,
+            blind: rollData.blind,
+            private: rollData.private,
+            userId: game.users.players.find((p) => p.character.id === rollData.actor)?.id
+        });
         const messageData = {
             user: game.user.id,
             speaker,
@@ -196,7 +211,7 @@ export class DiceHM3 {
      */
     static async d6Roll(rollData) {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
-        const {blind, rollMode, whisper} = this.getRollMode(rollData.skill);
+        const {blind, rollMode, whisper} = this.getRollMode({skill: rollData.skill});
 
         const dialogOptions = {
             type: rollData.type,
@@ -446,7 +461,7 @@ export class DiceHM3 {
                 true
             );
         }
-        return chatTemplateData;
+        return result;
     }
 
     /**
@@ -1319,19 +1334,32 @@ export class DiceHM3 {
         return result;
     }
 
-    static getRollMode(skillName, isAppraisal) {
+    /**
+     *
+     * @param {*} options
+     * @returns
+     */
+    static getRollMode(options) {
+        options = foundry.utils.mergeObject({skill: null, isAppraisal: false, blind: false, private: false, userId: null}, options);
         // publicroll, gmroll, blindroll & selfroll (CONST.DICE_ROLL_MODES.BLIND)
-        let blind =
+        const blind =
+            options.blind ||
             game.settings.get('core', 'rollMode') === CONST.DICE_ROLL_MODES.BLIND ||
-            ((HM3.blindRolls.includes(skillName) || isAppraisal) && game.settings.get('hm3', 'blindGmMode'));
-        const rollMode = blind ? CONST.DICE_ROLL_MODES.BLIND : game.settings.get('core', 'rollMode');
+            ((HM3.blindRolls.includes(options.skill) || options.isAppraisal) && !!game.settings.get('hm3', 'blindGmMode'));
+        const rollMode = blind
+            ? CONST.DICE_ROLL_MODES.BLIND
+            : options.private
+            ? CONST.DICE_ROLL_MODES.PRIVATE
+            : game.settings.get('core', 'rollMode');
         const whisper = new Set();
         if (blind) whisper.add(game.users.activeGM.id);
         else {
             if (rollMode === CONST.DICE_ROLL_MODES.SELF) whisper.add(game.users.current.id);
             if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE) whisper.add(game.users.activeGM.id);
             if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE) whisper.add(game.users.current.id);
+            if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE && options.userId) whisper.add(options.userId);
         }
+
         return {blind, rollMode, whisper: Array.from(whisper)};
     }
 }

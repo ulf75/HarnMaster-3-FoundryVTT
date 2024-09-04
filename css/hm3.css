@@ -285,6 +285,13 @@ section.highlight {
     font-style: italic;
 }
 
+.chat-card .fluff {
+    font-style: italic;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 .tooltip {
     position: relative;
     display: inline-block;
