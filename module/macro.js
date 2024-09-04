@@ -83,7 +83,7 @@ export async function onManageMacro(event, owner) {
  */
 export async function registerHooks() {
     [...supportedFoundryHooks, ...supportedHMHooks].forEach((hook) => {
-        Hooks.on(hook, (...args) => executeHooks(...args, hook));
+        Hooks.on(hook, (...args) => executeHook(...args, hook));
     });
 }
 
@@ -91,7 +91,7 @@ export async function registerHooks() {
  * TODO
  * @param  {...any} args
  */
-function executeHooks(...args) {
+function executeHook(...args) {
     const hook = args.pop();
 
     const actors = new Set();
@@ -104,14 +104,14 @@ function executeHooks(...args) {
             const trigger = macro?.getFlag('hm3', 'trigger');
             if (trigger === hook) {
                 if (macro.canExecute) {
-                    const asyncFunction = macro.command.includes('await') ? 'async' : ''; // TODO
+                    // const asyncFunction = macro.command.includes('await') ? 'async' : ''; // TODO
                     const macroTokens = canvas.scene.tokens.contents.filter((t) => t.actor.id === actorId);
                     await macro.execute({
                         macroActor: macroTokens[0].actor,
                         macroTokens,
                         allOtherTokens: canvas.scene.tokens.contents.filter((t) => t.actor.id !== actorId),
-                        triggerArgs: args,
-                        macros: game.hm3.macros
+                        triggerArgs: args, // original args from the hook
+                        macros: game.hm3.macros // convenience
                     });
                 }
             }
