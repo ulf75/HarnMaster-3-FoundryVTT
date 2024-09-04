@@ -461,7 +461,7 @@ export class DiceHM3 {
                 true
             );
         }
-        return chatTemplateData;
+        return result;
     }
 
     /**
