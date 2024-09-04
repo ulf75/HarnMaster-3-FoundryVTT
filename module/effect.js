@@ -114,6 +114,7 @@ export async function checkExpiredActiveEffects() {
     for (let actor of game.actors.values()) {
         if (actor.isOwner && actor.effects?.size) {
             await disableExpiredAE(actor);
+            actor.sheet.render();
         }
     }
 
