@@ -1024,7 +1024,7 @@ export class HarnMasterActor extends Actor {
     _applySkillActiveEffects() {
         const ownedItems = this.items;
         const changes = this.effects.reduce((chgs, e) => {
-            if (e.disabled) return chgs;
+            if (e.disabled || e.duration?.startTime > game.time.worldTime) return chgs;
             const emlChanges = e.changes.filter((chg) => {
                 if (chg.key === 'system.eph.itemEMLMod') {
                     const val = utility.parseAEValue(chg.value);
@@ -1075,7 +1075,7 @@ export class HarnMasterActor extends Actor {
      */
     _applyWeaponActiveEffects() {
         const changes = this.effects.reduce((chgs, e) => {
-            if (e.disabled) return chgs;
+            if (e.disabled || e.duration?.startTime > game.time.worldTime) return chgs;
             const amlChanges = e.changes.filter((chg) => {
                 if (chg.key === 'system.eph.itemAMLMod') {
                     const val = utility.parseAEValue(chg.value);
@@ -1168,7 +1168,7 @@ export class HarnMasterActor extends Actor {
 
         // Organize non-disabled effects by their application priority
         const changes = this.effects.reduce((chgs, e) => {
-            if (e.disabled) return chgs;
+            if (e.disabled || e.duration?.startTime > game.time.worldTime) return chgs;
             const chgList = e.changes.filter((chg) => chg.key === property);
             return chgs.concat(
                 chgList.map((c) => {
@@ -1203,7 +1203,7 @@ export class HarnMasterActor extends Actor {
         const skillData = skill.system;
         // Organize non-disabled effects by their application priority
         const changes = this.effects.reduce((chgs, e) => {
-            if (e.disabled) return chgs;
+            if (e.disabled || e.duration?.startTime > game.time.worldTime) return chgs;
             if (!['skill', 'psionic'].includes(skill.type)) return chgs;
             const skillChanges = e.changes.filter(
                 (chg) =>
