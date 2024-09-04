@@ -88,12 +88,12 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
         } else if (!result.isSuccess && !result.isCritical) {
             // marginal failure
             seconds = macros.d6(8) * MINUTE;
-            value = -4;
+            value = -3;
             addon = ' (MF)';
         } else {
             // critical failure
             seconds = macros.d6(16) * MINUTE;
-            value = -4;
+            value = -3;
             addon = ' (CF)';
             await macros.createActiveEffect(
                 {
@@ -104,7 +104,7 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
                     icon: STENCH_OF_CORRUPTION_ICON
                 },
                 [{key: 'universalPenalty', value: 4}],
-                {selfDestroy: true}
+                {selfDestroy: true, unique: true}
             );
         }
 
@@ -117,7 +117,7 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
                 icon: STENCH_OF_CORRUPTION_ICON
             },
             [{key: 'eph.smell', value}],
-            {selfDestroy: true}
+            {selfDestroy: true, unique: true}
         );
     }
 }
