@@ -1,4 +1,22 @@
 /**
+ * Combat Action types enum.
+ */
+export const Action = Object.freeze({
+    CHARGE: 'Charge',
+    DISENGAGE: 'Disengage',
+    ENGAGE: 'Engage',
+    ESOTERIC_ATTACK: 'Esoteric Attack',
+    FREE_MOVE: 'Free Move',
+    GRAPPLE_ATTACK: 'Grapple Attack',
+    GROPE: 'Grope',
+    MELEE_ATTACK: 'Melee Attack',
+    MISSILE_ATTACK: 'Missile Attack',
+    PASS: 'Pass',
+    REST: 'Rest',
+    RISE: 'Rise'
+});
+
+/**
  * Actor types enum.
  */
 export const ActorType = Object.freeze({
@@ -15,6 +33,35 @@ export const Aspect = Object.freeze({
     EDGED: 'Edged',
     FIRE: 'Fire',
     PIERCING: 'Piercing'
+});
+
+/**
+ * Condition types enum. A Condition is just a special type of Active Effect.
+ */
+export const Condition = Object.freeze({
+    /**@constant {string} - EYE to 0. COMBAT, CRAFT, MAGIC & PHYSICAL skills to 05. */
+    BLINDED: 'Blinded',
+
+    /**@constant {string} - HRG to 0. */
+    DEAFENED: 'Deafened',
+
+    /**@constant {string} - MOV to 0. Only GRAPPLE_ATTACK or PASS actions. Only GRAPPLE or IGNORE defenses. */
+    GRAPPLED: 'Grappled',
+
+    /**@constant {string} - NO skills, spells & psionics. Only MOVE, PASS or REST actions. Only IGNORE defenses. */
+    INCAPACITATED: 'Incapacitated',
+
+    /**@constant {string} - MOV to 0. +20 EML for all engaged enemies. Only PASS or RISE actions. */
+    PRONE: 'Prone',
+
+    /**@constant {string} - NO skills, spells & psionics. Only HALF_MOVE, PASS or REST actions. Only IGNORE defenses. */
+    SHOCKED: 'Shocked',
+
+    /**@constant {string} - Incapacitated plus MOV to 0. */
+    STUNNED: 'Stunned',
+
+    /**@constant {string} - MOV to 0. NO skills, spells & psionics. Only PASS actions. Only IGNORE defenses. Plus PRONE. */
+    UNCONSCIOUS: 'Unconscious'
 });
 
 /**
