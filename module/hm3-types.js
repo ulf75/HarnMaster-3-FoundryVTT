@@ -9,6 +9,7 @@ export const Action = Object.freeze({
     FREE_MOVE: 'Free Move',
     GRAPPLE_ATTACK: 'Grapple Attack',
     GROPE: 'Grope',
+    HALF_MOVE: 'Half Move',
     MELEE_ATTACK: 'Melee Attack',
     MISSILE_ATTACK: 'Missile Attack',
     PASS: 'Pass',

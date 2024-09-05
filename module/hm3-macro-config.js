@@ -54,8 +54,8 @@ export class HM3MacroConfig extends MacroConfig {
             {value: 'updateToken', label: 'Update Token'},
             {value: 'updateWorldTime', label: 'Update World Time'}
         ];
-        const macro = game.macros.get(data.data._id);
-        data.trigger = macro.getFlag('hm3', 'trigger');
+
+        data.trigger = this.object.getFlag('hm3', 'trigger') || 'manual';
 
         if (data.trigger === 'legacy') {
             data.triggerTypes.push({value: 'legacy', label: 'Legacy'});
@@ -72,13 +72,12 @@ export class HM3MacroConfig extends MacroConfig {
     async _updateObject(event, formData) {
         event.preventDefault();
         if (event instanceof SubmitEvent) {
-            const macroId = event.currentTarget
-                ? event.currentTarget[0].offsetParent.id.substring(21)
-                : event.target[0].offsetParent.id.substring(21);
-            const macro = game.macros.get(macroId);
-            await macro.setFlag('hm3', 'trigger', formData.trigger);
-            await super._updateObject(event, formData);
-            utility.getActorFromMacro(macro)?.sheet.render();
+            const ret = await super._updateObject(event, formData);
+            await this.object.setFlag('hm3', 'trigger', formData.trigger);
+            utility.getActorFromMacro(this.object)?.sheet.render();
+            return ret;
+        } else {
+            return await super._updateObject(event, formData);
         }
     }
 
