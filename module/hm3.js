@@ -10,10 +10,12 @@ import * as effect from './effect.js';
 import {HM3ActiveEffectConfig} from './hm3-active-effect-config.js';
 import {HarnMasterCombat} from './hm3-combat.js';
 import {HM3MacroConfig} from './hm3-macro-config.js';
+import {HarnMasterMacro} from './hm3-macro.js';
+import {HarnMasterToken} from './hm3-token.js';
 import {ActorType, Aspect, Hook, ItemType, Location, Range, SkillType} from './hm3-types.js';
 import {HarnMasterItemSheet} from './item/item-sheet.js';
 import {HarnMasterItem} from './item/item.js';
-import {HarnMasterMacro, registerHooks} from './macro.js';
+import {registerHooks} from './macro.js';
 import * as macros from './macros.js';
 import * as migrations from './migrations.js';
 import {registerSystemSettings} from './settings.js';
@@ -88,6 +90,7 @@ Hooks.once('init', async function () {
     });
 
     CONFIG.Macro.documentClass = HarnMasterMacro;
+    CONFIG.Token.objectClass = HarnMasterToken;
 
     // Register sheet application classes
     Actors.unregisterSheet('core', ActorSheet);

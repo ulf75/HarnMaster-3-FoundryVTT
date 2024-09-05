@@ -1,8 +1,13 @@
 import * as combat from './combat.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
-import {SkillType} from './hm3-types.js';
+import {Condition, SkillType} from './hm3-types.js';
 import * as utility from './utility.js';
+
+export const SECOND = 1;
+export const MINUTE = 60 * SECOND;
+export const HOUR = 60 * MINUTE;
+export const DAY = 60 * HOUR;
 
 /**
  * Create a script macro from an Item drop.
@@ -1482,35 +1487,50 @@ export function getActiveEffect(actor, name, strict = false) {
  * @returns
  */
 export async function createActiveEffect(efffectData, changes = [], options = {}) {
+    efffectData = foundry.utils.mergeObject(
+        {
+            label: null,
+            actor: null,
+            type: null,
+            icon: 'icons/svg/aura.svg',
+            postpone: 0,
+            startTime: null,
+            seconds: null,
+            startRound: null,
+            startTurn: null,
+            rounds: 1,
+            turns: 0
+        },
+        efffectData
+    );
+
     // mandatory
-    if (!efffectData.label || !efffectData.owner || !efffectData.type) {
-        console.error('HM3 Macro "createActiveEffect" needs label, owner & type as mandatory input!');
+    if (!efffectData.label || !efffectData.actor || !efffectData.type) {
+        console.error('HM3 Macro "createActiveEffect" needs label, actor & type as mandatory input!');
         return null;
     }
 
     options = foundry.utils.mergeObject({selfDestroy: false, unique: false}, options);
     changes = changes.map((change) => {
         change = foundry.utils.mergeObject({key: '', value: 0, mode: 2, priority: null}, change);
-        const keys = getObjectKeys(efffectData.owner.system);
+        const keys = getObjectKeys(efffectData.actor.system);
         change.key = 'system.' + keys.find((v) => v.includes(change.key));
         return change;
     });
 
-    if (options.unique && hasActiveEffect(efffectData.owner, efffectData.label)) {
+    if (options.unique && hasActiveEffect(efffectData.actor, efffectData.label)) {
         return null;
     }
 
-    const icon = efffectData.icon || 'icons/svg/aura.svg';
-
     const aeData = {
         label: efffectData.label,
-        icon,
-        origin: efffectData.owner.uuid,
+        icon: efffectData.icon,
+        origin: efffectData.actor.uuid,
         changes
     };
 
     if (efffectData.type === 'GameTime') {
-        const postpone = efffectData.postpone || 0;
+        const postpone = efffectData.postpone;
         const startTime = efffectData.startTime || game.time.worldTime + postpone;
         const seconds = efffectData.seconds === null ? null : efffectData.seconds || 1;
 
@@ -1519,8 +1539,8 @@ export async function createActiveEffect(efffectData, changes = [], options = {}
     } else if (efffectData.type === 'Combat' && !!game.combats.active?.current) {
         const startRound = efffectData.startRound || game.combats.active.current.round || 1;
         const startTurn = efffectData.startTurn || game.combats.active.current.turn || 0;
-        const rounds = efffectData.rounds || 1;
-        const turns = efffectData.turns || 0;
+        const rounds = efffectData.rounds;
+        const turns = efffectData.turns;
 
         aeData['duration.combat'] = game.combats.active.id;
         aeData['duration.startRound'] = startRound;
@@ -1531,13 +1551,34 @@ export async function createActiveEffect(efffectData, changes = [], options = {}
         return null;
     }
 
-    const effect = await ActiveEffect.create(aeData, {parent: efffectData.owner});
+    const effect = await ActiveEffect.create(aeData, {parent: efffectData.actor});
 
     if (options.selfDestroy) {
-        await effect.setFlag('effectmacro', 'onDisable.script', `game.actors.get('${efffectData.owner.id}').effects.get('${effect.id}').delete();`);
+        await effect.setFlag('effectmacro', 'onDisable.script', `game.actors.get('${efffectData.actor.id}').effects.get('${effect.id}').delete();`);
     }
 
     return effect;
+}
+
+export async function createCondition(condition, actor) {
+    switch (condition) {
+        case Condition.BLINDED:
+        case Condition.DEAFENED:
+        case Condition.GRAPPLED:
+        case Condition.INCAPACITATED:
+        case Condition.PRONE:
+        case Condition.SHOCKED:
+            console.info(`HM3 | Condition '${condition}' not yet implemented.`);
+            break;
+        case Condition.UNCONSCIOUS:
+            await createActiveEffect({label: Condition.UNCONSCIOUS, actor, type: 'GameTime', seconds: d6(2) * MINUTE}, [], {
+                selfDestroy: true,
+                unique: true
+            });
+            break;
+        default:
+            console.error('HM3 | No valid condition.');
+    }
 }
 
 /**
