@@ -27,7 +27,7 @@ export class HarnMasterMacro extends Macro {
      * @override
      */
     get canExecute() {
-        return super.canExecute || !!this.getFlag('hm3', 'ownerId');
+        return super.canExecute || !!this.getFlag('hm3', 'ownerId') || this.getFlag('hm3', 'trigger') === 'manual';
     }
 }
 
