@@ -7,27 +7,27 @@ function d6() {
 
 /**
  *
- * @param {Actor} actor
+ * @param {Token} token
  * @returns
  */
-export async function createUnconsciousCondition(actor) {
-    if (!actor) return;
+export async function createUnconsciousCondition(token) {
+    if (!token) return;
 
-    const ON_CREATE_MACRO = `const actor = game.actors.get('${actor.id}');
-console.log('HM3 | Actor ' + actor.name + ' fails the SHOCK roll and gets unconscious.');
+    const ON_CREATE_MACRO = `const token = canvas.tokens.get('${token.id}');
+console.log('HM3 | Combatant ' + token.name + ' fails the SHOCK roll and gets unconscious.');
 await ChatMessage.create({
   speaker,
   content: "<p>You faint from pain and exertion on your occupied field.</p>",
 });`;
 
     // On deletion (regain consciousness), make a last SHOCK roll (SKILLS 22, COMBAT 14)
-    const ON_DELETE_MACRO = `const actor = game.actors.get('${actor.id}');
-console.log('HM3 | Actor ' + actor.name + ' makes a last SHOCK roll.');`;
+    const ON_DELETE_MACRO = `const token = canvas.tokens.get('${token.id}');
+console.log('HM3 | Combatant ' + token.name + ' makes a last SHOCK roll.');`;
 
     return {
         effectData: {
             label: UNCONSCIOUS,
-            actor,
+            token,
             icon: UNCONSCIOUS_ICON,
             type: 'GameTime',
             seconds: (d6() + d6()) * 60, // 2d6 minutes
@@ -40,15 +40,15 @@ console.log('HM3 | Actor ' + actor.name + ' makes a last SHOCK roll.');`;
     };
 }
 
-export function getOnTurnStartMacro(actor, effect) {
+export function getOnTurnStartMacro(token, effect) {
     // If in combat, make a SHOCK roll each turn (SKILLS 22, COMBAT 14)
-    return `const actor = game.actors.get('${actor.id}');
-console.log('HM3 | Actor ' + actor.name + ' makes a SHOCK roll to regain consciousness.');
+    return `const token = canvas.tokens.get('${token.id}');
+console.log('HM3 | Combatant ' + token.name + ' makes a SHOCK roll to regain consciousness.');
 const success = true;
 if (success) {
     // regain consciousness
-    console.log('HM3 | Actor ' + actor.name + ' regains consciousness.');
-    await actor.effects.get('${effect.id}').delete();
+    console.log('HM3 | Combatant ' + token.name + ' regains consciousness.');
+    await token.actor.effects.get('${effect.id}').delete();
     await ChatMessage.create({
         speaker,
         content: '<p>You regain consciousness!</p><p>Are you coming back to your senses, but are you stable?</p>'

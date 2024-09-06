@@ -1462,37 +1462,40 @@ export function pathIntersectsCircle(circle, line, centerToCenter = true) {
 
 /**
  * TODO
- * @param {*} actor
- * @param {*} name
+ * @param {Token} token
+ * @param {string} name
  * @returns
  */
-export function hasActiveEffect(actor, name, strict = false) {
-    return !!getActiveEffect(actor, name, strict);
+export function hasActiveEffect(token, name, strict = false) {
+    return !!getActiveEffect(token, name, strict);
 }
 
 /**
  * TODO
- * @param {*} actor
- * @param {*} name
+ * @param {Token} token
+ * @param {string} name
  * @returns
  */
-export function getActiveEffect(actor, name, strict = false) {
+export function getActiveEffect(token, name, strict = false) {
     return strict
-        ? actor.effects.contents.find((v) => v.name === name)
-        : actor.effects.contents.find((v) => v.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(v.name.toLowerCase()));
+        ? token.actor.effects.contents.find((v) => v.name === name)
+        : token.actor.effects.contents.find(
+              (v) => v.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(v.name.toLowerCase())
+          );
 }
 
 /**
  * TODO
- * @param {*} effectData
- * @param {*} options
+ * @param {*} effectData -
+ * @param {*} changes -
+ * @param {*} options -
  * @returns
  */
 export async function createActiveEffect(effectData, changes = [], options = {}) {
     effectData = foundry.utils.mergeObject(
         {
             label: null,
-            actor: null,
+            token: null,
             type: null,
             icon: 'icons/svg/aura.svg',
             flags: [],
@@ -1508,8 +1511,8 @@ export async function createActiveEffect(effectData, changes = [], options = {})
     );
 
     // mandatory
-    if (!effectData.label || !effectData.actor || !effectData.type) {
-        console.error('HM3 Macro "createActiveEffect" needs label, actor & type as mandatory input!');
+    if (!effectData.label || !effectData.token || !effectData.type) {
+        console.error('HM3 Macro "createActiveEffect" needs label, token & type as mandatory input!');
         return null;
     }
 
@@ -1521,15 +1524,14 @@ export async function createActiveEffect(effectData, changes = [], options = {})
         return change;
     });
 
-    if (options.unique && hasActiveEffect(effectData.actor, effectData.label)) {
+    if (options.unique && hasActiveEffect(effectData.token, effectData.label)) {
         return null;
     }
 
     const aeData = {
-        id: effectData.id,
         label: effectData.label,
         icon: effectData.icon,
-        origin: effectData.actor.uuid,
+        origin: effectData.token.actor.uuid,
         flags: effectData.flags,
         changes
     };
@@ -1556,19 +1558,23 @@ export async function createActiveEffect(effectData, changes = [], options = {})
         return null;
     }
 
-    const effect = await ActiveEffect.create(aeData, {parent: effectData.actor});
+    const effect = await ActiveEffect.create(aeData, {parent: effectData.token.actor});
 
     if (options.selfDestroy) {
-        await effect.setFlag('effectmacro', 'onDisable.script', `game.actors.get('${effectData.actor.id}').effects.get('${effect.id}').delete();`);
+        await effect.setFlag(
+            'effectmacro',
+            'onDisable.script',
+            `game.actors.get('${effectData.token.actor.id}').effects.get('${effect.id}').delete();`
+        );
     }
 
     return effect;
 }
 
-export async function createCondition(actor, condition) {
-    if (!actor) return;
+export async function createCondition(token, condition) {
+    if (!token) return;
 
-    let effect, id;
+    let effect;
     switch (condition) {
         case Condition.BLINDED:
         case Condition.DEAFENED:
@@ -1580,19 +1586,21 @@ export async function createCondition(actor, condition) {
 
         case Condition.PRONE:
             {
-                const {effectData, changes, options} = await prone.createProneCondition(actor);
+                const {effectData, changes, options} = await prone.createProneCondition(token);
                 effect = await createActiveEffect(effectData, changes, options);
             }
             break;
 
         case Condition.UNCONSCIOUS:
             {
-                const {effectData, changes, options} = await unconscious.createUnconsciousCondition(actor);
+                const {effectData, changes, options} = await unconscious.createUnconsciousCondition(token);
                 effect = await createActiveEffect(effectData, changes, options);
 
                 // If in combat, make a SHOCK roll each turn (SKILLS 22, COMBAT 14)
-                await effect.setFlag('effectmacro', 'onTurnStart.script', unconscious.getOnTurnStartMacro(actor, effect));
-                await createCondition(actor, Condition.PRONE);
+                await effect.setFlag('effectmacro', 'onTurnStart.script', unconscious.getOnTurnStartMacro(token, effect));
+
+                // In addition, the combatant falls prone.
+                await createCondition(token, Condition.PRONE);
             }
             break;
 

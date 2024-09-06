@@ -4,20 +4,22 @@ const UNCONSCIOUS = 'Unconscious';
 
 /**
  *
- * @param {Actor} actor
+ * @param {Token} token
  * @returns
  */
-export async function createProneCondition(actor) {
-    if (!actor) return;
+export async function createProneCondition(token) {
+    if (!token) return;
 
-    const ON_CREATE_MACRO = `if (game.hm3.macros.hasActiveEffect(game.actors.get('${actor.id}'), '${UNCONSCIOUS}', true)) return;
+    const ON_CREATE_MACRO = `const token = canvas.tokens.get('${token.id}');
+console.log('HM3 | Combatant ' + token.name + ' falls prone.');
+if (game.hm3.macros.hasActiveEffect(canvas.tokens.get('${token.id}'), '${UNCONSCIOUS}', true)) return;
 await ChatMessage.create({
     speaker,
     content:
         "<p>You're lying on the floor. Getting up takes <b>one action</b>.</p><p><b>All</b> opponents gain +20 on <b>all</b> attack and defence rolls against you.</p>"
 });`;
 
-    const ON_TURN_START_MACRO = `if (game.hm3.macros.hasActiveEffect(game.actors.get('${actor.id}'), '${UNCONSCIOUS}', true)) return;
+    const ON_TURN_START_MACRO = `if (game.hm3.macros.hasActiveEffect(canvas.tokens.get('${token.id}'), '${UNCONSCIOUS}', true)) return;
 const PRONE = '${PRONE}';
 const PRONE_IMG = '${PRONE_ICON}';
 await Requestor.request({
@@ -30,7 +32,7 @@ await Requestor.request({
         {
             label: 'Rise',
             command: async function () {
-                const effect = game.actors.get('${actor.id}').effects.contents.find((v) => v.name === PRONE);
+                const effect = game.hm3.macros.getActiveEffect(canvas.tokens.get('${token.id}'), '${PRONE}', true);
                 if (effect) {
                     effect.delete();
                     await ChatMessage.create({
@@ -57,7 +59,7 @@ await Requestor.request({
     return {
         effectData: {
             label: PRONE,
-            actor,
+            token,
             icon: PRONE_ICON,
             type: 'GameTime',
             seconds: null,

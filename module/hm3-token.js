@@ -11,7 +11,7 @@ export class HarnMasterToken extends Token {
      * @returns
      */
     async addCondition(condition) {
-        return macros.createCondition(this.actor, condition);
+        return macros.createCondition(this, condition);
     }
 
     /**
@@ -20,6 +20,6 @@ export class HarnMasterToken extends Token {
      * @returns
      */
     hasCondition(condition) {
-        return macros.hasActiveEffect(this.actor, condition, true);
+        return macros.hasActiveEffect(this, condition, true);
     }
 }

@@ -6,7 +6,6 @@ if (canvas.tokens.controlled.length !== 1) {
 }
 
 const token = canvas.tokens.controlled[0];
-const actor = token.actor;
 
 let dialogEditor = new Dialog({
     title: 'Prone',
@@ -14,7 +13,7 @@ let dialogEditor = new Dialog({
         none: {
             label: `None`,
             callback: () => {
-                const effect = game.hm3.macros.getActiveEffect(actor, PRONE, true);
+                const effect = game.hm3.macros.getActiveEffect(token, PRONE, true);
                 if (effect) effect.delete();
                 dialogEditor.render(true);
             }
@@ -23,7 +22,7 @@ let dialogEditor = new Dialog({
         prone: {
             label: PRONE,
             callback: () => {
-                game.hm3.macros.createCondition(actor, PRONE);
+                game.hm3.macros.createCondition(token, PRONE);
                 dialogEditor.render(true);
             }
         },
