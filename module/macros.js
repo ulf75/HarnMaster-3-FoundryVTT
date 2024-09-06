@@ -1,5 +1,6 @@
 import * as combat from './combat.js';
 import * as prone from './condition/prone.js';
+import * as unconscious from './condition/unconscious.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
 import {Condition, SkillType} from './hm3-types.js';
@@ -1525,6 +1526,7 @@ export async function createActiveEffect(effectData, changes = [], options = {})
     }
 
     const aeData = {
+        id: effectData.id,
         label: effectData.label,
         icon: effectData.icon,
         origin: effectData.actor.uuid,
@@ -1566,7 +1568,7 @@ export async function createActiveEffect(effectData, changes = [], options = {})
 export async function createCondition(actor, condition) {
     if (!actor) return;
 
-    let effect;
+    let effect, id;
     switch (condition) {
         case Condition.BLINDED:
         case Condition.DEAFENED:
@@ -1577,37 +1579,20 @@ export async function createCondition(actor, condition) {
             break;
 
         case Condition.PRONE:
-            const {effectData, changes, options} = await prone.createProneCondition(actor);
-            effect = await createActiveEffect(effectData, changes, options);
+            {
+                const {effectData, changes, options} = await prone.createProneCondition(actor);
+                effect = await createActiveEffect(effectData, changes, options);
+            }
             break;
 
         case Condition.UNCONSCIOUS:
-            effect = await createActiveEffect({label: Condition.UNCONSCIOUS, actor, type: 'GameTime', seconds: d6(2) * MINUTE}, [], {
-                selfDestroy: true,
-                unique: true
-            });
+            {
+                const {effectData, changes, options} = await unconscious.createUnconsciousCondition(actor);
+                effect = await createActiveEffect(effectData, changes, options);
 
-            // If in combat, make a SHOCK roll each turn (SKILLS 22, COMBAT 14)
-            await effect.setFlag(
-                'effectmacro',
-                'onTurnStart.script',
-                `const actor = game.actors.get('${actor}');
-console.log('HM3 | Actor ' + actor.id + ' makes a SHOCK roll to regain consciousness.');
-const success = true;
-if (success) {
-    // regain consciousness
-    actor.effects.get('${effect.id}').delete();
-}`
-            );
-
-            // On deletion (regain consciousness), make a last SHOCK roll (SKILLS 22, COMBAT 14)
-            await effect.setFlag(
-                'effectmacro',
-                'onDelete.script',
-                `const actor = game.actors.get('${actor}');
-console.log('HM3 | Actor ' + actor.id + ' makes a last SHOCK roll.');
-// actor.effects.get('${effect.id}').delete();`
-            );
+                // If in combat, make a SHOCK roll each turn (SKILLS 22, COMBAT 14)
+                await effect.setFlag('effectmacro', 'onTurnStart.script', unconscious.getOnTurnStartMacro(actor, effect));
+            }
 
             break;
         default:

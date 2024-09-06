@@ -1,5 +1,5 @@
 const PRONE = 'Prone';
-const PRONE_IMG = 'systems/hm3/images/icons/svg/falling.svg';
+const PRONE_ICON = 'systems/hm3/images/icons/svg/falling.svg';
 
 /**
  *
@@ -9,13 +9,13 @@ const PRONE_IMG = 'systems/hm3/images/icons/svg/falling.svg';
 export async function createProneCondition(actor) {
     if (!actor) return;
 
-    const PRONE_CREATE_MACRO = `await ChatMessage.create({
+    const ON_CREATE_MACRO = `await ChatMessage.create({
   speaker,
   content: "<p>You're lying on the floor. Getting up takes <b>one action</b>.</p><p><b>All</b> opponents gain +20 on <b>all</b> attack and defence rolls against you.</p>",
 });`;
 
-    const PRONE_TURN_START_MACRO = `const PRONE = 'Prone';
-const PRONE_IMG = 'icons/svg/falling.svg';
+    const ON_TURN_START_MACRO = `const PRONE = '${PRONE}';
+const PRONE_IMG = '${PRONE_ICON}';
 await Requestor.request({
   title: PRONE,
   description:
@@ -54,10 +54,10 @@ await Requestor.request({
         effectData: {
             label: PRONE,
             actor,
-            icon: PRONE_IMG,
+            icon: PRONE_ICON,
             type: 'GameTime',
             seconds: null,
-            flags: {effectmacro: {onCreate: {script: PRONE_CREATE_MACRO}, onTurnStart: {script: PRONE_TURN_START_MACRO}}}
+            flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
         },
         changes: [],
         options: {unique: true}
