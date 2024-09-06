@@ -1,4 +1,5 @@
 import * as combat from './combat.js';
+import * as prone from './condition/prone.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
 import {Condition, SkillType} from './hm3-types.js';
@@ -1482,17 +1483,18 @@ export function getActiveEffect(actor, name, strict = false) {
 
 /**
  * TODO
- * @param {*} efffectData
+ * @param {*} effectData
  * @param {*} options
  * @returns
  */
-export async function createActiveEffect(efffectData, changes = [], options = {}) {
-    efffectData = foundry.utils.mergeObject(
+export async function createActiveEffect(effectData, changes = [], options = {}) {
+    effectData = foundry.utils.mergeObject(
         {
             label: null,
             actor: null,
             type: null,
             icon: 'icons/svg/aura.svg',
+            flags: [],
             postpone: 0,
             startTime: null,
             seconds: null,
@@ -1501,11 +1503,11 @@ export async function createActiveEffect(efffectData, changes = [], options = {}
             rounds: 1,
             turns: 0
         },
-        efffectData
+        effectData
     );
 
     // mandatory
-    if (!efffectData.label || !efffectData.actor || !efffectData.type) {
+    if (!effectData.label || !effectData.actor || !effectData.type) {
         console.error('HM3 Macro "createActiveEffect" needs label, actor & type as mandatory input!');
         return null;
     }
@@ -1513,34 +1515,35 @@ export async function createActiveEffect(efffectData, changes = [], options = {}
     options = foundry.utils.mergeObject({selfDestroy: false, unique: false}, options);
     changes = changes.map((change) => {
         change = foundry.utils.mergeObject({key: '', value: 0, mode: 2, priority: null}, change);
-        const keys = getObjectKeys(efffectData.actor.system);
+        const keys = getObjectKeys(effectData.actor.system);
         change.key = 'system.' + keys.find((v) => v.includes(change.key));
         return change;
     });
 
-    if (options.unique && hasActiveEffect(efffectData.actor, efffectData.label)) {
+    if (options.unique && hasActiveEffect(effectData.actor, effectData.label)) {
         return null;
     }
 
     const aeData = {
-        label: efffectData.label,
-        icon: efffectData.icon,
-        origin: efffectData.actor.uuid,
+        label: effectData.label,
+        icon: effectData.icon,
+        origin: effectData.actor.uuid,
+        flags: effectData.flags,
         changes
     };
 
-    if (efffectData.type === 'GameTime') {
-        const postpone = efffectData.postpone;
-        const startTime = efffectData.startTime || game.time.worldTime + postpone;
-        const seconds = efffectData.seconds === null ? null : efffectData.seconds || 1;
+    if (effectData.type === 'GameTime') {
+        const postpone = effectData.postpone;
+        const startTime = effectData.startTime || game.time.worldTime + postpone;
+        const seconds = effectData.seconds === null ? null : effectData.seconds || 1;
 
         aeData['duration.startTime'] = startTime;
         aeData['duration.seconds'] = seconds;
-    } else if (efffectData.type === 'Combat' && !!game.combats.active?.current) {
-        const startRound = efffectData.startRound || game.combats.active.current.round || 1;
-        const startTurn = efffectData.startTurn || game.combats.active.current.turn || 0;
-        const rounds = efffectData.rounds;
-        const turns = efffectData.turns;
+    } else if (effectData.type === 'Combat' && !!game.combats.active?.current) {
+        const startRound = effectData.startRound || game.combats.active.current.round || 1;
+        const startTurn = effectData.startTurn || game.combats.active.current.turn || 0;
+        const rounds = effectData.rounds;
+        const turns = effectData.turns;
 
         aeData['duration.combat'] = game.combats.active.id;
         aeData['duration.startRound'] = startRound;
@@ -1551,30 +1554,61 @@ export async function createActiveEffect(efffectData, changes = [], options = {}
         return null;
     }
 
-    const effect = await ActiveEffect.create(aeData, {parent: efffectData.actor});
+    const effect = await ActiveEffect.create(aeData, {parent: effectData.actor});
 
     if (options.selfDestroy) {
-        await effect.setFlag('effectmacro', 'onDisable.script', `game.actors.get('${efffectData.actor.id}').effects.get('${effect.id}').delete();`);
+        await effect.setFlag('effectmacro', 'onDisable.script', `game.actors.get('${effectData.actor.id}').effects.get('${effect.id}').delete();`);
     }
 
     return effect;
 }
 
-export async function createCondition(condition, actor) {
+export async function createCondition(actor, condition) {
+    if (!actor) return;
+
+    let effect;
     switch (condition) {
         case Condition.BLINDED:
         case Condition.DEAFENED:
         case Condition.GRAPPLED:
         case Condition.INCAPACITATED:
-        case Condition.PRONE:
         case Condition.SHOCKED:
             console.info(`HM3 | Condition '${condition}' not yet implemented.`);
             break;
+
+        case Condition.PRONE:
+            const {effectData, changes, options} = await prone.createProneCondition(actor);
+            effect = await createActiveEffect(effectData, changes, options);
+            break;
+
         case Condition.UNCONSCIOUS:
-            await createActiveEffect({label: Condition.UNCONSCIOUS, actor, type: 'GameTime', seconds: d6(2) * MINUTE}, [], {
+            effect = await createActiveEffect({label: Condition.UNCONSCIOUS, actor, type: 'GameTime', seconds: d6(2) * MINUTE}, [], {
                 selfDestroy: true,
                 unique: true
             });
+
+            // If in combat, make a SHOCK roll each turn (SKILLS 22, COMBAT 14)
+            await effect.setFlag(
+                'effectmacro',
+                'onTurnStart.script',
+                `const actor = game.actors.get('${actor}');
+console.log('HM3 | Actor ' + actor.id + ' makes a SHOCK roll to regain consciousness.');
+const success = true;
+if (success) {
+    // regain consciousness
+    actor.effects.get('${effect.id}').delete();
+}`
+            );
+
+            // On deletion (regain consciousness), make a last SHOCK roll (SKILLS 22, COMBAT 14)
+            await effect.setFlag(
+                'effectmacro',
+                'onDelete.script',
+                `const actor = game.actors.get('${actor}');
+console.log('HM3 | Actor ' + actor.id + ' makes a last SHOCK roll.');
+// actor.effects.get('${effect.id}').delete();`
+            );
+
             break;
         default:
             console.error('HM3 | No valid condition.');

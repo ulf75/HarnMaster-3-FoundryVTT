@@ -6,6 +6,6 @@ import * as macros from './macros.js';
  */
 export class HarnMasterToken extends Token {
     addCondition(condition) {
-        macros.createCondition(condition, this.actor);
+        macros.createCondition(this.actor, condition);
     }
 }
