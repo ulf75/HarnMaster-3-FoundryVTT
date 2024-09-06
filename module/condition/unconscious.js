@@ -1,5 +1,6 @@
 const UNCONSCIOUS = 'Unconscious';
 const UNCONSCIOUS_ICON = 'systems/hm3/images/icons/svg/shock.svg';
+const SHOCKED = 'Shocked';
 
 function d6() {
     return Math.floor(6 * foundry.dice.MersenneTwister.random()) + 1;
@@ -44,14 +45,43 @@ export function getOnTurnStartMacro(token, effect) {
     // If in combat, make a SHOCK roll each turn (SKILLS 22, COMBAT 14)
     return `const token = canvas.tokens.get('${token.id}');
 console.log('HM3 | Combatant ' + token.name + ' makes a SHOCK roll to regain consciousness.');
-const success = true;
+await ChatMessage.create({
+    speaker,
+    content: '<p>You need a successful shock roll to regain consciousness.</p>'
+});
+const success = (await game.hm3.macros.shockRoll(false, token.actor)).isSuccess;
 if (success) {
-    // regain consciousness
+    // Combatant regains consciousness
     console.log('HM3 | Combatant ' + token.name + ' regains consciousness.');
-    await token.actor.effects.get('${effect.id}').delete();
     await ChatMessage.create({
         speaker,
         content: '<p>You regain consciousness!</p><p>Are you coming back to your senses, but are you stable?</p>'
+    });
+    const ok = (await game.hm3.macros.shockRoll(false, token.actor)).isSuccess;
+    await token.actor.effects.get('${effect.id}').delete();
+    if (ok) {
+        // Combatant is back
+        console.log('HM3 | Combatant ' + token.name + ' is back.');
+        await ChatMessage.create({
+            speaker,
+            content: '<p>You are back and function normally.</p>'
+        });
+    } else {
+        // Combatant is now SHOCKED
+        console.log('HM3 | Combatant ' + token.name + ' is now SHOCKED.');
+        await game.hm3.macros.createCondition(token, '${SHOCKED}');
+        await ChatMessage.create({
+            speaker,
+            content:
+                '<p>You are in <b>SHOCK</b> and display a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. You are incoherent and gaze helplessly at your injuries.</p>'
+        });
+    }
+} else {
+    // Combatant stays unconscious
+    console.log('HM3 | Combatant ' + token.name + ' stays unconscious.');
+    await ChatMessage.create({
+        speaker,
+        content: '<p>You stay unconscious.</p>'
     });
 }`;
 }

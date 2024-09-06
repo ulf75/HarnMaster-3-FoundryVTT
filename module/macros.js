@@ -1,5 +1,6 @@
 import * as combat from './combat.js';
 import * as prone from './condition/prone.js';
+import * as shocked from './condition/shocked.js';
 import * as unconscious from './condition/unconscious.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
@@ -1571,6 +1572,12 @@ export async function createActiveEffect(effectData, changes = [], options = {})
     return effect;
 }
 
+/**
+ * TODO
+ * @param {Token} token
+ * @param {string} condition
+ * @returns
+ */
 export async function createCondition(token, condition) {
     if (!token) return;
 
@@ -1580,13 +1587,19 @@ export async function createCondition(token, condition) {
         case Condition.DEAFENED:
         case Condition.GRAPPLED:
         case Condition.INCAPACITATED:
-        case Condition.SHOCKED:
             console.info(`HM3 | Condition '${condition}' not yet implemented.`);
             break;
 
         case Condition.PRONE:
             {
                 const {effectData, changes, options} = await prone.createProneCondition(token);
+                effect = await createActiveEffect(effectData, changes, options);
+            }
+            break;
+
+        case Condition.SHOCKED:
+            {
+                const {effectData, changes, options} = await shocked.createShockedCondition(token);
                 effect = await createActiveEffect(effectData, changes, options);
             }
             break;
