@@ -5,7 +5,21 @@ import * as macros from './macros.js';
  * @extends {Token}
  */
 export class HarnMasterToken extends Token {
-    addCondition(condition) {
-        macros.createCondition(this.actor, condition);
+    /**
+     *
+     * @param {Condition} condition
+     * @returns
+     */
+    async addCondition(condition) {
+        return macros.createCondition(this.actor, condition);
+    }
+
+    /**
+     *
+     * @param {Condition} condition
+     * @returns
+     */
+    hasCondition(condition) {
+        return macros.hasActiveEffect(this.actor, condition, true);
     }
 }

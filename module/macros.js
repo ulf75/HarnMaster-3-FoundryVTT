@@ -1592,12 +1592,15 @@ export async function createCondition(actor, condition) {
 
                 // If in combat, make a SHOCK roll each turn (SKILLS 22, COMBAT 14)
                 await effect.setFlag('effectmacro', 'onTurnStart.script', unconscious.getOnTurnStartMacro(actor, effect));
+                await createCondition(actor, Condition.PRONE);
             }
-
             break;
+
         default:
             console.error('HM3 | No valid condition.');
     }
+
+    return effect;
 }
 
 /**
