@@ -1,6 +1,7 @@
 const PRONE = 'Prone';
 const PRONE_ICON = 'systems/hm3/images/icons/svg/falling.svg';
 const UNCONSCIOUS = 'Unconscious';
+const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
  *
@@ -62,7 +63,7 @@ await Requestor.request({
             token,
             icon: PRONE_ICON,
             type: 'GameTime',
-            seconds: null,
+            seconds: INDEFINITE,
             flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
         },
         changes: [],

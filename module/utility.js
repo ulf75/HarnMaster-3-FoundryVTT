@@ -502,6 +502,7 @@ export function aeChanges(effect) {
 }
 
 function toNormTime(seconds) {
+    if (seconds === Number.MAX_SAFE_INTEGER) return 'None';
     const normHours = Math.floor(seconds / 3600);
     const remSeconds = seconds % 3600;
     const normMinutes = Number(Math.floor(remSeconds / 60))

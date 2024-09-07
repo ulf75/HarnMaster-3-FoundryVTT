@@ -11,6 +11,7 @@ export const SECOND = 1;
 export const MINUTE = 60 * SECOND;
 export const HOUR = 60 * MINUTE;
 export const DAY = 60 * HOUR;
+export const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
  * Create a script macro from an Item drop.
@@ -1520,7 +1521,7 @@ export async function createActiveEffect(effectData, changes = [], options = {})
     options = foundry.utils.mergeObject({selfDestroy: false, unique: false}, options);
     changes = changes.map((change) => {
         change = foundry.utils.mergeObject({key: '', value: 0, mode: 2, priority: null}, change);
-        const keys = getObjectKeys(effectData.actor.system);
+        const keys = getObjectKeys(effectData.token.actor.system);
         change.key = 'system.' + keys.find((v) => v.includes(change.key));
         return change;
     });

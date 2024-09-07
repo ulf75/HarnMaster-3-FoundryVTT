@@ -16,6 +16,22 @@ export class HarnMasterActor extends Actor {
         return game.folders.get(game.settings.get('hm3', 'actorMacrosFolderId')) || null;
     }
 
+    /**
+     * The original FVTT return of the applicable effects does not take the permissions into account.
+     * With this implementation, a player must have at least LIMITED permission to see the active effect.
+     * @override
+     */
+    allApplicableEffects() {
+        const effects = [];
+        for (const effect of super.allApplicableEffects()) {
+            if (effect.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED)) {
+                effects.push(effect);
+            }
+        }
+
+        return effects;
+    }
+
     static defaultName({type, parent, pack} = {}) {
         const documentName = this.metadata.name;
         let collection;

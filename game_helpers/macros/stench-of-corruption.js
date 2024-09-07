@@ -58,7 +58,8 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
             await token.document.update(pos);
         }
 
-        const victimActor = stops[0].victimToken.actor;
+        const victimToken = stops[0].victimToken;
+        const victimActor = victimToken.actor;
         const result = await macros.testAbilityD100RollAlt({
             ability: 'will',
             noDialog: true,
@@ -97,8 +98,8 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
             addon = ' (CF)';
             await macros.createActiveEffect(
                 {
-                    owner: victimActor,
-                    label: STENCH_OF_CORRUPTION + ' (Violent Retching)',
+                    token: victimToken,
+                    label: 'Violent Retching',
                     type: 'GameTime',
                     seconds: 20 * SECOND,
                     icon: STENCH_OF_CORRUPTION_ICON
@@ -110,7 +111,7 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
 
         await macros.createActiveEffect(
             {
-                owner: victimActor,
+                token: victimToken,
                 label: STENCH_OF_CORRUPTION + addon,
                 type: 'GameTime',
                 seconds,
