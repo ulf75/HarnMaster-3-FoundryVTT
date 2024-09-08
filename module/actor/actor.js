@@ -8,6 +8,8 @@ import * as utility from '../utility.js';
  * @extends {Actor}
  */
 export class HarnMasterActor extends Actor {
+    #activeEffectPermissions = game.settings.get('hm3', 'activeEffectPermissions');
+
     get macrolist() {
         return game.macros.contents.filter((m) => m.getFlag('hm3', 'ownerId') === this.id) || [];
     }
@@ -22,6 +24,8 @@ export class HarnMasterActor extends Actor {
      * @override
      */
     allApplicableEffects() {
+        if (!this.#activeEffectPermissions) return super.allApplicableEffects();
+
         const effects = [];
         for (const effect of super.allApplicableEffects()) {
             if (effect.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED)) {

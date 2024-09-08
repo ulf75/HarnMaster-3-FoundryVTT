@@ -141,4 +141,13 @@ export const registerSystemSettings = function () {
         default: false,
         type: Boolean
     });
+
+    game.settings.register('hm3', 'activeEffectPermissions', {
+        name: 'NEW Active Effect Permissions',
+        hint: 'If selected, the active effect permissions are taken into account for the visibility of the effects for the players.',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean
+    });
 };
