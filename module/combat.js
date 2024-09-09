@@ -1,5 +1,6 @@
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
+import {Condition} from './hm3-types.js';
 
 /**
  * Initiates a missile attack.
@@ -39,6 +40,16 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
 
     if (!attackToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+        return null;
+    }
+
+    if (attackToken.hasCondition(Condition.SHOCKED)) {
+        ui.notifications.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
+        return null;
+    }
+
+    if (attackToken.hasCondition(Condition.UNCONSCIOUS)) {
+        ui.notifications.warn(`You cannot attack while you are '${Condition.UNCONSCIOUS}'.`);
         return null;
     }
 
@@ -93,6 +104,11 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
+    const grappled = defendToken.hasCondition(Condition.GRAPPLED);
+    const incapacitated = defendToken.hasCondition(Condition.INCAPACITATED);
+    const shocked = defendToken.hasCondition(Condition.SHOCKED);
+    const stunned = defendToken.hasCondition(Condition.STUNNED);
+    const unconscious = defendToken.hasCondition(Condition.UNCONSCIOUS);
 
     const chatTemplateData = {
         title: `${missileItem.name} Missile Attack`,
@@ -114,9 +130,10 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         origAML: missileItem.system.attackMasteryLevel,
         effAML: effAML,
         impactMod: dialogResult.impactMod,
-        hasDodge: true,
-        hasBlock: true,
-        hasCounterstrike: false,
+        hasDodge: !(grappled || incapacitated || shocked || stunned || unconscious),
+        hasBlock: !(grappled || incapacitated || shocked || stunned || unconscious),
+        hasCounterstrike: !(grappled || incapacitated || shocked || stunned || unconscious),
+        hasGrapple: false,
         hasIgnore: true,
         visibleActorId: defendToken.actor.id
     };
@@ -180,6 +197,16 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
         return null;
     }
 
+    if (attackToken.hasCondition(Condition.SHOCKED)) {
+        ui.notifications.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
+        return null;
+    }
+
+    if (attackToken.hasCondition(Condition.UNCONSCIOUS)) {
+        ui.notifications.warn(`You cannot attack while you are '${Condition.UNCONSCIOUS}'.`);
+        return null;
+    }
+
     const targetRange = rangeToTarget(attackToken, defendToken, true);
     if (targetRange > 1) {
         const msg = `Target ${defendToken.name} is outside of melee range for attacker ${attackToken.name}; range=${targetRange}.`;
@@ -215,8 +242,15 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
         options['defaultWeapon'] = defWpns.defaultWeapon;
     }
 
+    options['defaultModifier'] = 0;
     if (attackToken.actor?.system?.eph?.meleeAMLMod !== undefined) {
-        options['defaultModifier'] = attackToken.actor.system.eph.meleeAMLMod;
+        options['defaultModifier'] += attackToken.actor.system.eph.meleeAMLMod;
+    }
+
+    // A character who is attacking (or being attacked by) a prone enemy increases EML by 20. (COMBAT 11)
+    const prone = defendToken.hasCondition(Condition.PRONE);
+    if (prone) {
+        options['defaultModifier'] += 20;
     }
 
     const dialogResult = await attackDialog(options);
@@ -233,6 +267,11 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
+    const grappled = defendToken.hasCondition(Condition.GRAPPLED);
+    const incapacitated = defendToken.hasCondition(Condition.INCAPACITATED);
+    const shocked = defendToken.hasCondition(Condition.SHOCKED);
+    const stunned = defendToken.hasCondition(Condition.STUNNED);
+    const unconscious = defendToken.hasCondition(Condition.UNCONSCIOUS);
 
     const chatTemplateData = {
         title: `${weaponItem.name} Melee Attack`,
@@ -249,9 +288,10 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
         origAML: weaponItem.system.attackMasteryLevel,
         effAML: effAML,
         impactMod: dialogResult.impactMod,
-        hasDodge: true,
-        hasBlock: true,
-        hasCounterstrike: true,
+        hasDodge: !(grappled || incapacitated || shocked || stunned || unconscious),
+        hasBlock: !(grappled || incapacitated || shocked || stunned || unconscious),
+        hasCounterstrike: !(grappled || incapacitated || shocked || stunned || unconscious),
+        hasGrapple: !(incapacitated || shocked || stunned || unconscious),
         hasIgnore: true,
         visibleActorId: defendToken.actor.id
     };
@@ -563,8 +603,15 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     options.attackerName = defToken.name;
     options.defenderName = atkToken.name;
 
+    options.defaultModifier = 0;
     if (defToken.actor?.system?.eph?.outnumbered > 1) {
-        options.defaultModifier = Math.floor(defToken.actor.system.eph.outnumbered - 1) * -10;
+        options.defaultModifier += Math.floor(defToken.actor.system.eph.outnumbered - 1) * -10;
+    }
+
+    // A character who is attacking (or being attacked by) a prone enemy increases EML by 20. (COMBAT 11)
+    const prone = atkToken.hasCondition(Condition.PRONE);
+    if (prone) {
+        options.defaultModifier += 20;
     }
 
     const csDialogResult = await attackDialog(options);
@@ -763,16 +810,22 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     const effDML = defToken.actor.system.dodge;
 
-    let outnumberedMod = 0;
+    let defaultModifier = 0;
     if (defToken.actor?.system?.eph?.outnumbered > 1) {
-        outnumberedMod = Math.floor((defToken.actor.system.eph.outnumbered - 1) * -10);
+        defaultModifier += Math.floor((defToken.actor.system.eph.outnumbered - 1) * -10);
+    }
+
+    // A character who is attacking (or being attacked by) a prone enemy increases EML by 20. (COMBAT 11)
+    const prone = atkToken.hasCondition(Condition.PRONE);
+    if (prone) {
+        defaultModifier += 20;
     }
 
     const defRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
-        modifier: outnumberedMod,
+        modifier: defaultModifier,
         target: effDML
     });
 
@@ -810,7 +863,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : null,
         effAML: effAML,
         defense: 'Dodge',
-        effDML: effDML + outnumberedMod,
+        effDML: effDML + defaultModifier,
         attackRoll: atkRoll.rollObj.total,
         atkRollResult: atkRoll.description,
         defenseRoll: defRoll.rollObj.total,
@@ -940,9 +993,15 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         return ui.notifications.warn(`${defToken.name} has no weapons that can be used for blocking, block defense refused.`);
     }
 
-    let outnumberedMod = 0;
+    let defaultModifier = 0;
     if (defToken.actor?.system?.eph?.outnumbered > 1) {
-        outnumberedMod = Math.floor(defToken.actor.system.eph.outnumbered - 1) * -10;
+        defaultModifier += Math.floor(defToken.actor.system.eph.outnumbered - 1) * -10;
+    }
+
+    // A character who is attacking (or being attacked by) a prone enemy increases EML by 20. (COMBAT 11)
+    const prone = atkToken.hasCondition(Condition.PRONE);
+    if (prone) {
+        defaultModifier += 20;
     }
 
     const options = {
@@ -950,7 +1009,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         prompt: prompt,
         weapons: weapons,
         defaultWeapon: defaultWeapon,
-        defaultModifier: outnumberedMod,
+        defaultModifier: defaultModifier,
         modifierType: 'Defense'
     };
     const dialogResult = await selectWeaponDialog(options);

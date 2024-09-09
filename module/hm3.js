@@ -340,10 +340,6 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
             const actor = token.actor;
             let move = actor.system.move.effective;
 
-            // if (actor.system.eph.move > 25) move /= 5;
-
-            // move = Math.max(move, 1);
-
             // Conditions
             const grappled = token.hasCondition(Condition.GRAPPLED);
             const prone = token.hasCondition(Condition.PRONE);
@@ -356,11 +352,11 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
             }
 
             if (prone || shocked) {
-                return [{range: Math.round(move / 2) * 5, color: 'walk'}];
+                return [{range: Math.round(move / 2 + Number.EPSILON) * 5, color: 'walk'}];
             }
 
             return [
-                {range: Math.round(move / 2) * 5, color: 'walk'},
+                {range: Math.round(move / 2 + Number.EPSILON) * 5, color: 'walk'},
                 {range: move * 5, color: 'jog'},
                 {range: 2 * move * 5, color: 'run'},
                 {range: 3 * move * 5, color: 'sprint'}

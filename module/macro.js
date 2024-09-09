@@ -67,7 +67,7 @@ export async function onManageMacro(event, owner) {
  */
 export async function registerHooks() {
     [...supportedFoundryHooks, ...supportedHMHooks].forEach((hook) => {
-        Hooks.on(hook, (...args) => executeHook(...args, hook));
+        Hooks.on(hook, async (...args) => await executeHook(...args, hook));
     });
 }
 
@@ -75,30 +75,24 @@ export async function registerHooks() {
  * TODO
  * @param  {...any} args
  */
-function executeHook(...args) {
+async function executeHook(...args) {
     const hook = args.pop();
 
-    const actors = new Set();
-    canvas.scene?.tokens?.contents?.forEach((token) => {
-        actors.add(token.actor.id);
-    });
-    Array.from(actors).forEach((actorId) => {
-        game.actors.get(actorId).macrolist?.forEach(async (m) => {
-            const macro = game.macros.get(m._id);
-            const trigger = macro?.getFlag('hm3', 'trigger');
+    await Promise.all(
+        game.macros.contents.map(async (macro) => {
+            const trigger = macro.getFlag('hm3', 'trigger');
             if (trigger === hook) {
                 if (macro.canExecute) {
-                    // const asyncFunction = macro.command.includes('await') ? 'async' : ''; // TODO
-                    const macroTokens = canvas.scene.tokens.contents.filter((t) => t.actor.id === actorId);
+                    const actorId = macro.getFlag('hm3', 'ownerId') || null;
                     await macro.execute({
-                        macroActor: macroTokens[0].actor,
-                        macroTokens,
-                        allOtherTokens: canvas.scene.tokens.contents.filter((t) => t.actor.id !== actorId),
+                        macroActor: game.actors.get(actorId) || null,
+                        macroTokens: actorId ? canvas.scene.tokens.contents.filter((t) => t.actor.id === actorId) : null,
+                        allOtherTokens: actorId ? canvas.scene.tokens.contents.filter((t) => t.actor.id !== actorId) : null,
                         triggerArgs: args, // original args from the hook
                         macros: game.hm3.macros // convenience
                     });
                 }
             }
-        });
-    });
+        })
+    );
 }
