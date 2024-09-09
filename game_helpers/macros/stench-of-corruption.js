@@ -75,27 +75,23 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
             }
         });
 
-        let seconds, value, addon;
+        let seconds, value;
         if (result.isSuccess && result.isCritical) {
             // critical success - all good!
             seconds = 10 * MINUTE;
             value = 0;
-            addon = ' (CS)';
         } else if (result.isSuccess && !result.isCritical) {
             // marginal success
             seconds = macros.d6(4) * MINUTE;
             value = -2;
-            addon = ' (MS)';
         } else if (!result.isSuccess && !result.isCritical) {
             // marginal failure
             seconds = macros.d6(8) * MINUTE;
             value = -3;
-            addon = ' (MF)';
         } else {
             // critical failure
             seconds = macros.d6(16) * MINUTE;
             value = -3;
-            addon = ' (CF)';
             await macros.createActiveEffect(
                 {
                     token: victimToken,
@@ -112,7 +108,7 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
         await macros.createActiveEffect(
             {
                 token: victimToken,
-                label: STENCH_OF_CORRUPTION + addon,
+                label: STENCH_OF_CORRUPTION,
                 type: 'GameTime',
                 seconds,
                 icon: STENCH_OF_CORRUPTION_ICON
