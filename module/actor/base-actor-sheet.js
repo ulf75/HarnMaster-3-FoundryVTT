@@ -12,6 +12,11 @@ import {HarnMasterActor} from './actor.js';
 export class HarnMasterBaseActorSheet extends ActorSheet {
     /** @override */
     getData() {
+        if (!this.actor.system.eph.stumbleTarget) {
+            // sometimes it is not initialized correctly
+            this.actor.prepareDerivedData();
+        }
+
         let isOwner = this.document.isOwner;
         const data = {
             owner: isOwner,

@@ -8,8 +8,6 @@ import * as utility from '../utility.js';
  * @extends {Actor}
  */
 export class HarnMasterActor extends Actor {
-    #activeEffectPermissions = game.settings.get('hm3', 'activeEffectPermissions');
-
     get macrolist() {
         return game.macros.contents.filter((m) => m.getFlag('hm3', 'ownerId') === this.id) || [];
     }
@@ -24,7 +22,7 @@ export class HarnMasterActor extends Actor {
      * @override
      */
     allApplicableEffects() {
-        if (!this.#activeEffectPermissions) return super.allApplicableEffects();
+        if (!game.settings.get('hm3', 'activeEffectPermissions')) return super.allApplicableEffects();
 
         const effects = [];
         for (const effect of super.allApplicableEffects()) {
@@ -337,6 +335,10 @@ export class HarnMasterActor extends Actor {
 
         eph.effectiveWeight = actorData.loadRating ? Math.max(actorData.totalWeight - actorData.loadRating, 0) : actorData.totalWeight;
         actorData.encumbrance = Math.floor(eph.effectiveWeight / actorData.endurance);
+
+        // sometimes move is in feet, which is not according to the rules
+        // normalized here to avoid special treatments around the code
+        if (actorData.move.base > 25) actorData.move.base /= 5;
 
         // Setup temporary work values masking the base values
         eph.move = actorData.move.base;
