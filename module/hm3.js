@@ -12,7 +12,7 @@ import {HarnMasterCombat} from './hm3-combat.js';
 import {HM3MacroConfig} from './hm3-macro-config.js';
 import {HarnMasterMacro} from './hm3-macro.js';
 import {HarnMasterToken} from './hm3-token.js';
-import {ActorType, Aspect, Hook, ItemType, Location, Range, SkillType} from './hm3-types.js';
+import {ActorType, Aspect, Condition, Hook, ItemType, Location, Range, SkillType} from './hm3-types.js';
 import {HarnMasterItemSheet} from './item/item-sheet.js';
 import {HarnMasterItem} from './item/item.js';
 import {registerHooks} from './macro.js';
@@ -333,24 +333,38 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
             return 0x000000;
         }
 
-        /** @param token {Token} The token to check movement */
+        /**
+         * @param {Token} token - The token to check movement
+         * */
         getRanges(token) {
             const actor = token.actor;
             let move = actor.system.move.effective;
-            if (actor.system.eph.move > 25) move /= 5;
-            const stunned = false;
-            const prone = false;
 
-            if (stunned) return [{range: -1, color: 'walk'}];
+            // if (actor.system.eph.move > 25) move /= 5;
 
-            const ranges = [
+            // move = Math.max(move, 1);
+
+            // Conditions
+            const grappled = token.hasCondition(Condition.GRAPPLED);
+            const prone = token.hasCondition(Condition.PRONE);
+            const shocked = token.hasCondition(Condition.SHOCKED);
+            const stunned = token.hasCondition(Condition.STUNNED);
+            const unconscious = token.hasCondition(Condition.UNCONSCIOUS);
+
+            if (grappled || stunned || unconscious) {
+                return [{range: -1, color: 'walk'}];
+            }
+
+            if (prone || shocked) {
+                return [{range: Math.round(move / 2) * 5, color: 'walk'}];
+            }
+
+            return [
                 {range: Math.round(move / 2) * 5, color: 'walk'},
                 {range: move * 5, color: 'jog'},
                 {range: 2 * move * 5, color: 'run'},
                 {range: 3 * move * 5, color: 'sprint'}
             ];
-
-            return ranges;
         }
     }
 
