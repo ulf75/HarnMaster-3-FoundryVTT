@@ -963,6 +963,7 @@ export class HarnMasterActor extends Actor {
                 });
                 break;
 
+            case 'ata-attack':
             case 'dta-attack':
                 macros.weaponAttack(null, false, atkToken, true);
                 break;
@@ -976,7 +977,8 @@ export class HarnMasterActor extends Actor {
                     button.dataset.effAml,
                     button.dataset.aim,
                     button.dataset.aspect,
-                    button.dataset.impactMod
+                    button.dataset.impactMod,
+                    button.dataset.grappleAtk === 'true'
                 );
                 break;
 
@@ -989,7 +991,8 @@ export class HarnMasterActor extends Actor {
                     button.dataset.effAml,
                     button.dataset.aim,
                     button.dataset.aspect,
-                    button.dataset.impactMod
+                    button.dataset.impactMod,
+                    button.dataset.grappleAtk === 'true'
                 );
                 break;
 
@@ -1002,7 +1005,8 @@ export class HarnMasterActor extends Actor {
                     button.dataset.effAml,
                     button.dataset.aim,
                     button.dataset.aspect,
-                    button.dataset.impactMod
+                    button.dataset.impactMod,
+                    button.dataset.grappleAtk === 'true'
                 );
                 break;
 
@@ -1014,7 +1018,8 @@ export class HarnMasterActor extends Actor {
                     button.dataset.effAml,
                     button.dataset.aim,
                     button.dataset.aspect,
-                    button.dataset.impactMod
+                    button.dataset.impactMod,
+                    button.dataset.grappleAtk === 'true'
                 );
                 break;
 
@@ -1028,6 +1033,10 @@ export class HarnMasterActor extends Actor {
 
             case 'fumble':
                 macros.fumbleRoll(false, actor);
+                break;
+
+            case 'throwdown':
+                macros.throwDownRoll(atkToken.id, defToken.id, Number(button.dataset.atkDice), Number(button.dataset.defDice));
                 break;
         }
 

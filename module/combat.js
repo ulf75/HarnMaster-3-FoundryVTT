@@ -132,8 +132,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         impactMod: dialogResult.impactMod,
         hasDodge: !(grappled || incapacitated || shocked || stunned || unconscious),
         hasBlock: !(grappled || incapacitated || shocked || stunned || unconscious),
-        hasCounterstrike: !(grappled || incapacitated || shocked || stunned || unconscious),
-        hasGrapple: false,
+        hasCounterstrike: false, // not possible against missile attacks
         hasIgnore: true,
         visibleActorId: defendToken.actor.id
     };
@@ -171,7 +170,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
  * @param defendToken {Token} Token representing defender
  * @param weaponItem {Item} Melee weapon used by attacker
  */
-export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
+export async function meleeAttack(attackToken, defendToken, weaponItem = null, unarmed = false) {
     if (!attackToken) {
         ui.notifications.warn(`No attacker token identified.`);
         return null;
@@ -221,7 +220,8 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
     const options = {
         type: 'Attack',
         attackerName: attackToken.name,
-        defenderName: defendToken.name
+        defenderName: defendToken.name,
+        unarmed
     };
 
     // If a weapon was provided, don't ask for it.
@@ -273,8 +273,9 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
     const stunned = defendToken.hasCondition(Condition.STUNNED);
     const unconscious = defendToken.hasCondition(Condition.UNCONSCIOUS);
 
+    const type = dialogResult.isGrappleAtk ? 'Grapple' : 'Melee';
     const chatTemplateData = {
-        title: `${weaponItem.name} Melee Attack`,
+        title: `${weaponItem.name} ${type} Attack`,
         attacker: attackToken.name,
         atkTokenId: attackToken.id,
         defender: defendToken.name,
@@ -289,11 +290,11 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
         effAML: effAML,
         impactMod: dialogResult.impactMod,
         hasDodge: !(grappled || incapacitated || shocked || stunned || unconscious),
-        hasBlock: !(grappled || incapacitated || shocked || stunned || unconscious),
-        hasCounterstrike: !(grappled || incapacitated || shocked || stunned || unconscious),
-        hasGrapple: !(incapacitated || shocked || stunned || unconscious),
+        hasBlock: !(grappled || incapacitated || shocked || stunned || unconscious) && !dialogResult.isGrappleAtk,
+        hasCounterstrike: !(incapacitated || shocked || stunned || unconscious),
         hasIgnore: true,
-        visibleActorId: defendToken.actor.id
+        visibleActorId: defendToken.actor.id,
+        isGrappleAtk: !!dialogResult.isGrappleAtk
     };
 
     const html = await renderTemplate(chatTemplate, chatTemplateData);
@@ -391,7 +392,11 @@ async function attackDialog(options) {
         options.name = options.attackerName;
         const result = await selectWeaponDialog(options);
 
-        if (result) options.weapon = options.weapons.find((w) => result.weapon === w.name);
+        if (result) {
+            options.weapon = options.weapons.find((w) => result.weapon === w.name);
+            // If an attack is carried out unarmed, you can select the GRAPPLE option.
+            options.unarmed = options.weapon.system.assocSkill.toLowerCase().includes('unarmed');
+        }
     }
 
     if (!options.weapon) {
@@ -407,7 +412,8 @@ async function attackDialog(options) {
             {key: 'High', label: 'High (-10)'}
         ],
         defaultAim: 'Mid',
-        defaultModifier: options.defaultModifier || 0
+        defaultModifier: options.defaultModifier || 0,
+        unarmed: options.unarmed
     };
 
     if (options.weapon.type === 'weapongear') {
@@ -478,6 +484,7 @@ async function attackDialog(options) {
         callback: (html) => {
             const form = html[0].querySelector('form');
             const formRange = form.range ? form.range.value : null;
+            const isGrappleAtk = form[3]?.checked || false;
 
             // const addlModifier = (form.addlModifier ? parseInt(form.addlModifier.value) : 0) + (form.aim?.value !== 'Mid' ? -10 : 0);
             const result = {
@@ -487,7 +494,8 @@ async function attackDialog(options) {
                 addlModifier: form.addlModifier ? parseInt(form.addlModifier.value) : 0,
                 range: formRange,
                 rangeExceedsExtreme: dialogOptions.rangeExceedsExtreme,
-                impactMod: 0
+                impactMod: 0,
+                isGrappleAtk
             };
 
             if (formRange) {
@@ -582,7 +590,7 @@ function defaultMeleeWeapon(token) {
  * @param {*} atkAspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} atkImpactMod Additional modifier to impact
  */
-export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
+export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod, isGrappleAtk) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
@@ -648,9 +656,20 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         await game.dice3d.showForRoll(cRoll, game.user, true);
     }
 
+    // Grapple
+    const isGrappleDef = csDialogResult.isGrappleAtk;
+
     const atkResult = `${atkRoll.isCritical ? 'c' : 'm'}${atkRoll.isSuccess ? 's' : 'f'}`;
     const defResult = `${csRoll.isCritical ? 'c' : 'm'}${csRoll.isSuccess ? 's' : 'f'}`;
-    const combatResult = meleeCombatResult(atkResult, defResult, 'counterstrike', atkImpactMod, csDialogResult.impactMod);
+    const combatResult = meleeCombatResult(
+        atkResult,
+        defResult,
+        isGrappleDef ? 'grapple' : 'counterstrike',
+        atkImpactMod,
+        csDialogResult.impactMod,
+        isGrappleAtk,
+        isGrappleDef
+    );
 
     // We now know the results of the attack, roll applicable damage
     let atkImpactRoll = null;
@@ -675,11 +694,13 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         effAML: atkEffAML,
         effDML: 0,
         attackRoll: atkRoll.rollObj.total,
+        atkIsCritical: atkRoll.isCritical,
+        atkIsSuccess: atkRoll.isSuccess,
         atkRollResult: atkRoll.description,
         defenseRoll: 0,
         defRollResult: '',
         resultDesc: combatResult.desc,
-        hasAttackHit: combatResult.outcome.atkDice,
+        hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.atkDice,
         addlWeaponImpact: 0, // in future, maybe ask this in dialog?
         weaponImpact: atkImpactMod,
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
@@ -701,6 +722,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         defender: atkToken.name,
         defTokenId: atkToken.id,
         outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : 0,
+        atkProne: atkToken.hasCondition(Condition.PRONE),
+        defProne: defToken.hasCondition(Condition.PRONE),
         attackWeapon: csDialogResult.weapon.name,
         mlType: 'AML',
         addlModifierAbs: Math.abs(csDialogResult.addlModifier),
@@ -710,11 +733,13 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         effAML: csEffEML + csDialogResult.addlModifier,
         effDML: 0,
         attackRoll: csRoll.rollObj.total,
+        atkIsCritical: csRoll.isCritical,
+        atkIsSuccess: csRoll.isSuccess,
         atkRollResult: csRoll.description,
         defenseRoll: 0,
         defRollResult: '',
         resultDesc: combatResult.csDesc,
-        hasAttackHit: combatResult.outcome.defDice,
+        hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.defDice,
         addlWeaponImpact: 0, // in future, maybe ask this in dialog?
         weaponImpact: csDialogResult.impactMod,
         impactRoll: csImpactRoll ? csImpactRoll.dice[0].values.join(' + ') : null,
@@ -791,7 +816,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
+export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
@@ -843,7 +868,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     const defResult = `${defRoll.isCritical ? 'c' : 'm'}${defRoll.isSuccess ? 's' : 'f'}`;
     let combatResult = null;
     if (type === 'melee') {
-        combatResult = meleeCombatResult(atkResult, defResult, 'dodge', impactMod);
+        combatResult = meleeCombatResult(atkResult, defResult, 'dodge', impactMod, 0, isGrappleAtk);
     } else {
         combatResult = missileCombatResult(atkResult, defResult, 'dodge', impactMod);
     }
@@ -853,36 +878,50 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
     }
 
+    const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
     const chatData = {
-        title: `Attack Result`,
-        attacker: atkToken.name,
-        atkTokenId: atkToken.id,
-        defender: defToken.name,
-        defTokenId: defToken.id,
-        attackWeapon: weaponName,
-        outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : null,
-        effAML: effAML,
-        defense: 'Dodge',
-        effDML: effDML + defaultModifier,
-        attackRoll: atkRoll.rollObj.total,
-        atkRollResult: atkRoll.description,
-        defenseRoll: defRoll.rollObj.total,
-        defRollResult: defRoll.description,
-        resultDesc: combatResult.desc,
-        hasAttackHit: combatResult.outcome.atkDice,
+        addlModifierAbs: Math.abs(defaultModifier),
+        addlModifierSign: defaultModifier < 0 ? '-' : '+',
         addlWeaponImpact: 0, // in future, maybe ask this in dialog?
-        weaponImpact: impactMod,
-        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
-        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         atkAim: aim,
         atkAspect: aspect,
+        atkIsCritical: atkRoll.isCritical,
+        atkIsSuccess: atkRoll.isSuccess,
+        atkProne: atkToken.hasCondition(Condition.PRONE),
+        atkRollResult: atkRoll.description,
+        atkTokenId: atkToken.id,
+        attacker: atkToken.name,
+        attackRoll: atkRoll.rollObj.total,
+        attackWeapon: weaponName,
+        defender: defToken.name,
+        defense: 'Dodge',
+        defenseRoll: defRoll.rollObj.total,
+        defIsCritical: defRoll.isCritical,
+        defIsSuccess: defRoll.isSuccess,
+        defProne: defToken.hasCondition(Condition.PRONE),
+        defRollResult: defRoll.description,
+        defTokenId: defToken.id,
         dta: combatResult.outcome.dta,
-        isAtkStumbleRoll: combatResult.outcome.atkStumble,
+        effAML: effAML,
+        effDML: effDML + defaultModifier,
+        effEML: effDML + defaultModifier,
+        hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.atkDice,
+        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
         isAtkFumbleRoll: combatResult.outcome.atkFumble,
-        isDefStumbleRoll: combatResult.outcome.defStumble,
+        isAtkStumbleRoll: combatResult.outcome.atkStumble,
         isDefFumbleRoll: combatResult.outcome.defFumble,
+        isDefStumbleRoll: combatResult.outcome.defStumble,
+        isGrappleAtk,
+        isGrappleAtkSuccessful: isGrappleAtk && combatResult.outcome.atkDice > 0,
+        mlType: 'DML',
+        origEML: effDML,
+        outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : null,
+        resultDesc: combatResult.desc,
+        title,
+        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         visibleAtkActorId: atkToken.actor.id,
-        visibleDefActorId: defToken.actor.id
+        visibleDefActorId: defToken.actor.id,
+        weaponImpact: impactMod
     };
 
     let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.html';
@@ -925,7 +964,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
+export async function blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
@@ -1055,7 +1094,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     let combatResult;
     if (type === 'melee') {
-        combatResult = meleeCombatResult(atkResult, defResult, 'block', impactMod);
+        combatResult = meleeCombatResult(atkResult, defResult, 'block', impactMod, 0, isGrappleAtk);
     } else {
         combatResult = missileCombatResult(atkResult, defResult, 'block', impactMod);
     }
@@ -1084,48 +1123,53 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         }
     }
 
+    const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
     const chatData = {
-        title: `Attack Result`,
-        attacker: atkToken.name,
-        atkTokenId: atkToken.id,
-        defender: defToken.name,
-        defTokenId: defToken.id,
-        outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : null,
-        mlType: 'DML',
-        attackWeapon: weaponName,
-        defendWeapon: defWeapon ? defWeapon.name : '',
-        effAML: effAML,
-        effDML: effDML + dialogResult.addlModifier,
-        defense: `Block w/ ${dialogResult.weapon}`,
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
         addlModifierSign: dialogResult.addlModifier < 0 ? '-' : '+',
-        origEML: effDML,
-        effEML: effDML + dialogResult.addlModifier,
-        attackRoll: atkRoll.rollObj.total,
+        addlWeaponImpact: 0, // in future, maybe ask this in dialog?
+        atkAim: aim,
+        atkAspect: aspect,
         atkIsCritical: atkRoll.isCritical,
         atkIsSuccess: atkRoll.isSuccess,
+        atkProne: atkToken.hasCondition(Condition.PRONE),
         atkRollResult: atkRoll.description,
+        atkTokenId: atkToken.id,
+        atkWeaponBroke: weaponBroke.attackWeaponBroke,
+        attacker: atkToken.name,
+        attackRoll: atkRoll.rollObj.total,
+        attackWeapon: weaponName,
+        defender: defToken.name,
+        defendWeapon: defWeapon ? defWeapon.name : '',
+        defense: `Block w/ ${dialogResult.weapon}`,
         defenseRoll: defRoll.rollObj.total,
         defIsCritical: defRoll.isCritical,
         defIsSuccess: defRoll.isSuccess,
+        defProne: defToken.hasCondition(Condition.PRONE),
         defRollResult: defRoll.description,
-        resultDesc: combatResult.desc,
-        hasAttackHit: combatResult.outcome.atkDice,
-        addlWeaponImpact: 0, // in future, maybe ask this in dialog?
-        weaponImpact: impactMod,
-        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
-        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
-        atkAim: aim,
-        atkAspect: aspect,
-        dta: combatResult.outcome.dta,
-        atkWeaponBroke: weaponBroke.attackWeaponBroke,
+        defTokenId: defToken.id,
         defWeaponBroke: weaponBroke.defendWeaponBroke,
-        isAtkStumbleRoll: combatResult.outcome.atkStumble,
+        dta: combatResult.outcome.dta,
+        effAML: effAML,
+        effDML: effDML + dialogResult.addlModifier,
+        effEML: effDML + dialogResult.addlModifier,
+        hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.atkDice,
+        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
         isAtkFumbleRoll: combatResult.outcome.atkFumble,
-        isDefStumbleRoll: combatResult.outcome.defStumble,
+        isAtkStumbleRoll: combatResult.outcome.atkStumble,
         isDefFumbleRoll: combatResult.outcome.defFumble,
+        isDefStumbleRoll: combatResult.outcome.defStumble,
+        isGrappleAtk,
+        isGrappleAtkSuccessful: isGrappleAtk && combatResult.outcome.atkDice > 0,
+        mlType: 'DML',
+        origEML: effDML,
+        outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : null,
+        resultDesc: combatResult.desc,
+        title,
+        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         visibleAtkActorId: atkToken.actor.id,
-        visibleDefActorId: defToken.actor.id
+        visibleDefActorId: defToken.actor.id,
+        weaponImpact: impactMod
     };
 
     let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.html';
@@ -1253,7 +1297,7 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
+export async function ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
@@ -1281,7 +1325,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
     const atkResult = `${atkRoll.isCritical ? 'c' : 'm'}${atkRoll.isSuccess ? 's' : 'f'}`;
     let combatResult;
     if (type === 'melee') {
-        combatResult = meleeCombatResult(atkResult, null, 'ignore', impactMod);
+        combatResult = meleeCombatResult(atkResult, null, 'ignore', impactMod, 0, isGrappleAtk);
     } else {
         combatResult = missileCombatResult(atkResult, null, 'ignore', impactMod);
     }
@@ -1291,36 +1335,45 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
     }
 
+    const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
     const chatData = {
-        title: `Attack Result`,
-        attacker: atkToken.name,
-        atkTokenId: atkToken.id,
-        defender: defToken.name,
-        defTokenId: defToken.id,
-        mlType: 'AML',
-        attackWeapon: weaponName,
-        effAML: effAML,
-        defense: 'Ignore',
-        effDML: 0,
-        attackRoll: atkRoll.rollObj.total,
-        atkRollResult: atkRoll.description,
-        defenseRoll: 0,
-        defRollResult: '',
-        resultDesc: combatResult.desc,
-        hasAttackHit: combatResult.outcome.atkDice,
         addlWeaponImpact: 0, // in future, maybe ask this in dialog?
-        weaponImpact: impactMod,
-        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
-        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         atkAim: aim,
         atkAspect: aspect,
+        atkDice: combatResult.outcome.atkDice,
+        atkIsCritical: atkRoll.isCritical,
+        atkIsSuccess: atkRoll.isSuccess,
+        atkRollResult: atkRoll.description,
+        atkTokenId: atkToken.id,
+        attacker: atkToken.name,
+        attackRoll: atkRoll.rollObj.total,
+        attackWeapon: weaponName,
+        defDice: combatResult.outcome.defDice,
+        defender: defToken.name,
+        defense: 'Ignore',
+        defenseRoll: 0,
+        defRollResult: '',
+        defTokenId: defToken.id,
         dta: combatResult.outcome.dta,
-        isAtkStumbleRoll: combatResult.outcome.atkStumble,
+        effAML: effAML,
+        effDML: 0,
+        hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.atkDice,
+        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
         isAtkFumbleRoll: combatResult.outcome.atkFumble,
-        isDefStumbleRoll: combatResult.outcome.defStumble,
+        isAtkHold: combatResult.outcome.atkHold,
+        isAtkStumbleRoll: combatResult.outcome.atkStumble,
         isDefFumbleRoll: combatResult.outcome.defFumble,
+        isDefHold: combatResult.outcome.defHold,
+        isDefStumbleRoll: combatResult.outcome.defStumble,
+        isGrappleAtk,
+        isGrappleAtkSuccessful: isGrappleAtk && combatResult.outcome.atkDice > 0,
+        mlType: 'AML',
+        resultDesc: combatResult.desc,
+        title,
+        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         visibleAtkActorId: atkToken.actor.id,
-        visibleDefActorId: defToken.actor.id
+        visibleDefActorId: defToken.actor.id,
+        weaponImpact: impactMod
     };
 
     let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.html';
@@ -1354,13 +1407,15 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
  * @param {String} atkResult The result from the attack, comprised of "cs", "cf", "ms", or "mf"
  * @param {String} defResult The result from the defense, comprised of "cs", "cf", "ms", or "mf"
  * @param {String} defense The type of defense: "ignore", "block", "counterstrike", or "dodge"
- * @param {Number} atkAddlImpact Additional impact for the attacker
- * @param {Number} defAddlImpact If counterstrike defense, the additional impact for the defender (counterstriker)
+ * @param {Number} [atkAddlImpact=0] Additional impact for the attacker
+ * @param {Number} [defAddlImpact=0] If counterstrike defense, the additional impact for the defender (counterstriker)
+ * @param {boolean} [isGrappleAtk=false]
+ * @param {boolean} [isGrappleDef=false]
  */
-export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact = 0, defAddlImpact = 0) {
+export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact = 0, defAddlImpact = 0, isGrappleAtk = false, isGrappleDef = false) {
     let outcome = null;
     let index = null;
-    const defenseTable = HM3.meleeCombatTable[defense];
+    const defenseTable = isGrappleAtk ? HM3.grappleCombatTable[defense] : HM3.meleeCombatTable[defense];
     if (defenseTable) {
         if (defense === 'ignore') {
             index = atkResult;
@@ -1372,13 +1427,21 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact =
 
     if (!outcome) return null;
 
-    const result = {outcome: outcome, desc: 'Attack misses.', csDesc: 'Counterstrike misses.'};
+    const result = {
+        outcome: outcome,
+        desc: isGrappleAtk ? 'Grapple attempt unsuccessful.' : 'Attack misses.',
+        csDesc: isGrappleDef ? 'Grapple attempt unsuccessful.' : 'Counterstrike misses.',
+        atkHold: !!outcome.atkHold,
+        defHold: !!outcome.defHold
+    };
 
     if (defense !== 'counterstrike') {
-        if (outcome.atkDice) {
+        if (outcome.atkHold) {
+            result.desc = `Attacker obtains hold.`;
+        } else if (outcome.atkDice) {
             result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
         } else if (outcome.atkFumble && outcome.defFumble) {
-            result.desc = 'Both Attacker and Defender Fumble';
+            result.desc = 'Both attacker and defender fumble.';
         } else if (outcome.atkFumble) {
             result.desc = `Attacker fumbles.`;
         } else if (outcome.defFumble) {
@@ -1392,10 +1455,14 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact =
         } else if (outcome.block) {
             result.desc = `Attack blocked.`;
         } else if (outcome.dta) {
-            result.desc = `Defender gains Tactical Advantage.`;
+            result.desc = `Defender gains a Tactical Advantage.`;
         }
     } else {
-        if (outcome.atkDice) {
+        if (outcome.atkHold && outcome.defHold) {
+            result.desc = `Both attacker and defender obtain hold.`;
+        } else if (outcome.atkHold) {
+            result.desc = `Attacker obtains hold.`;
+        } else if (outcome.atkDice) {
             result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
         } else if (outcome.atkFumble) {
             result.desc = `Attacker fumbles.`;
@@ -1403,7 +1470,11 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact =
             result.desc = `Attacker stumbles.`;
         }
 
-        if (outcome.defDice) {
+        if (outcome.atkHold && outcome.defHold) {
+            result.desc = `Both attacker and defender obtain hold.`;
+        } else if (outcome.defHold) {
+            result.csDesc = `Defender obtains hold.`;
+        } else if (outcome.defDice) {
             result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact)} impact.`;
         } else if (outcome.defFumble) {
             result.csDesc = 'Counterstriker fumbles.';
@@ -1413,7 +1484,7 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact =
             result.desc = 'Attacker blocked.';
             result.csDesc = `Counterstriker blocked.`;
         } else if (outcome.dta) {
-            result.csDesc = `Counterstriker achieves Tactical Advantage!`;
+            result.csDesc = `Counterstriker gains a Tactical Advantage!`;
         } else if (outcome.miss) {
             result.csDesc = `Counterstrike misses.`;
         }

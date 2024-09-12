@@ -50,4 +50,11 @@
         <label>Additional {{type}} Modifier:</label>
         <input type="number" name="addlModifier" value="{{defaultModifier}}" />
     </div>
+
+    {{#if unarmed}}
+    <div class="form-group">
+        <label>Grapple Attack?</label>
+        <input type="checkbox" name="grapple" />
+    </div>
+    {{/if}}
 </form>

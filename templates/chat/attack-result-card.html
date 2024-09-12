@@ -10,9 +10,21 @@
     </div>
     {{/if}}
 
+    {{#if atkProne}}
+    <div class="card-content center">
+        <span class="notice-header">Attacker Prone</span>
+    </div>
+    {{/if}}
+
     {{#if outnumbered}}
     <div class="card-content center">
-        <span class="notice-header">Outnumbered {{outnumbered}}:1</span>
+        <span class="notice-header">Defender Outnumbered {{outnumbered}}:1</span>
+    </div>
+    {{/if}}
+
+    {{#if defProne}}
+    <div class="card-content center">
+        <span class="notice-header">Defender Prone</span>
     </div>
     {{/if}}
 
@@ -38,9 +50,9 @@
     <div class="grid grid-2col mingap">
         <span class="header">Attack</span>
         <span class="header">Defend</span>
-        <span class="center">{{attackWeapon}}</span>
+        <span class="center">{{#if attackWeapon}}{{attackWeapon}}{{else}}&#8212;{{/if}}</span>
         <span class="center">{{#if defense}}{{defense}}{{else}}&#8212;{{/if}}</span>
-        <span class="center">Eff. AML: {{effAML}}</span>
+        <span class="center">{{#if effAML}}Eff. AML: {{effAML}}{{else}}&#8212;{{/if}}</span>
         <span class="center">{{#if effDML}}Eff. DML: {{effDML}}{{else}}&#8212;{{/if}}</span>
         <span class="center">Roll: {{attackRoll}}</span>
         <span class="center">{{#if defenseRoll}}Roll: {{defenseRoll}}{{else}}&#8212;{{/if}}</span>
@@ -99,10 +111,14 @@
     {{/if}}
     {{/if}}
 
-    {{#if (or hasAttackHit dta isAtkFumbleRoll isAtkStumbleRoll isDefFumbleRoll isDefStumbleRoll)}}
+    {{#if (or hasAttackHit ata dta isAtkFumbleRoll isAtkStumbleRoll isAtkHold isDefFumbleRoll isDefStumbleRoll isDefHold)}}
     <div class="card-buttons">
         {{#if hasAttackHit}}
             <button data-action="injury" data-visible-actor-id="{{visibleDefActorId}}" data-token-id="{{defTokenId}}" data-atk-token-id="{{atkTokenId}}" data-attack-Weapon="{{attackWeapon}}" data-aim="{{atkAim}}" data-aspect="{{atkAspect}}" data-impact="{{totalImpact}}">Calculate {{defender}} Injury</button>
+        {{/if}}
+
+        {{#if ata}}
+        <button data-action="ata-attack"  data-visible-actor-id="{{visibleAtkActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}">Initiate ATA Attack</button>
         {{/if}}
 
         {{#if dta}}
@@ -123,6 +139,14 @@
 
         {{#if isDefStumbleRoll}}
         <button data-action="stumble" data-visible-actor-id="{{visibleDefActorId}}" {{#if defTokenId}}data-token-id="{{defTokenId}}"{{else}}data-actor-id="{{visibleDefActorId}}"{{/if}}>Stumble Roll</button>
+        {{/if}}
+
+        {{#if isAtkHold}}
+        <button data-action="throwdown" data-visible-actor-id="{{visibleAtkActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}" data-atk-dice="{{atkDice}}" data-def-dice="{{defDice}}" {{#if atkTokenId}}data-token-id="{{atkTokenId}}"{{else}}data-actor-id="{{visibleAtkActorId}}"{{/if}}>Throw down Defender</button>
+        {{/if}}
+
+        {{#if isDefHold}}
+        <button data-action="throwdown" data-visible-actor-id="{{visibleDefActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}" data-atk-dice="{{atkDice}}" data-def-dice="{{defDice}}" {{#if defTokenId}}data-token-id="{{defTokenId}}"{{else}}data-actor-id="{{visibleDefActorId}}"{{/if}}>Throw down Attacker</button>
         {{/if}}
     </div>
     {{/if}}

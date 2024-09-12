@@ -945,6 +945,91 @@ export async function fumbleRoll(noDialog = false, myActor = null) {
     return null;
 }
 
+/**
+ *
+ * @param {string} atkTokenId
+ * @param {string} defTokenId
+ * @param {number} atkDice
+ * @param {number} defDice
+ * @returns
+ */
+export async function throwDownRoll(atkTokenId, defTokenId, atkDice, defDice) {
+    const atkToken = canvas.tokens.get(atkTokenId);
+    if (!atkToken) {
+        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        return null;
+    }
+
+    const defToken = canvas.tokens.get(defTokenId);
+    if (!defToken) {
+        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        return null;
+    }
+
+    const hooksOk = Hooks.call('hm3.preThrowDownRoll', atkToken, defToken);
+    if (hooksOk) {
+        let atkResult = 0,
+            defResult = 0;
+        // re-roll ties
+        while (atkResult === defResult) {
+            // House rule: To make GRAPPLE more attractive and effective, the player who starts
+            // the grapple receives more dice according to the success result (one or two more).
+            atkResult = d6(3 + atkDice) + atkToken.actor.system.abilities.strength.effective;
+            defResult = d6(3 + defDice) + defToken.actor.system.abilities.strength.effective;
+        }
+
+        let ata = false,
+            dta = false,
+            resultDesc = '',
+            goProne;
+        if (atkResult > defResult) {
+            // Attacker has thrown the defender to the ground and wins a Tactical Advantage.
+            goProne = async () => await createCondition(defToken, Condition.PRONE);
+            resultDesc = `${atkToken.name} has thrown ${defToken.name} to the ground and wins a Tactical Advantage.`;
+            ata = true;
+        } else {
+            // Defender has thrown the attacker to the ground and wins a Tactical Advantage.
+            goProne = async () => await createCondition(atkToken, Condition.PRONE);
+            resultDesc = `${defToken.name} has thrown ${atkToken.name} to the ground and wins a Tactical Advantage.`;
+            dta = true;
+        }
+
+        const chatData = {
+            ata,
+            atkTokenId: atkToken.id,
+            attacker: atkToken.name,
+            attackRoll: atkResult,
+            defender: defToken.name,
+            defenseRoll: defResult,
+            defTokenId: defToken.id,
+            dta,
+            hasAttackHit: false,
+            resultDesc,
+            title: `Throw Down Roll`,
+            visibleAtkActorId: atkToken.actor.id,
+            visibleDefActorId: defToken.actor.id
+        };
+
+        let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.html';
+
+        const html = await renderTemplate(chatTemplate, chatData);
+
+        let messageData = {
+            content: html.trim(),
+            sound: CONFIG.sounds.dice,
+            speaker: ChatMessage.getSpeaker(),
+            user: game.user.id
+        };
+
+        // Create a chat message
+        await ChatMessage.create(messageData, {});
+        await goProne();
+
+        callOnHooks('hm3.onThrowDownRoll', atkToken, defToken, {atkResult, defResult});
+    }
+    return null;
+}
+
 export async function genericDamageRoll(myActor = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
     if (!actorInfo) {
@@ -1090,10 +1175,13 @@ export async function weaponAttack(itemName = null, noDialog = false, myToken = 
         weapon = await combat.getItem(itemName, 'weapongear', combatant.actor);
     }
 
-    const hooksOk = Hooks.call('hm3.preMeleeAttack', combatant, targetToken, weapon);
+    // If an attack is carried out unarmed, you can select the GRAPPLE option.
+    const unarmed = weapon?.system.assocSkill.toLowerCase().includes('unarmed') || false;
+
+    const hooksOk = Hooks.call('hm3.preMeleeAttack', combatant, targetToken, weapon, unarmed);
     if (hooksOk) {
-        const result = await combat.meleeAttack(combatant.token, targetToken, weapon);
-        Hooks.call('hm3.onMeleeAttack', result, combatant, targetToken, weapon);
+        const result = await combat.meleeAttack(combatant.token, targetToken, weapon, unarmed);
+        Hooks.call('hm3.onMeleeAttack', result, combatant, targetToken, weapon, unarmed);
         return result;
     }
     return null;
@@ -1131,8 +1219,9 @@ export async function missileAttack(itemName = null, noDialog = false, myToken =
  * @param {*} atkAim Attack aim ("High", "Mid", "Low")
  * @param {*} atkAspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} atkImpactMod Additional modifier to impact
+ * @param {boolean} isGrappleAtk
  */
-export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
+export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod, isGrappleAtk) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1145,10 +1234,40 @@ export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeapon
         return null;
     }
 
-    const hooksOk = Hooks.call('hm3.preMeleeCounterstrikeResume', atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod);
+    const hooksOk = Hooks.call(
+        'hm3.preMeleeCounterstrikeResume',
+        atkToken,
+        defToken,
+        atkWeaponName,
+        atkEffAML,
+        atkAim,
+        atkAspect,
+        atkImpactMod,
+        isGrappleAtk
+    );
     if (hooksOk) {
-        const result = await combat.meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod);
-        Hooks.call('hm3.onMeleeCounterstrikeResume', result, atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod);
+        const result = await combat.meleeCounterstrikeResume(
+            atkToken,
+            defToken,
+            atkWeaponName,
+            atkEffAML,
+            atkAim,
+            atkAspect,
+            atkImpactMod,
+            isGrappleAtk
+        );
+        Hooks.call(
+            'hm3.onMeleeCounterstrikeResume',
+            result,
+            atkToken,
+            defToken,
+            atkWeaponName,
+            atkEffAML,
+            atkAim,
+            atkAspect,
+            atkImpactMod,
+            isGrappleAtk
+        );
         return result;
     }
     return null;
@@ -1166,7 +1285,7 @@ export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeapon
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
+export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1179,10 +1298,10 @@ export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effA
         return null;
     }
 
-    const hooksOk = Hooks.call('hm3.preDodgeResume', atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+    const hooksOk = Hooks.call('hm3.preDodgeResume', atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
     if (hooksOk) {
-        const result = await combat.dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
-        Hooks.call('hm3.onDodgeResume', result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+        const result = await combat.dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
+        Hooks.call('hm3.onDodgeResume', result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
         return result;
     }
     return null;
@@ -1200,7 +1319,7 @@ export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function blockResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
+export async function blockResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1213,10 +1332,10 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
         return null;
     }
 
-    const hooksOk = Hooks.call('hm3.preBlockResume', atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+    const hooksOk = Hooks.call('hm3.preBlockResume', atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
     if (hooksOk) {
-        const result = await combat.blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
-        Hooks.call('hm3.onBlockResume', result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+        const result = await combat.blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
+        Hooks.call('hm3.onBlockResume', result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
         return result;
     }
     return null;
@@ -1234,7 +1353,7 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
+export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1247,10 +1366,10 @@ export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, eff
         return null;
     }
 
-    const hooksOk = Hooks.call('hm3.preIgnoreResume', atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+    const hooksOk = Hooks.call('hm3.preIgnoreResume', atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
     if (hooksOk) {
-        const result = await combat.ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
-        Hooks.call('hm3.onIgnoreResume', result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+        const result = await combat.ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
+        Hooks.call('hm3.onIgnoreResume', result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
         return result;
     }
     return null;
