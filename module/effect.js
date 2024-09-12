@@ -1,5 +1,3 @@
-//import { HM3ActiveEffect } from './hm3-active-effect.js';
-
 /**
  * Manage Active Effect instances through the Actor Sheet via effect control buttons.
  * @param {MouseEvent} event      The left-click event on the effect control

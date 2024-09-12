@@ -1,9 +1,13 @@
-export class HM3ActiveEffect extends ActiveEffect {
-    constructor(...args) {
-        super(...args);
-    }
+const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
-    static create(...args) {
-        return new HM3ActiveEffect(...args);
+export class HarnMasterActiveEffect extends ActiveEffect {
+    _prepareDuration() {
+        const ret = super._prepareDuration();
+
+        if (ret.duration === INDEFINITE) {
+            ret.label = 'Indefinite';
+        }
+
+        return ret;
     }
 }

@@ -376,11 +376,12 @@ export function aeDuration(effect) {
 
     // Time-based duration
     if (Number.isNumeric(d.seconds)) {
+        const isIndefinite = d.label === 'Indefinite';
         const start = d.startTime || game.time.worldTime;
         const elapsed = game.time.worldTime - start;
         const remaining = elapsed < 0 ? d.seconds : Math.max(d.seconds - elapsed, 0);
         //const normDuration = toNormTime(d.seconds);
-        const normRemaining = toNormTime(remaining);
+        const normRemaining = isIndefinite ? 'None' : toNormTime(remaining);
         const normStart = elapsed < 0 ? toNormTime(-elapsed) : 'Started';
         return {
             type: 'seconds',

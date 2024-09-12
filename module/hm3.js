@@ -8,6 +8,7 @@ import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
 import * as effect from './effect.js';
 import {HM3ActiveEffectConfig} from './hm3-active-effect-config.js';
+import {HarnMasterActiveEffect} from './hm3-active-effect.js';
 import {HarnMasterCombat} from './hm3-combat.js';
 import {HM3MacroConfig} from './hm3-macro-config.js';
 import {HarnMasterMacro} from './hm3-macro.js';
@@ -89,6 +90,7 @@ Hooks.once('init', async function () {
         wrapper: true
     });
 
+    CONFIG.ActiveEffect.documentClass = HarnMasterActiveEffect;
     CONFIG.Macro.documentClass = HarnMasterMacro;
     CONFIG.Token.objectClass = HarnMasterToken;
 
