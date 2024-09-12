@@ -42,7 +42,7 @@ Hooks.once('init', async function () {
      */
     CONFIG.Combat.initiative = {
         formula: '@initiative',
-        decimals: 2
+        decimals: 1
     };
 
     // Set Combat Time Length
