@@ -801,6 +801,13 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions);
 
+    if (combatResult.outcome.atkHold) {
+        await defToken.addCondition(Condition.GRAPPLED);
+    }
+    if (combatResult.outcome.defHold) {
+        await atkToken.addCondition(Condition.GRAPPLED);
+    }
+
     return {atk: atkChatData, cs: csChatData};
 }
 
@@ -908,8 +915,10 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.atkDice,
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
         isAtkFumbleRoll: combatResult.outcome.atkFumble,
+        isAtkHold: combatResult.outcome.atkHold,
         isAtkStumbleRoll: combatResult.outcome.atkStumble,
         isDefFumbleRoll: combatResult.outcome.defFumble,
+        isDefHold: combatResult.outcome.defHold,
         isDefStumbleRoll: combatResult.outcome.defStumble,
         isGrappleAtk,
         isGrappleAtkSuccessful: isGrappleAtk && combatResult.outcome.atkDice > 0,
@@ -947,6 +956,13 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     await ChatMessage.create(messageData, messageOptions);
     if (!combatResult.outcome.atkDice && game.settings.get('hm3', 'combatAudio')) {
         foundry.audio.AudioHelper.play({src: 'systems/hm3/audio/swoosh1.ogg', autoplay: true, loop: false}, true);
+    }
+
+    if (combatResult.outcome.atkHold) {
+        await defToken.addCondition(Condition.GRAPPLED);
+    }
+    if (combatResult.outcome.defHold) {
+        await atkToken.addCondition(Condition.GRAPPLED);
     }
 
     return chatData;
@@ -1197,6 +1213,13 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         foundry.audio.AudioHelper.play({src: 'systems/hm3/audio/shield-bash.ogg', autoplay: true, loop: false}, true);
     }
 
+    if (combatResult.outcome.atkHold) {
+        await defToken.addCondition(Condition.GRAPPLED);
+    }
+    if (combatResult.outcome.defHold) {
+        await atkToken.addCondition(Condition.GRAPPLED);
+    }
+
     return chatData;
 }
 
@@ -1397,6 +1420,13 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
 
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions);
+
+    if (combatResult.outcome.atkHold) {
+        await defToken.addCondition(Condition.GRAPPLED);
+    }
+    if (combatResult.outcome.defHold) {
+        await atkToken.addCondition(Condition.GRAPPLED);
+    }
 
     return chatData;
 }
