@@ -248,21 +248,25 @@ export class DiceHM3 {
         });
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : '';
 
+        const isTAPossible = ['fumble', 'shock', 'stumble'].includes(rollData.type);
+        const addlInfo = !roll.isSuccess && isTAPossible ? 'Opponent gains a Tactical Advantage.' : '';
+
         const chatTemplateData = {
-            type: roll.type,
-            type: rollData.type,
-            title: rollData.label,
-            origTarget: rollData.target,
-            modifier: roll.modifier,
-            plusMinus: roll.modifier < 0 ? '-' : '+',
-            modifiedTarget: roll.target,
-            isSuccess: roll.isSuccess,
-            rollValue: roll.rollObj.total,
-            rollResult: roll.rollObj.dice[0].values.join(' + '),
-            showResult: roll.rollObj.dice[0].values.length > 1,
+            addlInfo,
             description: roll.description,
+            isSuccess: roll.isSuccess,
+            modifiedTarget: roll.target,
+            modifier: roll.modifier,
             notes: renderedNotes,
-            roll: roll
+            origTarget: rollData.target,
+            plusMinus: roll.modifier < 0 ? '-' : '+',
+            roll: roll,
+            rollResult: roll.rollObj.dice[0].values.join(' + '),
+            rollValue: roll.rollObj.total,
+            showResult: roll.rollObj.dice[0].values.length > 1,
+            title: rollData.label,
+            type: roll.type,
+            type: rollData.type
         };
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);

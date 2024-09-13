@@ -1748,15 +1748,16 @@ export const displayChatActionButtons = function (message, html, data) {
 };
 
 export async function isFirstTA() {
-    return !!(await game.combats.active.getFlag('hm3', 'TA'));
+    return !game.combats.active.getFlag('hm3', 'TA');
 }
 
 export async function setTA() {
-    if (isFirstTA()) {
+    if (await isFirstTA()) {
         await game.combats.active.setFlag('hm3', 'TA', 'true');
         return true;
     } else {
-        ui.notifications.info(`No more than one Tactical Advantage may be earned per character turn.`);
+        ui.notifications.info(`No more than one Tactical Advantage may be earned per character turn. Turn ends.`);
+        await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
         return false;
     }
 }

@@ -36,9 +36,10 @@ await Requestor.request({
                 const effect = game.hm3.macros.getActiveEffect(canvas.tokens.get('${token.id}'), '${PRONE}', true);
                 if (effect) {
                     effect.delete();
+                    await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
                     await ChatMessage.create({
                         speaker,
-                        content: 'You got up successfully.'
+                        content: 'You got up successfully. Your turn ends.'
                     });
                 }
             },

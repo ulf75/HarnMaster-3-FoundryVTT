@@ -22,9 +22,17 @@ export class HarnMasterCombat extends Combat {
     }
 
     /** @override */
-    async nextTurn() {
-        // Remove the Tactical Advantage flag
-        await this.unsetFlag('hm3', 'TA');
-        return super.nextTurn();
+    async nextTurn(postpone = 0) {
+        if (postpone > 0) {
+            setTimeout(async () => {
+                // Remove the Tactical Advantage flag
+                await this.unsetFlag('hm3', 'TA');
+                return super.nextTurn();
+            }, postpone);
+        } else {
+            // Remove the Tactical Advantage flag
+            await this.unsetFlag('hm3', 'TA');
+            return super.nextTurn();
+        }
     }
 }

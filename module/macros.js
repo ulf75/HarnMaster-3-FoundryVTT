@@ -869,6 +869,10 @@ export async function shockRoll(noDialog = false, myActor = null) {
         const result = await DiceHM3.d6Roll(stdRollData);
         actorInfo.actor.runCustomMacro(result);
         if (result) {
+            if (!result.isSuccess) {
+                // Opponent gains a TA
+                await combat.setTA();
+            }
             callOnHooks('hm3.onShockRoll', actorInfo.actor, result, stdRollData);
         }
         return result;
@@ -904,6 +908,10 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
         const result = await DiceHM3.d6Roll(stdRollData);
         if (result) {
             actorInfo.actor.runCustomMacro(result);
+            if (!result.isSuccess) {
+                // Opponent gains a TA
+                await combat.setTA();
+            }
             callOnHooks('hm3.onStumbleRoll', actorInfo.actor, result, stdRollData);
         }
         return result;
@@ -939,6 +947,10 @@ export async function fumbleRoll(noDialog = false, myActor = null) {
         const result = await DiceHM3.d6Roll(stdRollData);
         if (result) {
             actorInfo.actor.runCustomMacro(result);
+            if (!result.isSuccess) {
+                // Opponent gains a TA
+                await combat.setTA();
+            }
             callOnHooks('hm3.onFumbleRoll', actorInfo.actor, result, stdRollData);
         }
         return result;
