@@ -995,6 +995,14 @@ export async function throwDownRoll(atkTokenId, defTokenId, atkDice, defDice) {
             dta = true;
         }
 
+        if (ata || dta) {
+            // Only one TA per turn
+            if (!(await combat.setTA())) {
+                ata = false;
+                dta = false;
+            }
+        }
+
         const chatData = {
             ata,
             atkTokenId: atkToken.id,

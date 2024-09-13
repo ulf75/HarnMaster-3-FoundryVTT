@@ -21,6 +21,11 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         return null;
     }
 
+    if (attackToken instanceof TokenDocument) {
+        // Should be a HarnMasterToken object
+        attackToken = attackToken.object;
+    }
+
     if (!isValidToken(attackToken)) {
         ui.notifications.error(`Attack token not valid.`);
         console.error(`HM3 | missileAttack attackToken=${attackToken} is not valid.`);
@@ -30,6 +35,11 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     if (!defendToken) {
         ui.notifications.warn(`No defender token identified.`);
         return null;
+    }
+
+    if (defendToken instanceof TokenDocument) {
+        // Should be a HarnMasterToken object
+        defendToken = defendToken.object;
     }
 
     if (!isValidToken(defendToken)) {
@@ -176,6 +186,11 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null, u
         return null;
     }
 
+    if (attackToken instanceof TokenDocument) {
+        // Should be a HarnMasterToken object
+        attackToken = attackToken.object;
+    }
+
     if (!isValidToken(attackToken)) {
         console.error(`HM3 | meleeAttack attackToken=${attackToken} is not valid.`);
         return null;
@@ -184,6 +199,11 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null, u
     if (!defendToken) {
         ui.notifications.warn(`No defender token identified.`);
         return null;
+    }
+
+    if (defendToken instanceof TokenDocument) {
+        // Should be a HarnMasterToken object
+        defendToken = defendToken.object;
     }
 
     if (!isValidToken(defendToken)) {
@@ -671,6 +691,13 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         isGrappleDef
     );
 
+    if (combatResult.outcome.dta) {
+        // Only one TA per turn
+        if (!(await combat.setTA())) {
+            combatResult.outcome.dta = false;
+        }
+    }
+
     // We now know the results of the attack, roll applicable damage
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
@@ -716,43 +743,43 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     };
 
     const csChatData = {
-        title: `Counterstrike Result`,
-        attacker: defToken.name,
-        atkTokenId: defToken.id,
-        defender: atkToken.name,
-        defTokenId: atkToken.id,
-        outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : 0,
-        atkProne: atkToken.hasCondition(Condition.PRONE),
-        defProne: defToken.hasCondition(Condition.PRONE),
-        attackWeapon: csDialogResult.weapon.name,
-        mlType: 'AML',
         addlModifierAbs: Math.abs(csDialogResult.addlModifier),
         addlModifierSign: csDialogResult.addlModifier < 0 ? '-' : '+',
-        origEML: csEffEML,
-        effEML: csEffEML + csDialogResult.addlModifier,
-        effAML: csEffEML + csDialogResult.addlModifier,
-        effDML: 0,
-        attackRoll: csRoll.rollObj.total,
-        atkIsCritical: csRoll.isCritical,
-        atkIsSuccess: csRoll.isSuccess,
-        atkRollResult: csRoll.description,
-        defenseRoll: 0,
-        defRollResult: '',
-        resultDesc: combatResult.csDesc,
-        hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.defDice,
         addlWeaponImpact: 0, // in future, maybe ask this in dialog?
-        weaponImpact: csDialogResult.impactMod,
-        impactRoll: csImpactRoll ? csImpactRoll.dice[0].values.join(' + ') : null,
-        totalImpact: csImpactRoll ? csImpactRoll.total + parseInt(csDialogResult.impactMod) : 0,
         atkAim: csDialogResult.aim,
         atkAspect: csDialogResult.aspect,
+        atkIsCritical: csRoll.isCritical,
+        atkIsSuccess: csRoll.isSuccess,
+        atkProne: atkToken.hasCondition(Condition.PRONE),
+        atkRollResult: csRoll.description,
+        atkTokenId: defToken.id,
+        attacker: defToken.name,
+        attackRoll: csRoll.rollObj.total,
+        attackWeapon: csDialogResult.weapon.name,
+        defender: atkToken.name,
+        defenseRoll: 0,
+        defProne: defToken.hasCondition(Condition.PRONE),
+        defRollResult: '',
+        defTokenId: atkToken.id,
         dta: combatResult.outcome.dta,
-        isAtkStumbleRoll: combatResult.outcome.defStumble,
+        effAML: csEffEML + csDialogResult.addlModifier,
+        effDML: 0,
+        effEML: csEffEML + csDialogResult.addlModifier,
+        hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.defDice,
+        impactRoll: csImpactRoll ? csImpactRoll.dice[0].values.join(' + ') : null,
         isAtkFumbleRoll: combatResult.outcome.defFumble,
-        isDefStumbleRoll: null,
+        isAtkStumbleRoll: combatResult.outcome.defStumble,
         isDefFumbleRoll: null,
+        isDefStumbleRoll: null,
+        mlType: 'AML',
+        origEML: csEffEML,
+        outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : 0,
+        resultDesc: combatResult.csDesc,
+        title: `Counterstrike Result`,
+        totalImpact: csImpactRoll ? csImpactRoll.total + parseInt(csDialogResult.impactMod) : 0,
         visibleAtkActorId: defToken.actor.id,
-        visibleDefActorId: atkToken.actor.id
+        visibleDefActorId: atkToken.actor.id,
+        weaponImpact: csDialogResult.impactMod
     };
 
     let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.html';
@@ -878,6 +905,13 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         combatResult = meleeCombatResult(atkResult, defResult, 'dodge', impactMod, 0, isGrappleAtk);
     } else {
         combatResult = missileCombatResult(atkResult, defResult, 'dodge', impactMod);
+    }
+
+    if (combatResult.outcome.dta) {
+        // Only one TA per turn
+        if (!(await combat.setTA())) {
+            combatResult.outcome.dta = false;
+        }
     }
 
     let atkImpactRoll = null;
@@ -1113,6 +1147,13 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         combatResult = meleeCombatResult(atkResult, defResult, 'block', impactMod, 0, isGrappleAtk);
     } else {
         combatResult = missileCombatResult(atkResult, defResult, 'block', impactMod);
+    }
+
+    if (combatResult.outcome.dta) {
+        // Only one TA per turn
+        if (!(await combat.setTA())) {
+            combatResult.outcome.dta = false;
+        }
     }
 
     let atkImpactRoll = null;
@@ -1705,3 +1746,17 @@ export const displayChatActionButtons = function (message, html, data) {
         });
     }
 };
+
+export async function isFirstTA() {
+    return !!(await game.combats.active.getFlag('hm3', 'TA'));
+}
+
+export async function setTA() {
+    if (isFirstTA()) {
+        await game.combats.active.setFlag('hm3', 'TA', 'true');
+        return true;
+    } else {
+        ui.notifications.info(`No more than one Tactical Advantage may be earned per character turn.`);
+        return false;
+    }
+}
