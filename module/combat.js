@@ -21,11 +21,6 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         return null;
     }
 
-    if (attackToken instanceof TokenDocument) {
-        // Should be a HarnMasterToken object
-        attackToken = attackToken.object;
-    }
-
     if (!isValidToken(attackToken)) {
         ui.notifications.error(`Attack token not valid.`);
         console.error(`HM3 | missileAttack attackToken=${attackToken} is not valid.`);
@@ -35,11 +30,6 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     if (!defendToken) {
         ui.notifications.warn(`No defender token identified.`);
         return null;
-    }
-
-    if (defendToken instanceof TokenDocument) {
-        // Should be a HarnMasterToken object
-        defendToken = defendToken.object;
     }
 
     if (!isValidToken(defendToken)) {
@@ -186,11 +176,6 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null, u
         return null;
     }
 
-    if (attackToken instanceof TokenDocument) {
-        // Should be a HarnMasterToken object
-        attackToken = attackToken.object;
-    }
-
     if (!isValidToken(attackToken)) {
         console.error(`HM3 | meleeAttack attackToken=${attackToken} is not valid.`);
         return null;
@@ -199,11 +184,6 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null, u
     if (!defendToken) {
         ui.notifications.warn(`No defender token identified.`);
         return null;
-    }
-
-    if (defendToken instanceof TokenDocument) {
-        // Should be a HarnMasterToken object
-        defendToken = defendToken.object;
     }
 
     if (!isValidToken(defendToken)) {

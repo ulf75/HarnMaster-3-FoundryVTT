@@ -81,7 +81,8 @@ if (success) {
     console.log('HM3 | Combatant ' + token.name + ' stays unconscious.');
     await ChatMessage.create({
         speaker,
-        content: '<div class="chat-card"><p class="fluff">You stay unconscious.</p></div>'
+        content: '<div class="chat-card"><p class="fluff">You stay unconscious. Your turn ends.</p></div>'
     });
+    await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
 }`;
 }

@@ -77,7 +77,7 @@ const outn21Effect = A.effects.contents.find((v) => v.name === OUTNUMBERED21);
 
 const PRONE_CREATE_MACRO = `await ChatMessage.create({
   speaker,
-  content: "<p>You're lying on the floor. Getting up takes <b>one action</b>.</p><p><b>All</b> opponents gain +20 on <b>all</b> attack and defence rolls against you.</p>",
+  content: "<p>You're lying on the floor. Getting up takes <b>one action</b>.</p><p><b>All</b> opponents gain +20 on <b>all</b> attack and defense rolls against you.</p>",
 });`;
 
 const PRONE_EACH_TURN_MACRO = `const PRONE = 'Prone';
@@ -85,7 +85,7 @@ const PRONE_IMG = 'icons/svg/falling.svg';
 await Requestor.request({
   title: PRONE,
   description:
-    "<p>You're still lying on the floor. Getting up takes <b>one action</b>.</p><p>If you remain on the ground, <b>all</b> opponents gain +20 on <b>all</b> attack and defence rolls against you.</p>",
+    "<p>You're still lying on the floor. Getting up takes <b>one action</b>.</p><p>If you remain on the ground, <b>all</b> opponents gain +20 on <b>all</b> attack and defense rolls against you.</p>",
   img: PRONE_IMG,
   limit: Requestor.LIMIT.OPTION,
   buttonData: [
@@ -165,7 +165,7 @@ let dialogEditor = new Dialog({
                                 onTurnStart: {
                                     script: `await ChatMessage.create({
   speaker,
-  content: "<p>You're outnumbered 2:1. You get -10 on all defence rolls including counterattack.</p>",
+  content: "<p>You're outnumbered 2:1. You get -10 on all defense rolls including counterattack.</p>",
 });`
                                 }
                             }
@@ -195,7 +195,7 @@ let dialogEditor = new Dialog({
                                 onTurnStart: {
                                     script: `await ChatMessage.create({
   speaker,
-  content: "<p>You're outnumbered 3:1. You get -20 on all defence rolls including counterattack.</p>",
+  content: "<p>You're outnumbered 3:1. You get -20 on all defense rolls including counterattack.</p>",
 });`
                                 }
                             }
@@ -225,7 +225,7 @@ let dialogEditor = new Dialog({
                                 onTurnStart: {
                                     script: `await ChatMessage.create({
   speaker,
-  content: "<p>You're outnumbered 4:1. You get -30 on all defence rolls including counterattack.</p>",
+  content: "<p>You're outnumbered 4:1. You get -30 on all defense rolls including counterattack.</p>",
 });`
                                 }
                             }
@@ -255,7 +255,7 @@ let dialogEditor = new Dialog({
                                 onTurnStart: {
                                     script: `await ChatMessage.create({
   speaker,
-  content: "<p>You're outnumbered 5:1. You get -40 on all defence rolls including counterattack.</p>",
+  content: "<p>You're outnumbered 5:1. You get -40 on all defense rolls including counterattack.</p>",
 });`
                                 }
                             }

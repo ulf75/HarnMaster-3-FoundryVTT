@@ -868,11 +868,23 @@ export async function shockRoll(noDialog = false, myActor = null) {
     if (hooksOk) {
         const result = await DiceHM3.d6Roll(stdRollData);
         actorInfo.actor.runCustomMacro(result);
+
         if (result) {
+            const token = canvas.scene.tokens.contents.find((t) => t.actor.id === actorInfo.actor.id);
             if (!result.isSuccess) {
+                if (!token.hasCondition(Condition.SHOCKED) && !token.hasCondition(Condition.UNCONSCIOUS)) {
+                    // 1st failed SHOCK roll - combatant faints and gets unconscious
+                    await token.addCondition(Condition.UNCONSCIOUS);
+                }
                 // Opponent gains a TA
                 await combat.setTA();
+            } else {
+                if (!token.hasCondition(Condition.SHOCKED) && token.hasCondition(Condition.UNCONSCIOUS)) {
+                    // Combatant is unconscious and regains consciousness
+                    token.deleteCondition(Condition.UNCONSCIOUS);
+                }
             }
+
             callOnHooks('hm3.onShockRoll', actorInfo.actor, result, stdRollData);
         }
         return result;
