@@ -951,15 +951,17 @@ export class HarnMasterActor extends Actor {
         switch (action) {
             case 'injury':
                 macros.injuryRoll(token.actor, {
+                    actor: token.actor,
+                    aim: button.dataset.aim,
+                    aspect: button.dataset.aspect,
+                    atkToken,
+                    attackerId: button.dataset.atkTokenId,
+                    attackWeapon: button.dataset.attackWeapon,
+                    impact: button.dataset.impact,
                     items: token.actor.items,
                     name: token.name,
-                    actor: token.actor,
-                    impact: button.dataset.impact,
-                    aspect: button.dataset.aspect,
-                    aim: button.dataset.aim,
-                    tokenId: token.id,
-                    attackerId: button.dataset.atkTokenId,
-                    attackWeapon: button.dataset.attackWeapon
+                    token,
+                    tokenId: token.id
                 });
                 break;
 

@@ -423,6 +423,7 @@ export class DiceHM3 {
         if (!result) return null;
 
         if (result && rollData.tokenId) result.tokenId = rollData.tokenId;
+        if (result && rollData.atkToken) result.atkToken = rollData.atkToken;
 
         if (result.addToCharSheet) {
             DiceHM3.createInjury(rollData.actor, result);
@@ -497,15 +498,20 @@ export class DiceHM3 {
             locationName = `${result.location} ${injuryDesc[result.aspect][sev]}`;
         }
 
+        const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
+        const notes = dateTime
+            ? `From '${result.atkToken?.name}' in '${game.scenes.current.name}', ${dateTime.date} ${dateTime.yearPostfix} (Aspect: ${result.aspect})`
+            : `From '${result.atkToken?.name}' in '${game.scenes.current.name}' (Aspect: ${result.aspect})`;
+
         let item = Item.create(
             {
                 name: locationName,
                 type: 'injury',
                 system: {
-                    severity: sev,
-                    injuryLevel: result.injuryLevel,
                     healRate: 0,
-                    notes: `Aspect: ${result.aspect}`
+                    injuryLevel: result.injuryLevel,
+                    notes,
+                    severity: sev
                 }
             },
             {parent: actor}
