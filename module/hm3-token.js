@@ -1,10 +1,18 @@
 import * as macros from './macros.js';
+import {Mutex} from './mutex.js';
+
+let tokenMutex;
 
 /**
  * Extend the base Token.
  * @extends {Token}
  */
 export class HarnMasterToken extends Token {
+    constructor(...args) {
+        super(...args);
+        if (!tokenMutex) tokenMutex = new Mutex();
+    }
+
     /**
      *
      * @param {Condition} condition
@@ -35,10 +43,16 @@ export class HarnMasterToken extends Token {
     /**
      * Deletes a condition from a token.
      * @param {Condition} condition
+     * @param {number} [postpone=0]
      * @returns
      */
-    async deleteCondition(condition) {
-        return this.getCondition(condition)?.delete();
+    async deleteCondition(condition, postpone = 0) {
+        if (postpone > 0) {
+            // avoid race conditions
+            setTimeout(() => tokenMutex.runExclusive(async () => await this.getCondition(condition)?.delete()), postpone);
+        } else {
+            return this.getCondition(condition)?.delete();
+        }
     }
 }
 
@@ -73,9 +87,10 @@ export class HarnMasterTokenDocument extends TokenDocument {
     /**
      * Deletes a condition from a token.
      * @param {Condition} condition
+     * @param {number} [postpone=0]
      * @returns
      */
-    async deleteCondition(condition) {
-        return this.object.deleteCondition(condition);
+    async deleteCondition(condition, postpone = 0) {
+        return this.object.deleteCondition(condition, postpone);
     }
 }
