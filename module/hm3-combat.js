@@ -16,7 +16,14 @@ export class HarnMasterCombat extends Combat {
      * @override
      */
     async nextRound() {
-        const combatantIds = this.combatants.map((c) => c.id);
+        const combatantIds = this.combatants.map((c) => {
+            // If UNCONSCIOUS, set initiative to 0
+            if (c.token.hasCondition('Unconscious')) {
+                c.initiative = 0;
+                c.token.actor.system.initiative = 0;
+            }
+            return c.id;
+        });
         await this.rollInitiative(combatantIds);
         return super.nextRound();
     }
@@ -27,7 +34,7 @@ export class HarnMasterCombat extends Combat {
             setTimeout(async () => {
                 // Remove the Tactical Advantage flag
                 await this.unsetFlag('hm3', 'TA');
-                return super.nextTurn();
+                await super.nextTurn();
             }, postpone);
         } else {
             // Remove the Tactical Advantage flag
