@@ -54,6 +54,21 @@ export class HarnMasterToken extends Token {
             return this.getCondition(condition)?.delete();
         }
     }
+
+    /**
+     *
+     * @returns true, if token belongs to a player
+     */
+    hasPlayer() {
+        return this.actor.hasPlayerOwner();
+    }
+
+    /**
+     *
+     */
+    get player() {
+        return game.users.find((u) => !u.isGM && this.actor.testUserPermission(u, 'OWNER')) || null;
+    }
 }
 
 export class HarnMasterTokenDocument extends TokenDocument {
@@ -92,5 +107,13 @@ export class HarnMasterTokenDocument extends TokenDocument {
      */
     async deleteCondition(condition, postpone = 0) {
         return this.object.deleteCondition(condition, postpone);
+    }
+
+    hasPlayer() {
+        return this.object.hasPlayer();
+    }
+
+    get player() {
+        return this.object.player;
     }
 }

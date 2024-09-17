@@ -119,7 +119,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // get active effects
         data.effects = {};
-        this.actor.effects.forEach((effect) => {
+        this.actor.allApplicableEffects().forEach((effect) => {
             data.effects[effect.id] = {
                 'id': effect.id,
                 'label': effect.name,

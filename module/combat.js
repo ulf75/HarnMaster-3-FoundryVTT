@@ -1727,13 +1727,13 @@ export const displayChatActionButtons = function (message, html, data) {
     }
 };
 
-export async function isFirstTA() {
+export function isFirstTA() {
     return !game.combats.active.getFlag('hm3', 'TA');
 }
 
 export async function setTA() {
-    if (await isFirstTA()) {
-        await game.combats.active.setFlag('hm3', 'TA', 'true');
+    if (isFirstTA()) {
+        await game.combats.active.setFlag('hm3', 'TA', true);
         return true;
     } else {
         ui.notifications.info(`No more than one Tactical Advantage may be earned per character turn. Turn ends.`);
