@@ -41,6 +41,21 @@ export class HarnMasterToken extends Token {
     }
 
     /**
+     *
+     * @param {Condition} condition
+     * @param {number} [postpone=0]
+     * @returns
+     */
+    async disableCondition(condition, postpone = 0) {
+        if (postpone > 0) {
+            // avoid race conditions
+            setTimeout(() => tokenMutex.runExclusive(async () => await this.getCondition(condition)?.update({disabled: true})), postpone);
+        } else {
+            return this.getCondition(condition)?.update({disabled: true});
+        }
+    }
+
+    /**
      * Deletes a condition from a token.
      * @param {Condition} condition
      * @param {number} [postpone=0]
@@ -97,6 +112,16 @@ export class HarnMasterTokenDocument extends TokenDocument {
      */
     getCondition(condition) {
         return this.object.getCondition(condition);
+    }
+
+    /**
+     *
+     * @param {Condition} condition
+     * @param {number} [postpone=0]
+     * @returns
+     */
+    async disableCondition(condition, postpone = 0) {
+        return this.object.disableCondition(condition, postpone);
     }
 
     /**

@@ -871,17 +871,18 @@ export async function shockRoll(noDialog = false, myActor = null) {
 
         if (result) {
             const token = canvas.scene.tokens.contents.find((t) => t.actor.id === actorInfo.actor.id);
+            const unconscious = token.hasCondition(Condition.UNCONSCIOUS);
             if (!result.isSuccess) {
-                if (!token.hasCondition(Condition.SHOCKED) && !token.hasCondition(Condition.UNCONSCIOUS)) {
+                if (!unconscious) {
                     // 1st failed SHOCK roll - combatant faints and gets unconscious
                     await token.addCondition(Condition.UNCONSCIOUS);
                 }
                 // Opponent gains a TA
                 await combat.setTA();
             } else {
-                if (!token.hasCondition(Condition.SHOCKED) && token.hasCondition(Condition.UNCONSCIOUS)) {
+                if (unconscious) {
                     // Combatant is unconscious and regains consciousness
-                    token.deleteCondition(Condition.UNCONSCIOUS);
+                    token.disableCondition(Condition.UNCONSCIOUS, 500);
                 }
             }
 
@@ -1666,11 +1667,12 @@ export async function createActiveEffect(effectData, changes = [], options = {})
 
     // mandatory
     if (!effectData.label || !effectData.token || !effectData.type) {
-        console.error('HM3 Macro "createActiveEffect" needs label, token & type as mandatory input!');
+        console.error('HM3 | Macro "createActiveEffect" needs label, token & type as mandatory input!');
         return null;
     }
 
-    options = foundry.utils.mergeObject({selfDestroy: false, unique: false}, options);
+    options = foundry.utils.mergeObject({hidden: false, selfDestroy: false, unique: false}, options);
+
     changes = changes.map((change) => {
         change = foundry.utils.mergeObject({key: '', value: 0, mode: 2, priority: null}, change);
         const keys = getObjectKeys(effectData.token.actor.system);
@@ -1683,11 +1685,11 @@ export async function createActiveEffect(effectData, changes = [], options = {})
     }
 
     const aeData = {
-        label: effectData.label,
-        icon: effectData.icon,
-        origin: effectData.token.actor.uuid,
+        changes,
         flags: effectData.flags,
-        changes
+        icon: effectData.icon,
+        label: effectData.label,
+        origin: effectData.token.actor.uuid
     };
 
     if (effectData.type === 'GameTime') {
@@ -1713,6 +1715,10 @@ export async function createActiveEffect(effectData, changes = [], options = {})
     }
 
     const effect = await ActiveEffect.create(aeData, {parent: effectData.token.actor});
+
+    if (options.hidden) {
+        await effect.setFlag('hm3', 'hidden', true);
+    }
 
     if (options.selfDestroy) {
         await effect.setFlag(
@@ -1781,6 +1787,50 @@ export async function createCondition(token, condition) {
     }
 
     return effect;
+}
+
+export async function createInjury(injuryData, options = {}) {
+    injuryData = foundry.utils.mergeObject(
+        {
+            flags: [],
+            healRate: 0,
+            icon: 'systems/hm3/images/icons/svg/injury.svg',
+            injuryLevel: 0,
+            name: null,
+            notes: '',
+            severity: null,
+            subType: 'injury', // blood, disease, infection, injury, poison, shock (different healing rolls)
+            token: null
+        },
+        injuryData
+    );
+    options = foundry.utils.mergeObject({}, options); // TBD
+
+    // mandatory
+    if (!injuryData.name || !injuryData.token) {
+        console.error('HM3 | Macro "createInjury" needs name & token as mandatory input!');
+        return null;
+    }
+
+    const injury = await Item.create(
+        {
+            flags: injuryData.flags,
+            icon: injuryData.icon,
+            name: injuryData.name,
+            origin: injuryData.token.actor.uuid,
+            type: 'injury',
+            system: {
+                healRate: injuryData.healRate,
+                injuryLevel: injuryData.injuryLevel,
+                notes: injuryData.notes,
+                severity: injuryData.severity,
+                subType: injuryData.subType
+            }
+        },
+        {parent: injuryData.token.actor}
+    );
+
+    return injury;
 }
 
 /**

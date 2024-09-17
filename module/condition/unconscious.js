@@ -1,10 +1,7 @@
 const UNCONSCIOUS = 'Unconscious';
 const UNCONSCIOUS_ICON = 'systems/hm3/images/icons/svg/shock.svg';
 const SHOCKED = 'Shocked';
-
-function d6() {
-    return Math.floor(6 * foundry.dice.MersenneTwister.random()) + 1;
-}
+const MINUTE = 60;
 
 /**
  *
@@ -21,9 +18,30 @@ await ChatMessage.create({
   content: '<div class="chat-card"><p class="fluff">You faint from pain, bloodloss and exertion on your occupied field.</p></div>',
 });`;
 
-    // On deletion (regain consciousness), make a last SHOCK roll (SKILLS 22, COMBAT 14)
-    const ON_DELETE_MACRO = `const token = canvas.tokens.get('${token.id}');
-console.log('HM3 | Combatant ' + token.name + ' makes a last SHOCK roll.');`;
+    // On disable (regain consciousness), make a last SHOCK roll (SKILLS 22, COMBAT 14)
+    const ON_DISABLE_MACRO = `const token = canvas.tokens.get('${token.id}');
+console.log('HM3 | Combatant ' + token.name + ' makes a last SHOCK roll.');
+const ok = (await game.hm3.macros.shockRoll(false, token.actor)).isSuccess;
+token.deleteCondition('${UNCONSCIOUS}');
+if (ok) {
+    // Combatant is back
+    console.log('HM3 | Combatant ' + token.name + ' is back.');
+    await ChatMessage.create({
+        speaker,
+        content: '<div class="chat-card"><p class="fluff">You are back and function normally.</p></div>'
+    });
+} else {
+    // Combatant is now SHOCKED
+    console.log('HM3 | Combatant ' + token.name + ' is now SHOCKED.');
+    await game.hm3.macros.createCondition(token, '${SHOCKED}');
+    const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
+    await game.hm3.macros.createInjury({token, name: 'Shock', subType: 'shock', healRate: 4, notes: 'Started: ' + dateTime?.date + ' - ' + dateTime?.time});
+    await ChatMessage.create({
+        speaker,
+        content:
+            '<div class="chat-card"><p class="fluff">You are in <b>SHOCK</b> and display a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. You are incoherent and gaze helplessly at your injuries.</p></div>'
+    });
+}`;
 
     return {
         effectData: {
@@ -31,13 +49,13 @@ console.log('HM3 | Combatant ' + token.name + ' makes a last SHOCK roll.');`;
             token,
             icon: UNCONSCIOUS_ICON,
             type: 'GameTime',
-            seconds: (d6() + d6()) * 60, // 2d6 minutes
+            seconds: game.hm3.macros.d6(2) * MINUTE, // 2d6 minutes
             flags: {
-                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onDelete: {script: ON_DELETE_MACRO}}
+                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onDisable: {script: ON_DISABLE_MACRO}}
             }
         },
         changes: [],
-        options: {selfDestroy: true, unique: true}
+        options: {unique: true}
     };
 }
 
@@ -57,25 +75,7 @@ if (success) {
         speaker,
         content: '<div class="chat-card"><p class="fluff">You regain consciousness!</p><p class="fluff">You are coming back to your senses, but are you stable?</p></div>'
     });
-    const ok = (await game.hm3.macros.shockRoll(false, token.actor)).isSuccess;
-    await token.actor.effects.get('${effect.id}').delete();
-    if (ok) {
-        // Combatant is back
-        console.log('HM3 | Combatant ' + token.name + ' is back.');
-        await ChatMessage.create({
-            speaker,
-            content: '<div class="chat-card"><p class="fluff">You are back and function normally.</p></div>'
-        });
-    } else {
-        // Combatant is now SHOCKED
-        console.log('HM3 | Combatant ' + token.name + ' is now SHOCKED.');
-        await game.hm3.macros.createCondition(token, '${SHOCKED}');
-        await ChatMessage.create({
-            speaker,
-            content:
-                '<div class="chat-card"><p class="fluff">You are in <b>SHOCK</b> and display a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. You are incoherent and gaze helplessly at your injuries.</p></div>'
-        });
-    }
+    token.disableCondition('${UNCONSCIOUS}', 500); // postpone a bit
 } else {
     // Combatant stays unconscious
     console.log('HM3 | Combatant ' + token.name + ' stays unconscious.');
