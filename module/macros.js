@@ -1799,7 +1799,7 @@ export async function createInjury(injuryData, options = {}) {
             name: null,
             notes: '',
             severity: null,
-            subType: 'injury', // blood, disease, infection, injury, poison, shock (different healing rolls)
+            subType: 'injury', // blood, disease, infection, injury, negligible-injury, poison, shock (different healing rolls)
             token: null
         },
         injuryData
@@ -1843,16 +1843,48 @@ export async function createInjury(injuryData, options = {}) {
  * @returns
  */
 export async function createInjuryHelper(token, injuryId, injuryName) {
-    let postpone = 5 * DAY;
-    if (injuryData.subType === 'disease') postpone = DAY;
-    if (injuryData.subType === 'infection') postpone = DAY;
-    if (injuryData.subType === 'shock') postpone = 4 * HOUR;
+    const timestamp = SimpleCalendar.api.timestamp();
+
+    let startTime, scDate;
+    switch (injuryData.subType) {
+        case 'blood': // HR: always H6
+        case 'injury': // HR: varies, plus half Physician EML
+            startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {day: 5});
+            scDate = SimpleCalendar.api.timestampToDate(startTime);
+            break;
+
+        case 'disease': // HR: varies
+        case 'infection': // HR: varies (same as wound), plus Physician SI
+            startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {day: 1});
+            scDate = SimpleCalendar.api.timestampToDate(startTime);
+            break;
+
+        case 'negligible-injury': // heals in one day
+            break;
+
+        case 'poison': // HR: varies
+            // TBD
+            startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {minute: 5});
+            break;
+
+        case 'shock': // HR: always H5, plus half Physician EML
+            startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {hour: 4});
+            break;
+
+        default:
+            console.error('HM3 | Wrong injury subtype.');
+            break;
+    }
+
+    // Make the healing rolls at midnight (besides poison & shock rolls)
+    if (scDate)
+        startTime = SimpleCalendar.api.dateToTimestamp({year: scDate.year, month: scDate.month, day: scDate.day, hour: 0, minute: 0, seconds: 0});
 
     return createActiveEffect(
         {
             label: `Injury Helper (${injuryName})`,
-            postpone,
             seconds: 1,
+            startTime,
             token,
             type: 'GameTime',
             flags: {
