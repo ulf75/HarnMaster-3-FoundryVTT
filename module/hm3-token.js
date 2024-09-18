@@ -84,6 +84,10 @@ export class HarnMasterToken extends Token {
     get player() {
         return game.users.find((u) => !u.isGM && this.actor.testUserPermission(u, 'OWNER')) || null;
     }
+
+    hasInjury(id) {
+        return !!token.actor.items.find((i) => i.id === id);
+    }
 }
 
 export class HarnMasterTokenDocument extends TokenDocument {
@@ -140,5 +144,9 @@ export class HarnMasterTokenDocument extends TokenDocument {
 
     get player() {
         return this.object.player;
+    }
+
+    hasInjury(id) {
+        return this.object.hasInjury(id);
     }
 }

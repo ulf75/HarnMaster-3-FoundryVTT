@@ -1651,7 +1651,7 @@ export async function createActiveEffect(effectData, changes = [], options = {})
         {
             label: null,
             token: null,
-            type: null,
+            type: null, // 'GameTime' | 'Combat'
             icon: 'icons/svg/aura.svg',
             flags: [],
             postpone: 0,
@@ -1830,7 +1830,47 @@ export async function createInjury(injuryData, options = {}) {
         {parent: injuryData.token.actor}
     );
 
+    // await createInjuryHelper(injuryData.token, injury.id, injuryData.name);
+
     return injury;
+}
+
+/**
+ *
+ * @param {Token} token
+ * @param {string} injuryId
+ * @param {string} injuryName
+ * @returns
+ */
+export async function createInjuryHelper(token, injuryId, injuryName) {
+    let postpone = 5 * DAY;
+    if (injuryData.subType === 'disease') postpone = DAY;
+    if (injuryData.subType === 'infection') postpone = DAY;
+    if (injuryData.subType === 'shock') postpone = 4 * HOUR;
+
+    return createActiveEffect(
+        {
+            label: `Injury Helper (${injuryName})`,
+            postpone,
+            seconds: 1,
+            token,
+            type: 'GameTime',
+            flags: {
+                effectmacro: {
+                    onDelete: {
+                        script: `const token = canvas.tokens.get('${token.id}');
+if(token.hasInjury('${injuryId}'))
+    await game.hm3.macros.createInjuryHelper(token, '${injuryName}');`
+                    }
+                }
+            }
+        },
+        [],
+        {
+            hidden: true,
+            selfDestroy: true
+        }
+    );
 }
 
 /**
