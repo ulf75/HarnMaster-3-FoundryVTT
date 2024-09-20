@@ -29,14 +29,15 @@ export class DiceHM3 {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
 
         const dialogOptions = {
-            type: rollData.type,
-            target: rollData.target,
+            effSkillBase: rollData.effSkillBase,
+            isAbility: rollData.isAbility || false,
+            isCraftOrLore: rollData.isCraftOrLore || false,
             label: rollData.label,
             modifier: rollData.modifier || 0,
             skill: rollData.skill,
-            isAbility: rollData.isAbility || false,
-            isCraftOrLore: rollData.isCraftOrLore || false,
-            effSkillBase: rollData.effSkillBase
+            subType: rollData.subType || 'healing',
+            target: rollData.target,
+            type: rollData.type
         };
 
         // Create the Roll instance
@@ -140,12 +141,12 @@ export class DiceHM3 {
         // Render modal dialog
         let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/standard-test-dialog.html';
         let dialogData = {
+            effSkillBase: dialogOptions.effSkillBase,
             isAbility: dialogOptions.isAbility || false,
             isCraftOrLore: dialogOptions.isCraftOrLore || false,
-            effSkillBase: dialogOptions.effSkillBase,
-            target: dialogOptions.target,
             modifier: dialogOptions.modifier,
             multiplier: 5,
+            target: dialogOptions.target,
             multipliers: [
                 {key: 1, label: `${dialogOptions.skill} x1 (EML ${dialogOptions.effSkillBase * 1})`},
                 {key: 2, label: `${dialogOptions.skill} x2 (EML ${dialogOptions.effSkillBase * 2})`},
@@ -156,6 +157,20 @@ export class DiceHM3 {
                 {key: 7, label: `${dialogOptions.skill} x7 (EML ${dialogOptions.effSkillBase * 7})`}
             ]
         };
+
+        const isHealingRoll = dialogOptions.type === 'healing';
+        if (isHealingRoll) {
+            if (dialogOptions.subType === 'healing' || dialogOptions.subType === 'shock') {
+                dialogData.isPhysician = true;
+                dialogData.physicianModifier = 0;
+                dialogData.physicianMod = 'EML/2';
+            } else if (dialogOptions.subType === 'infection') {
+                dialogData.isPhysician = true;
+                dialogData.physicianModifier = 0;
+                dialogData.physicianMod = 'SI';
+            }
+        }
+
         const html = await renderTemplate(dlgTemplate, dialogData);
 
         // Create the dialog window
@@ -167,6 +182,7 @@ export class DiceHM3 {
                 const form = html[0].querySelector('form');
                 const multiplier = form.multipliers?.selectedIndex + 1 || -1;
                 const formModifier = form.modifier.value;
+                const formPhysicianModifier = form.physicianModifier?.value || '0';
                 const isAppraisal = form.appraisal?.checked || false;
                 let target = dialogOptions.target;
                 if (dialogOptions.isAbility) target = dialogOptions.effSkillBase * multiplier;
@@ -177,7 +193,7 @@ export class DiceHM3 {
                     data: null,
                     diceSides: 100,
                     diceNum: 1,
-                    modifier: formModifier,
+                    modifier: Number(formModifier) + Number(formPhysicianModifier),
                     multiplier,
                     isAppraisal
                 });

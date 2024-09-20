@@ -962,7 +962,7 @@
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="item-detail injury-healrate active"><a class="healing-roll"
-                                    title="{{item.name}} Healing Roll">{{system.healRate}}</a></div>
+                                    title="{{item.name}} Healing Roll">{{#if (gt system.healRate 6)}}EE{{else}}{{system.healRate}}{{/if}}</a></div>
                                 <div class="item-detail injury-severity">{{system.severity}}</div>
                                 <div class="item-detail injury-notes">{{system.notes}}</div>
                                 <div class="item-controls">

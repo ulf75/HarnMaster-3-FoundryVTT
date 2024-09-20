@@ -770,11 +770,32 @@ export async function injuryRoll(myActor = null, rollData = {}) {
 
 export async function healingRoll(itemName, noDialog = false, myActor = null) {
     const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'injury');
+    const subType = item.system.subType || 'healing';
+
+    if (isNaN(item.system.healRate) || item.system?.healRate < 1 || item.system?.healRate > 7) {
+        ui.notifications.warn(`No valid healing rate specified.`);
+        return null;
+    }
+
+    if (subType === 'healing' && (isNaN(item.system.injuryLevel) || item.system?.injuryLevel < 1 || item.system?.injuryLevel > 5)) {
+        ui.notifications.warn(`No valid injury level specified.`);
+        return null;
+    }
+
+    // Negligible injury (EE) heals automatically
+    if (item.system?.healRate === 7) {
+        await item.delete();
+        return null;
+    }
 
     const stdRollData = {
-        type: 'healing',
+        fastforward: noDialog,
         label: `${item.name} Healing Roll`,
+        notes: item.system.notes,
+        speaker: speaker,
+        subType,
         target: item.system.healRate * actor.system.endurance,
+        type: 'healing',
         notesData: {
             up: actor.system.universalPenalty,
             pp: actor.system.physicalPenalty,
@@ -783,10 +804,7 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
             endurance: actor.system.endurance,
             injuryName: item.name,
             healRate: item.system.healRate
-        },
-        speaker: speaker,
-        fastforward: noDialog,
-        notes: item.system.notes
+        }
     };
     if (actor.isToken) {
         stdRollData.token = actor.token.id;
@@ -799,11 +817,42 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
         item.runCustomMacro(result);
         if (result) {
+            await heal(item, result);
             callOnHooks('hm3.onHealingRoll', actor, result, stdRollData, item);
         }
         return result;
     }
     return null;
+}
+
+async function heal(injury, result) {
+    const subType = injury.system.subType || 'healing';
+    switch (subType) {
+        case 'bloodloss':
+            // TBD
+            break;
+
+        case 'healing':
+            if (result.isSuccess) {
+                const il = injury.system.injuryLevel - (result.isCritical ? 2 : 1);
+                if (il <= 0) await injury.delete(); // fully healed
+                else await injury.update({'system.injuryLevel': il}); // partially healed
+            }
+            break;
+
+        case 'disease':
+        case 'poison':
+        case 'toxin':
+        case 'shock':
+            let hr;
+            if (result.isSuccess) hr = injury.system.healRate + (result.isCritical ? 2 : 1);
+            else hr = injury.system.healRate - (result.isCritical ? 2 : 1);
+            if (hr >= 6) await injury.delete(); // Fully recovered at HR6
+            else if (hr <= 0) {
+                // Patient is dead at HR0
+            } else await injury.update({'system.healRate': hr}); // partially recovered
+            break;
+    }
 }
 
 export async function dodgeRoll(noDialog = false, myActor = null) {
@@ -1811,7 +1860,7 @@ export async function createCondition(token, condition) {
  * @param {number} [injuryData.injuryLevel=0]
  * @param {string} [injuryData.name]
  * @param {string} [injuryData.notes='']
- * @param {string} [injuryData.subType='injury']
+ * @param {string} [injuryData.subType='healing']
  * @param {Token} [injuryData.token]
  * @param {Object} [options={}]
  * @returns {Promise<HarnMasterItem>}
@@ -1826,7 +1875,7 @@ export async function createInjury(injuryData, options = {}) {
             name: null,
             notes: '',
             severity: null,
-            subType: 'injury', // blood, disease, infection, injury, negligible-injury, poison, shock, toxin (different healing rolls)
+            subType: 'healing', // bloodloss, disease, healing, infection, poison, shock, toxin (different healing rolls)
             token: null
         },
         injuryData
@@ -1875,7 +1924,7 @@ export async function createInjuryHelper(injuryData) {
 
     let startTime, scDate;
     switch (injuryData.subType) {
-        case 'blood': // HR: always H6
+        case 'bloodloss': // HR: always H6
         case 'injury': // HR: varies, plus half Physician EML
             startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {day: 5});
             scDate = SimpleCalendar.api.timestampToDate(startTime);
@@ -1885,9 +1934,6 @@ export async function createInjuryHelper(injuryData) {
         case 'infection': // HR: varies (same as wound), plus Physician SI
             startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {day: 1});
             scDate = SimpleCalendar.api.timestampToDate(startTime);
-            break;
-
-        case 'negligible-injury': // heals in one day
             break;
 
         case 'poison': // HR: varies

@@ -16,6 +16,12 @@
         <input readonly type="text" name="target" value="{{target}}" />
     </div>
     {{/if}}
+    {{#if isPhysician}}
+    <div class="form-group">
+      <label>Physician ({{physicianMod}}):</label>
+      <input type="text" name="physicianModifier" value="{{physicianModifier}}" />
+    </div>
+    {{/if}}
     <div class="form-group">
         <label>Modifier:</label>
         <input type="text" name="modifier" value="{{modifier}}" />
