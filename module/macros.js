@@ -1641,26 +1641,41 @@ export function getActiveEffect(token, name, strict = false) {
 
 /**
  * TODO
- * @param {*} effectData -
- * @param {*} changes -
- * @param {*} options -
- * @returns
+ * @param {Object} effectData - Data to create the effect
+ * @param {Object[]} [effectData.flags=[]] -
+ * @param {string} [effectData.icon='icons/svg/aura.svg'] -
+ * @param {string} [effectData.label] -
+ * @param {number} [effectData.postpone=0] -
+ * @param {number} [effectData.rounds=1] -
+ * @param {number} [effectData.seconds] -
+ * @param {number} [effectData.startRound] -
+ * @param {number} [effectData.startTime] -
+ * @param {number} [effectData.startTurn] -
+ * @param {number} [effectData.token] -
+ * @param {number} [effectData.turns=0] -
+ * @param {string} [effectData.type] -
+ * @param {Object[]} [changes=[]] -
+ * @param {Object} options - Additional options
+ * @param {boolean} [options.hidden=false] - Non GMs will not see this effect
+ * @param {boolean} [options.selfDestroy=false] - The effect deletes itself after completion
+ * @param {boolean} [options.unique=false] - The effect is unique and cannot exist more than once
+ * @returns {Promise<HarnMasterActiveEffect>}
  */
 export async function createActiveEffect(effectData, changes = [], options = {}) {
     effectData = foundry.utils.mergeObject(
         {
-            label: null,
-            token: null,
-            type: null, // 'GameTime' | 'Combat'
-            icon: 'icons/svg/aura.svg',
             flags: [],
+            icon: 'icons/svg/aura.svg',
+            label: null,
             postpone: 0,
-            startTime: null,
+            rounds: 1,
             seconds: null,
             startRound: null,
+            startTime: null,
             startTurn: null,
-            rounds: 1,
-            turns: 0
+            token: null,
+            turns: 0,
+            type: null // 'GameTime' | 'Combat'
         },
         effectData
     );
@@ -1789,6 +1804,18 @@ export async function createCondition(token, condition) {
     return effect;
 }
 
+/**
+ *
+ * @param {Object} injuryData
+ * @param {number} [injuryData.healRate=0]
+ * @param {number} [injuryData.injuryLevel=0]
+ * @param {string} [injuryData.name]
+ * @param {string} [injuryData.notes='']
+ * @param {string} [injuryData.subType='injury']
+ * @param {Token} [injuryData.token]
+ * @param {Object} [options={}]
+ * @returns {Promise<HarnMasterItem>}
+ */
 export async function createInjury(injuryData, options = {}) {
     injuryData = foundry.utils.mergeObject(
         {
