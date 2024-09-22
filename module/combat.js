@@ -1,6 +1,6 @@
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
-import {Condition} from './hm3-types.js';
+import {Aspect, Condition} from './hm3-types.js';
 
 /**
  * Initiates a missile attack.
@@ -1622,15 +1622,15 @@ function calcWeaponAspect(weapon) {
     // Any impact < 0 indicates that aspect is not available
     const maxImpact = Math.max(data.blunt, data.piercing, data.edged);
     if (maxImpact >= 0) {
-        if (data.blunt >= 0) result.aspects['Blunt'] = data.blunt;
-        if (data.edged >= 0) result.aspects['Edged'] = data.edged;
-        if (data.piercing >= 0) result.aspects['Piercing'] = data.piercing;
+        if (data.blunt >= 0) result.aspects[Aspect.BLUNT] = data.blunt;
+        if (data.edged >= 0) result.aspects[Aspect.EDGED] = data.edged;
+        if (data.piercing >= 0) result.aspects[Aspect.PIERCING] = data.piercing;
         if (maxImpact === data.piercing) {
-            result.defaultAspect = 'Piercing';
+            result.defaultAspect = Aspect.PIERCING;
         } else if (maxImpact === data.edged) {
-            result.defaultAspect = 'Edged';
+            result.defaultAspect = Aspect.EDGED;
         } else if (maxImpact === data.blunt) {
-            result.defaultAspect = 'Blunt';
+            result.defaultAspect = Aspect.BLUNT;
         }
     }
 

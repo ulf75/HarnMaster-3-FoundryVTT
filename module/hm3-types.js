@@ -33,6 +33,7 @@ export const Aspect = Object.freeze({
     BLUNT: 'Blunt',
     EDGED: 'Edged',
     FIRE: 'Fire',
+    FROST: 'Frost',
     PIERCING: 'Piercing'
 });
 
@@ -146,6 +147,16 @@ export const Hook = Object.freeze({
     PRE_STUMBLE_ROLL: 'hm3.preStumbleRoll',
     PRE_WEAPON_ATTACK_ROLL: 'hm3.preWeaponAttackRoll',
     PRE_WEAPON_DEFEND_ROLL: 'hm3.preWeaponDefendRoll'
+});
+
+export const InjurySubtype = Object.freeze({
+    BLOODLOSS: 'bloodloss',
+    DISEASE: 'disease',
+    HEALING: 'healing',
+    INFECTION: 'infection',
+    POISON: 'poison',
+    SHOCK: 'shock',
+    TOXIN: 'toxin'
 });
 
 /**

@@ -12,14 +12,25 @@
     </div>
     {{else}}
     <div class="form-group">
+        {{#if isTreatment}}
+        <label>Physician EML:</label>
+        <input type="text" name="target" value="{{target}}" />
+        {{else}}
         <label>Target:</label>
         <input readonly type="text" name="target" value="{{target}}" />
+        {{/if}}
     </div>
     {{/if}}
     {{#if isPhysician}}
     <div class="form-group">
-      <label>Physician ({{physicianMod}}):</label>
-      <input type="text" name="physicianModifier" value="{{physicianModifier}}" />
+        <label>Physician ({{physicianMod}}):</label>
+        <input type="text" name="physicianModifier" value="{{physicianModifier}}" />
+    </div>
+    {{/if}}
+    {{#if isTreatment}}
+    <div class="form-group">
+        <label>Treatment Modifier:</label>
+        <input readonly type="text" name="treatmentModifier" value="{{treatmentModifier}}" />
     </div>
     {{/if}}
     <div class="form-group">

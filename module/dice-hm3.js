@@ -1,4 +1,5 @@
 import {HM3} from './config.js';
+import {Aspect, InjurySubtype} from './hm3-types.js';
 import * as utility from './utility.js';
 
 export class DiceHM3 {
@@ -32,11 +33,13 @@ export class DiceHM3 {
             effSkillBase: rollData.effSkillBase,
             isAbility: rollData.isAbility || false,
             isCraftOrLore: rollData.isCraftOrLore || false,
+            isTreatment: rollData.type === 'treatment' || false,
             label: rollData.label,
             modifier: rollData.modifier || 0,
             skill: rollData.skill,
-            subType: rollData.subType || 'healing',
+            subType: rollData.subType || InjurySubtype.HEALING,
             target: rollData.target,
+            treatmentTable: rollData.treatmentTable,
             type: rollData.type
         };
 
@@ -59,16 +62,16 @@ export class DiceHM3 {
 
         const notesData = foundry.utils.mergeObject(rollData.notesData, {
             actor: speaker.alias,
-            target: rollData.target,
+            isCF: !roll.isSuccess && roll.isCritical,
+            isCritical: roll.isCritical,
+            isCS: roll.isSuccess && roll.isCritical,
+            isMF: !roll.isSuccess && !roll.isCritical,
+            isMS: roll.isSuccess && !roll.isCritical,
+            isSuccess: roll.isSuccess,
             modifier: rollData.modifier,
             roll: roll.rollObj.total,
             rollText: roll.description,
-            isSuccess: roll.isSuccess,
-            isCritical: roll.isCritical,
-            isCS: roll.isSuccess && roll.isCritical,
-            isMS: roll.isSuccess && !roll.isCritical,
-            isMF: !roll.isSuccess && !roll.isCritical,
-            isCF: !roll.isSuccess && roll.isCritical
+            target: rollData.target || roll.target - roll.modifier
         });
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : '';
 
@@ -83,22 +86,22 @@ export class DiceHM3 {
         }
 
         const chatTemplateData = {
-            type: roll.type,
-            title,
-            origTarget: rollData.target,
-            modifier: Math.abs(roll.modifier),
-            plusMinus: roll.modifier < 0 ? '-' : '+',
-            modifiedTarget: roll.target,
-            isSuccess: roll.isSuccess,
-            isCritical: roll.isCritical,
-            rollValue: roll.rollObj.total,
-            rollResult: roll.rollObj.total,
-            showResult: false,
             description: roll.description,
+            fluff: rollData.fluff ? (rollData.fluff.startsWith('<p>') ? rollData.fluff : '<p>' + rollData.fluff + '</p>') : undefined,
+            fluffResult: fluffResult ? (fluffResult.startsWith('<p>') ? fluffResult : '<p>' + fluffResult + '</p>') : undefined,
+            isCritical: roll.isCritical,
+            isSuccess: roll.isSuccess,
+            modifiedTarget: roll.target,
+            modifier: Math.abs(roll.modifier),
             notes: renderedNotes,
+            origTarget: rollData.target || roll.target - roll.modifier,
+            plusMinus: roll.modifier < 0 ? '-' : '+',
             roll,
-            fluff: rollData.fluff,
-            fluffResult
+            rollResult: roll.rollObj.total,
+            rollValue: roll.rollObj.total,
+            showResult: false,
+            title,
+            type: roll.type
         };
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
@@ -144,6 +147,7 @@ export class DiceHM3 {
             effSkillBase: dialogOptions.effSkillBase,
             isAbility: dialogOptions.isAbility || false,
             isCraftOrLore: dialogOptions.isCraftOrLore || false,
+            isTreatment: dialogOptions.isTreatment || false,
             modifier: dialogOptions.modifier,
             multiplier: 5,
             target: dialogOptions.target,
@@ -158,17 +162,20 @@ export class DiceHM3 {
             ]
         };
 
-        const isHealingRoll = dialogOptions.type === 'healing';
+        const isHealingRoll = dialogOptions.type === InjurySubtype.HEALING;
         if (isHealingRoll) {
-            if (dialogOptions.subType === 'healing' || dialogOptions.subType === 'shock') {
+            if (dialogOptions.subType === InjurySubtype.HEALING || dialogOptions.subType === InjurySubtype.SHOCK) {
                 dialogData.isPhysician = true;
                 dialogData.physicianModifier = 0;
                 dialogData.physicianMod = 'EML/2';
-            } else if (dialogOptions.subType === 'infection') {
+            } else if (dialogOptions.subType === InjurySubtype.INFECTION) {
                 dialogData.isPhysician = true;
                 dialogData.physicianModifier = 0;
                 dialogData.physicianMod = 'SI';
             }
+        }
+        if (dialogOptions.isTreatment) {
+            dialogData.treatmentModifier = dialogOptions.treatmentTable.eml;
         }
 
         const html = await renderTemplate(dlgTemplate, dialogData);
@@ -181,21 +188,23 @@ export class DiceHM3 {
             callback: (html) => {
                 const form = html[0].querySelector('form');
                 const multiplier = form.multipliers?.selectedIndex + 1 || -1;
+                const formTarget = form.target.value;
                 const formModifier = form.modifier.value;
                 const formPhysicianModifier = form.physicianModifier?.value || '0';
+                const formTreatmentModifier = form.treatmentModifier?.value || '0';
                 const isAppraisal = form.appraisal?.checked || false;
                 let target = dialogOptions.target;
                 if (dialogOptions.isAbility) target = dialogOptions.effSkillBase * multiplier;
                 if (isAppraisal) target = Math.max(dialogOptions.target + dialogOptions.effSkillBase, 5 * dialogOptions.effSkillBase);
                 return DiceHM3.rollTest({
-                    type: dialogOptions.type,
-                    target,
                     data: null,
-                    diceSides: 100,
                     diceNum: 1,
-                    modifier: Number(formModifier) + Number(formPhysicianModifier),
+                    diceSides: 100,
+                    isAppraisal,
+                    modifier: Number(formModifier) + Number(formPhysicianModifier) + Number(formTreatmentModifier),
                     multiplier,
-                    isAppraisal
+                    target: Number(formTarget),
+                    type: dialogOptions.type
                 });
             }
         });
@@ -494,8 +503,9 @@ export class DiceHM3 {
         const injuryDesc = {
             'Blunt': {'M': 'Bruise', 'S': 'Fracture', 'G': 'Crush'},
             'Edged': {'M': 'Cut', 'S': 'Slash', 'G': 'Gash'},
-            'Piercing': {'M': 'Poke', 'S': 'Stab', 'G': 'Impale'},
-            'Fire': {'M': 'Singe', 'S': 'Burn', 'G': 'Scorch'}
+            'Fire': {'M': 'Singe', 'S': 'Burn', 'G': 'Scorch'},
+            'Frost': {'M': 'Chilled Flesh', 'S': 'Frostbite', 'G': 'Frostbite'},
+            'Piercing': {'M': 'Poke', 'S': 'Stab', 'G': 'Impale'}
         };
 
         if (result.injuryLevel === 0) return;
@@ -524,10 +534,12 @@ export class DiceHM3 {
                 name: locationName,
                 type: 'injury',
                 system: {
+                    aspect: result.aspect,
                     healRate: 0,
                     injuryLevel: result.injuryLevel,
                     notes,
-                    severity: sev
+                    severity: sev,
+                    subType: InjurySubtype.HEALING // bloodloss, disease, healing, infection, poison, shock, toxin (different healing rolls)
                 }
             },
             {parent: actor}
@@ -572,7 +584,7 @@ export class DiceHM3 {
             aim: 'mid',
             location: 'Random',
             impact: 0,
-            aspect: 'Blunt',
+            aspect: Aspect.BLUNT,
             askRecordInjury: recordInjury === 'ask',
             hitLocations: dialogOptions.hitLocations
         };
@@ -647,11 +659,11 @@ export class DiceHM3 {
         result.armorType = armorLocationData.layers === '' ? 'None' : armorLocationData.layers;
 
         // determine effective impact (impact - armor)
-        if (aspect === 'Blunt') {
+        if (aspect === Aspect.BLUNT) {
             result.armorValue = armorLocationData.blunt;
-        } else if (aspect === 'Edged') {
+        } else if (aspect === Aspect.EDGED) {
             result.armorValue = armorLocationData.edged;
-        } else if (aspect === 'Piercing') {
+        } else if (aspect === Aspect.PIERCING) {
             result.armorValue = armorLocationData.piercing;
         } else {
             result.armorValue = armorLocationData.fire;
@@ -690,24 +702,24 @@ export class DiceHM3 {
 
             case 'G4':
                 result.injuryLevel = 4;
-                result.isAmputate = enableAmputate && armorLocationData.isAmputate && aspect === 'Edged';
+                result.isAmputate = enableAmputate && armorLocationData.isAmputate && aspect === Aspect.EDGED;
                 break;
 
             case 'K4':
                 result.injuryLevel = 4;
                 result.isKillShot = true;
-                result.isAmputate = enableAmputate && armorLocationData.isAmputate && aspect === 'Edged';
+                result.isAmputate = enableAmputate && armorLocationData.isAmputate && aspect === Aspect.EDGED;
                 break;
 
             case 'G5':
                 result.injuryLevel = 5;
-                result.isAmputate = enableAmputate && armorLocationData.isAmputate && aspect === 'Edged';
+                result.isAmputate = enableAmputate && armorLocationData.isAmputate && aspect === Aspect.EDGED;
                 break;
 
             case 'K5':
                 result.injuryLevel = 5;
                 result.isKillShot = true;
-                result.isAmputate = enableAmputate && armorLocationData.isAmputate && aspect === 'Edged';
+                result.isAmputate = enableAmputate && armorLocationData.isAmputate && aspect === Aspect.EDGED;
                 break;
 
             case 'NA':
@@ -723,7 +735,7 @@ export class DiceHM3 {
         }
 
         // Optional Rule - Bloodloss (Combat 14)
-        result.isBleeder = enableBloodloss && result.injuryLevel >= 4 && result.aspect != 'Fire';
+        result.isBleeder = enableBloodloss && result.injuryLevel >= 4 && result.aspect != Aspect.FIRE;
 
         // Optional Rule - Limb Injuries (Combat 14)
         if (armorLocationData.isFumble) {
@@ -909,8 +921,9 @@ export class DiceHM3 {
             aspects: {
                 'Blunt': 0,
                 'Edged': 0,
-                'Piercing': 0,
                 'Fire': 0,
+                'Frost': 0,
+                'Piercing': 0,
                 'Other': 0
             }
         };
@@ -921,15 +934,15 @@ export class DiceHM3 {
             const itemData = it.system;
             if (it.type === 'weapongear' && it.name === weapon) {
                 let maxImpact = Math.max(itemData.blunt, itemData.piercing, itemData.edged, 0);
-                result.aspects['Blunt'] = itemData.blunt;
-                result.aspects['Edged'] = itemData.edged;
-                result.aspects['Piercing'] = itemData.piercing;
+                result.aspects[Aspect.BLUNT] = itemData.blunt;
+                result.aspects[Aspect.EDGED] = itemData.edged;
+                result.aspects[Aspect.PIERCING] = itemData.piercing;
                 if (maxImpact === itemData.piercing) {
-                    result.defaultAspect = 'Piercing';
+                    result.defaultAspect = Aspect.PIERCING;
                 } else if (maxImpact === itemData.edged) {
-                    result.defaultAspect = 'Edged';
+                    result.defaultAspect = Aspect.EDGED;
                 } else if (maxImpact === itemData.blunt) {
-                    result.defaultAspect = 'Blunt';
+                    result.defaultAspect = Aspect.BLUNT;
                 } else {
                     // This shouldn't happen, but if all else fails, choose "Other"
                     result.defaultAspect = 'Other';

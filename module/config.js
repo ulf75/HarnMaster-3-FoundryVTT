@@ -2164,6 +2164,34 @@ HM3.missileCombatTable = {
     }
 };
 
+HM3.treatmentTable = {
+    Blunt: [
+        {injury: 'Bruise', desc: 'Welts/Swelling', treatment: 'Compress', eml: 30, nt: 5, cf: 4, mf: 5, ms: 6, cs: 7},
+        {injury: 'Fracture', desc: 'Simple Fracture', treatment: 'Splint', eml: 20, nt: 4, cf: 3, mf: 4, ms: 5, cs: 6},
+        {injury: 'Crush', desc: 'Compound Fracture/Bleeder', treatment: 'Surgery/Splint', eml: 10, nt: 3, cf: 2, mf: 3, ms: 4, cs: 5}
+    ],
+    Edged: [
+        {injury: 'Minor Cut/Tear', desc: 'Cut/Gash 1-2" long', treatment: 'Clean & Dress', eml: 30, nt: 5, cf: 4, mf: 5, ms: 6, cs: 7},
+        {injury: 'Serious Cut/Tear', desc: 'Cut/Gash 2-6" long', treatment: 'Surgery', eml: 20, nt: 4, cf: 3, mf: 4, ms: 5, cs: 6},
+        {injury: 'Grievous Cut/Tear', desc: 'Cut/Gash over 6" long/Bleeder', treatment: 'Surgery', eml: 10, nt: 3, cf: 2, mf: 3, ms: 4, cs: 5}
+    ],
+    Fire: [
+        {injury: 'Minor Burn', desc: '1st Degree Burn/Blisters', treatment: 'Compress', eml: 30, nt: 5, cf: 4, mf: 5, ms: 6, cs: 7},
+        {injury: 'Serious Burn', desc: '2nd Degree Burn/Open Wound', treatment: 'Clean & Dress', eml: 15, nt: 3, cf: 2, mf: 3, ms: 4, cs: 5},
+        {injury: 'Grievous Burn', desc: '3rd Degree Burn/Charred Skin', treatment: 'Clean & Dress', eml: 5, nt: 2, cf: 1, mf: 2, ms: 3, cs: 4}
+    ],
+    Frost: [
+        {injury: 'Minor Frost', desc: 'Chilled Flesh/Shivering', treatment: 'Warming', eml: 50, nt: 5, cf: 4, mf: 5, ms: 7, cs: 7},
+        {injury: 'Serious Frost', desc: '2nd Degree Frostbite', treatment: 'Warming', eml: 25, nt: 4, cf: 3, mf: 4, ms: 5, cs: 7},
+        {injury: 'Grievous Frost', desc: '3rd Degree Frostbite', treatment: 'Amputate', eml: 10, nt: 0, cf: 0, mf: 0, ms: 0, cs: 0}
+    ],
+    Piercing: [
+        {injury: 'Minor Stab/Bite', desc: 'Puncture 1" deep', treatment: 'Clean & Dress', eml: 25, nt: 5, cf: 4, mf: 5, ms: 6, cs: 7},
+        {injury: 'Serious Stab/Bite', desc: 'Puncture 3" deep', treatment: 'Clean & Dress', eml: 15, nt: 4, cf: 3, mf: 4, ms: 5, cs: 6},
+        {injury: 'Grievous Stab/Bite', desc: 'Deep Puncture/Bleeder', treatment: 'Surgery', eml: 5, nt: 3, cf: 2, mf: 3, ms: 4, cs: 5}
+    ]
+};
+
 HM3.actorLabels = {
     character: 'Character',
     creature: 'Creature',
