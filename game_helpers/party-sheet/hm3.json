@@ -11,6 +11,7 @@
         "type": "charactersheet",
         "minwidth": 50,
         "align": "center",
+        "valign": "top",
         "header": "hide",
         "text": ""
       },
@@ -20,6 +21,7 @@
         "minwidth": 100,
         "header": "show",
         "align": "left",
+        "valign": "top",
         "text": "{b} name {/b} {nl} {i} system.occupation {/i}"
       },
       {
@@ -28,6 +30,7 @@
         "header": "show",
         "minwidth": 75,
         "align": "left",
+        "valign": "top",
         "text": "Height {nl} Frame {nl} Weight {nl} CML system.eph.comeliness"
       },
       {
@@ -36,6 +39,7 @@
         "header": "show",
         "minwidth": 75,
         "align": "left",
+        "valign": "top",
         "text": "STR system.eph.strength {nl} STA system.eph.stamina {nl} DEX system.eph.dexterity {nl} AGL system.eph.agility"
       },
       {
@@ -44,6 +48,7 @@
         "header": "hide",
         "minwidth": 75,
         "align": "left",
+        "valign": "top",
         "text": "EYE system.eph.eyesight {nl} HRG system.eph.hearing {nl} SML system.eph.smell {nl} VOI system.eph.voice"
       },
       {
@@ -52,6 +57,7 @@
         "header": "show",
         "minwidth": 75,
         "align": "left",
+        "valign": "top",
         "text": "INT system.eph.intelligence {nl} AUR system.eph.aura {nl} WIL system.eph.will {nl} MOR system.eph.morality"
       },
       {
@@ -60,6 +66,7 @@
         "header": "show",
         "minwidth": 75,
         "align": "left",
+        "valign": "top",
         "text": "MOV system.eph.move {nl} END system.endurance {nl} INI system.initiative"
       },
       {
@@ -68,6 +75,7 @@
         "header": "show",
         "minwidth": 75,
         "align": "left",
+        "valign": "top",
         "text": "UP system.universalPenalty {nl} PP system.physicalPenalty {nl} Fatigue system.eph.fatigue {nl} ILs system.eph.totalInjuryLevels"
       },
       {
@@ -76,15 +84,17 @@
         "header": "show",
         "minwidth": 75,
         "align": "left",
+        "valign": "top",
         "text": "TODO"
       },
       {
         "name": "Effects",
-        "type": "direct",
+        "type": "object-loop",
         "header": "show",
-        "minwidth": 75,
+        "minwidth": 100,
         "align": "left",
-        "text": "TODO"
+        "valign": "top",
+        "text": "effects => name {nl}"
       }
     ]
   ]
