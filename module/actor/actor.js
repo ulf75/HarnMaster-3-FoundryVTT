@@ -21,6 +21,15 @@ export class HarnMasterActor extends Actor {
     }
 
     /**
+     * Mainly for the Party Sheet module.
+     */
+    get subtype() {
+        if (!!this.player && this.type === 'character') return 'pc';
+        else if (this.type === 'character') return 'npc';
+        else return this.type;
+    }
+
+    /**
      * The original FVTT return of the applicable effects does not take the permissions into account.
      * With this implementation, a player must have at least LIMITED permission to see the active effect.
      * @override

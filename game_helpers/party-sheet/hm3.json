@@ -1,0 +1,91 @@
+{
+  "name": "HarnMaster3",
+  "system": "hm3",
+  "author": "ulf75",
+  "offline_includes_property": "subtype",
+  "offline_includes": ["pc"],
+  "rows": [
+    [
+      {
+        "name": "Character Sheet",
+        "type": "charactersheet",
+        "minwidth": 50,
+        "align": "center",
+        "header": "hide",
+        "text": ""
+      },
+      {
+        "name": "Name",
+        "type": "direct",
+        "minwidth": 100,
+        "header": "show",
+        "align": "left",
+        "text": "{b} name {/b} {nl} {i} system.occupation {/i}"
+      },
+      {
+        "name": "Appearance",
+        "type": "direct",
+        "header": "show",
+        "minwidth": 75,
+        "align": "left",
+        "text": "Height {nl} Frame {nl} Weight {nl} CML system.eph.comeliness"
+      },
+      {
+        "name": "Physical",
+        "type": "direct",
+        "header": "show",
+        "minwidth": 75,
+        "align": "left",
+        "text": "STR system.eph.strength {nl} STA system.eph.stamina {nl} DEX system.eph.dexterity {nl} AGL system.eph.agility"
+      },
+      {
+        "name": "Sense",
+        "type": "direct",
+        "header": "hide",
+        "minwidth": 75,
+        "align": "left",
+        "text": "EYE system.eph.eyesight {nl} HRG system.eph.hearing {nl} SML system.eph.smell {nl} VOI system.eph.voice"
+      },
+      {
+        "name": "Personality",
+        "type": "direct",
+        "header": "show",
+        "minwidth": 75,
+        "align": "left",
+        "text": "INT system.eph.intelligence {nl} AUR system.eph.aura {nl} WIL system.eph.will {nl} MOR system.eph.morality"
+      },
+      {
+        "name": "Combat",
+        "type": "direct",
+        "header": "show",
+        "minwidth": 75,
+        "align": "left",
+        "text": "MOV system.eph.move {nl} END system.endurance {nl} INI system.initiative"
+      },
+      {
+        "name": "Penalties",
+        "type": "direct",
+        "header": "show",
+        "minwidth": 75,
+        "align": "left",
+        "text": "UP system.universalPenalty {nl} PP system.physicalPenalty {nl} Fatigue system.eph.fatigue {nl} ILs system.eph.totalInjuryLevels"
+      },
+      {
+        "name": "Skills",
+        "type": "direct",
+        "header": "show",
+        "minwidth": 75,
+        "align": "left",
+        "text": "TODO"
+      },
+      {
+        "name": "Effects",
+        "type": "direct",
+        "header": "show",
+        "minwidth": 75,
+        "align": "left",
+        "text": "TODO"
+      }
+    ]
+  ]
+}
