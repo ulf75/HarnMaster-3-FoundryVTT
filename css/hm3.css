@@ -27,7 +27,7 @@
 .rollable:hover,
 .rollable:focus {
     color: #000;
-    text-shadow: 0 0 10px red;
+    text-shadow: 0 0 10px #d57681;
     cursor: pointer;
 }
 
@@ -66,6 +66,10 @@ button,
     -webkit-box-shadow: 0.125rem 0.125rem 0 rgba(122, 112, 98, 0.5);
     box-shadow: 0.125rem 0.125rem 0 rgba(122, 112, 98, 0.5);
     background-color: #c8c6b6;
+}
+
+a:hover {
+    text-shadow: 0 0 10px #d57681;
 }
 
 section.highlight {
@@ -225,7 +229,7 @@ section.highlight {
 
 .chat-card .card-header h3:hover {
     color: #111;
-    text-shadow: 0 0 10px red;
+    text-shadow: 0 0 10px #d57681;
 }
 
 .chat-card .mingap {
@@ -418,8 +422,8 @@ section.highlight {
 .hm3 input[type='text']:focus,
 .hm3 input[type='number']:focus {
     border: 1px solid #111;
-    -webkit-box-shadow: 0 0 8px red;
-    box-shadow: 0 0 8px red;
+    -webkit-box-shadow: 0 0 8px #d57681;
+    box-shadow: 0 0 8px #d57681;
 }
 
 .hm3 input:disabled,
@@ -523,7 +527,7 @@ section.highlight {
 
 .hm3 .sheet .editable .rollable:hover {
     color: #000;
-    text-shadow: 0 0 10px red;
+    text-shadow: 0 0 10px #d57681;
     cursor: pointer;
 }
 
