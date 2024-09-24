@@ -48,3 +48,8 @@ button,
 a:hover {
     text-shadow: 0 0 10px $hover-color;
 }
+
+.sheet.journal-entry .journal-entry-content {
+    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background-size: cover;
+}
