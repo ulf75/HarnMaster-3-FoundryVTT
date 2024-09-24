@@ -31,6 +31,10 @@
     cursor: pointer;
 }
 
+.app {
+    background: url(/systems/hm3/ui/denim075.png) repeat;
+}
+
 .window-app .window-content {
     background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
@@ -388,12 +392,14 @@ section.highlight {
 }
 
 #hotbar li.macro {
-    background: url('../ui/parchment.jpg');
+    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background-size: cover;
 }
 
 /* Styles limited to hm3 sheets */
 .hm3 .window-content {
-    background: url('../ui/parchment.jpg') repeat;
+    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background-size: cover;
     font-size: 13px;
     color: #191813;
 }

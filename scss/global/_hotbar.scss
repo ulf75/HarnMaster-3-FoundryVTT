@@ -1,4 +1,6 @@
 #hotbar li.macro {
-    background: url('../ui/parchment.jpg');
+    // background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background-size: cover;
     //    background: rgba(0, 0, 0, 0)
 }

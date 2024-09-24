@@ -1,5 +1,7 @@
 .window-content {
-    background: url('../ui/parchment.jpg') repeat;
+    // background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background-size: cover;
     font-size: 13px;
     color: #191813;
 }
