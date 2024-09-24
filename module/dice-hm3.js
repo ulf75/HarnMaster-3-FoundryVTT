@@ -111,7 +111,7 @@ export class DiceHM3 {
             isAppraisal: roll.preData.isAppraisal,
             blind: rollData.blind,
             private: rollData.private,
-            userId: game.users.players.find((p) => p.character.id === rollData.actor)?.id
+            userId: game.users.players.find((p) => p.character?.id === rollData.actor)?.id
         });
         const messageData = {
             user: game.user.id,
@@ -203,7 +203,7 @@ export class DiceHM3 {
                     isAppraisal,
                     modifier: Number(formModifier) + Number(formPhysicianModifier) + Number(formTreatmentModifier),
                     multiplier,
-                    target: Number(formTarget),
+                    target: Number(formTarget) || dialogData.target,
                     type: dialogOptions.type
                 });
             }
