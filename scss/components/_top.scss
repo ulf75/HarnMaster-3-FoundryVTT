@@ -71,11 +71,14 @@ label.init-checkbox {
     height: 22px;
     line-height: 22px;
 }
+
 .sheet {
     .window-content {
         overflow-y: hidden;
         padding: 5px;
-        background: url('../ui/parchment.jpg') repeat;
+        // background: url(/systems/hm3/ui/parchment.jpg) repeat;
+        background: url(/systems/hm3/ui/background.webp) no-repeat;
+        background-size: cover;
         font-size: 13px;
         color: #191813;
     }
@@ -207,12 +210,12 @@ label.init-checkbox {
     }
 }
 
-.sheet-body .macro .command {
-    height: calc(100% - 80px);
+// .sheet-body .macro .command {
+//     height: calc(100% - 80px);
 
-    textarea {
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-    }
-}
+//     textarea {
+//         width: 100%;
+//         height: 100%;
+//         box-sizing: border-box;
+//     }
+// }

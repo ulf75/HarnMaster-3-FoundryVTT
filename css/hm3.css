@@ -31,6 +31,39 @@
     cursor: pointer;
 }
 
+.window-app .window-content {
+    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background-size: cover;
+    max-width: 950px;
+}
+
+.dialog .dialog-buttons button.default,
+.dialog .dialog-buttons button {
+    background: #b6b4a5;
+    -webkit-box-shadow: 0.25rem 0.25rem 0 rgba(122, 112, 98, 0.5);
+    box-shadow: 0.25rem 0.25rem 0 rgba(122, 112, 98, 0.5);
+    color: #4c4b38;
+    border-radius: 0;
+    border: 1px solid #6f2a32;
+}
+
+button,
+.dialog-buttons {
+    background: #b6b4a5;
+    -webkit-box-shadow: 0.25rem 0.25rem 0 rgba(122, 112, 98, 0.5);
+    box-shadow: 0.25rem 0.25rem 0 rgba(122, 112, 98, 0.5);
+    color: #4c4b38;
+    border-radius: 0;
+    border: 1px solid #6f2a32;
+}
+
+.dialog-buttons button:hover,
+.dialog-buttons button.default:hover {
+    -webkit-box-shadow: 0.125rem 0.125rem 0 rgba(122, 112, 98, 0.5);
+    box-shadow: 0.125rem 0.125rem 0 rgba(122, 112, 98, 0.5);
+    background-color: #c8c6b6;
+}
+
 section.highlight {
     padding: 0 5px;
     background: rgba(247, 230, 2, 0.05);
@@ -141,6 +174,11 @@ section.highlight {
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between;
+}
+
+.chat-message {
+    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background-size: cover;
 }
 
 .chat-card {
@@ -437,7 +475,8 @@ section.highlight {
 .hm3 .sheet .window-content {
     overflow-y: hidden;
     padding: 5px;
-    background: url('../ui/parchment.jpg') repeat;
+    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background-size: cover;
     font-size: 13px;
     color: #191813;
 }
@@ -580,17 +619,6 @@ section.highlight {
 
 .hm3 .sheet .sheet-navigation .item.active {
     border-bottom: 3px solid #44191a;
-}
-
-.hm3 .sheet-body .macro .command {
-    height: calc(100% - 80px);
-}
-
-.hm3 .sheet-body .macro .command textarea {
-    width: 100%;
-    height: 100%;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
 }
 
 .hm3 .facade img.facade-image {
