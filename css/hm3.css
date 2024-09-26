@@ -189,6 +189,11 @@ section.highlight {
     justify-content: space-between;
 }
 
+#chat-form textarea {
+    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background-size: cover;
+}
+
 .chat-message {
     background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
