@@ -673,7 +673,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
 
     if (combatResult.outcome.dta) {
         // Only one TA per turn
-        if (!(await combat.setTA())) {
+        if (!(await setTA())) {
             combatResult.outcome.dta = false;
         }
     }
@@ -889,7 +889,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     if (combatResult.outcome.dta) {
         // Only one TA per turn
-        if (!(await combat.setTA())) {
+        if (!(await setTA())) {
             combatResult.outcome.dta = false;
         }
     }
@@ -985,8 +985,8 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 /**
  * Resume the attack with the defender performing the "Block" defense.
  *
- * @param {*} atkToken Token representing the attacker
- * @param {*} defToken Token representing the defender
+ * @param {HarnMasterToken} atkToken Token representing the attacker
+ * @param {HarnMasterToken} defToken Token representing the defender
  * @param {*} type Type of attack: "melee" or "missile"
  * @param {*} weaponName Name of the weapon the attacker is using
  * @param {*} effAML The effective AML (Attack Mastery Level) of the attacker after modifiers applied
@@ -1131,7 +1131,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     if (combatResult.outcome.dta) {
         // Only one TA per turn
-        if (!(await combat.setTA())) {
+        if (!(await setTA())) {
             combatResult.outcome.dta = false;
         }
     }
@@ -1144,19 +1144,27 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     // If there was a block, check whether a weapon broke
     let weaponBroke = {attackWeaponBroke: false, defendWeaponBroke: false};
     if (game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block) {
-        weaponBroke = await checkWeaponBreak(atkWeapon, defWeapon);
+        weaponBroke = await checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon);
 
         // If either of the weapons has broken, then mark the appropriate
         // weapon as "unequipped"
 
         if (weaponBroke.attackWeaponBroke) {
             const item = atkToken.actor.items.get(atkWeapon.id);
-            await item.update({'system.isEquipped': false});
+            await item.update({
+                'system.isEquipped': false,
+                'system.notes': 'Weapon is damaged!',
+                'system.weaponQuality': item.system.weaponQuality - 1
+            });
         }
 
         if (weaponBroke.defendWeaponBroke) {
             const item = defToken.actor.items.get(defWeapon.id);
-            await item.update({'system.isEquipped': false});
+            await item.update({
+                'system.isEquipped': false,
+                'system.notes': 'Weapon is damaged!',
+                'system.weaponQuality': item.system.weaponQuality - 1
+            });
         }
     }
 
@@ -1219,9 +1227,9 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         content: html.trim()
     };
     if (combatResult.outcome.atkDice) {
-        messageData.type = CONST.CHAT_MESSAGE_STYLES.ROLL;
-        messageData.sound = CONFIG.sounds.dice;
         messageData.roll = atkImpactRoll;
+        messageData.sound = CONFIG.sounds.dice;
+        messageData.type = CONST.CHAT_MESSAGE_STYLES.ROLL;
     } else {
         messageData.type = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
@@ -1244,17 +1252,22 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     return chatData;
 }
 
-export async function checkWeaponBreak(atkWeapon, defWeapon) {
-    const atkToken = atkWeapon?.parent?.token;
-    const defToken = defWeapon?.parent?.token;
-
+/**
+ *
+ * @param {HarnMasterToken} atkToken
+ * @param {HarnMasterItem} atkWeapon
+ * @param {HarnMasterToken} defToken
+ * @param {HarnMasterItem} defWeapon
+ * @returns {Promise<{attackWeaponBroke: boolean, defendWeaponBroke: boolean}>} Promise with break info
+ */
+export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon) {
     if (!atkWeapon || !atkToken) {
-        console.error(`Attack weapon was not specified`);
+        console.error(`HM3 | Attack weapon was not specified`);
         return {attackWeaponBroke: false, defendWeaponBroke: false};
     }
 
     if (!defWeapon || !defToken) {
-        console.error(`Defend weapon was not specified`);
+        console.error(`HM3 | Defend weapon was not specified`);
         return {attackWeaponBroke: false, defendWeaponBroke: false};
     }
 
