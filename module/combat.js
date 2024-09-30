@@ -628,8 +628,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     // Roll Attacker's Attack
     const atkRoll = await DiceHM3.rollTest({
         data: {},
-        diceSides: 100,
         diceNum: 1,
+        diceSides: 100,
         modifier: 0,
         target: atkEffAML
     });
@@ -639,8 +639,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     // Roll Counterstrike Attack
     const csRoll = await DiceHM3.rollTest({
         data: {},
-        diceSides: 100,
         diceNum: 1,
+        diceSides: 100,
         modifier: csDialogResult.addlModifier,
         target: csEffEML
     });
@@ -662,13 +662,13 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     const atkResult = `${atkRoll.isCritical ? 'c' : 'm'}${atkRoll.isSuccess ? 's' : 'f'}`;
     const defResult = `${csRoll.isCritical ? 'c' : 'm'}${csRoll.isSuccess ? 's' : 'f'}`;
     const combatResult = meleeCombatResult(
-        atkResult,
-        defResult,
-        isGrappleDef ? 'grapple' : 'counterstrike',
         atkImpactMod,
+        atkResult,
         csDialogResult.impactMod,
+        defResult,
         isGrappleAtk,
-        isGrappleDef
+        isGrappleDef,
+        isGrappleDef ? 'grapple' : 'counterstrike'
     );
 
     if (combatResult.outcome.dta) {
@@ -1153,7 +1153,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
             const item = atkToken.actor.items.get(atkWeapon.id);
             await item.update({
                 'system.isEquipped': false,
-                'system.notes': 'Weapon is damaged!',
+                'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
                 'system.weaponQuality': item.system.weaponQuality - 1
             });
         }
@@ -1162,7 +1162,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
             const item = defToken.actor.items.get(defWeapon.id);
             await item.update({
                 'system.isEquipped': false,
-                'system.notes': 'Weapon is damaged!',
+                'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
                 'system.weaponQuality': item.system.weaponQuality - 1
             });
         }
@@ -1492,11 +1492,11 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact =
     if (!outcome) return null;
 
     const result = {
-        outcome: outcome,
-        desc: isGrappleAtk ? 'Grapple attempt unsuccessful.' : 'Attack misses.',
-        csDesc: isGrappleDef ? 'Grapple attempt unsuccessful.' : 'Counterstrike misses.',
         atkHold: !!outcome.atkHold,
-        defHold: !!outcome.defHold
+        csDesc: isGrappleDef ? 'Grapple attempt unsuccessful.' : 'Counterstrike misses.',
+        defHold: !!outcome.defHold,
+        desc: isGrappleAtk ? 'Grapple attempt unsuccessful.' : 'Attack misses.',
+        outcome: outcome
     };
 
     if (defense !== 'counterstrike') {

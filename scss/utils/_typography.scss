@@ -1,26 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Martel:wght@400;800&family=Roboto:wght@300;400;500&display=swap');
 
-//$font-primary: 'Roboto', sans-serif;
-//$font-secondary: 'Roboto', sans-serif;
+// $font-primary: 'Roboto', sans-serif;
+// $font-secondary: 'Roboto', sans-serif;
 
-$font-primary: 'Signika', sans-serif;
-$font-secondary: 'Signika', sans-serif;
+// $font-primary: 'Signika', sans-serif;
+// $font-secondary: 'Signika', sans-serif;
+
+$font-primary: 'Amasis MT Medium';
+$font-secondary: 'Amasis MT Medium';
+$font-headers: 'Modesto Condensed', 'Palatino Linotype', serif;
 
 @font-face {
     font-family: 'Lakise';
-    src: url('../fonts/Harn-Lakise-Normal.otf') format('opentype');
+    src: url(/systems/hm3/fonts/Harn-Lakise-Normal.otf) format('opentype');
     font-weight: normal;
     font-style: normal;
 }
 @font-face {
     font-family: 'Runic';
-    src: url('../fonts/Harn-Runic-Normal.otf') format('opentype');
+    src: url(/systems/hm3/fonts/Harn-Runic-Normal.otf) format('opentype');
     font-weight: normal;
     font-style: normal;
 }
 @font-face {
     font-family: 'Lankorian Blackhand';
-    src: url('../fonts/Lankorian-Blackhand.otf') format('opentype');
+    src: url(/systems/hm3/fonts/Lankorian-Blackhand.otf) format('opentype');
     font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Amasis MT Medium';
+    src: url(/systems/hm3/fonts/amasis-mt-medium.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Amasis MT Medium';
+    src: url(/systems/hm3/fonts/amasis-mt-medium-italic.ttf) format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Amasis MT Std';
+    src: url(/systems/hm3/fonts/amasis-mt-std-bold.ttf) format('truetype');
+    font-weight: bold;
     font-style: normal;
 }

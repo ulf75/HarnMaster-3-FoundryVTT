@@ -4,7 +4,7 @@
             flex: 1;
             margin: 0;
             line-height: 36px;
-            font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
+            font-family: $font-headers;
             font-size: 20px;
             font-weight: 700;
             color: #4b4a44;
@@ -83,7 +83,7 @@
                 .label {
                     flex: 0 0 45px;
                     padding-left: 8px;
-                    font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
+                    font-family: $font-headers;
                     font-weight: bold;
                     font-size: 19px;
                 }
