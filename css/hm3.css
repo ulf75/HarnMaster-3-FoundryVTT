@@ -245,7 +245,6 @@ section.highlight {
 
 .chat-card {
     font-style: normal;
-    font-size: 15px;
 }
 
 .chat-card .card-header {
@@ -253,7 +252,7 @@ section.highlight {
     padding: 3px 0;
     border-top: 2px groove #fff;
     border-bottom: 2px groove #fff;
-    background-color: #bbb;
+    background-color: rgba(122, 112, 98, 0.5);
     color: #111;
 }
 
@@ -300,13 +299,16 @@ section.highlight {
 }
 
 .chat-card .result-desc {
-    color: blue;
-    font-weight: bold;
+    color: #6f2a32;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .chat-card .weapon-broke {
     text-align: center;
     color: red;
+    padding-top: 2px;
+    padding-bottom: 2px;
     font-weight: bold;
 }
 
@@ -334,21 +336,24 @@ section.highlight {
     padding: 3px 0 0;
     border-top: 2px groove #fff;
     text-align: center;
-    font-size: 16px;
 }
 
 .chat-card .critical-success-block {
-    background-color: green;
+    background-color: rgba(0, 128, 0, 0.7);
+    padding-top: 5px;
+    padding-bottom: 5px;
     color: white;
 }
 
 .chat-card .critical-failure-block {
-    background-color: red;
+    background-color: rgba(255, 0, 0, 0.7);
+    padding-top: 5px;
+    padding-bottom: 5px;
     color: white;
 }
 
 .chat-card .critical-success-text {
-    color: green;
+    color: #1f9348;
     font-weight: bold;
 }
 
@@ -374,10 +379,15 @@ section.highlight {
 }
 
 .chat-card .success-text {
-    color: green;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #1f9348;
+    font-weight: bold;
 }
 
 .chat-card .failure-text {
+    padding-top: 5px;
+    padding-bottom: 5px;
     color: red;
 }
 

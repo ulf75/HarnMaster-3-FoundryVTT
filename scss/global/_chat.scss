@@ -30,14 +30,14 @@
 
 .chat-card {
     font-style: normal;
-    font-size: 15px;
+    // font-size: 15px;
 
     .card-header {
         text-align: center;
         padding: 3px 0;
         border-top: 2px groove #fff;
         border-bottom: 2px groove #fff;
-        background-color: #bbb;
+        background-color: $header-bg-1;
         color: #111;
 
         h3 {
@@ -80,13 +80,17 @@
     }
 
     .result-desc {
-        color: blue;
-        font-weight: bold;
+        color: $highlight-1;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        // font-weight: bold;
     }
 
     .weapon-broke {
         text-align: center;
         color: red;
+        padding-top: 2px;
+        padding-bottom: 2px;
         font-weight: bold;
     }
 
@@ -114,21 +118,25 @@
         padding: 3px 0 0;
         border-top: 2px groove #fff;
         text-align: center;
-        font-size: 16px;
+        // font-size: 16px;
     }
 
     .critical-success-block {
-        background-color: green;
+        background-color: $green-bg-1;
+        padding-top: 5px;
+        padding-bottom: 5px;
         color: white;
     }
 
     .critical-failure-block {
-        background-color: red;
+        background-color: $red-bg-1;
+        padding-top: 5px;
+        padding-bottom: 5px;
         color: white;
     }
 
     .critical-success-text {
-        color: green;
+        color: $green-1;
         font-weight: bold;
     }
 
@@ -154,10 +162,15 @@
     }
 
     .success-text {
-        color: green;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        color: $green-1;
+        font-weight: bold;
     }
 
     .failure-text {
+        padding-top: 5px;
+        padding-bottom: 5px;
         color: red;
     }
 
