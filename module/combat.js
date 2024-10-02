@@ -662,13 +662,13 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     const atkResult = `${atkRoll.isCritical ? 'c' : 'm'}${atkRoll.isSuccess ? 's' : 'f'}`;
     const defResult = `${csRoll.isCritical ? 'c' : 'm'}${csRoll.isSuccess ? 's' : 'f'}`;
     const combatResult = meleeCombatResult(
-        atkImpactMod,
         atkResult,
-        csDialogResult.impactMod,
         defResult,
+        isGrappleDef ? 'grapple' : 'counterstrike',
+        atkImpactMod,
+        csDialogResult.impactMod,
         isGrappleAtk,
-        isGrappleDef,
-        isGrappleDef ? 'grapple' : 'counterstrike'
+        isGrappleDef
     );
 
     // If there was a block, check whether a weapon broke
