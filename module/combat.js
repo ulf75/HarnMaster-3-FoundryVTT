@@ -671,9 +671,45 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         isGrappleDef ? 'grapple' : 'counterstrike'
     );
 
-    if (combatResult.outcome.dta) {
+    // If there was a block, check whether a weapon broke
+    let weaponBroke = {attackWeaponBroke: false, defendWeaponBroke: false};
+    if (game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block) {
+        weaponBroke = await checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon);
+
+        // If either of the weapons has broken, then mark the appropriate
+        // weapon as "unequipped"
+
+        if (weaponBroke.attackWeaponBroke) {
+            const item = atkToken.actor.items.get(atkWeapon.id);
+            combatResult.outcome.dta = true;
+            await item.update({
+                'system.isEquipped': false,
+                'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
+                'system.weaponQuality': item.system.weaponQuality - 1
+            });
+        }
+
+        if (weaponBroke.defendWeaponBroke) {
+            const item = defToken.actor.items.get(defWeapon.id);
+            combatResult.outcome.ata = true;
+            await item.update({
+                'system.isEquipped': false,
+                'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
+                'system.weaponQuality': item.system.weaponQuality - 1
+            });
+        }
+    }
+
+    if (combatResult.outcome.ata && combatResult.outcome.dta) {
+        // No more than one Tactical Advantage may be earned per Character Turn.
+        // When opponents gain simultaneous TAs, the Turn also ends. (COMBAT 12)
+        combatResult.outcome.ata = false;
+        combatResult.outcome.dta = false;
+        await setTA(true); // turn ends
+    } else if (combatResult.outcome.ata || combatResult.outcome.dta) {
         // Only one TA per turn
         if (!(await setTA())) {
+            combatResult.outcome.ata = false;
             combatResult.outcome.dta = false;
         }
     }
@@ -690,36 +726,38 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     }
 
     const atkChatData = {
-        title: `Attack Result`,
-        attacker: atkToken.name,
-        atkTokenId: atkToken.id,
-        defender: defToken.name,
-        defTokenId: defToken.id,
-        attackWeapon: atkWeaponName,
-        mlType: 'AML',
-        defense: 'Counterstrike',
-        effAML: atkEffAML,
-        effDML: 0,
-        attackRoll: atkRoll.rollObj.total,
+        addlWeaponImpact: 0, // in future, maybe ask this in dialog?
+        atkAim: atkAim,
+        atkAspect: atkAspect,
         atkIsCritical: atkRoll.isCritical,
         atkIsSuccess: atkRoll.isSuccess,
         atkRollResult: atkRoll.description,
+        atkTokenId: atkToken.id,
+        atkWeaponBroke: weaponBroke.attackWeaponBroke,
+        attacker: atkToken.name,
+        attackRoll: atkRoll.rollObj.total,
+        attackWeapon: atkWeaponName,
+        defender: defToken.name,
+        defense: 'Counterstrike',
         defenseRoll: 0,
         defRollResult: '',
-        resultDesc: combatResult.desc,
+        defTokenId: defToken.id,
+        defWeaponBroke: weaponBroke.defendWeaponBroke,
+        effAML: atkEffAML,
+        effDML: 0,
         hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.atkDice,
-        addlWeaponImpact: 0, // in future, maybe ask this in dialog?
-        weaponImpact: atkImpactMod,
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
-        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(atkImpactMod) : 0,
-        atkAim: atkAim,
-        atkAspect: atkAspect,
-        isAtkStumbleRoll: combatResult.outcome.atkStumble,
         isAtkFumbleRoll: combatResult.outcome.atkFumble,
-        isDefStumbleRoll: null,
+        isAtkStumbleRoll: combatResult.outcome.atkStumble,
         isDefFumbleRoll: null,
+        isDefStumbleRoll: null,
+        mlType: 'AML',
+        resultDesc: combatResult.desc,
+        title: `Attack Result`,
+        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(atkImpactMod) : 0,
         visibleAtkActorId: atkToken.actor.id,
-        visibleDefActorId: defToken.actor.id
+        visibleDefActorId: defToken.actor.id,
+        weaponImpact: atkImpactMod
     };
 
     const csChatData = {
@@ -1129,18 +1167,6 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         combatResult = missileCombatResult(atkResult, defResult, 'block', impactMod);
     }
 
-    if (combatResult.outcome.dta) {
-        // Only one TA per turn
-        if (!(await setTA())) {
-            combatResult.outcome.dta = false;
-        }
-    }
-
-    let atkImpactRoll = null;
-    if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
-    }
-
     // If there was a block, check whether a weapon broke
     let weaponBroke = {attackWeaponBroke: false, defendWeaponBroke: false};
     if (game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block) {
@@ -1151,6 +1177,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
         if (weaponBroke.attackWeaponBroke) {
             const item = atkToken.actor.items.get(atkWeapon.id);
+            combatResult.outcome.dta = true;
             await item.update({
                 'system.isEquipped': false,
                 'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
@@ -1160,6 +1187,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
         if (weaponBroke.defendWeaponBroke) {
             const item = defToken.actor.items.get(defWeapon.id);
+            combatResult.outcome.ata = true;
             await item.update({
                 'system.isEquipped': false,
                 'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
@@ -1168,11 +1196,31 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         }
     }
 
+    if (combatResult.outcome.ata && combatResult.outcome.dta) {
+        // No more than one Tactical Advantage may be earned per Character Turn.
+        // When opponents gain simultaneous TAs, the Turn also ends. (COMBAT 12)
+        combatResult.outcome.ata = false;
+        combatResult.outcome.dta = false;
+        await setTA(true); // turn ends
+    } else if (combatResult.outcome.ata || combatResult.outcome.dta) {
+        // Only one TA per turn
+        if (!(await setTA())) {
+            combatResult.outcome.ata = false;
+            combatResult.outcome.dta = false;
+        }
+    }
+
+    let atkImpactRoll = null;
+    if (combatResult.outcome.atkDice) {
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
+    }
+
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
     const chatData = {
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
         addlModifierSign: dialogResult.addlModifier < 0 ? '-' : '+',
         addlWeaponImpact: 0, // in future, maybe ask this in dialog?
+        ata: combatResult.outcome.ata,
         atkAim: aim,
         atkAspect: aspect,
         atkIsCritical: atkRoll.isCritical,
@@ -1740,12 +1788,21 @@ export const displayChatActionButtons = function (message, html, data) {
     }
 };
 
+/**
+ *
+ * @returns True, if no TA has been received so far in this turn.
+ */
 export function isFirstTA() {
     return !game.combats.active.getFlag('hm3', 'TA');
 }
 
-export async function setTA() {
-    if (isFirstTA()) {
+/**
+ *
+ * @param {boolean} [autoend=false] (defaults to false)
+ * @returns {Promise<boolean>}
+ */
+export async function setTA(autoend = false) {
+    if (isFirstTA() && !autoend) {
         await game.combats.active.setFlag('hm3', 'TA', true);
         return true;
     } else {
