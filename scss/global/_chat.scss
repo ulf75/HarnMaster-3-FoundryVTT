@@ -151,9 +151,11 @@
 
     .notice-header {
         border-top: 2px groove;
-        color: red;
+        color: $neutral-4;
+        padding-top: 2px;
+        padding-bottom: 2px;
         text-align: center;
-        font-weight: bold;
+        // font-weight: bold;
     }
 
     .notice-body {

@@ -368,9 +368,10 @@ section.highlight {
 
 .chat-card .notice-header {
     border-top: 2px groove;
-    color: red;
+    color: #454545;
+    padding-top: 2px;
+    padding-bottom: 2px;
     text-align: center;
-    font-weight: bold;
 }
 
 .chat-card .notice-body {
