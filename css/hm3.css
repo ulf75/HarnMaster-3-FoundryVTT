@@ -265,7 +265,7 @@ section.highlight {
     font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
     font-size: 20px;
     font-weight: 700;
-    color: #4b4a44;
+    color: #4c4b38;
 }
 
 .chat-card .card-header h4 {
@@ -277,7 +277,7 @@ section.highlight {
     font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
     font-size: 16px;
     font-weight: 700;
-    color: #4b4a44;
+    color: #4c4b38;
 }
 
 .chat-card .card-header h3:hover {
@@ -300,14 +300,12 @@ section.highlight {
 
 .chat-card .result-desc {
     color: #6f2a32;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 2px 0;
 }
 
 .chat-card .weapon-broke {
     text-align: center;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 2px 0;
 }
 
 .chat-card .card-content {
@@ -330,35 +328,37 @@ section.highlight {
     text-align: left;
 }
 
+.chat-card .card-note {
+    padding: 3px 0;
+    color: #6f2a32;
+    text-align: center;
+}
+
 .chat-card .card-footer {
-    padding: 3px 0 0;
+    padding: 3px 0;
     border-top: 2px groove #fff;
     text-align: center;
 }
 
 .chat-card .success-block {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 5px 0;
     color: #004d06;
 }
 
 .chat-card .failure-block {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 5px 0;
     color: #b30000;
 }
 
 .chat-card .critical-success-block {
     background-color: rgba(0, 77, 6, 0.7);
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 5px 0;
     color: white;
 }
 
 .chat-card .critical-failure-block {
     background-color: rgba(179, 0, 0, 0.7);
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 5px 0;
     color: white;
 }
 
@@ -378,8 +378,7 @@ section.highlight {
     border-top: 2px groove;
     border-bottom: 2px groove;
     color: #454545;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 2px 0;
     text-align: center;
 }
 
@@ -390,6 +389,10 @@ section.highlight {
 
 .chat-card .emphasize-text {
     font-style: italic;
+}
+
+.chat-card .fluff {
+    color: #6f2a32;
 }
 
 .chat-card .fluff p {

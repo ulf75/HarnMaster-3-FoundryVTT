@@ -36,7 +36,7 @@
         padding: 3px 0;
         border-top: 2px groove #fff;
         border-bottom: 2px groove #fff;
-        background-color: $header-bg-1;
+        background-color: $hm3-header-bg;
         color: #111;
 
         h3 {
@@ -46,7 +46,8 @@
             font-family: $font-headers;
             font-size: 20px;
             font-weight: 700;
-            color: #4b4a44;
+            // color: #4b4a44;
+            color: $hm3-header;
         }
 
         h4 {
@@ -56,12 +57,13 @@
             font-family: $font-headers;
             font-size: 16px;
             font-weight: 700;
-            color: #4b4a44;
+            // color: #4b4a44;
+            color: $hm3-header;
         }
 
         h3:hover {
             color: #111;
-            text-shadow: 0 0 10px $hover-color;
+            text-shadow: 0 0 10px $hm3-hover-color;
         }
     }
 
@@ -79,15 +81,13 @@
     }
 
     .result-desc {
-        color: $highlight-1;
-        padding-top: 2px;
-        padding-bottom: 2px;
+        color: $hm3-standard;
+        padding: 2px 0;
     }
 
     .weapon-broke {
         text-align: center;
-        padding-top: 2px;
-        padding-bottom: 2px;
+        padding: 2px 0;
     }
 
     .card-content {
@@ -110,44 +110,47 @@
         }
     }
 
+    .card-note {
+        padding: 3px 0;
+        // border-top: 2px groove #fff;
+        color: $hm3-standard;
+        text-align: center;
+    }
+
     .card-footer {
-        padding: 3px 0 0;
+        padding: 3px 0;
         border-top: 2px groove #fff;
         text-align: center;
     }
 
     .success-block {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        color: $green-1;
+        padding: 5px 0;
+        color: $hm3-success;
     }
 
     .failure-block {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        color: $red-1;
+        padding: 5px 0;
+        color: $hm3-failure;
     }
 
     .critical-success-block {
-        background-color: $green-bg-1;
-        padding-top: 5px;
-        padding-bottom: 5px;
+        background-color: $hm3-success-bg;
+        padding: 5px 0;
         color: white;
     }
 
     .critical-failure-block {
-        background-color: $red-bg-1;
-        padding-top: 5px;
-        padding-bottom: 5px;
+        background-color: $hm3-failure-bg;
+        padding: 5px 0;
         color: white;
     }
 
     .success-text {
-        color: $green-1;
+        color: $hm3-success;
     }
 
     .failure-text {
-        color: $red-1;
+        color: $hm3-failure;
     }
 
     .note {
@@ -158,13 +161,12 @@
         border-top: 2px groove;
         border-bottom: 2px groove;
         color: $neutral-4;
-        padding-top: 2px;
-        padding-bottom: 2px;
+        padding: 2px 0;
         text-align: center;
     }
 
     .notice-body {
-        color: $red-1;
+        color: $hm3-failure;
         text-align: center;
     }
 
@@ -173,6 +175,8 @@
     }
 
     .fluff {
+        color: $hm3-standard;
+
         p {
             font-style: italic;
             text-align: center;

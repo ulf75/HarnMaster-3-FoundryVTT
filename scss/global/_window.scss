@@ -6,7 +6,7 @@
     &:hover,
     &:focus {
         color: #000;
-        text-shadow: 0 0 10px $hover-color;
+        text-shadow: 0 0 10px $hm3-hover-color;
         cursor: pointer;
     }
 }
@@ -26,29 +26,29 @@
 .dialog .dialog-buttons button.default,
 .dialog .dialog-buttons button {
     background: $neutral-3;
-    box-shadow: 0.25rem 0.25rem 0 $header-bg-1;
+    box-shadow: 0.25rem 0.25rem 0 $hm3-header-bg;
     color: $header-1;
     border-radius: 0;
-    border: 1px solid $highlight-1;
+    border: 1px solid $hm3-standard;
 }
 
 button,
 .dialog-buttons {
     background: $neutral-3;
-    box-shadow: 0.25rem 0.25rem 0 $header-bg-1;
+    box-shadow: 0.25rem 0.25rem 0 $hm3-header-bg;
     color: $header-1;
     border-radius: 0;
-    border: 1px solid $highlight-1;
+    border: 1px solid $hm3-standard;
 }
 
 .dialog-buttons button:hover,
 .dialog-buttons button.default:hover {
-    box-shadow: 0.125rem 0.125rem 0 $header-bg-1;
+    box-shadow: 0.125rem 0.125rem 0 $hm3-header-bg;
     background-color: $neutral-2;
 }
 
 a:hover {
-    text-shadow: 0 0 10px $hover-color;
+    text-shadow: 0 0 10px $hm3-hover-color;
 }
 
 .sheet.journal-entry .journal-entry-content {
