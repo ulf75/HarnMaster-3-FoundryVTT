@@ -306,10 +306,8 @@ section.highlight {
 
 .chat-card .weapon-broke {
     text-align: center;
-    color: red;
     padding-top: 2px;
     padding-bottom: 2px;
-    font-weight: bold;
 }
 
 .chat-card .card-content {
@@ -338,28 +336,38 @@ section.highlight {
     text-align: center;
 }
 
+.chat-card .success-block {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #004d06;
+}
+
+.chat-card .failure-block {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #b30000;
+}
+
 .chat-card .critical-success-block {
-    background-color: rgba(0, 128, 0, 0.7);
+    background-color: rgba(0, 77, 6, 0.7);
     padding-top: 5px;
     padding-bottom: 5px;
     color: white;
 }
 
 .chat-card .critical-failure-block {
-    background-color: rgba(255, 0, 0, 0.7);
+    background-color: rgba(179, 0, 0, 0.7);
     padding-top: 5px;
     padding-bottom: 5px;
     color: white;
 }
 
-.chat-card .critical-success-text {
-    color: #1f9348;
-    font-weight: bold;
+.chat-card .success-text {
+    color: #004d06;
 }
 
-.chat-card .critical-failure-text {
-    color: red;
-    font-weight: bold;
+.chat-card .failure-text {
+    color: #b30000;
 }
 
 .chat-card .note {
@@ -368,6 +376,7 @@ section.highlight {
 
 .chat-card .notice-header {
     border-top: 2px groove;
+    border-bottom: 2px groove;
     color: #454545;
     padding-top: 2px;
     padding-bottom: 2px;
@@ -375,21 +384,8 @@ section.highlight {
 }
 
 .chat-card .notice-body {
-    color: red;
+    color: #b30000;
     text-align: center;
-}
-
-.chat-card .success-text {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    color: #1f9348;
-    font-weight: bold;
-}
-
-.chat-card .failure-text {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    color: red;
 }
 
 .chat-card .emphasize-text {

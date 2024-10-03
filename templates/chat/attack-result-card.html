@@ -57,15 +57,15 @@
         <span class="center">Roll: {{attackRoll}}</span>
         <span class="center">{{#if defenseRoll}}Roll: {{defenseRoll}}{{else}}&#8212;{{/if}}</span>
         {{#if atkIsSuccess}}
-        <span class="center {{#if atkIsCritical}}critical-success-block{{else}}success-text{{/if}}">{{atkRollResult}}</span>
+        <span class="center {{#if atkIsCritical}}critical-success-block{{else}}success-block{{/if}}">{{atkRollResult}}</span>
         {{else}}
-        <span class="center {{#if atkIsCritical}}critical-failure-block{{else}}failure-text{{/if}}">{{atkRollResult}}</span>
+        <span class="center {{#if atkIsCritical}}critical-failure-block{{else}}failure-block{{/if}}">{{atkRollResult}}</span>
         {{/if}}
         {{#if defenseRoll}}
         {{#if defIsSuccess}}
-        <span class="center {{#if defIsCritical}}critical-success-block{{else}}success-text{{/if}}">{{defRollResult}}</span>
+        <span class="center {{#if defIsCritical}}critical-success-block{{else}}success-block{{/if}}">{{defRollResult}}</span>
         {{else}}
-        <span class="center {{#if defIsCritical}}critical-failure-block{{else}}failure-text{{/if}}">{{defRollResult}}</span>
+        <span class="center {{#if defIsCritical}}critical-failure-block{{else}}failure-block{{/if}}">{{defRollResult}}</span>
         {{/if}}
         {{else}}
         <span class="center">&#8212;</span>
@@ -78,13 +78,13 @@
 
     {{#if atkWeaponBroke}}
     <div class="card-content center">
-        <span class="weapon-broke">{{attacker}}'s {{attackWeapon}} broke!</span>
+        <span class="weapon-broke failure-text">{{attacker}}'s {{attackWeapon}} broke!</span>
     </div>
     {{/if}}
 
     {{#if defWeaponBroke}}
     <div class="card-content center">
-        <span class="weapon-broke">{{defender}}'s {{defendWeapon}} broke!</span>
+        <span class="weapon-broke failure-text">{{defender}}'s {{defendWeapon}} broke!</span>
     </div>
     {{/if}}
 

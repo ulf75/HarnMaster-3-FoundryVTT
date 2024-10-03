@@ -30,7 +30,6 @@
 
 .chat-card {
     font-style: normal;
-    // font-size: 15px;
 
     .card-header {
         text-align: center;
@@ -83,15 +82,12 @@
         color: $highlight-1;
         padding-top: 2px;
         padding-bottom: 2px;
-        // font-weight: bold;
     }
 
     .weapon-broke {
         text-align: center;
-        color: red;
         padding-top: 2px;
         padding-bottom: 2px;
-        font-weight: bold;
     }
 
     .card-content {
@@ -118,7 +114,18 @@
         padding: 3px 0 0;
         border-top: 2px groove #fff;
         text-align: center;
-        // font-size: 16px;
+    }
+
+    .success-block {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        color: $green-1;
+    }
+
+    .failure-block {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        color: $red-1;
     }
 
     .critical-success-block {
@@ -135,14 +142,12 @@
         color: white;
     }
 
-    .critical-success-text {
+    .success-text {
         color: $green-1;
-        font-weight: bold;
     }
 
-    .critical-failure-text {
-        color: red;
-        font-weight: bold;
+    .failure-text {
+        color: $red-1;
     }
 
     .note {
@@ -151,29 +156,16 @@
 
     .notice-header {
         border-top: 2px groove;
+        border-bottom: 2px groove;
         color: $neutral-4;
         padding-top: 2px;
         padding-bottom: 2px;
         text-align: center;
-        // font-weight: bold;
     }
 
     .notice-body {
-        color: red;
+        color: $red-1;
         text-align: center;
-    }
-
-    .success-text {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        color: $green-1;
-        font-weight: bold;
-    }
-
-    .failure-text {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        color: red;
     }
 
     .emphasize-text {
