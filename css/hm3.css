@@ -390,20 +390,20 @@ section.highlight {
     font-style: italic;
 }
 
-.chat-card .fluff {
+.fluff {
     color: #6f2a32;
 }
 
-.chat-card .fluff p {
+.fluff p {
     font-style: italic;
     text-align: center;
 }
 
-.chat-card .fluff p:first-child {
+.fluff p:first-child {
     padding-top: 10px;
 }
 
-.chat-card .fluff p:last-child {
+.fluff p:last-child {
     padding-bottom: 10px;
 }
 

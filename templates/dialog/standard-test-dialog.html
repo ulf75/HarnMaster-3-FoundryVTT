@@ -1,4 +1,9 @@
 <form>
+    {{#if (and isTreatment fluff)}}
+    <div class="fluff">
+        {{{fluff}}}
+    </div>
+    {{/if}}
     {{#if isAbility}}
     <div class="form-group">
         <label>Eff Ability Base:</label>

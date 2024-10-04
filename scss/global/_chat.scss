@@ -170,21 +170,21 @@
     .emphasize-text {
         font-style: italic;
     }
+}
 
-    .fluff {
-        color: $hm3-standard;
+.fluff {
+    color: $hm3-standard;
 
-        p {
-            font-style: italic;
-            text-align: center;
-        }
+    p {
+        font-style: italic;
+        text-align: center;
+    }
 
-        p:first-child {
-            padding-top: 10px;
-        }
+    p:first-child {
+        padding-top: 10px;
+    }
 
-        p:last-child {
-            padding-bottom: 10px;
-        }
+    p:last-child {
+        padding-bottom: 10px;
     }
 }

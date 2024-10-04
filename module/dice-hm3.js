@@ -31,6 +31,7 @@ export class DiceHM3 {
 
         const dialogOptions = {
             effSkillBase: rollData.effSkillBase,
+            fluff: rollData.fluff || null,
             isAbility: rollData.isAbility || false,
             isCraftOrLore: rollData.isCraftOrLore || false,
             isTreatment: rollData.type === 'treatment' || false,
@@ -145,6 +146,7 @@ export class DiceHM3 {
         let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/standard-test-dialog.html';
         let dialogData = {
             effSkillBase: dialogOptions.effSkillBase,
+            fluff: dialogOptions.fluff || null,
             isAbility: dialogOptions.isAbility || false,
             isCraftOrLore: dialogOptions.isCraftOrLore || false,
             isTreatment: dialogOptions.isTreatment || false,

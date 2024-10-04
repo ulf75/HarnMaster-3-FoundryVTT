@@ -827,28 +827,33 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
 async function treatmentRoll(actor, injury, speaker) {
     const treatmentTable = HM3.treatmentTable[injury.system.aspect || Aspect.BLUNT][Math.floor(injury.system.injuryLevel / 2)];
 
+    let fluff =
+        `<p><b>Injury:</b> ${treatmentTable.injury}</p><p><b>Description:</b> ${treatmentTable.desc}</p><p><b>Treatment:</b> ${treatmentTable.treatment}</p>`.trim();
     let treatment = '';
-    if (treatmentTable.treatment.includes('Clean')) {
-        treatment += `<p>Takes ${5 * injury.system.injuryLevel} minutes and requires water and bandages.</p>`;
+    if (treatmentTable.treatment.includes('Surgery')) {
+        fluff += `<p><b>Surgery</b> takes some minutes. It requires sharp knives, and a needle and thread for sutures. Anesthetic is highly recommended (patients tend to struggle and whimper otherwise) and disinfectants are a good idea too. Such items may be purchased from good apothecaries and improve <b>Treatment EML 10-20</b>.</p>`;
+        treatment += `<p><b>Surgery</b> took ${d6(10)} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Compress')) {
-        treatment += `<p>Apply cold compress for ${d6(5)} minutes. Herbal remedies and balms that reduce swelling add 10-20 to EML.</p>`;
+        fluff += `<p>Apply cold <b>compress</b> for some minutes. Herbal remedies and balms that reduce swelling add improve <b>Treatment EML 10-20</b>.</p>`;
+        treatment += `<p>Cold <b>compress</b> took ${d6(5)} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Splint')) {
-        treatment += `<p>Setting bone and splinting took ${d6(5)} minutes.</p>`;
+        fluff += `<p>Setting bone and <b>splinting</b> takes some minutes.</p>`;
+        treatment += `<p><b>Splinting</b> took ${d6(5)} minutes.</p>`;
     }
-    if (treatmentTable.treatment.includes('Splint')) {
-        treatment += `<p>Cleaning and dressing the wound took ${d6(
-            10
-        )} minutes. Requires sharp knives, and a needle and thread for sutures. Anesthetic is highly recommended (patients tend to struggle and whimper otherwise) and disinfectants are a good idea too. Such items may be purchased from good apothecaries and improve Treatment EML 10-20.</p>`;
+    if (treatmentTable.treatment.includes('Clean') || treatmentTable.treatment.includes('Surgery')) {
+        fluff += `<p><b>Cleaning and dressing</b> takes some minutes and requires water and bandages.</p>`;
+        treatment += `<p><b>Cleaning and dressing</b> took ${5 * injury.system.injuryLevel} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Warming')) {
-        treatment += `<p>Gentle warming (blanket, healthy person's flesh, etc.) of the injury for ${dx(3)} hours.</p>`;
+        fluff += `<p>Gentle <b>warming</b> (blanket, healthy person's flesh, etc.) of the injury for a few hours.</p>`;
+        treatment += `<p><b>Warming</b> took ${dx(3)} hours.</p>`;
     }
 
     const stdRollData = {
         fastforward: false,
-        fluff: `<p><b>Injury:</b> ${treatmentTable.injury}</p><p><b>Description:</b> ${treatmentTable.desc}</p><p><b>Treatment:</b> ${treatmentTable.treatment}</p>`.trim(),
+        fluff,
         fluffResult: {
             CS: treatment + `<p>Excellent work! ${treatmentTable.cs === 7 ? 'EE' : 'H' + treatmentTable.cs} is the best result possible.</p>`,
             MS: treatment + `<p>Good work. ${treatmentTable.ms === 7 ? 'EE' : 'H' + treatmentTable.ms} is a solid result.</p>`,
