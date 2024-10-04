@@ -2,12 +2,14 @@
     textarea {
         background: url(/systems/hm3/ui/background.webp) no-repeat;
         background-size: cover;
+        color: $hm3-text;
     }
 }
 
 .chat-message {
     background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
+    color: $hm3-text;
 }
 
 .chat-message.emote {
@@ -30,6 +32,7 @@
 
 .chat-card {
     font-style: normal;
+    color: $hm3-text;
 
     .card-header {
         text-align: center;

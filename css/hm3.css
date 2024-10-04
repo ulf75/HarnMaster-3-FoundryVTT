@@ -215,11 +215,13 @@ section.highlight {
 #chat-form textarea {
     background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
+    color: #454545;
 }
 
 .chat-message {
     background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
+    color: #454545;
 }
 
 .chat-message.emote {
@@ -245,6 +247,7 @@ section.highlight {
 
 .chat-card {
     font-style: normal;
+    color: #454545;
 }
 
 .chat-card .card-header {
@@ -264,7 +267,7 @@ section.highlight {
     font-family: 'Amasis MT Medium';
     font-size: 20px;
     font-weight: 550;
-    color: #4c4b38;
+    color: #454545;
 }
 
 .chat-card .card-header h4 {
@@ -276,7 +279,7 @@ section.highlight {
     font-family: 'Amasis MT Medium';
     font-size: 15px;
     font-weight: 550;
-    color: #4c4b38;
+    color: #454545;
 }
 
 .chat-card .card-header h3:hover {
