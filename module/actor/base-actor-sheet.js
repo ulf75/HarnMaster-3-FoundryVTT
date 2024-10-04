@@ -963,7 +963,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
      * @param {Event} event   The triggering click event
      * @private
      */
-    _onToggleImprove(event) {
+    async _onToggleImprove(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
@@ -995,8 +995,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         return null;
     }
 
-    _improveToggleDialog(item) {
-        const dlghtml = '<p>Do you want to perform a Skill Development Roll (SDR), or just disable the flag?</p>';
+    async _improveToggleDialog(item) {
+        let dlghtml = '<p>Do you want to perform a Skill Development Roll (SDR), or just disable the flag?</p>';
 
         // Create the dialog window
         return new Promise((resolve) => {
@@ -1007,7 +1007,25 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     performSDR: {
                         label: 'Perform SDR',
                         callback: async (html) => {
-                            return await HarnMasterActor.skillDevRoll(item);
+                            dlghtml = `<div style="padding: 2px 0"><label>Perform Skill Development Roll(s) (SDR):</label></div><div style="padding: 6px 0"><input type="number" id="sdr" name="sdr" value="1" min="1" max="100" /></div>`;
+                            return new Promise((resolve) => {
+                                new Dialog({
+                                    title: 'Skill Development Roll(s)',
+                                    content: dlghtml.trim(),
+                                    buttons: {
+                                        roll: {
+                                            label: 'Roll',
+                                            callback: async (html) => {
+                                                const num = Number(html.find('#sdr')[0].value);
+                                                for (let i = 0; i < num; i++) await HarnMasterActor.skillDevRoll(item);
+                                                resolve(true);
+                                            }
+                                        }
+                                    },
+                                    default: 'roll',
+                                    close: () => resolve(false)
+                                }).render(true);
+                            });
                         }
                     },
                     disableFlag: {
