@@ -492,6 +492,25 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         });
 
         // Filter on name for effects
+        html.on('keyup', '.macros-name-filter', (ev) => {
+            this.macrosNameFilter = $(ev.currentTarget).val();
+            const lcMacrosNameFilter = this.macrosNameFilter.toLowerCase();
+            let macroItems = html.find('.macro');
+            for (let macro of macroItems) {
+                const macroName = macro.getAttribute('data-macro-name');
+                if (lcMacrosNameFilter) {
+                    if (macroName.toLowerCase().includes(lcMacrosNameFilter)) {
+                        $(macro).show();
+                    } else {
+                        $(macro).hide();
+                    }
+                } else {
+                    $(macro).show();
+                }
+            }
+        });
+
+        // Filter on name for effects
         html.on('keyup', '.effects-name-filter', (ev) => {
             this.effectsNameFilter = $(ev.currentTarget).val();
             const lcEffectsNameFilter = this.effectsNameFilter.toLowerCase();
