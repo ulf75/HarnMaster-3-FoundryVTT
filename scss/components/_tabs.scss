@@ -18,23 +18,26 @@
 // }
 
 .tabs {
-    flex: 0 0 30px;
+    flex: 0 0 15px;
     margin-bottom: 5px;
-    font-family: $font-headers;
-    font-size: 20px;
-    font-weight: 700;
+    font-family: $font-primary;
+    font-size: 19px;
+    font-weight: 500;
 
     .item {
         height: 30px;
         line-height: 32px;
-        margin: 0 24px;
-        border-bottom: 3px solid #b5b3a4;
+        margin: 0 12px;
+        border-bottom: 3px solid $header-2;
+        color: $header-1;
     }
 
     .item.active {
         text-shadow: none;
-        border-bottom: 3px solid black;
-        font-size: 25px;
+        border-bottom: 3px solid $hm3-text;
+        font-size: 23px;
+        font-weight: 550;
+        color: $hm3-text;
     }
 }
 
