@@ -17,8 +17,8 @@
         flex: 0 0 440px;
 
         .weight-header {
-            background-color: rgba(0, 0, 0, 0.05);
-            color: #4b4a44;
+            background-color: $hm3-table-header-bg;
+            color: $hm3-text;
             border: 2px groove #eeede0;
             padding: 5px;
             font-weight: bold;

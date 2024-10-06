@@ -27,7 +27,7 @@
             margin: 2px 0;
             padding: 0;
             align-items: center;
-            background: rgba(0, 0, 0, 0.05);
+            background: $hm3-table-header-bg;
             border: 2px groove #eeede0;
             font-weight: bold;
             line-height: 24px;
@@ -98,6 +98,7 @@
             word-break: break-word;
             white-space: nowrap;
             overflow: hidden;
+            margin: auto;
         }
 
         .item-dice {
@@ -120,6 +121,7 @@
         .item-controls {
             flex: 0 0 45px;
             text-align: right;
+            padding: 0 3px;
 
             .item-control {
                 flex: 0 0 22px;
