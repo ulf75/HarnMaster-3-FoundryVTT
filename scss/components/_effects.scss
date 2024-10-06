@@ -8,12 +8,13 @@
         margin: 7px 0;
         padding: 0;
         overflow-y: hidden;
+        color: $hm3-text;
 
         .effects-header {
             margin: 2px 0;
             padding: 0;
             align-items: center;
-            background: rgba(0, 0, 0, 0.05);
+            background: $hm3-table-header-bg;
             border: 2px groove #eeede0;
             font-weight: bold;
             line-height: 24px;
@@ -28,7 +29,7 @@
             }
 
             .effect-name {
-                color: #191813;
+                // color: #191813;
                 border-right: 1px solid #c9c7b8;
 
                 i {

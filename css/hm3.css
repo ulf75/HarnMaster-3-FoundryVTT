@@ -2949,6 +2949,7 @@ section.highlight {
     margin: 7px 0;
     padding: 0;
     overflow-y: hidden;
+    color: #454545;
 }
 
 .hm3 .effects .effects-list .effects-header {
@@ -2957,7 +2958,7 @@ section.highlight {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(148, 138, 122, 0.3);
     border: 2px groove #eeede0;
     font-weight: bold;
     line-height: 24px;
@@ -2973,7 +2974,6 @@ section.highlight {
 }
 
 .hm3 .effects .effects-list .effects-header .effect-name {
-    color: #191813;
     border-right: 1px solid #c9c7b8;
 }
 
@@ -3146,6 +3146,7 @@ section.highlight {
     margin: 7px 0;
     padding: 0;
     overflow-y: hidden;
+    color: #454545;
 }
 
 .hm3 .macros .macros-list .macros-header {
@@ -3154,7 +3155,7 @@ section.highlight {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(148, 138, 122, 0.3);
     border: 2px groove #eeede0;
     font-weight: bold;
     line-height: 24px;
@@ -3170,7 +3171,6 @@ section.highlight {
 }
 
 .hm3 .macros .macros-list .macros-header .macro-name {
-    color: #191813;
     border-right: 1px solid #c9c7b8;
 }
 
