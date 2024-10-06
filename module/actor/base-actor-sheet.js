@@ -200,63 +200,66 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         const droppedItem = await Item.fromDropData(data);
 
-        // Check if coming from a compendium pack
-        if (droppedItem.pack) {
-            return super._onDropItem(event, data);
-        }
-
-        // Skills, spells, etc. (non-gear)
-        if (!droppedItem.type.endsWith('gear')) {
-            return super._onDropItem(event, data);
-        }
-
+        // Check if coming from a compendium pack ||
+        // Skills, spells, etc. (non-gear) ||
         // Gear coming from world items list
-        if (!droppedItem.parent) {
-            return super._onDropItem(event, data);
-        }
+        if (droppedItem.pack || !droppedItem.type?.endsWith('gear') || !droppedItem.parent) {
+            const closestContainer = event.target.closest('[data-container-id]');
+            const destContainer = closestContainer?.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';
 
-        // At this point we know the item is some sort of gear, and coming from an actor
-
-        // Destination containerid: set to 'on-person' if a containerid can't be found
-        const closestContainer = event.target.closest('[data-container-id]');
-        const destContainer = closestContainer?.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';
-
-        // Dropping an item into the same actor (Token or Linked)
-        if (
-            (droppedItem.parent.isToken && this.actor.token?.id === droppedItem.parent.token.id) ||
-            (!droppedItem.parent.isToken && !this.actor.isToken && droppedItem.parent.id === this.actor.id)
-        ) {
+            const newItem = (await super._onDropItem(event, data))[0];
             // If the item is some type of gear (other than containergear), then
             // make sure we set the container to the same as the dropped location
             // (this allows people to move items into containers easily)
-            if (droppedItem.type.endsWith('gear') && droppedItem.type !== 'containergear') {
-                if (droppedItem.system.container !== destContainer) {
-                    await droppedItem.update({'system.container': destContainer});
+            if (newItem.type.endsWith('gear') && newItem.type !== 'containergear') {
+                if (newItem.system.container !== destContainer) {
+                    await newItem.update({'system.container': destContainer});
                 }
             }
-
-            return super._onDropItem(event, data);
-        }
-
-        // At this point we know this dropped item is Gear coming from an actor,
-
-        // Containers are a special case, and they need to be processed specially
-        if (droppedItem.type === ItemType.CONTAINERGEAR) return await this._moveContainer(event, droppedItem);
-
-        // Set the destination container to the closest drop containerid
-        droppedItem.system.container = destContainer;
-
-        const quantity = droppedItem.system.quantity;
-
-        // Source quantity really should never be 0 or negative; if so, just decline
-        // the drop request.
-        if (quantity <= 0) return false;
-
-        if (quantity > 1) {
-            // Ask how many to move
-            return await this._moveQtyDialog(event, droppedItem);
         } else {
-            return await this._moveItems(droppedItem, 1);
+            // At this point we know the item is some sort of gear, and coming from an actor
+
+            // Destination containerid: set to 'on-person' if a containerid can't be found
+            const closestContainer = event.target.closest('[data-container-id]');
+            const destContainer = closestContainer?.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';
+
+            // Dropping an item into the same actor (Token or Linked)
+            if (
+                (droppedItem.parent.isToken && this.actor.token?.id === droppedItem.parent.token.id) ||
+                (!droppedItem.parent.isToken && !this.actor.isToken && droppedItem.parent.id === this.actor.id)
+            ) {
+                // If the item is some type of gear (other than containergear), then
+                // make sure we set the container to the same as the dropped location
+                // (this allows people to move items into containers easily)
+                if (droppedItem.type.endsWith('gear') && droppedItem.type !== 'containergear') {
+                    if (droppedItem.system.container !== destContainer) {
+                        await droppedItem.update({'system.container': destContainer});
+                    }
+                }
+
+                return super._onDropItem(event, data);
+            }
+
+            // At this point we know this dropped item is Gear coming from an actor,
+
+            // Containers are a special case, and they need to be processed specially
+            if (droppedItem.type === ItemType.CONTAINERGEAR) return await this._moveContainer(event, droppedItem);
+
+            // Set the destination container to the closest drop containerid
+            droppedItem.system.container = destContainer;
+
+            const quantity = droppedItem.system.quantity;
+
+            // Source quantity really should never be 0 or negative; if so, just decline
+            // the drop request.
+            if (quantity <= 0) return false;
+
+            if (quantity > 1) {
+                // Ask how many to move
+                return await this._moveQtyDialog(event, droppedItem);
+            } else {
+                return await this._moveItems(droppedItem, 1);
+            }
         }
     }
 
