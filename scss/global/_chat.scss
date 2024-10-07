@@ -184,10 +184,12 @@
     }
 
     p:first-child {
-        padding-top: 10px;
+        border-top: 2px groove $shadow-3;
+        padding-top: 15px;
     }
 
     p:last-child {
-        padding-bottom: 10px;
+        padding-bottom: 15px;
+        border-bottom: 2px groove $shadow-3;
     }
 }

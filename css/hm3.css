@@ -403,11 +403,13 @@ section.highlight {
 }
 
 .fluff p:first-child {
-    padding-top: 10px;
+    border-top: 2px groove rgba(111, 42, 50, 0.7);
+    padding-top: 15px;
 }
 
 .fluff p:last-child {
-    padding-bottom: 10px;
+    padding-bottom: 15px;
+    border-bottom: 2px groove rgba(111, 42, 50, 0.7);
 }
 
 .tooltip {
