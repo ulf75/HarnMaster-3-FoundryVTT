@@ -17,7 +17,7 @@ if (game.hm3.macros.hasActiveEffect(canvas.tokens.get('${token.id}'), '${UNCONSC
 await ChatMessage.create({
     speaker,
     content:
-        "<p>You're lying on the floor. Getting up takes <b>one action</b>.</p><p><b>All</b> opponents gain +20 on <b>all</b> attack and defense rolls against you.</p>"
+        '<div class="chat-card fluff"><p>You are lying on the floor. Getting up takes <b>one action</b>.</p><p><b>All</b> opponents gain +20 on <b>all</b> attack and defense rolls against you.</p></div>'
 });`;
 
     const ON_TURN_START_MACRO = `if (game.hm3.macros.hasActiveEffect(canvas.tokens.get('${token.id}'), '${UNCONSCIOUS}', true)) return;
@@ -26,7 +26,7 @@ const PRONE_IMG = '${PRONE_ICON}';
 await Requestor.request({
     title: PRONE,
     description:
-        "<p>You're still lying on the floor. Getting up takes <b>one action</b>.</p><p>If you remain on the ground, <b>all</b> opponents gain +20 on <b>all</b> attack and defense rolls against you.</p>",
+        '<div class="chat-card fluff"><p>You are still lying on the floor. Getting up takes <b>one action</b>.</p><p>If you remain on the ground, <b>all</b> opponents gain +20 on <b>all</b> attack and defense rolls against you.</p></div>',
     img: PRONE_IMG,
     limit: Requestor.LIMIT.OPTION,
     buttonData: [
@@ -38,7 +38,7 @@ await Requestor.request({
                     effect.delete();
                     await ChatMessage.create({
                         speaker,
-                        content: '<div class="chat-card"><p class="fluff">You got up successfully. Your turn ends.</p></div>'
+                        content: '<div class="chat-card fluff"><p>You got up successfully. Your turn ends.</p></div>'
                     });
                     await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
                 }
@@ -50,7 +50,7 @@ await Requestor.request({
             command: async function () {
                 await ChatMessage.create({
                     speaker,
-                    content: '<div class="chat-card"><p class="fluff">Ok, you remain lying on the floor.</p></div>'
+                    content: '<div class="chat-card fluff"><p>Ok, you remain lying on the floor.</p></div>'
                 });
             },
             scope: {speaker: speaker}

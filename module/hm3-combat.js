@@ -16,14 +16,7 @@ export class HarnMasterCombat extends Combat {
      * @override
      */
     async nextRound() {
-        const combatantIds = this.combatants.map((c) => {
-            // If UNCONSCIOUS, set initiative to 0
-            if (c.token.hasCondition('Unconscious')) {
-                c.initiative = 0;
-                c.token.actor.system.initiative = 0;
-            }
-            return c.id;
-        });
+        const combatantIds = this.combatants.map((c) => c.id);
         await this.rollInitiative(combatantIds);
         return super.nextRound();
     }

@@ -10,19 +10,27 @@ const token = canvas.tokens.controlled[0];
 let dialogEditor = new Dialog({
     title: 'Prone',
     buttons: {
-        none: {
-            label: `None`,
-            callback: () => {
-                const effect = game.hm3.macros.getActiveEffect(token, PRONE, true);
-                if (effect) effect.delete();
+        prone: {
+            label: PRONE,
+            callback: async () => {
+                if (token.hasCondition(PRONE)) {
+                    ui.notifications.info(`${token.name} is already PRONE.`);
+                } else {
+                    game.hm3.macros.createCondition(token, PRONE);
+                }
                 dialogEditor.render(true);
             }
         },
 
-        prone: {
-            label: PRONE,
-            callback: () => {
-                game.hm3.macros.createCondition(token, PRONE);
+        rise: {
+            label: `Rise`,
+            callback: async () => {
+                const effect = game.hm3.macros.getActiveEffect(token, PRONE, true);
+                if (effect) {
+                    effect.delete();
+                } else {
+                    ui.notifications.info(`${token.name} is not PRONE.`);
+                }
                 dialogEditor.render(true);
             }
         },

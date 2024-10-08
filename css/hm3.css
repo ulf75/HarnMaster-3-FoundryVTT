@@ -404,12 +404,14 @@ section.highlight {
 
 .fluff p:first-child {
     border-top: 2px groove rgba(111, 42, 50, 0.7);
-    padding-top: 15px;
+    margin-top: 15px;
+    padding-top: 10px;
 }
 
 .fluff p:last-child {
-    padding-bottom: 15px;
     border-bottom: 2px groove rgba(111, 42, 50, 0.7);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
 }
 
 .tooltip {
@@ -2091,9 +2093,6 @@ section.highlight {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    border-top: 2px groove #eeede0;
-    border-bottom: 2px groove #eeede0;
-    margin-top: 12px;
     padding: 5px 0;
 }
 
@@ -2105,8 +2104,8 @@ section.highlight {
 
 .hm3 .sheet-body .profile-params .profile-item .attribute .label {
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 60px;
-    flex: 0 0 60px;
+    -ms-flex: 0 0 100px;
+    flex: 0 0 100px;
     font-weight: bold;
     text-transform: uppercase;
     text-align: right;
@@ -2115,8 +2114,16 @@ section.highlight {
 
 .hm3 .sheet-body .profile-params .profile-item .attribute .value {
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 150px;
-    flex: 0 0 150px;
+    -ms-flex: 0 0 140px;
+    flex: 0 0 140px;
+}
+
+.hm3 .sheet-body .profile-params .profile-item:first-child {
+    border-top: 2px groove #e2d0d2;
+}
+
+.hm3 .sheet-body .profile-params .profile-item:last-child {
+    border-bottom: 2px groove #e2d0d2;
 }
 
 .hm3 .sheet-body .profile-desc {

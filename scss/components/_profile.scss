@@ -104,16 +104,14 @@
 
         .profile-item {
             align-items: center;
-            border-top: 2px groove #eeede0;
-            border-bottom: 2px groove #eeede0;
-            margin-top: 12px;
+            // margin-top: 12px;
             padding: 5px 0;
 
             .attribute {
                 align-items: center;
 
                 .label {
-                    flex: 0 0 60px;
+                    flex: 0 0 100px;
                     font-weight: bold;
                     text-transform: uppercase;
                     text-align: right;
@@ -121,9 +119,18 @@
                 }
 
                 .value {
-                    flex: 0 0 150px;
+                    flex: 0 0 140px;
                 }
             }
+        }
+
+        .profile-item:first-child {
+            // padding-top: 5x;
+            border-top: 2px groove $highlight-5;
+        }
+        .profile-item:last-child {
+            // padding-bottom: 5x;
+            border-bottom: 2px groove $highlight-5;
         }
     }
 

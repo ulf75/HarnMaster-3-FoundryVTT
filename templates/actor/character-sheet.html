@@ -330,8 +330,11 @@
                         </div>
                         <div class="attribute gender flexrow">
                             <label class="label">Gender</label>
-                            <input class="value" type="text" name="system.gender" value="{{adata.gender}}"
-                                data-dtype="String" />
+                            <select class="value" name="system.gender">
+                                {{selectOptions config.gender selected=adata.gender valueAttr="key" labelAttr="key"}}
+                            </select>
+                            <!-- <input class="value" type="text" name="system.gender" value="{{adata.gender}}"
+                                data-dtype="String" /> -->
                         </div>
                     </div>
                 </div>

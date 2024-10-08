@@ -22,6 +22,27 @@ HM3.skillTypes = [{key: 'Craft'}, {key: 'Physical'}, {key: 'Communication'}, {ke
 
 HM3.traitTypes = [{key: 'Physical'}, {key: 'Psyche'}];
 
+HM3.cultures = [{key: 'Feudal'}, {key: 'Imperial'}, {key: 'Khuzdul'}, {key: 'Sindarin'}, {key: 'Tribal'}, {key: 'Viking'}];
+
+HM3.socialClasses = [{key: 'Slave'}, {key: 'Serf'}, {key: 'Unguilded'}, {key: 'Guilded'}, {key: 'Noble'}];
+
+HM3.gender = [{key: 'Male'}, {key: 'Female'}];
+
+HM3.months = [
+    {key: 'Nuzyael'},
+    {key: 'Peonu'},
+    {key: 'Kelen'},
+    {key: 'Nolus'},
+    {key: 'Larane'},
+    {key: 'Agrazhar'},
+    {key: 'Azura'},
+    {key: 'Halane'},
+    {key: 'Savor'},
+    {key: 'Ilvin'},
+    {key: 'Navek'},
+    {key: 'Morgat'}
+];
+
 HM3.ITEM_TYPE_LABEL = {
     skill: {singular: 'Skill', plural: 'Skills'},
     spell: {singular: 'Spell', plural: 'Spells'},
