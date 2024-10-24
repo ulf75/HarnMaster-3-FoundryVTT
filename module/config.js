@@ -2234,4 +2234,4 @@ HM3.itemLabels = {
     trait: 'Trait'
 };
 
-HM3.blindRolls = ['Awareness', 'Eyesight', 'Hearing', 'Lockcraft', 'Mental Conflict', 'Runecraft', 'Smell', 'Tarotry', 'Weatherlore'];
+HM3.blindRolls = ['Aura', 'Awareness', 'Eyesight', 'Hearing', 'Lockcraft', 'Mental Conflict', 'Runecraft', 'Smell', 'Tarotry', 'Weatherlore'];
