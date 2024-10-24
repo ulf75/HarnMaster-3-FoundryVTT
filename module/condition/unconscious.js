@@ -24,10 +24,10 @@ await ChatMessage.create({
 console.log('HM3 | Combatant ' + token.name + ' makes a last SHOCK roll.');
 const ok = (await game.hm3.macros.shockRoll(false, token.actor)).isSuccess;
 token.deleteCondition('${UNCONSCIOUS}');
-await token.combatant.update({defeated: false});
 if (ok) {
     // Combatant is back
     console.log('HM3 | Combatant ' + token.name + ' is back.');
+    await token.combatant.update({defeated: false});
     await ChatMessage.create({
         speaker,
         content: '<div class="chat-card fluff"><p>You are back and function normally.</p></div>'
