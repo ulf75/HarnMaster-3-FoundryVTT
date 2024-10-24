@@ -1,0 +1,35 @@
+{
+  "_id": "HxJSIYFQx6ry37Qg",
+  "name": "Ornithophobia",
+  "type": "trait",
+  "img": "systems/hm3/images/icons/svg/caduceus.svg",
+  "effects": [],
+  "folder": "Q0193gAvt3nr1o12",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "fear of birds",
+    "description": "<p>A <b>phobia</b> is an irrational fear/aversion. When likely to be stimulated by an appropriate situation, the GM tests the character's WILL to determine if the phobia can be resisted or not. If relief is impossible, a character may faint, become hysterical, go berserk, etc.</p><p>A <b>mania</b> is an irrational fascination, obsession, or compulsion, usually to excess.</p>",
+    "source": "HM3 Character 11",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "type": "Psyche",
+    "improveFlag": false
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284348336,
+    "modifiedTime": 1689285072117,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!HxJSIYFQx6ry37Qg"
+}

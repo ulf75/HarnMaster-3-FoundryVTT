@@ -1,0 +1,35 @@
+{
+  "_id": "nRqMxDJ1zuL38QT7",
+  "name": "Hemophilia",
+  "type": "trait",
+  "img": "systems/hm3/images/icons/svg/caduceus.svg",
+  "effects": [],
+  "folder": "6PWNnAg6lo97QAQ0",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "The character's blood clots much more slowly than normal. Attempts to stop bloodloss suffer a special penalty of 40. Females do not suffer the effect, but pass it on to their sons.",
+    "source": "HM3 Character 9",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "type": "Physical",
+    "improveFlag": false
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284348336,
+    "modifiedTime": 1689285072117,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!nRqMxDJ1zuL38QT7"
+}
