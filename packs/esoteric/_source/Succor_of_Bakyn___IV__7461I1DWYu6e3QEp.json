@@ -1,6 +1,6 @@
 {
   "_id": "7461I1DWYu6e3QEp",
-  "name": "Succor of Bakyn  (IV)",
+  "name": "Succor of Bakyn  [IV]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/ilvir.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Meditation/Tree Bark</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 5 (MS); 15 (CS) days</td></tr></table><p>Enables the subject to ignore the need of food or water for Duration. The subject must chew on a small piece of bark from the Orbaalese Spruce during Time. Most Ilviran clerics carry a small pouch of bark for this purpose. There are no weight loss or dehydration effects, provided there is at least a ten day interval of normal sustenance between each use.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI minutes+</td><td><b>Ritual:</b> Meditation/Tree Bark</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 5 (MS); 15 (CS) days</td></tr></table><p>Enables the subject to ignore the need of food or water for Duration. The subject must chew on a small piece of bark from the Orbaalese Spruce during Time. Most Ilviran clerics carry a small pouch of bark for this purpose. There are no weight loss or dehydration effects, provided there is at least a ten day interval of normal sustenance between each use.</p>",
     "source": "",
     "macros": {
       "type": "script",

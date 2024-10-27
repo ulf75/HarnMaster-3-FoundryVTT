@@ -1,6 +1,6 @@
 {
   "_id": "JsRTLsaVW58Jhg6G",
-  "name": "Sereniel’s Stone (III)",
+  "name": "Sereniel's Stone [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/siem.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> N/A</td></tr></table><p>Invoker learns the type of rock or mineral touched and its purity. With CS the information should be relatively precise, otherwise more general in nature.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> N/A</td></tr></table><p>Invoker learns the type of rock or mineral touched and its purity. With CS the information should be relatively precise, otherwise more general in nature.</p>",
     "source": "",
     "macros": {
       "type": "script",

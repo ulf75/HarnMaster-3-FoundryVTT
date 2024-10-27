@@ -1,6 +1,6 @@
 {
   "_id": "KIECVJIX3LT23ugA",
-  "name": "Touch of the V’hir (III)",
+  "name": "Touch of the V'hir [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/agrik.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Prayer (silent)</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> One shock roll</td></tr></table><p>Inflicts a severe jolt of pain on a victim, who must then make an immediate Shock Roll:</p><p>CS: 6d6 shock roll</p><p>MS: 4d6 shock roll</p><p>MF: No effect, although the victim feels some pain, and will probably take exception to the attempt.</p><p>CF: Invoker makes a 5d6 shock roll.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Prayer (silent)</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> One shock roll</td></tr></table><p>Inflicts a severe jolt of pain on a victim, who must then make an immediate Shock Roll:</p><p>CS: 6d6 shock roll</p><p>MS: 4d6 shock roll</p><p>MF: No effect, although the victim feels some pain, and will probably take exception to the attempt.</p><p>CF: Invoker makes a 5d6 shock roll.</p>",
     "source": "",
     "macros": {
       "type": "script",

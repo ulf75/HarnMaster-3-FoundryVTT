@@ -1,6 +1,6 @@
 {
   "_id": "tf5CBm3oRFs9XD03",
-  "name": "Protection of Angcaradina (IV)",
+  "name": "Protection of Angcaradina [IV]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/larani.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 25−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 10 (MS); 30 (CS) minutes</td></tr></table><p>Enhances ALL armour or clothing worn by the cleric, or that of one subject touched. Affected armour takes on a blood-red hue.  The effect is +2 (+3 Fire) to all protection values for Duration.</p>",
+    "description": "<table><tr><td><b>Time:</b> 25-RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 10 (MS); 30 (CS) minutes</td></tr></table><p>Enhances ALL armour or clothing worn by the cleric, or that of one subject touched. Affected armour takes on a blood-red hue.  The effect is +2 (+3 Fire) to all protection values for Duration.</p>",
     "source": "",
     "macros": {
       "type": "script",

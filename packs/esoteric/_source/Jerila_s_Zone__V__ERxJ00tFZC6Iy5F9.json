@@ -1,6 +1,6 @@
 {
   "_id": "ERxJ00tFZC6Iy5F9",
-  "name": "Jerila’s Zone (V)",
+  "name": "Jerila's Zone [V]",
   "type": "spell",
   "img": "systems/hm3/images/icons/svg/divination.svg",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<p>A spell to create confusion in the minds of living entities within CSI hexes of the caster, who must remain stationary throughout Duration.</p><p>Each affected entity tests Will x5 (MS) or Will x2 (CS) to avoid the effect. Those who succumb lose volition, and stand around helplessly until the spell terminates or is dispelled. The caster is immune to the effect.</p><p>An intense psychic bond is created between the caster and all affected living entities. Any pain received by an affected victim also applies to the caster at GM discretion.</p><p>&nbsp;</p><p>Special Bonus: A caster with Telepathy adds that psionic talent’s SI to EML.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Caster may release individuals from the effect by touching them.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>The zone may be centered on a Savoryan object. The caster may move within the zone which itself is immobile.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Zone may move with the caster.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: CSI hexes</p><p>Duration: CSI rounds</p>",
+    "description": "<p>A spell to create confusion in the minds of living entities within CSI hexes of the caster, who must remain stationary throughout Duration.</p><p>Each affected entity tests Will x5 (MS) or Will x2 (CS) to avoid the effect. Those who succumb lose volition, and stand around helplessly until the spell terminates or is dispelled. The caster is immune to the effect.</p><p>An intense psychic bond is created between the caster and all affected living entities. Any pain received by an affected victim also applies to the caster at GM discretion.</p><p>&nbsp;</p><p>Special Bonus: A caster with Telepathy adds that psionic talent's SI to EML.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Caster may release individuals from the effect by touching them.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>The zone may be centered on a Savoryan object. The caster may move within the zone which itself is immobile.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Zone may move with the caster.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: CSI hexes</p><p>Duration: CSI rounds</p>",
     "source": "HM3 Magic",
     "macros": {
       "type": "script",

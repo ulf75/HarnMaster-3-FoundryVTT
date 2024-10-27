@@ -1,6 +1,6 @@
 {
   "_id": "RYMmzPLoiUPemd7j",
-  "name": "Pameshlu’s Curse (III)",
+  "name": "Pameshlu's Curse [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/agrik.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI Seconds+</td><td><b>Ritual:</b> Spoken Curse</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> RSI/2 rounds (MS); RSI rounds (CS)</td></tr></table><p>One chosen subject suffers a −10 (MS) or −30 (CS) to combat skills for Duration.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI Seconds+</td><td><b>Ritual:</b> Spoken Curse</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> RSI/2 rounds (MS); RSI rounds (CS)</td></tr></table><p>One chosen subject suffers a -10 (MS) or -30 (CS) to combat skills for Duration.</p>",
     "source": "",
     "macros": {
       "type": "script",

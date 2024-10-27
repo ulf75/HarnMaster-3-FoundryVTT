@@ -1,6 +1,6 @@
 {
   "_id": "deXfyWSsyAMYl1BY",
-  "name": "Water of the Azure Bowl (III)",
+  "name": "Water of the Azure Bowl [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/siem.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Song</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> Permanent</td></tr></table><p>Purifies up to RSI gallons of water of anything that can cause harm. Water must be in a container.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Song</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> Permanent</td></tr></table><p>Purifies up to RSI gallons of water of anything that can cause harm. Water must be in a container.</p>",
     "source": "",
     "macros": {
       "type": "script",

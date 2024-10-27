@@ -1,6 +1,6 @@
 {
   "_id": "imIVGdcgyROwvVfF",
-  "name": "Yael’s Calm (III)",
+  "name": "Yael's Calm [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/siem.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI Hexes+</td><td><b>Duration:</b> 10 (MS); 30 (CS) rounds</td></tr></table><p>Ends fighting in Range. Combatants/disputants must make a roll vs WIL ×3 each round to continue fighting.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI Hexes+</td><td><b>Duration:</b> 10 (MS); 30 (CS) rounds</td></tr></table><p>Ends fighting in Range. Combatants/disputants must make a roll vs WIL ×3 each round to continue fighting.</p>",
     "source": "",
     "macros": {
       "type": "script",

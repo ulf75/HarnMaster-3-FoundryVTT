@@ -1,6 +1,6 @@
 {
   "_id": "tQWeL0I6Ir0wCdJG",
-  "name": "Arwyn’s Bubble (V)",
+  "name": "Arwyn's Bubble [V]",
   "type": "spell",
   "img": "systems/hm3/images/icons/svg/pentacle.svg",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<p>A spherical zone within which magical effects are halted. The sphere, centered on the caster, extends CSI hexes in all directions. With the basic spell, the caster cannot move more than a foot in each direction for Duration (the Bubble is non-mobile).</p><p>Indefinite and Permanent spells are suspended within the sphere; they resume normally when the bubble “pops.” Temporary enchantments are also suspended, but resume only if they have Duration remaining.</p><p>While the Bubble is in place, magic (including the caster’s) cannot operate within nor penetrate from the outside.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Caster may expand/contract the Bubble within its maximum extent.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Caster may move normally although the Bubble remains centered and attached.</td></tr></table><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Self</p><p>Duration: CSI Rounds</p>",
+    "description": "<p>A spherical zone within which magical effects are halted. The sphere, centered on the caster, extends CSI hexes in all directions. With the basic spell, the caster cannot move more than a foot in each direction for Duration (the Bubble is non-mobile).</p><p>Indefinite and Permanent spells are suspended within the sphere; they resume normally when the bubble “pops.” Temporary enchantments are also suspended, but resume only if they have Duration remaining.</p><p>While the Bubble is in place, magic (including the caster's) cannot operate within nor penetrate from the outside.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Caster may expand/contract the Bubble within its maximum extent.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Caster may move normally although the Bubble remains centered and attached.</td></tr></table><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Self</p><p>Duration: CSI Rounds</p>",
     "source": "HM3 Magic",
     "macros": {
       "type": "script",

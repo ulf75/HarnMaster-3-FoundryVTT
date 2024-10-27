@@ -1,6 +1,6 @@
 {
   "_id": "yHDcg7hdHFSjs1we",
-  "name": "Usnarl’s Hug  (II)",
+  "name": "Usnarl's Hug  [II]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/sarajin.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Silent Prayer</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 20 (MS); 60 (CS) mins.</td></tr></table><p>Increases subject’s Strength for Duration. Any skills employing STR have a bonus of +5, or +10 if STR is used twice in skill base.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Silent Prayer</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 20 (MS); 60 (CS) mins.</td></tr></table><p>Increases subject's Strength for Duration. Any skills employing STR have a bonus of +5, or +10 if STR is used twice in skill base.</p>",
     "source": "",
     "macros": {
       "type": "script",

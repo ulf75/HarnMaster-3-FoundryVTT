@@ -1,6 +1,6 @@
 {
   "_id": "0ApiVtM7us8XX1St",
-  "name": "Sweldre’s Cloak (V)",
+  "name": "Sweldre's Cloak [V]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/siem.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 10 (MS); 30 (CS) minutes</td></tr></table><p>Subject’s body takes on the form of an chosen (GM Discretion) animal for Duration. The were-creature has the physical attributes of the animal, but INT, WIL, and AUR of the subject.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 10 (MS); 30 (CS) minutes</td></tr></table><p>Subject's body takes on the form of an chosen (GM Discretion) animal for Duration. The were-creature has the physical attributes of the animal, but INT, WIL, and AUR of the subject.</p>",
     "source": "",
     "macros": {
       "type": "script",

@@ -1,6 +1,6 @@
 {
   "_id": "EAX96bEWBN4UxTWO",
-  "name": "Passage of the Soul (II)",
+  "name": "Passage of the Soul [II]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/morgath.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI mins+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> N/A+</td><td><b>Duration:</b> N/A</td></tr></table><p>A funeral ceremony to aid a soul to make a quick and uneventful death journey. The intent is for the cleric and/or any attendees to give the departed sufficient piety to ensure Divine Grace.</p><p>The cleric provides 3d6 piety and each attendee provides 1d6 piety to the departed. Individuals may give additional piety by special prayer, etc.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI mins+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> N/A+</td><td><b>Duration:</b> N/A</td></tr></table><p>A funeral ceremony to aid a soul to make a quick and uneventful death journey. The intent is for the cleric and/or any attendees to give the departed sufficient piety to ensure Divine Grace.</p><p>The cleric provides 3d6 piety and each attendee provides 1d6 piety to the departed. Individuals may give additional piety by special prayer, etc.</p>",
     "source": "",
     "macros": {
       "type": "script",

@@ -1,6 +1,6 @@
 {
   "_id": "eOsV6AvPsG58Wf4Y",
-  "name": "Yerit and Ilyasha’s Game (III)",
+  "name": "Yerit and Ilyasha's Game [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/saveknor.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Silent Prayer & Gesture</td></tr><tr><td><b>Range:</b> RSI hexes+</td><td><b>Duration:</b> 10 (MS); 30 (CS) seconds.</td></tr></table><p>Distracts anyone within Range although nothing actually happens. Anyone within Range must roll vs WIL ×3 (MS) or WIL ×1 (CS) or is stunned for 10 (MS) or 30 (CS) seconds.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Silent Prayer & Gesture</td></tr><tr><td><b>Range:</b> RSI hexes+</td><td><b>Duration:</b> 10 (MS); 30 (CS) seconds.</td></tr></table><p>Distracts anyone within Range although nothing actually happens. Anyone within Range must roll vs WIL ×3 (MS) or WIL ×1 (CS) or is stunned for 10 (MS) or 30 (CS) seconds.</p>",
     "source": "",
     "macros": {
       "type": "script",

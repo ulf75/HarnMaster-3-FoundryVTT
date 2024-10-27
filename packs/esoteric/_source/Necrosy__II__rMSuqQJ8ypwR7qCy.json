@@ -1,6 +1,6 @@
 {
   "_id": "rMSuqQJ8ypwR7qCy",
-  "name": "Necrosy (II)",
+  "name": "Necrosy [II]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/morgath.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer & Chant</td></tr><tr><td><b>Range:</b> Touch corpse+</td><td><b>Duration:</b> 3 (MS); 9 (CS) days</td></tr></table><p>Permits the invoker to preserve a corpse at its current state of decomposition for Duration. CF will turn the corpse into a pile of dust.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI minutes+</td><td><b>Ritual:</b> Prayer & Chant</td></tr><tr><td><b>Range:</b> Touch corpse+</td><td><b>Duration:</b> 3 (MS); 9 (CS) days</td></tr></table><p>Permits the invoker to preserve a corpse at its current state of decomposition for Duration. CF will turn the corpse into a pile of dust.</p>",
     "source": "",
     "macros": {
       "type": "script",

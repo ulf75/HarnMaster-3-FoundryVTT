@@ -1,6 +1,6 @@
 {
   "_id": "FsJBlOTXKkuiL3gm",
-  "name": "Naveh’s Cloak (IV)",
+  "name": "Naveh's Cloak [IV]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/naveh.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI secs+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> 10 (MS); 30 (CS) mins.</td></tr></table><p>Permits cleric, who must remain still, to escape notice for Duration unless someone is actively searching. On a CS, even an active search will not notice the recipient.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI secs+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> 10 (MS); 30 (CS) mins.</td></tr></table><p>Permits cleric, who must remain still, to escape notice for Duration unless someone is actively searching. On a CS, even an active search will not notice the recipient.</p>",
     "source": "",
     "macros": {
       "type": "script",

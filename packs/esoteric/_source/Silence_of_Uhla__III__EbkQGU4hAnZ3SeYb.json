@@ -1,6 +1,6 @@
 {
   "_id": "EbkQGU4hAnZ3SeYb",
-  "name": "Silence of Uhla (III)",
+  "name": "Silence of Uhla [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/saveknor.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI hexes+</td><td><b>Duration:</b> 10 (MS); 30 (CS) minutes</td></tr></table><p>Creates a sphere centered on the invoker with a radius of RSI hexes for Duration. No sound is heard inside the zone, nor can sound emanate from the zone.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI hexes+</td><td><b>Duration:</b> 10 (MS); 30 (CS) minutes</td></tr></table><p>Creates a sphere centered on the invoker with a radius of RSI hexes for Duration. No sound is heard inside the zone, nor can sound emanate from the zone.</p>",
     "source": "",
     "macros": {
       "type": "script",

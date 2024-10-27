@@ -1,6 +1,6 @@
 {
   "_id": "2o4rYa9NNO43stFX",
-  "name": "Counsel of Sweldre (II)",
+  "name": "Counsel of Sweldre [II]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/siem.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 25−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> N/A</td></tr></table><p>Gives the cleric insight into the proper course of action in a moral quandary. GM may reveal the information in any appropriate way.</p>",
+    "description": "<table><tr><td><b>Time:</b> 25-RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> N/A</td></tr></table><p>Gives the cleric insight into the proper course of action in a moral quandary. GM may reveal the information in any appropriate way.</p>",
     "source": "",
     "macros": {
       "type": "script",

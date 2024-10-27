@@ -1,6 +1,6 @@
 {
   "_id": "8NZCpO4vFh4LVnM2",
-  "name": "Throat of Klyss (III)",
+  "name": "Throat of Klyss [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/morgath.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 25−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> 3 (MS); 5 (CS) minutes</td></tr></table><p>Those within Range hear the scream of a person losing their soul to Morgath. Anyone within RML feet must roll vs WIL ×5 (MS) or WIL ×2 (CS). Failure causes the victim to faint for Duration or flee (GM Discretion). CF requires the cleric to make a 4d6 shock roll.</p>",
+    "description": "<table><tr><td><b>Time:</b> 25-RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> 3 (MS); 5 (CS) minutes</td></tr></table><p>Those within Range hear the scream of a person losing their soul to Morgath. Anyone within RML feet must roll vs WIL ×5 (MS) or WIL ×2 (CS). Failure causes the victim to faint for Duration or flee (GM Discretion). CF requires the cleric to make a 4d6 shock roll.</p>",
     "source": "",
     "macros": {
       "type": "script",

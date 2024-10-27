@@ -1,6 +1,6 @@
 {
   "_id": "vwU0iozDt7TFLfcX",
-  "name": "Prayer to Elkyri (II)",
+  "name": "Prayer to Elkyri [II]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/sarajin.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 25−RSI seconds+</td><td><b>Ritual:</b> Chant, Song, Prayer</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> One Skill Use</td></tr></table><p>A prayer to one specific Elkyri, identified in advance by the invoker, for assistance to perform a task. The task should be one in which the Elkyri has some interest.</p><p>MS: Elkyri hears and grants a +20 bonus to a related skill.</p><p>CS: Elkyri hears and grants a +50 bonus to a related skill.</p><p>CF: Elkyri is bothered, upset, or annoyed by the call. Request denied and retribution may (50% chance) be involved.</p>",
+    "description": "<table><tr><td><b>Time:</b> 25-RSI seconds+</td><td><b>Ritual:</b> Chant, Song, Prayer</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> One Skill Use</td></tr></table><p>A prayer to one specific Elkyri, identified in advance by the invoker, for assistance to perform a task. The task should be one in which the Elkyri has some interest.</p><p>MS: Elkyri hears and grants a +20 bonus to a related skill.</p><p>CS: Elkyri hears and grants a +50 bonus to a related skill.</p><p>CF: Elkyri is bothered, upset, or annoyed by the call. Request denied and retribution may (50% chance) be involved.</p>",
     "source": "",
     "macros": {
       "type": "script",

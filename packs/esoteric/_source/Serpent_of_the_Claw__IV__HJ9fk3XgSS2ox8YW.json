@@ -1,6 +1,6 @@
 {
   "_id": "HJ9fk3XgSS2ox8YW",
-  "name": "Serpent of the Claw (IV)",
+  "name": "Serpent of the Claw [IV]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/ilvir.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Silent Prayer</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> RSI mins.</td></tr></table><p>Transforms a staff into a brown and yellow striped serpent for Duration. The serpent is normally held and used like a staff in combat, but its impact is a poisonous bite. The serpent can also be dropped to do this work alone. Venom has a Healing Rate of H3 (MS) or H1 (CS); 1 minute between rolls. With CF, the invoker suffers a H3 bite.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Silent Prayer</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> RSI mins.</td></tr></table><p>Transforms a staff into a brown and yellow striped serpent for Duration. The serpent is normally held and used like a staff in combat, but its impact is a poisonous bite. The serpent can also be dropped to do this work alone. Venom has a Healing Rate of H3 (MS) or H1 (CS); 1 minute between rolls. With CF, the invoker suffers a H3 bite.</p>",
     "source": "",
     "macros": {
       "type": "script",

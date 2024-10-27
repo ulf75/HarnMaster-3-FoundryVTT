@@ -1,6 +1,6 @@
 {
   "_id": "0rH0n5r1XBcdsbht",
-  "name": "Flames of the V’hir (IV)",
+  "name": "Flames of the V'hir [IV]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/agrik.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 25−RSI Seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> 10 (MS); 30 (CS) Rounds</td></tr></table><p>Invoker self-immolates and is enveloped in ethereal flames for a radius of RSI feet. Although the invoker is immune, any victim touching the fire suffers an ethereal burn (shock roll) of 4d6.  The invoker can move with the flames, but visibility is impaired and speed is halved.</p>",
+    "description": "<table><tr><td><b>Time:</b> 25-RSI Seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> 10 (MS); 30 (CS) Rounds</td></tr></table><p>Invoker self-immolates and is enveloped in ethereal flames for a radius of RSI feet. Although the invoker is immune, any victim touching the fire suffers an ethereal burn (shock roll) of 4d6.  The invoker can move with the flames, but visibility is impaired and speed is halved.</p>",
     "source": "",
     "macros": {
       "type": "script",

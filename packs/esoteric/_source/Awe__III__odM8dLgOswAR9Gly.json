@@ -1,6 +1,6 @@
 {
   "_id": "odM8dLgOswAR9Gly",
-  "name": "Awe (III)",
+  "name": "Awe [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/saveknor.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 25−RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> One Initiative Test</td></tr></table><p>Creates a feeling of the presence of the deity. In crisis situations, the effect is to cause ALL persons within Range who are not adherents of the deity to test Initiative (Combat 18), modified as noted for success level:</p><p>CS: −20</p><p>MS: −10</p><p>CF: +20</p><p>&nbsp;</p><p>The invocation may be limited to specific individuals touched by the cleric.</p>",
+    "description": "<table><tr><td><b>Time:</b> 25-RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> One Initiative Test</td></tr></table><p>Creates a feeling of the presence of the deity. In crisis situations, the effect is to cause ALL persons within Range who are not adherents of the deity to test Initiative (Combat 18), modified as noted for success level:</p><p>CS: -20</p><p>MS: -10</p><p>CF: +20</p><p>&nbsp;</p><p>The invocation may be limited to specific individuals touched by the cleric.</p>",
     "source": "",
     "macros": {
       "type": "script",

@@ -1,6 +1,6 @@
 {
   "_id": "g6tlmLKaThhdxakq",
-  "name": "Peoni’s Aid (IV)",
+  "name": "Peoni's Aid [IV]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/peoni.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> One Use</td></tr></table><p>CS: Heals the designated wound completely in one day.</p><p>MS: Stops bloodloss and heals one (1) injury level from any designated wound touched by the invoker.</p><p>CF: Causes the designated wound to become infected.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> One Use</td></tr></table><p>CS: Heals the designated wound completely in one day.</p><p>MS: Stops bloodloss and heals one (1) injury level from any designated wound touched by the invoker.</p><p>CF: Causes the designated wound to become infected.</p>",
     "source": "",
     "macros": {
       "type": "script",

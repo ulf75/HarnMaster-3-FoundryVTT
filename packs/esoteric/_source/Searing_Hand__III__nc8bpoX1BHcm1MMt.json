@@ -1,6 +1,6 @@
 {
   "_id": "nc8bpoX1BHcm1MMt",
-  "name": "Searing Hand (III)",
+  "name": "Searing Hand [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/agrik.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI Seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/RSI hexes+</td><td><b>Duration:</b> One Touch or Impact</td></tr></table><p>A ball of mundane fire appears in the invoker’s hand for Duration. It may be used to burn a victim touched, or may be cast as a low velocity missile up to Range by using the Missile Combat system. The fireball vanishes after impact. Fire impact for touch/fireball is 3d6 (MS) or 5d6 (CS).</p><p>&nbsp;</p><p>CF: Fireball explodes in cleric’s hand, causing 3d6 fire impact to 1d6 randomly generated body parts.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI Seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/RSI hexes+</td><td><b>Duration:</b> One Touch or Impact</td></tr></table><p>A ball of mundane fire appears in the invoker's hand for Duration. It may be used to burn a victim touched, or may be cast as a low velocity missile up to Range by using the Missile Combat system. The fireball vanishes after impact. Fire impact for touch/fireball is 3d6 (MS) or 5d6 (CS).</p><p>&nbsp;</p><p>CF: Fireball explodes in cleric's hand, causing 3d6 fire impact to 1d6 randomly generated body parts.</p>",
     "source": "",
     "macros": {
       "type": "script",

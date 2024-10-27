@@ -1,6 +1,6 @@
 {
   "_id": "0u1hjxmlTJQXcVnX",
-  "name": "Divination (IV)",
+  "name": "Divination [IV]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/larani.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer/Meditation</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> One Question.</td></tr></table><p>An attempt to discover the will of the deity.</p><table><tr><td style='width: 3em;'>CS</td><td>The character may ask one broad question</td></tr><tr><td style='width: 3em;'>MS</td><td>The character may ask one specific yes/no question.</td></tr><tr><td style='width: 3em;'>CF</td><td>The deity is annoyed by the intrusion and punishes the invoker with 1d6 Fatigue Levels.</td></tr></table><p>Note: Some clerics prefer to Summon a divine servant of their deity and ask it questions with Divination. A summoned being can be asked three questions.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI minutes+</td><td><b>Ritual:</b> Prayer/Meditation</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> One Question.</td></tr></table><p>An attempt to discover the will of the deity.</p><table><tr><td style='width: 3em;'>CS</td><td>The character may ask one broad question</td></tr><tr><td style='width: 3em;'>MS</td><td>The character may ask one specific yes/no question.</td></tr><tr><td style='width: 3em;'>CF</td><td>The deity is annoyed by the intrusion and punishes the invoker with 1d6 Fatigue Levels.</td></tr></table><p>Note: Some clerics prefer to Summon a divine servant of their deity and ask it questions with Divination. A summoned being can be asked three questions.</p>",
     "source": "",
     "macros": {
       "type": "script",

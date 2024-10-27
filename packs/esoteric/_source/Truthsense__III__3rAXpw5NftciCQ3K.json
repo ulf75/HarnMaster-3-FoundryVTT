@@ -1,6 +1,6 @@
 {
   "_id": "3rAXpw5NftciCQ3K",
-  "name": "Truthsense (III)",
+  "name": "Truthsense [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/saveknor.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> RSI feet+</td><td><b>Duration:</b> 5 (MS); 15 (CS) mins.</td></tr></table><p>Allows the cleric to perceive a lie when talking with someone.</p><table><tr><td style='width: 3em;'>CS</td><td>lies of omission are also detected.</td></tr><tr><td style='width: 3em;'>MS</td><td>only lies of commission are detected.</td></tr></table><p>Truthsense cannot force a person to speak to the cleric.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> RSI feet+</td><td><b>Duration:</b> 5 (MS); 15 (CS) mins.</td></tr></table><p>Allows the cleric to perceive a lie when talking with someone.</p><table><tr><td style='width: 3em;'>CS</td><td>lies of omission are also detected.</td></tr><tr><td style='width: 3em;'>MS</td><td>only lies of commission are detected.</td></tr></table><p>Truthsense cannot force a person to speak to the cleric.</p>",
     "source": "",
     "macros": {
       "type": "script",

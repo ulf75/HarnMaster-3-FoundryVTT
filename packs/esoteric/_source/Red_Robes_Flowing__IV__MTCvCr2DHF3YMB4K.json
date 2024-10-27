@@ -1,6 +1,6 @@
 {
   "_id": "MTCvCr2DHF3YMB4K",
-  "name": "Red Robes Flowing (IV)",
+  "name": "Red Robes Flowing [IV]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/larani.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 25−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI hexes+</td><td><b>Duration:</b> 1 (MS); 3 (CS) minutes</td></tr></table><p>Causes all adherents in Range to go berserk. Warriors may roll vs 3× WIL to avoid berserking. Each warrior is assessed F3 Fatigue at the end of Duration.</p>",
+    "description": "<table><tr><td><b>Time:</b> 25-RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI hexes+</td><td><b>Duration:</b> 1 (MS); 3 (CS) minutes</td></tr></table><p>Causes all adherents in Range to go berserk. Warriors may roll vs 3× WIL to avoid berserking. Each warrior is assessed F3 Fatigue at the end of Duration.</p>",
     "source": "",
     "macros": {
       "type": "script",

@@ -1,6 +1,6 @@
 {
   "_id": "Zw0dBlBCvR6DQBjF",
-  "name": "Skin of Lexesh (II)",
+  "name": "Skin of Lexesh [II]",
   "type": "spell",
   "img": "systems/hm3/images/icons/svg/fire.svg",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<p>A self-enchantment which allows the caster to handle mundane fire without being burned. The basic spell enchants only the caster’s hands. It halves (MS) or eliminates (CS) Fire Impact. The enchantment prevents or reduces new burns; it cannot heal existing injuries.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Enchantment may be laid upon all Head, Arm, and Body parts.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Enchantment may be laid upon all body parts.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Enchantment may be laid upon an inanimate object, or extended to clothes worn and items carried by the caster.</td></tr></table><p>&nbsp;</p><p>Time: 35-CSI seconds</p><p>Range: Self</p><p>Duration: CSI minutes</p>",
+    "description": "<p>A self-enchantment which allows the caster to handle mundane fire without being burned. The basic spell enchants only the caster's hands. It halves (MS) or eliminates (CS) Fire Impact. The enchantment prevents or reduces new burns; it cannot heal existing injuries.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Enchantment may be laid upon all Head, Arm, and Body parts.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Enchantment may be laid upon all body parts.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Enchantment may be laid upon an inanimate object, or extended to clothes worn and items carried by the caster.</td></tr></table><p>&nbsp;</p><p>Time: 35-CSI seconds</p><p>Range: Self</p><p>Duration: CSI minutes</p>",
     "source": "HM3 Magic",
     "macros": {
       "type": "script",

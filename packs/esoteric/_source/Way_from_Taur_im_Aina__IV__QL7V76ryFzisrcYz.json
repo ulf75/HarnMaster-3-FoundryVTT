@@ -1,6 +1,6 @@
 {
   "_id": "QL7V76ryFzisrcYz",
-  "name": "Way from Taur-im-Aina (IV)",
+  "name": "Way from Taur-im-Aina [IV]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/siem.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI miles+</td><td><b>Duration:</b> N/A</td></tr></table><p>Invoker can physically merge his body into that of a tree or large bush (larger than invoker), and emerge from another of the same species within range. Unique True Names of both trees must be known. Invoker can enter one tree and stay there indefinitely, but is not immune to hunger.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI minutes+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI miles+</td><td><b>Duration:</b> N/A</td></tr></table><p>Invoker can physically merge his body into that of a tree or large bush (larger than invoker), and emerge from another of the same species within range. Unique True Names of both trees must be known. Invoker can enter one tree and stay there indefinitely, but is not immune to hunger.</p>",
     "source": "",
     "macros": {
       "type": "script",

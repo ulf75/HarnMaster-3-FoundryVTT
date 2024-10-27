@@ -1,6 +1,6 @@
 {
   "_id": "b6D3pAVmNbcrNTzv",
-  "name": "Power of Valdan (I)",
+  "name": "Power of Valdan [I]",
   "type": "spell",
   "img": "systems/hm3/images/icons/svg/water.svg",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<p>An enchantment to increase the buoyancy of any living entity touched by the caster that works by making its subject partially ethereal.</p><p>The effect is to double Swimming ML for Duration.  With the basic enchantment, the subject’s weight cannot exceed that of the caster.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Touch no longer required.  Range is CSI hexes.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>Subject can be up to two (2) times the caster’s weight.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Subject can be up to CSI times the caster’s weight.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: Touch/CSI hexes at CML50+</p><p>Duration: CSI x10 minutes</p>",
+    "description": "<p>An enchantment to increase the buoyancy of any living entity touched by the caster that works by making its subject partially ethereal.</p><p>The effect is to double Swimming ML for Duration.  With the basic enchantment, the subject's weight cannot exceed that of the caster.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Touch no longer required.  Range is CSI hexes.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>Subject can be up to two (2) times the caster's weight.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Subject can be up to CSI times the caster's weight.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: Touch/CSI hexes at CML50+</p><p>Duration: CSI x10 minutes</p>",
     "source": "HM3 Magic",
     "macros": {
       "type": "script",

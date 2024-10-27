@@ -1,6 +1,6 @@
 {
   "_id": "oKSnEqAfXNyH0cn6",
-  "name": "Exorcism (V)",
+  "name": "Exorcism [V]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/agrik.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI Hours+</td><td><b>Ritual:</b> Prayer/Holy Water</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> One Mental Conflict</td></tr></table><p>Seeks to banish a possessing spirit from a victim. The ceremony requires frequent laying on of hands and Holy Water. The invocation involves one Mental Conflict (Skills 23/24) with the possessing spirit, modified as below:</p><p>CS: +50</p><p>MS: +20</p><p>CF: −30</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI Hours+</td><td><b>Ritual:</b> Prayer/Holy Water</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> One Mental Conflict</td></tr></table><p>Seeks to banish a possessing spirit from a victim. The ceremony requires frequent laying on of hands and Holy Water. The invocation involves one Mental Conflict (Skills 23/24) with the possessing spirit, modified as below:</p><p>CS: +50</p><p>MS: +20</p><p>CF: -30</p>",
     "source": "",
     "macros": {
       "type": "script",

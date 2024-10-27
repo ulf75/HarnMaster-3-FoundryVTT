@@ -1,6 +1,6 @@
 {
   "_id": "rgu0cuBUovfTk33H",
-  "name": "Blade of Sycanus (V)",
+  "name": "Blade of Sycanus [V]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/agrik.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 35−RSI Seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Touch Weapon+</td><td><b>Duration:</b> one strike</td></tr></table><p>Converts any edged weapon into a mundane flaming sickle for Duration. Using the normal impact of the edged weapon, an injury of +9 (or more) causes the victim to make a K4 roll. A lesser impact is treated as a normal strike and terminates the invocation.</p><p>CF: Weapon melts and causes 3d6 fire impact to hand(s).</p>",
+    "description": "<table><tr><td><b>Time:</b> 35-RSI Seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Touch Weapon+</td><td><b>Duration:</b> one strike</td></tr></table><p>Converts any edged weapon into a mundane flaming sickle for Duration. Using the normal impact of the edged weapon, an injury of +9 (or more) causes the victim to make a K4 roll. A lesser impact is treated as a normal strike and terminates the invocation.</p><p>CF: Weapon melts and causes 3d6 fire impact to hand(s).</p>",
     "source": "",
     "macros": {
       "type": "script",

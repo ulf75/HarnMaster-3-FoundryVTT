@@ -1,6 +1,6 @@
 {
   "_id": "1bkaS8T0IzhjWuds",
-  "name": "Heart of Darkness  (II)",
+  "name": "Heart of Darkness  [II]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/morgath.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> n/a</td></tr></table><p>Invoker draws a small portion of the Shadow of Bukrai into his person and stores it in his skull as Bukrai Points. If the amount exceeds subject’s AUR, he becomes a Gulmorvrus. The number of Bukrai Points is 1d6 (MS) or 2d6 (CS).</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI minutes+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> n/a</td></tr></table><p>Invoker draws a small portion of the Shadow of Bukrai into his person and stores it in his skull as Bukrai Points. If the amount exceeds subject's AUR, he becomes a Gulmorvrus. The number of Bukrai Points is 1d6 (MS) or 2d6 (CS).</p>",
     "source": "",
     "macros": {
       "type": "script",

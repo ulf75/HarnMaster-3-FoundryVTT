@@ -1,6 +1,6 @@
 {
   "_id": "c2ACwIgEckyCahRI",
-  "name": "Zyna’s Tap (II)",
+  "name": "Zyna's Tap [II]",
   "type": "spell",
   "img": "systems/hm3/images/icons/svg/pentacle.svg",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<p>A self-enchantment that postpones the caster’s current fatigue. The GM makes a note of the caster’s total Fatigue Levels, including any acquired by casting Zyna’s Tap.  Fatigue is then reduced to F0.</p><p>When Duration expires the caster receives double the Fatigue Levels postponed and must make an immediate Shock Roll.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Enchantment may be laid upon a willing recipient. Touch is required.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Enchantment may be laid upon an unwilling victim who fails a test against Will x5 (MS casting) or Will x2 (CS casting). Touch is required.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: Self/Touch at CML 70+</p><p>Duration: CSI minutes</p>",
+    "description": "<p>A self-enchantment that postpones the caster's current fatigue. The GM makes a note of the caster's total Fatigue Levels, including any acquired by casting Zyna's Tap.  Fatigue is then reduced to F0.</p><p>When Duration expires the caster receives double the Fatigue Levels postponed and must make an immediate Shock Roll.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Enchantment may be laid upon a willing recipient. Touch is required.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Enchantment may be laid upon an unwilling victim who fails a test against Will x5 (MS casting) or Will x2 (CS casting). Touch is required.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: Self/Touch at CML 70+</p><p>Duration: CSI minutes</p>",
     "source": "HM3 Magic",
     "macros": {
       "type": "script",

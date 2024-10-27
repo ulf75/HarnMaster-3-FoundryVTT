@@ -1,6 +1,6 @@
 {
   "_id": "Pnw7Q9QSrEO0Obi6",
-  "name": "Ibenis’ Withering (IV)",
+  "name": "Ibenis' Withering [IV]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/ilvir.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 35−RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 24 hours</td></tr></table><p>Causes the subject to age rapidly. The invocation is used to effect a convincing disguise, or to inflict the perils of aging on anyone. The subject ages one year per hour for Duration, and then grows younger at the same rate until normal age is reached. Any subject (even the cleric) reaching 50 years of age, must roll on the Aging Table (Character 22) each “year.”</p>",
+    "description": "<table><tr><td><b>Time:</b> 35-RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 24 hours</td></tr></table><p>Causes the subject to age rapidly. The invocation is used to effect a convincing disguise, or to inflict the perils of aging on anyone. The subject ages one year per hour for Duration, and then grows younger at the same rate until normal age is reached. Any subject (even the cleric) reaching 50 years of age, must roll on the Aging Table (Character 22) each “year.”</p>",
     "source": "",
     "macros": {
       "type": "script",

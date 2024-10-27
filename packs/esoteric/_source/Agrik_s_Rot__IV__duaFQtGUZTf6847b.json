@@ -1,6 +1,6 @@
 {
   "_id": "duaFQtGUZTf6847b",
-  "name": "Agrik’s Rot (IV)",
+  "name": "Agrik's Rot [IV]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/agrik.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 35−RSI seconds+</td><td><b>Ritual:</b> Spoken Curse</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> Cure or Death</td></tr></table><p>Causes an open wound to become infected. See: Physician 4 for infection and healing routine.</p><p>CF: Invoker makes a 4d6 shock roll.</p>",
+    "description": "<table><tr><td><b>Time:</b> 35-RSI seconds+</td><td><b>Ritual:</b> Spoken Curse</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> Cure or Death</td></tr></table><p>Causes an open wound to become infected. See: Physician 4 for infection and healing routine.</p><p>CF: Invoker makes a 4d6 shock roll.</p>",
     "source": "",
     "macros": {
       "type": "script",

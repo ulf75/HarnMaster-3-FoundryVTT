@@ -1,6 +1,6 @@
 {
   "_id": "mF3mMVHua5lFkfVV",
-  "name": "Eyes of Niyar (III)",
+  "name": "Eyes of Niyar [III]",
   "type": "spell",
   "img": "systems/hm3/images/icons/svg/fire.svg",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<p>A self-enchantment which causes the caster’s eyes to perceive distinctions in heat instead of light. The subject perceives gradations in temperature as variations in color.  The enchanted eyes cannot see normally, and emit a faint orange glow.</p><p>This kind of “infravision” does not allow one to distinguish objects of similar temperature and will not work if the subject is blind visually.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML80+</td><td>Enchantment may be laid upon a willing recipient. Touch is required.</td></tr></table><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Self/Touch at CML80+</p><p>Duration: CSI minutes</p>",
+    "description": "<p>A self-enchantment which causes the caster's eyes to perceive distinctions in heat instead of light. The subject perceives gradations in temperature as variations in color.  The enchanted eyes cannot see normally, and emit a faint orange glow.</p><p>This kind of “infravision” does not allow one to distinguish objects of similar temperature and will not work if the subject is blind visually.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML80+</td><td>Enchantment may be laid upon a willing recipient. Touch is required.</td></tr></table><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Self/Touch at CML80+</p><p>Duration: CSI minutes</p>",
     "source": "HM3 Magic",
     "macros": {
       "type": "script",

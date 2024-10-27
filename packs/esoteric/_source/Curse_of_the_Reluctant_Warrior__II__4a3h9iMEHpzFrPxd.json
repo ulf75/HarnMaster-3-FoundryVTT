@@ -1,6 +1,6 @@
 {
   "_id": "4a3h9iMEHpzFrPxd",
-  "name": "Curse of the Reluctant Warrior (II)",
+  "name": "Curse of the Reluctant Warrior [II]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/larani.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> RSI rounds</td></tr></table><p>One chosen subject in Range suffers a −10 (MS) or −30 (CS) to combat skills for Duration. With CS, the effect is extended to three (3) subjects.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> RSI rounds</td></tr></table><p>One chosen subject in Range suffers a -10 (MS) or -30 (CS) to combat skills for Duration. With CS, the effect is extended to three (3) subjects.</p>",
     "source": "",
     "macros": {
       "type": "script",

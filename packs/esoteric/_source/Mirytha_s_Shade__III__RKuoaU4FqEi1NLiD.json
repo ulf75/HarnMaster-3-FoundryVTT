@@ -1,6 +1,6 @@
 {
   "_id": "RKuoaU4FqEi1NLiD",
-  "name": "Mirytha’s Shade (III)",
+  "name": "Mirytha's Shade [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/peoni.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Line of Sight+</td><td><b>Duration:</b> 1 (MS); 3 (CS) hours</td></tr></table><p>Offers insight into the reason a ghost haunts a locale or is causing trouble. The priest is then compelled to help the ghost find its way to the next plane of existence. The GM may reveal the information in any suitable manner.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI minutes+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Line of Sight+</td><td><b>Duration:</b> 1 (MS); 3 (CS) hours</td></tr></table><p>Offers insight into the reason a ghost haunts a locale or is causing trouble. The priest is then compelled to help the ghost find its way to the next plane of existence. The GM may reveal the information in any suitable manner.</p>",
     "source": "",
     "macros": {
       "type": "script",

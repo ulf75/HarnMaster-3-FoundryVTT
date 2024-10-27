@@ -1,6 +1,6 @@
 {
   "_id": "og76rUM6ozuvm04v",
-  "name": "Tongues (III)",
+  "name": "Tongues [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/naveh.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 25−RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> 30 minutes</td></tr></table><p>Allows the cleric to speak and understand any language at ML75 for Duration. If already known, the cleric can make one (1) Skill development roll for that language after Duration expires. With CS, the cleric may open an unknown language at SB2 (same family) or SB1 (alien family).</p>",
+    "description": "<table><tr><td><b>Time:</b> 25-RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> 30 minutes</td></tr></table><p>Allows the cleric to speak and understand any language at ML75 for Duration. If already known, the cleric can make one (1) Skill development roll for that language after Duration expires. With CS, the cleric may open an unknown language at SB2 (same family) or SB1 (alien family).</p>",
     "source": "",
     "macros": {
       "type": "script",
