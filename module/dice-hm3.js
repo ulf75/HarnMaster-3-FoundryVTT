@@ -205,7 +205,7 @@ export class DiceHM3 {
                     isAppraisal,
                     modifier: Number(formModifier) + Number(formPhysicianModifier) + Number(formTreatmentModifier),
                     multiplier,
-                    target: Number(formTarget) || dialogData.target,
+                    target: Number(formTarget) || target,
                     type: dialogOptions.type
                 });
             }
