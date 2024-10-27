@@ -410,13 +410,29 @@ HM3.stdSkills = {
     'Agrik': {'source': 'HM Religion, Agrik 1', 'skillBase': {'formula': '@voi, @int, @str, Nadai:2, Angberelius, Ahnu', 'SBx': 1}, 'type': 'Ritual'},
     'Halea': {'source': 'HM Religion, Halea 1', 'skillBase': {'formula': '@voi, @int, @cml, Tarael:2, Hirin, Masara', 'SBx': 1}, 'type': 'Ritual'},
     'Ilvir': {'source': 'HM Religion, Ilvir 1', 'skillBase': {'formula': '@voi, @int, @aur, Skorus:2, Tai, Ulandus', 'SBx': 1}, 'type': 'Ritual'},
-    'Larani': {'source': 'HM Religion, Larani 1', 'skillBase': {'formula': '@voi, @int, @wil, Angberelius:2, Ahnu, Feniri', 'SBx': 1}, 'type': 'Ritual'},
+    'Larani': {
+        'source': 'HM Religion, Larani 1',
+        'skillBase': {'formula': '@voi, @int, @wil, Angberelius:2, Ahnu, Feniri', 'SBx': 1},
+        'type': 'Ritual'
+    },
     'Morgath': {'source': 'HM Religion, Morgath 1', 'skillBase': {'formula': '@voi, @int, @aur, Lado:2, Ahnu, Masara', 'SBx': 1}, 'type': 'Ritual'},
     'Naveh': {'source': 'HM Religion, Naveh 1', 'skillBase': {'formula': '@voi, @int, @wil, Masara:2, Skorus, Tarael', 'SBx': 1}, 'type': 'Ritual'},
-    'Peoni': {'source': 'HM Religion, Peoni 1', 'skillBase': {'formula': '@voi, @int, @dex, Aralius:2, Angberelius, Ulandus', 'SBx': 1}, 'type': 'Ritual'},
-    'Sarajin': {'source': 'HM Religion, Sarajin 1', 'skillBase': {'formula': '@voi, @int, @str, Feniri:2, Aralius, Lado', 'SBx': 1}, 'type': 'Ritual'},
+    'Peoni': {
+        'source': 'HM Religion, Peoni 1',
+        'skillBase': {'formula': '@voi, @int, @dex, Aralius:2, Angberelius, Ulandus', 'SBx': 1},
+        'type': 'Ritual'
+    },
+    'Sarajin': {
+        'source': 'HM Religion, Sarajin 1',
+        'skillBase': {'formula': '@voi, @int, @str, Feniri:2, Aralius, Lado', 'SBx': 1},
+        'type': 'Ritual'
+    },
     'Siem': {'source': 'HM Religion, Siem 1', 'skillBase': {'formula': '@voi, @int, @aur, Hirin:2, Feniri, Ulandus', 'SBx': 1}, 'type': 'Ritual'},
-    "Save K'nor": {'source': "HM Religion, Save K'nor 1", 'skillBase': {'formula': '@voi, @int, @int, Tai:2, Tarael, Skorus', 'SBx': 1}, 'type': 'Craft'}
+    "Save K'nor": {
+        'source': "HM Religion, Save K'nor 1",
+        'skillBase': {'formula': '@voi, @int, @int, Tai:2, Tarael, Skorus', 'SBx': 1},
+        'type': 'Craft'
+    }
 };
 
 HM3.injuryLevels = ['NA', 'M1', 'S2', 'S3', 'G4', 'G5', 'K4', 'K5'];

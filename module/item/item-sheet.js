@@ -1,4 +1,5 @@
 import {onManageActiveEffect} from '../effect.js';
+import {ItemType} from '../hm3-types.js';
 import * as utility from '../utility.js';
 
 /**
@@ -51,7 +52,7 @@ export class HarnMasterItemSheet extends ItemSheet {
         // Containers are not allowed in other containers.  So if this item is a container,
         // don't show any other containers.
 
-        if (this.actor && this.item.type !== 'containergear') {
+        if (this.actor && this.item.type !== ItemType.CONTAINERGEAR) {
             this.actor.items.forEach((it) => {
                 if (it.type === 'containergear') {
                     data.containers.push({label: it.name, key: it.id});
@@ -60,7 +61,7 @@ export class HarnMasterItemSheet extends ItemSheet {
         }
 
         // Fill appropriate lists for individual item sheets
-        if (this.item.type === 'spell') {
+        if (this.item.type === ItemType.SPELL) {
             // Spells need a list of convocations
             data.convocations = [];
             if (this.actor) {
@@ -71,7 +72,7 @@ export class HarnMasterItemSheet extends ItemSheet {
                     }
                 });
             }
-        } else if (this.item.type === 'invocation') {
+        } else if (this.item.type === ItemType.INVOCATION) {
             // Invocations need a list of dieties
             data.dieties = [];
             if (this.actor) {
@@ -82,12 +83,12 @@ export class HarnMasterItemSheet extends ItemSheet {
                     }
                 });
             }
-        } else if (this.item.type === 'weapongear' || this.item.type === 'missilegear') {
+        } else if (this.item.type === ItemType.WEAPONGEAR || this.item.type === ItemType.MISSILEGEAR) {
             // Weapons need a list of combat skills
             data.combatSkills = [];
 
             if (this.actor) {
-                if (this.item.type === 'weapongear') {
+                if (this.item.type === ItemType.WEAPONGEAR) {
                     // For weapons, we add a "None" item to the front of the list
                     // as a default (in case no other combat skill applies)
                     data.combatSkills.push({key: 'None'});
@@ -109,6 +110,11 @@ export class HarnMasterItemSheet extends ItemSheet {
                         }
                     }
                 });
+            }
+        } else if (this.item.type === ItemType.TRAIT) {
+            if (data.idata.type === 'Psyche') {
+                data.isPsycheTrait = true;
+                if (isNaN(parseInt(data.idata.severity))) data.idata.severity = 5;
             }
         }
 

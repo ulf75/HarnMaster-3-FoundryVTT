@@ -36,6 +36,14 @@
                 <label class="resource-label">Note</label>
                 <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
+            {{#if isPsycheTrait}}
+            <div class="resource">
+                <label class="resource-label">Severity</label>
+                <select name="system.severity">
+                    {{selectOptions config.psycheSeverity selected=idata.severity valueAttr="key" labelAttr="label"}}
+                </select>
+            </div>
+            {{/if}}
         </div>
 
         {{!-- Description Tab --}}

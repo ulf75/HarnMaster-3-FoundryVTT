@@ -45,6 +45,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             if (i.type === ItemType.PSIONIC) {
                 i.system.visible = String(!game.settings.get('hm3', 'dormantPsionicTalents') || i.system.masteryLevel > 20 || game.user.isGM);
             }
+            if (i.type === ItemType.TRAIT) {
+                if (i.system.type === 'Psyche') {
+                    const sev = data.config.psycheSeverity.find((v) => v.key === parseInt(i.system.severity))?.label || 'Mild';
+                    i.psycheName = sev + ' ' + i.name;
+                }
+            }
             // The range can also be displayed in grids (hex). Can be changed in the settings.
             if (i.type === ItemType.MISSILEGEAR) {
                 if (data.isGridDistanceUnits) {
