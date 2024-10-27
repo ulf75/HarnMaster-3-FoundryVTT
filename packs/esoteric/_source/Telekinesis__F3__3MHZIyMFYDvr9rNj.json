@@ -1,6 +1,6 @@
 {
   "_id": "3MHZIyMFYDvr9rNj",
-  "name": "Telekinesis [F3]",
+  "name": "Telekinesis",
   "type": "psionic",
   "img": "systems/hm3/images/icons/svg/psionics.svg",
   "effects": [],
@@ -9,7 +9,7 @@
     "core": {}
   },
   "system": {
-    "notes": "",
+    "notes": "(F3)",
     "description": "",
     "source": "",
     "macros": {

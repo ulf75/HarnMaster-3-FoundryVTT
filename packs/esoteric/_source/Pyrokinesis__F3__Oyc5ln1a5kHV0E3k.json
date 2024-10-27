@@ -1,6 +1,6 @@
 {
   "_id": "Oyc5ln1a5kHV0E3k",
-  "name": "Pyrokinesis [F3]",
+  "name": "Pyrokinesis",
   "type": "psionic",
   "img": "systems/hm3/images/icons/svg/psionics.svg",
   "effects": [],
@@ -9,7 +9,7 @@
     "core": {}
   },
   "system": {
-    "notes": "15-SI secs",
+    "notes": "15-SI secs (F3)",
     "description": "<p>Raises the temperature of a combustible, inanimate object to flash point and starts a fire. The object must be within SI yards and line of sight. Time to invoke and start the fire (15 &ndash; SI) seconds takes longer when object is chilled or wet. Once the object begins to burn, the invoker has no control over the fire.</p><p>The talent may be used to warm objects to a desired temperature less than flash point, but CF may cause ignition. The talent has no effect on objects possessing aura or ego, including the invoker.</p><p>Psionic Episodes: When the character is in a condition of stress, nearby objects sometimes smolder or burst into flame.</p><p>Misfire (CF): The wrong object(s) ignite.</p>\n\n\n",
     "source": "",
     "macros": {

@@ -1,6 +1,6 @@
 {
   "_id": "yViLNUe3IxKlfA7q",
-  "name": "Psychometry [F3]",
+  "name": "Psychometry",
   "type": "psionic",
   "img": "systems/hm3/images/icons/svg/psionics.svg",
   "effects": [],
@@ -9,7 +9,7 @@
     "core": {}
   },
   "system": {
-    "notes": "15-SI Mins",
+    "notes": "15-SI Mins (F3)",
     "description": "<p>The ability to divine information about persons by touching an object with which they have been in contact. Psychometry requires the invoker to hold the object and enter a trance for (15 &ndash; SI) minutes.</p><p>Psychometry is most often used to divine the age or history of an object, the identity of the object&rsquo;s maker or owners, magical/divine powers, etc. Another use is to determine a person&rsquo;s location: MS will answer any reasonable yes/no question; CS gives bonus information.</p><p>Psychometry can never be used to divine the future. It works best when queries concern the present or recent past. EML should be reduced for inquiries in the distant past, or if knowledge of the object is magically or divinely hidden.</p><p>Psionic Episodes: Feelings of Jamais vu in connection with various objects are common.</p><p>Misfire (CF): False or random information is given to the invoker, or an object held crumbles to dust.</p>\n\n\n",
     "source": "",
     "macros": {
