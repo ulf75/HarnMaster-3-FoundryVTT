@@ -1,6 +1,6 @@
 {
   "_id": "s8x8BykOgGftIqu8",
-  "name": "Argenon’s Riddle [III]",
+  "name": "Argenon's Riddle [III]",
   "type": "invocation",
   "img": "systems/hm3/images/icons/png/saveknor.png",
   "effects": [],
@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Prayer/Spoken Riddle</td></tr><tr><td><b>Range:</b> 1 Listener+</td><td><b>Duration:</b> 10 (MS); 30 (CS) mins.</td></tr></table><p>Poses a riddle that the listener must answer or make a successful WIL ×3 check to ignore. Those puzzled by the riddle can perform no other action that requires concentration, and suffer a special penalty to all skills of −10 for Duration. Riddle must be in a language known by listener and involve a familiar subject. The priest must know the answer.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Prayer/Spoken Riddle</td></tr><tr><td><b>Range:</b> 1 Listener+</td><td><b>Duration:</b> 10 (MS); 30 (CS) mins.</td></tr></table><p>Poses a riddle that the listener must answer or make a successful WIL ×3 check to ignore. Those puzzled by the riddle can perform no other action that requires concentration, and suffer a special penalty to all skills of -10 for Duration. Riddle must be in a language known by listener and involve a familiar subject. The priest must know the answer.</p>",
     "source": "",
     "macros": {
       "type": "script",
