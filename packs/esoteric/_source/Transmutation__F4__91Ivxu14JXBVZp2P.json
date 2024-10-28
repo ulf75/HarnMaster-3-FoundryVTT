@@ -9,7 +9,7 @@
     "core": {}
   },
   "system": {
-    "notes": "15-SI min (F4)",
+    "notes": "15-SI min",
     "description": "<p>The psionic ability to shapechange. The target form is rarely a choice and is nearly always an animal of roughly the same size as the invoker. The invoker acquires the physical attributes of the target form, but retains own personality attributes. The effect lasts for up to SI hours, but this can be shortened by another transmutation use.</p><p><strong>Psionic Episodes</strong>: Headaches, dizziness, and dreams/ nightmares involving the target form.</p><p><strong>Misfire (CF)</strong>: facial disfigurement, skin discoloration, etc.</p>",
     "source": "",
     "macros": {
