@@ -60,7 +60,6 @@
 .window-app .window-content {
     background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
-    max-width: 950px;
     font-family: 'Amasis MT Medium';
 }
 
