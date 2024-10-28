@@ -20,7 +20,8 @@
     "skillBase": {
       "value": 0,
       "formula": "@aur, @aur, @sml, Ulandus:3, Aralius:2, Feneri:1, Angberelius:-1, Nadai:-2, Hirin:-3, Tarael:-2, Tai:-1, Masara, Lado:2",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 3
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

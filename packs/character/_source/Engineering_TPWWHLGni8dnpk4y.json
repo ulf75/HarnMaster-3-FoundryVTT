@@ -20,7 +20,9 @@
     "skillBase": {
       "value": 0,
       "formula": "@dex, @int, @int, Ulandus:2, Aralius:2, Feniri",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 1,
+      "training": 3
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

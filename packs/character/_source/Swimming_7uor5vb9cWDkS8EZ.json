@@ -20,7 +20,8 @@
     "skillBase": {
       "value": 0,
       "formula": "@sta, @dex, @agl, Skorus, Masara:3, Lado:3",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 1
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

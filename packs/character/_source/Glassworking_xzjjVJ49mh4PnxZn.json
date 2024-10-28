@@ -20,7 +20,9 @@
     "skillBase": {
       "value": 0,
       "formula": "@dex, @eye, @wil, Feniri:2",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 1,
+      "training": 3
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

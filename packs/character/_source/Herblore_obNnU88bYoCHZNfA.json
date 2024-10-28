@@ -20,7 +20,9 @@
     "skillBase": {
       "value": 0,
       "formula": "@eye, @sml, @int, Ulandus:3, Aralius:2",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 1,
+      "training": 1
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

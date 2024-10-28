@@ -20,7 +20,9 @@
     "skillBase": {
       "value": 0,
       "formula": "@str, @dex, @int, Ulandus:2, Aralius",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 3,
+      "training": 1
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

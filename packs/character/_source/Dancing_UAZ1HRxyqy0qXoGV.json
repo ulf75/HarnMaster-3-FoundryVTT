@@ -20,7 +20,8 @@
     "skillBase": {
       "value": 0,
       "formula": "@Dex, @agl, @agl, Tarael:2, Hirin, Tai",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 2
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

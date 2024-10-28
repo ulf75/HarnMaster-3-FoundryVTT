@@ -20,7 +20,9 @@
     "skillBase": {
       "value": 0,
       "formula": "@dex, @eye, @wil, Feniri:3, Tarael, Aralius",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 1,
+      "training": 2
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

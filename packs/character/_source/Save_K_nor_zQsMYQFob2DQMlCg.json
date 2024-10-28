@@ -20,7 +20,8 @@
     "skillBase": {
       "value": 0,
       "formula": "@voi, @int, @int, Tai:2, Tarael, Skorus",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 1
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

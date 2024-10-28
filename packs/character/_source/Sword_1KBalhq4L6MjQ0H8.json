@@ -20,7 +20,8 @@
     "skillBase": {
       "value": 0,
       "formula": "@str, @dex, @dex, Angberelius:3, Ahnu, Nadai",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 3
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

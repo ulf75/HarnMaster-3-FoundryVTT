@@ -20,7 +20,8 @@
     "skillBase": {
       "value": 0,
       "formula": "@voi, @voi, @int, Angberelius:2, Nadai, Tai",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 2
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

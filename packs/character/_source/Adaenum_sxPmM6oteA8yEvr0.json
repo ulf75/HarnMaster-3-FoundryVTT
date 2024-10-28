@@ -20,7 +20,8 @@
     "skillBase": {
       "value": 0,
       "formula": "@voi, @int, @dex, Lado:2, Hirin, Skorus",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 2
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

@@ -20,7 +20,8 @@
     "skillBase": {
       "value": 0,
       "formula": "@dex, @agl, @wil, Ulandus, Aralius",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 1
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

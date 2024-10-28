@@ -20,7 +20,8 @@
     "skillBase": {
       "value": 0,
       "formula": "@str, @str, @dex, Ahnu, Feniri, Angberelius",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 3
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

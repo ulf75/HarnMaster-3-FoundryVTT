@@ -20,7 +20,9 @@
     "skillBase": {
       "value": 0,
       "formula": "@int, @int, @wil, Tai:3, Tarael, Skorus",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 1,
+      "training": 3
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

@@ -20,7 +20,9 @@
     "skillBase": {
       "value": 0,
       "formula": "@dex, @eye, @eye, Skorus, Tai",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 2,
+      "training": 1
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,

@@ -20,7 +20,8 @@
     "skillBase": {
       "value": 0,
       "formula": "@agl, @wil, @wil",
-      "isFormulaValid": true
+      "isFormulaValid": true,
+      "SBx": 4
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,
