@@ -217,7 +217,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             // If the item is some type of gear (other than containergear), then
             // make sure we set the container to the same as the dropped location
             // (this allows people to move items into containers easily)
-            if (newItem.type.endsWith('gear') && newItem.type !== 'containergear') {
+            if (newItem?.type?.endsWith('gear') && newItem?.type !== 'containergear') {
                 if (newItem.system.container !== destContainer) {
                     await newItem.update({'system.container': destContainer});
                 }
