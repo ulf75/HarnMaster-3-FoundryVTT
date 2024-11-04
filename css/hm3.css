@@ -329,6 +329,12 @@ section.highlight {
     text-align: left;
 }
 
+.chat-card .precipitation {
+    border-top: 2px groove #e2d0d2;
+    margin-top: 7px;
+    padding-top: 7px;
+}
+
 .chat-card .card-note {
     padding: 3px 0;
     color: #6f2a32;

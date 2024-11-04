@@ -16,6 +16,14 @@ export const registerSystemSettings = function () {
         default: null
     });
 
+    game.settings.register('hm3', 'weather', {
+        name: 'Current Weather',
+        scope: 'world',
+        config: false,
+        type: Object,
+        default: {start: 0, weather: [{idx: undefined, force: undefined, precipitation: undefined}]}
+    });
+
     game.settings.register('hm3', 'showWelcomeDialog', {
         name: 'Show Welcome Dialog On Start',
         hint: 'Display the welcome dialog box when the user logs in.',

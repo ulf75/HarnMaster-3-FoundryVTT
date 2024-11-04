@@ -20,6 +20,7 @@ import {registerHooks} from './macro.js';
 import * as macros from './macros.js';
 import * as migrations from './migrations.js';
 import {registerSystemSettings} from './settings.js';
+import {Weather} from './weather.js';
 
 Hooks.once('init', async function () {
     console.log(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
@@ -252,6 +253,13 @@ Hooks.once('ready', async function () {
     }
 
     await registerHooks();
+
+    if (await Weather.Initialize()) {
+        Weather.Render();
+        Hooks.on('updateWorldTime', () => {
+            Weather.Render();
+        });
+    }
 
     HM3.ready = true;
 
