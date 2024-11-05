@@ -10,10 +10,10 @@
 </g>
 <g transform="matrix(0 0 0 0 0 0)" id="11b22f8f-5568-4084-ba94-a0823e973087"  >
 </g>
-<g transform="matrix(3.84 0 0 3.84 149.58 149.41)" id="aef3dfdd-9eac-45e5-80f0-e0578921c6d1"  >
+<g transform="matrix(3.84 0 0 3.84 150 150)" id="aef3dfdd-9eac-45e5-80f0-e0578921c6d1"  >
 <circle style="stroke: rgb(183,0,0); stroke-width: 14; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,217,4); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  cx="0" cy="0" r="35" />
 </g>
-<g transform="matrix(0.75 0 0 0.75 149.19 151.79)" style="" id="857d2720-fed0-4acb-89a5-2566f2bc78a9"  >
-		<text xml:space="preserve" font-family="Lato" font-size="200" font-style="normal" font-weight="700" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(183,0,0); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-71" y="62.83" >A</tspan></text>
+<g transform="matrix(0.75 0 0 0.75 150 150)" style="" id="857d2720-fed0-4acb-89a5-2566f2bc78a9"  >
+		<text xml:space="preserve" font-family="Amasis MT Medium" font-size="200" font-style="normal" font-weight="600" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(183,0,0); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-71" y="62.83" >A</tspan></text>
 </g>
 </svg>
