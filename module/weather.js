@@ -17,6 +17,7 @@ export class Weather {
     static weather = [];
 
     static async Render() {
+        if (!game.user.isGM) return;
         if (!this.dateTimeApi) return;
         if (this.lastWatch === this.Watch()) return;
 
