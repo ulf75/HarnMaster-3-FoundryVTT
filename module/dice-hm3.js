@@ -195,7 +195,7 @@ export class DiceHM3 {
                 const formPhysicianModifier = form.physicianModifier?.value || '0';
                 const formTreatmentModifier = form.treatmentModifier?.value || '0';
                 const isAppraisal = form.appraisal?.checked || false;
-                let target = dialogOptions.target;
+                let target = !isNaN(Number(formTarget)) ? Number(formTarget) : dialogOptions.target;
                 if (dialogOptions.isAbility) target = dialogOptions.effSkillBase * multiplier;
                 if (isAppraisal) target = Math.max(dialogOptions.target + dialogOptions.effSkillBase, 5 * dialogOptions.effSkillBase);
                 return DiceHM3.rollTest({
@@ -205,7 +205,7 @@ export class DiceHM3 {
                     isAppraisal,
                     modifier: Number(formModifier) + Number(formPhysicianModifier) + Number(formTreatmentModifier),
                     multiplier,
-                    target: Number(formTarget) || target,
+                    target,
                     type: dialogOptions.type
                 });
             }
