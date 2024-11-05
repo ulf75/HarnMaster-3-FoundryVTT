@@ -1,4 +1,5 @@
 import {HM3} from '../config.js';
+import {ItemType} from '../hm3-types.js';
 import * as utility from '../utility.js';
 
 /**
@@ -48,7 +49,7 @@ export class HarnMasterItem extends Item {
         let pctUnivPen = HarnMasterItem.calcPenaltyPct(this.actor?.system?.universalPenalty);
         let pctPhysPen = HarnMasterItem.calcPenaltyPct(this.actor?.system?.physicalPenalty);
 
-        if (this.type === 'skill') {
+        if (this.type === ItemType.SKILL) {
             if (!itemData.masteryLevel || itemData.masteryLevel < 0) itemData.masteryLevel = 0;
 
             utility.calcSkillBase(this);
@@ -56,7 +57,12 @@ export class HarnMasterItem extends Item {
             // Handle using Condition Skill for Endurance if it is present
             if (this.name.toLowerCase() === 'condition' && this.actor) {
                 this.actor.system.hasCondition = true;
+                if (itemData.masteryLevel === 0) itemData.masteryLevel = 5 * itemData.skillBase.value;
                 this.actor.system.endurance = Math.floor(itemData.masteryLevel / 5) || 1;
+            } else if (this.name.toLowerCase() === 'dodge' && this.actor) {
+                if (itemData.masteryLevel === 0) itemData.masteryLevel = 5 * itemData.skillBase.value;
+            } else if (this.actor) {
+                if (itemData.masteryLevel === 0 && itemData.skillBase.SBx) itemData.masteryLevel = itemData.skillBase.SBx * itemData.skillBase.value;
             }
 
             // We modify the EML by 5 times the difference between the SB based on base
@@ -82,11 +88,14 @@ export class HarnMasterItem extends Item {
             } else if (lcSkillName === 'dodge') {
                 if (this.actor?.system) this.actor.system.dodge = itemData.effectiveMasteryLevel;
             }
-        } else if (this.type === 'psionic') {
+        } else if (this.type === ItemType.PSIONIC) {
             if (!itemData.masteryLevel || itemData.masteryLevel < 0) itemData.masteryLevel = 0;
             utility.calcSkillBase(this);
+            if (this.actor) {
+                if (itemData.masteryLevel === 0) itemData.masteryLevel = itemData.skillBase.value;
+            }
             itemData.effectiveMasteryLevel = itemData.masteryLevel - pctUnivPen;
-        } else if (this.type === 'injury') {
+        } else if (this.type === ItemType.INJURY) {
             // Just make sure if injuryLevel is negative, we set it to zero
             itemData.injuryLevel = Math.max(itemData.injuryLevel || 0, 0);
             HarnMasterItem.calcInjurySeverity(this);
