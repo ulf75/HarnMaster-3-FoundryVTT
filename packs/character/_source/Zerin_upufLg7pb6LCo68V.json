@@ -1,0 +1,46 @@
+{
+  "_id": "upufLg7pb6LCo68V",
+  "name": "Zerin",
+  "type": "skill",
+  "img": "systems/hm3/images/icons/svg/scroll.svg",
+  "effects": [],
+  "folder": "J0xwQtSGnFyerX7W",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "Agrik & Halea Church Script",
+    "description": "<p>A script is a system for symbolizing language sounds. Most languages may be written in multiple scripts. For example, English is usually written in the Roman script, but it is possible to use Cyrillic to convey the same sounds.</p><h3>Native Script</h3><p>On Hârn, most scholars, clerics, guildsmen, and nobles know the locally-used script, generally <i>Lakise</i>. <i>Runic</i> is the script of the Khuzdul and Ivinians. A third script (<i>Selenian</i>) is used by the Sindarin. Each script is treated as a separate skill. Any Native Script is opened at 70 + SB.</p>",
+    "source": "HM3 Skills 11",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "type": "Communication",
+    "skillBase": {
+      "value": 0,
+      "formula": "@dex, @eye, @int, Tarael, Tai",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "ritual": {
+      "piety": 0
+    },
+    "improveFlag": false
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284325380,
+    "modifiedTime": 1689285072117,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!upufLg7pb6LCo68V"
+}

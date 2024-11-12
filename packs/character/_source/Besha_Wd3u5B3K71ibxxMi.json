@@ -1,0 +1,47 @@
+{
+  "_id": "Wd3u5B3K71ibxxMi",
+  "name": "Besha",
+  "type": "skill",
+  "img": "systems/hm3/images/icons/svg/speaking.svg",
+  "effects": [],
+  "folder": "J0xwQtSGnFyerX7W",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "& Naveh Temple Language (extinct)",
+    "description": "<p>All characters begin play with at least one Native Tongue, determined by birthplace. Some characters may be bilingual. The GM will tell you the name of your native tongue(s). On Hârn, it is usually Hârnic.</p><p>Languages are tested only on special occasions, such as when foreigners converse. Characters are presumed to speak their native tongues well enough to make success rolls unnecessary. The EML of a skill using language can never exceed language ML in the tongue used.</p>",
+    "source": "HM3 Skills 10",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "type": "Communication",
+    "skillBase": {
+      "value": 0,
+      "formula": "@voi, @int, @wil, Tai",
+      "isFormulaValid": true,
+      "SBx": 1
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "ritual": {
+      "piety": 0
+    },
+    "improveFlag": false
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284325380,
+    "modifiedTime": 1689285072117,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!Wd3u5B3K71ibxxMi"
+}
