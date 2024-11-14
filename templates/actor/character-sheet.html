@@ -42,6 +42,10 @@
         </div>
     </header>
 
+    {{#if isCharacterMancer}}
+    <div style="color:red; text-align: center; font-size: larger;font-weight: bold; height: 30px; align-content: center; flex: unset;">................CHARACTER MANCER ACTIVE................<a class="character-mancer" title="Close Character Mancer" data-type="skill"> Close</a></div>
+    {{/if}}
+
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="item" data-tab="facade">Fa&#231;ade</a>
@@ -430,6 +434,9 @@
                         data-journal-entry="Sheet - Skills Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
+                    {{#if isCharacterMancer}}
+                    <div class="skill-ele item-detail">x</div>
+                    {{/if}}
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
@@ -448,6 +455,9 @@
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{system.skillBase.value}}</div>
+                                {{#if ../isCharacterMancer}}
+                                <div class="skill-ele item-detail"><input type="text" name="item-sbx-special" id="{{item.id}}" value="{{system.skillBase.SBx}}" data-dtype="Number"/></div>
+                                {{/if}}
                                 <div class="skill-ele item-detail">{{system.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{system.effectiveMasteryLevel}}</div>
                                 <div class="skill-notes">{{system.notes}}</div>
@@ -474,6 +484,9 @@
                         data-journal-entry="Sheet - Skills Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
+                    {{#if isCharacterMancer}}
+                    <div class="skill-ele item-detail">x</div>
+                    {{/if}}
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
@@ -492,6 +505,9 @@
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{system.skillBase.value}}</div>
+                                {{#if ../isCharacterMancer}}
+                                <div class="skill-ele item-detail"><input type="text" name="item-sbx-special" id="{{item.id}}" value="{{system.skillBase.SBx}}" data-dtype="Number"/></div>
+                                {{/if}}
                                 <div class="skill-ele item-detail">{{system.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{system.effectiveMasteryLevel}}</div>
                                 <div class="skill-notes">{{system.notes}}</div>
@@ -518,6 +534,9 @@
                         data-journal-entry="Sheet - Skills Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
+                    {{#if isCharacterMancer}}
+                    <div class="skill-ele item-detail">x</div>
+                    {{/if}}
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
@@ -536,6 +555,9 @@
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{system.skillBase.value}}</div>
+                                {{#if ../isCharacterMancer}}
+                                <div class="skill-ele item-detail"><input type="text" name="item-sbx-special" id="{{item.id}}" value="{{system.skillBase.SBx}}" data-dtype="Number"/></div>
+                                {{/if}}
                                 <div class="skill-ele item-detail">{{system.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{system.effectiveMasteryLevel}}</div>
                                 <div class="skill-notes">{{system.notes}}</div>
@@ -562,6 +584,9 @@
                         data-journal-entry="Sheet - Skills Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
+                    {{#if isCharacterMancer}}
+                    <div class="skill-ele item-detail">x</div>
+                    {{/if}}
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
@@ -580,6 +605,9 @@
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{system.skillBase.value}}</div>
+                                {{#if ../isCharacterMancer}}
+                                <div class="skill-ele item-detail"><input type="text" name="item-sbx-special" id="{{item.id}}" value="{{system.skillBase.SBx}}" data-dtype="Number"/></div>
+                                {{/if}}
                                 <div class="skill-ele item-detail">{{system.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{system.effectiveMasteryLevel}}</div>
                                 <div class="skill-notes">{{system.notes}}</div>
@@ -606,6 +634,9 @@
                         data-journal-entry="Sheet - Skill Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
+                    {{#if isCharacterMancer}}
+                    <div class="skill-ele item-detail">x</div>
+                    {{/if}}
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
@@ -624,6 +655,9 @@
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{system.skillBase.value}}</div>
+                                {{#if ../isCharacterMancer}}
+                                <div class="skill-ele item-detail"><input type="text" name="item-sbx-special" id="{{item.id}}" value="{{system.skillBase.SBx}}" data-dtype="Number"/></div>
+                                {{/if}}
                                 <div class="skill-ele item-detail">{{system.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{system.effectiveMasteryLevel}}</div>
                                 <div class="skill-notes">{{system.notes}}</div>
@@ -650,6 +684,9 @@
                         data-journal-entry="Sheet - Skills Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
+                    {{#if isCharacterMancer}}
+                    <div class="skill-ele item-detail">x</div>
+                    {{/if}}
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-ele item-detail">Piety</div>
@@ -669,6 +706,9 @@
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{system.skillBase.value}}</div>
+                                {{#if ../isCharacterMancer}}
+                                <div class="skill-ele item-detail"><input type="text" name="item-sbx-special" id="{{item.id}}" value="{{system.skillBase.SBx}}" data-dtype="Number"/></div>
+                                {{/if}}
                                 <div class="skill-ele item-detail">{{system.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{system.effectiveMasteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{system.ritual.piety}}</div>

@@ -29,6 +29,14 @@ export class HarnMasterActor extends Actor {
         else return this.type;
     }
 
+    pronoun(capital = false) {
+        const p = () => {
+            if (!this.system.gender) return 'It';
+            return this.system.gender === 'Male' ? 'His' : 'Her';
+        };
+        return capital ? p() : p().toLowerCase();
+    }
+
     /**
      * The original FVTT return of the applicable effects does not take the permissions into account.
      * With this implementation, a player must have at least LIMITED permission to see the active effect.
@@ -136,6 +144,12 @@ export class HarnMasterActor extends Actor {
             rejectClose: false,
             options
         });
+    }
+
+    /** @override */
+    async _onCreate(data, options, userId) {
+        await super._onCreate(data, options, userId);
+        await this.setFlag('hm3', 'CharacterMancer', true);
     }
 
     /** @override */
@@ -339,7 +353,7 @@ export class HarnMasterActor extends Actor {
                 actorData.totalInjuryLevels += itemData.injuryLevel || 0;
             } else if (it.type === 'skill' && it.name.toLowerCase() === 'condition') {
                 // if Condition skill is present, use that for endurance instead
-                actorData.endurance = Math.round((itemData.masteryLevel || 0) / 5);
+                actorData.endurance = Math.round((itemData.masteryLevel || 5 * actorData.endurance) / 5);
                 actorData.condition = itemData.masteryLevel;
             }
         });

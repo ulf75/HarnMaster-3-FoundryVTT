@@ -19,15 +19,16 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         let isOwner = this.document.isOwner;
         const data = {
-            owner: isOwner,
+            config: CONFIG.HM3,
+            cssClass: isOwner ? 'editable' : 'locked',
+            editable: this.isEditable,
+            isCharacter: this.document.type === 'character',
+            isCharacterMancer: this.actor.getFlag('hm3', 'CharacterMancer') || false,
+            isContainer: this.document.type === 'container',
+            isCreature: this.document.type === 'creature',
             limited: this.document.limited,
             options: this.options,
-            editable: this.isEditable,
-            cssClass: isOwner ? 'editable' : 'locked',
-            isCharacter: this.document.type === 'character',
-            isCreature: this.document.type === 'creature',
-            isContainer: this.document.type === 'container',
-            config: CONFIG.HM3
+            owner: isOwner
         };
 
         data.isGM = game.user.isGM;
@@ -424,6 +425,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Everything below here is only needed if the sheet is editable
         if (!this.options.editable) return;
 
+        html.find('.character-mancer').click(async (ev) => {
+            await this.actor.unsetFlag('hm3', 'CharacterMancer');
+            item.sheet.render(true);
+        });
+
         // Add Inventory Item
         html.find('.item-create').click(this._onItemCreate.bind(this));
 
@@ -459,6 +465,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.on('change', "input[type='text']", (ev) => {
             if (ev.target.name === 'item-quantity-special') {
                 this._handleQtyInput(ev.target.id, ev.target.value);
+            } else if (ev.target.name === 'item-sbx-special') {
+                this._handleSbxInput(ev.target.id, ev.target.value);
             }
         });
 
@@ -1144,5 +1152,28 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Update the quantity on the server
         item.update({'system.quantity': item.system.quantity});
+    }
+
+    async _handleSbxInput(itemId, newValue) {
+        const item = this.actor.items.find((i) => i.id === itemId);
+
+        // Ensure that something meaningful has been entered
+        if (newValue.length === 0 || isNaN(newValue)) {
+            document.getElementById(itemId).value = item.system.quantity;
+            return;
+        }
+
+        // Ensure that something meaningful has been entered
+        if (Number(newValue) <= 0 || Number(newValue) >= 8) {
+            document.getElementById(itemId).value = item.system.quantity;
+            return;
+        }
+
+        item.system.skillBase.SBx = newValue;
+
+        document.getElementById(itemId).value = item.system.skillBase.SBx;
+
+        // Update the quantity on the server
+        item.update({'system.skillBase.SBx': item.system.skillBase.SBx});
     }
 }
