@@ -38,11 +38,14 @@
                 }
 
                 .skill-notes {
-                    flex: 1 0 100px;
-                    text-align: left;
-                    padding-left: 5px;
                     border-left: 1px solid #c9c7b8;
                     border-right: 1px solid #c9c7b8;
+                    flex: 1 0 100px;
+                    overflow: hidden;
+                    padding-left: 5px;
+                    text-align: left;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
 
                 .skill-ele {

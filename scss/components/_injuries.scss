@@ -56,10 +56,10 @@
 
     .injury-notes {
         flex: 1 0 200px;
+        overflow: hidden;
         padding-left: 10px;
         text-overflow: ellipsis;
         white-space: nowrap;
-        overflow: hidden;
     }
 
     .item-controls {

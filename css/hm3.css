@@ -1574,10 +1574,10 @@ section.highlight {
     -webkit-box-flex: 1;
     -ms-flex: 1 0 75px;
     flex: 1 0 75px;
+    overflow: hidden;
     padding-left: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 .hm3 .combat .weapons-list .weapon .item-controls-inv {
@@ -1805,10 +1805,10 @@ section.highlight {
     -webkit-box-flex: 1;
     -ms-flex: 1 0 50px;
     flex: 1 0 50px;
+    overflow: hidden;
     padding-left: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 .hm3 .combat .missiles-list .missile .item-controls-inv {
@@ -2049,13 +2049,16 @@ section.highlight {
 }
 
 .hm3 .sheet-body .traits .traits-list .trait .trait-notes {
+    border-left: 1px solid #c9c7b8;
+    border-right: 1px solid #c9c7b8;
     -webkit-box-flex: 1;
     -ms-flex: 1 0 50px;
     flex: 1 0 50px;
-    text-align: left;
+    overflow: hidden;
     padding-left: 5px;
-    border-left: 1px solid #c9c7b8;
-    border-right: 1px solid #c9c7b8;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .hm3 .sheet-body .traits .traits-list .trait .trait-ele {
@@ -2240,10 +2243,10 @@ section.highlight {
     -webkit-box-flex: 1;
     -ms-flex: 1 0 200px;
     flex: 1 0 200px;
+    overflow: hidden;
     padding-left: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 .hm3 .injuries-list .item-controls {
@@ -2295,13 +2298,16 @@ section.highlight {
 }
 
 .hm3.actor .skills .skills-list .skill .skill-notes {
+    border-left: 1px solid #c9c7b8;
+    border-right: 1px solid #c9c7b8;
     -webkit-box-flex: 1;
     -ms-flex: 1 0 100px;
     flex: 1 0 100px;
-    text-align: left;
+    overflow: hidden;
     padding-left: 5px;
-    border-left: 1px solid #c9c7b8;
-    border-right: 1px solid #c9c7b8;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .hm3.actor .skills .skills-list .skill .skill-ele {
@@ -2447,10 +2453,10 @@ section.highlight {
     -webkit-box-flex: 1;
     -ms-flex: 1 0 150px;
     flex: 1 0 150px;
+    overflow: hidden;
     padding-left: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 .hm3 .esoteric .spells-list .item-controls {
@@ -2539,10 +2545,10 @@ section.highlight {
     -webkit-box-flex: 1;
     -ms-flex: 1 0 150;
     flex: 1 0 150;
+    overflow: hidden;
     padding-left: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 .hm3 .esoteric .psionics-list .item-controls {
@@ -2655,10 +2661,10 @@ section.highlight {
     -webkit-box-flex: 1;
     -ms-flex: 1 0 150px;
     flex: 1 0 150px;
+    overflow: hidden;
     padding-left: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 .hm3 .armorlocations-list .item-controls {
@@ -2754,10 +2760,10 @@ section.highlight {
     -webkit-box-flex: 1;
     -ms-flex: 1 0 50px;
     flex: 1 0 50px;
+    overflow: hidden;
     padding-left: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 .hm3 .armor-list .item-controls {
@@ -2886,10 +2892,10 @@ section.highlight {
     -webkit-box-flex: 1;
     -ms-flex: 1 0 60px;
     flex: 1 0 60px;
+    overflow: hidden;
     padding-left: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 .hm3 .gear-list .item-controls {

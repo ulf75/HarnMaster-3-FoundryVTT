@@ -71,10 +71,10 @@
 
         .spell-notes {
             flex: 1 0 150px;
+            overflow: hidden;
             padding-left: 10px;
             text-overflow: ellipsis;
             white-space: nowrap;
-            overflow: hidden;
         }
 
         .item-controls {
@@ -147,10 +147,10 @@
 
         .psionic-notes {
             flex: 1 0 150;
+            overflow: hidden;
             padding-left: 10px;
             text-overflow: ellipsis;
             white-space: nowrap;
-            overflow: hidden;
         }
 
         .item-controls {

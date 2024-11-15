@@ -67,11 +67,14 @@
                 }
 
                 .trait-notes {
-                    flex: 1 0 50px;
-                    text-align: left;
-                    padding-left: 5px;
                     border-left: 1px solid #c9c7b8;
                     border-right: 1px solid #c9c7b8;
+                    flex: 1 0 50px;
+                    overflow: hidden;
+                    padding-left: 5px;
+                    text-align: left;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
 
                 .trait-ele {

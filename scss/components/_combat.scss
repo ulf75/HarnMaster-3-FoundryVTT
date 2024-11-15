@@ -221,10 +221,10 @@
 
             .weapon-notes {
                 flex: 1 0 75px;
+                overflow: hidden;
                 padding-left: 10px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
-                overflow: hidden;
             }
 
             .item-controls-inv {
@@ -416,10 +416,10 @@
 
             .missile-notes {
                 flex: 1 0 50px;
+                overflow: hidden;
                 padding-left: 10px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
-                overflow: hidden;
             }
 
             .item-controls-inv {
