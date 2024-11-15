@@ -464,9 +464,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         html.on('change', "input[type='text']", (ev) => {
             if (ev.target.name === 'item-quantity-special') {
-                this._handleQtyInput(ev.target.id, ev.target.value);
+                this._handleQtyInput(ev.target.id.slice(0, 16), ev.target.value);
             } else if (ev.target.name === 'item-sbx-special') {
-                this._handleSbxInput(ev.target.id, ev.target.value);
+                this._handleSbxInput(ev.target.id.slice(0, 16), ev.target.value);
+            } else if (ev.target.name === 'item-op-special') {
+                this._handleOpInput(ev.target.id.slice(0, 16), ev.target.value);
             }
         });
 
@@ -1159,21 +1161,54 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Ensure that something meaningful has been entered
         if (newValue.length === 0 || isNaN(newValue)) {
-            document.getElementById(itemId).value = item.system.quantity;
+            document.getElementById(itemId + '-SBx').value = item.system.skillBase.SBx;
             return;
         }
 
         // Ensure that something meaningful has been entered
         if (Number(newValue) <= 0 || Number(newValue) >= 8) {
-            document.getElementById(itemId).value = item.system.quantity;
+            document.getElementById(itemId + '-SBx').value = item.system.skillBase.SBx;
             return;
         }
 
         item.system.skillBase.SBx = newValue;
-
-        document.getElementById(itemId).value = item.system.skillBase.SBx;
+        document.getElementById(itemId + '-SBx').value = item.system.skillBase.SBx;
 
         // Update the quantity on the server
-        item.update({'system.skillBase.SBx': item.system.skillBase.SBx});
+        await item.update({'system.skillBase.SBx': item.system.skillBase.SBx});
+        await item.update({'system.masteryLevel': 0});
+    }
+
+    async _handleOpInput(itemId, newValue) {
+        const item = this.actor.items.find((i) => i.id === itemId);
+
+        if (newValue.length === 0) {
+            item.system.skillBase.OP = null;
+            document.getElementById(itemId + '-OP').value = item.system.skillBase.OP;
+
+            // Update the quantity on the server
+            await item.update({'system.skillBase.-=OP': item.system.skillBase.OP});
+            await item.update({'system.masteryLevel': 0});
+            return;
+        }
+
+        // Ensure that something meaningful has been entered
+        if (isNaN(newValue)) {
+            document.getElementById(itemId + '-OP').value = item.system.skillBase.OP;
+            return;
+        }
+
+        // Ensure that something meaningful has been entered
+        if (Number(newValue) <= 0 || Number(newValue) >= 4) {
+            document.getElementById(itemId + '-OP').value = item.system.skillBase.OP;
+            return;
+        }
+
+        item.system.skillBase.OP = newValue;
+        document.getElementById(itemId + '-OP').value = item.system.skillBase.OP;
+
+        // Update the quantity on the server
+        await item.update({'system.skillBase.OP': item.system.skillBase.OP});
+        await item.update({'system.masteryLevel': 0});
     }
 }

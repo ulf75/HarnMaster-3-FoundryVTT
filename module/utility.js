@@ -589,3 +589,36 @@ export function truncate(value, digits = 2) {
 export function getActorFromMacro(macro) {
     return game.actors.contents.find((a) => macro.getFlag('hm3', 'ownerId') === a.id);
 }
+
+/**
+ * It is technically possible for a starting character with very high attributes to begin
+ * play with excessively high Mastery Levels. To help balance the game, if the OML of any
+ *  skill other than a Script or Language exceeds 70, it should be truncated.
+ *
+ * OML truncation only applies to starting characters. It does not affect in-game skill
+ * development.
+ * @link https://www.lythia.com/warflail/downloads/HMA_Rulebook_v1.4.pdf
+ * @param {number} value
+ * @returns truncated number
+ */
+export function truncatedOML(value) {
+    if (value <= 70) return value;
+    else if (value <= 72) return 71;
+    else if (value <= 74) return 72;
+    else if (value <= 76) return 73;
+    else if (value <= 78) return 74;
+    else if (value <= 80) return 75;
+    else if (value <= 82) return 76;
+    else if (value <= 84) return 77;
+    else if (value <= 86) return 78;
+    else if (value <= 88) return 79;
+    else if (value <= 90) return 80;
+    else if (value <= 94) return 81;
+    else if (value <= 98) return 82;
+    else if (value <= 102) return 83;
+    else if (value <= 106) return 84;
+    else if (value <= 110) return 85;
+    else if (value <= 114) return 86;
+    else if (value <= 118) return 87;
+    else return 88;
+}

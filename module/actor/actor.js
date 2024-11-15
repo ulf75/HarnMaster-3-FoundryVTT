@@ -441,6 +441,19 @@ export class HarnMasterActor extends Actor {
         actorData.abilities.morality.modified = eph.morality;
         actorData.abilities.comeliness.modified = eph.comeliness;
 
+        const condition = this.items.find((it) => it.name.toLowerCase() === 'condition');
+        if (condition) {
+            // Handle using Condition Skill for Endurance if it is present
+            utility.calcSkillBase(condition);
+            // this.system.hasCondition = true; deprecated
+            const OP = Math.round((Number(condition.system.skillBase.OP) || 0) / 2);
+            const ML =
+                condition.system.masteryLevel ||
+                utility.truncatedOML(Number(condition.system.skillBase.value) * (Number(condition.system.skillBase.SBx) + OP));
+            this.system.endurance = Math.floor(ML / 5) || 1;
+            this.system.encumbrance = Math.floor(this.system.eph.effectiveWeight / this.system.endurance);
+        }
+
         // All common character and creature derived data below here
 
         // Since active effects may have modified these values, we must ensure

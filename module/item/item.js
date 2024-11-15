@@ -54,15 +54,11 @@ export class HarnMasterItem extends Item {
 
             utility.calcSkillBase(this);
 
-            // Handle using Condition Skill for Endurance if it is present
-            if (this.name.toLowerCase() === 'condition' && this.actor) {
-                this.actor.system.hasCondition = true;
-                if (itemData.masteryLevel === 0) itemData.masteryLevel = 5 * itemData.skillBase.value;
-                this.actor.system.endurance = Math.floor(itemData.masteryLevel / 5) || 1;
-            } else if (this.name.toLowerCase() === 'dodge' && this.actor) {
-                if (itemData.masteryLevel === 0) itemData.masteryLevel = 5 * itemData.skillBase.value;
-            } else if (this.actor) {
-                if (itemData.masteryLevel === 0 && itemData.skillBase.SBx) itemData.masteryLevel = itemData.skillBase.SBx * itemData.skillBase.value;
+            if (this.actor) {
+                if (itemData.masteryLevel === 0 && itemData.skillBase.SBx) {
+                    const OP = Math.round((Number(itemData.skillBase.OP) || 0) / 2);
+                    itemData.masteryLevel = utility.truncatedOML((Number(itemData.skillBase.SBx) + OP) * itemData.skillBase.value);
+                }
             }
 
             // We modify the EML by 5 times the difference between the SB based on base
