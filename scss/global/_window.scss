@@ -55,3 +55,27 @@ a:hover {
     background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
 }
+
+body {
+    font-family: 'Amasis MT Medium';
+}
+
+//pause spinner
+#pause {
+    background: none;
+}
+#pause > img {
+    width: 200px;
+    height: auto;
+    top: -50px;
+    left: calc(50% - 100px);
+    opacity: 1;
+}
+#pause > figcaption {
+    font-size: var(--font-size-48);
+    text-shadow: 0px 3px 5px rgb(0, 0, 0);
+}
+
+.fa-spin {
+    animation: none;
+}

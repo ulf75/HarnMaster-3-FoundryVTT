@@ -274,6 +274,8 @@ Hooks.once('ready', async function () {
     }
 });
 
+Hooks.on('renderPause', (_app, html) => html.find('img').attr('src', 'systems/hm3/images/png/HMLogo.png'));
+
 // Since HM3 does not have the concept of rolling for initiative,
 // this hook simply prepopulates the initiative value. This ensures
 // that no die roll is needed.

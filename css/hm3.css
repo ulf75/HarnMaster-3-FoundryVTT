@@ -99,6 +99,32 @@ a:hover {
     background-size: cover;
 }
 
+body {
+    font-family: 'Amasis MT Medium';
+}
+
+#pause {
+    background: none;
+}
+
+#pause > img {
+    width: 200px;
+    height: auto;
+    top: -50px;
+    left: calc(50% - 100px);
+    opacity: 1;
+}
+
+#pause > figcaption {
+    font-size: var(--font-size-48);
+    text-shadow: 0px 3px 5px black;
+}
+
+.fa-spin {
+    -webkit-animation: none;
+    animation: none;
+}
+
 section.highlight {
     padding: 0 5px;
     background: rgba(247, 230, 2, 0.05);
