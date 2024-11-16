@@ -342,6 +342,7 @@ HM3.stdSkills = {
     'Textilecraft': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@dex, @dex, @eye, Ulandus, Aralius', 'SBx': 2}, 'type': 'Craft'},
     'Timbercraft': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@str, @dex, @agl, Ulandus:3, Aralius', 'SBx': 2}, 'type': 'Craft'},
     'Tracking': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@eye, @sml, @wil, Ulandus:3, Aralius:3', 'SBx': 2}, 'type': 'Craft'},
+    'Trapping': {'source': 'Barbarians 6', 'skillBase': {'formula': '@agl, @dex, @eye, Ulandus:2, Aralius:2', 'SBx': 2}, 'type': 'Craft'},
     'Weaponcraft': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@str, @dex, @wil, Feniri:3, Ahnu, Angberelius', 'SBx': 1}, 'type': 'Craft'},
     'Weatherlore': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@int, @eye, @sml, Hirin, Tarael, Masada, Lado', 'SBx': 3}, 'type': 'Craft'},
     'Woodcraft': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@dex, @dex, @wil, Ulandus:2, Aralius, Lado', 'SBx': 2}, 'type': 'Craft'},
