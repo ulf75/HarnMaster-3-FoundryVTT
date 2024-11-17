@@ -13,6 +13,18 @@ export class HarnMasterToken extends Token {
         if (!tokenMutex) tokenMutex = new Mutex();
     }
 
+    /** @override */
+    _onClickLeft(event) {
+        if (event.shiftKey && event.ctrlKey) super._onClickLeft2(event);
+        else super._onClickLeft(event);
+    }
+
+    /** @override */
+    _onClickRight(event) {
+        if (event.shiftKey && event.ctrlKey) super._onClickRight2(event);
+        else super._onClickRight(event);
+    }
+
     /**
      *
      * @param {Condition} condition
@@ -88,6 +100,14 @@ export class HarnMasterToken extends Token {
     hasInjury(id) {
         return !!token.actor.items.find((i) => i.id === id);
     }
+
+    pronoun(capital = false) {
+        const p = () => {
+            if (!this.actor.system.gender) return 'It';
+            return this.actor.system.gender === 'Male' ? 'His' : 'Her';
+        };
+        return capital ? p() : p().toLowerCase();
+    }
 }
 
 export class HarnMasterTokenDocument extends TokenDocument {
@@ -148,5 +168,9 @@ export class HarnMasterTokenDocument extends TokenDocument {
 
     hasInjury(id) {
         return this.object.hasInjury(id);
+    }
+
+    pronoun(capital = false) {
+        return this.object.pronoun(capital);
     }
 }

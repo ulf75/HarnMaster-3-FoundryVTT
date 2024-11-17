@@ -9,9 +9,12 @@ import {DiceHM3} from './dice-hm3.js';
 import * as effect from './effect.js';
 import {HM3ActiveEffectConfig} from './hm3-active-effect-config.js';
 import {HarnMasterActiveEffect} from './hm3-active-effect.js';
+import {HarnMasterAmbientLight} from './hm3-ambient-light.js';
+import {HarnMasterAmbientSound} from './hm3-ambient-sound.js';
 import {HarnMasterCombat} from './hm3-combat.js';
 import {HM3MacroConfig} from './hm3-macro-config.js';
 import {HarnMasterMacro} from './hm3-macro.js';
+import {HarnMasterNote} from './hm3-note.js';
 import {HarnMasterToken, HarnMasterTokenDocument} from './hm3-token.js';
 import {ActorType, Aspect, Condition, Hook, ItemType, Location, Range, SkillType} from './hm3-types.js';
 import {HarnMasterItemSheet} from './item/item-sheet.js';
@@ -92,7 +95,10 @@ Hooks.once('init', async function () {
     });
 
     CONFIG.ActiveEffect.documentClass = HarnMasterActiveEffect;
+    CONFIG.AmbientLight.objectClass = HarnMasterAmbientLight;
+    CONFIG.AmbientSound.objectClass = HarnMasterAmbientSound;
     CONFIG.Macro.documentClass = HarnMasterMacro;
+    CONFIG.Note.objectClass = HarnMasterNote;
     CONFIG.Token.documentClass = HarnMasterTokenDocument;
     CONFIG.Token.objectClass = HarnMasterToken;
 
@@ -260,6 +266,31 @@ Hooks.once('ready', async function () {
             Weather.Render();
         });
     }
+
+    const addEvent = (element, eventName, callback) => {
+        if (element.addEventListener) {
+            element.addEventListener(eventName, callback, false);
+        } else if (element.attachEvent) {
+            element.attachEvent('on' + eventName, callback);
+        } else {
+            element['on' + eventName] = callback;
+        }
+    };
+
+    addEvent(document, 'keypress', function (e) {
+        e = e || window.event;
+        // use e.keyCode
+        // var doubleClickEvent = new MouseEvent('dblclick', {
+        //     'view': window,
+        //     'bubbles': true
+        //     // 'cancelable': true
+        // });
+        if (e.key === 'Enter' && !e.shiftKey) {
+            var doubleClickEvent = document.createEvent('MouseEvents');
+            doubleClickEvent.initEvent('dblclick', true, true);
+            e.currentTarget.dispatchEvent(doubleClickEvent);
+        }
+    });
 
     HM3.ready = true;
 
