@@ -1,8 +1,9 @@
 .facade {
     img.facade-image {
+        background: transparent;
+        border: none;
         flex: 0 0 200px;
         object-fit: contain;
-        background: white;
     }
 
     .facade-description {

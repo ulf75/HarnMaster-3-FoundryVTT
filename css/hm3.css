@@ -733,12 +733,13 @@ section.highlight {
 }
 
 .hm3 .facade img.facade-image {
+    background: transparent;
+    border: none;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 200px;
     flex: 0 0 200px;
     -o-object-fit: contain;
     object-fit: contain;
-    background: white;
 }
 
 .hm3 .facade .facade-description {
