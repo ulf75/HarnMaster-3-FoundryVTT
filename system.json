@@ -1,9 +1,9 @@
 {
   "id": "hm3",
   "name": "hm3",
-  "title": "HarnMaster 3",
+  "title": "HârnMaster 3",
   "description": "The HarnMaster system for FoundryVTT!",
-  "version": "0.0.0",
+  "version": "12.0.0",
   "authors": [
     {
       "name": "Toasty",
