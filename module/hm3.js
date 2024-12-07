@@ -203,10 +203,8 @@ Hooks.on('renderChatMessage', (app, html, data) => {
     if (html[0].innerHTML.includes('hm3 chat-card') && app.blind && !game.user.isGM) {
         const nodes = html[0].childNodes[3].childNodes[1];
         nodes.childNodes[3].innerText = 'Blind GM Roll';
-        nodes.childNodes[5].remove();
-        nodes.childNodes[5].remove();
-        nodes.childNodes[5].remove();
-        nodes.childNodes[5].remove();
+        const len = nodes.childNodes.length - 6;
+        for (let i = 0; i < len; i++) nodes.childNodes[5].remove();
     }
 });
 

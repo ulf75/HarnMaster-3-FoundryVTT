@@ -1393,8 +1393,9 @@ export class DiceHM3 {
             ? CONST.DICE_ROLL_MODES.PRIVATE
             : game.settings.get('core', 'rollMode');
         const whisper = new Set();
-        if (blind) whisper.add(game.users.activeGM.id);
-        else {
+        if (blind) {
+            if (game.users.activeGM) whisper.add(game.users.activeGM.id);
+        } else {
             if (rollMode === CONST.DICE_ROLL_MODES.SELF) whisper.add(game.users.current.id);
             if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE) whisper.add(game.users.activeGM.id);
             if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE) whisper.add(game.users.current.id);
