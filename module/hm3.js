@@ -12,6 +12,7 @@ import {HarnMasterActiveEffect} from './hm3-active-effect.js';
 import {HarnMasterAmbientLight} from './hm3-ambient-light.js';
 import {HarnMasterAmbientSound} from './hm3-ambient-sound.js';
 import {HarnMasterCombat} from './hm3-combat.js';
+import {HarnMasterDrawing} from './hm3-drawing.js';
 import {HM3MacroConfig} from './hm3-macro-config.js';
 import {HarnMasterMacro} from './hm3-macro.js';
 import {HarnMasterNote} from './hm3-note.js';
@@ -99,6 +100,7 @@ Hooks.once('init', async function () {
     CONFIG.ActiveEffect.documentClass = HarnMasterActiveEffect;
     CONFIG.AmbientLight.objectClass = HarnMasterAmbientLight;
     CONFIG.AmbientSound.objectClass = HarnMasterAmbientSound;
+    CONFIG.Drawing.objectClass = HarnMasterDrawing;
     CONFIG.Macro.documentClass = HarnMasterMacro;
     CONFIG.Note.objectClass = HarnMasterNote;
     CONFIG.Region.objectClass = HarnMasterRegion;
