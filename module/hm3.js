@@ -20,6 +20,7 @@ import {HarnMasterRegion} from './hm3-region.js';
 import {HarnMasterTile} from './hm3-tile.js';
 import {HarnMasterToken, HarnMasterTokenDocument} from './hm3-token.js';
 import {ActorType, Aspect, Condition, Hook, ItemType, Location, Range, SkillType} from './hm3-types.js';
+import {HarnMasterWall} from './hm3-wall.js';
 import {HarnMasterItemSheet} from './item/item-sheet.js';
 import {HarnMasterItem} from './item/item.js';
 import {registerHooks} from './macro.js';
@@ -107,6 +108,7 @@ Hooks.once('init', async function () {
     CONFIG.Tile.objectClass = HarnMasterTile;
     CONFIG.Token.documentClass = HarnMasterTokenDocument;
     CONFIG.Token.objectClass = HarnMasterToken;
+    CONFIG.Wall.objectClass = HarnMasterWall;
 
     // Register sheet application classes
     Actors.unregisterSheet('core', ActorSheet);
