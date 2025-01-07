@@ -9,7 +9,7 @@
     "core": {}
   },
   "system": {
-    "notes": "JARIND language family & Common Language on Hârn (living)",
+    "notes": "Common Language on Hârn (living) & JARIND language family",
     "description": "<p>All characters begin play with at least one Native Tongue, determined by birthplace. Some characters may be bilingual. The GM will tell you the name of your native tongue(s). On Hârn, it is usually Hârnic.</p><p>Languages are tested only on special occasions, such as when foreigners converse. Characters are presumed to speak their native tongues well enough to make success rolls unnecessary. The EML of a skill using language can never exceed language ML in the tongue used.</p>",
     "source": "HM3 Skills 10",
     "macros": {

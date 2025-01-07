@@ -2,7 +2,7 @@
   "_id": "sW40MFdYzQTMf60O",
   "name": "Kurbul Rerebraces",
   "type": "armorgear",
-  "img": "systems/hm3/images/icons/svg/armor.svg",
+  "img": "systems/hm3/images/icons/svg/bracer.svg",
   "effects": [],
   "folder": "JD5aWyIFHJQTSkqB",
   "flags": {
@@ -17,8 +17,8 @@
       "command": ""
     },
     "quantity": 1,
-    "value": 0,
-    "weight": 0,
+    "value": 30,
+    "weight": 1.5,
     "isCarried": true,
     "isEquipped": true,
     "container": "on-person",

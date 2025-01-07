@@ -1,15 +1,15 @@
-2024/08/20-18:43:37.638 31d8 Recovering log #126
-2024/08/20-18:43:37.646 31d8 Delete type=0 #126
-2024/08/20-18:43:37.646 31d8 Delete type=3 #124
-2024/08/20-18:43:37.661 488c Level-0 table #132: started
-2024/08/20-18:43:37.666 488c Level-0 table #132: 91988 bytes OK
-2024/08/20-18:43:37.666 488c Delete type=0 #130
-2024/08/20-18:43:37.666 488c Manual compaction at level-0 from '!folders!F942jQieSSl65G9g' @ 72057594037927935 : 1 .. '!items!yfgUwqqlG4F6HHXo' @ 0 : 0; will stop at (end)
-2024/08/20-18:43:37.666 488c Manual compaction at level-1 from '!folders!F942jQieSSl65G9g' @ 72057594037927935 : 1 .. '!items!yfgUwqqlG4F6HHXo' @ 0 : 0; will stop at '!items!yfgUwqqlG4F6HHXo' @ 1727 : 1
-2024/08/20-18:43:37.666 488c Compacting 1@1 + 1@2 files
-2024/08/20-18:43:37.684 488c Generated table #133@1: 169 keys, 91988 bytes
-2024/08/20-18:43:37.684 488c Compacted 1@1 + 1@2 files => 91988 bytes
-2024/08/20-18:43:37.686 488c compacted to: files[ 0 0 1 0 0 0 0 ]
-2024/08/20-18:43:37.687 488c Delete type=2 #128
-2024/08/20-18:43:37.687 488c Delete type=2 #132
-2024/08/20-18:43:37.687 488c Manual compaction at level-1 from '!items!yfgUwqqlG4F6HHXo' @ 1727 : 1 .. '!items!yfgUwqqlG4F6HHXo' @ 0 : 0; will stop at (end)
+2024/11/14-10:18:54.868 c7c Recovering log #131
+2024/11/14-10:18:54.885 c7c Delete type=0 #131
+2024/11/14-10:18:54.886 c7c Delete type=3 #129
+2024/11/14-10:18:54.911 74dc Level-0 table #137: started
+2024/11/14-10:18:54.929 74dc Level-0 table #137: 91823 bytes OK
+2024/11/14-10:18:54.932 74dc Delete type=0 #135
+2024/11/14-10:18:54.940 74dc Manual compaction at level-0 from '!folders!F942jQieSSl65G9g' @ 72057594037927935 : 1 .. '!items!yfgUwqqlG4F6HHXo' @ 0 : 0; will stop at (end)
+2024/11/14-10:18:54.940 74dc Manual compaction at level-1 from '!folders!F942jQieSSl65G9g' @ 72057594037927935 : 1 .. '!items!yfgUwqqlG4F6HHXo' @ 0 : 0; will stop at '!items!yfgUwqqlG4F6HHXo' @ 1896 : 1
+2024/11/14-10:18:54.940 74dc Compacting 1@1 + 1@2 files
+2024/11/14-10:18:54.964 74dc Generated table #138@1: 169 keys, 91823 bytes
+2024/11/14-10:18:54.964 74dc Compacted 1@1 + 1@2 files => 91823 bytes
+2024/11/14-10:18:54.964 74dc compacted to: files[ 0 0 1 0 0 0 0 ]
+2024/11/14-10:18:54.964 74dc Delete type=2 #133
+2024/11/14-10:18:54.964 74dc Delete type=2 #137
+2024/11/14-10:18:54.964 74dc Manual compaction at level-1 from '!items!yfgUwqqlG4F6HHXo' @ 1896 : 1 .. '!items!yfgUwqqlG4F6HHXo' @ 0 : 0; will stop at (end)
