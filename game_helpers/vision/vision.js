@@ -34,6 +34,27 @@ let dialogEditor = new Dialog({
                 dialogEditor.render(true);
             }
         },
+        vision50: {
+            label: `V 50`,
+            callback: () => {
+                token.document.update({sight: {enabled: true, visionMode: 'basic', range: 50}});
+                dialogEditor.render(true);
+            }
+        },
+        vision100: {
+            label: `V 100`,
+            callback: () => {
+                token.document.update({sight: {enabled: true, visionMode: 'basic', range: 100}});
+                dialogEditor.render(true);
+            }
+        },
+        vision200: {
+            label: `V 200`,
+            callback: () => {
+                token.document.update({sight: {enabled: true, visionMode: 'basic', range: 200}});
+                dialogEditor.render(true);
+            }
+        },
         blind: {
             label: `Blinded`,
             callback: () => {

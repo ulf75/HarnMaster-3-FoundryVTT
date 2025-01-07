@@ -11,8 +11,8 @@ let dialogEditor = new Dialog({
         none: {
             label: `None`,
             callback: () => {
-                token?.document.update({light: {dim: 0, bright: 0, color: '#000000', alpha: 1, animation: {type: 'none'}}});
-                light?.document.update({config: {dim: 0, bright: 0, color: '#000000', alpha: 1, animation: {type: 'none'}}});
+                token?.document.update({light: {dim: 0, bright: 0, color: '#000000', alpha: 1, attenuation: 0.5, animation: {type: 'none'}}});
+                light?.document.update({config: {dim: 0, bright: 0, color: '#000000', alpha: 1, attenuation: 0.5, animation: {type: 'none'}}});
                 dialogEditor.render(true);
             }
         },
@@ -20,10 +20,26 @@ let dialogEditor = new Dialog({
             label: `Candle`,
             callback: () => {
                 token?.document.update({
-                    light: {dim: 15, bright: 10, color: '#ff830f', alpha: 0.5, angle: 360, animation: {type: 'torch', speed: 25, intensity: 3}}
+                    light: {
+                        alpha: 0.25,
+                        angle: 360,
+                        animation: {type: 'torch', speed: 25, intensity: 5},
+                        attenuation: 0.7,
+                        bright: 10,
+                        color: '#ff830f',
+                        dim: 15
+                    }
                 });
                 light?.document.update({
-                    config: {dim: 15, bright: 10, color: '#ff830f', alpha: 0.5, angle: 360, animation: {type: 'flame', speed: 25, intensity: 3}}
+                    config: {
+                        alpha: 0.25,
+                        angle: 360,
+                        animation: {type: 'flame', speed: 25, intensity: 3},
+                        attenuation: 0.7,
+                        bright: 10,
+                        color: '#ff830f',
+                        dim: 15
+                    }
                 });
                 dialogEditor.render(true);
             }
@@ -32,10 +48,26 @@ let dialogEditor = new Dialog({
             label: `Torch`,
             callback: () => {
                 token?.document.update({
-                    light: {dim: 40, bright: 20, color: '#ff830f', alpha: 0.5, angle: 360, animation: {type: 'torch', speed: 5, intensity: 5}}
+                    light: {
+                        alpha: 0.25,
+                        angle: 360,
+                        animation: {type: 'torch', speed: 6, intensity: 10},
+                        attenuation: 0.7,
+                        bright: 20,
+                        color: '#ff830f',
+                        dim: 40
+                    }
                 });
                 light?.document.update({
-                    config: {dim: 40, bright: 20, color: '#ff830f', alpha: 0.5, angle: 360, animation: {type: 'flame', speed: 5, intensity: 5}}
+                    config: {
+                        alpha: 0.25,
+                        angle: 360,
+                        animation: {type: 'flame', speed: 5, intensity: 5},
+                        attenuation: 0.7,
+                        bright: 20,
+                        color: '#ff830f',
+                        dim: 40
+                    }
                 });
                 dialogEditor.render(true);
             }
@@ -44,10 +76,26 @@ let dialogEditor = new Dialog({
             label: `Lamp`,
             callback: () => {
                 token?.document.update({
-                    light: {dim: 45, bright: 15, color: '#ffa200', alpha: 0.5, angle: 360, animation: {type: 'torch', speed: 3, intensity: 3}}
+                    light: {
+                        alpha: 0.25,
+                        angle: 360,
+                        animation: {type: 'torch', speed: 3, intensity: 3},
+                        attenuation: 0.5,
+                        bright: 15,
+                        color: '#ffa200',
+                        dim: 45
+                    }
                 });
                 light?.document.update({
-                    config: {dim: 45, bright: 15, color: '#ffa200', alpha: 0.5, angle: 360, animation: {type: 'flame', speed: 3, intensity: 3}}
+                    config: {
+                        alpha: 0.25,
+                        angle: 360,
+                        animation: {type: 'flame', speed: 3, intensity: 3},
+                        attenuation: 0.5,
+                        bright: 15,
+                        color: '#ffa200',
+                        dim: 45
+                    }
                 });
                 dialogEditor.render(true);
             }
@@ -56,10 +104,26 @@ let dialogEditor = new Dialog({
             label: `HoodedLantern(O)`,
             callback: () => {
                 token?.document.update({
-                    light: {dim: 60, bright: 30, color: '#ffa200', alpha: 0.5, angle: 360, animation: {type: 'torch', speed: 3, intensity: 3}}
+                    light: {
+                        alpha: 0.25,
+                        angle: 360,
+                        animation: {type: 'torch', speed: 3, intensity: 3},
+                        attenuation: 0.5,
+                        bright: 30,
+                        color: '#ffa200',
+                        dim: 60
+                    }
                 });
                 light?.document.update({
-                    config: {dim: 60, bright: 30, color: '#ffa200', alpha: 0.5, angle: 360, animation: {type: 'flame', speed: 3, intensity: 3}}
+                    config: {
+                        alpha: 0.25,
+                        angle: 360,
+                        animation: {type: 'flame', speed: 3, intensity: 3},
+                        attenuation: 0.5,
+                        bright: 30,
+                        color: '#ffa200',
+                        dim: 60
+                    }
                 });
                 dialogEditor.render(true);
             }
@@ -68,7 +132,15 @@ let dialogEditor = new Dialog({
             label: `HoodedLantern(C)`,
             callback: () => {
                 token?.document.update({
-                    light: {dim: 5, bright: 0, color: '#ffa200', alpha: 0.5, angle: 360, animation: {type: 'torch', speed: 3, intensity: 3}}
+                    light: {
+                        alpha: 0.25,
+                        angle: 360,
+                        animation: {type: 'torch', speed: 3, intensity: 3},
+                        attenuation: 0.5,
+                        bright: 0,
+                        color: '#ffa200',
+                        dim: 5
+                    }
                 });
                 dialogEditor.render(true);
             }
@@ -77,7 +149,32 @@ let dialogEditor = new Dialog({
             label: `CampFire`,
             callback: () => {
                 light?.document.update({
-                    config: {dim: 60, bright: 30, color: '#ff830f', alpha: 0.5, angle: 360, animation: {type: 'flame', speed: 4, intensity: 4}}
+                    config: {
+                        alpha: 0.25,
+                        angle: 360,
+                        animation: {type: 'flame', speed: 5, intensity: 6},
+                        attenuation: 0.7,
+                        bright: 30,
+                        color: '#ff830f',
+                        dim: 60
+                    }
+                });
+                dialogEditor.render(true);
+            }
+        },
+        moon: {
+            label: `Moon`,
+            callback: () => {
+                light?.document.update({
+                    config: {
+                        alpha: 0.25,
+                        angle: 360,
+                        animation: {type: 'fog', speed: 1, intensity: 1},
+                        attenuation: 1,
+                        bright: 0,
+                        color: '#484956',
+                        dim: 60
+                    }
                 });
                 dialogEditor.render(true);
             }
