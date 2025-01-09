@@ -877,12 +877,12 @@ export class HarnMasterActor extends Actor {
                     if (typeof armorMap[l] != 'undefined') {
                         // Add this armor's protection to the location
                         if (itemData.hasOwnProperty('protection')) {
-                            armorMap[l].blunt += itemData.protection.blunt;
-                            armorMap[l].edged += itemData.protection.edged;
-                            armorMap[l].piercing += itemData.protection.piercing;
-                            armorMap[l].fire += itemData.protection.fire;
-                            armorMap[l].squeeze += itemData.protection.squeeze;
-                            armorMap[l].tear += itemData.protection.tear;
+                            armorMap[l].blunt += Math.min(2 * itemData.protection.blunt, itemData.protection.blunt + itemData.armorQuality);
+                            armorMap[l].edged += Math.min(2 * itemData.protection.edged, itemData.protection.edged + itemData.armorQuality);
+                            armorMap[l].piercing += Math.min(2 * itemData.protection.piercing, itemData.protection.piercing + itemData.armorQuality);
+                            armorMap[l].fire += Math.min(2 * itemData.protection.fire, itemData.protection.fire + itemData.armorQuality);
+                            armorMap[l].squeeze += Math.min(2 * itemData.protection.squeeze, itemData.protection.squeeze + itemData.armorQuality);
+                            armorMap[l].tear += Math.min(2 * itemData.protection.tear, itemData.protection.tear + itemData.armorQuality);
                         }
 
                         // if a material has been specified, add it to the layers
