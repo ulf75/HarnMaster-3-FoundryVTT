@@ -17,8 +17,8 @@
       "command": ""
     },
     "quantity": 1,
-    "value": 101,
-    "weight": 7.6,
+    "value": 112,
+    "weight": 8.4,
     "isCarried": true,
     "isEquipped": true,
     "container": "on-person",

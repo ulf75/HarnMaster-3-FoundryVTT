@@ -17,8 +17,8 @@
       "command": ""
     },
     "quantity": 1,
-    "value": 194,
-    "weight": 14.5,
+    "value": 176,
+    "weight": 13.2,
     "isCarried": true,
     "isEquipped": true,
     "container": "on-person",
@@ -30,7 +30,7 @@
     },
     "material": "Quilt",
     "armorQuality": 0,
-    "locations": ["Upper Arm", "Forearm", "Shoulder", "Thorax", "Abdomen", "Hip", "Groin"],
+    "locations": ["Upper Arm", "Shoulder", "Thorax", "Abdomen", "Hip", "Groin"],
     "protection": {
       "blunt": 5,
       "edged": 3,
