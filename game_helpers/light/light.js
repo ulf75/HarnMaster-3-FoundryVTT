@@ -1,3 +1,23 @@
+const FIRE_COLOR = '#ad641f'; // #eccd8b  | #ff9500 | #ff830f | #ad641f
+const LAMP_COLOR = '#eccd8b'; // #ffa200
+const MOON_COLOR = '#484956'; // #484956
+
+const LIGHT_ALPHA = 0.75;
+const LIGHT_ANIM_TYPE = 'torch'; // flame | torch
+const LIGHT_ATTENUATION = 0.6;
+const TOKEN_ALPHA = 0.75;
+const TOKEN_ANIM_TYPE = 'torch'; // flame | torch
+const TOKEN_ATTENUATION = 0.6;
+
+const NONE = 'none';
+
+const CANDLE = [1, 2];
+const TORCH = [4, 8];
+const LAMP = [2, 4];
+const LANTERN = [4, 8];
+const BRAZIER = [5, 10];
+const CAMP_FIRE = [6, 12];
+
 if (canvas.tokens.controlled.length !== 1 && canvas.lighting.controlled.length !== 1) {
     ui.notifications.error('Please select ONE token or light source!');
     return null;
@@ -21,24 +41,24 @@ let dialogEditor = new Dialog({
             callback: () => {
                 token?.document.update({
                     light: {
-                        alpha: 0.25,
+                        alpha: TOKEN_ALPHA,
                         angle: 360,
-                        animation: {type: 'torch', speed: 25, intensity: 5},
-                        attenuation: 0.7,
-                        bright: 10,
-                        color: '#ff830f',
-                        dim: 15
+                        animation: {type: TOKEN_ANIM_TYPE, speed: 15, intensity: 3},
+                        attenuation: TOKEN_ATTENUATION,
+                        bright: 5 * CANDLE[0],
+                        color: FIRE_COLOR,
+                        dim: 5 * CANDLE[1]
                     }
                 });
                 light?.document.update({
                     config: {
-                        alpha: 0.25,
+                        alpha: LIGHT_ALPHA,
                         angle: 360,
-                        animation: {type: 'flame', speed: 25, intensity: 3},
-                        attenuation: 0.7,
-                        bright: 10,
-                        color: '#ff830f',
-                        dim: 15
+                        animation: {type: LIGHT_ANIM_TYPE, speed: 15, intensity: 3},
+                        attenuation: LIGHT_ATTENUATION,
+                        bright: 5 * CANDLE[0],
+                        color: FIRE_COLOR,
+                        dim: 5 * CANDLE[1]
                     }
                 });
                 dialogEditor.render(true);
@@ -49,24 +69,24 @@ let dialogEditor = new Dialog({
             callback: () => {
                 token?.document.update({
                     light: {
-                        alpha: 0.25,
+                        alpha: TOKEN_ALPHA,
                         angle: 360,
-                        animation: {type: 'torch', speed: 6, intensity: 10},
-                        attenuation: 0.7,
-                        bright: 20,
-                        color: '#ff830f',
-                        dim: 40
+                        animation: {type: TOKEN_ANIM_TYPE, speed: 4, intensity: 4},
+                        attenuation: TOKEN_ATTENUATION,
+                        bright: 5 * TORCH[0],
+                        color: FIRE_COLOR,
+                        dim: 5 * TORCH[1]
                     }
                 });
                 light?.document.update({
                     config: {
-                        alpha: 0.25,
+                        alpha: LIGHT_ALPHA,
                         angle: 360,
-                        animation: {type: 'flame', speed: 5, intensity: 5},
-                        attenuation: 0.7,
-                        bright: 20,
-                        color: '#ff830f',
-                        dim: 40
+                        animation: {type: LIGHT_ANIM_TYPE, speed: 4, intensity: 4},
+                        attenuation: LIGHT_ATTENUATION,
+                        bright: 5 * TORCH[0],
+                        color: FIRE_COLOR,
+                        dim: 5 * TORCH[1]
                     }
                 });
                 dialogEditor.render(true);
@@ -77,24 +97,24 @@ let dialogEditor = new Dialog({
             callback: () => {
                 token?.document.update({
                     light: {
-                        alpha: 0.25,
+                        alpha: TOKEN_ALPHA,
                         angle: 360,
-                        animation: {type: 'torch', speed: 3, intensity: 3},
-                        attenuation: 0.5,
-                        bright: 15,
-                        color: '#ffa200',
-                        dim: 45
+                        animation: {type: TOKEN_ANIM_TYPE, speed: 3, intensity: 3},
+                        attenuation: TOKEN_ATTENUATION,
+                        bright: 5 * LAMP[0],
+                        color: LAMP_COLOR,
+                        dim: 5 * LAMP[1]
                     }
                 });
                 light?.document.update({
                     config: {
-                        alpha: 0.25,
+                        alpha: LIGHT_ALPHA,
                         angle: 360,
-                        animation: {type: 'flame', speed: 3, intensity: 3},
-                        attenuation: 0.5,
-                        bright: 15,
-                        color: '#ffa200',
-                        dim: 45
+                        animation: {type: LIGHT_ANIM_TYPE, speed: 3, intensity: 3},
+                        attenuation: LIGHT_ATTENUATION,
+                        bright: 5 * LAMP[0],
+                        color: LAMP_COLOR,
+                        dim: 5 * LAMP[1]
                     }
                 });
                 dialogEditor.render(true);
@@ -105,24 +125,24 @@ let dialogEditor = new Dialog({
             callback: () => {
                 token?.document.update({
                     light: {
-                        alpha: 0.25,
+                        alpha: TOKEN_ALPHA,
                         angle: 360,
-                        animation: {type: 'torch', speed: 3, intensity: 3},
-                        attenuation: 0.5,
-                        bright: 30,
-                        color: '#ffa200',
-                        dim: 60
+                        animation: {type: TOKEN_ANIM_TYPE, speed: 3, intensity: 3},
+                        attenuation: TOKEN_ATTENUATION,
+                        bright: 5 * LANTERN[0],
+                        color: LAMP_COLOR,
+                        dim: 5 * LANTERN[1]
                     }
                 });
                 light?.document.update({
                     config: {
-                        alpha: 0.25,
+                        alpha: LIGHT_ALPHA,
                         angle: 360,
-                        animation: {type: 'flame', speed: 3, intensity: 3},
-                        attenuation: 0.5,
-                        bright: 30,
-                        color: '#ffa200',
-                        dim: 60
+                        animation: {type: LIGHT_ANIM_TYPE, speed: 3, intensity: 3},
+                        attenuation: LIGHT_ATTENUATION,
+                        bright: 5 * LANTERN[0],
+                        color: LAMP_COLOR,
+                        dim: 5 * LANTERN[1]
                     }
                 });
                 dialogEditor.render(true);
@@ -135,11 +155,50 @@ let dialogEditor = new Dialog({
                     light: {
                         alpha: 0.25,
                         angle: 360,
-                        animation: {type: 'torch', speed: 3, intensity: 3},
-                        attenuation: 0.5,
+                        animation: {type: NONE},
+                        attenuation: TOKEN_ATTENUATION,
                         bright: 0,
-                        color: '#ffa200',
-                        dim: 5
+                        color: LAMP_COLOR,
+                        dim: 2
+                    }
+                });
+                light?.document.update({
+                    config: {
+                        alpha: 0.25,
+                        angle: 360,
+                        animation: {type: NONE},
+                        attenuation: LIGHT_ATTENUATION,
+                        bright: 0,
+                        color: LAMP_COLOR,
+                        dim: 2
+                    }
+                });
+                dialogEditor.render(true);
+            }
+        },
+        brazier: {
+            label: `Brazier`,
+            callback: () => {
+                token?.document.update({
+                    light: {
+                        alpha: TOKEN_ALPHA,
+                        angle: 360,
+                        animation: {type: TOKEN_ANIM_TYPE, speed: 4, intensity: 3},
+                        attenuation: TOKEN_ATTENUATION,
+                        bright: 5 * BRAZIER[0],
+                        color: FIRE_COLOR,
+                        dim: 5 * BRAZIER[1]
+                    }
+                });
+                light?.document.update({
+                    config: {
+                        alpha: LIGHT_ALPHA,
+                        angle: 360,
+                        animation: {type: LIGHT_ANIM_TYPE, speed: 4, intensity: 3},
+                        attenuation: LIGHT_ATTENUATION,
+                        bright: 5 * BRAZIER[0],
+                        color: FIRE_COLOR,
+                        dim: 5 * BRAZIER[1]
                     }
                 });
                 dialogEditor.render(true);
@@ -148,15 +207,26 @@ let dialogEditor = new Dialog({
         campFire: {
             label: `CampFire`,
             callback: () => {
+                token?.document.update({
+                    light: {
+                        alpha: TOKEN_ALPHA,
+                        angle: 360,
+                        animation: {type: TOKEN_ANIM_TYPE, speed: 4, intensity: 3},
+                        attenuation: TOKEN_ATTENUATION,
+                        bright: 5 * CAMP_FIRE[0],
+                        color: FIRE_COLOR,
+                        dim: 5 * CAMP_FIRE[1]
+                    }
+                });
                 light?.document.update({
                     config: {
-                        alpha: 0.25,
+                        alpha: LIGHT_ALPHA,
                         angle: 360,
-                        animation: {type: 'flame', speed: 5, intensity: 6},
-                        attenuation: 0.7,
-                        bright: 30,
-                        color: '#ff830f',
-                        dim: 60
+                        animation: {type: LIGHT_ANIM_TYPE, speed: 4, intensity: 3},
+                        attenuation: LIGHT_ATTENUATION,
+                        bright: 5 * CAMP_FIRE[0],
+                        color: FIRE_COLOR,
+                        dim: 5 * CAMP_FIRE[1]
                     }
                 });
                 dialogEditor.render(true);
