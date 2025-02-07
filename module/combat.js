@@ -680,23 +680,37 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         // weapon as "unequipped"
 
         if (weaponBroke.attackWeaponBroke) {
-            const item = atkToken.actor.items.get(atkWeapon.id);
-            combatResult.outcome.dta = true;
-            await item.update({
-                'system.isEquipped': false,
-                'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-                'system.weaponQuality': item.system.weaponQuality - 1
-            });
+            try {
+                const item = atkToken.actor.items.get(atkWeapon.id);
+                await item.update({
+                    'system.isEquipped': false,
+                    'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
+                    'system.weaponQuality': item.system.weaponQuality - 1
+                });
+            } catch (ex) {
+                ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${atkToken?.actor?.name}`, {
+                    permanent: true
+                });
+            } finally {
+                combatResult.outcome.dta = true;
+            }
         }
 
         if (weaponBroke.defendWeaponBroke) {
-            const item = defToken.actor.items.get(defWeapon.id);
-            combatResult.outcome.ata = true;
-            await item.update({
-                'system.isEquipped': false,
-                'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-                'system.weaponQuality': item.system.weaponQuality - 1
-            });
+            try {
+                const item = defToken.actor.items.get(defWeapon.id);
+                await item.update({
+                    'system.isEquipped': false,
+                    'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
+                    'system.weaponQuality': item.system.weaponQuality - 1
+                });
+            } catch (ex) {
+                ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`, {
+                    permanent: true
+                });
+            } finally {
+                combatResult.outcome.ata = true;
+            }
         }
     }
 
