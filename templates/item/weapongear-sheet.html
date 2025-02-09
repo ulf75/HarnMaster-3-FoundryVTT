@@ -65,12 +65,17 @@
                 <div></div>
                 <div></div>
                 <div></div>
+                <div class="resource" id="weapongear-wq-mod">
+                    <label class="resource-label">WQ Modifier</label>
+                    <input type="number" name="system.wqModifier" value="{{idata.wqModifier}}"
+                        data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                </div>
                 <div class="resource" id="weapongear-attack-mod">
                     <label class="resource-label">Attack Modifier</label>
                     <input type="number" name="system.attackModifier" value="{{idata.attackModifier}}"
                         data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
                 </div>
-                <div class="resource"></div>
+                <!-- <div class="resource"></div> -->
                 <div class="resource"></div>
                 <div></div>
                 <div></div>

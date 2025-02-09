@@ -42,6 +42,12 @@ export class HarnMasterItemSheet extends ItemSheet {
         data.strictMode = game.settings.get('hm3', 'strictGmMode');
         data.hasRwPermission = data.isGM || !data.strictMode;
         data.isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
+        data.idata.wqModifier = data.idata.wqModifier | 0;
+
+        // if (data.itemType === ItemType.ARMORGEAR) {
+        //     if (!data.idata.baseValue) data.idata.baseValue = data.idata.value;
+        //     data.idata.value = Math.ceil(data.idata.baseValue * 2 ** data.idata.armorQuality * game.hm3.config.sizes[data.idata.size]);
+        // }
 
         data.macroTypes = [
             {key: 'chat', label: 'Chat'},

@@ -1190,23 +1190,37 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         // weapon as "unequipped"
 
         if (weaponBroke.attackWeaponBroke) {
-            const item = atkToken.actor.items.get(atkWeapon.id);
-            combatResult.outcome.dta = true;
-            await item.update({
-                'system.isEquipped': false,
-                'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-                'system.weaponQuality': item.system.weaponQuality - 1
-            });
+            try {
+                const item = atkToken.actor.items.get(atkWeapon.id);
+                await item.update({
+                    'system.isEquipped': false,
+                    'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
+                    'system.weaponQuality': item.system.weaponQuality - 1
+                });
+            } catch (ex) {
+                ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`, {
+                    permanent: true
+                });
+            } finally {
+                combatResult.outcome.dta = true;
+            }
         }
 
         if (weaponBroke.defendWeaponBroke) {
-            const item = defToken.actor.items.get(defWeapon.id);
-            combatResult.outcome.ata = true;
-            await item.update({
-                'system.isEquipped': false,
-                'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-                'system.weaponQuality': item.system.weaponQuality - 1
-            });
+            try {
+                const item = defToken.actor.items.get(defWeapon.id);
+                await item.update({
+                    'system.isEquipped': false,
+                    'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
+                    'system.weaponQuality': item.system.weaponQuality - 1
+                });
+            } catch (ex) {
+                ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`, {
+                    permanent: true
+                });
+            } finally {
+                combatResult.outcome.ata = true;
+            }
         }
     }
 
@@ -1337,8 +1351,8 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     let atkWeaponBroke = false;
     let defWeaponBroke = false;
 
-    const atkWeaponQuality = atkWeapon.system.weaponQuality;
-    const defWeaponQuality = defWeapon.system.weaponQuality;
+    const atkWeaponQuality = atkWeapon.system.weaponQuality + (atkWeapon.system.wqModifier | 0);
+    const defWeaponQuality = defWeapon.system.weaponQuality + (defWeapon.system.wqModifier | 0);
 
     const atkBreakRoll = await new Roll('3d6').evaluate();
     const defBreakRoll = await new Roll('3d6').evaluate();
@@ -1367,7 +1381,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
 
     chatData.tokenName = atkToken.name;
     chatData.weaponName = atkWeapon.name;
-    chatData.weaponQuality = atkWeapon.system.weaponQuality;
+    chatData.weaponQuality = atkWeapon.system.weaponQuality + (atkWeapon.system.wqModifier | 0);
     chatData.weaponBroke = atkWeaponBroke;
     chatData.rollValue = atkBreakRoll.total;
     chatData.actorId = atkWeapon.parent;
@@ -1387,7 +1401,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
 
     chatData.tokenName = defToken.name;
     chatData.weaponName = defWeapon.name;
-    chatData.weaponQuality = defWeapon.system.weaponQuality;
+    chatData.weaponQuality = defWeapon.system.weaponQuality + (defWeapon.system.wqModifier | 0);
     chatData.weaponBroke = defWeaponBroke;
     chatData.rollValue = defBreakRoll.total;
     chatData.actorId = defWeapon.parent;
