@@ -8,26 +8,28 @@
                 <div class="flexrow name-attribute">
                     <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
                     <div class="header-stat-block">
-                        <div class="endurance flexrow">
+                        <!-- <div class="endurance flexrow">
                             <span class="label">Shock Index: {{adata.shockIndex.value}}</span>
                         </div>
                         <div class="endbar">
                             <span class="bar" style="width: {{adata.shockIndex.value}}%"></span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="header-attributes">
                     <ol class="flexrow">
                         <li class="attribute creature-species flexcol">
+                            <label class="label">Race</label>
+                            <input class="value" type="text" name="system.species" value="{{adata.species}}" data-dtype="String"/>
                         </li>
-                        <li class="attribute move flexcol">
+                        <!-- <li class="attribute move flexcol">
                             <label class="label">Move</label>
                             <div class="flexrow move-values">
                                 <span class="move-eff">{{adata.move.effective}}</span>
                                 <span class="sep">/</span>
                                 <input class="move-base" type="number" name="system.move.base" value="{{adata.move.base}}" data-dtype="Number"/>
                             </div>
-                        </li>
+                        </li> -->
                     </ol>
                 </div>
             </div>

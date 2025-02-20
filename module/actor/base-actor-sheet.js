@@ -168,6 +168,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : b?.name.toLowerCase() > a?.name.toLowerCase() ? -1 : 0
         );
 
+        // default species for character is Human
+        if (this.actor.type === ActorType.CHARACTER && data.adata.species.length === 0) data.adata.species = 'Human';
+
         return data;
     }
 

@@ -915,7 +915,6 @@ section.highlight {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 100px;
     flex: 0 0 100px;
-    border-right: 2px groove #eeede0;
 }
 
 .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move {
