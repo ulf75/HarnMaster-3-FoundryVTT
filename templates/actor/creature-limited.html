@@ -18,9 +18,15 @@
                 </div>
                 <div class="header-attributes">
                     <ol class="flexrow">
-                        <li class="attribute creature-species flexcol">
+                        <li class="attribute species flexcol">
                             <label class="label">Race</label>
                             <input class="value" type="text" name="system.species" value="{{adata.species}}" data-dtype="String"/>
+                        </li>
+                        <li class="attribute size flexcol">
+                            <label class="label">Size</label>
+                            <select class="value" name="system.size" disabled>
+                                {{selectOptions config.creatureSizes selected=adata.size valueAttr="key" labelAttr="label"}}
+                            </select>
                         </li>
                         <!-- <li class="attribute move flexcol">
                             <label class="label">Move</label>

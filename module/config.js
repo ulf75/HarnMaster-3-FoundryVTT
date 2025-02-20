@@ -49,6 +49,20 @@ HM3.months = [
     {key: 'Morgat'}
 ];
 
+HM3.sizes = [0, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4];
+
+HM3.creatureSizes = [
+    {key: 0, label: 'Insectile'},
+    {key: 2, label: 'Tiny'},
+    {key: 3, label: 'Very Small'},
+    {key: 4, label: 'Small'},
+    {key: 6, label: 'Medium'},
+    {key: 8, label: 'Large'},
+    {key: 10, label: 'Very Large'},
+    {key: 12, label: 'Huge'},
+    {key: 20, label: 'Gargantuan'}
+];
+
 HM3.ITEM_TYPE_LABEL = {
     skill: {singular: 'Skill', plural: 'Skills'},
     spell: {singular: 'Spell', plural: 'Spells'},
