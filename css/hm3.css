@@ -905,10 +905,16 @@ section.highlight {
 }
 
 .hm3 .sheet .sheet-header-character .header-fields .header-attributes .creature-species {
-    -webkit-box-flex: 1;
-    -ms-flex: 1 0 100px;
-    flex: 1 0 100px;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 150px;
+    flex: 0 0 150px;
     border-right: 2px groove #eeede0;
+}
+
+.hm3 .sheet .sheet-header-character .header-fields .header-attributes .creature-size {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 150px;
+    flex: 0 0 150px;
 }
 
 .hm3 .sheet .sheet-header-character .header-fields .header-attributes .gender {

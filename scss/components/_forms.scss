@@ -132,8 +132,13 @@
             }
 
             .creature-species {
-                flex: 1 0 100px;
+                flex: 0 0 150px;
                 border-right: 2px groove #eeede0;
+            }
+
+            .creature-size {
+                flex: 0 0 150px;
+                // border-right: 2px groove #eeede0;
             }
 
             .gender {
