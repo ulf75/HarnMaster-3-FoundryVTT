@@ -1,4 +1,5 @@
 import * as combat from './combat.js';
+import * as berserk from './condition/berserk.js';
 import * as grappled from './condition/grappled.js';
 import * as prone from './condition/prone.js';
 import * as shocked from './condition/shocked.js';
@@ -1818,6 +1819,7 @@ export async function createActiveEffect(effectData, changes = [], options = {})
     });
 
     if (options.unique && hasActiveEffect(effectData.token, effectData.label)) {
+        ui.notifications.warn(`Effect ${effectData.label} is unique and already exists.`);
         return null;
     }
 
@@ -1880,9 +1882,19 @@ export async function createCondition(token, condition) {
     let effect;
     switch (condition) {
         case Condition.BLINDED:
+        case Condition.BROKEN:
+        case Condition.CAUTIOUS:
         case Condition.DEAFENED:
+        case Condition.DESPERATE:
         case Condition.INCAPACITATED:
             console.info(`HM3 | Condition '${condition}' not yet implemented.`);
+            break;
+
+        case Condition.BERSERK:
+            {
+                const {effectData, changes, options} = await berserk.createBerserkCondition(token);
+                effect = await createActiveEffect(effectData, changes, options);
+            }
             break;
 
         case Condition.GRAPPLED:

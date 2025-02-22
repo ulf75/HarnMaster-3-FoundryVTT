@@ -41,11 +41,30 @@ export const Aspect = Object.freeze({
  * Condition types enum. A Condition is just a special type of Active Effect.
  */
 export const Condition = Object.freeze({
+    /**@constant {string} - This is a special state of battle frenzy. Any character who enters this mode must take the most
+     * aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike.
+     * Further Initiative rolls are ignored until the battle ends. (COMBAT 16) */
+    BERSERK: 'Berserk',
+
     /**@constant {string} - EYE to 0. COMBAT, CRAFT, MAGIC & PHYSICAL skills to 05. */
     BLINDED: 'Blinded',
 
+    /**@constant {string} - The character is unable to fight in any useful way. The only available options are flight or
+     * surrender. Flight is normally preferable; surrender is a last resort. If neither is feasible, the character makes
+     * a Rest or Pass action option, but can defend if attacked except that Counterstrike is prohibited. (COMBAT 16) */
+    BROKEN: 'Broken',
+
+    /**@constant {string} - A cautious character will not Engage, must choose Pass if engaged, and cannot select the
+     * Counterstrike defense. (COMBAT 16) */
+    CAUTIOUS: 'Cautious',
+
     /**@constant {string} - HRG to 0. */
     DEAFENED: 'Deafened',
+
+    /**@constant {string} - Character tries to conclude the battle, one way or the other, as soon as possible. Until
+     * the situation changes and a new Initiative Test is passed, the character selects the most aggressive option
+     * available. (COMBAT 16) */
+    DESPERATE: 'Desperate',
 
     /**@constant {string} - MOV to 0. Only GRAPPLE_ATTACK or PASS actions. Only GRAPPLE or IGNORE defenses. */
     GRAPPLED: 'Grappled',
