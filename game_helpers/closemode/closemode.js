@@ -15,8 +15,7 @@ let dialogEditor = new Dialog({
         none: {
             label: `None`,
             callback: () => {
-                const effect = game.hm3.macros.getActiveEffect(token, CLOSE, true);
-                if (effect) effect.delete();
+                game.hm3.macros.getActiveEffect(token, CLOSE, true)?.delete();
                 dialogEditor.render(true);
             }
         },

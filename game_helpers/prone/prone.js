@@ -13,11 +13,7 @@ let dialogEditor = new Dialog({
         prone: {
             label: PRONE,
             callback: async () => {
-                if (token.hasCondition(PRONE)) {
-                    ui.notifications.info(`${token.name} is already PRONE.`);
-                } else {
-                    game.hm3.macros.createCondition(token, PRONE);
-                }
+                game.hm3.macros.createCondition(token, PRONE);
                 dialogEditor.render(true);
             }
         },
@@ -25,12 +21,7 @@ let dialogEditor = new Dialog({
         rise: {
             label: `Rise`,
             callback: async () => {
-                const effect = game.hm3.macros.getActiveEffect(token, PRONE, true);
-                if (effect) {
-                    effect.delete();
-                } else {
-                    ui.notifications.info(`${token.name} is not PRONE.`);
-                }
+                game.hm3.macros.getActiveEffect(token, PRONE, true)?.delete();
                 dialogEditor.render(true);
             }
         },

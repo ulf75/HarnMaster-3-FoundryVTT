@@ -13,12 +13,7 @@ let dialogEditor = new Dialog({
         normal: {
             label: `Normal`,
             callback: async () => {
-                const effect = game.hm3.macros.getActiveEffect(token, BERSERK, true);
-                if (effect) {
-                    effect.delete();
-                } else {
-                    ui.notifications.info(`${token.name} is not BERSERK.`);
-                }
+                game.hm3.macros.getActiveEffect(token, BERSERK, true)?.delete();
                 dialogEditor.render(true);
             }
         },
@@ -26,11 +21,7 @@ let dialogEditor = new Dialog({
         berserk: {
             label: BERSERK,
             callback: async () => {
-                if (token.hasCondition(BERSERK)) {
-                    ui.notifications.info(`${token.name} is already BERSERK.`);
-                } else {
-                    game.hm3.macros.createCondition(token, BERSERK);
-                }
+                game.hm3.macros.createCondition(token, BERSERK);
                 dialogEditor.render(true);
             }
         },
