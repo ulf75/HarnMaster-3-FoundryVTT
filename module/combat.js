@@ -166,61 +166,61 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
  *
  * No die rolling occurs as a result of this function, only the declaration of the attack.
  *
- * @param attackToken {Token} Token representing attacker
- * @param defendToken {Token} Token representing defender
+ * @param atkToken {Token} Token representing attacker
+ * @param defToken {Token} Token representing defender
  * @param weaponItem {Item} Melee weapon used by attacker
  */
-export async function meleeAttack(attackToken, defendToken, weaponItem = null, unarmed = false) {
-    if (!attackToken) {
+export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed = false) {
+    if (!atkToken) {
         ui.notifications.warn(`No attacker token identified.`);
         return null;
     }
 
-    if (!isValidToken(attackToken)) {
-        console.error(`HM3 | meleeAttack attackToken=${attackToken} is not valid.`);
+    if (!isValidToken(atkToken)) {
+        console.error(`HM3 | meleeAttack attackToken=${atkToken} is not valid.`);
         return null;
     }
 
-    if (!defendToken) {
+    if (!defToken) {
         ui.notifications.warn(`No defender token identified.`);
         return null;
     }
 
-    if (!isValidToken(defendToken)) {
-        console.error(`HM3 | meleeAttack defendToken=${defendToken} is not valid.`);
+    if (!isValidToken(defToken)) {
+        console.error(`HM3 | meleeAttack defendToken=${defToken} is not valid.`);
         return null;
     }
 
-    if (!attackToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+    if (!atkToken.isOwner) {
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
-    if (attackToken.hasCondition(Condition.SHOCKED)) {
+    if (atkToken.hasCondition(Condition.SHOCKED)) {
         ui.notifications.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
         return null;
     }
 
-    if (attackToken.hasCondition(Condition.UNCONSCIOUS)) {
+    if (atkToken.hasCondition(Condition.UNCONSCIOUS)) {
         ui.notifications.warn(`You cannot attack while you are '${Condition.UNCONSCIOUS}'.`);
         return null;
     }
 
-    const targetRange = rangeToTarget(attackToken, defendToken, true);
+    const targetRange = rangeToTarget(atkToken, defToken, true);
     if (targetRange > 1) {
-        const msg = `Target ${defendToken.name} is outside of melee range for attacker ${attackToken.name}; range=${targetRange}.`;
+        const msg = `Target ${defToken.name} is outside of melee range for attacker ${atkToken.name}; range=${targetRange}.`;
         console.warn(msg);
         ui.notifications.warn(msg);
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: attackToken.document});
+    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
 
     // display dialog, get aspect, aim, and addl damage
     const options = {
         type: 'Attack',
-        attackerName: attackToken.name,
-        defenderName: defendToken.name,
+        attackerName: atkToken.name,
+        defenderName: defToken.name,
         unarmed
     };
 
@@ -229,13 +229,13 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null, u
         if (weaponItem.system.isEquipped) {
             options['weapon'] = weaponItem;
         } else {
-            ui.notifications.warn(`For ${attackToken.name} ${weaponItem.name} is not equipped.`);
+            ui.notifications.warn(`For ${atkToken.name} ${weaponItem.name} is not equipped.`);
             return null;
         }
     } else {
-        const defWpns = defaultMeleeWeapon(attackToken);
+        const defWpns = defaultMeleeWeapon(atkToken);
         if (!defWpns.weapons || !defWpns.weapons.length) {
-            ui.notifications.warn(`${attackToken.name} does not have any equipped melee weapons.`);
+            ui.notifications.warn(`${atkToken.name} does not have any equipped melee weapons.`);
             return null;
         }
         options['weapons'] = defWpns.weapons;
@@ -243,12 +243,12 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null, u
     }
 
     options['defaultModifier'] = 0;
-    if (attackToken.actor?.system?.eph?.meleeAMLMod !== undefined) {
-        options['defaultModifier'] += attackToken.actor.system.eph.meleeAMLMod;
+    if (atkToken.actor?.system?.eph?.meleeAMLMod !== undefined) {
+        options['defaultModifier'] += atkToken.actor.system.eph.meleeAMLMod;
     }
 
     // A character who is attacking (or being attacked by) a prone enemy increases EML by 20. (COMBAT 11)
-    const prone = defendToken.hasCondition(Condition.PRONE);
+    const prone = defToken.hasCondition(Condition.PRONE);
     if (prone) {
         options['defaultModifier'] += 20;
     }
@@ -267,34 +267,39 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null, u
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
-    const grappled = defendToken.hasCondition(Condition.GRAPPLED);
-    const incapacitated = defendToken.hasCondition(Condition.INCAPACITATED);
-    const shocked = defendToken.hasCondition(Condition.SHOCKED);
-    const stunned = defendToken.hasCondition(Condition.STUNNED);
-    const unconscious = defendToken.hasCondition(Condition.UNCONSCIOUS);
+    const berserk = defToken.hasCondition(Condition.BERSERK);
+    const grappled = defToken.hasCondition(Condition.GRAPPLED);
+    const incapacitated = defToken.hasCondition(Condition.INCAPACITATED);
+    const shocked = defToken.hasCondition(Condition.SHOCKED);
+    const stunned = defToken.hasCondition(Condition.STUNNED);
+    const unconscious = defToken.hasCondition(Condition.UNCONSCIOUS);
 
     const type = dialogResult.isGrappleAtk ? 'Grapple' : 'Melee';
     const chatTemplateData = {
-        title: `${weaponItem.name} ${type} Attack`,
-        attacker: attackToken.name,
-        atkTokenId: attackToken.id,
-        defender: defendToken.name,
-        defTokenId: defendToken.id,
-        weaponType: 'melee',
-        weaponName: weaponItem.name,
-        aim: dialogResult.aim,
-        aspect: dialogResult.aspect,
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
         addlModifierSign: dialogResult.addlModifier < 0 ? '-' : '+',
-        origAML: weaponItem.system.attackMasteryLevel,
+        aim: dialogResult.aim,
+        aspect: dialogResult.aspect,
+        atkBerserk: atkToken.hasCondition(Condition.BERSERK),
+        atkProne: atkToken.hasCondition(Condition.PRONE),
+        atkTokenId: atkToken.id,
+        attacker: atkToken.name,
+        defBerserk: defToken.hasCondition(Condition.BERSERK),
+        defender: defToken.name,
+        defProne: defToken.hasCondition(Condition.PRONE),
+        defTokenId: defToken.id,
         effAML: effAML,
-        impactMod: dialogResult.impactMod,
-        hasDodge: !(grappled || incapacitated || shocked || stunned || unconscious),
-        hasBlock: !(grappled || incapacitated || shocked || stunned || unconscious) && !dialogResult.isGrappleAtk,
+        hasBlock: !(berserk || grappled || incapacitated || shocked || stunned || unconscious) && !dialogResult.isGrappleAtk,
         hasCounterstrike: !(incapacitated || shocked || stunned || unconscious),
+        hasDodge: !(berserk || grappled || incapacitated || shocked || stunned || unconscious),
         hasIgnore: true,
-        visibleActorId: defendToken.actor.id,
-        isGrappleAtk: !!dialogResult.isGrappleAtk
+        impactMod: dialogResult.impactMod,
+        isGrappleAtk: !!dialogResult.isGrappleAtk,
+        origAML: weaponItem.system.attackMasteryLevel,
+        title: `${weaponItem.name} ${type} Attack`,
+        visibleActorId: defToken.actor.id,
+        weaponName: weaponItem.name,
+        weaponType: 'melee'
     };
 
     const html = await renderTemplate(chatTemplate, chatTemplateData);
@@ -622,6 +627,14 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         options.defaultModifier += 20;
     }
 
+    // This is a special state of battle frenzy. Any character who enters this mode must take the most
+    // aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike.
+    // Further Initiative rolls are ignored until the battle ends. (COMBAT 16)
+    const berserk = defToken.hasCondition(Condition.BERSERK);
+    if (berserk) {
+        options.defaultModifier += 20;
+    }
+
     const csDialogResult = await attackDialog(options);
     if (!csDialogResult) return null;
 
@@ -780,6 +793,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         addlWeaponImpact: 0, // in future, maybe ask this in dialog?
         atkAim: csDialogResult.aim,
         atkAspect: csDialogResult.aspect,
+        atkBerserk: atkToken.hasCondition(Condition.BERSERK),
         atkIsCritical: csRoll.isCritical,
         atkIsSuccess: csRoll.isSuccess,
         atkProne: atkToken.hasCondition(Condition.PRONE),
@@ -788,6 +802,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         attacker: defToken.name,
         attackRoll: csRoll.rollObj.total,
         attackWeapon: csDialogResult.weapon.name,
+        defBerserk: defToken.hasCondition(Condition.BERSERK),
         defender: atkToken.name,
         defenseRoll: 0,
         defProne: defToken.hasCondition(Condition.PRONE),

@@ -1890,6 +1890,9 @@ export async function createCondition(token, condition) {
             console.info(`HM3 | Condition '${condition}' not yet implemented.`);
             break;
 
+        // This is a special state of battle frenzy. Any character who enters this mode must take the most
+        // aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike.
+        // Further Initiative rolls are ignored until the battle ends. (COMBAT 16)
         case Condition.BERSERK:
             {
                 const {effectData, changes, options} = await berserk.createBerserkCondition(token);
@@ -1932,7 +1935,7 @@ export async function createCondition(token, condition) {
             break;
 
         default:
-            console.error('HM3 | No valid condition.');
+            ui.notifications.error(`${condition} is no valid condition.`);
     }
 
     return effect;

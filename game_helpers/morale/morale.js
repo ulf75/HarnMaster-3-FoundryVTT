@@ -1,4 +1,7 @@
 const BERSERK = 'Berserk';
+const BROKEN = 'Broken';
+const CAUTIOUS = 'Cautious';
+const DESPERATE = 'Desperate';
 
 if (canvas.tokens.controlled.length !== 1) {
     ui.notifications.error('Please select ONE token!');
@@ -7,13 +10,20 @@ if (canvas.tokens.controlled.length !== 1) {
 
 const token = canvas.tokens.controlled[0];
 
+function deleteMorale() {
+    game.hm3.macros.getActiveEffect(token, BERSERK, true)?.delete();
+    game.hm3.macros.getActiveEffect(token, BROKEN, true)?.delete();
+    game.hm3.macros.getActiveEffect(token, CAUTIOUS, true)?.delete();
+    game.hm3.macros.getActiveEffect(token, DESPERATE, true)?.delete();
+}
+
 let dialogEditor = new Dialog({
-    title: 'Berserk',
+    title: 'Morale',
     buttons: {
         normal: {
             label: `Normal`,
             callback: async () => {
-                game.hm3.macros.getActiveEffect(token, BERSERK, true)?.delete();
+                deleteMorale();
                 dialogEditor.render(true);
             }
         },
@@ -21,7 +31,35 @@ let dialogEditor = new Dialog({
         berserk: {
             label: BERSERK,
             callback: async () => {
+                deleteMorale();
                 game.hm3.macros.createCondition(token, BERSERK);
+                dialogEditor.render(true);
+            }
+        },
+
+        broken: {
+            label: BROKEN,
+            callback: async () => {
+                deleteMorale();
+                game.hm3.macros.createCondition(token, BROKEN);
+                dialogEditor.render(true);
+            }
+        },
+
+        cautious: {
+            label: CAUTIOUS,
+            callback: async () => {
+                deleteMorale();
+                game.hm3.macros.createCondition(token, CAUTIOUS);
+                dialogEditor.render(true);
+            }
+        },
+
+        desperate: {
+            label: DESPERATE,
+            callback: async () => {
+                deleteMorale();
+                game.hm3.macros.createCondition(token, DESPERATE);
                 dialogEditor.render(true);
             }
         },

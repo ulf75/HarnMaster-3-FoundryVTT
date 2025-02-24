@@ -10,6 +10,36 @@
     </div>
     {{/if}}
 
+    {{#if atkBerserk}}
+    <div class="card-content center">
+        <span class="notice-header">Attacker Berserker</span>
+    </div>
+    {{/if}}
+
+    {{#if atkProne}}
+    <div class="card-content center">
+        <span class="notice-header">Attacker Prone</span>
+    </div>
+    {{/if}}
+
+    {{#if outnumbered}}
+    <div class="card-content center">
+        <span class="notice-header">Defender Outnumbered {{outnumbered}}:1</span>
+    </div>
+    {{/if}}
+
+    {{#if defBerserk}}
+    <div class="card-content center">
+        <span class="notice-header">Defender Berserker</span>
+    </div>
+    {{/if}}
+
+    {{#if defProne}}
+    <div class="card-content center">
+        <span class="notice-header">Defender Prone</span>
+    </div>
+    {{/if}}
+    
     <div class="grid grid-2col">
         <div class="card-content center">
             <div class="flexrow">
