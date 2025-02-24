@@ -1887,7 +1887,7 @@ export async function createCondition(token, condition) {
         case Condition.DEAFENED:
         case Condition.DESPERATE:
         case Condition.INCAPACITATED:
-            console.info(`HM3 | Condition '${condition}' not yet implemented.`);
+            ui.notifications.info(`Condition '${condition}' not yet implemented.`);
             break;
 
         // This is a special state of battle frenzy. Any character who enters this mode must take the most
