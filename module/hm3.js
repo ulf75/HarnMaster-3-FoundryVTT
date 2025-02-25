@@ -41,7 +41,7 @@ Hooks.once('init', async function () {
         config: HM3,
         macros: macros,
         migrations: migrations,
-        enums: {ActorType, Aspect, Hook, ItemType, Location, Range, SkillType}
+        enums: {ActorType, Aspect, Condition, Hook, ItemType, Location, Range, SkillType}
     };
 
     /**
