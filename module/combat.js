@@ -1,6 +1,6 @@
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
-import {Aspect, Condition} from './hm3-types.js';
+import {ActorType, Aspect, Condition} from './hm3-types.js';
 
 /**
  * Initiates a missile attack.
@@ -578,7 +578,11 @@ function defaultMeleeWeapon(token) {
     }
 
     return {
-        weapons: equippedWeapons,
+        weapons: equippedWeapons.sort((a, b) => {
+            const aMax = Math.max(a.system.blunt, a.system.edged, a.system.piercing);
+            const bMax = Math.max(b.system.blunt, b.system.edged, b.system.piercing);
+            return aMax <= bMax ? 1 : -1;
+        }),
         defaultWeapon: defaultWeapon
     };
 }
@@ -669,6 +673,9 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         await game.dice3d.showForRoll(cRoll, game.user, true);
     }
 
+    const atkDie = atkToken.actor.type === ActorType.CREATURE ? atkToken.actor.system.size : 6;
+    const csDie = defToken.actor.type === ActorType.CREATURE ? defToken.actor.system.size : 6;
+
     // Grapple
     const isGrappleDef = csDialogResult.isGrappleAtk;
 
@@ -681,10 +688,15 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         atkImpactMod,
         csDialogResult.impactMod,
         isGrappleAtk,
-        isGrappleDef
+        isGrappleDef,
+        atkDie,
+        csDie
     );
 
     // If there was a block, check whether a weapon broke
+    const atkWeapon = atkToken.actor.itemTypes.weapongear.find((w) => w.name === atkWeaponName);
+    const defWeapon = csDialogResult.weapon;
+
     let weaponBroke = {attackWeaponBroke: false, defendWeaponBroke: false};
     if (game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block) {
         weaponBroke = await checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon);
@@ -698,7 +710,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
                 await item.update({
                     'system.isEquipped': false,
                     'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-                    'system.weaponQuality': item.system.weaponQuality - 1
+                    'system.wqModifier': (item.system.wqModifier | 0) - weaponBroke.atkWeaponDiff
                 });
             } catch (ex) {
                 ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${atkToken?.actor?.name}`, {
@@ -715,7 +727,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
                 await item.update({
                     'system.isEquipped': false,
                     'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-                    'system.weaponQuality': item.system.weaponQuality - 1
+                    'system.wqModifier': (item.system.wqModifier | 0) - weaponBroke.defWeaponDiff
                 });
             } catch (ex) {
                 ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`, {
@@ -744,12 +756,12 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     // We now know the results of the attack, roll applicable damage
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
     let csImpactRoll = null;
     if (combatResult.outcome.defDice) {
-        csImpactRoll = await new Roll(`${combatResult.outcome.defDice}d6`).evaluate();
+        csImpactRoll = await new Roll(`${combatResult.outcome.defDice}d${csDie}`).evaluate();
     }
 
     const atkChatData = {
@@ -765,6 +777,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         attackRoll: atkRoll.rollObj.total,
         attackWeapon: atkWeaponName,
         defender: defToken.name,
+        defendWeapon: defWeapon.name,
         defense: 'Counterstrike',
         defenseRoll: 0,
         defRollResult: '',
@@ -945,11 +958,13 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         await game.dice3d.showForRoll(dRoll, game.user, true);
     }
 
+    const atkDie = atkToken.actor.type === ActorType.CREATURE ? atkToken.actor.system.size : 6;
+
     const atkResult = `${atkRoll.isCritical ? 'c' : 'm'}${atkRoll.isSuccess ? 's' : 'f'}`;
     const defResult = `${defRoll.isCritical ? 'c' : 'm'}${defRoll.isSuccess ? 's' : 'f'}`;
     let combatResult = null;
     if (type === 'melee') {
-        combatResult = meleeCombatResult(atkResult, defResult, 'dodge', impactMod, 0, isGrappleAtk);
+        combatResult = meleeCombatResult(atkResult, defResult, 'dodge', impactMod, 0, isGrappleAtk, false, atkDie);
     } else {
         combatResult = missileCombatResult(atkResult, defResult, 'dodge', impactMod);
     }
@@ -963,7 +978,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
@@ -1189,9 +1204,11 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     const atkResult = `${atkRoll.isCritical ? 'c' : 'm'}${atkRoll.isSuccess ? 's' : 'f'}`;
     const defResult = `${defRoll.isCritical ? 'c' : 'm'}${defRoll.isSuccess ? 's' : 'f'}`;
 
+    const atkDie = atkToken.actor.type === ActorType.CREATURE ? atkToken.actor.system.size : 6;
+
     let combatResult;
     if (type === 'melee') {
-        combatResult = meleeCombatResult(atkResult, defResult, 'block', impactMod, 0, isGrappleAtk);
+        combatResult = meleeCombatResult(atkResult, defResult, 'block', impactMod, 0, isGrappleAtk, false, atkDie);
     } else {
         combatResult = missileCombatResult(atkResult, defResult, 'block', impactMod);
     }
@@ -1210,7 +1227,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
                 await item.update({
                     'system.isEquipped': false,
                     'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-                    'system.weaponQuality': item.system.weaponQuality - 1
+                    'system.wqModifier': (item.system.wqModifier | 0) - weaponBroke.atkWeaponDiff
                 });
             } catch (ex) {
                 ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`, {
@@ -1227,7 +1244,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
                 await item.update({
                     'system.isEquipped': false,
                     'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-                    'system.weaponQuality': item.system.weaponQuality - 1
+                    'system.wqModifier': (item.system.wqModifier | 0) - weaponBroke.defWeaponDiff
                 });
             } catch (ex) {
                 ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`, {
@@ -1255,7 +1272,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
@@ -1365,6 +1382,8 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     // Weapon Break Check
     let atkWeaponBroke = false;
     let defWeaponBroke = false;
+    let atkWeaponDiff = 0;
+    let defWeaponDiff = 0;
 
     const atkWeaponQuality = atkWeapon.system.weaponQuality + (atkWeapon.system.wqModifier | 0);
     const defWeaponQuality = defWeapon.system.weaponQuality + (defWeapon.system.wqModifier | 0);
@@ -1375,12 +1394,20 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     if (atkWeaponQuality <= defWeaponQuality) {
         // Check attacker first, then defender
         atkWeaponBroke = atkBreakRoll.total > atkWeaponQuality;
+        atkWeaponDiff = atkBreakRoll.total - atkWeaponQuality;
         defWeaponBroke = !atkWeaponBroke && defBreakRoll.total > defWeaponQuality;
+        defWeaponDiff = defBreakRoll.total - defWeaponQuality;
     } else {
         // Check defender first, then attacker
         defWeaponBroke = defBreakRoll.total > defWeaponQuality;
+        defWeaponDiff = defBreakRoll.total - defWeaponQuality;
         atkWeaponBroke = !defWeaponBroke && atkBreakRoll.total > atkWeaponQuality;
+        atkWeaponDiff = atkBreakRoll.total - atkWeaponQuality;
     }
+
+    // SPECIAL: WQ of 0 never breaks and cannot break other weapons
+    if (atkWeaponQuality === 0) atkWeaponBroke = false;
+    if (defWeaponQuality === 0) defWeaponBroke = false;
 
     const chatData = {};
 
@@ -1430,7 +1457,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
 
     await ChatMessage.create(messageData, messageOptions);
 
-    return {attackWeaponBroke: atkWeaponBroke, defendWeaponBroke: defWeaponBroke};
+    return {attackWeaponBroke: atkWeaponBroke, atkWeaponDiff, defendWeaponBroke: defWeaponBroke, defWeaponDiff};
 }
 
 /**
@@ -1470,17 +1497,19 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         await game.dice3d.showForRoll(aRoll, game.user, true);
     }
 
+    const atkDie = atkToken.actor.type === ActorType.CREATURE ? atkToken.actor.system.size : 6;
+
     const atkResult = `${atkRoll.isCritical ? 'c' : 'm'}${atkRoll.isSuccess ? 's' : 'f'}`;
     let combatResult;
     if (type === 'melee') {
-        combatResult = meleeCombatResult(atkResult, null, 'ignore', impactMod, 0, isGrappleAtk);
+        combatResult = meleeCombatResult(atkResult, null, 'ignore', impactMod, 0, isGrappleAtk, false, atkDie);
     } else {
         combatResult = missileCombatResult(atkResult, null, 'ignore', impactMod);
     }
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
@@ -1567,7 +1596,17 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
  * @param {boolean} [isGrappleAtk=false]
  * @param {boolean} [isGrappleDef=false]
  */
-export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact = 0, defAddlImpact = 0, isGrappleAtk = false, isGrappleDef = false) {
+export function meleeCombatResult(
+    atkResult,
+    defResult,
+    defense,
+    atkAddlImpact = 0,
+    defAddlImpact = 0,
+    isGrappleAtk = false,
+    isGrappleDef = false,
+    atkDie = 6,
+    defDie = 6
+) {
     let outcome = null;
     let index = null;
     const defenseTable = isGrappleAtk ? HM3.grappleCombatTable[defense] : HM3.meleeCombatTable[defense];
@@ -1594,7 +1633,7 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact =
         if (outcome.atkHold) {
             result.desc = `Attacker obtains hold.`;
         } else if (outcome.atkDice) {
-            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
+            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact, atkDie)} impact.`;
         } else if (outcome.atkFumble && outcome.defFumble) {
             result.desc = 'Both attacker and defender fumble.';
         } else if (outcome.atkFumble) {
@@ -1618,7 +1657,7 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact =
         } else if (outcome.atkHold) {
             result.desc = `Attacker obtains hold.`;
         } else if (outcome.atkDice) {
-            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
+            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact, atkDie)} impact.`;
         } else if (outcome.atkFumble) {
             result.desc = `Attacker fumbles.`;
         } else if (outcome.atkStumble) {
@@ -1630,7 +1669,7 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact =
         } else if (outcome.defHold) {
             result.csDesc = `Defender obtains hold.`;
         } else if (outcome.defDice) {
-            result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact)} impact.`;
+            result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact, defDie)} impact.`;
         } else if (outcome.defFumble) {
             result.csDesc = 'Counterstriker fumbles.';
         } else if (outcome.defStumble) {
@@ -1692,14 +1731,14 @@ export function missileCombatResult(atkResult, defResult, defense, atkAddlImpact
  * @param {*} numDice  Number of 6-sided dice to include in the formula
  * @param {*} addlImpact Any additional impact to include in the formula
  */
-function diceFormula(numDice, addlImpact) {
+function diceFormula(numDice, addlImpact, die = 6) {
     if (numDice <= 0) {
         return 'no';
     }
     if (addlImpact) {
-        return `${numDice}d6${addlImpact < 0 ? '-' : '+'}${Math.abs(addlImpact)}`;
+        return `${numDice}d${die}${addlImpact < 0 ? '-' : '+'}${Math.abs(addlImpact)}`;
     } else {
-        return `${numDice}d6`;
+        return `${numDice}d${die}`;
     }
 }
 
