@@ -109,15 +109,15 @@
 
     <div class="card-content">
         <div class="flexcol flex-center">
-            <span class="label">Attack Impact (Base + Addl + Roll):</span>
-            <span class="value">{{weaponImpact}} + {{addlWeaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>    
+            <span class="label">Attack Impact (Roll) + Impact + Addl:</span>
+            <span class="value">({{impactRoll}}) + {{weaponImpact}} + {{addlWeaponImpact}} = <strong>{{totalImpact}}</strong></span>    
         </div>
     </div>
     {{else}}
     <div class="card-content">
         <div class="flexcol flex-center">
-            <span class="label">Attack Impact (Base + Roll):</span>
-            <span class="value">{{weaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>    
+            <span class="label">Attack Impact (Roll) + Impact:</span>
+            <span class="value">({{impactRoll}}) + {{weaponImpact}} = <strong>{{totalImpact}}</strong></span>    
         </div>
     </div>
     {{/if}}
