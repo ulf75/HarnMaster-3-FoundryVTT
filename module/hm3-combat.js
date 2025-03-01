@@ -5,7 +5,7 @@ export class HarnMasterCombat extends Combat {
      */
     async startCombat() {
         // Initially remove the Tactical Advantage flag
-        await this.unsetFlag('hm3', 'TA');
+        await game.hm3.socket.executeAsGM('unsetTAFlag');
         return super.startCombat();
     }
 
@@ -29,12 +29,12 @@ export class HarnMasterCombat extends Combat {
         if (postpone > 0) {
             setTimeout(async () => {
                 // Remove the Tactical Advantage flag
-                await this.unsetFlag('hm3', 'TA');
+                await game.hm3.socket.executeAsGM('unsetTAFlag');
                 await super.nextTurn();
             }, postpone);
         } else {
             // Remove the Tactical Advantage flag
-            await this.unsetFlag('hm3', 'TA');
+            await game.hm3.socket.executeAsGM('unsetTAFlag');
             return super.nextTurn();
         }
     }

@@ -451,3 +451,38 @@ Handlebars.registerHelper('multiply', function (op1, op2) {
 Handlebars.registerHelper('endswith', function (op1, op2) {
     return op1.endsWith(op2);
 });
+
+let socket;
+
+Hooks.once('ready', () => {
+    socket = socketlib.registerSystem('hm3');
+    socket.register('isFirstTA', isFirstTA);
+    socket.register('setTAFlag', setTAFlag);
+    socket.register('unsetTAFlag', unsetTAFlag);
+    socket.register('weaponBroke', weaponBroke);
+    game.hm3['socket'] = socket;
+});
+
+function isFirstTA() {
+    return !game.combats?.active?.getFlag('hm3', 'TA');
+}
+
+function setTAFlag() {
+    return game.combats?.active?.setFlag('hm3', 'TA', true);
+}
+
+function unsetTAFlag() {
+    return game.combats?.active?.unsetFlag('hm3', 'TA');
+}
+
+function weaponBroke(tokenId, weaponId, atkWeaponDiff) {
+    const t = canvas.tokens.get(tokenId);
+    console.log(t);
+    const item = t.actor.items.get(weaponId);
+    console.log(item);
+    return item.update({
+        'system.isEquipped': false,
+        'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
+        'system.wqModifier': (item.system.wqModifier | 0) - atkWeaponDiff
+    });
+}

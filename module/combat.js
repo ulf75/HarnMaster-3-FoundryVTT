@@ -706,12 +706,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
 
         if (weaponBroke.attackWeaponBroke) {
             try {
-                const item = atkToken.actor.items.get(atkWeapon.id);
-                await item.update({
-                    'system.isEquipped': false,
-                    'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-                    'system.wqModifier': (item.system.wqModifier | 0) - weaponBroke.atkWeaponDiff
-                });
+                await game.hm3.socket.executeAsGM('weaponBroke', atkToken.id, atkWeapon.id, weaponBroke.atkWeaponDiff);
             } catch (ex) {
                 ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${atkToken?.actor?.name}`, {
                     permanent: true
@@ -723,12 +718,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
 
         if (weaponBroke.defendWeaponBroke) {
             try {
-                const item = defToken.actor.items.get(defWeapon.id);
-                await item.update({
-                    'system.isEquipped': false,
-                    'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-                    'system.wqModifier': (item.system.wqModifier | 0) - weaponBroke.defWeaponDiff
-                });
+                await game.hm3.socket.executeAsGM('weaponBroke', defToken.id, defWeapon.id, weaponBroke.defWeaponDiff);
             } catch (ex) {
                 ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`, {
                     permanent: true
@@ -1176,7 +1166,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     }
 
     // If attacking weapon is a missile and defending weapon is not
-    // a sheild, then it will defend at 1/2 DML.
+    // a shield, then it will defend at 1/2 DML.
     if (type === 'missile') {
         if (!shields.some((s) => s.name === dialogResult.weapon.name)) {
             effDML = Math.max(Math.round(effDML / 2), 5);
@@ -1223,14 +1213,9 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
         if (weaponBroke.attackWeaponBroke) {
             try {
-                const item = atkToken.actor.items.get(atkWeapon.id);
-                await item.update({
-                    'system.isEquipped': false,
-                    'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-                    'system.wqModifier': (item.system.wqModifier | 0) - weaponBroke.atkWeaponDiff
-                });
+                await game.hm3.socket.executeAsGM('weaponBroke', atkToken.id, atkWeapon.id, weaponBroke.atkWeaponDiff);
             } catch (ex) {
-                ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`, {
+                ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${atkToken?.actor?.name}`, {
                     permanent: true
                 });
             } finally {
@@ -1240,12 +1225,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
         if (weaponBroke.defendWeaponBroke) {
             try {
-                const item = defToken.actor.items.get(defWeapon.id);
-                await item.update({
-                    'system.isEquipped': false,
-                    'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-                    'system.wqModifier': (item.system.wqModifier | 0) - weaponBroke.defWeaponDiff
-                });
+                await game.hm3.socket.executeAsGM('weaponBroke', defToken.id, defWeapon.id, weaponBroke.defWeaponDiff);
             } catch (ex) {
                 ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`, {
                     permanent: true
@@ -1874,8 +1854,9 @@ export const displayChatActionButtons = function (message, html, data) {
  *
  * @returns True, if no TA has been received so far in this turn.
  */
-export function isFirstTA() {
-    return !game.combats.active.getFlag('hm3', 'TA');
+async function isFirstTA() {
+    // return !game.combats.active.getFlag('hm3', 'TA');
+    return await game.hm3.socket.executeAsGM('isFirstTA');
 }
 
 /**
@@ -1884,8 +1865,8 @@ export function isFirstTA() {
  * @returns {Promise<boolean>}
  */
 export async function setTA(autoend = false) {
-    if (isFirstTA() && !autoend) {
-        await game.combats.active.setFlag('hm3', 'TA', true);
+    if ((await isFirstTA()) && !autoend) {
+        await game.hm3.socket.executeAsGM('setTAFlag');
         return true;
     } else {
         ui.notifications.info(`No more than one Tactical Advantage may be earned per character turn. Turn ends.`);
