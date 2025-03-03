@@ -41,7 +41,17 @@ Hooks.once('init', async function () {
         config: HM3,
         macros: macros,
         migrations: migrations,
-        enums: {ActorType, Aspect, Condition, Hook, ItemType, Location, Range, SkillType}
+        enums: {ActorType, Aspect, Condition, Hook, ItemType, Location, Range, SkillType},
+        GmSays: async (content, source) => {
+            return ChatMessage.create(
+                {
+                    content: `<div class="chat-card gmsays"><blockquote lang="en"><p>${content}</p><cite>&ndash; ${source}</cite></blockquote></div>`,
+                    speaker: ChatMessage.getSpeaker({alias: 'Gamemaster says...'}),
+                    type: CONST.CHAT_MESSAGE_STYLES.OTHER
+                },
+                {}
+            );
+        }
     };
 
     /**

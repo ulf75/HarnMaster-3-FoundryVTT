@@ -179,6 +179,48 @@
     .emphasize-text {
         font-style: italic;
     }
+
+    &.gmsays {
+        h1,
+        blockquote {
+            border-left: none;
+            font-size: large;
+            font-style: normal;
+            margin: auto;
+            text-align: center;
+        }
+
+        blockquote p {
+            margin: 0;
+        }
+
+        blockquote cite {
+            font-size: medium;
+            margin-top: 1rem;
+        }
+
+        blockquote p b {
+            font-variant-caps: small-caps;
+        }
+
+        blockquote::before,
+        blockquote::after {
+            content: '';
+            align-self: center;
+            background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-6%200%2012%204%22%3E%3Ctext%20x%3D%220%22%20y%3D%222%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%22%20font-size%3D%223%22%20fill%3D%22hsl%28353%2C%2045%25%2C%2030%25%29%22%3E%E2%80%9E%3C%2Ftext%3E%3Cg%20stroke-width%3D%220.1%22%20stroke%3D%22hsl%28353%2C%2045%25%2C%2030%25%29%22%3E%3Cline%20x1%3D%226%22%20x2%3D%221.5%22%20y1%3D%222%22%20y2%3D%222%22%2F%3E%3Cline%20x1%3D%22-6%22%20x2%3D%22-1.5%22%20y1%3D%222%22%20y2%3D%222%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+            /* <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 0 12 4"><text x="0" y="2" text-anchor="middle" font-family="Georgia" font-size="3" fill="hsl(353 60% 60%)">„</text><g stroke-width="0.1" stroke="hsl(353 60% 60%)"><line x1="6" x2="1.5" y1="2" y2="2"/><line x1="-6" x2="-1.5" y1="2" y2="2"/></g></svg> */
+            background-position: center;
+            background-repeat: no-repeat;
+            display: block;
+            height: 2em;
+            width: 100%;
+        }
+
+        blockquote:lang(en)::before,
+        blockquote:lang(de)::after {
+            transform: rotate(0.5turn);
+        }
+    }
 }
 
 .fluff {
