@@ -11,56 +11,56 @@ import {ActorType, Aspect, Condition} from './hm3-types.js';
  *
  * No die rolling occurs as a result of this function, only the declaration of the attack.
  *
- * @param attackToken {Token} Token representing attacker
- * @param defendToken {Token} Token representing defender
+ * @param atkToken {Token} Token representing attacker
+ * @param defToken {Token} Token representing defender
  * @param weaponItem {Item} Missile weapon used by attacker
  */
-export async function missileAttack(attackToken, defendToken, missileItem) {
-    if (!attackToken) {
+export async function missileAttack(atkToken, defToken, missileItem) {
+    if (!atkToken) {
         ui.notifications.warn(`No attacker token identified.`);
         return null;
     }
 
-    if (!isValidToken(attackToken)) {
+    if (!isValidToken(atkToken)) {
         ui.notifications.error(`Attack token not valid.`);
-        console.error(`HM3 | missileAttack attackToken=${attackToken} is not valid.`);
+        console.error(`HM3 | missileAttack atkToken=${atkToken} is not valid.`);
         return null;
     }
 
-    if (!defendToken) {
+    if (!defToken) {
         ui.notifications.warn(`No defender token identified.`);
         return null;
     }
 
-    if (!isValidToken(defendToken)) {
+    if (!isValidToken(defToken)) {
         ui.notifications.error(`Defender token not valid.`);
-        console.error(`HM3 | missileAttack defendToken=${defendToken} is not valid.`);
+        console.error(`HM3 | missileAttack defToken=${defToken} is not valid.`);
         return null;
     }
 
-    if (!attackToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+    if (!atkToken.isOwner) {
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
-    if (attackToken.hasCondition(Condition.SHOCKED)) {
+    if (atkToken.hasCondition(Condition.SHOCKED)) {
         ui.notifications.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
         return null;
     }
 
-    if (attackToken.hasCondition(Condition.UNCONSCIOUS)) {
+    if (atkToken.hasCondition(Condition.UNCONSCIOUS)) {
         ui.notifications.warn(`You cannot attack while you are '${Condition.UNCONSCIOUS}'.`);
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: attackToken.document});
-    const range = rangeToTarget(attackToken, defendToken);
+    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
+    const range = rangeToTarget(atkToken, defToken);
 
     const options = {
         distance: Math.round(range),
         type: 'Attack',
-        attackerName: attackToken.name,
-        defenderName: defendToken.name
+        attackerName: atkToken.name,
+        defenderName: defToken.name
     };
 
     // If a weapon was provided, don't ask for it.
@@ -76,8 +76,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         return null;
     }
 
-    if (attackToken.actor?.system?.eph?.missileAMLMod !== undefined) {
-        options['defaultModifier'] = attackToken.actor.system.eph.missileAMLMod;
+    if (atkToken.actor?.system?.eph?.missileAMLMod !== undefined) {
+        options['defaultModifier'] = atkToken.actor.system.eph.missileAMLMod;
     }
 
     const dialogResult = await attackDialog(options);
@@ -89,13 +89,13 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         missileItem = dialogResult.weapon;
     }
 
-    if (game.settings.get('hm3', 'missileTracking') && attackToken.actor) {
+    if (game.settings.get('hm3', 'missileTracking') && atkToken.actor) {
         if (missileItem.system.quantity <= 0) {
             ui.notifications.warn(`No more ${missileItem.name} left, attack denied.`);
             return null;
         }
 
-        const item = attackToken.actor.items.get(missileItem.id);
+        const item = atkToken.actor.items.get(missileItem.id);
         item.update({'system.quantity': missileItem.system.quantity - 1});
     }
 
@@ -104,18 +104,18 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
-    const grappled = defendToken.hasCondition(Condition.GRAPPLED);
-    const incapacitated = defendToken.hasCondition(Condition.INCAPACITATED);
-    const shocked = defendToken.hasCondition(Condition.SHOCKED);
-    const stunned = defendToken.hasCondition(Condition.STUNNED);
-    const unconscious = defendToken.hasCondition(Condition.UNCONSCIOUS);
+    const grappled = defToken.hasCondition(Condition.GRAPPLED);
+    const incapacitated = defToken.hasCondition(Condition.INCAPACITATED);
+    const shocked = defToken.hasCondition(Condition.SHOCKED);
+    const stunned = defToken.hasCondition(Condition.STUNNED);
+    const unconscious = defToken.hasCondition(Condition.UNCONSCIOUS);
 
     const chatTemplateData = {
         title: `${missileItem.name} Missile Attack`,
-        attacker: attackToken.name,
-        atkTokenId: attackToken.id,
-        defender: defendToken.name,
-        defTokenId: defendToken.id,
+        attacker: atkToken.name,
+        atkTokenId: atkToken.id,
+        defender: defToken.name,
+        defTokenId: defToken.id,
         weaponType: 'missile',
         weaponName: missileItem.name,
         rangeText: dialogResult.range,
@@ -134,7 +134,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         hasBlock: !(grappled || incapacitated || shocked || stunned || unconscious),
         hasCounterstrike: false, // not possible against missile attacks
         hasIgnore: true,
-        visibleActorId: defendToken.actor.id
+        visibleActorId: defToken.actor.id
     };
 
     const html = await renderTemplate(chatTemplate, chatTemplateData);
@@ -177,7 +177,7 @@ export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed
     }
 
     if (!isValidToken(atkToken)) {
-        console.error(`HM3 | meleeAttack attackToken=${atkToken} is not valid.`);
+        console.error(`HM3 | meleeAttack atkToken=${atkToken} is not valid.`);
         return null;
     }
 
@@ -187,7 +187,7 @@ export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed
     }
 
     if (!isValidToken(defToken)) {
-        console.error(`HM3 | meleeAttack defendToken=${defToken} is not valid.`);
+        console.error(`HM3 | meleeAttack defToken=${defToken} is not valid.`);
         return null;
     }
 
@@ -281,6 +281,7 @@ export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed
         aim: dialogResult.aim,
         aspect: dialogResult.aspect,
         atkBerserk: atkToken.hasCondition(Condition.BERSERK),
+        atkCloseMode: atkToken.hasCondition(Condition.CLOSEMODE),
         atkProne: atkToken.hasCondition(Condition.PRONE),
         atkTokenId: atkToken.id,
         attacker: atkToken.name,
@@ -602,7 +603,7 @@ function defaultMeleeWeapon(token) {
 export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod, isGrappleAtk) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
@@ -797,6 +798,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         atkAim: csDialogResult.aim,
         atkAspect: csDialogResult.aspect,
         atkBerserk: atkToken.hasCondition(Condition.BERSERK),
+        atkCloseMode: atkToken.hasCondition(Condition.CLOSEMODE),
         atkIsCritical: csRoll.isCritical,
         atkIsSuccess: csRoll.isSuccess,
         atkProne: atkToken.hasCondition(Condition.PRONE),
@@ -903,7 +905,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
 export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
@@ -1069,7 +1071,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 export async function blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
@@ -1455,7 +1457,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
 export async function ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
@@ -1869,7 +1871,7 @@ export async function setTA(autoend = false) {
         await game.hm3.socket.executeAsGM('setTAFlag');
         return true;
     } else {
-        await game.hm3.GmSays('No more than one <b>Tactical Advantage</b> may be earned per character turn. <b>Turn ends.</b>');
+        await game.hm3.GmSays('No more than one <b>Tactical Advantage</b> may be earned per character turn. <b>Turn ends.</b>', 'Combat 12');
         await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
         return false;
     }
