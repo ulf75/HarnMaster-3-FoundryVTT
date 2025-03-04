@@ -55,26 +55,17 @@ export function getOnTurnStartMacro(token, effect) {
     // If in combat, make a SHOCK roll each turn (SKILLS 22, COMBAT 14)
     return `const token = canvas.tokens.get('${token.id}');
 console.log('HM3 | Combatant ' + token.name + ' makes a SHOCK roll to regain consciousness.');
-await ChatMessage.create({
-    speaker,
-    content: '<div class="chat-card fluff"><p>You need a successful shock roll to regain consciousness.</p></div>'
-});
+await game.hm3.GmSays("<b>" + token.name + "</b> needs a successful shock roll to regain consciousness.", "Combat 14");
 const success = (await game.hm3.macros.shockRoll(false, token.actor)).isSuccess;
 if (success) {
     // Combatant regains consciousness
     console.log('HM3 | Combatant ' + token.name + ' regains consciousness.');
-    await ChatMessage.create({
-        speaker,
-        content: '<div class="chat-card fluff"><p>You regain consciousness!</p><p>You are coming back to your senses, but are you stable?</p></div>'
-    });
+    await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and starts coming back to full senses, though stability remains uncertain. Another <b>Shock Roll</b> is needed.", "Combat 14");
     token.disableCondition('${UNCONSCIOUS}', 500); // postpone a bit
 } else {
     // Combatant stays unconscious
     console.log('HM3 | Combatant ' + token.name + ' stays unconscious.');
-    await ChatMessage.create({
-        speaker,
-        content: '<div class="chat-card fluff"><p>You stay unconscious. Your turn ends.</p></div>'
-    });
+    await game.hm3.GmSays("<b>" + token.name + "</b> stays unconscious. <b>Turn ends.</b>", "Combat 14");
     await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
 }`;
 }

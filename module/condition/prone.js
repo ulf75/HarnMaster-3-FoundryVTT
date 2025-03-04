@@ -14,7 +14,7 @@ export async function createProneCondition(token) {
     const ON_CREATE_MACRO = `const token = canvas.tokens.get('${token.id}');
 console.log('HM3 | Combatant ' + token.name + ' falls prone.');
 if (game.hm3.macros.hasActiveEffect(canvas.tokens.get('${token.id}'), '${UNCONSCIOUS}', true)) return;
-game.hm3.GmSays("<b>" + token.name + "</b> falls prone, getting up takes one action. <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
+await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, getting up takes one action. <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
 `;
 
     const ON_TURN_START_MACRO = `if (game.hm3.macros.hasActiveEffect(canvas.tokens.get('${token.id}'), '${UNCONSCIOUS}', true)) return;
