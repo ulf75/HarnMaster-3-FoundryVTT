@@ -33,10 +33,10 @@ let dialogEditor = new Dialog({
                         flags: {
                             effectmacro: {
                                 onEachTurn: {
-                                    script: `await ChatMessage.create({
-speaker,
-content: "<p>You're fighting with your secondary hand. You get -10 on all attack rolls.</p>",
-});`
+                                    script: `
+                                    const token = canvas.tokens.get('${token.id}');
+                                    await game.hm3.GmSays("<b>" + token.name + "</b> fights with the <b>Secondary Hand</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 3 & 11");
+                                    `
                                 }
                             }
                         }

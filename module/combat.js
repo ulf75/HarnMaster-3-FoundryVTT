@@ -1869,7 +1869,7 @@ export async function setTA(autoend = false) {
         await game.hm3.socket.executeAsGM('setTAFlag');
         return true;
     } else {
-        ui.notifications.info(`No more than one Tactical Advantage may be earned per character turn. Turn ends.`);
+        await game.hm3.GmSays('No more than ONE <b>Tactical Advantage</b> may be earned per character turn. <b>Turn ends.</b>');
         await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
         return false;
     }

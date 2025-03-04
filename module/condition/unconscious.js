@@ -14,10 +14,7 @@ export async function createUnconsciousCondition(token) {
     const ON_CREATE_MACRO = `const token = canvas.tokens.get('${token.id}');
 console.log('HM3 | Combatant ' + token.name + ' fails the SHOCK roll and gets unconscious.');
 await token.combatant.update({defeated: true});
-await ChatMessage.create({
-  speaker,
-  content: '<div class="chat-card fluff"><p>You faint from pain, bloodloss and exertion on your occupied field.</p></div>',
-});`;
+await game.hm3.GmSays("Overwhelmed by pain, blood loss, and exhaustion, <b>" + token.name + "</b> collapses unconscious onto the battlefield, falling <b>Prone</b> amidst the chaos.", "Combat 14");`;
 
     // On disable (regain consciousness), make a last SHOCK roll (SKILLS 22, COMBAT 14)
     const ON_DISABLE_MACRO = `const token = canvas.tokens.get('${token.id}');
@@ -28,21 +25,14 @@ if (ok) {
     // Combatant is back
     console.log('HM3 | Combatant ' + token.name + ' is back.');
     await token.combatant.update({defeated: false});
-    await ChatMessage.create({
-        speaker,
-        content: '<div class="chat-card fluff"><p>You are back and function normally.</p></div>'
-    });
+    await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and resumes functioning normally.", "Combat 14");
 } else {
     // Combatant is now SHOCKED
     console.log('HM3 | Combatant ' + token.name + ' is now SHOCKED.');
     await game.hm3.macros.createCondition(token, '${SHOCKED}');
     const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
     await game.hm3.macros.createInjury({token, name: 'Shock', subType: 'shock', healRate: 4, notes: 'Started: ' + dateTime?.date + ' - ' + dateTime?.time});
-    await ChatMessage.create({
-        speaker,
-        content:
-            '<div class="chat-card fluff"><p>You are in <b>SHOCK</b> and display a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. You are incoherent and gaze helplessly at your injuries.</p></div>'
-    });
+    await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b> and displays a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. <b>" + token.name + "</b> is incoherent and gazes helplessly at the injuries.", "Combat 14");
 }`;
 
     return {

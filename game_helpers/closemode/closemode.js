@@ -33,10 +33,10 @@ let dialogEditor = new Dialog({
                         flags: {
                             effectmacro: {
                                 onTurnStart: {
-                                    script: `await ChatMessage.create({
-speaker,
-content: "<p>You're in close mode. You get -10 on all attack rolls.</p>",
-});`
+                                    script: `
+                                    const token = canvas.tokens.get('${token.id}');
+                                    await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Close Mode</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 11");
+                                    `
                                 }
                             }
                         }
