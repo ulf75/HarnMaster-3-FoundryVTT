@@ -11,13 +11,16 @@ const INDEFINITE = Number.MAX_SAFE_INTEGER;
 export async function createProneCondition(token) {
     if (!token) return;
 
-    const ON_CREATE_MACRO = `const token = canvas.tokens.get('${token.id}');
+    const ON_CREATE_MACRO = `
+const token = canvas.tokens.get('${token.id}');
 console.log('HM3 | Combatant ' + token.name + ' falls prone.');
 if (game.hm3.macros.hasActiveEffect(canvas.tokens.get('${token.id}'), '${UNCONSCIOUS}', true)) return;
-await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, getting up takes one action. <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
+await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, and getting up takes one action. <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
 `;
 
-    const ON_TURN_START_MACRO = `if (game.hm3.macros.hasActiveEffect(canvas.tokens.get('${token.id}'), '${UNCONSCIOUS}', true)) return;
+    const ON_TURN_START_MACRO = `
+const token = canvas.tokens.get('${token.id}');
+if (game.hm3.macros.hasActiveEffect(token, '${UNCONSCIOUS}', true)) return;
 const PRONE = '${PRONE}';
 const PRONE_IMG = '${PRONE_ICON}';
 await Requestor.request({
@@ -33,27 +36,21 @@ await Requestor.request({
                 const effect = game.hm3.macros.getActiveEffect(canvas.tokens.get('${token.id}'), '${PRONE}', true);
                 if (effect) {
                     effect.delete();
-                    await ChatMessage.create({
-                        speaker,
-                        content: '<div class="chat-card fluff"><p>You got up successfully. Your turn ends.</p></div>'
-                    });
+                    await game.hm3.GmSays("<b>" + token.name + "</b> successfully rises from the ground. <b>Turn ends.</b>", "Combat 11");
                     await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
                 }
             },
-            scope: {PRONE: PRONE, speaker: speaker}
+            scope: {PRONE: PRONE}
         },
         {
             label: 'Ignore',
             command: async function () {
-                await ChatMessage.create({
-                    speaker,
-                    content: '<div class="chat-card fluff"><p>Ok, you remain lying on the floor.</p></div>'
-                });
-            },
-            scope: {speaker: speaker}
+                await game.hm3.GmSays("Ok, " + token.name + " remains lying on the floor.", "Combat 11");
+            }
         }
     ]
-});`;
+});
+`;
 
     return {
         effectData: {
