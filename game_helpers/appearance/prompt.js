@@ -10,6 +10,9 @@ const CATARACT =
 const IVINIAN =
     'Create a detailed medieval-style illustration using an earthy, muted color palette with browns, greens, and grays. Incorporate vibrant accents like rich yellows and decorative patterns to add contrast. Use strong, defined outlines combined with intricate interior linework to emphasize texture in clothing, armor, and wooden objects. Apply detailed hatching and stippling techniques to create depth and shading. Employ realistic lighting and natural contrast to highlight focal points. The composition should prioritize dynamic action, expressive poses, and historically inspired attire, with a softly toned background to maintain focus on the main subjects. Capture the aesthetic of traditional historical illustration with attention to period-accurate materials and intricate detailing.';
 
+const MIXED =
+    'Create a detailed medieval-inspired illustration using an earthy, muted color palette dominated by shades of green, brown, and gray. Incorporate vibrant accents such as rich reds, oranges, and yellows to enhance focal points. Emphasize strong, defined outlines combined with intricate interior linework to render textures in clothing, armor, and wooden objects. Use detailed hatching, cross-hatching, and stippling techniques to create shading and depth. Employ realistic lighting with bold shadows, diffused highlights, and natural contrast to enhance mood. Include atmospheric effects like rain, mist, or fire with layered brushwork and softened tones for realism. The composition should prioritize expressive poses, dynamic tension, and historically inspired attire, with a softly toned background to maintain focus on the main subjects. Capture the aesthetic of traditional historical illustration with period-accurate materials, strong storytelling elements, and rich textural detail.';
+
 if (canvas.tokens.controlled.length === 1) {
     const token = canvas.tokens.controlled[0];
     let description = (' ' + token.actor.system.description).slice(1);
@@ -35,7 +38,7 @@ if (canvas.tokens.controlled.length === 1) {
     description = description.replace(/\n/g, '');
     description = description.replace(/&nbsp;/g, '');
 
-    const prompt = `${IVINIAN} ${name} in full-size in portrait format: a medieval/dark age human ${gender} ${description}. For the background, choose something suitable from the occupation. Avoid too many ornaments, example colors and multiple variants of the person.`;
+    const prompt = `${MIXED} ${name} in full-size in portrait format: a medieval/dark age human ${gender} ${description}. For the background, choose something suitable from the occupation. Avoid too many ornaments, example colors and multiple variants of the person.`;
     navigator.clipboard.writeText(prompt);
     ui.notifications.info('LLM prompt copied to clipboard.');
 }
