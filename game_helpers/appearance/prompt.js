@@ -23,6 +23,7 @@ if (canvas.tokens.controlled.length === 1) {
     description = description.replace(/<tr.*">/g, '');
     description = description.replace(/<strong>/g, '');
     description = description.replace(/<tbody>/g, '');
+    description = description.replace(/<tbody.*>/g, '');
     description = description.replace(/<td>/g, '');
     description = description.replace(/<td.*">/g, '');
     description = description.replace(/<table.*">/g, '');
@@ -32,6 +33,7 @@ if (canvas.tokens.controlled.length === 1) {
     description = description.replace(/<\/strong>/g, ': ');
     description = description.replace(/<\/tbody>/g, '');
     description = description.replace(/<\/table>/g, '');
+    description = description.replace(/<\/span>/g, '');
     description = description.replace(/<p>&nbsp;<\/p>/g, '');
     description = description.replace(/<p>/g, '');
     description = description.replace(/<\/p>/g, '');
