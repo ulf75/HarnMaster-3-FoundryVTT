@@ -184,7 +184,7 @@
         h1,
         blockquote {
             border-left: none;
-            color: $hm3-standard;
+            color: $hm3-text;
             font-size: large;
             font-style: normal;
             margin: auto;
@@ -204,7 +204,7 @@
         }
 
         blockquote p b {
-            color: $highlight-2;
+            color: $header-0;
             font-variant-caps: small-caps;
         }
 
