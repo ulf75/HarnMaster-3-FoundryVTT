@@ -184,6 +184,7 @@
         h1,
         blockquote {
             border-left: none;
+            color: $hm3-standard;
             font-size: large;
             font-style: normal;
             margin: auto;
@@ -195,6 +196,7 @@
         }
 
         blockquote cite {
+            color: $hm3-text;
             font-size: medium;
             font-style: normal;
             font-variant-caps: small-caps;
@@ -202,6 +204,7 @@
         }
 
         blockquote p b {
+            color: $highlight-2;
             font-variant-caps: small-caps;
         }
 

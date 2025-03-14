@@ -428,6 +428,7 @@ section.highlight {
 .chat-card.gmsays h1,
 .chat-card.gmsays blockquote {
     border-left: none;
+    color: #6f2a32;
     font-size: large;
     font-style: normal;
     margin: auto;
@@ -439,6 +440,7 @@ section.highlight {
 }
 
 .chat-card.gmsays blockquote cite {
+    color: #454545;
     font-size: medium;
     font-style: normal;
     font-variant-caps: small-caps;
@@ -446,6 +448,7 @@ section.highlight {
 }
 
 .chat-card.gmsays blockquote p b {
+    color: #943840;
     font-variant-caps: small-caps;
 }
 
