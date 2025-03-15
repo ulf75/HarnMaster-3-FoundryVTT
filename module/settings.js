@@ -158,4 +158,22 @@ export const registerSystemSettings = function () {
         default: false,
         type: Boolean
     });
+
+    game.settings.register('hm3', 'showWeather', {
+        name: 'NEW Weather',
+        hint: 'If selected, weather is randomly generated according to HM rules for each watch.',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean
+    });
+
+    game.settings.register('hm3', 'autoMarkUsedSkills', {
+        name: 'NEW Auto Mark Used Skills',
+        hint: 'If selected, the skills used are automatically marked for an SDR.',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean
+    });
 };

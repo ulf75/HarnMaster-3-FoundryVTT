@@ -17,6 +17,7 @@ export class Weather {
     static weather = [];
 
     static async Render() {
+        if (!game.settings.get('hm3', 'showWeather')) return;
         if (!game.user.isGM) return;
         if (!this.dateTimeApi) return;
         if (this.lastWatch === this.Watch()) return;
@@ -61,6 +62,7 @@ export class Weather {
     static async Initialize() {
         this.dateTimeApi = SimpleCalendar?.api;
 
+        if (!game.settings.get('hm3', 'showWeather')) return false;
         if (!this.dateTimeApi) return false;
 
         const data = game.settings.get('hm3', 'weather');
