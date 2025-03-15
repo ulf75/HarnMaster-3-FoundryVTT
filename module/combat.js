@@ -154,6 +154,15 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         foundry.audio.AudioHelper.play({src: 'sounds/drums.wav', autoplay: true, loop: false}, true);
     }
 
+    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+        const skill = options.weapon.system.assocSkill;
+        atkToken.actor.items.forEach((item) => {
+            if (item.name === skill && !item.system.improveFlag) {
+                item.update({'system.improveFlag': true});
+            }
+        });
+    }
+
     return chatTemplateData;
 }
 
@@ -318,6 +327,15 @@ export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed
     await ChatMessage.create(messageData, messageOptions);
     if (game.settings.get('hm3', 'combatAudio')) {
         foundry.audio.AudioHelper.play({src: 'sounds/drums.wav', autoplay: true, loop: false}, true);
+    }
+
+    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+        const skill = options.weapon.system.assocSkill;
+        atkToken.actor.items.forEach((item) => {
+            if (item.name === skill && !item.system.improveFlag) {
+                item.update({'system.improveFlag': true});
+            }
+        });
     }
 
     return chatTemplateData;
@@ -887,6 +905,15 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         await atkToken.addCondition(Condition.GRAPPLED);
     }
 
+    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+        const skill = defWeapon.system.assocSkill;
+        defToken.actor.items.forEach((item) => {
+            if (item.name === skill && !item.system.improveFlag) {
+                item.update({'system.improveFlag': true});
+            }
+        });
+    }
+
     return {atk: atkChatData, cs: csChatData};
 }
 
@@ -1051,6 +1078,14 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     }
     if (combatResult.outcome.defHold) {
         await atkToken.addCondition(Condition.GRAPPLED);
+    }
+
+    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+        defToken.actor.items.forEach((item) => {
+            if (item.name === 'Dodge' && !item.system.improveFlag) {
+                item.update({'system.improveFlag': true});
+            }
+        });
     }
 
     return chatData;
@@ -1337,6 +1372,15 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     }
     if (combatResult.outcome.defHold) {
         await atkToken.addCondition(Condition.GRAPPLED);
+    }
+
+    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+        const skill = defWeapon.system.assocSkill;
+        defToken.actor.items.forEach((item) => {
+            if (item.name === skill && !item.system.improveFlag) {
+                item.update({'system.improveFlag': true});
+            }
+        });
     }
 
     return chatData;

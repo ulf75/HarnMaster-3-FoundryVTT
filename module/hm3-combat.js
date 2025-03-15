@@ -25,6 +25,22 @@ export class HarnMasterCombat extends Combat {
     }
 
     /** @override */
+    async rollInitiative(combatantIds) {
+        if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+            combatantIds.forEach((id) => {
+                const combatant = this.combatants.get(id);
+                combatant.actor.items.forEach((item) => {
+                    if (item.name === 'Initiative' && !item.system.improveFlag) {
+                        item.update({'system.improveFlag': true});
+                    }
+                });
+            });
+        }
+
+        return super.rollInitiative(combatantIds);
+    }
+
+    /** @override */
     async nextTurn(postpone = 0) {
         if (postpone > 0) {
             setTimeout(async () => {

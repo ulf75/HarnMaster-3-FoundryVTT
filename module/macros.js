@@ -274,7 +274,7 @@ export async function skillRoll(itemName, noDialog = false, myActor = null) {
             item.runCustomMacro(result);
             callOnHooks('hm3.onSkillRoll', actor, result, stdRollData, item);
 
-            if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+            if (game.settings.get('hm3', 'autoMarkUsedSkills') && !item.system.improveFlag) {
                 item.update({'system.improveFlag': true});
             }
         }
