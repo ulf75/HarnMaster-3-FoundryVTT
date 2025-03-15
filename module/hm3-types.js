@@ -58,6 +58,9 @@ export const Condition = Object.freeze({
      * Counterstrike defense. (COMBAT 16) */
     CAUTIOUS: 'Cautious',
 
+    /**@constant {string} - TODO */
+    CLOSEMODE: 'Close Mode',
+
     /**@constant {string} - HRG to 0. */
     DEAFENED: 'Deafened',
 

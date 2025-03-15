@@ -273,6 +273,10 @@ export async function skillRoll(itemName, noDialog = false, myActor = null) {
         if (result) {
             item.runCustomMacro(result);
             callOnHooks('hm3.onSkillRoll', actor, result, stdRollData, item);
+
+            if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+                item.update({'system.improveFlag': true});
+            }
         }
         return result;
     }
@@ -746,7 +750,7 @@ export async function missileAttackRoll(itemName, myActor = null) {
 }
 
 export async function injuryRoll(myActor = null, rollData = {}) {
-    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
@@ -962,8 +966,8 @@ export async function dodgeRoll(noDialog = false, myActor = null) {
     return null;
 }
 
-export async function shockRoll(noDialog = false, myActor = null) {
-    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+export async function shockRoll(noDialog = false, myActor = null, token = null) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null, token});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
@@ -972,14 +976,14 @@ export async function shockRoll(noDialog = false, myActor = null) {
     let hooksOk = false;
     let stdRollData = null;
     stdRollData = {
-        type: 'shock',
-        label: `Shock Roll`,
-        target: actorInfo.actor.system.endurance,
-        numdice: actorInfo.actor.system.universalPenalty,
-        notesData: {},
-        speaker: actorInfo.speaker,
         fastforward: noDialog,
-        notes: ''
+        label: `Shock Roll`,
+        notes: '',
+        notesData: {},
+        numdice: actorInfo.actor.system.universalPenalty,
+        speaker: actorInfo.speaker,
+        target: actorInfo.actor.system.endurance,
+        type: 'shock'
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;
@@ -993,19 +997,18 @@ export async function shockRoll(noDialog = false, myActor = null) {
         actorInfo.actor.runCustomMacro(result);
 
         if (result) {
-            const token = canvas.scene.tokens.contents.find((t) => t.actor.id === actorInfo.actor.id);
-            const unconscious = token.hasCondition(Condition.UNCONSCIOUS);
+            const unconscious = token?.hasCondition(Condition.UNCONSCIOUS);
             if (!result.isSuccess) {
                 if (!unconscious) {
                     // 1st failed SHOCK roll - combatant faints and gets unconscious
-                    await token.addCondition(Condition.UNCONSCIOUS);
+                    await token?.addCondition(Condition.UNCONSCIOUS);
                 }
                 // Opponent gains a TA
                 await combat.setTA();
             } else {
                 if (unconscious) {
                     // Combatant is unconscious and regains consciousness
-                    token.disableCondition(Condition.UNCONSCIOUS, 500);
+                    token?.disableCondition(Condition.UNCONSCIOUS, 500);
                 }
             }
 
@@ -1016,22 +1019,23 @@ export async function shockRoll(noDialog = false, myActor = null) {
     return null;
 }
 
-export async function stumbleRoll(noDialog = false, myActor = null) {
-    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+export async function stumbleRoll(noDialog = false, myActor = null, opponentToken = null) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     const stdRollData = {
-        type: 'stumble',
-        label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Stumble Roll`,
-        target: actorInfo.actor.system.eph.stumbleTarget,
-        numdice: 3,
-        notesData: {},
-        speaker: actorInfo.speaker,
         fastforward: noDialog,
-        notes: ''
+        label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Stumble Roll`,
+        notes: '',
+        notesData: {},
+        numdice: 3,
+        opponentToken,
+        speaker: actorInfo.speaker,
+        target: actorInfo.actor.system.eph.stumbleTarget,
+        type: 'stumble'
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;
@@ -1055,22 +1059,24 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
     return null;
 }
 
-export async function fumbleRoll(noDialog = false, myActor = null) {
-    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+export async function fumbleRoll(noDialog = false, myActor = null, opponentToken = null) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     const stdRollData = {
-        type: 'fumble',
-        label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Fumble Roll`,
-        target: actorInfo.actor.system.eph.fumbleTarget,
-        numdice: 3,
-        notesData: {},
-        speaker: actorInfo.speaker,
+        actor: actorInfo.actor,
         fastforward: noDialog,
-        notes: ''
+        label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Fumble Roll`,
+        notes: '',
+        notesData: {},
+        numdice: 3,
+        opponentToken,
+        speaker: actorInfo.speaker,
+        target: actorInfo.actor.system.eph.fumbleTarget,
+        type: 'fumble'
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;
@@ -1604,8 +1610,8 @@ function getUserTargetedToken(combatant) {
     return targetToken;
 }
 
-function getActor({item, actor, speaker} = {}) {
-    const result = {item, actor, speaker};
+function getActor({item, actor, speaker, token} = {}) {
+    const result = {item, actor, speaker, token};
     if (item?.actor) {
         result.actor = item.actor;
         result.speaker = ChatMessage.getSpeaker({actor: result.actor});

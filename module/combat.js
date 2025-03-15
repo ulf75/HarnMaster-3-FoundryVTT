@@ -1857,7 +1857,6 @@ export const displayChatActionButtons = function (message, html, data) {
  * @returns True, if no TA has been received so far in this turn.
  */
 async function isFirstTA() {
-    // return !game.combats.active.getFlag('hm3', 'TA');
     return await game.hm3.socket.executeAsGM('isFirstTA');
 }
 

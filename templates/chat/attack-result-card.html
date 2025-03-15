@@ -16,6 +16,12 @@
     </div>
     {{/if}}
 
+    {{#if atkCloseMode}}
+    <div class="card-content center">
+        <span class="notice-header">Attacker Close Mode</span>
+    </div>
+    {{/if}}
+
     {{#if atkProne}}
     <div class="card-content center">
         <span class="notice-header">Attacker Prone</span>
@@ -138,19 +144,19 @@
         {{/if}}
 
         {{#if isAtkFumbleRoll}}
-        <button data-action="fumble" data-visible-actor-id="{{visibleAtkActorId}}" {{#if atkTokenId}}data-token-id="{{atkTokenId}}"{{else}}data-actor-id="{{visibleAtkActorId}}"{{/if}}>Attacker Fumble Roll</button>
+        <button data-action="fumble" data-visible-actor-id="{{visibleAtkActorId}}" data-opponent-token-id="{{defTokenId}}" {{#if atkTokenId}}data-token-id="{{atkTokenId}}"{{else}}data-actor-id="{{visibleAtkActorId}}"{{/if}}>Attacker Fumble Roll</button>
         {{/if}}
 
         {{#if isDefFumbleRoll}}
-        <button data-action="fumble" data-visible-actor-id="{{visibleDefActorId}}" {{#if defTokenId}}data-token-id="{{defTokenId}}"{{else}}data-actor-id="{{visibleDefActorId}}"{{/if}}>Defender Fumble Roll</button>
+        <button data-action="fumble" data-visible-actor-id="{{visibleDefActorId}}" data-opponent-token-id="{{atkTokenId}}" {{#if defTokenId}}data-token-id="{{defTokenId}}"{{else}}data-actor-id="{{visibleDefActorId}}"{{/if}}>Defender Fumble Roll</button>
         {{/if}}
 
         {{#if isAtkStumbleRoll}}
-        <button data-action="stumble" data-visible-actor-id="{{visibleAtkActorId}}" {{#if atkTokenId}}data-token-id="{{atkTokenId}}"{{else}}data-actor-id="{{visibleAtkActorId}}"{{/if}}>Attacker Stumble Roll</button>
+        <button data-action="stumble" data-visible-actor-id="{{visibleAtkActorId}}" data-opponent-token-id="{{defTokenId}}" {{#if atkTokenId}}data-token-id="{{atkTokenId}}"{{else}}data-actor-id="{{visibleAtkActorId}}"{{/if}}>Attacker Stumble Roll</button>
         {{/if}}
 
         {{#if isDefStumbleRoll}}
-        <button data-action="stumble" data-visible-actor-id="{{visibleDefActorId}}" {{#if defTokenId}}data-token-id="{{defTokenId}}"{{else}}data-actor-id="{{visibleDefActorId}}"{{/if}}>Defender Stumble Roll</button>
+        <button data-action="stumble" data-visible-actor-id="{{visibleDefActorId}}" data-opponent-token-id="{{atkTokenId}}" {{#if defTokenId}}data-token-id="{{defTokenId}}"{{else}}data-actor-id="{{visibleDefActorId}}"{{/if}}>Defender Stumble Roll</button>
         {{/if}}
 
         {{#if isAtkHold}}

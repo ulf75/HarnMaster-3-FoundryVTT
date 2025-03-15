@@ -985,6 +985,17 @@ export class HarnMasterActor extends Actor {
                 return null;
             }
         }
+
+        let opponentToken = null;
+        if (button.dataset.opponentTokenId) {
+            opponentToken = canvas.tokens.get(button.dataset.opponentTokenId);
+            if (!opponentToken) {
+                console.warn(`HM3 | Action=${action}; Cannot find opponent token ${button.dataset.opponentTokenId}`);
+                button.disabled = false;
+                return null;
+            }
+        }
+
         switch (action) {
             case 'injury':
                 macros.injuryRoll(token.actor, {
@@ -1004,6 +1015,7 @@ export class HarnMasterActor extends Actor {
 
             case 'ata-attack':
             case 'dta-attack':
+            case 'ota-attack':
                 macros.weaponAttack(null, false, atkToken, true);
                 break;
 
@@ -1063,15 +1075,15 @@ export class HarnMasterActor extends Actor {
                 break;
 
             case 'shock':
-                macros.shockRoll(false, actor);
+                macros.shockRoll(false, actor, token);
                 break;
 
             case 'stumble':
-                macros.stumbleRoll(false, actor);
+                macros.stumbleRoll(false, actor, opponentToken);
                 break;
 
             case 'fumble':
-                macros.fumbleRoll(false, actor);
+                macros.fumbleRoll(false, actor, opponentToken);
                 break;
 
             case 'throwdown':

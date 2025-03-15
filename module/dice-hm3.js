@@ -241,22 +241,22 @@ export class DiceHM3 {
         const {blind, rollMode, whisper} = this.getRollMode({skill: rollData.skill});
 
         const dialogOptions = {
-            type: rollData.type,
-            target: Number(rollData.target),
+            items: rollData.items,
             label: rollData.label,
             modifier: rollData.modifier || 0,
             numdice: Number(rollData.numdice),
-            items: rollData.items
+            target: Number(rollData.target),
+            type: rollData.type
         };
 
         // Create the Roll instance
         const roll = rollData.fastforward
             ? await DiceHM3.rollTest({
-                  type: rollData.type,
-                  diceSides: 6,
                   diceNum: Number(rollData.numdice),
+                  diceSides: 6,
                   modifier: rollData.modifier || 0,
-                  target: rollData.target
+                  target: rollData.target,
+                  type: rollData.type
               })
             : await DiceHM3.d6Dialog(dialogOptions);
 
@@ -268,43 +268,45 @@ export class DiceHM3 {
 
         const notesData = foundry.utils.mergeObject(rollData.notesData, {
             actor: speaker.alias,
-            target: rollData.target,
+            isSuccess: roll.isSuccess,
             roll: roll.rollObj.total,
             rollText: roll.description,
-            isSuccess: roll.isSuccess
+            target: rollData.target
         });
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : '';
 
-        const isTAPossible = ['fumble', 'shock', 'stumble'].includes(rollData.type);
+        const isTAPossible = ['fumble', 'shock', 'stumble'].includes(rollData.type) && (await game.hm3.socket.executeAsGM('isFirstTA'));
         const addlInfo = !roll.isSuccess && isTAPossible ? 'Opponent gains a Tactical Advantage.' : '';
 
         const chatTemplateData = {
             addlInfo,
+            atkTokenId: rollData.opponentToken?.id,
             description: roll.description,
             isSuccess: roll.isSuccess,
             modifiedTarget: roll.target,
             modifier: roll.modifier,
             notes: renderedNotes,
             origTarget: rollData.target,
+            ota: !roll.isSuccess && isTAPossible, // Opponent TA
             plusMinus: roll.modifier < 0 ? '-' : '+',
             roll: roll,
             rollResult: roll.rollObj.dice[0].values.join(' + '),
             rollValue: roll.rollObj.total,
             showResult: roll.rollObj.dice[0].values.length > 1,
             title: rollData.label,
-            type: roll.type,
-            type: rollData.type
+            type: rollData.type,
+            visibleActorId: rollData.opponentToken?.actor?.id
         };
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user.id,
-            speaker: speaker,
-            content: html.trim(),
             blind,
-            sound: CONFIG.sounds.dice,
+            content: html.trim(),
             roll: roll.rollObj,
+            sound: CONFIG.sounds.dice,
+            speaker: speaker,
+            user: game.user.id,
             whisper
         };
 
@@ -461,6 +463,7 @@ export class DiceHM3 {
 
         const chatTemplateData = foundry.utils.mergeObject(
             {
+                opponentTokenId: rollData.atkToken.id,
                 title: `${rollData.actor.token ? rollData.actor.token.name : rollData.actor.name} Injury`,
                 visibleActorId: rollData.actor.id
             },

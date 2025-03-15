@@ -80,4 +80,13 @@
         {{{fluffResult}}}
     </div>
     {{/if}}
+
+    {{#if ota}}
+    <div class="card-buttons">
+        {{#if ota}}
+        <button data-action="ota-attack" data-visible-actor-id="{{visibleActorId}}" data-atk-token-id="{{atkTokenId}}">Initiate TA Attack</button>
+        <!-- <button data-action="ata-attack"  data-visible-actor-id="{{visibleAtkActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}">Initiate TA Attack</button> -->
+        {{/if}}
+    </div>
+    {{/if}}
 </div>
