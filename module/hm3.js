@@ -43,6 +43,7 @@ Hooks.once('init', async function () {
         migrations: migrations,
         enums: {ActorType, Aspect, Condition, Hook, ItemType, Location, Range, SkillType},
         GmSays: async (content, source) => {
+            console.info(`HM3 | ${content}`);
             return ChatMessage.create(
                 {
                     content: `<div class="chat-card gmsays"><blockquote lang="en"><p>${content}</p><cite>&ndash; ${source}</cite></blockquote></div>`,

@@ -1,6 +1,5 @@
 const PRONE = 'Prone';
 const PRONE_ICON = 'systems/hm3/images/icons/svg/falling.svg';
-const UNCONSCIOUS = 'Unconscious';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
@@ -13,14 +12,14 @@ export async function createProneCondition(token) {
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-console.log('HM3 | Combatant ' + token.name + ' falls prone.');
-if (game.hm3.macros.hasActiveEffect(canvas.tokens.get('${token.id}'), '${UNCONSCIOUS}', true)) return;
-await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, and getting up takes one action. <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
+const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, and getting up takes one action. <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
 `;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-if (game.hm3.macros.hasActiveEffect(token, '${UNCONSCIOUS}', true)) return;
+const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+if (unconscious) return;
 const PRONE = '${PRONE}';
 const PRONE_IMG = '${PRONE_ICON}';
 await Requestor.request({

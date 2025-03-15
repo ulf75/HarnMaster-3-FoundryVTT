@@ -1,4 +1,4 @@
-const CLOSE = 'Close Mode';
+const CLOSE = game.hm3.enums.Condition.CLOSEMODE;
 const CLOSE_IMG = 'systems/hm3/images/icons/svg/spiked-wall.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
@@ -35,7 +35,8 @@ let dialogEditor = new Dialog({
                                 onTurnStart: {
                                     script: `
                                     const token = canvas.tokens.get('${token.id}');
-                                    await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Close Mode</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 11");
+                                    const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+                                    if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Close Mode</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 11");
                                     `
                                 }
                             }

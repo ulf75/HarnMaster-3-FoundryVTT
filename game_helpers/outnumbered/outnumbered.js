@@ -78,7 +78,8 @@ let dialogEditor = new Dialog({
                                 onTurnStart: {
                                     script: `
                                     const token = canvas.tokens.get('${token.id}');
-                                    await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Outnumbered 2:1</b>, and gets -10 on <b>All</b> defense rolls including counterattack.", "Combat 11");
+                                    const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+                                    if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Outnumbered 2:1</b>, and gets -10 on <b>All</b> defense rolls including counterattack.", "Combat 11");
                                     `
                                 }
                             }
@@ -108,7 +109,8 @@ let dialogEditor = new Dialog({
                                 onTurnStart: {
                                     script: `
                                     const token = canvas.tokens.get('${token.id}');
-                                    await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Outnumbered 3:1</b>, and gets -20 on <b>All</b> defense rolls including counterattack.", "Combat 11");
+                                    const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+                                    if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Outnumbered 3:1</b>, and gets -20 on <b>All</b> defense rolls including counterattack.", "Combat 11");
                                     `
                                 }
                             }
@@ -138,7 +140,8 @@ let dialogEditor = new Dialog({
                                 onTurnStart: {
                                     script: `
                                     const token = canvas.tokens.get('${token.id}');
-                                    await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Outnumbered 4:1</b>, and gets -30 on <b>All</b> defense rolls including counterattack.", "Combat 11");
+                                    const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+                                    if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Outnumbered 4:1</b>, and gets -30 on <b>All</b> defense rolls including counterattack.", "Combat 11");
                                     `
                                 }
                             }
@@ -168,7 +171,8 @@ let dialogEditor = new Dialog({
                                 onTurnStart: {
                                     script: `
                                     const token = canvas.tokens.get('${token.id}');
-                                    await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Outnumbered 5:1</b>, and gets -40 on <b>All</b> defense rolls including counterattack.", "Combat 11");
+                                    const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+                                    if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Outnumbered 5:1</b>, and gets -40 on <b>All</b> defense rolls including counterattack.", "Combat 11");
                                     `
                                 }
                             }
@@ -198,7 +202,8 @@ let dialogEditor = new Dialog({
                                 onTurnStart: {
                                     script: `
                                     const token = canvas.tokens.get('${token.id}');
-                                    await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Outnumbered 6:1</b>, and gets -50 on <b>All</b> defense rolls including counterattack.", "Combat 11");
+                                    const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+                                    if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Outnumbered 6:1</b>, and gets -50 on <b>All</b> defense rolls including counterattack.", "Combat 11");
                                     `
                                 }
                             }

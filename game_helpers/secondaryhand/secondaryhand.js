@@ -35,7 +35,8 @@ let dialogEditor = new Dialog({
                                 onEachTurn: {
                                     script: `
                                     const token = canvas.tokens.get('${token.id}');
-                                    await game.hm3.GmSays("<b>" + token.name + "</b> fights with the <b>Secondary Hand</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 3 & 11");
+                                    const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+                                    if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> fights with the <b>Secondary Hand</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 3 & 11");
                                     `
                                 }
                             }
