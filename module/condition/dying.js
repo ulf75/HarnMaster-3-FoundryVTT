@@ -11,7 +11,7 @@ export async function createDyingCondition(token) {
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-await game.hm3.GmSays("<b>" + token.name + "</b> Ulf is unconscious due to the <b>Mortal Wound</b> and is <b>Dying</b>. Life-saving measures should be initiated as quickly as possible.", "Combat 14");
+await game.hm3.GmSays("<b>" + token.name + "</b> is unconscious due to the <b>Mortal Wound</b> and is <b>Dying</b>. Life-saving measures should be initiated as quickly as possible.", "Combat 14");
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 if (!unconscious) await token.addCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 await token.combatant?.delete();
