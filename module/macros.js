@@ -1969,6 +1969,33 @@ export async function createCondition(token, condition) {
             }
             break;
 
+        case Condition.CLOSEMODE:
+            game.hm3.macros.createActiveEffect(
+                {
+                    label: Condition.CLOSEMODE,
+                    icon: 'systems/hm3/images/icons/svg/spiked-wall.svg',
+                    token,
+                    type: 'GameTime',
+                    seconds: INDEFINITE,
+                    flags: {
+                        effectmacro: {
+                            onTurnStart: {
+                                script: `
+                            const token = canvas.tokens.get('${token.id}');
+                            const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+                            if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Close Mode</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 11");
+                            `
+                            }
+                        }
+                    }
+                },
+                [{key: 'eph.meleeAMLMod', mode: 2, value: '-10'}],
+                {
+                    unique: true
+                }
+            );
+            break;
+
         case Condition.DYING:
             {
                 const {effectData, changes, options} = await dying.createDyingCondition(token);
