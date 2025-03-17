@@ -69,6 +69,9 @@ export const Condition = Object.freeze({
      * available. (COMBAT 16) */
     DESPERATE: 'Desperate',
 
+    /**@constant {string} - TODO */
+    DYING: 'Dying',
+
     /**@constant {string} - MOV to 0. Only GRAPPLE_ATTACK or PASS actions. Only GRAPPLE or IGNORE defenses. */
     GRAPPLED: 'Grappled',
 

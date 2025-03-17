@@ -1,5 +1,6 @@
 import * as combat from './combat.js';
 import * as berserk from './condition/berserk.js';
+import * as dying from './condition/dying.js';
 import * as grappled from './condition/grappled.js';
 import * as prone from './condition/prone.js';
 import * as shocked from './condition/shocked.js';
@@ -966,6 +967,67 @@ export async function dodgeRoll(noDialog = false, myActor = null) {
     return null;
 }
 
+/**
+ * TODO
+ * @param {Object} options - Additional options
+ * @param {boolean} [options.noDialog=false] -
+ * @param {boolean} [options.myActor=null] -
+ * @param {boolean} [options.token=null] -
+ * @param {boolean} [options.injuryLevel=0] -
+ */
+export async function killRoll(options) {
+    options = foundry.utils.mergeObject({noDialog: false, myActor: null, token: null, injuryLevel: 0}, options);
+
+    const actorInfo = getActor({actor: options.myActor, item: null, speaker: null, token: options.token});
+    if (!actorInfo) {
+        ui.notifications.warn(`No actor for this action could be determined.`);
+        return null;
+    }
+
+    let hooksOk = false;
+    let stdRollData = null;
+    stdRollData = {
+        fastforward: options.noDialog,
+        label: `Kill Roll`,
+        notes: '',
+        notesData: {},
+        numdice: options.injuryLevel,
+        speaker: actorInfo.speaker,
+        target: actorInfo.actor.system.endurance,
+        type: 'kill'
+    };
+    if (actorInfo.actor.isToken) {
+        stdRollData.token = actorInfo.actor.token.id;
+    } else {
+        stdRollData.actor = actorInfo.actor.id;
+        stdRollData.token = options.token?.id;
+    }
+
+    hooksOk = Hooks.call('hm3.preKillRoll', stdRollData, actorInfo.actor);
+    if (hooksOk) {
+        const result = await DiceHM3.d6Roll(stdRollData);
+        actorInfo.actor.runCustomMacro(result);
+
+        if (result) {
+            if (!result.isSuccess) {
+                // DYING!!!
+                options.token.addCondition(game.hm3.enums.Condition.DYING);
+                const combatant = game.combats.active.getCombatantsByToken(options.token.id);
+                console.log(combatant);
+            } else {
+                await game.hm3.GmSays(
+                    `<b>${options.token.name}</b> just survives this <b>Fatal</b> wound, and makes a normal <b>Shock</b> roll.`,
+                    'Combat 14'
+                );
+            }
+
+            callOnHooks('hm3.onKillRoll', actorInfo.actor, result, stdRollData);
+        }
+        return result;
+    }
+    return null;
+}
+
 export async function shockRoll(noDialog = false, myActor = null, token = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null, token});
     if (!actorInfo) {
@@ -989,6 +1051,7 @@ export async function shockRoll(noDialog = false, myActor = null, token = null) 
         stdRollData.token = actorInfo.actor.token.id;
     } else {
         stdRollData.actor = actorInfo.actor.id;
+        stdRollData.token = token?.id;
     }
 
     hooksOk = Hooks.call('hm3.preShockRoll', stdRollData, actorInfo.actor);
@@ -1906,6 +1969,13 @@ export async function createCondition(token, condition) {
             }
             break;
 
+        case Condition.DYING:
+            {
+                const {effectData, changes, options} = await dying.createDyingCondition(token);
+                effect = await createActiveEffect(effectData, changes, options);
+            }
+            break;
+
         case Condition.GRAPPLED:
             {
                 const {effectData, changes, options} = await grappled.createGrappledCondition(token);
@@ -1931,9 +2001,6 @@ export async function createCondition(token, condition) {
             {
                 const {effectData, changes, options} = await unconscious.createUnconsciousCondition(token);
                 effect = await createActiveEffect(effectData, changes, options);
-
-                // If in combat, make a SHOCK roll each turn (SKILLS 22, COMBAT 14)
-                await effect.setFlag('effectmacro', 'onTurnStart.script', unconscious.getOnTurnStartMacro(token, effect));
 
                 // In addition, the combatant falls prone.
                 await createCondition(token, Condition.PRONE);
@@ -1985,8 +2052,8 @@ export async function createInjury(injuryData, options = {}) {
     }
 
     let sev;
-    if (result.injuryLevel === 1) sev = 'M';
-    else if (result.injuryLevel <= 3) sev = 'S';
+    if (injuryData.injuryLevel === 1) sev = 'M';
+    else if (injuryData.injuryLevel <= 3) sev = 'S';
     else sev = 'G';
 
     const injury = await Item.create(

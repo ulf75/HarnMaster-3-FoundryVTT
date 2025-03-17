@@ -942,6 +942,7 @@ export class HarnMasterActor extends Actor {
         button.disabled = true;
         const action = button.dataset.action;
         const weaponType = button.dataset.weaponType;
+        const injuryLevel = button.dataset.injuryLevel;
 
         let actor = null;
         if (button.dataset.actorId) {
@@ -1076,6 +1077,10 @@ export class HarnMasterActor extends Actor {
 
             case 'shock':
                 macros.shockRoll(false, actor, token);
+                break;
+
+            case 'kill':
+                macros.killRoll({myActor: actor, token, injuryLevel});
                 break;
 
             case 'stumble':

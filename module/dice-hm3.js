@@ -275,7 +275,7 @@ export class DiceHM3 {
         });
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : '';
 
-        const unconscious = canvas.tokens.get(rollData.token).hasCondition(Condition.UNCONSCIOUS);
+        const unconscious = canvas.tokens.get(rollData.token)?.hasCondition(Condition.UNCONSCIOUS);
         const isTAPossible =
             ['fumble', 'shock', 'stumble'].includes(rollData.type) && !unconscious && (await game.hm3.socket.executeAsGM('isFirstTA'));
         const addlInfo = !roll.isSuccess && isTAPossible ? 'Opponent gains a Tactical Advantage.' : '';

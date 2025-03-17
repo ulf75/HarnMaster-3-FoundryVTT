@@ -11,13 +11,15 @@ export async function createUnconsciousCondition(token) {
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-await token.combatant.update({defeated: true});
-await game.hm3.GmSays("Overwhelmed by pain, blood loss, and exhaustion, <b>" + token.name + "</b> collapses unconscious onto the battlefield, falling <b>Prone</b> amidst the chaos.", "Combat 14");
-`;
+const dying = token.hasCondition(game.hm3.enums.Condition.DYING);
+if (!dying) {
+    await token.combatant.update({defeated: true});
+    await game.hm3.GmSays("Overwhelmed by pain, blood loss, and exhaustion, <b>" + token.name + "</b> collapses unconscious onto the battlefield, falling <b>Prone</b> amidst the chaos.", "Combat 14");
+}`;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-await game.hm3.GmSays("<b>" + token.name + "</b> needs a successful shock roll to regain consciousness.", "Combat 14");
+await game.hm3.GmSays("<b>" + token.name + "</b> needs a successful <b>Shock</b> roll to regain consciousness.", "Combat 14");
 const success = (await game.hm3.macros.shockRoll(false, token.actor, token)).isSuccess;
 if (success) {
     // Combatant regains consciousness
@@ -40,7 +42,7 @@ if (ok) {
     await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and resumes functioning normally.", "Combat 14");
 } else {
     // Combatant is now SHOCKED
-    await game.hm3.macros.createCondition(token, game.hm3.enums.Condition.SHOCKED);
+    await token.addCondition(game.hm3.enums.Condition.SHOCKED);
     const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
     await game.hm3.macros.createInjury({token, name: 'Shock', subType: 'shock', healRate: 4, notes: 'Started: ' + dateTime?.date + ' - ' + dateTime?.time});
 }`;

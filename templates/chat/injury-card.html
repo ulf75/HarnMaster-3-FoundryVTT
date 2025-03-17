@@ -114,17 +114,21 @@
         </div>
         {{/if}}
         
-        <div class="card-buttons">
+        <div class="card-buttons"> 
+            {{#if isKillShot}}
+            <button data-action="kill" data-visible-actor-id="{{visibleActorId}}" data-opponent-token-id="{{opponentTokenId}}" data-injury-level="{{injuryLevel}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Kill Roll</button>
+            {{/if}}
+
+            {{#if injuryLevel}}
+            <button data-action="shock" data-visible-actor-id="{{visibleActorId}}" data-opponent-token-id="{{opponentTokenId}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Shock Roll</button>
+            {{/if}}
+
             {{#if isFumbleRoll}}
             <button data-action="fumble" data-visible-actor-id="{{visibleActorId}}" data-opponent-token-id="{{opponentTokenId}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Fumble Roll</button>
             {{/if}}
 
             {{#if isStumbleRoll}}
             <button data-action="stumble" data-visible-actor-id="{{visibleActorId}}" data-opponent-token-id="{{opponentTokenId}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Stumble Roll</button>
-            {{/if}}
-
-            {{#if injuryLevel}}
-            <button data-action="shock" data-visible-actor-id="{{visibleActorId}}" data-opponent-token-id="{{opponentTokenId}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Shock Roll</button>
             {{/if}}
         </div>
     {{/unless}}
