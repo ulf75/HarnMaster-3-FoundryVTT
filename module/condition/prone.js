@@ -1,4 +1,3 @@
-const PRONE = 'Prone';
 const PRONE_ICON = 'systems/hm3/images/icons/svg/falling.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
@@ -20,30 +19,32 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, 
 const token = canvas.tokens.get('${token.id}');
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 if (unconscious) return;
-const PRONE = '${PRONE}';
 const PRONE_IMG = '${PRONE_ICON}';
+await game.hm3.GmSays("<b>" + token.name + "</b> is prone, and <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
 await Requestor.request({
-    title: PRONE,
+    title: game.hm3.enums.Condition.PRONE,
     description:
-        '<div class="chat-card fluff"><p>You are still lying on the floor. Getting up takes <b>one action</b>.</p><p>If you remain on the ground, <b>all</b> opponents gain +20 on <b>all</b> attack and defense rolls against you.</p></div>',
+        '<div class="chat-card fluff"><p>Getting up takes <b>ONE Action</b>.</p></div>',
     img: PRONE_IMG,
     limit: Requestor.LIMIT.OPTION,
+    speaker: ChatMessage.getSpeaker({token}),
     buttonData: [
         {
             label: 'Rise',
             command: async function () {
-                const effect = game.hm3.macros.getActiveEffect(canvas.tokens.get('${token.id}'), '${PRONE}', true);
+                const token = canvas.tokens.get('${token.id}');
+                const effect = token.getCondition(game.hm3.enums.Condition.PRONE)
                 if (effect) {
                     effect.delete();
-                    await game.hm3.GmSays("<b>" + token.name + "</b> successfully rises from the ground. <b>Turn ends.</b>", "Combat 11");
+                    await game.hm3.GmSays("<b>" + token.name + "</b> rises successfully. <b>Turn ends.</b>", "Combat 11");
                     await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
                 }
-            },
-            scope: {PRONE: PRONE}
+            }
         },
         {
             label: 'Ignore',
             command: async function () {
+                const token = canvas.tokens.get('${token.id}');
                 await game.hm3.GmSays("Ok, " + token.name + " remains lying on the floor.", "Combat 11");
             }
         }
@@ -53,7 +54,7 @@ await Requestor.request({
 
     return {
         effectData: {
-            label: PRONE,
+            label: game.hm3.enums.Condition.PRONE,
             token,
             icon: PRONE_ICON,
             type: 'GameTime',

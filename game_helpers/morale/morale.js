@@ -16,10 +16,10 @@ let dialogEditor = new Dialog({
         normal: {
             label: `Normal`,
             callback: async () => {
-                game.hm3.macros.getActiveEffect(token, BERSERK, true)?.delete();
-                game.hm3.macros.getActiveEffect(token, BROKEN, true)?.delete();
-                game.hm3.macros.getActiveEffect(token, CAUTIOUS, true)?.delete();
-                game.hm3.macros.getActiveEffect(token, DESPERATE, true)?.delete();
+                token.getCondition(BERSERK)?.delete();
+                token.getCondition(BROKEN)?.delete();
+                token.getCondition(CAUTIOUS)?.delete();
+                token.getCondition(DESPERATE)?.delete();
                 dialogEditor.render(true);
             }
         },
@@ -27,10 +27,10 @@ let dialogEditor = new Dialog({
         berserk: {
             label: BERSERK,
             callback: async () => {
-                game.hm3.macros.getActiveEffect(token, BROKEN, true)?.delete();
-                game.hm3.macros.getActiveEffect(token, CAUTIOUS, true)?.delete();
-                game.hm3.macros.getActiveEffect(token, DESPERATE, true)?.delete();
-                game.hm3.macros.createCondition(token, BERSERK);
+                token.getCondition(BROKEN)?.delete();
+                token.getCondition(CAUTIOUS)?.delete();
+                token.getCondition(DESPERATE)?.delete();
+                token.addCondition(BERSERK);
                 dialogEditor.render(true);
             }
         },
@@ -38,10 +38,10 @@ let dialogEditor = new Dialog({
         broken: {
             label: BROKEN,
             callback: async () => {
-                game.hm3.macros.getActiveEffect(token, BERSERK, true)?.delete();
-                game.hm3.macros.getActiveEffect(token, CAUTIOUS, true)?.delete();
-                game.hm3.macros.getActiveEffect(token, DESPERATE, true)?.delete();
-                game.hm3.macros.createCondition(token, BROKEN);
+                token.getCondition(BERSERK)?.delete();
+                token.getCondition(CAUTIOUS)?.delete();
+                token.getCondition(DESPERATE)?.delete();
+                token.addCondition(BROKEN);
                 dialogEditor.render(true);
             }
         },
@@ -49,10 +49,10 @@ let dialogEditor = new Dialog({
         cautious: {
             label: CAUTIOUS,
             callback: async () => {
-                game.hm3.macros.getActiveEffect(token, BERSERK, true)?.delete();
-                game.hm3.macros.getActiveEffect(token, BROKEN, true)?.delete();
-                game.hm3.macros.getActiveEffect(token, DESPERATE, true)?.delete();
-                game.hm3.macros.createCondition(token, CAUTIOUS);
+                token.getCondition(BERSERK)?.delete();
+                token.getCondition(BROKEN)?.delete();
+                token.getCondition(DESPERATE)?.delete();
+                token.addCondition(CAUTIOUS);
                 dialogEditor.render(true);
             }
         },
@@ -60,10 +60,10 @@ let dialogEditor = new Dialog({
         desperate: {
             label: DESPERATE,
             callback: async () => {
-                game.hm3.macros.getActiveEffect(token, BERSERK, true)?.delete();
-                game.hm3.macros.getActiveEffect(token, BROKEN, true)?.delete();
-                game.hm3.macros.getActiveEffect(token, CAUTIOUS, true)?.delete();
-                game.hm3.macros.createCondition(token, DESPERATE);
+                token.getCondition(BERSERK)?.delete();
+                token.getCondition(BROKEN)?.delete();
+                token.getCondition(CAUTIOUS)?.delete();
+                token.addCondition(DESPERATE);
                 dialogEditor.render(true);
             }
         },

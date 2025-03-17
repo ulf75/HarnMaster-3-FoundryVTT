@@ -1,7 +1,6 @@
 // This is a special state of battle frenzy. Any character who enters this mode must take the most
 // aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike.
 // Further Initiative rolls are ignored until the battle ends. (COMBAT 16)
-const BERSERK = 'Berserk';
 const BERSERK_ICON = 'systems/hm3/images/icons/svg/enrage.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
@@ -27,7 +26,7 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Bers
 
     return {
         effectData: {
-            label: BERSERK,
+            label: game.hm3.enums.Condition.BERSERK,
             token,
             icon: BERSERK_ICON,
             type: 'GameTime',

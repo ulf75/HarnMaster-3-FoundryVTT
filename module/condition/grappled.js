@@ -1,4 +1,3 @@
-const GRAPPLED = 'Grappled';
 const GRAPPLED_ICON = 'systems/hm3/images/icons/svg/manacles.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
@@ -12,7 +11,7 @@ export async function createGrappledCondition(token) {
 
     return {
         effectData: {
-            label: GRAPPLED,
+            label: game.hm3.enums.Condition.GRAPPLED,
             token,
             icon: GRAPPLED_ICON,
             type: 'GameTime',
