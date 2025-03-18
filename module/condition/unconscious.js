@@ -43,8 +43,6 @@ if (ok) {
 } else {
     // Combatant is now SHOCKED
     await token.addCondition(game.hm3.enums.Condition.SHOCKED);
-    const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
-    await game.hm3.macros.createInjury({token, name: 'Shock', subType: 'shock', healRate: 4, notes: 'Started: ' + dateTime?.date + ' - ' + dateTime?.time});
 }`;
 
     return {

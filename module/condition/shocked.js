@@ -3,6 +3,8 @@ const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 const ON_CREATE_MACRO = (token) => `
 const token = canvas.tokens.get('${token.id}');
+const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
+await game.hm3.macros.createInjury({token, name: 'Shock', subType: 'shock', healRate: 4, notes: 'Started: ' + dateTime?.date + ' - ' + dateTime?.time});
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b> and displays a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. <b>" + token.name + "</b> is incoherent and gazes helplessly at the injuries.", "Combat 14");
 `;

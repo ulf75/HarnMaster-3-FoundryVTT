@@ -1,5 +1,6 @@
 import {HM3} from '../config.js';
 import {DiceHM3} from '../dice-hm3.js';
+import {Condition} from '../hm3-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 
@@ -532,7 +533,9 @@ export class HarnMasterActor extends Actor {
                         break;
 
                     case 'initiative':
-                        actorData.initiative = itemData.effectiveMasteryLevel + itemData.skillBase.value / 10;
+                        actorData.initiative = !this.token?.hasCondition(Condition.UNCONSCIOUS)
+                            ? itemData.effectiveMasteryLevel
+                            : 0 + itemData.skillBase.value / 10;
                         break;
 
                     case 'condition':
