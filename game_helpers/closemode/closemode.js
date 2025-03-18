@@ -1,7 +1,3 @@
-const CLOSE = game.hm3.enums.Condition.CLOSEMODE;
-const CLOSE_IMG = 'systems/hm3/images/icons/svg/spiked-wall.svg';
-const INDEFINITE = Number.MAX_SAFE_INTEGER;
-
 if (canvas.tokens.controlled.length !== 1) {
     ui.notifications.error('Please select ONE token!');
     return null;
@@ -10,44 +6,20 @@ if (canvas.tokens.controlled.length !== 1) {
 const token = canvas.tokens.controlled[0];
 
 let dialogEditor = new Dialog({
-    title: CLOSE,
+    title: game.hm3.enums.Condition.CLOSE_MODE,
     buttons: {
-        none: {
-            label: `None`,
-            callback: () => {
-                game.hm3.macros.getActiveEffect(token, CLOSE, true)?.delete();
+        CLOSE_MODE: {
+            label: game.hm3.enums.Condition.CLOSE_MODE,
+            callback: async () => {
+                token.addCondition(game.hm3.enums.Condition.CLOSE_MODE);
                 dialogEditor.render(true);
             }
         },
 
-        close_mode: {
-            label: CLOSE,
-            callback: () => {
-                game.hm3.macros.createActiveEffect(
-                    {
-                        label: CLOSE,
-                        icon: CLOSE_IMG,
-                        token,
-                        type: 'GameTime',
-                        seconds: INDEFINITE,
-                        flags: {
-                            effectmacro: {
-                                onTurnStart: {
-                                    script: `
-                                    const token = canvas.tokens.get('${token.id}');
-                                    const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
-                                    if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Close Mode</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 11");
-                                    `
-                                }
-                            }
-                        }
-                    },
-                    [{key: 'eph.meleeAMLMod', mode: 2, value: '-10'}],
-                    {
-                        unique: true
-                    }
-                );
-
+        rise: {
+            label: `None`,
+            callback: async () => {
+                token.getCondition(game.hm3.enums.Condition.CLOSE_MODE)?.delete();
                 dialogEditor.render(true);
             }
         },
