@@ -39,10 +39,11 @@ await token.deleteCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 await token.combatant.update({defeated: false});
 if (ok) {
     // Combatant is back
-    await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and resumes functioning normally.", "Combat 14");
+    await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and resumes functioning normally. <b>Turn Ends.</b>", "Combat 14");
+    await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
 } else {
     // Combatant is now SHOCKED
-    await token.addCondition(game.hm3.enums.Condition.SHOCKED);
+    token.addCondition(game.hm3.enums.Condition.SHOCKED);
 }`;
 
     return {
