@@ -59,7 +59,7 @@ export const Condition = Object.freeze({
     CAUTIOUS: 'Cautious',
 
     /**@constant {string} - TODO */
-    CLOSEMODE: 'Close Mode',
+    CLOSE_MODE: 'Close Mode',
 
     /**@constant {string} - HRG to 0. */
     DEAFENED: 'Deafened',
@@ -80,6 +80,9 @@ export const Condition = Object.freeze({
 
     /**@constant {string} - MOV to 0. +20 EML for all engaged enemies. Only PASS or RISE actions. */
     PRONE: 'Prone',
+
+    /**@constant {string} - TODO */
+    SECONDARY_HAND: 'Secondary Hand',
 
     /**@constant {string} - NO skills, spells & psionics. Only HALF_MOVE, PASS or REST actions. Only IGNORE defenses. */
     SHOCKED: 'Shocked',

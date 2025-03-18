@@ -10,7 +10,7 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shoc
 const ON_TURN_START_MACRO = (token) => `
 const token = canvas.tokens.get('${token.id}');
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
-if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b>. Shock prevents the use of skills, spells, and psionic talents. In a combat situation, a character in shock may Rest, Walk/Crawl (at half move), or be led away; the character will <b>Ignore</b> any attacks.", "Combat 18");
+if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b>. Shock prevents the use of skills, spells, and psionic talents. In a combat situation, a character in <b>Shock</b> may Rest, Walk/Crawl (at half move), or be led away; the character will <b>Ignore</b> any attacks.", "Combat 18");
 `;
 
 /**

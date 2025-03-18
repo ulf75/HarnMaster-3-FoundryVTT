@@ -1969,10 +1969,10 @@ export async function createCondition(token, condition) {
             }
             break;
 
-        case Condition.CLOSEMODE:
-            game.hm3.macros.createActiveEffect(
+        case Condition.CLOSE_MODE:
+            effect = await createActiveEffect(
                 {
-                    label: Condition.CLOSEMODE,
+                    label: Condition.CLOSE_MODE,
                     icon: 'systems/hm3/images/icons/svg/spiked-wall.svg',
                     token,
                     type: 'GameTime',
@@ -2015,6 +2015,33 @@ export async function createCondition(token, condition) {
                 const {effectData, changes, options} = await prone.createProneCondition(token);
                 effect = await createActiveEffect(effectData, changes, options);
             }
+            break;
+
+        case Condition.SECONDARY_HAND:
+            effect = await createActiveEffect(
+                {
+                    label: Condition.SECONDARY_HAND,
+                    icon: 'systems/hm3/images/icons/svg/arm-sling.svg',
+                    token,
+                    type: 'GameTime',
+                    seconds: INDEFINITE,
+                    flags: {
+                        effectmacro: {
+                            onTurnStart: {
+                                script: `
+                            const token = canvas.tokens.get('${token.id}');
+                            const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+                            if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> fights with the <b>Secondary Hand</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 3 & 11");
+                            `
+                            }
+                        }
+                    }
+                },
+                [{key: 'eph.meleeAMLMod', mode: 2, value: '-10'}],
+                {
+                    unique: true
+                }
+            );
             break;
 
         case Condition.SHOCKED:
