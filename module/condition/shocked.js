@@ -1,4 +1,5 @@
-const SHOCKED_ICON = 'systems/hm3/images/icons/svg/shock.svg';
+// const SHOCKED_ICON = 'systems/hm3/images/icons/svg/shock.svg';
+const SHOCKED_ICON = 'icons/svg/lightning.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 const ON_CREATE_MACRO = (token) => `

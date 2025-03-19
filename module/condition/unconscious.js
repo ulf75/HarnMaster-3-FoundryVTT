@@ -1,4 +1,5 @@
-const UNCONSCIOUS_ICON = 'systems/hm3/images/icons/svg/shock.svg';
+// const UNCONSCIOUS_ICON = 'systems/hm3/images/icons/svg/shock.svg';
+const UNCONSCIOUS_ICON = 'icons/svg/unconscious.svg';
 const MINUTE = 60;
 
 /**

@@ -1,4 +1,5 @@
-const PRONE_ICON = 'systems/hm3/images/icons/svg/falling.svg';
+// const PRONE_ICON = 'systems/hm3/images/icons/svg/falling.svg';
+const PRONE_ICON = 'icons/svg/falling.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
