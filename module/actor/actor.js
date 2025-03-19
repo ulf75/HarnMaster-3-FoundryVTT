@@ -523,7 +523,6 @@ export class HarnMasterActor extends Actor {
         this._setMinEML_AML_DML();
 
         // Store "special" skill properties
-        const unconscious = !!this.token?.hasCondition(Condition.UNCONSCIOUS);
         this.items.forEach((it) => {
             const itemData = it.system;
             if (it.type === 'skill') {
@@ -533,8 +532,7 @@ export class HarnMasterActor extends Actor {
                         break;
 
                     case 'initiative':
-                        actorData.initiative = !unconscious ? itemData.effectiveMasteryLevel : 0;
-                        actorData.initiative += itemData.skillBase.value / 10;
+                        actorData.initiative = itemData.effectiveMasteryLevel;
                         break;
 
                     case 'condition':

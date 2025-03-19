@@ -80,11 +80,7 @@ export class HarnMasterItem extends Item {
             // Set some actor properties from skills
             const lcSkillName = this.name.toLowerCase();
             if (lcSkillName === 'initiative') {
-                if (this.actor?.system) {
-                    const unconscious = !!this.actor?.token?.hasCondition(Condition.UNCONSCIOUS);
-                    this.actor.system.initiative = !unconscious ? itemData.effectiveMasteryLevel : 0;
-                    this.actor.system.initiative += itemData.skillBase.value / 10;
-                }
+                if (this.actor?.system) this.actor.system.initiative = itemData.effectiveMasteryLevel;
             } else if (lcSkillName === 'dodge') {
                 if (this.actor?.system) this.actor.system.dodge = itemData.effectiveMasteryLevel;
             }

@@ -409,11 +409,11 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
             let move = actor.system.move.effective;
 
             // Conditions
-            const grappled = token.hasCondition(Condition.GRAPPLED);
-            const prone = token.hasCondition(Condition.PRONE);
-            const shocked = token.hasCondition(Condition.SHOCKED);
-            const stunned = token.hasCondition(Condition.STUNNED);
-            const unconscious = token.hasCondition(Condition.UNCONSCIOUS);
+            const grappled = token.hasCondition(game.hm3.enums.Condition.GRAPPLED);
+            const prone = token.hasCondition(game.hm3.enums.Condition.PRONE);
+            const shocked = token.hasCondition(game.hm3.enums.Condition.SHOCKED);
+            const stunned = token.hasCondition(game.hm3.enums.Condition.STUNNED);
+            const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 
             if (grappled || stunned || unconscious) {
                 return [{range: -1, color: 'walk'}];
