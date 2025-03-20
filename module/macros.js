@@ -2055,9 +2055,6 @@ export async function createCondition(token, condition) {
             {
                 const {effectData, changes, options} = await unconscious.createUnconsciousCondition(token);
                 effect = await createActiveEffect(effectData, changes, options);
-
-                // In addition, the combatant falls prone.
-                await createCondition(token, Condition.PRONE);
             }
             break;
 

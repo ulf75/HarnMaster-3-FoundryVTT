@@ -108,6 +108,15 @@ export class HarnMasterToken extends Token {
         };
         return capital ? p() : p().toLowerCase();
     }
+
+    async toggleVisibility(options = {}) {
+        let isHidden = options?.active !== undefined ? options.active : this.document.hidden;
+        const tokens = this.controlled ? canvas.tokens.controlled : [this];
+        const updates = tokens.map((t) => {
+            return {_id: t.id, hidden: !isHidden};
+        });
+        return canvas.scene.updateEmbeddedDocuments('Token', updates);
+    }
 }
 
 export class HarnMasterTokenDocument extends TokenDocument {
@@ -172,5 +181,9 @@ export class HarnMasterTokenDocument extends TokenDocument {
 
     pronoun(capital = false) {
         return this.object.pronoun(capital);
+    }
+
+    async toggleVisibility(options = {}) {
+        return this.object.toggleVisibility(options);
     }
 }

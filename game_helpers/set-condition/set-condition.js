@@ -60,6 +60,10 @@ let dialogEditor = new Dialog({
                     Object.values(game.hm3.enums.Condition).forEach((condition) => {
                         token.deleteCondition(condition);
                     });
+                    token.combatant?.update({defeated: false});
+                    token.actor.toggleStatusEffect('dead', {active: false});
+                    token.actor.toggleStatusEffect('unconscious', {active: false});
+                    token.toggleVisibility({active: true});
                 }
                 dialogEditor.render(true);
             }
