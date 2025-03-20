@@ -1084,11 +1084,11 @@ export class HarnMasterActor extends Actor {
                 break;
 
             case 'stumble':
-                macros.stumbleRoll(false, actor, opponentToken);
+                macros.stumbleRoll(false, actor, opponentToken, token);
                 break;
 
             case 'fumble':
-                macros.fumbleRoll(false, actor, opponentToken);
+                macros.fumbleRoll(false, actor, opponentToken, token);
                 break;
 
             case 'throwdown':

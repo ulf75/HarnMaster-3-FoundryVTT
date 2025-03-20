@@ -1082,7 +1082,7 @@ export async function shockRoll(noDialog = false, myActor = null, token = null) 
     return null;
 }
 
-export async function stumbleRoll(noDialog = false, myActor = null, opponentToken = null) {
+export async function stumbleRoll(noDialog = false, myActor = null, opponentToken = null, token = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -1104,6 +1104,7 @@ export async function stumbleRoll(noDialog = false, myActor = null, opponentToke
         stdRollData.token = actorInfo.actor.token.id;
     } else {
         stdRollData.actor = actorInfo.actor.id;
+        stdRollData.token = token?.id;
     }
 
     const hooksOk = Hooks.call('hm3.preStumbleRoll', stdRollData, actorInfo.actor);
@@ -1112,6 +1113,7 @@ export async function stumbleRoll(noDialog = false, myActor = null, opponentToke
         if (result) {
             actorInfo.actor.runCustomMacro(result);
             if (!result.isSuccess) {
+                token?.addCondition(Condition.PRONE);
                 // Opponent gains a TA
                 await combat.setTA();
             }
@@ -1122,7 +1124,7 @@ export async function stumbleRoll(noDialog = false, myActor = null, opponentToke
     return null;
 }
 
-export async function fumbleRoll(noDialog = false, myActor = null, opponentToken = null) {
+export async function fumbleRoll(noDialog = false, myActor = null, opponentToken = null, token = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -1145,6 +1147,7 @@ export async function fumbleRoll(noDialog = false, myActor = null, opponentToken
         stdRollData.token = actorInfo.actor.token.id;
     } else {
         stdRollData.actor = actorInfo.actor.id;
+        stdRollData.token = token?.id;
     }
 
     const hooksOk = Hooks.call('hm3.preFumbleRoll', stdRollData, actorInfo.actor);
