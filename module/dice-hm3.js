@@ -277,7 +277,7 @@ export class DiceHM3 {
 
         const unconscious = canvas.tokens.get(rollData.token)?.hasCondition(Condition.UNCONSCIOUS);
         const isTAPossible =
-            ['fumble', 'shock', 'stumble'].includes(rollData.type) && !unconscious && (await game.hm3.socket.executeAsGM('isFirstTA'));
+            ['fumble', 'kill', 'shock', 'stumble'].includes(rollData.type) && !unconscious && (await game.hm3.socket.executeAsGM('isFirstTA'));
         const addlInfo = !roll.isSuccess && isTAPossible ? 'Opponent gains a Tactical Advantage.' : '';
 
         const chatTemplateData = {
@@ -286,7 +286,7 @@ export class DiceHM3 {
             description: roll.description,
             isSuccess: roll.isSuccess,
             modifiedTarget: roll.target,
-            modifier: roll.modifier,
+            modifier: Math.abs(roll.modifier),
             notes: renderedNotes,
             origTarget: rollData.target,
             ota: !roll.isSuccess && isTAPossible, // Opponent TA
@@ -1304,13 +1304,16 @@ export class DiceHM3 {
         const modifier = Number(testData.modifier);
         const baseTargetNum = Number(testData.target) + modifier;
         // Ensure target num is between 9 and 95; always a 5% chance of success/failure
-        const targetNum = Math.max(Math.min(baseTargetNum, 95), 5);
-        let isCrit = roll.total % 5 === 0;
-        const levelDesc = isCrit ? 'Critical' : 'Marginal';
+        const targetNum = diceType === 'd100' ? Math.max(Math.min(baseTargetNum, 95), 5) : baseTargetNum;
+
         let description = '';
+        let isCrit = false;
         let isSuccess = false;
 
         if (diceType === 'd100') {
+            isCrit = roll.total % 5 === 0;
+            const levelDesc = isCrit ? 'Critical' : 'Marginal';
+
             // ********** Failure ***********
             if (roll.total > targetNum) {
                 description = levelDesc + ' Failure';
@@ -1321,21 +1324,20 @@ export class DiceHM3 {
                 isSuccess = true;
             }
         } else {
-            isCrit = false; // d6 rolls have no criticals associated with them
             isSuccess = roll.total <= targetNum;
             description = isSuccess ? 'Success' : 'Failure';
         }
 
         let rollResults = {
-            'type': testData.type,
-            'target': targetNum,
+            'description': description,
             'isCapped': baseTargetNum !== targetNum,
-            'modifier': modifier,
-            'rollObj': roll,
             'isCritical': isCrit,
             'isSuccess': isSuccess,
-            'description': description,
-            'preData': testData
+            'modifier': modifier,
+            'preData': testData,
+            'rollObj': roll,
+            'target': targetNum,
+            'type': testData.type
         };
         return rollResults;
     }

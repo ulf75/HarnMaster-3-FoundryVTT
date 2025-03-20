@@ -935,7 +935,7 @@ async function heal(injury, result) {
 }
 
 export async function dodgeRoll(noDialog = false, myActor = null) {
-    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
@@ -998,6 +998,7 @@ export async function killRoll(options) {
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;
+        options.token = actorInfo.actor.token;
     } else {
         stdRollData.actor = actorInfo.actor.id;
         stdRollData.token = options.token?.id;
@@ -1011,9 +1012,7 @@ export async function killRoll(options) {
         if (result) {
             if (!result.isSuccess) {
                 // DYING!!!
-                options.token.addCondition(game.hm3.enums.Condition.DYING);
-                const combatant = game.combats.active.getCombatantsByToken(options.token.id);
-                console.log(combatant);
+                options.token?.addCondition(game.hm3.enums.Condition.DYING);
             } else {
                 await game.hm3.GmSays(
                     `<b>${options.token.name}</b> just survives this <b>Fatal</b> wound, and makes a normal <b>Shock</b> roll.`,
@@ -1049,6 +1048,7 @@ export async function shockRoll(noDialog = false, myActor = null, token = null) 
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;
+        token = actorInfo.actor.token;
     } else {
         stdRollData.actor = actorInfo.actor.id;
         stdRollData.token = token?.id;
@@ -1102,6 +1102,7 @@ export async function stumbleRoll(noDialog = false, myActor = null, opponentToke
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;
+        token = actorInfo.actor.token;
     } else {
         stdRollData.actor = actorInfo.actor.id;
         stdRollData.token = token?.id;
@@ -1145,6 +1146,7 @@ export async function fumbleRoll(noDialog = false, myActor = null, opponentToken
     };
     if (actorInfo.actor.isToken) {
         stdRollData.token = actorInfo.actor.token.id;
+        token = actorInfo.actor.token;
     } else {
         stdRollData.actor = actorInfo.actor.id;
         stdRollData.token = token?.id;
