@@ -579,30 +579,39 @@ function isValidToken(token) {
  *
  * @param {Token} token
  */
-function defaultMeleeWeapon(token) {
+function defaultMeleeWeapon(token, sortMode = 'highestDmg') {
     if (!isValidToken(token)) return {weapons: [], defaultWeapon: null};
+    if (!['highestDmg', 'highestAML', 'highestDML'].includes(sortMode)) return {weapons: [], defaultWeapon: null};
 
     const equippedWeapons = token.actor.itemTypes.weapongear.filter((w) => w.system.isEquipped);
-    let defaultWeapon = null;
-    if (equippedWeapons.length > 0) {
-        let maxImpact = -1;
-        equippedWeapons.forEach((w) => {
-            const data = w.system;
-            const impactMax = Math.max(data.blunt, data.edged, data.piercing);
-            if (impactMax > maxImpact) {
-                maxImpact = impactMax;
-                defaultWeapon = w;
-            }
-        });
+    if (equippedWeapons.length === 0) return {weapons: [], defaultWeapon: null};
+
+    let weapons = null;
+    switch (sortMode) {
+        case 'highestDmg':
+            weapons = equippedWeapons.sort((a, b) => {
+                const aMax = Math.max(a.system.blunt, a.system.edged, a.system.piercing);
+                const bMax = Math.max(b.system.blunt, b.system.edged, b.system.piercing);
+                return bMax - aMax;
+            });
+            break;
+
+        case 'highestAML':
+            weapons = equippedWeapons.sort((a, b) => {
+                return b.system.attackMasteryLevel - a.system.attackMasteryLevel;
+            });
+            break;
+
+        case 'highestDML':
+            weapons = equippedWeapons.sort((a, b) => {
+                return b.system.defenseMasteryLevel - a.system.defenseMasteryLevel;
+            });
+            break;
     }
 
     return {
-        weapons: equippedWeapons.sort((a, b) => {
-            const aMax = Math.max(a.system.blunt, a.system.edged, a.system.piercing);
-            const bMax = Math.max(b.system.blunt, b.system.edged, b.system.piercing);
-            return aMax <= bMax ? 1 : -1;
-        }),
-        defaultWeapon: defaultWeapon
+        weapons,
+        defaultWeapon: weapons[0]
     };
 }
 
@@ -748,17 +757,21 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         }
     }
 
+    let turnEnds = false;
     if (combatResult.outcome.ata && combatResult.outcome.dta) {
         // No more than one Tactical Advantage may be earned per Character Turn.
         // When opponents gain simultaneous TAs, the Turn also ends. (COMBAT 12)
         combatResult.outcome.ata = false;
         combatResult.outcome.dta = false;
-        await setTA(true); // turn ends
+        turnEnds = true;
     } else if (combatResult.outcome.ata || combatResult.outcome.dta) {
         // Only one TA per turn
-        if (!(await setTA())) {
+        if (!(await isFirstTA())) {
             combatResult.outcome.ata = false;
             combatResult.outcome.dta = false;
+            turnEnds = true;
+        } else {
+            await setTA();
         }
     }
 
@@ -914,6 +927,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         });
     }
 
+    if (turnEnds) await setTA(true);
+
     return {atk: atkChatData, cs: csChatData};
 }
 
@@ -988,10 +1003,14 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         combatResult = missileCombatResult(atkResult, defResult, 'dodge', impactMod);
     }
 
+    let turnEnds = false;
     if (combatResult.outcome.dta) {
         // Only one TA per turn
-        if (!(await setTA())) {
+        if (!(await isFirstTA())) {
             combatResult.outcome.dta = false;
+            turnEnds = true;
+        } else {
+            setTA();
         }
     }
 
@@ -1088,6 +1107,8 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         });
     }
 
+    if (turnEnds) await setTA(true);
+
     return chatData;
 }
 
@@ -1124,7 +1145,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     // setup defensive available weapons.  This is all equipped melee weapons initially,
     // but later we may limit it to only shields.
-    let defAvailWeapons = defToken.actor.itemTypes.weapongear;
+    let defAvailWeapons = defaultMeleeWeapon(defToken, 'highestDML').weapons; //defToken.actor.itemTypes.weapongear;
     const shields = defAvailWeapons.filter((w) => w.system.isEquipped && /shield|\bbuckler\b/i.test(w.name));
 
     let atkWeapon = null;
@@ -1155,17 +1176,8 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     // pop up dialog asking for which weapon to use for blocking
     // Only melee weapons can be used for blocking
     // Default weapon is one with highest DML
-    let weapons = [];
-    let defaultWeapon = null;
-    let maxDML = -9999;
-    defAvailWeapons.forEach((w) => {
-        if (w.system.isEquipped) {
-            if (w.system.defenseMasteryLevel > maxDML) {
-                defaultWeapon = w;
-            }
-            weapons.push(w);
-        }
-    });
+    let weapons = defAvailWeapons;
+    let defaultWeapon = defAvailWeapons[0];
 
     if (weapons.length === 0) {
         return ui.notifications.warn(`${defToken.name} has no weapons that can be used for blocking, block defense refused.`);
@@ -1273,17 +1285,21 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         }
     }
 
+    let turnEnds = false;
     if (combatResult.outcome.ata && combatResult.outcome.dta) {
         // No more than one Tactical Advantage may be earned per Character Turn.
         // When opponents gain simultaneous TAs, the Turn also ends. (COMBAT 12)
         combatResult.outcome.ata = false;
         combatResult.outcome.dta = false;
-        await setTA(true); // turn ends
+        turnEnds = true;
     } else if (combatResult.outcome.ata || combatResult.outcome.dta) {
         // Only one TA per turn
-        if (!(await setTA())) {
+        if (!(await isFirstTA())) {
             combatResult.outcome.ata = false;
             combatResult.outcome.dta = false;
+            turnEnds = true;
+        } else {
+            await setTA();
         }
     }
 
@@ -1382,6 +1398,8 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
             }
         });
     }
+
+    if (turnEnds) await setTA(true);
 
     return chatData;
 }
