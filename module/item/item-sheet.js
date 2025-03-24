@@ -163,6 +163,15 @@ export class HarnMasterItemSheet extends ItemSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        if (!game.user.isGM) {
+            html.find('.profile-img').click(async (ev) => {
+                new ImagePopout(this.item.img, {
+                    title: this.item.name,
+                    uuid: this.item.uuid
+                }).render(true);
+            });
+        }
+
         // Everything below here is only needed if the sheet is editable
         if (!this.options.editable) return;
 

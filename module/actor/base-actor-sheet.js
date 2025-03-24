@@ -431,6 +431,22 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        if (!game.user.isGM) {
+            html.find('.facade-image').click(async (ev) => {
+                new ImagePopout(this.actor.system.bioImage, {
+                    title: this.actor.name,
+                    uuid: this.actor.uuid
+                }).render(true);
+            });
+
+            html.find('.profile-img').click(async (ev) => {
+                new ImagePopout(this.actor.img, {
+                    title: this.actor.name,
+                    uuid: this.actor.uuid
+                }).render(true);
+            });
+        }
+
         // Everything below here is only needed if the sheet is editable
         if (!this.options.editable) return;
 
