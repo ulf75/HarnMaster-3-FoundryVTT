@@ -26,8 +26,15 @@ export class HarnMasterItemSheet extends ItemSheet {
     /* -------------------------------------------- */
 
     /** @override */
-    getData() {
-        const data = super.getData();
+    async getData(options = {}) {
+        const data = super.getData(options);
+        data.hasDescription = 'description' in this.object.system;
+        if (data.hasDescription) {
+            data.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {
+                secrets: game.user.isGM,
+                relativeTo: this.object.system
+            });
+        }
 
         // Re-define the template data references (backwards compatible)
         data.item = this.item;
