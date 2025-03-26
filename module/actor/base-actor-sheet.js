@@ -11,7 +11,7 @@ import {HarnMasterActor} from './actor.js';
  */
 export class HarnMasterBaseActorSheet extends ActorSheet {
     /** @override */
-    getData() {
+    async getData(options = {}) {
         if (!this.actor.system.eph.stumbleTarget) {
             // sometimes it is not initialized correctly
             this.actor.prepareDerivedData();
@@ -30,6 +30,14 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             options: this.options,
             owner: isOwner
         };
+
+        data.hasDescription = 'description' in this.object.system;
+        if (data.hasDescription) {
+            data.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {
+                secrets: game.user.isGM,
+                relativeTo: this.object.system
+            });
+        }
 
         data.isGM = game.user.isGM;
         data.strictMode = game.settings.get('hm3', 'strictGmMode');

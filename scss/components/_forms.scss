@@ -249,8 +249,18 @@
 
 .sheet-body,
 .sheet-body .tab,
-.sheet-body .tab .editor {
+.sheet-body .tab .editor,
+.sheet-body .tab .flexrow {
     height: 100%;
+
+    td,
+    th {
+        padding: 2px;
+
+        p {
+            margin: 0;
+        }
+    }
 }
 
 .tox {

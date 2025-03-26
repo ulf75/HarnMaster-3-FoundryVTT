@@ -100,6 +100,16 @@ a:hover {
     background-size: cover;
 }
 
+.sheet.journal-entry .journal-entry-content .journal-entry-page td,
+.sheet.journal-entry .journal-entry-content .journal-entry-page th {
+    padding: 4px;
+}
+
+.sheet.journal-entry .journal-entry-content .journal-entry-page td p,
+.sheet.journal-entry .journal-entry-content .journal-entry-page th p {
+    margin: 0;
+}
+
 body {
     font-family: 'Amasis MT Medium';
 }
@@ -1105,8 +1115,31 @@ section.highlight {
 
 .hm3 .sheet-body,
 .hm3 .sheet-body .tab,
-.hm3 .sheet-body .tab .editor {
+.hm3 .sheet-body .tab .editor,
+.hm3 .sheet-body .tab .flexrow {
     height: 100%;
+}
+
+.hm3 .sheet-body td,
+.hm3 .sheet-body th,
+.hm3 .sheet-body .tab td,
+.hm3 .sheet-body .tab th,
+.hm3 .sheet-body .tab .editor td,
+.hm3 .sheet-body .tab .editor th,
+.hm3 .sheet-body .tab .flexrow td,
+.hm3 .sheet-body .tab .flexrow th {
+    padding: 2px;
+}
+
+.hm3 .sheet-body td p,
+.hm3 .sheet-body th p,
+.hm3 .sheet-body .tab td p,
+.hm3 .sheet-body .tab th p,
+.hm3 .sheet-body .tab .editor td p,
+.hm3 .sheet-body .tab .editor th p,
+.hm3 .sheet-body .tab .flexrow td p,
+.hm3 .sheet-body .tab .flexrow th p {
+    margin: 0;
 }
 
 .hm3 .tox .tox-edit-area {

@@ -54,6 +54,17 @@ a:hover {
 .sheet.journal-entry .journal-entry-content {
     background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
+
+    .journal-entry-page {
+        td,
+        th {
+            padding: 4px;
+
+            p {
+                margin: 0;
+            }
+        }
+    }
 }
 
 body {

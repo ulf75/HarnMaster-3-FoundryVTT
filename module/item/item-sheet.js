@@ -11,8 +11,8 @@ export class HarnMasterItemSheet extends ItemSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ['hm3', 'sheet', 'item'],
-            width: 560,
-            height: 550,
+            width: 605,
+            height: 560,
             tabs: [{navSelector: '.sheet-tabs', contentSelector: '.sheet-body', initial: 'properties'}]
         });
     }

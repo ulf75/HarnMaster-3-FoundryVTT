@@ -9,8 +9,8 @@ export class HarnMasterCharacterSheet extends HarnMasterBaseActorSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ['hm3', 'sheet', 'actor', 'character'],
-            width: 780,
-            height: 640,
+            width: 810,
+            height: 650,
             tabs: [{navSelector: '.sheet-tabs', contentSelector: '.sheet-body', initial: 'facade'}]
         });
     }
