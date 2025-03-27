@@ -1113,13 +1113,6 @@ section.highlight {
     flex: 0;
 }
 
-.hm3 .sheet-body,
-.hm3 .sheet-body .tab,
-.hm3 .sheet-body .tab .editor,
-.hm3 .sheet-body .tab .flexrow {
-    height: 100%;
-}
-
 .hm3 .sheet-body td,
 .hm3 .sheet-body th,
 .hm3 .sheet-body .tab td,
@@ -1140,6 +1133,14 @@ section.highlight {
 .hm3 .sheet-body .tab .flexrow td p,
 .hm3 .sheet-body .tab .flexrow th p {
     margin: 0;
+}
+
+.hm3 .sheet-body .tab.facade.active {
+    height: 100%;
+}
+
+.hm3 .sheet-body .tab.facade.active .flexrow {
+    height: 100%;
 }
 
 .hm3 .tox .tox-edit-area {
