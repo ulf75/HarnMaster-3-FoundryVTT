@@ -118,8 +118,13 @@
                     const strDraw = await strTable.draw({roll: strRoll, recursive: true, displayChat: false});
                     const strMod = strDraw.results[0].text;
 
-                    let comeliness = (await new Roll('3d6').evaluate()).total;
-                    if (species === 'Sindarin') comeliness += 2;
+                    let comeliness = 0;
+                    if (!!token.actor.system.abilities.comeliness.base) {
+                        comeliness = token.actor.system.abilities.comeliness.base;
+                    } else {
+                        comeliness = (await new Roll('3d6').evaluate()).total;
+                        if (species === 'Sindarin') comeliness += 2;
+                    }
                     let comelinessStr = 'Average';
                     if (comeliness <= 5) comelinessStr = 'Ugly';
                     else if (comeliness <= 8) comelinessStr = 'Plain';
@@ -153,8 +158,13 @@
                     const hairDraw = await hairTable.draw({roll: hairRoll, recursive: true, displayChat: false});
                     const hair = hairDraw.results[0].text;
 
-                    let voice = (await new Roll('3d6').evaluate()).total;
-                    if (species === 'Sindarin') voice += 2;
+                    let voice = 0;
+                    if (!!token.actor.system.abilities.voice.base) {
+                        voice = token.actor.system.abilities.voice.base;
+                    } else {
+                        voice = (await new Roll('3d6').evaluate()).total;
+                        if (species === 'Sindarin') voice += 2;
+                    }
                     let voiceStr = 'Average';
                     if (voice <= 4) voiceStr = 'Unbearable';
                     else if (voice <= 6) voiceStr = 'Unpleasant';
@@ -184,41 +194,57 @@
 
                     if (canvas.tokens.controlled.length === 1) {
                         const token = canvas.tokens.controlled[0];
-                        const description = token.actor.system.description;
+                        let description = (' ' + token.actor.system.description).slice(1).trim();
                         let myArray = description.split('\n');
 
-                        let index = myArray.findIndex((l) => l.includes('Height')) + 1;
-                        myArray[index] = myArray[index].replace('>&nbsp;<', `>${height}" (${Math.round(height * 2.54)} cm)<`);
+                        let index = description.indexOf('Height');
+                        index = description.indexOf('<p>', index) + 3;
+                        description = [description.slice(0, index), `${height}" (${Math.round(height * 2.54)} cm)`, description.slice(index)].join(
+                            ''
+                        );
 
-                        index = myArray.findIndex((l) => l.includes('Frame')) + 1;
-                        myArray[index] = myArray[index].replace('>&nbsp;<', `>${frame}<`);
+                        index = description.indexOf('Frame');
+                        index = description.indexOf('<p>', index) + 3;
+                        description = [description.slice(0, index), `${frame}`, description.slice(index)].join('');
 
-                        index = myArray.findIndex((l) => l.includes('Weight')) + 1;
-                        myArray[index] = myArray[index].replace('>&nbsp;<', `>${weight} lbs (${Math.round(weight * 0.454)} kg) / ${size}<`);
+                        index = description.indexOf('Weight');
+                        index = description.indexOf('<p>', index) + 3;
+                        description = [
+                            description.slice(0, index),
+                            `${weight} lbs (${Math.round(weight * 0.454)} kg) / ${size}`,
+                            description.slice(index)
+                        ].join('');
 
-                        index = myArray.findIndex((l) => l.includes('Appearance')) + 1;
-                        myArray[index] = myArray[index].replace('>&nbsp;<', `>${comelinessStr}<`);
+                        index = description.indexOf('Appearance');
+                        index = description.indexOf('<p>', index) + 3;
+                        description = [description.slice(0, index), `${comelinessStr}`, description.slice(index)].join('');
 
-                        index = myArray.findIndex((l) => l.includes('Complexion')) + 1;
-                        myArray[index] = myArray[index].replace('>&nbsp;<', `>${complexion}<`);
+                        index = description.indexOf('Complexion');
+                        index = description.indexOf('<p>', index) + 3;
+                        description = [description.slice(0, index), `${complexion}`, description.slice(index)].join('');
 
-                        index = myArray.findIndex((l) => l.includes('Hair')) + 1;
-                        myArray[index] = myArray[index].replace('>&nbsp;<', `>${hair}<`);
+                        index = description.indexOf('Hair');
+                        index = description.indexOf('<p>', index) + 3;
+                        description = [description.slice(0, index), `${hair}`, description.slice(index)].join('');
 
-                        index = myArray.findIndex((l) => l.includes('Eye')) + 1;
-                        myArray[index] = myArray[index].replace('>&nbsp;<', `>${eye}<`);
+                        index = description.indexOf('Eye');
+                        index = description.indexOf('<p>', index) + 3;
+                        description = [description.slice(0, index), `${eye}`, description.slice(index)].join('');
 
-                        index = myArray.findIndex((l) => l.includes('Voice')) + 1;
-                        myArray[index] = myArray[index].replace('>&nbsp;<', `>${voiceStr}<`);
+                        index = description.indexOf('Voice');
+                        index = description.indexOf('<p>', index) + 3;
+                        description = [description.slice(0, index), `${voiceStr}`, description.slice(index)].join('');
 
-                        index = myArray.findIndex((l) => l.includes('Medical')) + 1;
-                        myArray[index] = myArray[index].replace('>&nbsp;<', `>${medical}<`);
+                        index = description.indexOf('Medical');
+                        index = description.indexOf('<p>', index) + 3;
+                        description = [description.slice(0, index), `${medical}`, description.slice(index)].join('');
 
-                        index = myArray.findIndex((l) => l.includes('Behavior')) + 1;
-                        myArray[index] = myArray[index].replace('>&nbsp;<', `>${mental}<`);
+                        index = description.indexOf('Behavior');
+                        index = description.indexOf('<p>', index) + 3;
+                        description = [description.slice(0, index), `${mental}`, description.slice(index)].join('');
 
-                        await token.actor.update({'system.description': myArray.join('\n')});
-                        // console.log(myArray.join('\n'));
+                        await token.actor.update({'system.description': description});
+                        // console.log(description);
                     }
                 }
             })();
