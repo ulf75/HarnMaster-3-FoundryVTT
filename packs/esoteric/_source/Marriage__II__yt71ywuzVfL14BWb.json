@@ -11,7 +11,7 @@
   "system": {
     "notes": "",
     "description": "<table><tr><td><b>Time:</b> Variable+</td><td><b>Ritual:</b> Prayer/Chant</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> The Ceremony</td></tr></table><p>A marriage ceremony which typically lasts 10-60 minutes.  Both the groom and bride must be of the same religion, or one spouse must be baptized in the other's faith before marriage.  The ceremony blesses and awards 3d6 piety to each spouse, from the deity with success, or from the cleric with failure.</p>",
-    "source": "",
+    "source": "Religion 13",
     "macros": {
       "type": "script",
       "command": ""

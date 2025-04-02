@@ -11,7 +11,7 @@
   "system": {
     "notes": "",
     "description": "<table><tr><td><b>Time:</b> 25-RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> 30 minutes.</td></tr></table><p>Cleric perceives the presence and location of any holy artifact within Range. The artifact emits an ultra-sonic hum audible only to the cleric. CS identifies the specific deity.</p>",
-    "source": "",
+    "source": "Religion 14",
     "macros": {
       "type": "script",
       "command": ""

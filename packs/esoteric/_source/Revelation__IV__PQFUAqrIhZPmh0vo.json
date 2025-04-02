@@ -11,7 +11,7 @@
   "system": {
     "notes": "",
     "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Prayer/Meditation</td></tr><tr><td><b>Range:</b> RML yards+</td><td><b>Duration:</b> RSI minutes</td></tr></table><p>Allows the cleric (only) to perceive all ethereal phenomena within Range as faint, colored lights for Duration. The Summoning invocation may be used on a revealed ethereal with a bonus of +10.</p>",
-    "source": "",
+    "source": "Religion 14",
     "macros": {
       "type": "script",
       "command": ""

@@ -11,7 +11,7 @@
   "system": {
     "notes": "",
     "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Self/RSI hexes+</td><td><b>Duration:</b> 10 minutes</td></tr></table><p>Temporarily increases the Endurance attribute +2 (MS) or +5 (CS) of one subject (usually a friend) within Range.</p><p>CF: halves the cleric's Endurance for Duration.</p>",
-    "source": "",
+    "source": "Religion 13",
     "macros": {
       "type": "script",
       "command": ""

@@ -11,7 +11,7 @@
   "system": {
     "notes": "",
     "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> One use</td></tr></table><p>An invocation to allow adherents of the same deity to voluntarily transfer piety to the invoker. The intent is to give the cleric more piety for any desired use. All donors of piety must touch the invoker.</p><table><tr><td style='width: 3em;'>CS</td><td>Receive up to 20pp from each donor.</td></tr><tr><td style='width: 3em;'>MS</td><td>Receive up to 10pp from each donor.</td></tr></table>",
-    "source": "",
+    "source": "Religion 13",
     "macros": {
       "type": "script",
       "command": ""
