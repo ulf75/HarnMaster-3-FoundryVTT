@@ -479,6 +479,73 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Dump Esoteric Description to Chat
         html.find('.item-dumpdesc').click(this._onDumpEsotericDescription.bind(this));
 
+        html.on('click', '.item-name, .spell-name', (ev) => {
+            switch (ev.currentTarget.innerText) {
+                case 'Magic Spells':
+                    ui.notifications.info('Magic Spells sorted!');
+                    const convocations = new Map([
+                        ['Fyvria', 1],
+                        ['Jmorvi', 2],
+                        ['Lyahvi', 3],
+                        ['Odivshe', 4],
+                        ['Peleahn', 5],
+                        ['Savorya', 6],
+                        ['Neutral', 7]
+                    ]);
+                    this.object.items.forEach(async (i) => {
+                        if (i.type === ItemType.SPELL) {
+                            await i.update({
+                                'sort': Number(
+                                    convocations.get(i.system.convocation).toString() +
+                                        i.system.level.toString() +
+                                        (i.name.toLowerCase().charCodeAt(0) - 87).toString() +
+                                        (i.name.toLowerCase().charCodeAt(1) - 87).toString() +
+                                        (i.name.toLowerCase().charCodeAt(2) - 87).toString() +
+                                        ((i.name.toLowerCase().charCodeAt(3) | 97) - 87).toString() +
+                                        ((i.name.toLowerCase().charCodeAt(4) | 97) - 87).toString()
+                                )
+                            });
+                        }
+                    });
+                    break;
+
+                case 'Ritual Invocations':
+                    ui.notifications.info('Ritual Invocations sorted!');
+                    this.object.items.forEach(async (i) => {
+                        if (i.type === ItemType.INVOCATION) {
+                            await i.update({
+                                'sort': Number(
+                                    i.system.circle.toString() +
+                                        (i.name.toLowerCase().charCodeAt(0) - 87).toString() +
+                                        (i.name.toLowerCase().charCodeAt(1) - 87).toString() +
+                                        (i.name.toLowerCase().charCodeAt(2) - 87).toString() +
+                                        ((i.name.toLowerCase().charCodeAt(3) | 97) - 87).toString() +
+                                        ((i.name.toLowerCase().charCodeAt(4) | 97) - 87).toString()
+                                )
+                            });
+                        }
+                    });
+                    break;
+
+                case 'Psionic Talents':
+                    ui.notifications.info('Psionic Talents sorted!');
+                    this.object.items.forEach(async (i) => {
+                        if (i.type === ItemType.PSIONIC) {
+                            await i.update({
+                                'sort': Number(
+                                    (i.name.toLowerCase().charCodeAt(0) - 87).toString() +
+                                        (i.name.toLowerCase().charCodeAt(1) - 87).toString() +
+                                        (i.name.toLowerCase().charCodeAt(2) - 87).toString() +
+                                        ((i.name.toLowerCase().charCodeAt(3) | 97) - 87).toString() +
+                                        ((i.name.toLowerCase().charCodeAt(4) | 97) - 87).toString()
+                                )
+                            });
+                        }
+                    });
+                    break;
+            }
+        });
+
         // Active Effect management
         html.find('.effect-control, .effect-name').click((ev) => onManageActiveEffect(ev, this.document));
 
@@ -1132,7 +1199,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
                 const messageData = {
                     user: game.user.id,
-                    speaker: ChatMessage.getSpeaker(),
+                    speaker: ChatMessage.getSpeaker({actor: this.object}),
                     content: html.trim(),
                     type: CONST.CHAT_MESSAGE_STYLES.OTHER
                 };
