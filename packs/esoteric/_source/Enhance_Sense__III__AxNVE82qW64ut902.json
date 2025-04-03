@@ -1,0 +1,37 @@
+{
+  "_id": "AxNVE82qW64ut902",
+  "name": "Enhance Sense",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "IU3a605kYGtSM2Go",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> RSI feet+</td><td><b>Duration:</b> 5 (MS); 15 (CS) mins.</td></tr></table><p>Enhances any one of the sensory attributes by 3, or each by 1 point for Duration.</p><table><tr><td style='width: 3em;'>CF</td><td>renders the invoker deaf, mute, and blind for 3d6 minutes.</td></tr></table><p></p>",
+    "source": "HM Religion, Halea 6",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284294673,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!AxNVE82qW64ut902"
+}

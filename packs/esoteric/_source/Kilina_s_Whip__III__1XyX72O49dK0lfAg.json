@@ -1,0 +1,37 @@
+{
+  "_id": "1XyX72O49dK0lfAg",
+  "name": "Kilina's Whip",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "IU3a605kYGtSM2Go",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds</td><td><b>Ritual:</b> Silent Prayer</td></tr><tr><td><b>Range:</b> Touch</td><td><b>Duration:</b> One Touch</td></tr></table><p>Inflicts a severe jolt of pain on the next person or creature touched by the invoker, requiring an immediate Shock Roll:</p><table><tr><td style='width: 3em;'>CS</td><td> 6d6 Shock Roll</td></tr><tr><td style='width: 3em;'>MS</td><td> 3d6 Shock Roll</td></tr><tr><td style='width: 3em;'>MF</td><td> No effect, although the victim feels some pain and will likely take exception to the deed.</td></tr><tr><td style='width: 3em;'>CF</td><td> Invoker makes a 5d6 Shock Roll.</td></tr></table><p>The invocation may be added to a whip. This extends “touch” to the range of the whip, but requires a strike to be effective. The impact of the whip is a separate injury.</p>",
+    "source": "HM Religion, Halea 6",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284294673,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!1XyX72O49dK0lfAg"
+}

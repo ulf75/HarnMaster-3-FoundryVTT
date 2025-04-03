@@ -10,7 +10,7 @@
   },
   "system": {
     "notes": "",
-    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> RSI feet+</td><td><b>Duration:</b> 5 (MS); 15 (CS) mins.</td></tr></table><p>Allows the cleric to perceive a lie when talking with someone.</p><table><tr><td style='width: 3em;'>CS</td><td>lies of omission are also detected.</td></tr><tr><td style='width: 3em;'>MS</td><td>only lies of commission are detected.</td></tr></table><p>Truthsense cannot force a person to speak to the cleric.</p>",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds</td><td><b>Ritual:</b> Silent Prayer</td></tr><tr><td><b>Range:</b> Touch</td><td><b>Duration:</b> 10 (MS); 30 (CS) mins.</td></tr></table><p>Enables recipient to know whether or not a person is lying. It does not indicate what the truth is, but CS indicates the magnitude of the lie.</p>",
     "source": "HM Religion, Halea 6",
     "macros": {
       "type": "script",

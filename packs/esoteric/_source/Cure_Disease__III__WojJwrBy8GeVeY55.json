@@ -1,0 +1,37 @@
+{
+  "_id": "WojJwrBy8GeVeY55",
+  "name": "Cure Disease",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "IU3a605kYGtSM2Go",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds</td><td><b>Ritual:</b> Prayer/Massage</td></tr><tr><td><b>Range:</b> Self/Touch</td><td><b>Duration:</b> One Healing Roll</td></tr></table><p>Helps a patient overcome disease or infection with an immediate roll on the Infection Table modified for success:</p><table><tr><td style='width: 3em;'>MS</td><td>+20</td></tr><tr><td style='width: 3em;'>CS</td><td>+50</td></tr></table><p>The invocation cannot heal wounds, revivify a corpse, etc.</p>",
+    "source": "HM Religion, Halea 6",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284294673,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!WojJwrBy8GeVeY55"
+}

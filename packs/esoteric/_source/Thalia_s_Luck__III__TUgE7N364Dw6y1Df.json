@@ -1,0 +1,37 @@
+{
+  "_id": "TUgE7N364Dw6y1Df",
+  "name": "Thalia's Luck",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "IU3a605kYGtSM2Go",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15-RSI seconds</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch</td><td><b>Duration:</b> One Skill Roll</td></tr></table><p>Enhances the cleric's luck, or that of another person touched. The effect is to modify any one skill roll: +10/+30 (MS/CS).</p><table><tr><td style='width: 3em;'>CF</td><td>renders the invoker mute for 3d6 minutes.</td></tr></table><p></p>",
+    "source": "HM Religion, Halea 6",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284294673,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!TUgE7N364Dw6y1Df"
+}
