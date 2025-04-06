@@ -27,7 +27,7 @@ if (!!token.actor.player) {
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 await game.hm3.GmSays("<b>" + token.name + "</b> stays unconscious due to a <b>Mortal Wound</b>. <b>Turn ends.</b>", "Combat 14");
-await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
+await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
 `;
 
     return {

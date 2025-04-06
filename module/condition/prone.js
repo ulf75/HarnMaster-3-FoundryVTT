@@ -12,6 +12,7 @@ export async function createProneCondition(token) {
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
+token.document.setFlag('wall-height', 'tokenHeight', 2);
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, and getting up takes one action. <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
 `;
@@ -34,12 +35,7 @@ await Requestor.request({
             label: 'Rise',
             command: async function () {
                 const token = canvas.tokens.get('${token.id}');
-                const effect = token.getCondition(game.hm3.enums.Condition.PRONE)
-                if (effect) {
-                    effect.delete();
-                    await game.hm3.GmSays("<b>" + token.name + "</b> rises successfully. <b>Turn ends.</b>", "Combat 11");
-                    await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
-                }
+                token.getCondition(game.hm3.enums.Condition.PRONE)?.delete();
             }
         },
         {
@@ -53,6 +49,13 @@ await Requestor.request({
 });
 `;
 
+    const ON_DELETE_MACRO = `
+const token = canvas.tokens.get('${token.id}');
+await game.hm3.GmSays("<b>" + token.name + "</b> rises successfully. <b>Turn ends.</b>", "Combat 11");
+await token.document.setFlag('wall-height', 'tokenHeight', token.actor.system.height | 6);
+await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
+`;
+
     return {
         effectData: {
             label: game.hm3.enums.Condition.PRONE,
@@ -60,7 +63,9 @@ await Requestor.request({
             icon: PRONE_ICON,
             type: 'GameTime',
             seconds: INDEFINITE,
-            flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
+            flags: {
+                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}, onDelete: {script: ON_DELETE_MACRO}}
+            }
         },
         changes: [],
         options: {unique: true}

@@ -120,6 +120,10 @@ export class HarnMasterToken extends Token {
 }
 
 export class HarnMasterTokenDocument extends TokenDocument {
+    _onCreate(data, options, userId) {
+        super._onCreate(data, options, userId);
+        this.setFlag('wall-height', 'tokenHeight', this.actor.system.height | 6);
+    }
     /**
      *
      * @param {Condition} condition

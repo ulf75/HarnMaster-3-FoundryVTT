@@ -36,7 +36,7 @@ if (success) {
 } else {
     // Combatant stays unconscious
     await game.hm3.GmSays("<b>" + token.name + "</b> stays unconscious. <b>Turn ends.</b>", "Combat 14");
-    await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
+    await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
 }`;
 
     // On disable (regain consciousness), make a last SHOCK roll (SKILLS 22, COMBAT 14)
@@ -48,7 +48,7 @@ await token.combatant.update({defeated: false});
 if (ok) {
     // Combatant is back
     await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and resumes functioning normally. <b>Turn Ends.</b>", "Combat 14");
-    await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
+    await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
 } else {
     // Combatant is now SHOCKED
     token.addCondition(game.hm3.enums.Condition.SHOCKED);

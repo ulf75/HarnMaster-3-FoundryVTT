@@ -1933,7 +1933,7 @@ export async function setTA(autoend = false) {
         return true;
     } else {
         await game.hm3.GmSays('No more than one <b>Tactical Advantage</b> may be earned per character turn. <b>Turn ends.</b>', 'Combat 12');
-        await game.combats.active.nextTurn(1000); // delay so that other hooks are executed first
+        await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
         return false;
     }
 }
