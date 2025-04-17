@@ -34,6 +34,13 @@ let dialogEditor = new Dialog({
                 dialogEditor.render(true);
             }
         },
+        vision30: {
+            label: `V 30`,
+            callback: () => {
+                token.document.update({sight: {enabled: true, visionMode: 'basic', range: 30}});
+                dialogEditor.render(true);
+            }
+        },
         vision50: {
             label: `V 50`,
             callback: () => {
