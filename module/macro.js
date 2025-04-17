@@ -4,10 +4,12 @@ import * as utility from './utility.js';
 const supportedHMHooks = Object.values(Hook);
 
 const supportedFoundryHooks = [
+    'applyTokenStatusEffect',
     'combatRound',
     'combatStart',
     'combatTurn',
     'combatTurnChange',
+    'createToken',
     'pauseGame',
     'preUpdateToken',
     'targetToken',
