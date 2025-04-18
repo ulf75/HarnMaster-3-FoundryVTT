@@ -870,22 +870,27 @@ export class HarnMasterActor extends Actor {
                 itemData.locations.forEach((l) => {
                     // If the location is unknown, skip the rest
                     if (typeof armorMap[l] != 'undefined') {
+                        const AQ = itemData.armorQuality | 0;
                         // Add this armor's protection to the location
                         if (itemData.hasOwnProperty('protection')) {
-                            armorMap[l].blunt += Math.min(2 * itemData.protection.blunt, itemData.protection.blunt + itemData.armorQuality);
-                            armorMap[l].edged += Math.min(2 * itemData.protection.edged, itemData.protection.edged + itemData.armorQuality);
-                            armorMap[l].piercing += Math.min(2 * itemData.protection.piercing, itemData.protection.piercing + itemData.armorQuality);
-                            armorMap[l].fire += Math.min(2 * itemData.protection.fire, itemData.protection.fire + itemData.armorQuality);
-                            armorMap[l].squeeze += Math.min(2 * itemData.protection.squeeze, itemData.protection.squeeze + itemData.armorQuality);
-                            armorMap[l].tear += Math.min(2 * itemData.protection.tear, itemData.protection.tear + itemData.armorQuality);
+                            armorMap[l].blunt += Math.min(2 * itemData.protection.blunt, itemData.protection.blunt + AQ);
+                            armorMap[l].edged += Math.min(2 * itemData.protection.edged, itemData.protection.edged + AQ);
+                            armorMap[l].piercing += Math.min(2 * itemData.protection.piercing, itemData.protection.piercing + AQ);
+                            armorMap[l].fire += Math.min(2 * itemData.protection.fire, itemData.protection.fire + AQ);
+                            armorMap[l].squeeze += Math.min(2 * itemData.protection.squeeze, itemData.protection.squeeze + AQ);
+                            armorMap[l].tear += Math.min(2 * itemData.protection.tear, itemData.protection.tear + AQ);
+                        } else {
+                            console.warn(`HM3 | item has no 'protection' property`);
                         }
 
                         // if a material has been specified, add it to the layers
                         if (itemData.material.length > 0) {
                             if (armorMap[l].layers.length > 0) {
-                                armorMap[l].layers += ',';
+                                armorMap[l].layers += ', ';
                             }
-                            armorMap[l].layers += itemData.material;
+                            let AQBonus = '';
+                            if (AQ !== 0) AQBonus = (AQ > 0 ? '+' : '-') + Math.abs(AQ);
+                            armorMap[l].layers += itemData.material + AQBonus;
                         }
                     }
                 });
