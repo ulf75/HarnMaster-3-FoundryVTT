@@ -1174,7 +1174,7 @@ export class HarnMasterActor extends Actor {
                     const magnitude = Number.parseInt(val[1], 10);
                     if (isNaN(magnitude)) return false;
                     const skillName = val[0];
-                    for (let item in this.items.values()) {
+                    for (let item of this.items.contents) {
                         if (item.name === skillName && (item.type === 'weapongear' || item.type === 'missilegear')) return true;
                     }
                 }
@@ -1189,7 +1189,7 @@ export class HarnMasterActor extends Actor {
                     const magnitude = Number.parseInt(val[1], 10);
                     if (isNaN(magnitude)) return false;
                     const skillName = val[0];
-                    for (let item in this.items.values()) {
+                    for (let item of this.items.contents) {
                         if (item.name === skillName && item.type === 'weapongear') return true;
                     }
                 }
