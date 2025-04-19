@@ -74,6 +74,15 @@ label.init-checkbox {
     line-height: 22px;
 }
 
+.editor {
+    height: 100%;
+}
+
+.editor .tox-toolbar-overlord,
+.editor .tox-toolbar__primary {
+    background: none;
+}
+
 .sheet {
     .window-content {
         overflow-y: hidden;

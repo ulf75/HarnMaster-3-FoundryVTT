@@ -261,7 +261,8 @@
     }
 }
 
-.sheet-body .tab.facade.active {
+.sheet-body .tab.facade.active,
+.sheet-body .tab.description.active {
     height: 100%;
 
     .flexrow {

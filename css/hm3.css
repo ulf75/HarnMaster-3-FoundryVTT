@@ -642,6 +642,15 @@ section.highlight {
     line-height: 22px;
 }
 
+.hm3 .editor {
+    height: 100%;
+}
+
+.hm3 .editor .tox-toolbar-overlord,
+.hm3 .editor .tox-toolbar__primary {
+    background: none;
+}
+
 .hm3 .sheet .window-content {
     overflow-y: hidden;
     padding: 5px;
@@ -1135,11 +1144,13 @@ section.highlight {
     margin: 0;
 }
 
-.hm3 .sheet-body .tab.facade.active {
+.hm3 .sheet-body .tab.facade.active,
+.hm3 .sheet-body .tab.description.active {
     height: 100%;
 }
 
-.hm3 .sheet-body .tab.facade.active .flexrow {
+.hm3 .sheet-body .tab.facade.active .flexrow,
+.hm3 .sheet-body .tab.description.active .flexrow {
     height: 100%;
 }
 
