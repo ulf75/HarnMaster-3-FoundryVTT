@@ -143,10 +143,13 @@ export class HarnMasterItemSheet extends ItemSheet {
         data.effects = {};
         this.item.effects.forEach((effect) => {
             data.effects[effect.id] = {
-                'source': effect.sourceName,
+                'changes': utility.aeChanges(effect),
+                'disabled': effect.disabled,
                 'duration': utility.aeDuration(effect),
-                'data': effect,
-                'changes': utility.aeChanges(effect)
+                'id': effect.id,
+                'img': effect.img,
+                'name': effect.name,
+                'sourceName': effect.sourceName
             };
         });
 

@@ -141,15 +141,15 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const inactive = isItemEffectInactive(effect);
 
             data.effects[effect.id] = {
-                'id': effect.id,
-                'name': effect.name,
-                'img': effect.img,
-                'sourceName': effect.sourceName,
+                'changes': utility.aeChanges(effect),
+                'disabled': inactive || effect.disabled,
                 'duration': utility.aeDuration(effect),
+                'id': effect.id,
+                'img': effect.img,
+                'name': effect.name,
                 'source': effect,
-                'changes': utility.aeChanges(effect)
+                'sourceName': effect.sourceName
             };
-            data.effects[effect.id].disabled = inactive || effect.disabled;
         });
 
         // migrate legacy macro
