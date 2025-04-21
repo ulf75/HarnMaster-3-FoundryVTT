@@ -152,7 +152,7 @@ export function getItemEffect(effect) {
         const origin = foundry.utils.parseUuid(effect.origin);
         if (origin.primaryType === 'Actor' && origin.type === 'Item') {
             const origItem = game.actors.get(origin.primaryId).items.get(origin.id);
-            const inactive = !origItem.system.isCarried || !origItem.system.isEquipped;
+            const inactive = !origItem?.system.isCarried || !origItem?.system.isEquipped;
 
             return {origin, origItem, inactive};
         }
