@@ -3236,6 +3236,14 @@ section.highlight {
     color: #9a998f;
 }
 
+.hm3 .effects .effects-list .effect-controls .effect-control.disable:hover {
+    text-shadow: unset;
+}
+
+.hm3 .effects .effects-list .effect-controls.effect-control.disable:hover {
+    text-shadow: unset;
+}
+
 .hm3 .effects .effects-list .effect-controls .effect-equip {
     color: #9a998f;
 }

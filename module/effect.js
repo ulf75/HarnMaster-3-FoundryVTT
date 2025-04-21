@@ -7,13 +7,7 @@ export async function onManageActiveEffect(event, owner) {
     event.preventDefault();
     const a = event.currentTarget;
     const li = a.closest('li');
-    const clickOnName = !!(
-        li.firstElementChild?.className?.includes('effect-name') &&
-        a.dataset.action !== 'create' &&
-        a.dataset.action !== 'toggle' &&
-        a.dataset.action !== 'delete'
-    );
-    const action = clickOnName ? 'edit' : a.dataset.action;
+    const action = a.dataset.action;
     const effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
     switch (action) {
         case 'create':
@@ -101,6 +95,10 @@ export async function onManageActiveEffect(event, owner) {
                 updateData['disabled'] = true;
             }
             return effect.update(updateData);
+
+        case 'void':
+        default:
+            break;
     }
 }
 

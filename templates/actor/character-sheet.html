@@ -56,8 +56,8 @@
         <a class="item" data-tab="inventory">Gear</a>
         {{#if hasRwPermission}}
         <a class="item" data-tab="macros">Macros</a>
-        <a class="item" data-tab="effects">Effects</a>
         {{/if}}
+        <a class="item" data-tab="effects">Effects</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -1346,25 +1346,36 @@
                     <div class="effect-source">Start</div>
                     <div class="effect-duration">Remaining</div>
                     <div class="effect-changes">Changes</div>
+                    {{#if hasRwPermission}}
                     <a class="effect-controls effect-control" title="Add Effect" data-action="create"><span class="active"><i
                         class="fas fa-plus"></i> Add</span></a>
+                    {{else}}
+                    <a class="effect-controls effect-control disable" data-action="void"><span class="inactive"><i
+                        class="fas fa-plus"></i> Add</span></a>
+                    {{/if}}
                 </li>
                 <ol class="effect-list item-list">
                 {{#each effects as |effect id|}}
                     <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-name="{{effect.label}}"
                         data-effect-id="{{effect.id}}">
-                        <div class="effect-name flexrow">
+                        <div class="effect-name flexrow"{{#if ../hasRwPermission}} data-action="edit"{{/if}}>
                             <div class="effect-image" style="background-image: url('{{effect.img}}')"></div>
-                            <h4>{{effect.label}}</h4>
+                            <h4>{{effect.name}}</h4>
                         </div>
                         <div class="effect-ele effect-source">{{effect.sourceName}}</div>
                         <div class="effect-ele effect-duration">{{effect.duration.startLabel}}</div>
                         <div class="effect-ele effect-duration">{{#if (eq effect.duration.label "None")}}Indefinite{{else}}{{effect.duration.label}}{{/if}}</div>
                         <div class="effect-ele effect-changes">{{effect.changes}}</div>
                         <div class="effect-controls">
-                            <a class="effect-control" data-action="toggle"><i class="{{#unless effect.disabled}}active{{/unless}} fas fa-circle-notch"></i></a>
-                            <a class="effect-control" data-action="edit"><i class="active fas fa-edit"></i></a>
-                            <a class="effect-control" data-action="delete"><i class="active fas fa-trash"></i></a>
+                            {{#if ../hasRwPermission}}
+                            <a class="effect-control" title="Toggle Effect on|off" data-action="toggle"><i class="{{#unless effect.disabled}}active{{/unless}} fas fa-circle-notch"></i></a>
+                            <a class="effect-control" title="Edit Effect" data-action="edit"><i class="active fas fa-edit"></i></a>
+                            <a class="effect-control" title="Delete Effect" data-action="delete"><i class="active fas fa-trash"></i></a>
+                            {{else}}
+                            <a class="effect-control disable" data-action="void"><i class="inactive fas fa-circle-notch"></i></a>
+                            <a class="effect-control disable" data-action="void"><i class="inactive fas fa-edit"></i></a>
+                            <a class="effect-control disable" data-action="void"><i class="inactive fas fa-trash"></i></a>
+                            {{/if}}
                         </div>
                     </li>
                 {{/each}}

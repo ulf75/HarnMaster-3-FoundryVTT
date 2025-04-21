@@ -381,7 +381,7 @@ export function aeDuration(effect) {
         const elapsed = game.time.worldTime - start;
         const remaining = elapsed < 0 ? d.seconds : Math.max(d.seconds - elapsed, 0);
         //const normDuration = toNormTime(d.seconds);
-        const normRemaining = isIndefinite ? 'None' : toNormTime(remaining);
+        const normRemaining = isIndefinite ? 'Indefinite' : toNormTime(remaining);
         const normStart = elapsed < 0 ? toNormTime(-elapsed) : 'Started';
         return {
             type: 'seconds',

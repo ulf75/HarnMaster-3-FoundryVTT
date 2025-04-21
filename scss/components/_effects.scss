@@ -133,6 +133,14 @@
                 font-size: 12px;
                 text-align: right;
                 color: #9a998f;
+
+                &.disable:hover {
+                    text-shadow: unset;
+                }
+            }
+
+            &.effect-control.disable:hover {
+                text-shadow: unset;
             }
 
             .effect-equip {
