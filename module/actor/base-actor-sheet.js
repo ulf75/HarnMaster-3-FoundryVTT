@@ -1,4 +1,4 @@
-import {onManageActiveEffect} from '../effect.js';
+import {isItemEffectInactive, onManageActiveEffect} from '../effect.js';
 import {ActorType, ItemType} from '../hm3-types.js';
 import {onManageMacro} from '../macro.js';
 import * as macros from '../macros.js';
@@ -138,6 +138,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // get active effects
         data.effects = {};
         this.actor.allApplicableEffects().forEach((effect) => {
+            const inactive = isItemEffectInactive(effect);
+
             data.effects[effect.id] = {
                 'id': effect.id,
                 'label': effect.name,
@@ -147,7 +149,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 'source': effect,
                 'changes': utility.aeChanges(effect)
             };
-            data.effects[effect.id].disabled = effect.disabled;
+            data.effects[effect.id].disabled = inactive || effect.disabled;
         });
 
         // migrate legacy macro
@@ -610,7 +612,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
         });
 
-        // Filter on name for effects
+        // Filter on name for macros
         html.on('keyup', '.macros-name-filter', (ev) => {
             this.macrosNameFilter = $(ev.currentTarget).val();
             const lcMacrosNameFilter = this.macrosNameFilter.toLowerCase();
