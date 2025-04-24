@@ -1,1 +1,7 @@
-{"hm3": {"speed-provider": {"walk": "Walk", "jog": "Jog", "run": "Run", "sprint": "Sprint"}}}
+{
+  "hm3": {
+    "SDRConditionSkillMax": "Condition skill is maxed out (SKILLS 9)",
+    "SDRSkillSpecialty": "Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)",
+    "speed-provider": {"walk": "Walk", "jog": "Jog", "run": "Run", "sprint": "Sprint"}
+  }
+}

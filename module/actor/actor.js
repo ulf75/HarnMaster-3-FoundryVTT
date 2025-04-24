@@ -437,18 +437,8 @@ export class HarnMasterActor extends Actor {
         actorData.abilities.morality.modified = eph.morality;
         actorData.abilities.comeliness.modified = eph.comeliness;
 
-        const condition = this.items.find((it) => it.name.toLowerCase() === 'condition');
-        if (condition) {
-            // Handle using Condition Skill for Endurance if it is present
-            utility.calcSkillBase(condition);
-            // this.system.hasCondition = true; deprecated
-            const OP = Math.round((Number(condition.system.skillBase.OP) || 0) / 2);
-            const ML =
-                condition.system.masteryLevel ||
-                utility.truncatedOML(Number(condition.system.skillBase.value) * (Number(condition.system.skillBase.SBx) + OP));
-            this.system.endurance = Math.floor(ML / 5) || 1;
-            this.system.encumbrance = Math.floor(this.system.eph.effectiveWeight / this.system.endurance);
-        }
+        // The effect of Load on a character’s physical activities. It is equal to Load ÷ Endurance, rounded off to the nearest whole number. (COMBAT 2)
+        this.system.encumbrance = Math.floor(this.system.eph.effectiveWeight / this.system.endurance);
 
         // All common character and creature derived data below here
 
@@ -926,6 +916,26 @@ export class HarnMasterActor extends Actor {
         const result = await DiceHM3.sdrRoll(item);
 
         if (result?.sdrIncr) {
+            //
+            // check special rules for skill development
+            //
+
+            // Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)
+            if (item.type === 'skill' && result.sdrIncr === 2) {
+                if (item.system.masteryLevel < 40) {
+                    ui.notifications.error(game.i18n.localize('hm3.SDRSkillSpecialty'));
+                    return;
+                }
+            }
+
+            // Condition skill is maxed out (SKILLS 9)
+            if (item.type === 'skill' && item.name === 'Condition') {
+                if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
+                    ui.notifications.error(game.i18n.localize('hm3.SDRConditionSkillMax'));
+                    return;
+                }
+            }
+
             await item.update({
                 'system.improveFlag': false,
                 'system.masteryLevel': +item.system.masteryLevel + (result.sdrIncr === 2 ? 2 : 1)
