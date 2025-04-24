@@ -465,7 +465,7 @@ export function aeChanges(effect) {
             let prefix = '';
             const parts = parseAEValue(ch.value);
             if (parts.length === 2) {
-                val = Number.parseInt(parts[1], 10) || 0;
+                val = truncate(Number.parseFloat(parts[1])) || 0;
                 const itemName = parts[0];
                 switch (key) {
                     case 'system.eph.itemEMLMod':

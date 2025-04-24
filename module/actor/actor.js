@@ -1121,7 +1121,7 @@ export class HarnMasterActor extends Actor {
                 if (chg.key === 'system.eph.itemEMLMod') {
                     const val = utility.parseAEValue(chg.value);
                     if (val.length != 2) return false;
-                    const magnitude = Number.parseInt(val[1], 10);
+                    const magnitude = Number.parseFloat(val[1]);
                     if (isNaN(magnitude)) return false;
                     const skillName = val[0];
                     return Array.from(ownedItems).some((i) => i.name === skillName && (i.type === 'skill' || i.type === 'psionic'));
@@ -1135,7 +1135,7 @@ export class HarnMasterActor extends Actor {
                     c = foundry.utils.duplicate(c);
                     const val = utility.parseAEValue(c.value);
                     const itemName = val[0];
-                    c.value = Number.parseInt(val[1], 10);
+                    c.value = utility.truncate(Number.parseFloat(val[1]));
                     c.key = 'system.effectiveMasteryLevel';
                     c.item = this.itemTypes.skill.find((it) => it.name === itemName);
                     if (!c.item) c.item = this.itemTypes.psionic.find((it) => it.name === itemName);
