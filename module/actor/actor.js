@@ -916,22 +916,10 @@ export class HarnMasterActor extends Actor {
         const result = await DiceHM3.sdrRoll(item);
 
         if (result?.sdrIncr) {
-            //
-            // check special rules for skill development
-            //
-
             // Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)
             if (item.type === 'skill' && result.sdrIncr === 2) {
                 if (item.system.masteryLevel < 40) {
-                    ui.notifications.error(game.i18n.localize('hm3.SDRSkillSpecialty'));
-                    return;
-                }
-            }
-
-            // Condition skill is maxed out (SKILLS 9)
-            if (item.type === 'skill' && item.name === 'Condition') {
-                if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
-                    ui.notifications.error(game.i18n.localize('hm3.SDRConditionSkillMax'));
+                    ui.notifications.error(item.name + ': ' + game.i18n.localize('hm3.SDR.SkillSpecialty'), {permanent: true});
                     return;
                 }
             }

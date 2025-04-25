@@ -1,7 +1,14 @@
 {
   "hm3": {
-    "SDRConditionSkillMax": "Condition skill is maxed out (SKILLS 9)",
-    "SDRSkillSpecialty": "Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)",
+    "SDR": {
+      "CombatExperience": "Weapon Skills may be developed by practice/training as normal, but no weapon skill can be increased beyond ML70 except by actual combat experience (SKILLS 18)",
+      "ConditionSkillMax": "Condition skill is maxed out (SKILLS 9)",
+      "InitiativeExperience": "Once opened, Development Rolls are made only for Combat Experience (SKILLS 18)",
+      "Perform": "Perform SDR",
+      "PerformTraining": "Perform Training SDR",
+      "SkillSpecialty": "Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)",
+      "Toggle": "Skill Development Toggle"
+    },
     "speed-provider": {"walk": "Walk", "jog": "Jog", "run": "Run", "sprint": "Sprint"}
   }
 }

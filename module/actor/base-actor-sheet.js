@@ -1117,48 +1117,81 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     }
 
     async _improveToggleDialog(item) {
-        let dlghtml = '<p>Do you want to perform a Skill Development Roll (SDR), or just disable the flag?</p>';
+        // Condition skill is maxed out (SKILLS 9)
+        if (item.type === 'skill' && item.name === 'Condition') {
+            if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
+                ui.notifications.error(game.i18n.localize('hm3.SDR.ConditionSkillMax'), {permanent: true});
+                return;
+            }
+        }
 
+        let dlghtml = '<p>Do you want to perform a Skill Development Roll (SDR), Training Rolls, or just disable the flag?</p>';
         // Create the dialog window
         return new Promise((resolve) => {
-            new Dialog({
-                title: 'Skill Development Toggle',
-                content: dlghtml.trim(),
-                buttons: {
-                    performSDR: {
-                        label: 'Perform SDR',
-                        callback: async (html) => {
-                            dlghtml = `<div style="padding: 2px 0"><label>Perform Skill Development Roll(s) (SDR):</label></div><div style="padding: 6px 0"><input type="number" id="sdr" name="sdr" value="1" min="1" max="100" /></div>`;
-                            return new Promise((resolve) => {
-                                new Dialog({
-                                    title: 'Skill Development Roll(s)',
-                                    content: dlghtml.trim(),
-                                    buttons: {
-                                        roll: {
-                                            label: 'Roll',
-                                            callback: async (html) => {
-                                                const num = Number(html.find('#sdr')[0].value);
-                                                for (let i = 0; i < num; i++) await HarnMasterActor.skillDevRoll(item);
-                                                resolve(true);
+            new Dialog(
+                {
+                    title: game.i18n.localize('hm3.SDR.Toggle'),
+                    content: dlghtml.trim(),
+                    buttons: {
+                        performSDR: {
+                            label: game.i18n.localize('hm3.SDR.Perform'),
+                            callback: async () => {
+                                await HarnMasterActor.skillDevRoll(item);
+                                resolve(true);
+                            }
+                        },
+                        performTrainingSDR: {
+                            label: game.i18n.localize('hm3.SDR.PerformTraining'),
+                            callback: async (html) => {
+                                // Special rules for combat skills
+                                if (item.type === 'skill' && item.system.type === 'Combat') {
+                                    // Once opened, Development Rolls are made only for Combat Experience (SKILLS 18)
+                                    if (item.name === 'Initiative') {
+                                        ui.notifications.error(item.name + ': ' + game.i18n.localize('hm3.SDR.InitiativeExperience'), {
+                                            permanent: true
+                                        });
+                                        return;
+                                    }
+                                    // Weapon Skills may be developed by practice/training as normal, but no weapon skill
+                                    // can be increased beyond ML70 except by actual combat experience (SKILLS 18)
+                                    else if (item.system.masteryLevel >= 70) {
+                                        ui.notifications.error(item.name + ': ' + game.i18n.localize('hm3.SDR.CombatExperience'), {permanent: true});
+                                        return;
+                                    }
+                                }
+                                dlghtml = `<div style="padding: 2px 0"><label>Perform Skill Development Roll(s) (SDR):</label></div><div style="padding: 6px 0"><input type="number" id="sdr" name="sdr" value="10" min="1" max="100" /></div>`;
+                                return new Promise((resolve) => {
+                                    new Dialog({
+                                        title: 'Skill Development Roll(s)',
+                                        content: dlghtml.trim(),
+                                        buttons: {
+                                            roll: {
+                                                label: 'Roll',
+                                                callback: async (html) => {
+                                                    const num = Number(html.find('#sdr')[0].value);
+                                                    for (let i = 0; i < num; i++) await HarnMasterActor.skillDevRoll(item, true);
+                                                    resolve(true);
+                                                }
                                             }
-                                        }
-                                    },
-                                    default: 'roll',
-                                    close: () => resolve(false)
-                                }).render(true);
-                            });
+                                        },
+                                        default: 'roll',
+                                        close: () => resolve(false)
+                                    }).render(true);
+                                });
+                            }
+                        },
+                        disableFlag: {
+                            label: 'Disable Flag',
+                            callback: async (html) => {
+                                return item.update({'system.improveFlag': false});
+                            }
                         }
                     },
-                    disableFlag: {
-                        label: 'Disable Flag',
-                        callback: async (html) => {
-                            return item.update({'system.improveFlag': false});
-                        }
-                    }
+                    default: 'performSDR',
+                    close: () => resolve(false)
                 },
-                default: 'performSDR',
-                close: () => resolve(false)
-            }).render(true);
+                {width: 550}
+            ).render(true);
         });
     }
 
