@@ -498,13 +498,13 @@ HM3.defaultContainerIconName = 'sack';
 
 HM3.magicIcons = [
     ['pentacle', 'systems/hm3/images/icons/svg/pentacle.svg'],
-    ['lyahvi', 'systems/hm3/images/icons/svg/wind.svg'],
-    ['peleahn', 'systems/hm3/images/icons/svg/fire.svg'],
-    ['jmorvi', 'systems/hm3/images/icons/svg/anvil.svg'],
-    ['fyvria', 'systems/hm3/images/icons/svg/tree.svg'],
-    ['odivshe', 'systems/hm3/images/icons/svg/water.svg'],
-    ['savorya', 'systems/hm3/images/icons/svg/divination.svg'],
-    ['neutral', 'systems/hm3/images/icons/svg/pentacle.svg']
+    ['lyahvi', 'systems/hm3/images/icons/png/lyahvi.png'],
+    ['peleahn', 'systems/hm3/images/icons/png/peleahn.png'],
+    ['jmorvi', 'systems/hm3/images/icons/png/jmorvi.png'],
+    ['fyvria', 'systems/hm3/images/icons/png/fyvria.png'],
+    ['odivshe', 'systems/hm3/images/icons/png/odivshe.png'],
+    ['savorya', 'systems/hm3/images/icons/png/savorya.png'],
+    ['neutral', 'systems/hm3/images/icons/png/neutral.png']
 ];
 
 HM3.ritualIcons = [
