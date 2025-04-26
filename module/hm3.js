@@ -219,14 +219,6 @@ Hooks.once('init', async function () {
 Hooks.on('renderChatMessage', (app, html, data) => {
     // Display action buttons
     combat.displayChatActionButtons(app, html, data);
-
-    // if blind Roll Mode, remove info from Chat Card
-    if (html[0].innerHTML.includes('hm3 chat-card') && app.blind && !game.user.isGM) {
-        const nodes = html[0].childNodes[3].childNodes[1];
-        nodes.childNodes[3].innerText = 'Blind GM Roll';
-        const len = nodes.childNodes.length - 6;
-        for (let i = 0; i < len; i++) nodes.childNodes[5].remove();
-    }
 });
 
 Hooks.on('renderChatLog', (app, html, data) => HarnMasterActor.chatListeners(html));

@@ -107,29 +107,25 @@ export class DiceHM3 {
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
-        const {blind, rollMode, whisper} = this.getRollMode({
-            skill: rollData.skill,
-            isAppraisal: roll.preData.isAppraisal,
+        const rollMode = this.getRollMode({
             blind: rollData.blind,
+            isAppraisal: roll.preData.isAppraisal,
             private: rollData.private,
-            userId: game.users.players.find((p) => p.character?.id === rollData.actor)?.id
+            skill: rollData.skill
         });
         const messageData = {
-            user: game.user.id,
-            speaker,
             content: html.trim(),
-            blind,
-            sound: CONFIG.sounds.dice,
             roll: roll.rollObj,
-            whisper
+            sound: CONFIG.sounds.dice,
+            speaker,
+            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            user: game.user.id
         };
 
-        const messageOptions = {
-            rollMode
-        };
+        const messageOptions = {rollMode};
 
         // Create a chat message
-        await ChatMessage.create(messageData, messageOptions);
+        await roll.rollObj.toMessage(messageData, messageOptions);
 
         return chatTemplateData;
     }
@@ -238,7 +234,7 @@ export class DiceHM3 {
      */
     static async d6Roll(rollData) {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
-        const {blind, rollMode, whisper} = this.getRollMode({skill: rollData.skill});
+        const rollMode = this.getRollMode({skill: rollData.skill});
 
         const dialogOptions = {
             items: rollData.items,
@@ -303,21 +299,19 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            blind,
             content: html.trim(),
             roll: roll.rollObj,
             sound: CONFIG.sounds.dice,
-            speaker: speaker,
-            user: game.user.id,
-            whisper
+            speaker,
+            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            user: game.user.id
         };
 
-        const messageOptions = {
-            rollMode
-        };
+        const messageOptions = {rollMode};
 
         // Create a chat message
-        await ChatMessage.create(messageData, messageOptions);
+        await roll.rollObj.toMessage(messageData, messageOptions);
+        // await ChatMessage.create(messageData, messageOptions);
 
         return chatTemplateData;
     }
@@ -1384,7 +1378,7 @@ export class DiceHM3 {
      * @returns
      */
     static getRollMode(options) {
-        options = foundry.utils.mergeObject({skill: null, isAppraisal: false, blind: false, private: false, userId: null}, options);
+        options = foundry.utils.mergeObject({skill: null, isAppraisal: false, blind: false, private: false}, options);
         // publicroll, gmroll, blindroll & selfroll (CONST.DICE_ROLL_MODES.BLIND)
         const blind =
             options.blind ||
@@ -1395,16 +1389,7 @@ export class DiceHM3 {
             : options.private
             ? CONST.DICE_ROLL_MODES.PRIVATE
             : game.settings.get('core', 'rollMode');
-        const whisper = new Set();
-        if (blind) {
-            if (game.users.activeGM) whisper.add(game.users.activeGM.id);
-        } else {
-            if (rollMode === CONST.DICE_ROLL_MODES.SELF) whisper.add(game.users.current.id);
-            if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE) whisper.add(game.users.activeGM.id);
-            if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE) whisper.add(game.users.current.id);
-            if (rollMode === CONST.DICE_ROLL_MODES.PRIVATE && options.userId) whisper.add(options.userId);
-        }
 
-        return {blind, rollMode, whisper: Array.from(whisper)};
+        return rollMode;
     }
 }
