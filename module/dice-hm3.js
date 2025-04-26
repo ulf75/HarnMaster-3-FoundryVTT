@@ -362,7 +362,7 @@ export class DiceHM3 {
     /*--------------------------------------------------------------------------------*/
 
     static async sdrRoll(item) {
-        const speaker = ChatMessage.getSpeaker();
+        const speaker = ChatMessage.getSpeaker({actor: item.actor});
 
         let roll = await new Roll(`1d100 + @sb`, {
             sb: item.system.skillBase.value
@@ -395,19 +395,18 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            speaker: speaker,
             content: html.trim(),
-            user: game.user.id,
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            roll: roll,
             sound: CONFIG.sounds.dice,
-            roll: roll
+            speaker: speaker,
+            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            user: game.user.id
         };
 
-        const messageOptions = {
-            rollMode: game.settings.get('core', 'rollMode')
-        };
+        const messageOptions = {};
 
         // Create a chat message
+        ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
         await ChatMessage.create(messageData, messageOptions);
 
         return chatTemplateData;
@@ -892,19 +891,18 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user.id,
-            speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            roll: roll.rollObj,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            speaker: speaker,
+            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            user: game.user.id
         };
 
-        const messageOptions = {
-            rollMode: game.settings.get('core', 'rollMode')
-        };
+        const messageOptions = {};
 
         // Create a chat message
+        ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
         await ChatMessage.create(messageData, messageOptions);
 
         return chatTemplateData;
@@ -1062,19 +1060,18 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user.id,
-            speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            roll: roll.rollObj,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            speaker: speaker,
+            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            user: game.user.id
         };
 
-        const messageOptions = {
-            rollMode: game.settings.get('core', 'rollMode')
-        };
+        const messageOptions = {};
 
         // Create a chat message
+        ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
         await ChatMessage.create(messageData, messageOptions);
 
         return chatTemplateData;
@@ -1228,19 +1225,18 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user.id,
-            speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            roll: roll.rollObj,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            speaker: speaker,
+            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            user: game.user.id
         };
 
-        const messageOptions = {
-            rollMode: game.settings.get('core', 'rollMode')
-        };
+        const messageOptions = {};
 
         // Create a chat message
+        ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
         await ChatMessage.create(messageData, messageOptions);
 
         return chatTemplateData;
