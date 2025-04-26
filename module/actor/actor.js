@@ -919,7 +919,7 @@ export class HarnMasterActor extends Actor {
             // Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)
             if (item.type === 'skill' && result.sdrIncr === 2) {
                 if (item.system.masteryLevel < 40) {
-                    ui.notifications.error(item.name + ': ' + game.i18n.localize('hm3.SDR.SkillSpecialty'), {permanent: true});
+                    await game.hm3.GmSays('<b>' + item.name + '</b>: ' + game.i18n.localize('hm3.SDR.SkillSpecialty'), 'SKILLS 2');
                     return;
                 }
             }

@@ -1120,12 +1120,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Condition skill is maxed out (SKILLS 9)
         if (item.type === 'skill' && item.name === 'Condition') {
             if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
-                ui.notifications.error(game.i18n.localize('hm3.SDR.ConditionSkillMax'), {permanent: true});
+                await game.hm3.GmSays(game.i18n.localize('hm3.SDR.ConditionSkillMax'), 'SKILLS 9');
                 return;
             }
         }
 
-        let dlghtml = '<p>Do you want to perform a Skill Development Roll (SDR), Training Rolls, or just disable the flag?</p>';
+        let dlghtml = game.i18n.localize('hm3.SDR.MainDlgHtml');
         // Create the dialog window
         return new Promise((resolve) => {
             new Dialog(
@@ -1147,29 +1147,59 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                 if (item.type === 'skill' && item.system.type === 'Combat') {
                                     // Once opened, Development Rolls are made only for Combat Experience (SKILLS 18)
                                     if (item.name === 'Initiative') {
-                                        ui.notifications.error(item.name + ': ' + game.i18n.localize('hm3.SDR.InitiativeExperience'), {
-                                            permanent: true
-                                        });
+                                        await game.hm3.GmSays(
+                                            '<b>' + item.name + '</b>: ' + game.i18n.localize('hm3.SDR.InitiativeExperience'),
+                                            'SKILLS 18'
+                                        );
                                         return;
                                     }
                                     // Weapon Skills may be developed by practice/training as normal, but no weapon skill
                                     // can be increased beyond ML70 except by actual combat experience (SKILLS 18)
                                     else if (item.system.masteryLevel >= 70) {
-                                        ui.notifications.error(item.name + ': ' + game.i18n.localize('hm3.SDR.CombatExperience'), {permanent: true});
+                                        await game.hm3.GmSays(
+                                            '<b>' + item.name + '</b>: ' + game.i18n.localize('hm3.SDR.CombatExperience'),
+                                            'SKILLS 18'
+                                        );
                                         return;
                                     }
                                 }
-                                dlghtml = `<div style="padding: 2px 0"><label>Perform Skill Development Roll(s) (SDR):</label></div><div style="padding: 6px 0"><input type="number" id="sdr" name="sdr" value="10" min="1" max="100" /></div>`;
+                                dlghtml = game.i18n.localize('hm3.SDR.TrainingDlgHtml');
                                 return new Promise((resolve) => {
                                     new Dialog({
-                                        title: 'Skill Development Roll(s)',
+                                        title: game.i18n.localize('hm3.SDR.SDRs'),
                                         content: dlghtml.trim(),
                                         buttons: {
                                             roll: {
-                                                label: 'Roll',
+                                                label: game.i18n.localize('hm3.SDR.Roll'),
                                                 callback: async (html) => {
                                                     const num = Number(html.find('#sdr')[0].value);
-                                                    for (let i = 0; i < num; i++) await HarnMasterActor.skillDevRoll(item, true);
+                                                    for (let i = 0; i < num; i++) {
+                                                        // Condition skill is maxed out (SKILLS 9)
+                                                        if (item.type === 'skill' && item.name === 'Condition') {
+                                                            if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
+                                                                await game.hm3.GmSays(
+                                                                    game.i18n.localize('hm3.SDR.ConditionSkillMax') + `<p>(${num - i} SDRs left)</p>`,
+                                                                    'SKILLS 9'
+                                                                );
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (item.type === 'skill' && item.system.type === 'Combat') {
+                                                            if (item.system.masteryLevel >= 70) {
+                                                                await game.hm3.GmSays(
+                                                                    '<b>' +
+                                                                        item.name +
+                                                                        '</b>: ' +
+                                                                        game.i18n.localize('hm3.SDR.CombatExperience') +
+                                                                        `<p>(${num - i} SDRs left)</p>`,
+                                                                    'SKILLS 18'
+                                                                );
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        await HarnMasterActor.skillDevRoll(item, true);
+                                                    }
                                                     resolve(true);
                                                 }
                                             }
@@ -1181,7 +1211,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                             }
                         },
                         disableFlag: {
-                            label: 'Disable Flag',
+                            label: game.i18n.localize('hm3.SDR.DisableFlag'),
                             callback: async (html) => {
                                 return item.update({'system.improveFlag': false});
                             }

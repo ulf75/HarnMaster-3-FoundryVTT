@@ -1,14 +1,24 @@
 {
   "hm3": {
     "SDR": {
-      "CombatExperience": "Weapon Skills may be developed by practice/training as normal, but no weapon skill can be increased beyond ML70 except by actual combat experience (SKILLS 18)",
-      "ConditionSkillMax": "Condition skill is maxed out (SKILLS 9)",
-      "InitiativeExperience": "Once opened, Development Rolls are made only for Combat Experience (SKILLS 18)",
+      "CombatExperience": "Weapon Skills may be developed by practice/training as normal, but no weapon skill can be increased beyond ML70 except by actual combat experience.",
+      "ConditionSkillMax": "<b>Condition</b> ML is maxed out (SBx7).",
+      "DisableFlag": "Disable Flag",
+      "InitiativeExperience": "Once opened, Development Rolls are made only for Combat Experience.",
+      "MainDlgHtml": "<p>Do you want to perform a Skill Development Roll (SDR), Training Rolls, or just disable the flag?</p>",
       "Perform": "Perform SDR",
       "PerformTraining": "Perform Training SDR",
-      "SkillSpecialty": "Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)",
-      "Toggle": "Skill Development Toggle"
+      "Roll": "Roll",
+      "SDRs": "Skill Development Roll(s)",
+      "SkillSpecialty": "Characters may begin selecting specialties when a skill reaches ML40.",
+      "Toggle": "Skill Development Toggle",
+      "TrainingDlgHtml": "<div style=\"padding: 2px 0\"><label>Perform Skill Development Roll(s) (SDR):</label></div><div style=\"padding: 6px 0\"><input type=\"number\" id=\"sdr\" name=\"sdr\" value=\"10\" min=\"1\" max=\"100\" /></div>"
     },
-    "speed-provider": {"walk": "Walk", "jog": "Jog", "run": "Run", "sprint": "Sprint"}
+    "speed-provider": {
+      "jog": "Jog",
+      "run": "Run",
+      "sprint": "Sprint",
+      "walk": "Walk"
+    }
   }
 }
