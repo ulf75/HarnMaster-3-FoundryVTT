@@ -7,5 +7,16 @@
   },
   "editor.codeActionsOnSave": {
     "source.removeUnusedImports": "explicit"
-  }
+  },
+  "i18n-ally.localesPaths": ["lang"],
+  "i18n-ally.displayLanguage": "en",
+  "i18n-ally.preferredDelimiter": ".",
+  // "i18n-ally.annotations": true,
+  // "i18n-ally.pathMatcher": "{locale}.json",
+  // "i18n-ally.sortKeys": true,
+  // "i18n-ally.defaultNamespace": "hm3",
+  "i18n-ally.translate.engines": ["deepl"],
+  "i18n-ally.translate.deepl.apiKey": "xxx-xxx-xxx-xxx-xxx:xx",
+  "i18n-ally.translate.deepl.useFreeApiEntry": true,
+  "i18n-ally.keystyle": "nested"
 }

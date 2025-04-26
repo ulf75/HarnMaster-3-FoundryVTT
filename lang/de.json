@@ -1,0 +1,24 @@
+{
+  "hm3": {
+    "SDR": {
+      "CombatExperience": "Waffenfähigkeiten können wie gewohnt durch Übung/Training entwickelt werden, aber keine Waffenfähigkeit kann über ML70 hinaus erhöht werden, außer durch tatsächliche Kampferfahrung.",
+      "ConditionSkillMax": "<b>Condition</b> ML ist maximal (SBx7).",
+      "DisableFlag": "Disable Flag",
+      "InitiativeExperience": "Sobald eröffnet, werden Entwicklungswürfe nur für Kampferfahrung gemacht.",
+      "MainDlgHtml": "<p>Wollen Sie einen Skill Development Roll (SDR), Trainingswürfe durchführen oder einfach nur die Markierung deaktivieren?</p>",
+      "Perform": "Perform SDR",
+      "PerformTraining": "Perform Training SDR",
+      "Roll": "Roll",
+      "SDRs": "Skill Development Roll(s)",
+      "SkillSpecialty": "Charaktere können mit der Auswahl von Spezialisierungen beginnen, wenn eine Fähigkeit ML40 erreicht.",
+      "Toggle": "Skill Development Toggle",
+      "TrainingDlgHtml": "<div style=\"padding: 2px 0\"><label>Perform Skill Development Roll(s) (SDR):</label></div><div style=\"padding: 6px 0\"><input type=\"number\" id=\"sdr\" name=\"sdr\" value=\"10\" min=\"1\" max=\"100\" /></div>"
+    },
+    "speed-provider": {
+      "jog": "Jog",
+      "run": "Run",
+      "sprint": "Sprint",
+      "walk": "Walk"
+    }
+  }
+}

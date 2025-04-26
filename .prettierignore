@@ -1,5 +1,7 @@
 # module/config.js
 # module/settings.js
 
+system.json
+
 # Ignore all HTML files:
 **/*.html
