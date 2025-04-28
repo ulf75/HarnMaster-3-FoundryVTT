@@ -557,7 +557,7 @@ async function attackDialog(options) {
 /**
  * Determine if the token is valid (must be either a 'creature' or 'character')
  *
- * @param {Token} token
+ * @param {HarnMasterToken} token
  */
 function isValidToken(token) {
     if (!token) {
@@ -581,7 +581,7 @@ function isValidToken(token) {
 /**
  * Determine default melee weapon based on maximum impact.
  *
- * @param {Token} token
+ * @param {HarnMasterToken} token
  */
 function defaultMeleeWeapon(token, sortMode = 'highestDmg') {
     if (!isValidToken(token)) return {weapons: [], defaultWeapon: null};
