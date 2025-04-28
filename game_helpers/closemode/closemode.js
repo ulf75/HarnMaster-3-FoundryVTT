@@ -11,7 +11,7 @@ let dialogEditor = new Dialog({
         CLOSE_MODE: {
             label: game.hm3.enums.Condition.CLOSE_MODE,
             callback: async () => {
-                token.addCondition(game.hm3.enums.Condition.CLOSE_MODE);
+                await token.addCondition(game.hm3.enums.Condition.CLOSE_MODE);
                 dialogEditor.render(true);
             }
         },

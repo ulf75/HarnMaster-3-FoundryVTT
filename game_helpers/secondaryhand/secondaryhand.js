@@ -8,7 +8,7 @@ let dialogEditor = new Dialog({
                     ui.notifications.error('Please select ONE token!');
                 } else {
                     const token = canvas.tokens.controlled[0];
-                    token.addCondition(game.hm3.enums.Condition.SECONDARY_HAND);
+                    await token.addCondition(game.hm3.enums.Condition.SECONDARY_HAND);
                 }
                 dialogEditor.render(true);
             }

@@ -24,14 +24,14 @@ let dialogEditor = new Dialog({
     buttons: {
         set: {
             label: 'Set',
-            callback: (html) => {
+            callback: async (html) => {
                 if (canvas.tokens.controlled.length !== 1) {
                     ui.notifications.error('Please select ONE token!');
                 } else {
                     const token = canvas.tokens.controlled[0];
                     const cond = html.find('#condition')[0];
                     const condition = cond.options[cond.selectedIndex].text;
-                    token.addCondition(condition);
+                    await token.addCondition(condition);
                 }
                 dialogEditor.render(true);
             }
