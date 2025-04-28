@@ -394,7 +394,7 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
         }
 
         /**
-         * @param {Token} token - The token to check movement
+         * @param {HarnMasterToken} token - The token to check movement
          * */
         getRanges(token) {
             const actor = token.actor;
