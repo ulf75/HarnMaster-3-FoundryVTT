@@ -3,10 +3,10 @@ const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
  *
- * @param {Token} token
+ * @param {HarnMasterToken} token
  * @returns
  */
-export async function createGrappledCondition(token) {
+export async function createCondition(token) {
     if (!token) return;
 
     return {

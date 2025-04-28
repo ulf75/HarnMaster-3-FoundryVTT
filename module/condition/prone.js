@@ -1,13 +1,17 @@
 // const PRONE_ICON = 'systems/hm3/images/icons/svg/falling.svg';
-const PRONE_ICON = 'icons/svg/falling.svg';
+const CONDITION_ICON = 'icons/svg/falling.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
  *
- * @param {Token} token
+ * @param {HarnMasterToken} token
+ * @param {Object} [options={}] - Options for the condition
+ * @param {boolean} [options.oneRoll=false] - Only one roll defaults to false
+ * @param {boolean} [options.oneRound=false] - Only one round defaults to false
+ * @param {boolean} [options.oneTurn=false] - Only one turn defaults to false
  * @returns
  */
-export async function createProneCondition(token) {
+export async function createCondition(token, options = {}) {
     if (!token) return;
 
     const ON_CREATE_MACRO = `
@@ -21,7 +25,7 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, 
 const token = canvas.tokens.get('${token.id}');
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 if (unconscious) return;
-const PRONE_IMG = '${PRONE_ICON}';
+const PRONE_IMG = '${CONDITION_ICON}';
 await game.hm3.GmSays("<b>" + token.name + "</b> is prone, and <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
 await Requestor.request({
     title: game.hm3.enums.Condition.PRONE,
@@ -60,7 +64,7 @@ await game.combats.active.nextTurn(500); // delay so that other hooks are execut
         effectData: {
             label: game.hm3.enums.Condition.PRONE,
             token,
-            icon: PRONE_ICON,
+            icon: CONDITION_ICON,
             type: 'GameTime',
             seconds: INDEFINITE,
             flags: {

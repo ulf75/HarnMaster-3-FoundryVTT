@@ -1,6 +1,10 @@
 import * as combat from './combat.js';
 import * as berserk from './condition/berserk.js';
+import * as broken from './condition/broken.js';
+import * as cautious from './condition/cautious.js';
+import * as desperate from './condition/desperate.js';
 import * as dying from './condition/dying.js';
+import * as empowered from './condition/empowered.js';
 import * as grappled from './condition/grappled.js';
 import * as prone from './condition/prone.js';
 import * as shocked from './condition/shocked.js';
@@ -1012,7 +1016,7 @@ export async function killRoll(options) {
         if (result) {
             if (!result.isSuccess) {
                 // DYING!!!
-                options.token?.addCondition(game.hm3.enums.Condition.DYING);
+                await options.token?.addCondition(game.hm3.enums.Condition.DYING);
             } else {
                 await game.hm3.GmSays(
                     `<b>${options.token.name}</b> just survives this <b>Fatal</b> wound, and makes a normal <b>Shock</b> roll.`,
@@ -1114,7 +1118,7 @@ export async function stumbleRoll(noDialog = false, myActor = null, opponentToke
         if (result) {
             actorInfo.actor.runCustomMacro(result);
             if (!result.isSuccess) {
-                token?.addCondition(Condition.PRONE);
+                await token?.addCondition(Condition.PRONE);
                 // Opponent gains a TA
                 await combat.setTA();
             }
@@ -1286,6 +1290,80 @@ export async function genericDamageRoll(myActor = null) {
         const result = await DiceHM3.damageRoll(rollData);
         if (result) {
             callOnHooks('hm3.onDamageRoll', actorInfo.actor, result, rollData);
+        }
+        return result;
+    }
+    return null;
+}
+
+export async function moraleRoll(noDialog = false, myActor = null) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null});
+    if (!actorInfo) {
+        ui.notifications.warn(`No actor for this action could be determined.`);
+        return null;
+    }
+
+    const ini = actorInfo.actor.items.find((x) => x.name === 'Initiative');
+    if (!ini) {
+        ui.notifications.warn(`No Initiative skill for this actor for this action could be determined.`);
+        return null;
+    }
+
+    let token = actorInfo.token;
+    const unconscious = token.hasCondition(Condition.UNCONSCIOUS);
+    if (unconscious) {
+        ui.notifications.warn(`Token is unconscious.`);
+        return null;
+    }
+
+    const stdRollData = {
+        actor: actorInfo.actor,
+        fastforward: noDialog,
+        label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Morale Roll`,
+        notes: '',
+        notesData: {},
+        private: true, // hidden to players
+        speaker: actorInfo.speaker,
+        target: ini.system.effectiveMasteryLevel,
+        type: 'Initiative-d100'
+    };
+
+    if (actorInfo.actor.isToken) {
+        stdRollData.token = actorInfo.actor.token.id;
+        // token = actorInfo.actor.token;
+    } else {
+        stdRollData.actor = actorInfo.actor.id;
+        // token = actorInfo.actor.prototypeToken;
+        // stdRollData.token = token?.id;
+    }
+
+    const hooksOk = Hooks.call('hm3.preMoraleRoll', stdRollData, actorInfo.actor);
+    if (hooksOk) {
+        const result = await DiceHM3.d100StdRoll(stdRollData);
+        if (result) {
+            actorInfo.actor.runCustomMacro(result);
+            if (result.isSuccess && result.isCritical) {
+                // CS - Inspired
+                await token.addCondition(Condition.EMPOWERED, {oneRound: true});
+            } else if (!result.isSuccess && !result.isCritical) {
+                // MF - Cautious, turn ends
+                await token.addCondition(Condition.CAUTIOUS, {oneRound: true});
+                await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
+            } else if (!result.isSuccess && result.isCritical) {
+                // CF
+                const rollObj = new Roll('1d100');
+                const roll = await rollObj.evaluate();
+                if (roll.total <= 25) {
+                    await token.addCondition(Condition.BERSERK);
+                } else if (roll.total <= 50) {
+                    await token.addCondition(Condition.DESPERATE);
+                } else if (roll.total <= 75) {
+                    await token.addCondition(Condition.BROKEN);
+                } else {
+                    await token.addCondition(Condition.CAUTIOUS);
+                }
+            }
+            callOnHooks('hm3.onMoraleRoll', actorInfo.actor, result, stdRollData);
         }
         return result;
     }
@@ -1615,7 +1693,7 @@ export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, eff
  * is specified, tries to use token (and will allow it regardless if user is GM.),
  * otherwise returned token will be the combatant whose turn it currently is.
  *
- * @param {Token} token
+ * @param {HarnMasterToken} token
  */
 function getTokenInCombat(token = null, forceAllow = false) {
     if (token && (game.user.isGM || forceAllow)) {
@@ -1712,6 +1790,7 @@ function getActor({item, actor, speaker, token} = {}) {
             }
         }
     }
+    if (!result.token) result.token = canvas.tokens.get(result.speaker.token);
 
     if (!result.actor.isOwner) {
         ui.notifications.warn(`You do not have permissions to control ${result.actor.name}.`);
@@ -1814,7 +1893,7 @@ export function pathIntersectsCircle(circle, line, centerToCenter = true) {
 
 /**
  * TODO
- * @param {Token} token
+ * @param {HarnMasterToken} token
  * @param {string} name
  * @returns
  */
@@ -1824,7 +1903,7 @@ export function hasActiveEffect(token, name, strict = false) {
 
 /**
  * TODO
- * @param {Token} token
+ * @param {HarnMasterToken} token
  * @param {string} name
  * @returns
  */
@@ -1893,7 +1972,7 @@ export async function createActiveEffect(effectData, changes = [], options = {})
     });
 
     if (options.unique && hasActiveEffect(effectData.token, effectData.label)) {
-        ui.notifications.warn(`Effect ${effectData.label} is unique and already exists.`);
+        if (game.user.isGM) ui.notifications.info(`Effect ${effectData.label} is unique and already exists.`);
         return null;
     }
 
@@ -1946,20 +2025,30 @@ export async function createActiveEffect(effectData, changes = [], options = {})
 
 /**
  * TODO
- * @param {Token} token
+ * @param {HarnMasterToken} token
  * @param {string} condition
+ * @param {Object} [conditionOptions={}] - Options for the condition
+ * @param {boolean} [conditionOptions.oneRoll=false] - Only one roll defaults to false
+ * @param {boolean} [conditionOptions.oneRound=false] - Only one round defaults to false
+ * @param {boolean} [conditionOptions.oneTurn=false] - Only one turn defaults to false
  * @returns
  */
-export async function createCondition(token, condition) {
+export async function createCondition(token, condition, conditionOptions = {}) {
     if (!token) return;
+
+    conditionOptions = foundry.utils.mergeObject(
+        {
+            oneRoll: false,
+            oneRound: false,
+            oneTurn: false
+        },
+        conditionOptions
+    );
 
     let effect;
     switch (condition) {
         case Condition.BLINDED:
-        case Condition.BROKEN:
-        case Condition.CAUTIOUS:
         case Condition.DEAFENED:
-        case Condition.DESPERATE:
         case Condition.INCAPACITATED:
             ui.notifications.info(`Condition '${condition}' not yet implemented.`);
             break;
@@ -1969,7 +2058,27 @@ export async function createCondition(token, condition) {
         // Further Initiative rolls are ignored until the battle ends. (COMBAT 16)
         case Condition.BERSERK:
             {
-                const {effectData, changes, options} = await berserk.createBerserkCondition(token);
+                const {effectData, changes, options} = await berserk.createCondition(token, conditionOptions);
+                effect = await createActiveEffect(effectData, changes, options);
+            }
+            break;
+
+        // The character is unable to fight in any useful way. The only available options are flight or
+        // surrender. Flight is normally preferable; surrender is a last resort. If neither is feasible,
+        // the character makes a Rest or Pass action option, but can defend if attacked except that
+        // Counterstrike is prohibited. (COMBAT 16)
+        case Condition.BROKEN:
+            {
+                const {effectData, changes, options} = await broken.createCondition(token, conditionOptions);
+                effect = await createActiveEffect(effectData, changes, options);
+            }
+            break;
+
+        // A cautious character will not Engage, must choose Pass if engaged, and cannot select the
+        // Counterstrike defense. (COMBAT 16)
+        case Condition.CAUTIOUS:
+            {
+                const {effectData, changes, options} = await cautious.createCondition(token, conditionOptions);
                 effect = await createActiveEffect(effectData, changes, options);
             }
             break;
@@ -2001,23 +2110,42 @@ export async function createCondition(token, condition) {
             );
             break;
 
+        // Character tries to conclude the battle, one way or the other, as soon as possible. Until
+        // the situation changes and a new Initiative Test is passed, the character selects the most
+        // aggressive option available. (COMBAT 16)
+        case Condition.DESPERATE:
+            {
+                const {effectData, changes, options} = await desperate.createCondition(token, conditionOptions);
+                effect = await createActiveEffect(effectData, changes, options);
+            }
+            break;
+
         case Condition.DYING:
             {
-                const {effectData, changes, options} = await dying.createDyingCondition(token);
+                const {effectData, changes, options} = await dying.createCondition(token, conditionOptions);
+                effect = await createActiveEffect(effectData, changes, options);
+            }
+            break;
+
+        // Character selects and executes any Action Option, with a +10 bonus to EML. If the character’s
+        // current morale state is non-normal, it returns to normal. (COMBAT 16)
+        case Condition.EMPOWERED:
+            {
+                const {effectData, changes, options} = await empowered.createCondition(token, conditionOptions);
                 effect = await createActiveEffect(effectData, changes, options);
             }
             break;
 
         case Condition.GRAPPLED:
             {
-                const {effectData, changes, options} = await grappled.createGrappledCondition(token);
+                const {effectData, changes, options} = await grappled.createCondition(token, conditionOptions);
                 effect = await createActiveEffect(effectData, changes, options);
             }
             break;
 
         case Condition.PRONE:
             {
-                const {effectData, changes, options} = await prone.createProneCondition(token);
+                const {effectData, changes, options} = await prone.createCondition(token, conditionOptions);
                 effect = await createActiveEffect(effectData, changes, options);
             }
             break;
@@ -2051,14 +2179,14 @@ export async function createCondition(token, condition) {
 
         case Condition.SHOCKED:
             {
-                const {effectData, changes, options} = await shocked.createShockedCondition(token);
+                const {effectData, changes, options} = await shocked.createCondition(token, conditionOptions);
                 effect = await createActiveEffect(effectData, changes, options);
             }
             break;
 
         case Condition.UNCONSCIOUS:
             {
-                const {effectData, changes, options} = await unconscious.createUnconsciousCondition(token);
+                const {effectData, changes, options} = await unconscious.createCondition(token, conditionOptions);
                 effect = await createActiveEffect(effectData, changes, options);
             }
             break;
@@ -2139,7 +2267,7 @@ export async function createInjury(injuryData, options = {}) {
 
 /**
  *
- * @param {Token} token
+ * @param {HarnMasterToken} token
  * @param {string} injuryId
  * @param {string} injuryName
  * @returns

@@ -3,17 +3,21 @@ const MINUTE = 60;
 
 /**
  *
- * @param {Token} token
+ * @param {HarnMasterToken} token
+ * @param {Object} [options={}] - Options for the condition
+ * @param {boolean} [options.oneRoll=false] - Only one roll defaults to false
+ * @param {boolean} [options.oneRound=false] - Only one round defaults to false
+ * @param {boolean} [options.oneTurn=false] - Only one turn defaults to false
  * @returns
  */
-export async function createUnconsciousCondition(token) {
+export async function createCondition(token, options = {}) {
     if (!token) return;
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
+await token.deleteAllMoraleConditions();
+await token.addCondition(game.hm3.enums.Condition.PRONE);
 const dying = token.hasCondition(game.hm3.enums.Condition.DYING);
-const prone = token.hasCondition(game.hm3.enums.Condition.PRONE);
-if (!prone) token.addCondition(game.hm3.enums.Condition.PRONE);
 if (!dying) {
     await game.hm3.GmSays("Overwhelmed by pain, blood loss, and exhaustion, <b>" + token.name + "</b> collapses unconscious onto the battlefield, falling <b>Prone</b> amidst the chaos.", "Combat 14");
     await token.actor.toggleStatusEffect('unconscious', {active: true, overlay: true});
@@ -51,7 +55,7 @@ if (ok) {
     await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
 } else {
     // Combatant is now SHOCKED
-    token.addCondition(game.hm3.enums.Condition.SHOCKED);
+    await token.addCondition(game.hm3.enums.Condition.SHOCKED);
 }`;
 
     return {

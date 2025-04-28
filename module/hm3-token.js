@@ -30,8 +30,8 @@ export class HarnMasterToken extends Token {
      * @param {Condition} condition
      * @returns
      */
-    async addCondition(condition) {
-        return macros.createCondition(this, condition);
+    async addCondition(condition, options = {}) {
+        return macros.createCondition(this, condition, options);
     }
 
     /**
@@ -83,6 +83,18 @@ export class HarnMasterToken extends Token {
     }
 
     /**
+     * Deletes all morale conditions from a token.
+     * @returns
+     */
+    async deleteAllMoraleConditions(except = null) {
+        if (except !== game.hm3.enums.Condition.BERSERK) await this.deleteCondition(game.hm3.enums.Condition.BERSERK);
+        if (except !== game.hm3.enums.Condition.BROKEN) await this.deleteCondition(game.hm3.enums.Condition.BROKEN);
+        if (except !== game.hm3.enums.Condition.CAUTIOUS) await this.deleteCondition(game.hm3.enums.Condition.CAUTIOUS);
+        if (except !== game.hm3.enums.Condition.DESPERATE) await this.deleteCondition(game.hm3.enums.Condition.DESPERATE);
+        if (except !== game.hm3.enums.Condition.EMPOWERED) await this.deleteCondition(game.hm3.enums.Condition.EMPOWERED);
+    }
+
+    /**
      *
      * @returns true, if token belongs to a player
      */
@@ -129,8 +141,8 @@ export class HarnMasterTokenDocument extends TokenDocument {
      * @param {Condition} condition
      * @returns
      */
-    async addCondition(condition) {
-        return this.object.addCondition(condition);
+    async addCondition(condition, options = {}) {
+        return this.object.addCondition(condition, options);
     }
 
     /**
@@ -169,6 +181,14 @@ export class HarnMasterTokenDocument extends TokenDocument {
      */
     async deleteCondition(condition, postpone = 0) {
         return this.object.deleteCondition(condition, postpone);
+    }
+
+    /**
+     * Deletes all morale conditions from a token.
+     * @returns
+     */
+    async deleteAllMoraleConditions(except = null) {
+        return this.object.deleteAllMoraleConditions(except);
     }
 
     hasPlayer() {

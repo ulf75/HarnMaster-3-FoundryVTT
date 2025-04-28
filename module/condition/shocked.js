@@ -1,5 +1,5 @@
 // const SHOCKED_ICON = 'systems/hm3/images/icons/svg/shock.svg';
-const SHOCKED_ICON = 'icons/svg/lightning.svg';
+const CONDITION_ICON = 'icons/svg/lightning.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 const ON_CREATE_MACRO = (token) => `
@@ -25,17 +25,21 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shoc
 
 /**
  *
- * @param {Token} token
+ * @param {HarnMasterToken} token
+ * @param {Object} [options={}] - Options for the condition
+ * @param {boolean} [options.oneRoll=false] - Only one roll defaults to false
+ * @param {boolean} [options.oneRound=false] - Only one round defaults to false
+ * @param {boolean} [options.oneTurn=false] - Only one turn defaults to false
  * @returns
  */
-export async function createShockedCondition(token) {
+export async function createCondition(token, options = {}) {
     if (!token) return;
 
     return {
         effectData: {
             label: game.hm3.enums.Condition.SHOCKED,
             token,
-            icon: SHOCKED_ICON,
+            icon: CONDITION_ICON,
             type: 'GameTime',
             seconds: INDEFINITE,
             flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO(token)}, onTurnStart: {script: ON_TURN_START_MACRO(token)}}}

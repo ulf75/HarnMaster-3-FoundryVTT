@@ -1,20 +1,24 @@
 // const DYING_ICON = 'systems/hm3/images/icons/svg/daemon-skull.svg';
-const DYING_ICON = 'icons/svg/skull.svg';
+const CONDITION_ICON = 'icons/svg/skull.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
  *
- * @param {Token} token
+ * @param {HarnMasterToken} token
+ * @param {Object} [options={}] - Options for the condition
+ * @param {boolean} [options.oneRoll=false] - Only one roll defaults to false
+ * @param {boolean} [options.oneRound=false] - Only one round defaults to false
+ * @param {boolean} [options.oneTurn=false] - Only one turn defaults to false
  * @returns
  */
-export async function createDyingCondition(token) {
+export async function createCondition(token, options = {}) {
     if (!token) return;
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
+await token.deleteAllMoraleConditions();
 await token.actor.toggleStatusEffect('dead', {active: true, overlay: true});
-const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
-if (!unconscious) await token.addCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+await token.addCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 if (!!token.actor.player) {
     await game.hm3.GmSays("<b>" + token.name + "</b> is <b>unconscious</b> due to a <b>Mortal Wound</b> and is <b>Dying</b>. Life-saving measures should be initiated as quickly as possible.", "Combat 14");
 } else {
@@ -34,7 +38,7 @@ await game.combats.active.nextTurn(500); // delay so that other hooks are execut
         effectData: {
             label: game.hm3.enums.Condition.DYING,
             token,
-            icon: DYING_ICON,
+            icon: CONDITION_ICON,
             type: 'GameTime',
             seconds: INDEFINITE,
             flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}

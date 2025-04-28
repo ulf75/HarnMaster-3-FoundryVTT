@@ -28,7 +28,7 @@ let dialogEditor = new Dialog(
                         ui.notifications.error('Please select ONE token!');
                     } else {
                         const token = canvas.tokens.controlled[0];
-                        token.addCondition(BERSERK);
+                        await token.addCondition(BERSERK);
                     }
                     dialogEditor.render(true);
                 }
@@ -41,7 +41,7 @@ let dialogEditor = new Dialog(
                         ui.notifications.error('Please select ONE token!');
                     } else {
                         const token = canvas.tokens.controlled[0];
-                        token.addCondition(BROKEN);
+                        await token.addCondition(BROKEN);
                     }
                     dialogEditor.render(true);
                 }
@@ -54,7 +54,7 @@ let dialogEditor = new Dialog(
                         ui.notifications.error('Please select ONE token!');
                     } else {
                         const token = canvas.tokens.controlled[0];
-                        token.addCondition(CAUTIOUS);
+                        await token.addCondition(CAUTIOUS);
                     }
                     dialogEditor.render(true);
                 }
@@ -67,7 +67,7 @@ let dialogEditor = new Dialog(
                         ui.notifications.error('Please select ONE token!');
                     } else {
                         const token = canvas.tokens.controlled[0];
-                        token.addCondition(DESPERATE);
+                        await token.addCondition(DESPERATE);
                     }
                     dialogEditor.render(true);
                 }
@@ -80,7 +80,7 @@ let dialogEditor = new Dialog(
                         ui.notifications.error('Please select ONE token!');
                     } else {
                         const token = canvas.tokens.controlled[0];
-                        token.addCondition(EMPOWERED);
+                        await token.addCondition(EMPOWERED);
                     }
                     dialogEditor.render(true);
                 }

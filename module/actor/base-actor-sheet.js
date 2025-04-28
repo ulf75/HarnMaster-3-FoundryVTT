@@ -811,6 +811,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Generic Damage Roll
         html.find('.damage-roll').click((ev) => macros.genericDamageRoll(this.actor));
 
+        // Morale Roll
+        html.find('.morale-roll').click((ev) => macros.moraleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+
         // Toggle carry state
         html.find('.item-carry').click(this._onToggleCarry.bind(this));
 
