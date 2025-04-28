@@ -72,6 +72,10 @@ export const Condition = Object.freeze({
     /**@constant {string} - TODO */
     DYING: 'Dying',
 
+    /**@constant {string} - Character selects and executes any Action Option, with a +10 bonus to EML. If the character’s
+     * current morale state is non-normal, it returns to normal. (COMBAT 16) */
+    EMPOWERED: 'Empowered',
+
     /**@constant {string} - MOV to 0. Only GRAPPLE_ATTACK or PASS actions. Only GRAPPLE or IGNORE defenses. */
     GRAPPLED: 'Grappled',
 
