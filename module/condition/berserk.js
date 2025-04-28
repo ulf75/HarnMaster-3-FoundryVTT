@@ -20,13 +20,13 @@ export async function createCondition(token, options = {}) {
 const token = canvas.tokens.get('${token.id}');
 await token.deleteAllMoraleConditions(game.hm3.enums.Condition.BERSERK);
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
-if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> enters <b>Berserk Mode</b>, and <b>Must</b> take the most aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike. Further Initiative rolls are ignored until the battle ends.", "Combat 18");
+if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> enters <b>Berserk Mode</b>, and <b>Must</b> take the most aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike. Further Initiative rolls are ignored until the battle ends.", "Combat 18");
 `;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
-if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Berserk Mode</b>, and <b>Must</b> take the most aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike. Further Initiative rolls are ignored until the battle ends.", "Combat 18");
+if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is in <b>Berserk Mode</b>, and <b>Must</b> take the most aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike. Further Initiative rolls are ignored until the battle ends.", "Combat 18");
 `;
 
     return {

@@ -2,7 +2,7 @@
 // surrender. Flight is normally preferable; surrender is a last resort. If neither is feasible,
 // the character makes a Rest or Pass action option, but can defend if attacked except that
 // Counterstrike is prohibited. (COMBAT 16)
-const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction.svg';
+const CONDITION_ICON = 'icons/svg/downgrade.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
@@ -21,13 +21,13 @@ export async function createCondition(token, options = {}) {
 const token = canvas.tokens.get('${token.id}');
 await token.deleteAllMoraleConditions(game.hm3.enums.Condition.BROKEN);
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
-if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is now <b>Broken</b>, and is unable to fight in any useful way. The only available options are flight or surrender. Flight is normally preferable; surrender is a last resort.", "Combat 16");
+if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Broken</b>, and is unable to fight in any useful way. The only available options are flight or surrender. Flight is normally preferable; surrender is a last resort.", "Combat 16");
 `;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
-if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is still <b>Broken</b>, and is unable to fight in any useful way. The only available options are flight or surrender. Flight is normally preferable; surrender is a last resort.", "Combat 16");
+if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is still <b>Broken</b>, and is unable to fight in any useful way. The only available options are flight or surrender. Flight is normally preferable; surrender is a last resort.", "Combat 16");
 `;
 
     return {

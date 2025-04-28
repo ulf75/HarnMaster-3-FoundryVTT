@@ -43,16 +43,29 @@ Hooks.once('init', async function () {
         macros: macros,
         migrations: migrations,
         enums: {ActorType, Aspect, Condition, Hook, ItemType, Location, Range, SkillType},
-        GmSays: async (content, source) => {
-            console.info(`HM3 | ${content.replaceAll('<b>', '').replaceAll('</b>', '')}`);
-            return ChatMessage.create(
-                {
-                    content: `<div class="chat-card gmsays"><blockquote lang="en"><p>${content}</p><cite>&ndash; ${source}</cite></blockquote></div>`,
-                    speaker: ChatMessage.getSpeaker({alias: 'Gamemaster says...'}),
-                    type: CONST.CHAT_MESSAGE_STYLES.OTHER
-                },
-                {}
-            );
+        Gm2GmSays: async (content, source) => {
+            await game.hm3.socket.executeAsGM('GmSays', content, source, true);
+        },
+        GmSays: async (content, source, gmonly = false) => {
+            const gmUsers = game.users.filter((user) => user.isGM).map((user) => user.id);
+            const msg = {
+                content: `<div class="chat-card gmsays"><blockquote lang="en"><p>${content}</p><cite>&ndash; ${source}</cite></blockquote></div>`,
+                speaker: ChatMessage.getSpeaker({alias: 'Gamemaster says...'}),
+                type: CONST.CHAT_MESSAGE_STYLES.OTHER
+            };
+
+            // If the message is GM only, send it to the GM users
+            if (gmonly && game.user.isGM) {
+                msg['whisper'] = gmUsers;
+                console.info(`HM3 | GM only: ${content.replaceAll('<b>', '').replaceAll('</b>', '')}`);
+                return ChatMessage.create(msg);
+            }
+
+            // If the message is not GM only, send it to all users
+            else if (!gmonly) {
+                console.info(`HM3 | ${content.replaceAll('<b>', '').replaceAll('</b>', '')}`);
+                return ChatMessage.create(msg);
+            }
         }
     };
 
@@ -465,6 +478,7 @@ Hooks.once('ready', () => {
     socket.register('setTAFlag', setTAFlag);
     socket.register('unsetTAFlag', unsetTAFlag);
     socket.register('weaponBroke', weaponBroke);
+    socket.register('GmSays', gmSays);
     game.hm3['socket'] = socket;
 });
 
@@ -490,4 +504,8 @@ function weaponBroke(tokenId, weaponId, atkWeaponDiff) {
         'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
         'system.wqModifier': (item.system.wqModifier | 0) - atkWeaponDiff
     });
+}
+
+function gmSays(content, source, gmonly) {
+    return game.hm3.GmSays(content, source, gmonly);
 }

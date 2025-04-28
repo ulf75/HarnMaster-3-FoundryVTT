@@ -1,6 +1,6 @@
 // Character selects and executes any Action Option, with a +10 bonus to EML. If the character’s
 // current morale state is non-normal, it returns to normal. (COMBAT 16)
-const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction.svg';
+const CONDITION_ICON = 'icons/svg/upgrade.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
@@ -19,7 +19,7 @@ export async function createCondition(token, options = {}) {
 const token = canvas.tokens.get('${token.id}');
 await token.deleteAllMoraleConditions(game.hm3.enums.Condition.EMPOWERED);
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
-if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is now <b>Empowered</b>, and adds 10 to any EML this turn.", "Combat 16");
+if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Empowered</b>, and adds 10 to any EML this turn.", "Combat 16");
 `;
 
     const ON_TURN_START_MACRO = `
