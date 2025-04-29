@@ -1,6 +1,7 @@
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
 import {ActorType, Aspect, Condition} from './hm3-types.js';
+import {truncate} from './utility.js';
 
 /**
  * Initiates a missile attack.
@@ -1919,19 +1920,10 @@ export function rangeToTarget(sourceToken, targetToken, gridUnits = false) {
     // If the current scene is marked "Theatre of the Mind", then range is always 0
     if (canvas.scene.getFlag('hm3', 'isTotm')) return 0;
 
-    const sToken = canvas.tokens.get(sourceToken.id);
-    const tToken = canvas.tokens.get(targetToken.id);
-
-    const segments = [];
-    const source = sToken.center;
-    const dest = tToken.center;
-    const ray = new Ray(source, dest);
-    segments.push({ray});
-    const distances = canvas.grid.measureDistances(segments, {gridSpaces: true});
-    const distance = distances[0];
-    console.log(`Distance = ${distance}, gridUnits=${gridUnits}`);
-    if (gridUnits) return Math.round(distance / canvas.dimensions.distance);
-    return distance;
+    const distance = game.hm3.macros.distanceBtwnTwoTokens(sourceToken.id, targetToken.id);
+    console.log(`Distance = ${truncate(distance, 0)}, gridUnits=${gridUnits}`);
+    if (gridUnits) return truncate(distance / canvas.dimensions.distance, 0);
+    return truncate(distance, 0);
 }
 
 /**
@@ -1976,4 +1968,46 @@ export async function setTA(autoend = false) {
         await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
         return false;
     }
+}
+
+export async function updateOutnumbered() {
+    const all = canvas.scene.tokens.contents;
+    const friendly = all.filter((t) => t.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY);
+    const hostile = all.filter((t) => t.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE);
+
+    const engaged = new Map();
+
+    friendly.forEach((fDoc) => {
+        const e = [...hostile.filter((hDoc) => rangeToTarget(fDoc.object, hDoc.object) < 5.1).map((t) => t.object)];
+        engaged.set(fDoc.object.id, e);
+    });
+    hostile.forEach((fDoc) => {
+        const e = [...friendly.filter((hDoc) => rangeToTarget(fDoc.object, hDoc.object) < 5.1).map((t) => t.object)];
+        engaged.set(fDoc.object.id, e);
+    });
+
+    await all.reduce(async (a, t) => {
+        // Wait for the previous item to finish processing
+        await a;
+
+        const e = engaged.get(t.id);
+        if (e && e.length > 1) {
+            const exclusivelyEngaged = [...e.filter((t) => engaged.get(t.id).length === 1)];
+            const outnumbered = exclusivelyEngaged.length >= 2;
+            if (outnumbered) {
+                // Outnumbered
+                const label = `${Condition.OUTNUMBERED} ${exclusivelyEngaged.length}:1`;
+                if (!t.hasCondition(label)) {
+                    await game.hm3.macros.getActiveEffect(t, Condition.OUTNUMBERED, false)?.delete();
+                    await t.addCondition(Condition.OUTNUMBERED, {outnumbered: exclusivelyEngaged.length});
+                }
+            } else {
+                // Not outnumbered
+                await game.hm3.macros.getActiveEffect(t, Condition.OUTNUMBERED, false)?.delete();
+            }
+        } else {
+            // Not outnumbered
+            await game.hm3.macros.getActiveEffect(t, Condition.OUTNUMBERED, false)?.delete();
+        }
+    }, Promise.resolve());
 }

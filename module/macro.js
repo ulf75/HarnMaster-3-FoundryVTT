@@ -13,6 +13,7 @@ const supportedFoundryHooks = [
     'pauseGame',
     'preUpdateToken',
     'targetToken',
+    'updateCombatant',
     'updateToken',
     'updateWorldTime'
 ];

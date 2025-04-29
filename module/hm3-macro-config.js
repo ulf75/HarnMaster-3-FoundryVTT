@@ -56,6 +56,7 @@ export class HM3MacroConfig extends MacroConfig {
             {value: 'pauseGame', label: 'Pause Game'},
             {value: 'preUpdateToken', label: 'Pre Update Token'},
             {value: 'targetToken', label: 'Target Token'},
+            {value: 'updateCombatant', label: 'Update Combatant'},
             {value: 'updateToken', label: 'Update Token'},
             {value: 'updateWorldTime', label: 'Update World Time'}
         ];

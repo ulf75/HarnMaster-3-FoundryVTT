@@ -6,6 +6,7 @@ import * as desperate from './condition/desperate.js';
 import * as dying from './condition/dying.js';
 import * as empowered from './condition/empowered.js';
 import * as grappled from './condition/grappled.js';
+import * as outnumbered from './condition/outnumbered.js';
 import * as prone from './condition/prone.js';
 import * as shocked from './condition/shocked.js';
 import * as unconscious from './condition/unconscious.js';
@@ -2036,7 +2037,8 @@ export async function createActiveEffect(effectData, changes = [], options = {})
  * @param {boolean} [conditionOptions.oneRoll=false] - Only one roll defaults to false
  * @param {boolean} [conditionOptions.oneRound=false] - Only one round defaults to false
  * @param {boolean} [conditionOptions.oneTurn=false] - Only one turn defaults to false
- * @returns
+ * @param {number} [conditionOptions.outnumbered=1] - Outnumbered defaults to 1
+ * @returns {Promise<HarnMasterActiveEffect>}
  */
 export async function createCondition(token, condition, conditionOptions = {}) {
     if (!token) return;
@@ -2045,7 +2047,8 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         {
             oneRoll: false,
             oneRound: false,
-            oneTurn: false
+            oneTurn: false,
+            outnumbered: 1
         },
         conditionOptions
     );
@@ -2151,6 +2154,16 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         case Condition.PRONE:
             {
                 const {effectData, changes, options} = await prone.createCondition(token, conditionOptions);
+                effect = await createActiveEffect(effectData, changes, options);
+            }
+            break;
+
+        // A character is outnumbered if exclusively engaged by two or more opponents. When counting
+        // opponents for this purpose, prone enemies are excluded, as are enemies who are themselves
+        // engaged by other friendly characters. (COMBAT 11)
+        case Condition.OUTNUMBERED:
+            {
+                const {effectData, changes, options} = await outnumbered.createCondition(token, conditionOptions);
                 effect = await createActiveEffect(effectData, changes, options);
             }
             break;

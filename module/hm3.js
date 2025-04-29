@@ -252,8 +252,8 @@ Hooks.on('updateCombat', async (combat, updateData) => {
     await effect.checkExpiredActiveEffects();
 });
 
-Hooks.on('updateToken', async (tokenDoc, position, updateData, userId) => {
-    console.log('hm3 | updateToken', tokenDoc, position, updateData, userId);
+Hooks.on('updateCombatant', async (combatant, info, updateData, userId) => {
+    await combat.updateOutnumbered();
 });
 
 /**

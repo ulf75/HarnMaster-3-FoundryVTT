@@ -82,6 +82,9 @@ export const Condition = Object.freeze({
     /**@constant {string} - NO skills, spells & psionics. Only MOVE, PASS or REST actions. Only IGNORE defenses. */
     INCAPACITATED: 'Incapacitated',
 
+    /**@constant {string} - TODO */
+    OUTNUMBERED: 'Outnumbered',
+
     /**@constant {string} - MOV to 0. +20 EML for all engaged enemies. Only PASS or RISE actions. */
     PRONE: 'Prone',
 
