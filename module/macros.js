@@ -1833,14 +1833,19 @@ export function callOnHooks(hook, actor, result, rollData, item = null) {
 /**
  * Calculates the distance between two tokens.
  * @param {number} sourceTokenId The id of token #1.
- * @param {number} destTokenId The id of token #2.
+ * @param {number} targetTokenId The id of token #2.
+ * @param {boolean} gridUnits If true, the distance is returned in grid units.
  * @returns
  */
-export function distanceBtwnTwoTokens(sourceTokenId, destTokenId) {
-    const source = canvas.tokens.get(sourceTokenId).center;
-    const dest = canvas.tokens.get(destTokenId).center;
+export function distanceBtwnTwoTokens(sourceTokenId, targetTokenId, gridUnits = false) {
+    const source = canvas.tokens.get(sourceTokenId)?.center;
+    const target = canvas.tokens.get(targetTokenId)?.center;
 
-    return canvas.grid.measurePath([source, dest]).distance;
+    if (!source || !target || !canvas.scene || !canvas.scene.grid) return 9999;
+
+    const distance = canvas.grid.measurePath([source, target]).distance;
+    if (gridUnits) return utility.truncate(distance / canvas.dimensions.distance, 0);
+    return utility.truncate(distance, 0);
 }
 
 /**
