@@ -43,6 +43,16 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         return null;
     }
 
+    if (atkToken.hasCondition(Condition.BROKEN)) {
+        ui.notifications.warn(`You cannot attack while you are '${Condition.BROKEN}'.`);
+        return null;
+    }
+
+    if (atkToken.hasCondition(Condition.CAUTIOUS)) {
+        ui.notifications.warn(`You cannot attack while you are '${Condition.CAUTIOUS}'.`);
+        return null;
+    }
+
     if (atkToken.hasCondition(Condition.SHOCKED)) {
         ui.notifications.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
         return null;
@@ -207,6 +217,16 @@ export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed
         return null;
     }
 
+    if (atkToken.hasCondition(Condition.BROKEN)) {
+        ui.notifications.warn(`You cannot attack while you are '${Condition.BROKEN}'.`);
+        return null;
+    }
+
+    if (atkToken.hasCondition(Condition.CAUTIOUS)) {
+        ui.notifications.warn(`You cannot attack while you are '${Condition.CAUTIOUS}'.`);
+        return null;
+    }
+
     if (atkToken.hasCondition(Condition.SHOCKED)) {
         ui.notifications.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
         return null;
@@ -259,8 +279,8 @@ export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed
     }
 
     // A character who is attacking (or being attacked by) a prone enemy increases EML by 20. (COMBAT 11)
-    const prone = defToken.hasCondition(Condition.PRONE);
-    if (prone) {
+    const defProne = defToken.hasCondition(Condition.PRONE);
+    if (defProne) {
         options['defaultModifier'] += 20;
     }
 
@@ -278,12 +298,16 @@ export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
-    const berserk = defToken.hasCondition(Condition.BERSERK);
-    const grappled = defToken.hasCondition(Condition.GRAPPLED);
-    const incapacitated = defToken.hasCondition(Condition.INCAPACITATED);
-    const shocked = defToken.hasCondition(Condition.SHOCKED);
-    const stunned = defToken.hasCondition(Condition.STUNNED);
-    const unconscious = defToken.hasCondition(Condition.UNCONSCIOUS);
+
+    const defBerserk = defToken.hasCondition(Condition.BERSERK);
+    const defBroken = defToken.hasCondition(Condition.BROKEN);
+    const defCautious = defToken.hasCondition(Condition.CAUTIOUS);
+    const defDesperate = defToken.hasCondition(Condition.DESPERATE);
+    const defGrappled = defToken.hasCondition(Condition.GRAPPLED);
+    const defIncapacitated = defToken.hasCondition(Condition.INCAPACITATED);
+    const defShocked = defToken.hasCondition(Condition.SHOCKED);
+    const defStunned = defToken.hasCondition(Condition.STUNNED);
+    const defUnconscious = defToken.hasCondition(Condition.UNCONSCIOUS);
 
     const type = dialogResult.isGrappleAtk ? 'Grapple' : 'Melee';
     const chatTemplateData = {
@@ -296,14 +320,16 @@ export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed
         atkProne: atkToken.hasCondition(Condition.PRONE),
         atkTokenId: atkToken.id,
         attacker: atkToken.name,
-        defBerserk: defToken.hasCondition(Condition.BERSERK),
+        defBerserk,
         defender: defToken.name,
-        defProne: defToken.hasCondition(Condition.PRONE),
+        defProne,
         defTokenId: defToken.id,
         effAML: effAML,
-        hasBlock: !(berserk || grappled || incapacitated || shocked || stunned || unconscious) && !dialogResult.isGrappleAtk,
-        hasCounterstrike: !(incapacitated || shocked || stunned || unconscious),
-        hasDodge: !(berserk || grappled || incapacitated || shocked || stunned || unconscious),
+        hasBlock:
+            !(defBerserk || defDesperate || defGrappled || defIncapacitated || defShocked || defStunned || defUnconscious) &&
+            !dialogResult.isGrappleAtk,
+        hasCounterstrike: !(defBroken || defCautious || defIncapacitated || defShocked || defStunned || defUnconscious),
+        hasDodge: !(defBerserk || defDesperate || defGrappled || defIncapacitated || defShocked || defStunned || defUnconscious),
         hasIgnore: true,
         impactMod: dialogResult.impactMod,
         isGrappleAtk: !!dialogResult.isGrappleAtk,

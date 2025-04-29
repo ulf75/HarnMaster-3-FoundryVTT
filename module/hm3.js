@@ -44,7 +44,7 @@ Hooks.once('init', async function () {
         migrations: migrations,
         enums: {ActorType, Aspect, Condition, Hook, ItemType, Location, Range, SkillType},
         Gm2GmSays: async (content, source) => {
-            await game.hm3.socket.executeAsGM('GmSays', content, source, true);
+            return game.hm3.socket.executeAsGM('GmSays', content, source, true);
         },
         GmSays: async (content, source, gmonly = false) => {
             const gmUsers = game.users.filter((user) => user.isGM).map((user) => user.id);
@@ -250,6 +250,10 @@ Hooks.on('updateCombat', async (combat, updateData) => {
     // Called when the combat object is updated.  Possibly because of a change in round
     // or turn. updateData will have specifics of what changed.
     await effect.checkExpiredActiveEffects();
+});
+
+Hooks.on('updateToken', async (tokenDoc, position, updateData, userId) => {
+    console.log('hm3 | updateToken', tokenDoc, position, updateData, userId);
 });
 
 /**
@@ -479,6 +483,7 @@ Hooks.once('ready', () => {
     socket.register('unsetTAFlag', unsetTAFlag);
     socket.register('weaponBroke', weaponBroke);
     socket.register('GmSays', gmSays);
+
     game.hm3['socket'] = socket;
 });
 
@@ -486,19 +491,32 @@ function isFirstTA() {
     return !game.combats?.active?.getFlag('hm3', 'TA');
 }
 
-function setTAFlag() {
+/**
+ * Set the TA flag for the active combat proxy for socketlib
+ * @returns {Promise<void>}
+ */
+async function setTAFlag() {
     return game.combats?.active?.setFlag('hm3', 'TA', true);
 }
 
-function unsetTAFlag() {
+/**
+ * Unset the TA flag for the active combat proxy for socketlib
+ * @returns {Promise<void>}
+ */
+async function unsetTAFlag() {
     return game.combats?.active?.unsetFlag('hm3', 'TA');
 }
 
-function weaponBroke(tokenId, weaponId, atkWeaponDiff) {
+/**
+ * Mark a weapon as broken proxy for socketlib
+ * @param {string} tokenId - The ID of the token
+ * @param {string} weaponId - The ID of the weapon
+ * @param {number} atkWeaponDiff - The difference in weapon quality
+ * @returns {Promise<void>}
+ */
+async function weaponBroke(tokenId, weaponId, atkWeaponDiff) {
     const t = canvas.tokens.get(tokenId);
-    console.log(t);
     const item = t.actor.items.get(weaponId);
-    console.log(item);
     return item.update({
         'system.isEquipped': false,
         'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
@@ -506,6 +524,13 @@ function weaponBroke(tokenId, weaponId, atkWeaponDiff) {
     });
 }
 
-function gmSays(content, source, gmonly) {
+/**
+ * Send a message to the GM as GM proxy for socketlib
+ * @param {string} content - The message content
+ * @param {string} source - The source of the message
+ * @param {boolean} gmonly - If true, send the message only to the GM
+ * @returns {Promise<ChatMessage>} - The created chat message
+ */
+async function gmSays(content, source, gmonly) {
     return game.hm3.GmSays(content, source, gmonly);
 }
