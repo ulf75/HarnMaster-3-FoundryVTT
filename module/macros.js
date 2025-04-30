@@ -3,6 +3,7 @@ import * as berserk from './condition/berserk.js';
 import * as broken from './condition/broken.js';
 import * as cautious from './condition/cautious.js';
 import * as desperate from './condition/desperate.js';
+import * as distracted from './condition/distracted.js';
 import * as dying from './condition/dying.js';
 import * as empowered from './condition/empowered.js';
 import * as grappled from './condition/grappled.js';
@@ -2124,6 +2125,13 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         case Condition.DESPERATE:
             {
                 const {effectData, changes, options} = await desperate.createCondition(token, conditionOptions);
+                effect = await createActiveEffect(effectData, changes, options);
+            }
+            break;
+
+        case Condition.DISTRACTED:
+            {
+                const {effectData, changes, options} = await distracted.createCondition(token, conditionOptions);
                 effect = await createActiveEffect(effectData, changes, options);
             }
             break;

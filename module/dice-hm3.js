@@ -271,9 +271,13 @@ export class DiceHM3 {
         });
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : '';
 
+        const distracted = canvas.tokens.get(rollData.token)?.hasCondition(Condition.DISTRACTED);
         const unconscious = canvas.tokens.get(rollData.token)?.hasCondition(Condition.UNCONSCIOUS);
         const isTAPossible =
-            ['fumble', 'kill', 'shock', 'stumble'].includes(rollData.type) && !unconscious && (await game.hm3.socket.executeAsGM('isFirstTA'));
+            ['fumble', 'kill', 'shock', 'stumble'].includes(rollData.type) &&
+            !distracted &&
+            !unconscious &&
+            (await game.hm3.socket.executeAsGM('isFirstTA'));
         const addlInfo = !roll.isSuccess && isTAPossible ? 'Opponent gains a Tactical Advantage.' : '';
 
         const chatTemplateData = {

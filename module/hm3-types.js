@@ -69,6 +69,8 @@ export const Condition = Object.freeze({
      * available. (COMBAT 16) */
     DESPERATE: 'Desperate',
 
+    DISTRACTED: 'Distracted',
+
     /**@constant {string} - TODO */
     DYING: 'Dying',
 
