@@ -41,7 +41,14 @@
 
     const NEW = `Create an illustration in a hand-drawn style with detailed ink-like linework and fine cross-hatching. Use a painterly approach for color fills with visible texture. The color palette should be earthy and slightly desaturated, featuring browns, greens, greys, and occasional muted accent colors. Lighting should be soft and diffuse, like a cloudy day. Maintain realistic anatomy with subtle stylization. Backgrounds should be rendered with the same level of detail, incorporating natural elements and textured terrain. The overall aesthetic should resemble traditional illustration techniques using ink and watercolor or gouache, with a grounded and immersive tone.`;
 
-    const DALLE = `A hand-drawn illustration with fine ink-style linework and cross-hatching for detail and texture. Use a natural, earthy color palette with browns, greens, grays, and muted blues. Add occasional bright accent colors like red, yellow, or purple to highlight small elements. Colors should be rich but slightly desaturated. Avoid cross-hatching on skin; render it smooth and natural. Color fills should be painterly and textured, like watercolor or gouache. Figures should have realistic proportions with slightly stylized, expressive poses. Backgrounds should be detailed and integrated matching the overall style.`;
+    const DALLE = `A hand-drawn illustration with fine ink-style linework and cross-hatching for detail and texture. Use a natural, earthy color palette with browns, greens, grays, and muted blues. Add occasional bright accent colors like red, yellow, or purple to highlight small elements. Colors should be rich but slightly desaturated. Avoid cross-hatching on skin; render it smooth and natural. Color fills should be painterly and textured, like watercolor or gouache. Figures should have realistic proportions with slightly stylized, expressive poses, and in traditional dark age, early medieval England or Viking-inspired (northern Europe) clothing. Backgrounds should be detailed and integrated matching the overall style.`;
+
+    const PORTRAIT = `Create a detailed vertical portrait of a historical fantasy character in the style of a vintage woodcut or etching. 
+    Use fine cross-hatching for shading and rich, intricate linework. 
+    The color palette should be muted and earthy — sepia, olive green, parchment beige, and hints of faded blue or red. 
+    The character should be depicted from the waist up, in traditional dark age, early medieval or Viking-inspired clothing, with props that hint at their role (e.g., a potion vial for an apothecary, a battle axe for a warrior). 
+    The background should resemble old parchment with decorative borders or faded architecture, keeping the style consistent with antique book illustrations.
+    `;
 
     if (canvas.tokens.controlled.length === 1) {
         const token = canvas.tokens.controlled[0];
@@ -69,7 +76,7 @@
         description = description.replace(/\n/g, '');
         description = description.replace(/&nbsp;/g, '');
 
-        const prompt = `${DALLE} ${name} in full-size in portrait format: an early medieval/dark age England human ${gender} ${description}. For the background, choose something suitable from the occupation.`;
+        const prompt = `${DALLE} ${name} in portrait format: a human ${gender} ${description}.`;
         navigator.clipboard.writeText(prompt);
         ui.notifications.info('LLM prompt copied to clipboard.');
     }

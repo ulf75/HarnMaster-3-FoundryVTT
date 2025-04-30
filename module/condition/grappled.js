@@ -4,9 +4,14 @@ const INDEFINITE = Number.MAX_SAFE_INTEGER;
 /**
  *
  * @param {HarnMasterToken} token
+ * @param {Object} [options={}] - Options for the condition
+ * @param {boolean} [options.oneRoll=false] - Only one roll defaults to false
+ * @param {boolean} [options.oneRound=false] - Only one round defaults to false
+ * @param {boolean} [options.oneTurn=false] - Only one turn defaults to false
+ * @param {number} [options.outnumbered=1] - Outnumbered defaults to 1
  * @returns
  */
-export async function createCondition(token) {
+export async function createCondition(token, options = {}) {
     if (!token) return;
 
     return {
