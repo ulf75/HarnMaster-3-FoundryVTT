@@ -37,7 +37,7 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is <b>${label
             seconds: INDEFINITE,
             flags: {effectmacro: {onTurnStart: {script: ON_TURN_START_MACRO}}}
         },
-        changes: [{key: 'system.eph.outnumbered', mode: 2, priority: null, value: `${options.outnumbered}`}],
+        changes: [{key: 'eph.outnumbered', mode: 2, priority: null, value: `${options.outnumbered}`}],
         options: {unique: true}
     };
 }

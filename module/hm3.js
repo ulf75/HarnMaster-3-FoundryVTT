@@ -261,6 +261,10 @@ Hooks.on('createActiveEffect', async (activeEffect, info, userId) => {
     return game.hm3.socket.executeAsGM('updateOutnumbered', activeEffect.name);
 });
 
+Hooks.on('updateActiveEffect', async (activeEffect, info, userId) => {
+    return game.hm3.socket.executeAsGM('updateOutnumbered', activeEffect.name);
+});
+
 Hooks.on('deleteActiveEffect', async (activeEffect, info, userId) => {
     return game.hm3.socket.executeAsGM('updateOutnumbered', activeEffect.name);
 });
