@@ -27,6 +27,7 @@ import {HarnMasterItem} from './item/item.js';
 import {registerHooks} from './macro.js';
 import * as macros from './macros.js';
 import * as migrations from './migrations.js';
+import {Mutex} from './mutex.js';
 import {registerSystemSettings} from './settings.js';
 import {Weather} from './weather.js';
 
@@ -253,7 +254,15 @@ Hooks.on('updateCombat', async (combat, updateData) => {
 });
 
 Hooks.on('updateCombatant', async (combatant, info, updateData, userId) => {
-    await combat.updateOutnumbered();
+    return game.hm3.socket.executeAsGM('updateOutnumbered');
+});
+
+Hooks.on('createActiveEffect', async (activeEffect, info, userId) => {
+    return game.hm3.socket.executeAsGM('updateOutnumbered', activeEffect.name);
+});
+
+Hooks.on('deleteActiveEffect', async (activeEffect, info, userId) => {
+    return game.hm3.socket.executeAsGM('updateOutnumbered', activeEffect.name);
 });
 
 /**
@@ -483,6 +492,7 @@ Hooks.once('ready', () => {
     socket.register('unsetTAFlag', unsetTAFlag);
     socket.register('weaponBroke', weaponBroke);
     socket.register('GmSays', gmSays);
+    socket.register('updateOutnumbered', updateOutnumbered);
 
     game.hm3['socket'] = socket;
 });
@@ -533,4 +543,25 @@ async function weaponBroke(tokenId, weaponId, atkWeaponDiff) {
  */
 async function gmSays(content, source, gmonly) {
     return game.hm3.GmSays(content, source, gmonly);
+}
+
+let outMutex = new Mutex();
+/**
+ * Update outnumbered status for combatants
+ * @param {string} aeName - The name of the active effect
+ * @returns {Promise<void>}
+ */
+async function updateOutnumbered(aeName = 'true') {
+    if (
+        aeName === 'true' ||
+        [
+            game.hm3.enums.Condition.GRAPPLED,
+            game.hm3.enums.Condition.INCAPACITATED,
+            game.hm3.enums.Condition.PRONE,
+            game.hm3.enums.Condition.SHOCKED,
+            game.hm3.enums.Condition.UNCONSCIOUS
+        ].includes(aeName)
+    ) {
+        await outMutex.runExclusive(async () => await combat.updateOutnumbered());
+    }
 }

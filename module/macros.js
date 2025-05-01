@@ -1905,7 +1905,8 @@ export function pathIntersectsCircle(circle, line, centerToCenter = true) {
  * @returns
  */
 export function hasActiveEffect(token, name, strict = false) {
-    return !!getActiveEffect(token, name, strict);
+    const ae = getActiveEffect(token, name, strict);
+    return !!ae && !!ae?.active;
 }
 
 /**
@@ -2031,10 +2032,11 @@ export async function createActiveEffect(effectData, changes = [], options = {})
 }
 
 /**
- * TODO
- * @param {HarnMasterToken} token
- * @param {string} condition
+ * Creates a condition on the token.
+ * @param {HarnMasterToken} token - The token to apply the condition to
+ * @param {string} condition - The condition to apply
  * @param {Object} [conditionOptions={}] - Options for the condition
+ * @param {number} [conditionOptions.numTurns=0] - Number of turns defaults to 0
  * @param {boolean} [conditionOptions.oneRoll=false] - Only one roll defaults to false
  * @param {boolean} [conditionOptions.oneRound=false] - Only one round defaults to false
  * @param {boolean} [conditionOptions.oneTurn=false] - Only one turn defaults to false
@@ -2046,6 +2048,7 @@ export async function createCondition(token, condition, conditionOptions = {}) {
 
     conditionOptions = foundry.utils.mergeObject(
         {
+            numTurns: 0,
             oneRoll: false,
             oneRound: false,
             oneTurn: false,

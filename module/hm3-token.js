@@ -1,3 +1,4 @@
+import {Condition} from './hm3-types.js';
 import * as macros from './macros.js';
 import {Mutex} from './mutex.js';
 
@@ -111,6 +112,34 @@ export class HarnMasterToken extends Token {
 
     hasInjury(id) {
         return !!token.actor.items.find((i) => i.id === id);
+    }
+
+    hasEngagementZone() {
+        const grappled = this.hasCondition(Condition.GRAPPLED);
+        const incapacitated = this.hasCondition(Condition.INCAPACITATED);
+        const prone = this.hasCondition(Condition.PRONE);
+        const shocked = this.hasCondition(Condition.SHOCKED);
+        const unconscious = this.hasCondition(Condition.UNCONSCIOUS);
+
+        return !grappled && !incapacitated && !prone && !shocked && !unconscious;
+    }
+
+    isEngaged() {
+        const all = canvas.scene.tokens.contents;
+        const opponents =
+            this.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY || this.disposition === CONST.TOKEN_DISPOSITIONS.NEUTRAL
+                ? all.filter((t) => t.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE)
+                : all.filter((t) => t.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY);
+
+        const engaged = [
+            ...opponents.filter((hDoc) => rangeToTarget(this, hDoc.object) < 5.1 && hDoc.object.hasEngagementZone()).map((t) => t.object)
+        ];
+
+        return engaged.length > 0;
+    }
+
+    hasReactionZone() {
+        return !this.isEngaged() && this.hasEngagementZone();
     }
 
     pronoun(capital = false) {

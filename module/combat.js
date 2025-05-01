@@ -1978,36 +1978,39 @@ export async function updateOutnumbered() {
     const engaged = new Map();
 
     friendly.forEach((fDoc) => {
-        const e = [...hostile.filter((hDoc) => rangeToTarget(fDoc.object, hDoc.object) < 5.1).map((t) => t.object)];
+        const e = [
+            ...hostile.filter((hDoc) => rangeToTarget(fDoc.object, hDoc.object) < 5.1 && hDoc.object.hasEngagementZone()).map((t) => t.object)
+        ];
         engaged.set(fDoc.object.id, e);
     });
-    hostile.forEach((fDoc) => {
-        const e = [...friendly.filter((hDoc) => rangeToTarget(fDoc.object, hDoc.object) < 5.1).map((t) => t.object)];
-        engaged.set(fDoc.object.id, e);
+    hostile.forEach((hDoc) => {
+        const e = [
+            ...friendly.filter((fDoc) => rangeToTarget(fDoc.object, hDoc.object) < 5.1 && fDoc.object.hasEngagementZone()).map((t) => t.object)
+        ];
+        engaged.set(hDoc.object.id, e);
     });
 
-    await all.reduce(async (a, t) => {
-        // Wait for the previous item to finish processing
-        await a;
-
-        const e = engaged.get(t.id);
+    for (let i = 0; i < all.length; i++) {
+        const token = all[i];
+        const e = engaged.get(token.id);
         if (e && e.length > 1) {
             const exclusivelyEngaged = [...e.filter((t) => engaged.get(t.id).length === 1)];
             const outnumbered = exclusivelyEngaged.length >= 2;
             if (outnumbered) {
                 // Outnumbered
                 const label = `${Condition.OUTNUMBERED} ${exclusivelyEngaged.length}:1`;
-                if (!t.hasCondition(label)) {
-                    await game.hm3.macros.getActiveEffect(t, Condition.OUTNUMBERED, false)?.delete();
-                    await t.addCondition(Condition.OUTNUMBERED, {outnumbered: exclusivelyEngaged.length});
+                if (!token.hasCondition(label)) {
+                    await game.hm3.macros.getActiveEffect(token, Condition.OUTNUMBERED, false)?.delete();
+                    await token.addCondition(Condition.OUTNUMBERED, {outnumbered: exclusivelyEngaged.length});
                 }
             } else {
                 // Not outnumbered
-                await game.hm3.macros.getActiveEffect(t, Condition.OUTNUMBERED, false)?.delete();
+                await game.hm3.macros.getActiveEffect(token, Condition.OUTNUMBERED, false)?.delete();
             }
         } else {
             // Not outnumbered
-            await game.hm3.macros.getActiveEffect(t, Condition.OUTNUMBERED, false)?.delete();
+            await game.hm3.macros.getActiveEffect(token, Condition.OUTNUMBERED, false)?.delete();
         }
-    }, Promise.resolve());
+    }
+    await new Promise((resolve) => setTimeout(resolve, 500));
 }
