@@ -2024,7 +2024,7 @@ export async function createActiveEffect(effectData, changes = [], options = {})
         await effect.setFlag(
             'effectmacro',
             'onDisable.script',
-            `game.actors.get('${effectData.token.actor.id}').effects.get('${effect.id}').delete();`
+            `const token = canvas.tokens.get('${effectData.token.id}'); token.actor.effects.get('${effect.id}').delete();`
         );
     }
 
