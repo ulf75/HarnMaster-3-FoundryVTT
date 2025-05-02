@@ -271,10 +271,12 @@ export class DiceHM3 {
         });
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : '';
 
+        const cautious = canvas.tokens.get(rollData.token)?.hasCondition(Condition.CAUTIOUS);
         const distracted = canvas.tokens.get(rollData.token)?.hasCondition(Condition.DISTRACTED);
         const unconscious = canvas.tokens.get(rollData.token)?.hasCondition(Condition.UNCONSCIOUS);
         const isTAPossible =
             ['fumble', 'kill', 'shock', 'stumble'].includes(rollData.type) &&
+            !cautious &&
             !distracted &&
             !unconscious &&
             (await game.hm3.socket.executeAsGM('isFirstTA'));
