@@ -14,11 +14,11 @@ const INDEFINITE = Number.MAX_SAFE_INTEGER;
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
-    const ON_CREATE_MACRO = `
-const token = canvas.tokens.get('${token.id}');
-`;
+    const ON_CREATE_MACRO = ``;
 
-    const ON_TURN_START_MACRO = `
+    const ON_TURN_START_MACRO = options.oneRound
+        ? ``
+        : `
 const token = canvas.tokens.get('${token.id}');
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 if (!unconscious) {
@@ -26,16 +26,23 @@ if (!unconscious) {
     await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
 }`;
 
+    const type = options.oneRound || options.oneTurn ? 'Combat' : 'GameTime';
+    const seconds = type === 'GameTime' ? INDEFINITE : undefined;
+    const rounds = type === 'Combat' && options.oneRound ? 1 : undefined;
+    const turns = type === 'Combat' && options.oneTurn ? 1 : undefined;
+
     return {
         effectData: {
-            label: game.hm3.enums.Condition.DISTRACTED,
-            token,
             icon: CONDITION_ICON,
-            type: 'GameTime',
-            seconds: INDEFINITE,
+            label: game.hm3.enums.Condition.DISTRACTED,
+            rounds,
+            seconds,
+            token,
+            turns,
+            type,
             flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
         },
         changes: [{key: 'eph.meleeDMLMod', mode: 2, priority: null, value: '-10'}],
-        options: {unique: true}
+        options: {selfDestroy: true, unique: true}
     };
 }

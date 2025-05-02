@@ -23,22 +23,31 @@ const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Cautious</b>, and will not Engage, must choose <b>Pass</b> if engaged, and cannot select the Counterstrike defense.", "Combat 16");
 `;
 
-    const ON_TURN_START_MACRO = `
+    const ON_TURN_START_MACRO = options.oneRound
+        ? ''
+        : `
 const token = canvas.tokens.get('${token.id}');
 const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is still <b>Cautious</b>, and will not Engage, must choose <b>Pass</b> if engaged, and cannot select the Counterstrike defense.", "Combat 16");
 `;
 
+    const type = options.oneRound || options.oneTurn ? 'Combat' : 'GameTime';
+    const seconds = type === 'GameTime' ? INDEFINITE : undefined;
+    const rounds = type === 'Combat' && options.oneRound ? 1 : undefined;
+    const turns = type === 'Combat' && options.oneTurn ? 1 : undefined;
+
     return {
         effectData: {
-            label: game.hm3.enums.Condition.CAUTIOUS,
-            token,
             icon: CONDITION_ICON,
-            type: 'GameTime',
-            seconds: INDEFINITE,
+            label: game.hm3.enums.Condition.CAUTIOUS,
+            rounds,
+            seconds,
+            token,
+            turns,
+            type,
             flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
         },
         changes: [],
-        options: {unique: true}
+        options: {selfDestroy: true, unique: true}
     };
 }

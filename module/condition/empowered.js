@@ -23,20 +23,25 @@ const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Empowered</b>, and adds 10 to any EML this turn.", "Combat 16");
 `;
 
-    const ON_TURN_START_MACRO = `
-const token = canvas.tokens.get('${token.id}');
-`;
+    const ON_TURN_START_MACRO = ``;
+
+    const type = options.oneRound || options.oneTurn ? 'Combat' : 'GameTime';
+    const seconds = type === 'GameTime' ? INDEFINITE : undefined;
+    const rounds = type === 'Combat' && options.oneRound ? 1 : undefined;
+    const turns = type === 'Combat' && options.oneTurn ? 1 : undefined;
 
     return {
         effectData: {
-            label: game.hm3.enums.Condition.EMPOWERED,
-            token,
             icon: CONDITION_ICON,
-            type: 'GameTime',
-            seconds: INDEFINITE,
+            label: game.hm3.enums.Condition.EMPOWERED,
+            rounds,
+            seconds,
+            token,
+            turns,
+            type,
             flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
         },
         changes: [{key: 'eph.meleeAMLMod', mode: 2, priority: null, value: '10'}], // TODO must be a general bonus on ALL skills
-        options: {unique: true}
+        options: {selfDestroy: true, unique: true}
     };
 }
