@@ -71,16 +71,10 @@ export class HarnMasterToken extends Token {
     /**
      * Deletes a condition from a token.
      * @param {Condition} condition
-     * @param {number} [postpone=0]
      * @returns
      */
-    async deleteCondition(condition, postpone = 0) {
-        if (postpone > 0) {
-            // avoid race conditions
-            setTimeout(() => tokenMutex.runExclusive(async () => await this.getCondition(condition)?.delete()), postpone);
-        } else {
-            return this.getCondition(condition)?.delete();
-        }
+    async deleteCondition(condition) {
+        return game.hm3.macros.deleteActiveEffect(this.id, this.getCondition(condition)?.id);
     }
 
     /**
@@ -205,11 +199,10 @@ export class HarnMasterTokenDocument extends TokenDocument {
     /**
      * Deletes a condition from a token.
      * @param {Condition} condition
-     * @param {number} [postpone=0]
      * @returns
      */
-    async deleteCondition(condition, postpone = 0) {
-        return this.object.deleteCondition(condition, postpone);
+    async deleteCondition(condition) {
+        return this.object.deleteCondition(condition);
     }
 
     /**

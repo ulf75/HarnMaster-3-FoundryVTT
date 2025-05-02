@@ -14,6 +14,7 @@ import * as unconscious from './condition/unconscious.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
 import {Aspect, Condition, InjurySubtype, ItemType, SkillType} from './hm3-types.js';
+import {Mutex} from './mutex.js';
 import * as utility from './utility.js';
 
 export const SECOND = 1;
@@ -1345,9 +1346,10 @@ export async function moraleRoll(noDialog = false, myActor = null) {
         if (result) {
             actorInfo.actor.runCustomMacro(result);
             if (result.isSuccess && result.isCritical) {
-                // CS - Inspired
-                await token.addCondition(Condition.EMPOWERED, {oneRound: true});
-            } else if (!result.isSuccess && !result.isCritical) {
+                // CS - Empowered
+                await token.addCondition(Condition.EMPOWERED, {oneTurn: true});
+                // } else if (!result.isSuccess && !result.isCritical) {
+            } else if (true) {
                 // MF - Cautious, turn ends
                 await token.addCondition(Condition.CAUTIOUS, {oneRound: true});
                 await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
@@ -2021,14 +2023,26 @@ export async function createActiveEffect(effectData, changes = [], options = {})
     }
 
     if (options.selfDestroy) {
-        await effect.setFlag(
-            'effectmacro',
-            'onDisable.script',
-            `const token = canvas.tokens.get('${effectData.token.id}'); token.actor.effects.get('${effect.id}').delete();`
-        );
+        await effect.setFlag('effectmacro', 'onDisable.script', `game.hm3.macros.deleteActiveEffect('${effectData.token.id}', '${effect.id}');`);
     }
 
     return effect;
+}
+
+let deleteMutex = new Mutex();
+/**
+ * Deletes an active effect from the token.
+ * @param {string} tokenId - The id of the token
+ * @param {string} effectId - The id of the active effect
+ * @returns {Promise<void>}
+ */
+export async function deleteActiveEffect(tokenId, effectId) {
+    if (!tokenId || !effectId) return;
+    // sometimes effect macros fire twice -> race condition
+    await deleteMutex.runExclusive(async () => {
+        const token = canvas.tokens.get(tokenId);
+        await token.actor.effects.get(effectId)?.delete();
+    });
 }
 
 /**
