@@ -44,13 +44,16 @@ Hooks.once('init', async function () {
         macros: macros,
         migrations: migrations,
         enums: {ActorType, Aspect, Condition, Hook, ItemType, Location, Range, SkillType},
-        Gm2GmSays: async (content, source) => {
-            return game.hm3.socket.executeAsGM('GmSays', content, source, true);
+        Gm2GmSays: async (text, source) => {
+            return game.hm3.socket.executeAsGM('GmSays', text, source, true);
         },
-        GmSays: async (content, source, gmonly = false) => {
+        GmSays: async (text, source, gmonly = false) => {
             const gmUsers = game.users.filter((user) => user.isGM).map((user) => user.id);
+            const content = !!source
+                ? `<div class="chat-card gmsays"><blockquote lang="en"><p>${text}</p><cite>&ndash; ${source}</cite></blockquote></div>`
+                : `<div class="chat-card gmsays"><blockquote lang="en"><p>${text}</p></blockquote></div>`;
             const msg = {
-                content: `<div class="chat-card gmsays"><blockquote lang="en"><p>${content}</p><cite>&ndash; ${source}</cite></blockquote></div>`,
+                content,
                 speaker: ChatMessage.getSpeaker({alias: 'Gamemaster says...'}),
                 type: CONST.CHAT_MESSAGE_STYLES.OTHER
             };
@@ -58,13 +61,13 @@ Hooks.once('init', async function () {
             // If the message is GM only, send it to the GM users
             if (gmonly && game.user.isGM) {
                 msg['whisper'] = gmUsers;
-                console.info(`HM3 | GM only: ${content.replaceAll('<b>', '').replaceAll('</b>', '')}`);
+                console.info(`HM3 | GM only: ${text.replaceAll('<b>', '').replaceAll('</b>', '')}`);
                 return ChatMessage.create(msg);
             }
 
             // If the message is not GM only, send it to all users
             else if (!gmonly) {
-                console.info(`HM3 | ${content.replaceAll('<b>', '').replaceAll('</b>', '')}`);
+                console.info(`HM3 | ${text.replaceAll('<b>', '').replaceAll('</b>', '')}`);
                 return ChatMessage.create(msg);
             }
         }

@@ -361,7 +361,7 @@ export class DiceHM3 {
     /*        SKILL DEVELOPMENT ROLL PROCESSING
     /*--------------------------------------------------------------------------------*/
 
-    static async sdrRoll(item) {
+    static async sdrRoll(item, showChatMsg = true) {
         const speaker = ChatMessage.getSpeaker({actor: item.actor});
 
         let roll = await new Roll(`1d100 + @sb`, {
@@ -392,6 +392,8 @@ export class DiceHM3 {
             chatTemplateData.notes = `Since this is a specialized skill of ${specMatch[1]}, ML will be increased by 2`;
         }
 
+        if (!showChatMsg) return chatTemplateData;
+
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
@@ -403,11 +405,9 @@ export class DiceHM3 {
             user: game.user.id
         };
 
-        const messageOptions = {};
-
         // Create a chat message
         ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
-        await ChatMessage.create(messageData, messageOptions);
+        await ChatMessage.create(messageData);
 
         return chatTemplateData;
     }

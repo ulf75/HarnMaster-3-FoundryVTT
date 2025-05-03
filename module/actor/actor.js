@@ -912,15 +912,15 @@ export class HarnMasterActor extends Actor {
         });
     }
 
-    static async skillDevRoll(item) {
-        const result = await DiceHM3.sdrRoll(item);
+    async skillDevRoll(item, showChatMsg = true) {
+        const result = await DiceHM3.sdrRoll(item, showChatMsg);
 
         if (result?.sdrIncr) {
             // Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)
             if (item.type === 'skill' && result.sdrIncr === 2) {
                 if (item.system.masteryLevel < 40) {
-                    await game.hm3.GmSays('<b>' + item.name + '</b>: ' + game.i18n.localize('hm3.SDR.SkillSpecialty'), 'SKILLS 2');
-                    return;
+                    await game.hm3.GmSays(`<h4>${this.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.SkillSpecialty'), 'SKILLS 2');
+                    return false;
                 }
             }
 
@@ -928,11 +928,11 @@ export class HarnMasterActor extends Actor {
                 'system.improveFlag': false,
                 'system.masteryLevel': +item.system.masteryLevel + (result.sdrIncr === 2 ? 2 : 1)
             });
+            return true;
         } else {
             await item.update({'system.improveFlag': false});
+            return false;
         }
-
-        return result;
     }
 
     static chatListeners(html) {

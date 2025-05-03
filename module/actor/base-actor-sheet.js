@@ -3,7 +3,6 @@ import {ActorType, ItemType} from '../hm3-types.js';
 import {onManageMacro} from '../macro.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
-import {HarnMasterActor} from './actor.js';
 
 /**
  * Extend the basic ActorSheet with some common capabilities
@@ -1123,7 +1122,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Condition skill is maxed out (SKILLS 9)
         if (item.type === 'skill' && item.name === 'Condition') {
             if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
-                await game.hm3.GmSays(game.i18n.localize('hm3.SDR.ConditionSkillMax'), 'SKILLS 9');
+                await game.hm3.GmSays(`<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.ConditionSkillMax'), 'SKILLS 9');
                 return;
             }
         }
@@ -1139,7 +1138,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                         performSDR: {
                             label: game.i18n.localize('hm3.SDR.Perform'),
                             callback: async () => {
-                                await HarnMasterActor.skillDevRoll(item);
+                                await this.actor.skillDevRoll(item);
                                 resolve(true);
                             }
                         },
@@ -1151,7 +1150,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                     // Once opened, Development Rolls are made only for Combat Experience (SKILLS 18)
                                     if (item.name === 'Initiative') {
                                         await game.hm3.GmSays(
-                                            '<b>' + item.name + '</b>: ' + game.i18n.localize('hm3.SDR.InitiativeExperience'),
+                                            `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.InitiativeExperience'),
                                             'SKILLS 18'
                                         );
                                         return;
@@ -1160,7 +1159,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                     // can be increased beyond ML70 except by actual combat experience (SKILLS 18)
                                     else if (item.system.masteryLevel >= 70) {
                                         await game.hm3.GmSays(
-                                            '<b>' + item.name + '</b>: ' + game.i18n.localize('hm3.SDR.CombatExperience'),
+                                            `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.CombatExperience'),
                                             'SKILLS 18'
                                         );
                                         return;
@@ -1176,12 +1175,15 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                                 label: game.i18n.localize('hm3.SDR.Roll'),
                                                 callback: async (html) => {
                                                     const num = Number(html.find('#sdr')[0].value);
+                                                    let success = 0;
                                                     for (let i = 0; i < num; i++) {
                                                         // Condition skill is maxed out (SKILLS 9)
                                                         if (item.type === 'skill' && item.name === 'Condition') {
                                                             if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
                                                                 await game.hm3.GmSays(
-                                                                    game.i18n.localize('hm3.SDR.ConditionSkillMax') + `<p>(${num - i} SDRs left)</p>`,
+                                                                    `<h4>${this.actor.name}: ${item.name}</h4>` +
+                                                                        game.i18n.localize('hm3.SDR.ConditionSkillMax') +
+                                                                        `<p>(${num - i} SDRs left)</p>`,
                                                                     'SKILLS 9'
                                                                 );
                                                                 break;
@@ -1190,9 +1192,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                                         if (item.type === 'skill' && item.system.type === 'Combat') {
                                                             if (item.system.masteryLevel >= 70) {
                                                                 await game.hm3.GmSays(
-                                                                    '<b>' +
-                                                                        item.name +
-                                                                        '</b>: ' +
+                                                                    `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                                         game.i18n.localize('hm3.SDR.CombatExperience') +
                                                                         `<p>(${num - i} SDRs left)</p>`,
                                                                     'SKILLS 18'
@@ -1201,8 +1201,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                                             }
                                                         }
 
-                                                        await HarnMasterActor.skillDevRoll(item, true);
+                                                        if (await this.actor.skillDevRoll(item, false)) success++;
                                                     }
+                                                    await game.hm3.GmSays(
+                                                        `<h4>${this.actor.name}: ${item.name}</h4>${success}/${num} SDRs succeeded`
+                                                    );
                                                     resolve(true);
                                                 }
                                             }
