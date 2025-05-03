@@ -1,4 +1,4 @@
-const CONDITION_ICON = 'icons/svg/daze.svg';
+const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction-white.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**

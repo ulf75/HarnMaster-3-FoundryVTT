@@ -1,7 +1,7 @@
 // This is a special state of battle frenzy. Any character who enters this mode must take the most
 // aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike.
 // Further Initiative rolls are ignored until the battle ends. (COMBAT 16)
-const CONDITION_ICON = 'systems/hm3/images/icons/svg/enrage.svg';
+const CONDITION_ICON = 'systems/hm3/images/icons/svg/enrage-white.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**

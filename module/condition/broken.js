@@ -2,7 +2,8 @@
 // surrender. Flight is normally preferable; surrender is a last resort. If neither is feasible,
 // the character makes a Rest or Pass action option, but can defend if attacked except that
 // Counterstrike is prohibited. (COMBAT 16)
-const CONDITION_ICON = 'icons/svg/downgrade.svg';
+const CONDITION_ICON = 'systems/hm3/images/icons/svg/despair-white.svg';
+// const CONDITION_ICON = 'icons/svg/downgrade.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**

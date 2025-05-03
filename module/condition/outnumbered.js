@@ -1,7 +1,7 @@
 // A character is outnumbered if exclusively engaged by two or more opponents. When counting
 // opponents for this purpose, prone enemies are excluded, as are enemies who are themselves
 // engaged by other friendly characters. (COMBAT 11)
-const CONDITION_ICON = 'systems/hm3/images/icons/svg/backup.svg';
+const CONDITION_ICON = 'systems/hm3/images/icons/svg/backup-white.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
