@@ -181,56 +181,60 @@ export class HarnMasterItem extends Item {
 
         // If the image was not specified (or is default),
         // then set it based on the item name
-        if (!updateData.img || updateData.img === Item.DEFAULT_ICON) updateData.img = utility.getImagePath(itemData.name);
+        if (!updateData.img || updateData.img === Item.DEFAULT_ICON) updateData.img = utility.getImagePath(this.name);
 
         // Setup Image Icon only if it is currently the default icon
         if (!updateData.img) {
-            switch (itemData.type) {
-                case 'skill':
-                    if (itemData.system.type === 'Ritual') {
+            switch (this.type) {
+                case ItemType.SKILL:
+                    if (itemData.type === 'Ritual') {
                         updateData.img = utility.getImagePath(HM3.defaultRitualIconName);
-                    } else if (itemData.system.type === 'Magic') {
+                    } else if (itemData.type === 'Magic') {
                         updateData.img = utility.getImagePath(HM3.defaultMagicIconName);
                     }
                     break;
 
-                case 'psionic':
+                case ItemType.PSIONIC:
                     updateData.img = utility.getImagePath(HM3.defaultPsionicsIconName);
                     break;
 
-                case 'spell':
+                case ItemType.SPELL:
                     // Base image on convocation name
-                    updateData.img = utility.getImagePath(itemData.system.convocation);
+                    updateData.img = utility.getImagePath(itemData.convocation);
                     if (!updateData.img) {
                         // If convocation image wasn't found, use default
                         updateData.img = utility.getImagePath(HM3.defaultMagicIconName);
                     }
                     break;
 
-                case 'invocation':
+                case ItemType.INVOCATION:
                     // Base image on diety name
-                    updateData.img = utility.getImagePath(itemData.system.diety);
+                    updateData.img = utility.getImagePath(itemData.diety);
                     if (!updateData.img) {
                         // If diety name wasn't found, use default
                         updateData.img = utility.getImagePath(HM3.defaultRitualIconName);
                     }
                     break;
 
-                case 'miscgear':
+                case ItemType.MISCGEAR:
                     updateData.img = utility.getImagePath(HM3.defaultMiscItemIconName);
                     break;
 
-                case 'containergear':
+                case ItemType.CONTAINERGEAR:
                     updateData.img = utility.getImagePath(HM3.defaultContainerIconName);
                     break;
 
-                case 'armorgear':
+                case ItemType.ARMORGEAR:
                     updateData.img = utility.getImagePath(HM3.defaultArmorGearIconName);
                     break;
 
-                case 'weapongear':
-                case 'missilegear':
-                    updateData.img = utility.getImagePath(itemData.system.assocSkill);
+                case ItemType.WEAPONGEAR:
+                case ItemType.MISSILEGEAR:
+                    updateData.img = utility.getImagePath(itemData.assocSkill);
+                    break;
+
+                case ItemType.EFFECT:
+                    updateData.img = 'icons/svg/aura.svg';
                     break;
             }
 
