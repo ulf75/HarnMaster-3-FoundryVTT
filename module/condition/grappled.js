@@ -1,4 +1,5 @@
-const GRAPPLED_ICON = 'systems/hm3/images/icons/svg/manacles.svg';
+// const GRAPPLED_ICON = 'systems/hm3/images/icons/svg/manacles.svg';
+const GRAPPLED_ICON = 'icons/svg/net.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**

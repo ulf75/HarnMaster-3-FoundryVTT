@@ -1,7 +1,7 @@
 // Character tries to conclude the battle, one way or the other, as soon as possible. Until
 // the situation changes and a new Initiative Test is passed, the character selects the most
 // aggressive option available. (COMBAT 16)
-const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction.svg';
+const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction-white.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**

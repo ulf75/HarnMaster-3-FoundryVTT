@@ -1,6 +1,6 @@
 // A cautious character will not Engage, must choose Pass if engaged, and cannot select the
 // Counterstrike defense. (COMBAT 16)
-const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction.svg';
+const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction-white.svg';
 const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
