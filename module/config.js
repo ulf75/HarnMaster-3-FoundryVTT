@@ -18,6 +18,22 @@ HM3.allowedAspects = ['Edged', 'Piercing', 'Blunt'];
 
 HM3.allowedRanges = ['Short', 'Medium', 'Long', 'Extreme'];
 
+HM3.itemTypes = [
+    {key: 'armorgear', label: 'Armor Gear'},
+    {key: 'armorlocation', label: 'Armor Location'},
+    {key: 'containergear', label: 'Container Gear'},
+    {key: 'effectgear', label: 'Effect'},
+    {key: 'injury', label: 'Injury'},
+    {key: 'invocation', label: 'Invocation'},
+    {key: 'miscgear', label: 'Misc Gear'},
+    {key: 'missilegear', label: 'Missile Gear'},
+    {key: 'psionic', label: 'Psionic'},
+    {key: 'skill', label: 'Skill'},
+    {key: 'spell', label: 'Spell'},
+    {key: 'trait', label: 'Trait'},
+    {key: 'weapongear', label: 'Weapon Gear'}
+];
+
 HM3.skillTypes = [{key: 'Craft'}, {key: 'Physical'}, {key: 'Communication'}, {key: 'Combat'}, {key: 'Magic'}, {key: 'Ritual'}];
 
 HM3.traitTypes = [{key: 'Physical'}, {key: 'Psyche'}];

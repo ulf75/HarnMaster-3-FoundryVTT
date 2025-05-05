@@ -34,6 +34,7 @@ import {Weather} from './weather.js';
 Hooks.once('init', async function () {
     console.log(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
 
+    CONFIG.ActiveEffect.legacyTransferral = false;
     // CONFIG.debug.hooks = true;
 
     game.hm3 = {
@@ -106,18 +107,19 @@ Hooks.once('init', async function () {
     CONFIG.Item.documentClass = HarnMasterItem;
     CONFIG.Item.typeLabels = {
         base: 'Base',
+        armorgear: 'Armor',
+        armorlocation: 'Armor Location',
+        containergear: 'Container',
+        effectgear: 'Effect',
+        injury: 'Injury',
+        invocation: 'Invocation',
+        miscgear: 'Misc. Gear',
+        missilegear: 'Missile Weapon',
+        psionic: 'Psionic',
         skill: 'Skill',
         spell: 'Spell',
-        invocation: 'Invocation',
-        psionic: 'Psionic',
-        weapongear: 'Melee Weapon',
-        containergear: 'Container',
-        missilegear: 'Missile Weapon',
-        armorgear: 'Armor',
-        miscgear: 'Misc. Gear',
-        injury: 'Injury',
-        armorlocation: 'Armor Location',
-        trait: 'Trait'
+        trait: 'Trait',
+        weapongear: 'Melee Weapon'
     };
     CONFIG.Combat.documentClass = HarnMasterCombat;
     CONFIG.TinyMCE.style_formats[0].items.push({
@@ -270,6 +272,23 @@ Hooks.on('updateActiveEffect', async (activeEffect, info, userId) => {
 
 Hooks.on('deleteActiveEffect', async (activeEffect, info, userId) => {
     return game.hm3.socket.executeAsGM('updateOutnumbered', activeEffect.name);
+});
+
+Hooks.on('dropCanvasData', async (canvas, data) => {
+    if (data.type === 'Item') {
+        const targetToken = canvas.tokens.placeables.find((t) => t.bounds.contains(data.x, data.y));
+        if (!targetToken) return;
+
+        const actor = targetToken.actor;
+        if (!actor) return;
+
+        const item = await Item.fromDropData(data);
+        if (!item) return;
+
+        await actor.createEmbeddedDocuments('Item', [item.toObject()]);
+
+        ui.notifications.info(`"${item.name}" was added to ${targetToken.name}.`);
+    }
 });
 
 /**

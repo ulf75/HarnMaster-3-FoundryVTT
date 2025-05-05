@@ -83,7 +83,21 @@
     }
   },
   "Item": {
-    "types": ["skill", "spell", "invocation", "psionic", "weapongear", "containergear", "missilegear", "armorgear", "miscgear", "injury", "armorlocation", "trait"],
+    "types": [
+      "armorgear",
+      "armorlocation",
+      "containergear",
+      "effectgear",
+      "injury",
+      "invocation",
+      "miscgear",
+      "missilegear",
+      "psionic",
+      "skill",
+      "spell",
+      "trait",
+      "weapongear"
+    ],
     "templates": {
       "base": {
         "notes": "",
@@ -194,6 +208,9 @@
       "size": 6
     },
     "miscgear": {
+      "templates": ["base", "gear"]
+    },
+    "effectgear": {
       "templates": ["base", "gear"]
     },
     "containergear": {

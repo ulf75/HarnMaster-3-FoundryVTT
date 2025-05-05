@@ -1,5 +1,5 @@
 import {HM3} from './config.js';
-import {Aspect, Condition, InjurySubtype} from './hm3-types.js';
+import {Aspect, InjurySubtype} from './hm3-types.js';
 import * as utility from './utility.js';
 
 export class DiceHM3 {
@@ -271,15 +271,8 @@ export class DiceHM3 {
         });
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : '';
 
-        const cautious = canvas.tokens.get(rollData.token)?.hasCondition(Condition.CAUTIOUS);
-        const distracted = canvas.tokens.get(rollData.token)?.hasCondition(Condition.DISTRACTED);
-        const unconscious = canvas.tokens.get(rollData.token)?.hasCondition(Condition.UNCONSCIOUS);
         const isTAPossible =
-            ['fumble', 'kill', 'shock', 'stumble'].includes(rollData.type) &&
-            !cautious &&
-            !distracted &&
-            !unconscious &&
-            (await game.hm3.socket.executeAsGM('isFirstTA'));
+            ['fumble', 'kill', 'shock', 'stumble'].includes(rollData.type) && (await game.hm3.macros.isTAPossible(canvas.tokens.get(rollData.token)));
         const addlInfo = !roll.isSuccess && isTAPossible ? 'Opponent gains a Tactical Advantage.' : '';
 
         const chatTemplateData = {

@@ -8,7 +8,11 @@ export async function onManageActiveEffect(event, owner) {
     const a = event.currentTarget;
     const li = a.closest('li');
     const action = a.dataset.action;
-    const effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
+
+    let effect;
+    if (owner instanceof Actor) effect = li.dataset.effectId ? owner.allApplicableEffects().find((e) => e.id === li.dataset.effectId) : null;
+    if (owner instanceof Item) effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
+
     switch (action) {
         case 'create':
             const dlgTemplate = 'systems/hm3/templates/dialog/active-effect-start.html';
@@ -109,7 +113,7 @@ export async function onManageActiveEffect(event, owner) {
 export async function checkExpiredActiveEffects() {
     // Handle game actors first
     for (let actor of game.actors.values()) {
-        if (actor.isOwner && actor.effects?.size) {
+        if (actor.isOwner && actor.allApplicableEffects()?.size) {
             await disableExpiredAE(actor);
             actor.sheet.render();
         }
@@ -117,7 +121,7 @@ export async function checkExpiredActiveEffects() {
 
     // Next, handle tokens (only unlinked tokens)
     for (let token of canvas.tokens.ownedTokens.values()) {
-        if (!token.document.actorLink && token.actor?.effects?.size) {
+        if (!token.document.actorLink && token.actor?.allApplicableEffects()?.size) {
             await disableExpiredAE(token.actor);
         }
     }
@@ -130,7 +134,7 @@ export async function checkExpiredActiveEffects() {
  * @param {Actor} actor
  */
 async function disableExpiredAE(actor) {
-    for (let effect of actor.effects.values()) {
+    for (let effect of actor.allApplicableEffects()) {
         if (!effect.disabled) {
             const duration = effect.duration;
             if (duration.type !== 'none') {
@@ -149,9 +153,12 @@ async function disableExpiredAE(actor) {
  */
 export function getItemEffect(effect) {
     if (effect.origin?.length) {
+        let {type, id, primaryId, collection, embedded, doc} = foundry.utils.parseUuid(effect.origin);
         const origin = foundry.utils.parseUuid(effect.origin);
-        if (origin.primaryType === 'Actor' && origin.type === 'Item') {
-            const origItem = game.actors.get(origin.primaryId).items.get(origin.id);
+        if (type === 'Item' && effect.modifiesActor && collection.name === 'Items') {
+            const actor = effect.target;
+            const itemName = collection.get(id).name;
+            const origItem = actor.items.getName(itemName);
             const inactive = !origItem?.system.isCarried || !origItem?.system.isEquipped;
 
             return {origin, origItem, inactive};

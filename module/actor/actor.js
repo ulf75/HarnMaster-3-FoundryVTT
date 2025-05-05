@@ -42,9 +42,11 @@ export class HarnMasterActor extends Actor {
      * The original FVTT return of the applicable effects does not take the permissions into account.
      * With this implementation, a player must have at least LIMITED permission to see the active effect.
      * @override
+     * @param {boolean} [override=false]
+     * @returns
      */
-    allApplicableEffects() {
-        if (!game.settings.get('hm3', 'activeEffectPermissions')) return super.allApplicableEffects();
+    allApplicableEffects(override = false) {
+        if (!game.settings.get('hm3', 'activeEffectPermissions') || override) return super.allApplicableEffects();
 
         const effects = [];
         for (const effect of super.allApplicableEffects()) {
@@ -1113,7 +1115,7 @@ export class HarnMasterActor extends Actor {
      */
     _applySkillActiveEffects() {
         const ownedItems = this.items;
-        const changes = this.effects.reduce((chgs, e) => {
+        const changes = this.allApplicableEffects(true).reduce((chgs, e) => {
             if (e.disabled || isItemEffectInactive(e) || e.duration?.startTime > game.time.worldTime) return chgs;
             const emlChanges = e.changes.filter((chg) => {
                 if (chg.key === 'system.eph.itemEMLMod') {
@@ -1164,7 +1166,7 @@ export class HarnMasterActor extends Actor {
      * The "value" field should look like "<item name>:<magnitude>"
      */
     _applyWeaponActiveEffects() {
-        const changes = this.effects.reduce((chgs, e) => {
+        const changes = this.allApplicableEffects(true).reduce((chgs, e) => {
             if (e.disabled || e.duration?.startTime > game.time.worldTime) return chgs;
             const amlChanges = e.changes.filter((chg) => {
                 if (chg.key === 'system.eph.itemAMLMod') {
@@ -1257,7 +1259,7 @@ export class HarnMasterActor extends Actor {
         const overrides = {};
 
         // Organize non-disabled effects by their application priority
-        const changes = this.effects.reduce((chgs, e) => {
+        const changes = this.allApplicableEffects(true).reduce((chgs, e) => {
             if (e.disabled || e.duration?.startTime > game.time.worldTime) return chgs;
             const chgList = e.changes.filter((chg) => chg.key === property);
             return chgs.concat(
@@ -1292,7 +1294,7 @@ export class HarnMasterActor extends Actor {
     applySkillTypeActiveEffect(skill) {
         const skillData = skill.system;
         // Organize non-disabled effects by their application priority
-        const changes = this.effects.reduce((chgs, e) => {
+        const changes = this.allApplicableEffects(true).reduce((chgs, e) => {
             if (e.disabled || e.duration?.startTime > game.time.worldTime) return chgs;
             if (!['skill', 'psionic'].includes(skill.type)) return chgs;
             const skillChanges = e.changes.filter(

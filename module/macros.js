@@ -1919,10 +1919,10 @@ export function hasActiveEffect(token, name, strict = false) {
  */
 export function getActiveEffect(token, name, strict = false) {
     return strict
-        ? token.actor.effects.contents.find((v) => v.name === name)
-        : token.actor.effects.contents.find(
-              (v) => v.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(v.name.toLowerCase())
-          );
+        ? token.actor.allApplicableEffects().find((v) => v.name === name)
+        : token.actor
+              .allApplicableEffects()
+              .find((v) => v.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(v.name.toLowerCase()));
 }
 
 /**
@@ -2041,7 +2041,10 @@ export async function deleteActiveEffect(tokenId, effectId) {
     // sometimes effect macros fire twice -> race condition
     await deleteMutex.runExclusive(async () => {
         const token = canvas.tokens.get(tokenId);
-        await token.actor.effects.get(effectId)?.delete();
+        await token.actor
+            .allApplicableEffects()
+            .find((e) => e.id === effectId)
+            ?.delete();
     });
 }
 
@@ -2464,4 +2467,19 @@ export async function drawDebugPoint(p) {
     // const dd = await DrawingDocument.create(data);
     // const d = dl.createObject(dd);
     return;
+}
+
+/**
+ * Checks if the token can perform a TA (Tactical Advantage) of the given type.
+ * @param {HarnMasterToken} token - The token to check
+ * @returns {boolean} - True if the TA is possible, false otherwise
+ */
+export async function isTAPossible(token) {
+    if (!token) return true;
+
+    const cautious = token.hasCondition(Condition.CAUTIOUS);
+    const distracted = token.hasCondition(Condition.DISTRACTED);
+    const unconscious = token.hasCondition(Condition.UNCONSCIOUS);
+
+    return !cautious && !distracted && !unconscious && (await game.hm3.socket.executeAsGM('isFirstTA'));
 }

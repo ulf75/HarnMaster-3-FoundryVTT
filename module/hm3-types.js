@@ -203,6 +203,7 @@ export const ItemType = Object.freeze({
     ARMORGEAR: 'armorgear',
     ARMORLOCATION: 'armorlocation',
     CONTAINERGEAR: 'containergear',
+    EFFECT: 'effectgear',
     INJURY: 'injury',
     INVOCATION: 'invocation',
     MISCGEAR: 'miscgear',

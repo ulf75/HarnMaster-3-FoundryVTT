@@ -44,38 +44,49 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
         data.customSunSign = game.settings.get('hm3', 'customSunSign');
         data.actor = foundry.utils.deepClone(this.actor);
-        data.items = this.actor.items.map((i) => {
-            // A new, truncated number is created so that weights with many decimal places (e.g. dram) are also displayed nicely.
-            if ([ItemType.MISCGEAR, ItemType.ARMORGEAR, ItemType.WEAPONGEAR, ItemType.MISSILEGEAR, ItemType.CONTAINERGEAR].includes(i.type)) {
-                i.system.weightT = utility.truncate(i.system.weight, 3);
-            }
-            // Dormant psionic talents may be invisible for players (ML20 or less (Psionics 3))
-            if (i.type === ItemType.PSIONIC) {
-                i.system.visible = String(!game.settings.get('hm3', 'dormantPsionicTalents') || i.system.masteryLevel > 20 || game.user.isGM);
-            }
-            if (i.type === ItemType.TRAIT) {
-                if (i.system.type === 'Psyche') {
-                    const sev = data.config.psycheSeverity.find((v) => v.key === parseInt(i.system.severity))?.label || 'Mild';
-                    i.psycheName = sev + ' ' + i.name;
+        data.items = this.actor.items
+            .map((i) => {
+                // A new, truncated number is created so that weights with many decimal places (e.g. dram) are also displayed nicely.
+                if (
+                    [
+                        ItemType.MISCGEAR,
+                        ItemType.ARMORGEAR,
+                        ItemType.WEAPONGEAR,
+                        ItemType.MISSILEGEAR,
+                        ItemType.CONTAINERGEAR,
+                        ItemType.EFFECT
+                    ].includes(i.type)
+                ) {
+                    i.system.weightT = utility.truncate(i.system.weight, 3);
                 }
-            }
-            // The range can also be displayed in grids (hex). Can be changed in the settings.
-            if (i.type === ItemType.MISSILEGEAR) {
-                if (data.isGridDistanceUnits) {
-                    i.system.rangeGrid = {
-                        short: i.system.range.short / canvas.dimensions.distance,
-                        medium: i.system.range.medium / canvas.dimensions.distance,
-                        long: i.system.range.long / canvas.dimensions.distance,
-                        extreme: i.system.range.extreme / canvas.dimensions.distance
-                    };
+                // Dormant psionic talents may be invisible for players (ML20 or less (Psionics 3))
+                if (i.type === ItemType.PSIONIC) {
+                    i.system.visible = String(!game.settings.get('hm3', 'dormantPsionicTalents') || i.system.masteryLevel > 20 || game.user.isGM);
                 }
-            }
-            if (i.type === ItemType.WEAPONGEAR) {
-                i.wq = i.system.weaponQuality + (i.system.wqModifier | 0);
-            }
+                if (i.type === ItemType.TRAIT) {
+                    if (i.system.type === 'Psyche') {
+                        const sev = data.config.psycheSeverity.find((v) => v.key === parseInt(i.system.severity))?.label || 'Mild';
+                        i.psycheName = sev + ' ' + i.name;
+                    }
+                }
+                // The range can also be displayed in grids (hex). Can be changed in the settings.
+                if (i.type === ItemType.MISSILEGEAR) {
+                    if (data.isGridDistanceUnits) {
+                        i.system.rangeGrid = {
+                            short: i.system.range.short / canvas.dimensions.distance,
+                            medium: i.system.range.medium / canvas.dimensions.distance,
+                            long: i.system.range.long / canvas.dimensions.distance,
+                            extreme: i.system.range.extreme / canvas.dimensions.distance
+                        };
+                    }
+                }
+                if (i.type === ItemType.WEAPONGEAR) {
+                    i.wq = i.system.weaponQuality + (i.system.wqModifier | 0);
+                }
 
-            return i;
-        });
+                return i;
+            })
+            .filter((item) => item.type !== ItemType.EFFECT || game.user.isGM);
         data.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
 
         data.adata = data.actor.system;
@@ -127,11 +138,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         });
 
         data.gearTypes = {
-            'armorgear': 'Armor',
-            'weapongear': 'Melee Wpn',
-            'missilegear': 'Missile Wpn',
+            'armorgear': 'Armour',
+            'containergear': 'Container',
+            'effectgear': 'Effect',
             'miscgear': 'Misc. Gear',
-            'containergear': 'Container'
+            'missilegear': 'Missile Wpn',
+            'weapongear': 'Melee Wpn'
         };
 
         // get active effects
