@@ -61,7 +61,7 @@ export async function onManageActiveEffect(event, owner) {
             return effect.sheet.render(true);
 
         case 'delete':
-            if (effect.parent instanceof Item)
+            if (effect.parent instanceof Item && effect.parent?.parent instanceof Actor)
                 return ui.notifications.info(`This effect (${effect.name}) originates from an item (${effect.parent.name}) and cannot be deleted.`);
             return new Dialog({
                 title: 'Delete Active Effect',
