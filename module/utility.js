@@ -382,16 +382,14 @@ export function aeDuration(effect) {
         const remaining = elapsed < 0 ? d.seconds : Math.max(d.seconds - elapsed, 0);
         //const normDuration = toNormTime(d.seconds);
         const normRemaining = isIndefinite ? 'Indefinite' : toNormTime(remaining);
-        const normStart = elapsed < 0 ? toNormTime(-elapsed) : 'Started';
+        const startLabel = elapsed < 0 ? toNormTime(-elapsed) : 'Started';
         return {
-            type: 'seconds',
             duration: d.seconds,
-            remaining: remaining,
             label: normRemaining,
+            remaining,
             start,
-            startLabel: normStart
-            //normDuration: normDuration,
-            //normRemaining: normRemaining
+            startLabel,
+            type: 'seconds'
         };
     }
 
@@ -434,11 +432,15 @@ export function aeDuration(effect) {
             remainingTurns > 0 ? `${remainingTurns} Turns` : null,
             remainingRounds + remainingTurns === 0 ? 'None' : null
         ].filterJoin(', ');
+
+        const startLabel = 'Started';
+
         return {
-            type: 'turns',
-            duration: duration,
-            remaining: remaining,
-            label: label
+            duration,
+            label,
+            remaining,
+            startLabel,
+            type: 'turns'
         };
     }
 

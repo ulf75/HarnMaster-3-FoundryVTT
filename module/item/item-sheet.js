@@ -129,6 +129,13 @@ export class HarnMasterItemSheet extends ItemSheet {
                 data.isPsycheTrait = true;
                 if (isNaN(parseInt(data.idata.severity))) data.idata.severity = 5;
             }
+        } else if (this.item.type === ItemType.EFFECT) {
+            if (this.item.system.selfDestroy) {
+                this.item.effects.forEach((effect) => {
+                    if (!effect.getFlag('effectmacro', 'onDisable.script'))
+                        effect.setFlag('effectmacro', 'onDisable.script', `(await fromUuid('${this.item.uuid}'))?.delete();`);
+                });
+            }
         }
 
         if (data.isGridDistanceUnits && !!data.idata.range) {
