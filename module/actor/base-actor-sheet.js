@@ -1,4 +1,4 @@
-import {isItemEffectInactive, onManageActiveEffect} from '../effect.js';
+import {onManageActiveEffect} from '../effect.js';
 import {ActorType, ItemType} from '../hm3-types.js';
 import {onManageMacro} from '../macro.js';
 import * as macros from '../macros.js';
@@ -149,11 +149,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // get active effects
         data.effects = {};
         this.actor.allApplicableEffects().forEach((effect) => {
-            const inactive = isItemEffectInactive(effect);
-
             data.effects[effect.id] = {
                 'changes': utility.aeChanges(effect),
-                'disabled': inactive || effect.disabled,
+                'disabled': effect.disabled,
                 'duration': utility.aeDuration(effect),
                 'id': effect.id,
                 'img': effect.img,
@@ -1060,7 +1058,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
      * @param {Event} event   The triggering click event
      * @private
      */
-    _onToggleCarry(event) {
+    async _onToggleCarry(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
@@ -1068,7 +1066,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Only process inventory ("gear") items, otherwise ignore
         if (item.type.endsWith('gear')) {
             const attr = 'system.isCarried';
-            return item.update({[attr]: !getProperty(item, attr)});
+            const ret = await item.update({[attr]: !getProperty(item, attr)});
+
+            for (const effect of item.effects.contents) {
+                await effect.update({disabled: !item.system.isEquipped || !item.system.isCarried});
+            }
+
+            return ret;
         }
 
         return null;
@@ -1079,7 +1083,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
      * @param {Event} event   The triggering click event
      * @private
      */
-    _onToggleEquip(event) {
+    async _onToggleEquip(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
@@ -1087,7 +1091,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Only process inventory ("gear") items, otherwise ignore
         if (item.type.endsWith('gear')) {
             const attr = 'system.isEquipped';
-            return item.update({[attr]: !getProperty(item, attr)});
+            const ret = await item.update({[attr]: !getProperty(item, attr)});
+
+            for (const effect of item.effects.contents) {
+                await effect.update({disabled: !item.system.isEquipped || !item.system.isCarried});
+            }
+
+            return ret;
         }
 
         return null;

@@ -1,6 +1,5 @@
 import {HM3} from '../config.js';
 import {DiceHM3} from '../dice-hm3.js';
-import {isItemEffectInactive} from '../effect.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 
@@ -1116,7 +1115,7 @@ export class HarnMasterActor extends Actor {
     _applySkillActiveEffects() {
         const ownedItems = this.items;
         const changes = this.allApplicableEffects(true).reduce((chgs, e) => {
-            if (e.disabled || isItemEffectInactive(e) || e.duration?.startTime > game.time.worldTime) return chgs;
+            if (e.disabled || e.duration?.startTime > game.time.worldTime) return chgs;
             const emlChanges = e.changes.filter((chg) => {
                 if (chg.key === 'system.eph.itemEMLMod') {
                     const val = utility.parseAEValue(chg.value);

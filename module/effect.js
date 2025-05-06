@@ -82,7 +82,6 @@ export async function onManageActiveEffect(event, owner) {
             }).render(true);
 
         case 'toggle':
-            if (isItemEffectInactive(effect)) return;
             const updateData = {};
             if (effect.disabled) {
                 // Enable the Active Effect
@@ -144,44 +143,4 @@ async function disableExpiredAE(actor) {
             }
         }
     }
-}
-
-/**
- * Returns an info object when the active effect param is originally from an item, undefined otherwise.
- * @param {HarnMasterActiveEffect} effect the active effect
- * @returns Info object or undefined
- */
-export function getItemEffect(effect) {
-    if (effect.origin?.length) {
-        let {type, id, primaryId, collection, embedded, doc} = foundry.utils.parseUuid(effect.origin);
-        const origin = foundry.utils.parseUuid(effect.origin);
-        if (type === 'Item' && effect.modifiesActor && collection.name === 'Items') {
-            const actor = effect.target;
-            const itemName = collection.get(id).name;
-            const origItem = actor.items.getName(itemName);
-            const inactive = !origItem?.system.isCarried || !origItem?.system.isEquipped;
-
-            return {origin, origItem, inactive};
-        }
-    }
-}
-
-/**
- * Returns true when the active effect param is originally from an item, false otherwise.
- * @param {HarnMasterActiveEffect} effect the active effect
- * @returns true when the active effect param is originally from an item
- */
-export function isItemEffect(effect) {
-    return !!getItemEffect(effect);
-}
-
-/**
- * Returns true when the active effect param is originally from an item and this item is
- * carried and equipped, false otherwise.
- * @param {HarnMasterActiveEffect} effect the active effect
- * @returns true when the item is carried and equipped
- */
-export function isItemEffectInactive(effect) {
-    const ie = getItemEffect(effect);
-    return ie ? ie.inactive : false;
 }
