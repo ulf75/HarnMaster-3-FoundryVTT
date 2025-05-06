@@ -61,6 +61,8 @@ export async function onManageActiveEffect(event, owner) {
             return effect.sheet.render(true);
 
         case 'delete':
+            if (effect.parent instanceof Item)
+                return ui.notifications.info(`This effect (${effect.name}) originates from an item (${effect.parent.name}) and cannot be deleted.`);
             return new Dialog({
                 title: 'Delete Active Effect',
                 content: '<p>Are you sure?</p><p>This active effect will be permanently deleted and cannot be recovered.</p>',

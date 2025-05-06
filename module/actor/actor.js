@@ -52,7 +52,7 @@ export class HarnMasterActor extends Actor {
             if (override) {
                 effects.push(effect);
             } else {
-                const hidden = effect.getFlag('hm3', 'hidden') && !game.user.isGM;
+                const hidden = effect.hidden && !game.user.isGM;
                 if (effect.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED) && !hidden) {
                     effects.push(effect);
                 }
