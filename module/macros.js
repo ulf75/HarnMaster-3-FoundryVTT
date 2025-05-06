@@ -1348,8 +1348,7 @@ export async function moraleRoll(noDialog = false, myActor = null) {
             if (result.isSuccess && result.isCritical) {
                 // CS - Empowered
                 await token.addCondition(Condition.EMPOWERED, {oneTurn: true});
-                // } else if (!result.isSuccess && !result.isCritical) {
-            } else if (true) {
+            } else if (!result.isSuccess && !result.isCritical) {
                 // MF - Cautious, turn ends
                 await token.addCondition(Condition.CAUTIOUS, {oneRound: true});
                 await game.combats.active.nextTurn(500); // delay so that other hooks are executed first

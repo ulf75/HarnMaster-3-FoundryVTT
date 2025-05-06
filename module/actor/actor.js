@@ -45,13 +45,15 @@ export class HarnMasterActor extends Actor {
      * @returns
      */
     allApplicableEffects(override = false) {
-        if (!game.settings.get('hm3', 'activeEffectPermissions') || override) return super.allApplicableEffects();
-
         const effects = [];
         for (const effect of super.allApplicableEffects()) {
-            const hidden = effect.getFlag('hm3', 'hidden') && !game.user.isGM;
-            if (effect.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED) && !hidden) {
+            if (!game.settings.get('hm3', 'activeEffectPermissions') || override) {
                 effects.push(effect);
+            } else {
+                const hidden = effect.getFlag('hm3', 'hidden') && !game.user.isGM;
+                if (effect.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED) && !hidden) {
+                    effects.push(effect);
+                }
             }
         }
 
