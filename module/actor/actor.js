@@ -45,9 +45,11 @@ export class HarnMasterActor extends Actor {
      * @returns
      */
     allApplicableEffects(override = false) {
+        override ||= !game.settings.get('hm3', 'activeEffectPermissions');
+
         const effects = [];
         for (const effect of super.allApplicableEffects()) {
-            if (!game.settings.get('hm3', 'activeEffectPermissions') || override) {
+            if (override) {
                 effects.push(effect);
             } else {
                 const hidden = effect.getFlag('hm3', 'hidden') && !game.user.isGM;
