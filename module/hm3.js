@@ -274,6 +274,17 @@ Hooks.on('deleteActiveEffect', async (activeEffect, info, userId) => {
     return game.hm3.socket.executeAsGM('updateOutnumbered', activeEffect.name);
 });
 
+Hooks.on('createItem', async (item, info, userId) => {
+    if (item.type === ItemType.EFFECT) {
+        if (item.system.selfDestroy && item.parent instanceof Actor) {
+            item.effects.forEach((effect) => {
+                if (!effect.getFlag('effectmacro', 'onDisable.script'))
+                    effect.setFlag('effectmacro', 'onDisable.script', `(await fromUuid('${item.uuid}'))?.delete();`);
+            });
+        }
+    }
+});
+
 Hooks.on('dropCanvasData', async (canvas, data) => {
     if (data.type === 'Item') {
         const targetToken = canvas.tokens.placeables.find((t) => t.bounds.contains(data.x, data.y));
