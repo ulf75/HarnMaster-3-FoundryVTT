@@ -1351,7 +1351,6 @@ export async function moraleRoll(noDialog = false, myActor = null) {
             } else if (!result.isSuccess && !result.isCritical) {
                 // MF - Cautious, turn ends
                 await token.addCondition(Condition.CAUTIOUS, {oneRound: true});
-                await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
             } else if (!result.isSuccess && result.isCritical) {
                 // CF
                 const rollObj = new Roll('1d100');

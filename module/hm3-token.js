@@ -1,3 +1,4 @@
+import {rangeToTarget} from './combat.js';
 import {Condition} from './hm3-types.js';
 import * as macros from './macros.js';
 import {Mutex} from './mutex.js';
@@ -108,16 +109,25 @@ export class HarnMasterToken extends Token {
         return !!token.actor.items.find((i) => i.id === id);
     }
 
+    /**
+     *
+     * @returns true, if this token has an engagement zone (COMBAT 6)
+     */
     hasEngagementZone() {
+        const dying = this.hasCondition(Condition.DYING);
         const grappled = this.hasCondition(Condition.GRAPPLED);
         const incapacitated = this.hasCondition(Condition.INCAPACITATED);
         const prone = this.hasCondition(Condition.PRONE);
         const shocked = this.hasCondition(Condition.SHOCKED);
         const unconscious = this.hasCondition(Condition.UNCONSCIOUS);
 
-        return !grappled && !incapacitated && !prone && !shocked && !unconscious;
+        return game.combat?.started && !dying && !grappled && !incapacitated && !prone && !shocked && !unconscious;
     }
 
+    /**
+     *
+     * @returns true, if this token is engaged in combat (COMBAT 6)
+     */
     isEngaged() {
         const all = canvas.scene.tokens.contents;
         const opponents =
@@ -129,9 +139,13 @@ export class HarnMasterToken extends Token {
             ...opponents.filter((hDoc) => rangeToTarget(this, hDoc.object) < 5.1 && hDoc.object.hasEngagementZone()).map((t) => t.object)
         ];
 
-        return engaged.length > 0;
+        return game.combat?.started && engaged.length > 0;
     }
 
+    /**
+     *
+     * @returns true, if this token has a reaction zone (COMBAT 6)
+     */
     hasReactionZone() {
         return !this.isEngaged() && this.hasEngagementZone();
     }
