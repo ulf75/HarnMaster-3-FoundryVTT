@@ -57,8 +57,11 @@ export class HM3MacroConfig extends MacroConfig {
             {value: 'deleteCombatant', label: 'Delete Combatant'},
             {value: 'deleteToken', label: 'Delete Token'},
             {value: 'pauseGame', label: 'Pause Game'},
+            {value: 'preUpdateCombat', label: 'Pre Update Combat'},
+            {value: 'preUpdateCombatant', label: 'Pre Update Combatant'},
             {value: 'preUpdateToken', label: 'Pre Update Token'},
             {value: 'targetToken', label: 'Target Token'},
+            {value: 'updateCombat', label: 'Update Combat'},
             {value: 'updateCombatant', label: 'Update Combatant'},
             {value: 'updateToken', label: 'Update Token'},
             {value: 'updateWorldTime', label: 'Update World Time'}

@@ -14,8 +14,11 @@ const supportedFoundryHooks = [
     'deleteCombatant',
     'deleteToken',
     'pauseGame',
+    'preUpdateCombat',
+    'preUpdateCombatant',
     'preUpdateToken',
     'targetToken',
+    'updateCombat',
     'updateCombatant',
     'updateToken',
     'updateWorldTime'
