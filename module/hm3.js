@@ -109,6 +109,7 @@ Hooks.once('init', async function () {
         base: 'Base',
         armorgear: 'Armor',
         armorlocation: 'Armor Location',
+        companion: 'Companion',
         containergear: 'Container',
         effectgear: 'Effect',
         injury: 'Injury',

@@ -86,6 +86,7 @@
     "types": [
       "armorgear",
       "armorlocation",
+      "companion",
       "containergear",
       "effectgear",
       "injury",
@@ -254,6 +255,11 @@
     "trait": {
       "templates": ["base"],
       "type": "Physical"
+    },
+    "companion": {
+      "templates": ["base"],
+      "type": "Connection",
+      "actorUuid": ""
     }
   }
 }

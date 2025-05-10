@@ -21,6 +21,7 @@ HM3.allowedRanges = ['Short', 'Medium', 'Long', 'Extreme'];
 HM3.itemTypes = [
     {key: 'armorgear', label: 'Armor Gear'},
     {key: 'armorlocation', label: 'Armor Location'},
+    {key: 'companion', label: 'Companion'},
     {key: 'containergear', label: 'Container Gear'},
     {key: 'effectgear', label: 'Effect'},
     {key: 'injury', label: 'Injury'},
@@ -37,6 +38,8 @@ HM3.itemTypes = [
 HM3.skillTypes = [{key: 'Craft'}, {key: 'Physical'}, {key: 'Communication'}, {key: 'Combat'}, {key: 'Magic'}, {key: 'Ritual'}];
 
 HM3.traitTypes = [{key: 'Physical'}, {key: 'Psyche'}];
+
+HM3.companionTypes = [{key: 'Animal'}, {key: 'Connection'}, {key: 'Foe'}, {key: 'Follower'}, {key: 'Friend'}, {key: 'Party'}, {key: 'Steed'}];
 
 HM3.cultures = [{key: 'Feudal'}, {key: 'Imperial'}, {key: 'Khuzdul'}, {key: 'Sindarin'}, {key: 'Tribal'}, {key: 'Viking'}];
 

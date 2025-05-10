@@ -202,6 +202,7 @@ export const InjurySubtype = Object.freeze({
 export const ItemType = Object.freeze({
     ARMORGEAR: 'armorgear',
     ARMORLOCATION: 'armorlocation',
+    COMPANION: 'companion',
     CONTAINERGEAR: 'containergear',
     EFFECT: 'effectgear',
     INJURY: 'injury',

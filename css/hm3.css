@@ -3496,3 +3496,113 @@ section.highlight {
     border: 2px groove #eeede0;
     margin-top: 5px;
 }
+
+.hm3 .f-f-f h2 {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    margin: 0;
+    line-height: 36px;
+    font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #4b4a44;
+    background-color: #bbb;
+    border-top: 2px groove #fff;
+    border-bottom: 2px groove #fff;
+    padding: 5px;
+}
+
+.hm3 .f-f-f .fffs-list {
+    list-style: none;
+    margin: 7px 0;
+    padding: 0;
+    overflow-y: hidden;
+}
+
+.hm3 .f-f-f .fffs-list .fff-header {
+    font-weight: bold;
+}
+
+.hm3 .f-f-f .fffs-list .fff {
+    border-bottom: 1px solid #bbb;
+}
+
+.hm3 .f-f-f .fffs-list .fff .item-name.std-roll:hover .item-image {
+    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+}
+
+.hm3 .f-f-f .fffs-list .fff .item-name.std-roll .item-image:hover {
+    background-image: url('../../../icons/svg/d20-black.svg') !important;
+}
+
+.hm3 .f-f-f .fffs-list .fff .fff-image {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 24px;
+    flex: 0 0 24px;
+    margin-right: 5px;
+}
+
+.hm3 .f-f-f .fffs-list .fff img {
+    display: block;
+}
+
+.hm3 .f-f-f .fffs-list .fff-name {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 200px;
+    flex: 0 0 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.hm3 .f-f-f .fffs-list .fff-gender {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 70px;
+    flex: 0 0 70px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding-left: 3px;
+}
+
+.hm3 .f-f-f .fffs-list .fff-occupation {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 150px;
+    flex: 0 0 150px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding-left: 3px;
+}
+
+.hm3 .f-f-f .fffs-list .fff-species {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 150px;
+    flex: 0 0 150px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding-left: 3px;
+}
+
+.hm3 .f-f-f .fffs-list .fff-notes {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 0 150px;
+    flex: 1 0 150px;
+    overflow: hidden;
+    padding-left: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hm3 .f-f-f .fffs-list .item-controls {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 45px;
+    flex: 0 0 45px;
+    text-align: right;
+}
+
+.hm3 .f-f-f .fffs-list .item-controls .active {
+    color: #4b4a44;
+}

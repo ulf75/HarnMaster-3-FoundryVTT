@@ -4,6 +4,12 @@
             <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
             <div class="header-fields flexcol">
                 <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
+                <div class="skill-type flexrow">
+                    <label class="label">Type</label>
+                    <select class="value" name="system.type">
+                        {{selectOptions config.companionTypes selected=idata.type valueAttr="key" labelAttr="key"}}
+                    </select>
+                </div>
             </div>
         </div>
     </header>
@@ -23,6 +29,10 @@
         {{!-- Properties Tab --}}
         <div class="tab properties" data-group="primary" data-tab="properties">
             <div class="resource">
+                <label class="resource-label">Actor Uuid</label>
+                <input type="text" name="system.actorUuid" value="{{idata.actorUuid}}" data-dtype="String" {{#unless hasRwPermission}}disabled{{/unless}} />
+            </div>
+            <div class="resource">
                 <label class="resource-label">Source</label>
                 <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" {{#unless hasRwPermission}}disabled{{/unless}} />
             </div>
@@ -30,18 +40,6 @@
                 <label class="resource-label">Note</label>
                 <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
-            {{#if isGM}}
-            <div class="resource artifact flexrow">
-                <input type="checkbox" name="system.hidden" value="{{idata.hidden}}"
-                    data-dtype="Boolean" {{checked idata.hidden}} />
-                <label class="resource-label">Hidden</label>If checked, the effect is not displayed to the players.
-            </div>
-            <div class="resource artifact flexrow">
-                <input type="checkbox" name="system.selfDestroy" value="{{idata.selfDestroy}}"
-                    data-dtype="Boolean" {{checked idata.selfDestroy}} />
-                <label class="resource-label">Self Destroy</label>If checked, the item & effect will be deleted after completion.
-            </div>
-            {{/if}}
         </div>
 
         {{!-- Description Tab --}}

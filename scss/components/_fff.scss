@@ -1,0 +1,95 @@
+.f-f-f {
+    h2 {
+        flex: 1;
+        margin: 0;
+        line-height: 36px;
+        font-family: $font-headers;
+        font-size: 20px;
+        font-weight: 700;
+        color: #4b4a44;
+        background-color: #bbb;
+        border-top: 2px groove #fff;
+        border-bottom: 2px groove #fff;
+        padding: 5px;
+    }
+
+    .fffs-list {
+        list-style: none;
+        margin: 7px 0;
+        padding: 0;
+        overflow-y: hidden;
+
+        .fff-header {
+            font-weight: bold;
+        }
+
+        .fff {
+            border-bottom: 1px solid #bbb;
+
+            .item-name.std-roll:hover .item-image {
+                background-image: url('../../../icons/svg/d20-grey.svg') !important;
+            }
+
+            .item-name.std-roll .item-image:hover {
+                background-image: url('../../../icons/svg/d20-black.svg') !important;
+            }
+
+            .fff-image {
+                flex: 0 0 24px;
+                margin-right: 5px;
+            }
+
+            img {
+                display: block;
+            }
+        }
+
+        .fff-name {
+            flex: 0 0 200px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .fff-gender {
+            flex: 0 0 70px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-left: 3px;
+        }
+
+        .fff-occupation {
+            flex: 0 0 150px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-left: 3px;
+        }
+
+        .fff-species {
+            flex: 0 0 150px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-left: 3px;
+        }
+
+        .fff-notes {
+            flex: 1 0 150px;
+            overflow: hidden;
+            padding-left: 10px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .item-controls {
+            flex: 0 0 45px;
+            text-align: right;
+
+            .active {
+                color: #4b4a44;
+            }
+        }
+    }
+}
