@@ -13,7 +13,7 @@ import * as shocked from './condition/shocked.js';
 import * as unconscious from './condition/unconscious.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
-import {Aspect, Condition, InjurySubtype, ItemType, SkillType} from './hm3-types.js';
+import {Aspect, Condition, InjuryType, ItemType, SkillType} from './hm3-types.js';
 import {Mutex} from './mutex.js';
 import * as utility from './utility.js';
 
@@ -783,9 +783,9 @@ export async function injuryRoll(myActor = null, rollData = {}) {
 
 export async function healingRoll(itemName, noDialog = false, myActor = null) {
     const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.INJURY);
-    const subType = item.system.subType || InjurySubtype.HEALING;
+    const subType = item.system.subType || InjuryType.HEALING;
 
-    if (subType === InjurySubtype.HEALING && (isNaN(item.system.injuryLevel) || item.system?.injuryLevel < 1 || item.system?.injuryLevel > 5)) {
+    if (subType === InjuryType.HEALING && (isNaN(item.system.injuryLevel) || item.system?.injuryLevel < 1 || item.system?.injuryLevel > 5)) {
         ui.notifications.warn(`No valid injury level specified.`);
         return null;
     }
@@ -912,13 +912,13 @@ async function treatmentRoll(actor, injury, speaker) {
 }
 
 async function heal(injury, result) {
-    const subType = injury.system.subType || InjurySubtype.HEALING;
+    const subType = injury.system.subType || InjuryType.HEALING;
     switch (subType) {
-        case InjurySubtype.BLOODLOSS:
+        case InjuryType.BLOODLOSS:
             // TBD
             break;
 
-        case InjurySubtype.HEALING:
+        case InjuryType.HEALING:
             if (result.isSuccess) {
                 const il = injury.system.injuryLevel - (result.isCritical ? 2 : 1);
                 if (il <= 0) await injury.delete(); // fully healed
@@ -926,10 +926,10 @@ async function heal(injury, result) {
             }
             break;
 
-        case InjurySubtype.DISEASE:
-        case InjurySubtype.POISON:
-        case InjurySubtype.TOXIN:
-        case InjurySubtype.SHOCK:
+        case InjuryType.DISEASE:
+        case InjuryType.POISON:
+        case InjuryType.TOXIN:
+        case InjuryType.SHOCK:
             let hr;
             if (result.isSuccess) hr = injury.system.healRate + (result.isCritical ? 2 : 1);
             else hr = injury.system.healRate - (result.isCritical ? 2 : 1);
@@ -2266,7 +2266,7 @@ export async function createInjury(injuryData, options = {}) {
             injuryLevel: 0,
             name: null,
             notes: '',
-            subType: InjurySubtype.HEALING, // bloodloss, disease, healing, infection, poison, shock, toxin (different healing rolls)
+            subType: InjuryType.HEALING, // bloodloss, disease, healing, infection, poison, shock, toxin (different healing rolls)
             token: null
         },
         injuryData
@@ -2321,26 +2321,26 @@ export async function createInjuryHelper(injuryData) {
 
     let startTime, scDate;
     switch (injuryData.subType) {
-        case InjurySubtype.BLOODLOSS: // HR: always H6
-        case InjurySubtype.HEALING: // HR: varies, plus half Physician EML
+        case InjuryType.BLOODLOSS: // HR: always H6
+        case InjuryType.HEALING: // HR: varies, plus half Physician EML
             startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {day: 5});
             scDate = SimpleCalendar.api.timestampToDate(startTime);
             break;
 
-        case InjurySubtype.DISEASE: // HR: varies
-        case InjurySubtype.INFECTION: // HR: varies (same as wound), plus Physician SI
+        case InjuryType.DISEASE: // HR: varies
+        case InjuryType.INFECTION: // HR: varies (same as wound), plus Physician SI
             startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {day: 1});
             scDate = SimpleCalendar.api.timestampToDate(startTime);
             break;
 
-        case InjurySubtype.POISON: // HR: varies
-        case InjurySubtype.TOXIN: // HR: varies
+        case InjuryType.POISON: // HR: varies
+        case InjuryType.TOXIN: // HR: varies
             const minute = injuryData.minute || 5;
             const second = injuryData.second || 0;
             startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {minute, second});
             break;
 
-        case InjurySubtype.SHOCK: // HR: always H5, plus half Physician EML
+        case InjuryType.SHOCK: // HR: always H5, plus half Physician EML
             startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {hour: 4});
             break;
 

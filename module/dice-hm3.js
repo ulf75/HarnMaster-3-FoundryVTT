@@ -1,5 +1,5 @@
 import {HM3} from './config.js';
-import {Aspect, InjurySubtype} from './hm3-types.js';
+import {Aspect, InjuryType} from './hm3-types.js';
 import * as utility from './utility.js';
 
 export class DiceHM3 {
@@ -38,7 +38,7 @@ export class DiceHM3 {
             label: rollData.label,
             modifier: rollData.modifier || 0,
             skill: rollData.skill,
-            subType: rollData.subType || InjurySubtype.HEALING,
+            subType: rollData.subType || InjuryType.HEALING,
             target: rollData.target,
             treatmentTable: rollData.treatmentTable,
             type: rollData.type
@@ -160,13 +160,13 @@ export class DiceHM3 {
             ]
         };
 
-        const isHealingRoll = dialogOptions.type === InjurySubtype.HEALING;
+        const isHealingRoll = dialogOptions.type === InjuryType.HEALING;
         if (isHealingRoll) {
-            if (dialogOptions.subType === InjurySubtype.HEALING || dialogOptions.subType === InjurySubtype.SHOCK) {
+            if (dialogOptions.subType === InjuryType.HEALING || dialogOptions.subType === InjuryType.SHOCK) {
                 dialogData.isPhysician = true;
                 dialogData.physicianModifier = 0;
                 dialogData.physicianMod = 'EML/2';
-            } else if (dialogOptions.subType === InjurySubtype.INFECTION) {
+            } else if (dialogOptions.subType === InjuryType.INFECTION) {
                 dialogData.isPhysician = true;
                 dialogData.physicianModifier = 0;
                 dialogData.physicianMod = 'SI';
@@ -538,7 +538,7 @@ export class DiceHM3 {
                     injuryLevel: result.injuryLevel,
                     notes,
                     severity: sev,
-                    subType: InjurySubtype.HEALING // bloodloss, disease, healing, infection, poison, shock, toxin (different healing rolls)
+                    subType: InjuryType.HEALING // bloodloss, disease, healing, infection, poison, shock, toxin (different healing rolls)
                 }
             },
             {parent: actor}

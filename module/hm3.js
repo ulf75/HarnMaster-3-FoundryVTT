@@ -20,7 +20,7 @@ import {HarnMasterNote} from './hm3-note.js';
 import {HarnMasterRegion} from './hm3-region.js';
 import {HarnMasterTile} from './hm3-tile.js';
 import {HarnMasterToken, HarnMasterTokenDocument} from './hm3-token.js';
-import {ActorType, Aspect, Condition, Hook, ItemType, Location, Range, SkillType} from './hm3-types.js';
+import {ActorType, Aspect, Condition, Hook, InjuryType, ItemType, Location, MiscItemType, Range, SkillType} from './hm3-types.js';
 import {HarnMasterWall} from './hm3-wall.js';
 import {HarnMasterItemSheet} from './item/item-sheet.js';
 import {HarnMasterItem} from './item/item.js';
@@ -44,7 +44,7 @@ Hooks.once('init', async function () {
         config: HM3,
         macros: macros,
         migrations: migrations,
-        enums: {ActorType, Aspect, Condition, Hook, ItemType, Location, Range, SkillType},
+        enums: {ActorType, Aspect, Condition, Hook, InjuryType, ItemType, Location, MiscItemType, Range, SkillType},
         Gm2GmSays: async (text, source) => {
             return game.hm3.socket.executeAsGM('GmSays', text, source, true);
         },

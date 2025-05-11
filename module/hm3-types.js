@@ -186,7 +186,7 @@ export const Hook = Object.freeze({
     PRE_WEAPON_DEFEND_ROLL: 'hm3.preWeaponDefendRoll'
 });
 
-export const InjurySubtype = Object.freeze({
+export const InjuryType = Object.freeze({
     BLOODLOSS: 'bloodloss',
     DISEASE: 'disease',
     HEALING: 'healing',
@@ -240,6 +240,12 @@ export const Location = Object.freeze({
     THORAX: 'Thorax',
     UPPER_ARM: 'Upper Arm',
     WING: 'Wing'
+});
+
+export const MiscItemType = Object.freeze({
+    STANDARD: 'Standard',
+    POTION: 'Potion',
+    RIDER: 'Rider'
 });
 
 /**
