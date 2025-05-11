@@ -19,7 +19,7 @@ export async function createCondition(token, options = {}) {
 const token = canvas.tokens.get('${token.id}');
 await token.deleteAllMoraleConditions();
 await token.actor.toggleStatusEffect('dead', {active: true, overlay: true});
-await token.addCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+await token.addCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!!token.actor.player) {
     await game.hm3.GmSays("<b>" + token.name + "</b> is <b>unconscious</b> due to a <b>Mortal Wound</b> and is <b>Dying</b>. Life-saving measures should be initiated as quickly as possible.", "Combat 14");
 } else {
@@ -37,7 +37,7 @@ await game.combats.active.nextTurn(500); // delay so that other hooks are execut
 
     return {
         effectData: {
-            label: game.hm3.enums.Condition.DYING,
+            label: game.hm3.Condition.DYING,
             token,
             icon: CONDITION_ICON,
             type: 'GameTime',

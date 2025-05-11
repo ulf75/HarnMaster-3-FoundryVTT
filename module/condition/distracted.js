@@ -20,7 +20,7 @@ export async function createCondition(token, options = {}) {
         ? ``
         : `
 const token = canvas.tokens.get('${token.id}');
-const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
     await game.hm3.GmSays("<b>" + token.name + "</b> remains <b>Distracted</b> and <b>Must</b> take the <b>Pass</b> action. All Defense actions suffer a -10 penalty to EML. <b>Turn ends.</b>", "House Rule");
     await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
@@ -34,7 +34,7 @@ if (!unconscious) {
     return {
         effectData: {
             icon: CONDITION_ICON,
-            label: game.hm3.enums.Condition.DISTRACTED,
+            label: game.hm3.Condition.DISTRACTED,
             rounds,
             seconds,
             token,

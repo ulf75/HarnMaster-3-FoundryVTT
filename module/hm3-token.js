@@ -83,11 +83,11 @@ export class HarnMasterToken extends Token {
      * @returns
      */
     async deleteAllMoraleConditions(except = null) {
-        if (except !== game.hm3.enums.Condition.BERSERK) await this.deleteCondition(game.hm3.enums.Condition.BERSERK);
-        if (except !== game.hm3.enums.Condition.BROKEN) await this.deleteCondition(game.hm3.enums.Condition.BROKEN);
-        if (except !== game.hm3.enums.Condition.CAUTIOUS) await this.deleteCondition(game.hm3.enums.Condition.CAUTIOUS);
-        if (except !== game.hm3.enums.Condition.DESPERATE) await this.deleteCondition(game.hm3.enums.Condition.DESPERATE);
-        if (except !== game.hm3.enums.Condition.EMPOWERED) await this.deleteCondition(game.hm3.enums.Condition.EMPOWERED);
+        if (except !== game.hm3.Condition.BERSERK) await this.deleteCondition(game.hm3.Condition.BERSERK);
+        if (except !== game.hm3.Condition.BROKEN) await this.deleteCondition(game.hm3.Condition.BROKEN);
+        if (except !== game.hm3.Condition.CAUTIOUS) await this.deleteCondition(game.hm3.Condition.CAUTIOUS);
+        if (except !== game.hm3.Condition.DESPERATE) await this.deleteCondition(game.hm3.Condition.DESPERATE);
+        if (except !== game.hm3.Condition.EMPOWERED) await this.deleteCondition(game.hm3.Condition.EMPOWERED);
     }
 
     /**

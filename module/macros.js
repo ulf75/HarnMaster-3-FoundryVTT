@@ -1019,7 +1019,7 @@ export async function killRoll(options) {
         if (result) {
             if (!result.isSuccess) {
                 // DYING!!!
-                await options.token?.addCondition(game.hm3.enums.Condition.DYING);
+                await options.token?.addCondition(game.hm3.Condition.DYING);
             } else {
                 await game.hm3.GmSays(
                     `<b>${options.token.name}</b> just survives this <b>Fatal</b> wound, and makes a normal <b>Shock</b> roll.`,
@@ -2123,7 +2123,7 @@ export async function createCondition(token, condition, conditionOptions = {}) {
                             onTurnStart: {
                                 script: `
                             const token = canvas.tokens.get('${token.id}');
-                            const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+                            const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
                             if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Close Mode</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 11");
                             `
                             }
@@ -2207,7 +2207,7 @@ export async function createCondition(token, condition, conditionOptions = {}) {
                             onTurnStart: {
                                 script: `
                             const token = canvas.tokens.get('${token.id}');
-                            const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+                            const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
                             if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> fights with the <b>Secondary Hand</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 3 & 11");
                             `
                             }

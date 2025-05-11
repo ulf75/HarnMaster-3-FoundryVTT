@@ -17,7 +17,7 @@ export async function createCondition(token, options = {}) {
 
     return {
         effectData: {
-            label: game.hm3.enums.Condition.GRAPPLED,
+            label: game.hm3.Condition.GRAPPLED,
             token,
             icon: GRAPPLED_ICON,
             type: 'GameTime',

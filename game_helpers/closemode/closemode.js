@@ -6,12 +6,12 @@ if (canvas.tokens.controlled.length !== 1) {
 const token = canvas.tokens.controlled[0];
 
 let dialogEditor = new Dialog({
-    title: game.hm3.enums.Condition.CLOSE_MODE,
+    title: game.hm3.Condition.CLOSE_MODE,
     buttons: {
         CLOSE_MODE: {
-            label: game.hm3.enums.Condition.CLOSE_MODE,
+            label: game.hm3.Condition.CLOSE_MODE,
             callback: async () => {
-                await token.addCondition(game.hm3.enums.Condition.CLOSE_MODE);
+                await token.addCondition(game.hm3.Condition.CLOSE_MODE);
                 dialogEditor.render(true);
             }
         },
@@ -19,7 +19,7 @@ let dialogEditor = new Dialog({
         rise: {
             label: `None`,
             callback: async () => {
-                token.getCondition(game.hm3.enums.Condition.CLOSE_MODE)?.delete();
+                token.getCondition(game.hm3.Condition.CLOSE_MODE)?.delete();
                 dialogEditor.render(true);
             }
         },

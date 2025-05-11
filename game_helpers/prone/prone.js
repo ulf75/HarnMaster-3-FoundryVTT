@@ -1,14 +1,14 @@
 let dialogEditor = new Dialog({
-    title: game.hm3.enums.Condition.PRONE,
+    title: game.hm3.Condition.PRONE,
     buttons: {
         prone: {
-            label: game.hm3.enums.Condition.PRONE,
+            label: game.hm3.Condition.PRONE,
             callback: async () => {
                 if (canvas.tokens.controlled.length !== 1) {
                     ui.notifications.error('Please select ONE token!');
                 } else {
                     const token = canvas.tokens.controlled[0];
-                    await token.addCondition(game.hm3.enums.Condition.PRONE);
+                    await token.addCondition(game.hm3.Condition.PRONE);
                 }
                 dialogEditor.render(true);
             }
@@ -21,7 +21,7 @@ let dialogEditor = new Dialog({
                     ui.notifications.error('Please select ONE token!');
                 } else {
                     const token = canvas.tokens.controlled[0];
-                    token.getCondition(game.hm3.enums.Condition.PRONE)?.delete();
+                    token.getCondition(game.hm3.Condition.PRONE)?.delete();
                 }
                 dialogEditor.render(true);
             }

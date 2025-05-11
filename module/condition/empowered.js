@@ -18,8 +18,8 @@ export async function createCondition(token, options = {}) {
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-await token.deleteAllMoraleConditions(game.hm3.enums.Condition.EMPOWERED);
-const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+await token.deleteAllMoraleConditions(game.hm3.Condition.EMPOWERED);
+const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Empowered</b>, and adds 10 to any EML this turn.", "Combat 16");
 `;
 
@@ -33,7 +33,7 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>
     return {
         effectData: {
             icon: CONDITION_ICON,
-            label: game.hm3.enums.Condition.EMPOWERED,
+            label: game.hm3.Condition.EMPOWERED,
             rounds,
             seconds,
             token,

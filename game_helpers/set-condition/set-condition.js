@@ -17,7 +17,7 @@ const token = canvas.tokens.controlled[0];
 let dialogEditor = new Dialog({
     title: 'Set Condition',
     content: content(
-        Object.values(game.hm3.enums.Condition)
+        Object.values(game.hm3.Condition)
             .map((value) => `<option value="${value}">${value}</option>`)
             .join('\n')
     ),
@@ -57,7 +57,7 @@ let dialogEditor = new Dialog({
                     ui.notifications.error('Please select ONE token!');
                 } else {
                     const token = canvas.tokens.controlled[0];
-                    Object.values(game.hm3.enums.Condition).forEach((condition) => {
+                    Object.values(game.hm3.Condition).forEach((condition) => {
                         token.deleteCondition(condition);
                     });
                     token.combatant?.update({defeated: false});

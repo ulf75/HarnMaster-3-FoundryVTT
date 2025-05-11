@@ -18,8 +18,8 @@ export async function createCondition(token, options = {}) {
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-await token.deleteAllMoraleConditions(game.hm3.enums.Condition.CAUTIOUS);
-const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+await token.deleteAllMoraleConditions(game.hm3.Condition.CAUTIOUS);
+const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
     await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Cautious</b>, and will not Engage, must choose <b>Pass</b> if engaged, and cannot select the Counterstrike defense.", "Combat 16");
     if (token.isEngaged()) {
@@ -32,7 +32,7 @@ if (!unconscious) {
         ? ''
         : `
 const token = canvas.tokens.get('${token.id}');
-const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
     await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is still <b>Cautious</b>, and will not Engage, must choose <b>Pass</b> if engaged, and cannot select the Counterstrike defense.", "Combat 16");
     if (token.isEngaged()) {
@@ -49,7 +49,7 @@ if (!unconscious) {
     return {
         effectData: {
             icon: CONDITION_ICON,
-            label: game.hm3.enums.Condition.CAUTIOUS,
+            label: game.hm3.Condition.CAUTIOUS,
             rounds,
             seconds,
             token,

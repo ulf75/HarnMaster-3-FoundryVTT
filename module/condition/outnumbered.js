@@ -18,11 +18,11 @@ export async function createCondition(token, options = {}) {
     if (!token) return;
     if ((options?.outnumbered || 1) < 2) return;
 
-    const label = `${game.hm3.enums.Condition.OUTNUMBERED} ${options.outnumbered}:1`;
+    const label = `${game.hm3.Condition.OUTNUMBERED} ${options.outnumbered}:1`;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is <b>${label}</b>, and gets -${
         (options.outnumbered - 1) * 10
     } on <b>All</b> defense rolls including counterattack.", "Combat 11");

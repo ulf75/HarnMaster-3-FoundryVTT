@@ -42,9 +42,18 @@ Hooks.once('init', async function () {
         HarnMasterItem,
         DiceHM3,
         config: HM3,
-        macros: macros,
-        migrations: migrations,
-        enums: {ActorType, Aspect, Condition, Hook, InjuryType, ItemType, Location, MiscItemType, Range, SkillType},
+        macros,
+        migrations,
+        ActorType,
+        Aspect,
+        Condition,
+        Hook,
+        InjuryType,
+        ItemType,
+        Location,
+        MiscItemType,
+        Range,
+        SkillType,
         Gm2GmSays: async (text, source) => {
             return game.hm3.socket.executeAsGM('GmSays', text, source, true);
         },
@@ -465,11 +474,11 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
             let move = actor.system.move.effective;
 
             // Conditions
-            const grappled = token.hasCondition(game.hm3.enums.Condition.GRAPPLED);
-            const prone = token.hasCondition(game.hm3.enums.Condition.PRONE);
-            const shocked = token.hasCondition(game.hm3.enums.Condition.SHOCKED);
-            const stunned = token.hasCondition(game.hm3.enums.Condition.STUNNED);
-            const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+            const grappled = token.hasCondition(game.hm3.Condition.GRAPPLED);
+            const prone = token.hasCondition(game.hm3.Condition.PRONE);
+            const shocked = token.hasCondition(game.hm3.Condition.SHOCKED);
+            const stunned = token.hasCondition(game.hm3.Condition.STUNNED);
+            const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 
             if (grappled || stunned || unconscious) {
                 return [{range: -1, color: 'walk'}];
@@ -593,11 +602,11 @@ async function updateOutnumbered(aeName = 'true') {
     if (
         aeName === 'true' ||
         [
-            game.hm3.enums.Condition.GRAPPLED,
-            game.hm3.enums.Condition.INCAPACITATED,
-            game.hm3.enums.Condition.PRONE,
-            game.hm3.enums.Condition.SHOCKED,
-            game.hm3.enums.Condition.UNCONSCIOUS
+            game.hm3.Condition.GRAPPLED,
+            game.hm3.Condition.INCAPACITATED,
+            game.hm3.Condition.PRONE,
+            game.hm3.Condition.SHOCKED,
+            game.hm3.Condition.UNCONSCIOUS
         ].includes(aeName)
     ) {
         await outMutex.runExclusive(async () => await combat.updateOutnumbered());

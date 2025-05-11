@@ -18,18 +18,18 @@ export async function createCondition(token, options = {}) {
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 token.document.setFlag('wall-height', 'tokenHeight', 2);
-const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, and getting up takes one action. <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
 `;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-const unconscious = token.hasCondition(game.hm3.enums.Condition.UNCONSCIOUS);
+const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (unconscious) return;
 const PRONE_IMG = '${CONDITION_ICON}';
 await game.hm3.GmSays("<b>" + token.name + "</b> is prone, and <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
 await Requestor.request({
-    title: game.hm3.enums.Condition.PRONE,
+    title: game.hm3.Condition.PRONE,
     description:
         '<div class="chat-card fluff"><p>Getting up takes <b>ONE Action</b>.</p></div>',
     img: PRONE_IMG,
@@ -40,7 +40,7 @@ await Requestor.request({
             label: 'Rise',
             command: async function () {
                 const token = canvas.tokens.get('${token.id}');
-                token.getCondition(game.hm3.enums.Condition.PRONE)?.delete();
+                token.getCondition(game.hm3.Condition.PRONE)?.delete();
             }
         },
         {
@@ -63,7 +63,7 @@ await game.combats.active.nextTurn(500); // delay so that other hooks are execut
 
     return {
         effectData: {
-            label: game.hm3.enums.Condition.PRONE,
+            label: game.hm3.Condition.PRONE,
             token,
             icon: CONDITION_ICON,
             type: 'GameTime',

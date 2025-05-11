@@ -19,7 +19,7 @@ let dialogEditor = new Dialog({
         none: {
             label: `None`,
             callback: async () => {
-                await game.hm3.macros.getActiveEffect(token, game.hm3.enums.Condition.OUTNUMBERED, false)?.delete();
+                await game.hm3.macros.getActiveEffect(token, game.hm3.Condition.OUTNUMBERED, false)?.delete();
                 dialogEditor.render(true);
             }
         },
@@ -28,10 +28,10 @@ let dialogEditor = new Dialog({
             label: OUTNUMBERED21,
             callback: async () => {
                 const outnumbered = 2;
-                const label = `${game.hm3.enums.Condition.OUTNUMBERED} ${outnumbered}:1`;
+                const label = `${game.hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
                 if (!token.hasCondition(label)) {
-                    await game.hm3.macros.getActiveEffect(token, game.hm3.enums.Condition.OUTNUMBERED, false)?.delete();
-                    await token.addCondition(game.hm3.enums.Condition.OUTNUMBERED, {outnumbered});
+                    await game.hm3.macros.getActiveEffect(token, game.hm3.Condition.OUTNUMBERED, false)?.delete();
+                    await token.addCondition(game.hm3.Condition.OUTNUMBERED, {outnumbered});
                 }
                 dialogEditor.render(true);
             }
@@ -41,10 +41,10 @@ let dialogEditor = new Dialog({
             label: OUTNUMBERED31,
             callback: async () => {
                 const outnumbered = 3;
-                const label = `${game.hm3.enums.Condition.OUTNUMBERED} ${outnumbered}:1`;
+                const label = `${game.hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
                 if (!token.hasCondition(label)) {
-                    await game.hm3.macros.getActiveEffect(token, game.hm3.enums.Condition.OUTNUMBERED, false)?.delete();
-                    await token.addCondition(game.hm3.enums.Condition.OUTNUMBERED, {outnumbered});
+                    await game.hm3.macros.getActiveEffect(token, game.hm3.Condition.OUTNUMBERED, false)?.delete();
+                    await token.addCondition(game.hm3.Condition.OUTNUMBERED, {outnumbered});
                 }
                 dialogEditor.render(true);
             }
@@ -54,10 +54,10 @@ let dialogEditor = new Dialog({
             label: OUTNUMBERED41,
             callback: async () => {
                 const outnumbered = 4;
-                const label = `${game.hm3.enums.Condition.OUTNUMBERED} ${outnumbered}:1`;
+                const label = `${game.hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
                 if (!token.hasCondition(label)) {
-                    await game.hm3.macros.getActiveEffect(token, game.hm3.enums.Condition.OUTNUMBERED, false)?.delete();
-                    await token.addCondition(game.hm3.enums.Condition.OUTNUMBERED, {outnumbered});
+                    await game.hm3.macros.getActiveEffect(token, game.hm3.Condition.OUTNUMBERED, false)?.delete();
+                    await token.addCondition(game.hm3.Condition.OUTNUMBERED, {outnumbered});
                 }
                 dialogEditor.render(true);
             }
@@ -67,10 +67,10 @@ let dialogEditor = new Dialog({
             label: OUTNUMBERED51,
             callback: async () => {
                 const outnumbered = 5;
-                const label = `${game.hm3.enums.Condition.OUTNUMBERED} ${outnumbered}:1`;
+                const label = `${game.hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
                 if (!token.hasCondition(label)) {
-                    await game.hm3.macros.getActiveEffect(token, game.hm3.enums.Condition.OUTNUMBERED, false)?.delete();
-                    await token.addCondition(game.hm3.enums.Condition.OUTNUMBERED, {outnumbered});
+                    await game.hm3.macros.getActiveEffect(token, game.hm3.Condition.OUTNUMBERED, false)?.delete();
+                    await token.addCondition(game.hm3.Condition.OUTNUMBERED, {outnumbered});
                 }
                 dialogEditor.render(true);
             }
@@ -80,10 +80,10 @@ let dialogEditor = new Dialog({
             label: OUTNUMBERED61,
             callback: async () => {
                 const outnumbered = 6;
-                const label = `${game.hm3.enums.Condition.OUTNUMBERED} ${outnumbered}:1`;
+                const label = `${game.hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
                 if (!token.hasCondition(label)) {
-                    await game.hm3.macros.getActiveEffect(token, game.hm3.enums.Condition.OUTNUMBERED, false)?.delete();
-                    await token.addCondition(game.hm3.enums.Condition.OUTNUMBERED, {outnumbered});
+                    await game.hm3.macros.getActiveEffect(token, game.hm3.Condition.OUTNUMBERED, false)?.delete();
+                    await token.addCondition(game.hm3.Condition.OUTNUMBERED, {outnumbered});
                 }
                 dialogEditor.render(true);
             }
