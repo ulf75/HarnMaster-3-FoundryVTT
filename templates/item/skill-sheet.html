@@ -69,14 +69,15 @@
                 <label class="resource-label">Note</label>
                 <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
-            {{#if hasRwPermission}}{{#if (eq data.name "Riding")}}
-             <div class="resource">
+            {{#if isRiding}}
+            <p style="margin: 0;">&nbsp;</p>
+            <div class="resource">
                 <label class="resource-label">Steed</label>
-                    <select class="value" name="system.actorUuid" >
-                        {{selectOptions steeds selected=idata.actorUuid valueAttr="key" labelAttr="label"}}
+                <select class="value" name="system.actorUuid" >
+                    {{selectOptions steeds selected=idata.actorUuid valueAttr="key" labelAttr="label"}}
                 </select>
-                </div>
-            {{/if}}{{/if}}
+            </div>
+            {{/if}}
         </div>
 
         {{!-- Description Tab --}}

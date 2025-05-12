@@ -130,7 +130,7 @@ export class HarnMasterItemSheet extends ItemSheet {
                 if (isNaN(parseInt(data.idata.severity))) data.idata.severity = 5;
             }
         } else if (this.item.type === ItemType.SKILL) {
-            if (this.item.name === 'Riding') {
+            if (this.item.name.includes('Riding')) {
                 const ridingImg = new Map(game.hm3.config.combatSkillIcons).get('riding');
                 const steeds = await this.actor.getSteeds();
                 data.steeds = [
@@ -139,12 +139,18 @@ export class HarnMasterItemSheet extends ItemSheet {
                         return {key: steed.uuid, label: steed.name};
                     })
                 ];
+                data.isRiding = true;
 
+                // Steed linked to Riding skill according to COMBAT 20
                 if (!!this.item.system.actorUuid && this.item.img === ridingImg) {
                     const steed = await fromUuid(this.item.system.actorUuid);
-                    if (steed) this.item.img = steed.img;
+                    if (steed) {
+                        this.item.img = steed.img;
+                        this.item.name += '/' + steed.name;
+                    }
                 } else if (!this.item.system.actorUuid && this.item.img !== ridingImg) {
                     this.item.img = ridingImg;
+                    this.item.name = 'Riding';
                 }
             }
         }
