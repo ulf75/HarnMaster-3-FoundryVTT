@@ -146,10 +146,14 @@ export class DiceHM3 {
             isAbility: dialogOptions.isAbility || false,
             isCraftOrLore: dialogOptions.isCraftOrLore || false,
             isTreatment: dialogOptions.isTreatment || false,
+            isMorale: dialogOptions.type === 'Morale-d100',
             modifier: dialogOptions.modifier,
-            multiplier: 5,
-            target: dialogOptions.target,
-            multipliers: [
+            target: dialogOptions.target
+        };
+
+        if (dialogData.isAbility) {
+            dialogData.multiplier = 5;
+            dialogData.multipliers = [
                 {key: 1, label: `${dialogOptions.skill} x1 (EML ${dialogOptions.effSkillBase * 1})`},
                 {key: 2, label: `${dialogOptions.skill} x2 (EML ${dialogOptions.effSkillBase * 2})`},
                 {key: 3, label: `${dialogOptions.skill} x3 (EML ${dialogOptions.effSkillBase * 3})`},
@@ -157,8 +161,19 @@ export class DiceHM3 {
                 {key: 5, label: `${dialogOptions.skill} x5 (EML ${dialogOptions.effSkillBase * 5})`},
                 {key: 6, label: `${dialogOptions.skill} x6 (EML ${dialogOptions.effSkillBase * 6})`},
                 {key: 7, label: `${dialogOptions.skill} x7 (EML ${dialogOptions.effSkillBase * 7})`}
-            ]
-        };
+            ];
+        }
+
+        if (dialogData.isMorale) {
+            dialogData.moraleModification = 0;
+            dialogData.moraleModifications = [
+                {key: -20, label: `Desperate Situation (EML -20)`},
+                {key: -10, label: `Bad Situation (EML -10)`},
+                {key: 0, label: `Normal Situation (EML +0)`},
+                {key: 10, label: `Good Situation (EML +10)`},
+                {key: 20, label: `Excellent Situation (EML +20)`}
+            ];
+        }
 
         const isHealingRoll = dialogOptions.type === InjuryType.HEALING;
         if (isHealingRoll) {
@@ -172,7 +187,8 @@ export class DiceHM3 {
                 dialogData.physicianMod = 'SI';
             }
         }
-        if (dialogOptions.isTreatment) {
+
+        if (dialogData.isTreatment) {
             dialogData.treatmentModifier = dialogOptions.treatmentTable.eml;
         }
 
@@ -185,12 +201,13 @@ export class DiceHM3 {
             label: 'Roll',
             callback: (html) => {
                 const form = html[0].querySelector('form');
-                const multiplier = form.multipliers?.selectedIndex + 1 || -1;
-                const formTarget = form.target.value;
                 const formModifier = form.modifier.value;
                 const formPhysicianModifier = form.physicianModifier?.value || '0';
+                const formTarget = form.target.value;
                 const formTreatmentModifier = form.treatmentModifier?.value || '0';
                 const isAppraisal = form.appraisal?.checked || false;
+                const moraleModification = form.moraleModifications?.value || '0';
+                const multiplier = form.multipliers?.selectedIndex + 1 || -1;
                 let target = !isNaN(Number(formTarget)) ? Number(formTarget) : dialogOptions.target;
                 if (dialogOptions.isAbility) target = dialogOptions.effSkillBase * multiplier;
                 if (isAppraisal) target = Math.max(dialogOptions.target + dialogOptions.effSkillBase, 5 * dialogOptions.effSkillBase);
@@ -199,7 +216,7 @@ export class DiceHM3 {
                     diceNum: 1,
                     diceSides: 100,
                     isAppraisal,
-                    modifier: Number(formModifier) + Number(formPhysicianModifier) + Number(formTreatmentModifier),
+                    modifier: Number(formModifier) + Number(formPhysicianModifier) + Number(formTreatmentModifier) + Number(moraleModification),
                     multiplier,
                     target,
                     type: dialogOptions.type

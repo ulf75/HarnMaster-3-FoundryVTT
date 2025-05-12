@@ -1328,7 +1328,7 @@ export async function moraleRoll(noDialog = false, myActor = null) {
         private: true, // hidden to players
         speaker: actorInfo.speaker,
         target: ini.system.effectiveMasteryLevel + 5 * actorInfo.actor.system.encumbrance, // encumbrance do not count for morale
-        type: 'Initiative-d100'
+        type: 'Morale-d100'
     };
 
     if (actorInfo.actor.isToken) {
