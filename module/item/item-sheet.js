@@ -129,6 +129,25 @@ export class HarnMasterItemSheet extends ItemSheet {
                 data.isPsycheTrait = true;
                 if (isNaN(parseInt(data.idata.severity))) data.idata.severity = 5;
             }
+        } else if (this.item.type === ItemType.SKILL) {
+            if (this.item.name === 'Riding') {
+                const ridingImg = new Map(game.hm3.config.combatSkillIcons).get('riding');
+                let tmp = this.actor.items.contents.filter((i) => i.type === ItemType.COMPANION && i.system.type === 'Steed');
+                tmp = await Promise.all(
+                    tmp.map(async (i) => {
+                        const steed = await fromUuid(i.system.actorUuid);
+                        return {key: i.system.actorUuid, label: steed.name};
+                    })
+                );
+                data.steeds = [{key: '', label: `No Steed`}, ...tmp];
+
+                if (!!this.item.system.actorUuid && this.item.img === ridingImg) {
+                    const steed = await fromUuid(this.item.system.actorUuid);
+                    if (steed) this.item.img = steed.img;
+                } else if (!this.item.system.actorUuid && this.item.img !== ridingImg) {
+                    this.item.img = ridingImg;
+                }
+            }
         }
 
         if (data.isGridDistanceUnits && !!data.idata.range) {

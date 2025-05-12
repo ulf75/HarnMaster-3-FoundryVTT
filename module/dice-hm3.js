@@ -208,9 +208,11 @@ export class DiceHM3 {
                 const isAppraisal = form.appraisal?.checked || false;
                 const moraleModification = form.moraleModifications?.value || '0';
                 const multiplier = form.multipliers?.selectedIndex + 1 || -1;
+
                 let target = !isNaN(Number(formTarget)) ? Number(formTarget) : dialogOptions.target;
                 if (dialogOptions.isAbility) target = dialogOptions.effSkillBase * multiplier;
                 if (isAppraisal) target = Math.max(dialogOptions.target + dialogOptions.effSkillBase, 5 * dialogOptions.effSkillBase);
+
                 return DiceHM3.rollTest({
                     data: null,
                     diceNum: 1,
