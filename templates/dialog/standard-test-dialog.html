@@ -38,6 +38,14 @@
         <input readonly type="text" name="treatmentModifier" value="{{treatmentModifier}}" />
     </div>
     {{/if}}
+    {{#if isMorale}}
+    <div class="form-group">
+        <label>Modification:</label>
+        <select name="moraleModifications">
+            {{selectOptions moraleModifications selected=moraleModification valueAttr="key" labelAttr="label"}}
+        </select>
+    </div>
+    {{/if}}
     <div class="form-group">
         <label>Modifier:</label>
         <input type="text" name="modifier" value="{{modifier}}" />
