@@ -1,5 +1,6 @@
 import {HM3} from '../config.js';
 import {DiceHM3} from '../dice-hm3.js';
+import {ItemType} from '../hm3-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 
@@ -35,6 +36,15 @@ export class HarnMasterActor extends Actor {
             return this.system.gender === 'Male' ? 'His' : 'Her';
         };
         return capital ? p() : p().toLowerCase();
+    }
+
+    async getSteeds() {
+        let steeds = this.items.contents.filter((i) => i.type === ItemType.COMPANION && i.system.type === 'Steed');
+        return Promise.all(
+            steeds.map(async (steed) => {
+                return fromUuid(steed.system.actorUuid);
+            })
+        );
     }
 
     /**
