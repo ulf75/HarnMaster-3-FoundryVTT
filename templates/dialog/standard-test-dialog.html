@@ -19,7 +19,9 @@
     <div class="form-group">
         {{#if isTreatment}}
         <label>Physician EML:</label>
-        <input type="text" name="target" value="{{target}}" />
+        <select name="physicianEml">
+            {{selectOptions physicianSkills selected=physicianEml valueAttr="key" labelAttr="label"}}
+        </select>
         {{else}}
         <label>Target:</label>
         <input readonly type="text" name="target" value="{{target}}" />
@@ -29,7 +31,9 @@
     {{#if isPhysician}}
     <div class="form-group">
         <label>Physician ({{physicianMod}}):</label>
-        <input type="text" name="physicianModifier" value="{{physicianModifier}}" />
+        <select name="physicianEml">
+            {{selectOptions physicianSkills selected=physicianEml valueAttr="key" labelAttr="label"}}
+        </select>
     </div>
     {{/if}}
     {{#if isTreatment}}

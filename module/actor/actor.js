@@ -39,12 +39,34 @@ export class HarnMasterActor extends Actor {
     }
 
     async getSteeds() {
-        let steeds = this.items.contents.filter((i) => i.type === ItemType.COMPANION && i.system.type === 'Steed');
+        const steeds = this.items.contents.filter((i) => i.type === ItemType.COMPANION && i.system.type === 'Steed');
         return Promise.all(
             steeds.map(async (steed) => {
                 return fromUuid(steed.system.actorUuid);
             })
         );
+    }
+
+    async getParty() {
+        const party = this.items.contents.filter((i) => i.type === ItemType.COMPANION && i.system.type === 'Party');
+        return [
+            this,
+            ...(await Promise.all(
+                party.map(async (p) => {
+                    return fromUuid(p.system.actorUuid);
+                })
+            ))
+        ];
+    }
+
+    async getPartySkills(skill) {
+        const party = await this.getParty();
+        return party
+            .map((p) => {
+                return p.items.getName(skill);
+            })
+            .filter((p) => !!p)
+            .sort((a, b) => b.system.effectiveMasteryLevel - a.system.effectiveMasteryLevel);
     }
 
     /**

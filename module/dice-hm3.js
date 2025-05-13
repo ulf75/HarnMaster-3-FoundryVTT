@@ -37,6 +37,7 @@ export class DiceHM3 {
             isTreatment: rollData.type === 'treatment' || false,
             label: rollData.label,
             modifier: rollData.modifier || 0,
+            physicianSkills: rollData.physicianSkills || [],
             skill: rollData.skill,
             subType: rollData.subType || InjuryType.HEALING,
             target: rollData.target,
@@ -179,17 +180,48 @@ export class DiceHM3 {
         if (isHealingRoll) {
             if (dialogOptions.subType === InjuryType.HEALING || dialogOptions.subType === InjuryType.SHOCK) {
                 dialogData.isPhysician = true;
-                dialogData.physicianModifier = 0;
+                if (dialogOptions.physicianSkills.length > 0) {
+                    dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
+                        return {
+                            key: Math.round(p.system.effectiveMasteryLevel / 2),
+                            label: `${p.actor.name} (EML/2 ${Math.round(p.system.effectiveMasteryLevel / 2)})`
+                        };
+                    });
+                    dialogData.physicianEml = dialogData.physicianSkills[0].key;
+                } else {
+                    dialogData.physicianSkills = [{key: 0, label: 'Party lacks Physician skill'}];
+                    dialogData.physicianEml = 0;
+                }
                 dialogData.physicianMod = 'EML/2';
             } else if (dialogOptions.subType === InjuryType.INFECTION) {
                 dialogData.isPhysician = true;
-                dialogData.physicianModifier = 0;
+                if (dialogOptions.physicianSkills.length > 0) {
+                    dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
+                        return {
+                            key: Math.floor(p.system.masteryLevel / 10),
+                            label: `${p.actor.name} (SI ${Math.floor(p.system.masteryLevel / 10)})`
+                        };
+                    });
+                    dialogData.physicianEml = dialogData.physicianSkills[0].key;
+                } else {
+                    dialogData.physicianSkills = [{key: 0, label: 'Party lacks Physician skill'}];
+                    dialogData.physicianEml = 0;
+                }
                 dialogData.physicianMod = 'SI';
             }
         }
 
         if (dialogData.isTreatment) {
             dialogData.treatmentModifier = dialogOptions.treatmentTable.eml;
+            if (dialogOptions.physicianSkills.length > 0) {
+                dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
+                    return {key: p.system.effectiveMasteryLevel, label: `${p.actor.name} (EML ${p.system.effectiveMasteryLevel})`};
+                });
+                dialogData.physicianEml = dialogData.physicianSkills[0].key;
+            } else {
+                dialogData.physicianSkills = [{key: 0, label: 'Party lacks Physician skill (No treatment)'}];
+                dialogData.physicianEml = 0;
+            }
         }
 
         const html = await renderTemplate(dlgTemplate, dialogData);
@@ -202,7 +234,7 @@ export class DiceHM3 {
             callback: (html) => {
                 const form = html[0].querySelector('form');
                 const formModifier = form.modifier.value;
-                const formPhysicianModifier = form.physicianModifier?.value || '0';
+                const formPhysicianEml = form.physicianEml?.value || '0';
                 const formTarget = form.target.value;
                 const formTreatmentModifier = form.treatmentModifier?.value || '0';
                 const isAppraisal = form.appraisal?.checked || false;
@@ -212,13 +244,15 @@ export class DiceHM3 {
                 let target = !isNaN(Number(formTarget)) ? Number(formTarget) : dialogOptions.target;
                 if (dialogOptions.isAbility) target = dialogOptions.effSkillBase * multiplier;
                 if (isAppraisal) target = Math.max(dialogOptions.target + dialogOptions.effSkillBase, 5 * dialogOptions.effSkillBase);
+                if (dialogOptions.isTreatment) target = !isNaN(Number(formPhysicianEml)) ? Number(formPhysicianEml) : dialogOptions.target;
+                const phyBonus = !isNaN(Number(formPhysicianEml)) && dialogData.isPhysician ? Number(formPhysicianEml) : 0;
 
                 return DiceHM3.rollTest({
                     data: null,
                     diceNum: 1,
                     diceSides: 100,
                     isAppraisal,
-                    modifier: Number(formModifier) + Number(formPhysicianModifier) + Number(formTreatmentModifier) + Number(moraleModification),
+                    modifier: Number(formModifier) + Number(formTreatmentModifier) + Number(moraleModification) + phyBonus,
                     multiplier,
                     target,
                     type: dialogOptions.type
