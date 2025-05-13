@@ -24,10 +24,11 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, 
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
+const distracted = token.hasCondition(game.hm3.Condition.DISTRACTED);
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
-if (unconscious) return;
+if (distracted || unconscious) return;
 const PRONE_IMG = '${CONDITION_ICON}';
-await game.hm3.GmSays("<b>" + token.name + "</b> is prone, and <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
+await game.hm3.GmSays("<b>" + token.name + "</b> is prone, and <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11", !token.player);
 await Requestor.request({
     title: game.hm3.Condition.PRONE,
     description:
@@ -47,7 +48,7 @@ await Requestor.request({
             label: 'Ignore',
             command: async function () {
                 const token = canvas.tokens.get('${token.id}');
-                await game.hm3.GmSays("Ok, " + token.name + " remains lying on the floor.", "Combat 11");
+                await game.hm3.GmSays("Ok, " + token.name + " remains lying on the floor.", "Combat 11", !token.player);
             }
         }
     ]

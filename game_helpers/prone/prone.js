@@ -4,12 +4,9 @@ let dialogEditor = new Dialog({
         prone: {
             label: game.hm3.Condition.PRONE,
             callback: async () => {
-                if (canvas.tokens.controlled.length !== 1) {
-                    ui.notifications.error('Please select ONE token!');
-                } else {
-                    const token = canvas.tokens.controlled[0];
-                    await token.addCondition(game.hm3.Condition.PRONE);
-                }
+                canvas.tokens.controlled.forEach((token) => {
+                    token.addCondition(game.hm3.Condition.PRONE);
+                });
                 dialogEditor.render(true);
             }
         },
@@ -17,12 +14,9 @@ let dialogEditor = new Dialog({
         rise: {
             label: `Rise`,
             callback: async () => {
-                if (canvas.tokens.controlled.length !== 1) {
-                    ui.notifications.error('Please select ONE token!');
-                } else {
-                    const token = canvas.tokens.controlled[0];
+                canvas.tokens.controlled.forEach((token) => {
                     token.getCondition(game.hm3.Condition.PRONE)?.delete();
-                }
+                });
                 dialogEditor.render(true);
             }
         },

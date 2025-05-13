@@ -31,7 +31,7 @@ await token.combatant.update({defeated: true});
 const token = canvas.tokens.get('${token.id}');
 const dying = token.hasCondition(game.hm3.Condition.DYING);
 if (dying) return;
-await game.hm3.GmSays("<b>" + token.name + "</b> needs a successful <b>Shock</b> roll to regain consciousness.", "Combat 14");
+await game.hm3.GmSays("<b>" + token.name + "</b> needs a successful <b>Shock</b> roll to regain consciousness.", "Combat 14", !token.player);
 const success = (await game.hm3.macros.shockRoll(false, token.actor, token)).isSuccess;
 if (success) {
     // Combatant regains consciousness

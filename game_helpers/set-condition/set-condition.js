@@ -7,13 +7,6 @@ ${html}
 </div>
 `;
 
-if (canvas.tokens.controlled.length !== 1) {
-    ui.notifications.error('Please select ONE token!');
-    return null;
-}
-
-const token = canvas.tokens.controlled[0];
-
 let dialogEditor = new Dialog({
     title: 'Set Condition',
     content: content(
@@ -25,38 +18,29 @@ let dialogEditor = new Dialog({
         set: {
             label: 'Set',
             callback: async (html) => {
-                if (canvas.tokens.controlled.length !== 1) {
-                    ui.notifications.error('Please select ONE token!');
-                } else {
-                    const token = canvas.tokens.controlled[0];
+                canvas.tokens.controlled.forEach((token) => {
                     const cond = html.find('#condition')[0];
                     const condition = cond.options[cond.selectedIndex].text;
-                    await token.addCondition(condition);
-                }
+                    token.addCondition(condition);
+                });
                 dialogEditor.render(true);
             }
         },
         reset: {
             label: 'Reset',
             callback: (html) => {
-                if (canvas.tokens.controlled.length !== 1) {
-                    ui.notifications.error('Please select ONE token!');
-                } else {
-                    const token = canvas.tokens.controlled[0];
+                canvas.tokens.controlled.forEach((token) => {
                     const cond = html.find('#condition')[0];
                     const condition = cond.options[cond.selectedIndex].text;
                     token.deleteCondition(condition);
-                }
+                });
                 dialogEditor.render(true);
             }
         },
         resetAll: {
             label: 'Reset All',
             callback: () => {
-                if (canvas.tokens.controlled.length !== 1) {
-                    ui.notifications.error('Please select ONE token!');
-                } else {
-                    const token = canvas.tokens.controlled[0];
+                canvas.tokens.controlled.forEach((token) => {
                     Object.values(game.hm3.Condition).forEach((condition) => {
                         token.deleteCondition(condition);
                     });
@@ -64,7 +48,7 @@ let dialogEditor = new Dialog({
                     token.actor.toggleStatusEffect('dead', {active: false});
                     token.actor.toggleStatusEffect('unconscious', {active: false});
                     token.toggleVisibility({active: true});
-                }
+                });
                 dialogEditor.render(true);
             }
         },

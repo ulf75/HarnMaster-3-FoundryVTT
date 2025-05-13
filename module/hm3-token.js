@@ -92,14 +92,6 @@ export class HarnMasterToken extends Token {
 
     /**
      *
-     * @returns true, if token belongs to a player
-     */
-    hasPlayer() {
-        return this.actor.hasPlayerOwner();
-    }
-
-    /**
-     *
      */
     get player() {
         return game.users.find((u) => !u.isGM && this.actor.testUserPermission(u, 'OWNER')) || null;
@@ -225,10 +217,6 @@ export class HarnMasterTokenDocument extends TokenDocument {
      */
     async deleteAllMoraleConditions(except = null) {
         return this.object.deleteAllMoraleConditions(except);
-    }
-
-    hasPlayer() {
-        return this.object.hasPlayer();
     }
 
     get player() {
