@@ -599,10 +599,13 @@ let outMutex = new Mutex();
  * @returns {Promise<void>}
  */
 async function updateOutnumbered(aeName = 'true') {
-    if (!game.combats.active?.started) return;
+    if (!game.combat?.started) return;
     if (
         aeName === 'true' ||
         [
+            game.hm3.Condition.CAUTIOUS,
+            game.hm3.Condition.DISTRACTED,
+            game.hm3.Condition.DYING,
             game.hm3.Condition.GRAPPLED,
             game.hm3.Condition.INCAPACITATED,
             game.hm3.Condition.PRONE,
@@ -610,6 +613,7 @@ async function updateOutnumbered(aeName = 'true') {
             game.hm3.Condition.UNCONSCIOUS
         ].includes(aeName)
     ) {
+        console.debug(`HM3 | Run updateOutnumbered(aeName = ${aeName})`);
         await outMutex.runExclusive(async () => await combat.updateOutnumbered());
     }
 }
