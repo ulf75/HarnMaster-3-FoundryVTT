@@ -1921,7 +1921,7 @@ export function rangeToTarget(sourceToken, targetToken, gridUnits = false) {
     if (canvas.scene.getFlag('hm3', 'isTotm')) return 0;
 
     const distance = game.hm3.macros.distanceBtwnTwoTokens(sourceToken.id, targetToken.id);
-    console.log(`Distance = ${truncate(distance, 0)}, gridUnits=${gridUnits}`);
+    // console.log(`Distance = ${truncate(distance, 0)}, gridUnits=${gridUnits}`);
     if (gridUnits) return truncate(distance / canvas.dimensions.distance, 0);
     return truncate(distance, 0);
 }
@@ -1975,6 +1975,13 @@ export async function updateOutnumbered() {
     const friendly = all.filter((t) => t.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY);
     const hostile = all.filter((t) => t.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE);
 
+    // const friendly = all.filter((token) =>
+    //     [CONST.TOKEN_DISPOSITIONS.FRIENDLY, CONST.TOKEN_DISPOSITIONS.NEUTRAL, CONST.TOKEN_DISPOSITIONS.SECRET].includes(token.disposition)
+    // );
+    // const hostile = all.filter((token) =>
+    //     [CONST.TOKEN_DISPOSITIONS.HOSTILE, CONST.TOKEN_DISPOSITIONS.NEUTRAL, CONST.TOKEN_DISPOSITIONS.SECRET].includes(token.disposition)
+    // );
+
     const engaged = new Map();
 
     friendly.forEach((fDoc) => {
@@ -2012,5 +2019,5 @@ export async function updateOutnumbered() {
             await game.hm3.macros.getActiveEffect(token, Condition.OUTNUMBERED, false)?.delete();
         }
     }
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    // await new Promise((resolve) => setTimeout(resolve, 500));
 }
