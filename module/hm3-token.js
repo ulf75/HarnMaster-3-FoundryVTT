@@ -106,6 +106,10 @@ export class HarnMasterToken extends Token {
      * @returns true, if this token has an engagement zone (COMBAT 6)
      */
     hasEngagementZone() {
+        if (!game.combat?.started) return false;
+
+        const cautious = this.hasCondition(Condition.CAUTIOUS);
+        const distracted = this.hasCondition(Condition.DISTRACTED);
         const dying = this.hasCondition(Condition.DYING);
         const grappled = this.hasCondition(Condition.GRAPPLED);
         const incapacitated = this.hasCondition(Condition.INCAPACITATED);
@@ -113,25 +117,42 @@ export class HarnMasterToken extends Token {
         const shocked = this.hasCondition(Condition.SHOCKED);
         const unconscious = this.hasCondition(Condition.UNCONSCIOUS);
 
-        return game.combat?.started && !dying && !grappled && !incapacitated && !prone && !shocked && !unconscious;
+        return !cautious && !distracted && !dying && !grappled && !incapacitated && !prone && !shocked && !unconscious;
+    }
+
+    getEngagedTokens(exclusively = false) {
+        if (!game.combat?.started) return [];
+
+        const all = canvas.scene.tokens.contents;
+        const opponents =
+            this.document.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY
+                ? all.filter((token) =>
+                      [CONST.TOKEN_DISPOSITIONS.HOSTILE, CONST.TOKEN_DISPOSITIONS.NEUTRAL, CONST.TOKEN_DISPOSITIONS.SECRET].includes(
+                          token.disposition
+                      )
+                  )
+                : all.filter((token) =>
+                      [CONST.TOKEN_DISPOSITIONS.FRIENDLY, CONST.TOKEN_DISPOSITIONS.NEUTRAL, CONST.TOKEN_DISPOSITIONS.SECRET].includes(
+                          token.disposition
+                      )
+                  );
+
+        const engaged = [
+            ...opponents
+                .filter((tokenDoc) => rangeToTarget(this, tokenDoc.object) < 5.1 && tokenDoc.object.hasEngagementZone())
+                .map((token) => token.object)
+        ];
+
+        if (exclusively) return engaged.filter((token) => token.getEngagedTokens().length === 1);
+        else return engaged;
     }
 
     /**
      *
      * @returns true, if this token is engaged in combat (COMBAT 6)
      */
-    isEngaged() {
-        const all = canvas.scene.tokens.contents;
-        const opponents =
-            this.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY || this.disposition === CONST.TOKEN_DISPOSITIONS.NEUTRAL
-                ? all.filter((t) => t.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE)
-                : all.filter((t) => t.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY);
-
-        const engaged = [
-            ...opponents.filter((hDoc) => rangeToTarget(this, hDoc.object) < 5.1 && hDoc.object.hasEngagementZone()).map((t) => t.object)
-        ];
-
-        return game.combat?.started && engaged.length > 0;
+    isEngaged(exclusively = false) {
+        return game.combat?.started && this.getEngagedTokens(exclusively).length > 0;
     }
 
     /**
@@ -225,6 +246,22 @@ export class HarnMasterTokenDocument extends TokenDocument {
 
     hasInjury(id) {
         return this.object.hasInjury(id);
+    }
+
+    hasEngagementZone() {
+        return this.object.hasEngagementZone();
+    }
+
+    getEngagedTokens(exclusively = false) {
+        return this.object.getEngagedTokens(exclusively);
+    }
+
+    isEngaged(exclusively = false) {
+        return this.object.isEngaged(exclusively);
+    }
+
+    hasReactionZone() {
+        return this.object.hasReactionZone();
     }
 
     pronoun(capital = false) {
