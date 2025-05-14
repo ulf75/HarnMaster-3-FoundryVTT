@@ -599,6 +599,7 @@ let outMutex = new Mutex();
  * @returns {Promise<void>}
  */
 async function updateOutnumbered(aeName = 'true') {
+    if (!game.combats.active?.started) return;
     if (
         aeName === 'true' ||
         [
