@@ -17,6 +17,7 @@ export async function createCondition(token, options = {}) {
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
+if (!token) return;
 token.document.setFlag('wall-height', 'tokenHeight', 2);
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, and getting up takes one action. <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
@@ -24,6 +25,7 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, 
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
+if (!token) return;
 const distracted = token.hasCondition(game.hm3.Condition.DISTRACTED);
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (distracted || unconscious) return;
@@ -57,9 +59,16 @@ await Requestor.request({
 
     const ON_DELETE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-await game.hm3.GmSays("<b>" + token.name + "</b> rises successfully. <b>Turn ends.</b>", "Combat 11");
+if (!token) return;
 await token.document.setFlag('wall-height', 'tokenHeight', token.actor.system.height | 6);
-await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
+if (game.combat?.started) {
+    if (game.combat.combatant.id === token.combatant.id) {
+        await game.hm3.GmSays("<b>" + token.name + "</b> rises successfully. <b>Turn ends.</b>", "Combat 11");
+        token.turnEnds();
+    } else {
+        await game.hm3.GmSays("<b>" + token.name + "</b> rises successfully.", "Combat 11");
+    }
+}
 `;
 
     return {

@@ -4,14 +4,16 @@ const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 const ON_CREATE_MACRO = (token) => `
 const token = canvas.tokens.get('${token.id}');
+if (!token) return;
 const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
 await game.hm3.macros.createInjury({token, name: 'Shock', subType: 'shock', healRate: 4, notes: 'Started: ' + dateTime?.date + ' - ' + dateTime?.time});
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
-    const turnEnds = game.combats.active.combatant.id === token.combatant.id;
+    await token.actor.toggleStatusEffect('shock', {active: true, overlay: true});
+    const turnEnds = game.combat?.started && game.combat.combatant.id === token.combatant.id;
     if (turnEnds) {
         await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b> and displays a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. <b>" + token.name + "</b> is incoherent and gazes helplessly at the injuries. <b>Turn Ends.</b>", "Combat 14");
-        await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
+        token.turnEnds();
     } else {
         await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b> and displays a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. <b>" + token.name + "</b> is incoherent and gazes helplessly at the injuries.", "Combat 14");
     }
@@ -19,6 +21,7 @@ if (!unconscious) {
 
 const ON_TURN_START_MACRO = (token) => `
 const token = canvas.tokens.get('${token.id}');
+if (!token) return;
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b>. Shock prevents the use of skills, spells, and psionic talents. In a combat situation, a character in <b>Shock</b> may Rest, Walk/Crawl (at half move), or be led away; the character will <b>Ignore</b> any attacks.", "Combat 18");
 `;

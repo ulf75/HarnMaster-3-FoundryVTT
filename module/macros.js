@@ -1036,7 +1036,7 @@ export async function killRoll(options) {
     return null;
 }
 
-export async function shockRoll(noDialog = false, myActor = null, token = null) {
+export async function shockRoll(noDialog = false, myActor = null, token = null, mode = 0) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null, token});
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -1062,6 +1062,7 @@ export async function shockRoll(noDialog = false, myActor = null, token = null) 
         stdRollData.actor = actorInfo.actor.id;
         stdRollData.token = token?.id;
     }
+    if (mode > 0) stdRollData.noTA = true;
 
     hooksOk = Hooks.call('hm3.preShockRoll', stdRollData, actorInfo.actor);
     if (hooksOk) {
@@ -1069,19 +1070,10 @@ export async function shockRoll(noDialog = false, myActor = null, token = null) 
         actorInfo.actor.runCustomMacro(result);
 
         if (result) {
-            const unconscious = token?.hasCondition(Condition.UNCONSCIOUS);
-            if (!result.isSuccess) {
-                if (!unconscious) {
-                    // 1st failed SHOCK roll - combatant faints and gets unconscious
-                    await token?.addCondition(Condition.UNCONSCIOUS);
-                }
-                // Opponent gains a TA
-                await combat.setTA();
-            } else {
-                if (unconscious) {
-                    // Combatant is unconscious and regains consciousness
-                    token?.disableCondition(Condition.UNCONSCIOUS, 500);
-                }
+            if (mode === 0 && !result.isSuccess) {
+                // 1st failed SHOCK roll - combatant faints and gets unconscious
+                await token?.addCondition(Condition.UNCONSCIOUS);
+            } else if (mode > 0) {
             }
 
             callOnHooks('hm3.onShockRoll', actorInfo.actor, result, stdRollData);

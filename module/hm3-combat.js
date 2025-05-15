@@ -41,17 +41,14 @@ export class HarnMasterCombat extends Combat {
     }
 
     /** @override */
-    async nextTurn(postpone = 0) {
-        if (postpone > 0) {
-            setTimeout(async () => {
+    async nextTurn(tokenId = 'true') {
+        if (!game.combat?.started) return;
+        return await game.hm3.combatMutex.runExclusive(async () => {
+            if (tokenId === 'true' || tokenId === game.combat.combatant.token.id) {
                 // Remove the Tactical Advantage flag
                 await game.hm3.socket.executeAsGM('unsetTAFlag');
-                await super.nextTurn();
-            }, postpone);
-        } else {
-            // Remove the Tactical Advantage flag
-            await game.hm3.socket.executeAsGM('unsetTAFlag');
-            return super.nextTurn();
-        }
+                return await super.nextTurn();
+            }
+        });
     }
 }

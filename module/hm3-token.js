@@ -57,25 +57,24 @@ export class HarnMasterToken extends Token {
     /**
      *
      * @param {Condition} condition
-     * @param {number} [postpone=0]
+     * @param {number} [postpone=10]
      * @returns
      */
-    async disableCondition(condition, postpone = 0) {
-        if (postpone > 0) {
-            // avoid race conditions
-            setTimeout(() => tokenMutex.runExclusive(async () => await this.getCondition(condition)?.update({disabled: true})), postpone);
-        } else {
-            return this.getCondition(condition)?.update({disabled: true});
-        }
+    async disableCondition(condition, postpone = 10) {
+        setTimeout(() => tokenMutex.runExclusive(async () => await this.getCondition(condition)?.update({disabled: true})), postpone);
     }
 
     /**
      * Deletes a condition from a token.
      * @param {Condition} condition
+     * @param {number} [postpone=10]
      * @returns
      */
-    async deleteCondition(condition) {
-        return game.hm3.macros.deleteActiveEffect(this.id, this.getCondition(condition)?.id);
+    async deleteCondition(condition, postpone = 10) {
+        return setTimeout(
+            () => tokenMutex.runExclusive(async () => await game.hm3.macros.deleteActiveEffect(this.id, this.getCondition(condition)?.id)),
+            postpone
+        );
     }
 
     /**
@@ -163,6 +162,19 @@ export class HarnMasterToken extends Token {
         return !this.isEngaged() && this.hasEngagementZone();
     }
 
+    turnEnds(postpone = 666) {
+        if (!game.combat?.started) return;
+
+        console.debug(`HM3 | Token ${this.name} plans to finish the turn.`);
+
+        // delay so that other hooks are executed first
+        setTimeout(async () => {
+            console.debug(`HM3 | Token ${this.name} started the end of the turn.`);
+            game.combat.nextTurn(this.id);
+            console.debug(`HM3 | Token ${this.name} has finished the turn.`);
+        }, postpone);
+    }
+
     pronoun(capital = false) {
         const p = () => {
             if (!this.actor.system.gender) return 'It';
@@ -219,7 +231,7 @@ export class HarnMasterTokenDocument extends TokenDocument {
      * @param {number} [postpone=0]
      * @returns
      */
-    async disableCondition(condition, postpone = 0) {
+    async disableCondition(condition, postpone = 10) {
         return this.object.disableCondition(condition, postpone);
     }
 
@@ -228,8 +240,8 @@ export class HarnMasterTokenDocument extends TokenDocument {
      * @param {Condition} condition
      * @returns
      */
-    async deleteCondition(condition) {
-        return this.object.deleteCondition(condition);
+    async deleteCondition(condition, postpone = 10) {
+        return this.object.deleteCondition(condition, postpone);
     }
 
     /**
@@ -262,6 +274,10 @@ export class HarnMasterTokenDocument extends TokenDocument {
 
     hasReactionZone() {
         return this.object.hasReactionZone();
+    }
+
+    turnEnds(postpone = 666) {
+        return this.object.turnEnds(postpone);
     }
 
     pronoun(capital = false) {

@@ -54,6 +54,7 @@ Hooks.once('init', async function () {
         MiscItemType,
         Range,
         SkillType,
+        combatMutex: new Mutex(),
         Gm2GmSays: async (text, source) => {
             return game.hm3.socket.executeAsGM('GmSays', text, source, true);
         },

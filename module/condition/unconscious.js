@@ -16,44 +16,47 @@ export async function createCondition(token, options = {}) {
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
+if (!token) return;
 await token.deleteAllMoraleConditions();
 await token.addCondition(game.hm3.Condition.PRONE);
 const dying = token.hasCondition(game.hm3.Condition.DYING);
 if (!dying) {
     await game.hm3.GmSays("Overwhelmed by pain, blood loss, and exhaustion, <b>" + token.name + "</b> collapses unconscious onto the battlefield, falling <b>Prone</b> amidst the chaos.", "Combat 14");
     await token.actor.toggleStatusEffect('unconscious', {active: true, overlay: true});
-    await token.combatant.rollInitiative();
+    // await token.combatant.rollInitiative();
 }
 await token.combatant.update({defeated: true});
 `;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
+if (!token) return;
 const dying = token.hasCondition(game.hm3.Condition.DYING);
 if (dying) return;
 await game.hm3.GmSays("<b>" + token.name + "</b> needs a successful <b>Shock</b> roll to regain consciousness.", "Combat 14", !token.player);
-const success = (await game.hm3.macros.shockRoll(false, token.actor, token)).isSuccess;
+const success = (await game.hm3.macros.shockRoll(!token.player, token.actor, token, 1)).isSuccess;
 if (success) {
     // Combatant regains consciousness
     await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and starts coming back to full senses, though stability remains uncertain. Another <b>Shock Roll</b> is needed.", "Combat 14");
-    token.disableCondition(game.hm3.Condition.UNCONSCIOUS, 500); // postpone a bit
     await token.actor.toggleStatusEffect('unconscious', {active: false});
+    token.disableCondition(game.hm3.Condition.UNCONSCIOUS, 500); // postpone a bit
 } else {
     // Combatant stays unconscious
     await game.hm3.GmSays("<b>" + token.name + "</b> stays unconscious. <b>Turn ends.</b>", "Combat 14");
-    await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
+    token.turnEnds();
 }`;
 
     // On disable (regain consciousness), make a last SHOCK roll (SKILLS 22, COMBAT 14)
     const ON_DISABLE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-const ok = (await game.hm3.macros.shockRoll(false, token.actor, token)).isSuccess;
-await token.deleteCondition(game.hm3.Condition.UNCONSCIOUS);
-await token.combatant.update({defeated: false});
+if (!token) return;
+const ok = (await game.hm3.macros.shockRoll(!token.player, token.actor, token, 2)).isSuccess;
+await token.deleteCondition(game.hm3.Condition.UNCONSCIOUS, 500);
+await token.combatant?.update({defeated: false});
 if (ok) {
     // Combatant is back
     await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and resumes functioning normally. <b>Turn Ends.</b>", "Combat 14");
-    await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
+    token.turnEnds();
 } else {
     // Combatant is now SHOCKED
     await token.addCondition(game.hm3.Condition.SHOCKED);

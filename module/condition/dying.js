@@ -17,6 +17,7 @@ export async function createCondition(token, options = {}) {
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
+if (!token) return;
 await token.deleteAllMoraleConditions();
 await token.actor.toggleStatusEffect('dead', {active: true, overlay: true});
 await token.addCondition(game.hm3.Condition.UNCONSCIOUS);
@@ -25,14 +26,15 @@ if (!!token.actor.player) {
 } else {
     await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Dead</b> due to a <b>Mortal Wound</b>.", "Combat 14");
     // await token.combatant?.delete();
-    await token.document.toggleCombatant();
-    await token.toggleVisibility({active: false});
+    // await token.document.toggleCombatant();
+    // await token.toggleVisibility({active: false});
 }`;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
+if (!token) return;
 await game.hm3.GmSays("<b>" + token.name + "</b> stays unconscious due to a <b>Mortal Wound</b>. <b>Turn ends.</b>", "Combat 14");
-await game.combats.active.nextTurn(500); // delay so that other hooks are executed first
+token.turnEnds();
 `;
 
     return {
