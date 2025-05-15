@@ -1,7 +1,5 @@
 // Hook: On token's turn start, if disposition is neutral/secret, ask to set friendly or hostile.
 
-console.debug('HM3 | Check Token Disposition', triggerArgs);
-
 const combatant = triggerArgs[0].combatant;
 if (!combatant?.tokenId || combatant.hidden) return;
 
@@ -12,40 +10,31 @@ console.debug('HM3 | Check Token Disposition: ' + combatant.name);
 
 const currentDisposition = token.document.disposition;
 if (currentDisposition === CONST.TOKEN_DISPOSITIONS.NEUTRAL || currentDisposition === CONST.TOKEN_DISPOSITIONS.SECRET) {
-    const dispositions = {
-        FRIENDLY: CONST.TOKEN_DISPOSITIONS.FRIENDLY,
-        HOSTILE: CONST.TOKEN_DISPOSITIONS.HOSTILE
-    };
-
     new Dialog({
         title: `Disposition for ${token.name}`,
         content: `
-        <form>
-          <div class="form-group">
-            <p><strong>${token.name}</strong> has a neutral or secret disposition.<br>
-            Set a new disposition?</p>
-            <select name="dispo" autofocus>
-              <option value="">Skip for now</option>
-              <option value="FRIENDLY">Friendly</option>
-              <option value="HOSTILE">Hostile</option>
-            </select>
+          <div>
+            <p><strong>${token.name}</strong> has a neutral or secret disposition.</p>
+            <p>Set a new disposition?</p>
           </div>
-        </form>
       `,
         buttons: {
-            apply: {
-                label: 'Apply',
+            friendly: {
+                label: 'Friendly',
                 callback: (html) => {
-                    const choice = html.find('[name="dispo"]').val();
-                    if (choice) {
-                        token.document.update({disposition: dispositions[choice]});
-                    }
+                    token.document.update({disposition: CONST.TOKEN_DISPOSITIONS.FRIENDLY});
+                }
+            },
+            hostile: {
+                label: 'Hostile',
+                callback: (html) => {
+                    token.document.update({disposition: CONST.TOKEN_DISPOSITIONS.HOSTILE});
                 }
             },
             cancel: {
                 label: 'Skip'
             }
         },
-        default: 'apply'
+        default: 'friendly'
     }).render(true);
 }
