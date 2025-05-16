@@ -1,5 +1,7 @@
 // Import Modules
+import {HarnMasterBaseTest} from '../tests/hm3-basetest.js';
 import {RollMock} from '../tests/rollmock.js';
+import {runner} from '../tests/runner.js';
 import {HarnMasterActor} from './actor/actor.js';
 import {HarnMasterCharacterSheet} from './actor/character-sheet.js';
 import {HarnMasterContainerSheet} from './actor/container-sheet.js';
@@ -325,8 +327,10 @@ Hooks.on('dropCanvasData', async (canvas, data) => {
 Hooks.once('ready', async function () {
     if (game.settings.get('hm3', 'debugMode')) {
         CONFIG.debug.hm3 = true;
-        CONFIG.debug.hooks = true;
+        // CONFIG.debug.hooks = true;
         game.hm3.Roll = RollMock;
+        game.hm3.BaseTest = HarnMasterBaseTest;
+        game.hm3.runner = runner;
     } else {
         CONFIG.debug.hm3 = false;
         CONFIG.debug.hooks = false;
