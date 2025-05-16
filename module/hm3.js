@@ -1,4 +1,5 @@
 // Import Modules
+import {RollMock} from '../tests/rollmock.js';
 import {HarnMasterActor} from './actor/actor.js';
 import {HarnMasterCharacterSheet} from './actor/character-sheet.js';
 import {HarnMasterContainerSheet} from './actor/container-sheet.js';
@@ -35,13 +36,12 @@ Hooks.once('init', async function () {
     console.log(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
 
     CONFIG.ActiveEffect.legacyTransferral = false;
-    // CONFIG.debug.hooks = true;
 
     game.hm3 = {
         DiceHM3,
         HarnMasterActor,
         HarnMasterItem,
-        Roll: Roll, // RollMock,
+        Roll,
 
         config: HM3,
         macros,
@@ -323,6 +323,11 @@ Hooks.on('dropCanvasData', async (canvas, data) => {
  * we should perform a data migration.
  */
 Hooks.once('ready', async function () {
+    if (game.settings.get('hm3', 'debugMode')) {
+        CONFIG.debug.hooks = true;
+        game.hm3.Roll = RollMock;
+    }
+
     // Determine whether a system migration is required
     const currentMigrationVersion = game.settings.get('hm3', 'systemMigrationVersion');
     const NEEDS_MIGRATION_VERSION = '1.2.19'; // Anything older than this must be migrated

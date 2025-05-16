@@ -176,4 +176,13 @@ export const registerSystemSettings = function () {
         default: false,
         type: Boolean
     });
+
+    game.settings.register('hm3', 'debugMode', {
+        name: 'NEW Debug Mode',
+        hint: 'If selected, Debug Mode is active.',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean
+    });
 };
