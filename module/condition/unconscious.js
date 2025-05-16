@@ -19,20 +19,21 @@ const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 await token.deleteAllMoraleConditions();
 await token.addCondition(game.hm3.Condition.PRONE);
-const dying = token.hasCondition(game.hm3.Condition.DYING);
-if (!dying) {
+const almostDying = !token.player && (token.actor.system.shockIndex.value < 20);
+if (almostDying) {
+    await token.actor.toggleStatusEffect('dead', {active: true, overlay: true});
+    await token.combatant.update({defeated: true});
+    await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Dead</b> due to <b>Too Many Wounds</b>.", "House Rule");
+} else if (!token.dying) {
     await game.hm3.GmSays("Overwhelmed by pain, blood loss, and exhaustion, <b>" + token.name + "</b> collapses unconscious onto the battlefield, falling <b>Prone</b> amidst the chaos.", "Combat 14");
     await token.actor.toggleStatusEffect('unconscious', {active: true, overlay: true});
-    // await token.combatant.rollInitiative();
 }
-await token.combatant.update({defeated: true});
 `;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
-const dying = token.hasCondition(game.hm3.Condition.DYING);
-if (dying) return;
+if (token.dying) return;
 await game.hm3.GmSays("<b>" + token.name + "</b> needs a successful <b>Shock</b> roll to regain consciousness.", "Combat 14", !token.player);
 const success = (await game.hm3.macros.shockRoll(!token.player, token.actor, token, 1)).isSuccess;
 if (success) {
@@ -52,7 +53,6 @@ const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 const ok = (await game.hm3.macros.shockRoll(!token.player, token.actor, token, 2)).isSuccess;
 await token.deleteCondition(game.hm3.Condition.UNCONSCIOUS, 500);
-await token.combatant?.update({defeated: false});
 if (ok) {
     // Combatant is back
     await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and resumes functioning normally. <b>Turn Ends.</b>", "Combat 14");
