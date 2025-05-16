@@ -7,16 +7,16 @@ export async function migrateWorld() {
         `Applying HM3 System Migration for version ${game.system.version}. Please be patient and do not close your game or shut down your server.`,
         {permanent: true}
     );
-    console.log(`HM3 | Starting Migration`);
+    console.info(`HM3 | Starting Migration`);
 
     // Migrate World Actors
     for (let a of game.actors.contents) {
         try {
             const updateData = await migrateActorData(a);
             if (!foundry.utils.isEmpty(updateData)) {
-                console.log(`HM3 | Migrating Actor ${a.name}`);
+                console.info(`HM3 | Migrating Actor ${a.name}`);
                 await a.update(updateData, {enforceTypes: false});
-                console.log(`HM3 | Actor ${a.name} was successfully migrated`);
+                console.info(`HM3 | Actor ${a.name} was successfully migrated`);
             }
         } catch (err) {
             err.message = `Failed HM3 system migration for Actor ${a.name}: ${err.message}`;
@@ -29,9 +29,9 @@ export async function migrateWorld() {
         try {
             const updateData = migrateItemData(i);
             if (!foundry.utils.isEmpty(updateData)) {
-                console.log(`HM3 | Migrating Item ${i.name}`);
+                console.info(`HM3 | Migrating Item ${i.name}`);
                 await i.update(updateData, {enforceTypes: false});
-                console.log(`HM3 | Item ${i.name} was successfully migrated`);
+                console.info(`HM3 | Item ${i.name} was successfully migrated`);
             }
         } catch (err) {
             err.message = `Failed HM3 system migration for Item ${i.name}: ${err.message}`;
@@ -44,9 +44,9 @@ export async function migrateWorld() {
         try {
             const updateData = await migrateSceneData(s);
             if (!foundry.utils.isEmpty(updateData)) {
-                console.log(`HM3 | Migrating Scene ${s.name}`);
+                console.info(`HM3 | Migrating Scene ${s.name}`);
                 await s.update(updateData, {enforceTypes: false});
-                console.log(`HM3 | Scene ${s.name} was successfully migrated`);
+                console.info(`HM3 | Scene ${s.name} was successfully migrated`);
             }
         } catch (err) {
             err.message = `Failed HM3 system migration for Scene ${s.name}: ${err.message}`;
@@ -55,17 +55,17 @@ export async function migrateWorld() {
     }
 
     // Migrate World Compendium Packs
-    console.log(`HM3 | Migrating Compendium Packs`);
+    console.info(`HM3 | Migrating Compendium Packs`);
     for (let p of game.packs) {
         if (p.metadata.package !== 'world') continue;
         if (!['Actor', 'Item', 'Scene'].includes(p.documentName)) continue;
-        console.log(`HM3 | Starting Migration for Pack ${p.metadata.label}`);
+        console.info(`HM3 | Starting Migration for Pack ${p.metadata.label}`);
         await migrateCompendium(p);
     }
 
     // Set the migration as complete
     game.settings.set('hm3', 'systemMigrationVersion', game.system.version);
-    console.log(`HM3 | Migration Complete`);
+    console.info(`HM3 | Migration Complete`);
     ui.notifications.info(`HM3 System Migration to version ${game.system.version} completed!`, {permanent: true});
 }
 
@@ -107,7 +107,7 @@ export async function migrateCompendium(pack) {
             // Save the entry, if data was changed
             if (foundry.utils.isEmpty(updateData)) continue;
             await doc.update(updateData);
-            console.log(`Migrated ${doc} ${doc.name} in Compendium ${pack.collection}`);
+            console.info(`Migrated ${doc} ${doc.name} in Compendium ${pack.collection}`);
         } catch (err) {
             // Handle migration failures
             err.message = `Failed dnd5e system migration for ${doc.name} in pack ${pack.collection}: ${err.message}`;
@@ -117,7 +117,7 @@ export async function migrateCompendium(pack) {
 
     // Apply the original locked status for the pack
     await pack.configure({locked: wasLocked});
-    console.log(`Migrated all ${doc} entities from Compendium ${pack.collection}`);
+    console.info(`Migrated all ${doc} entities from Compendium ${pack.collection}`);
 }
 
 /* -------------------------------------------- */
@@ -543,7 +543,7 @@ async function purgeFlags(pack) {
             });
         }
         await doc.update(update, {recursive: false});
-        console.log(`HM3 | Purged flags from ${doc.name}`);
+        console.info(`HM3 | Purged flags from ${doc.name}`);
     }
     await pack.configure({locked: true});
 }

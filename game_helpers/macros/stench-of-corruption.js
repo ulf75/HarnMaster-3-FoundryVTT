@@ -25,7 +25,7 @@ const p2b = triggerArgs[1];
 
 // only movement is interesting
 if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
-    console.log(`${STENCH_OF_CORRUPTION} from a: ` + macroActor.name);
+    console.info(`${STENCH_OF_CORRUPTION} from a: ` + macroActor.name);
 
     // only friendly tokens are affected
     const friendlyTokens = macros.getSpecificTokens({friendly: true});
@@ -37,13 +37,13 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
 
     const stops = [];
     if (isFriendlyTokenMoving) {
-        console.log('to: ' + token.name);
+        console.info('to: ' + token.name);
         victimToken = token;
         const stop = macros.pathIntersectsCircle({center: canvas.tokens.get(token.id).center, radius: RADIUS}, {p1, p2}, true);
         if (!!stop) stops.push({stop, victimToken: token});
     } else {
         friendlyTokens.forEach((t) => {
-            console.log('to: ' + t.name);
+            console.info('to: ' + t.name);
             const stop = macros.pathIntersectsCircle({center: canvas.tokens.get(t.id).center, radius: RADIUS}, {p1, p2}, true);
             if (!!stop) stops.push({stop, victimToken: t});
         });

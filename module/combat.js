@@ -1921,7 +1921,7 @@ export function rangeToTarget(sourceToken, targetToken, gridUnits = false) {
     if (canvas.scene.getFlag('hm3', 'isTotm')) return 0;
 
     const distance = game.hm3.macros.distanceBtwnTwoTokens(sourceToken.id, targetToken.id);
-    // console.log(`Distance = ${truncate(distance, 0)}, gridUnits=${gridUnits}`);
+    // console.info(`Distance = ${truncate(distance, 0)}, gridUnits=${gridUnits}`);
     if (gridUnits) return truncate(distance / canvas.dimensions.distance, 0);
     return truncate(distance, 0);
 }

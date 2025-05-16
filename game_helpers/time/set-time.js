@@ -7,7 +7,7 @@ if (isLandingPage) {
     const interval = SimpleCalendar.api.secondsToInterval(time);
     await scene.setFlag('hm3', 'currentTime', time);
     ui.notifications.info(`New time set in ${scene.name}: ${JSON.stringify(interval)}`);
-    console.log(`New time set in ${scene.name}:`, JSON.stringify(interval), scene);
+    console.info(`New time set in ${scene.name}:`, JSON.stringify(interval), scene);
 } else {
     ui.notifications.error(`Scene ${scene.name} is no Landing Page!`);
 }

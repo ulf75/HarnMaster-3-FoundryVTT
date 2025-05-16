@@ -55,7 +55,7 @@
                     let ownership = html.find('#ownership')[0];
                     ownership = ownership.options[ownership.selectedIndex].value;
 
-                    // console.log(game.users.get(groups[group][0]), group, ownership, ownerships[ownership], d_ownership, ownerships[d_ownership]);
+                    // console.info(game.users.get(groups[group][0]), group, ownership, ownerships[ownership], d_ownership, ownerships[d_ownership]);
 
                     for (let n of canvas.notes.controlled) {
                         const doc = n.document;
@@ -68,18 +68,18 @@
                                 os[u] = ownerships[ownership];
                             }
                         }
-                        console.log(os, doc);
+                        console.info(os, doc);
 
                         if (page) {
                             page.ownership = foundry.utils.deepClone(os);
                             await page.update({'ownership': page.ownership}, {diff: false, recursive: false, noHook: true});
                             await journal.update();
-                            console.log(page);
+                            console.info(page);
                         } else if (journal) {
                             journal.ownership = foundry.utils.deepClone(os);
                             await journal.update({'ownership': journal.ownership}, {diff: false, recursive: false, noHook: true});
                             // await journal.update();
-                            console.log(journal);
+                            console.info(journal);
                         }
                     }
 
@@ -95,7 +95,7 @@
                                 delete os[u];
                             }
                         }
-                        console.log(os);
+                        console.info(os);
 
                         A.ownership = foundry.utils.deepClone(os);
                         await A.update({'ownership': foundry.utils.deepClone(os)}, {diff: false, recursive: false, noHook: true});

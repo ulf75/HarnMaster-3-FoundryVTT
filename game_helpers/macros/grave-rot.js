@@ -24,7 +24,7 @@ if (triggerArgs[3].effectiveImpact > 0) {
     // only friendly tokens are affected
     const friendlyTokens = macros.getSpecificTokens({friendly: true});
 
-    console.log(`${GRAVE_ROT} from ${macroActor.name} to ${victimActor.name}`);
+    console.info(`${GRAVE_ROT} from ${macroActor.name} to ${victimActor.name}`);
 
     // make a secret roll against CI x END
     const save = macros.HM100Check(CONTAGION_INDEX * victimActor.system.endurance);

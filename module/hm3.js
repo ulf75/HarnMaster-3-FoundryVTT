@@ -33,7 +33,7 @@ import {registerSystemSettings} from './settings.js';
 import {Weather} from './weather.js';
 
 Hooks.once('init', async function () {
-    console.log(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
+    console.info(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
 
     CONFIG.ActiveEffect.legacyTransferral = false;
 
@@ -324,8 +324,15 @@ Hooks.on('dropCanvasData', async (canvas, data) => {
  */
 Hooks.once('ready', async function () {
     if (game.settings.get('hm3', 'debugMode')) {
+        CONFIG.debug.hm3 = true;
         CONFIG.debug.hooks = true;
         game.hm3.Roll = RollMock;
+    } else {
+        CONFIG.debug.hm3 = false;
+        CONFIG.debug.hooks = false;
+        console.log = () => {};
+        console.debug = () => {};
+        console.trace = () => {};
     }
 
     // Determine whether a system migration is required

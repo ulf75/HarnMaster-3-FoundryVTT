@@ -244,7 +244,7 @@
                         description = [description.slice(0, index), `${mental}`, description.slice(index)].join('');
 
                         await token.actor.update({'system.description': description});
-                        // console.log(description);
+                        // console.info(description);
                     }
                 }
             })();
