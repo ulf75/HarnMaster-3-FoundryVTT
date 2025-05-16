@@ -38,12 +38,15 @@ Hooks.once('init', async function () {
     // CONFIG.debug.hooks = true;
 
     game.hm3 = {
+        DiceHM3,
         HarnMasterActor,
         HarnMasterItem,
-        DiceHM3,
+        Roll: Roll, // RollMock,
+
         config: HM3,
         macros,
         migrations,
+
         ActorType,
         Aspect,
         Condition,
@@ -54,7 +57,9 @@ Hooks.once('init', async function () {
         MiscItemType,
         Range,
         SkillType,
+
         combatMutex: new Mutex(),
+
         Gm2GmSays: async (text, source) => {
             return game.hm3.socket.executeAsGM('GmSays', text, source, true);
         },

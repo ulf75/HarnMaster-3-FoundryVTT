@@ -109,14 +109,13 @@ export class HarnMasterToken extends Token {
 
         const cautious = this.hasCondition(Condition.CAUTIOUS);
         const distracted = this.hasCondition(Condition.DISTRACTED);
-        const dying = this.hasCondition(Condition.DYING);
         const grappled = this.hasCondition(Condition.GRAPPLED);
         const incapacitated = this.hasCondition(Condition.INCAPACITATED);
         const prone = this.hasCondition(Condition.PRONE);
         const shocked = this.hasCondition(Condition.SHOCKED);
         const unconscious = this.hasCondition(Condition.UNCONSCIOUS);
 
-        return !cautious && !distracted && !dying && !grappled && !incapacitated && !prone && !shocked && !unconscious;
+        return !cautious && !distracted && !this.dying && !grappled && !incapacitated && !prone && !shocked && !unconscious;
     }
 
     getEngagedTokens(exclusively = false) {
@@ -173,6 +172,13 @@ export class HarnMasterToken extends Token {
             game.combat.nextTurn(this.id);
             console.debug(`HM3 | Token ${this.name} has finished the turn.`);
         }, postpone);
+    }
+
+    get dying() {
+        return (
+            this.hasCondition(Condition.DYING) ||
+            (this.document.hasStatusEffect('dead') && this.document.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE)
+        );
     }
 
     pronoun(capital = false) {
@@ -278,6 +284,10 @@ export class HarnMasterTokenDocument extends TokenDocument {
 
     turnEnds(postpone = 666) {
         return this.object.turnEnds(postpone);
+    }
+
+    get dying() {
+        return this.object.dying;
     }
 
     pronoun(capital = false) {

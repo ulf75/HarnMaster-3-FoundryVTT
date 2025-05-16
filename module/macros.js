@@ -1347,7 +1347,7 @@ export async function moraleRoll(noDialog = false, myActor = null) {
                 await token.addCondition(Condition.CAUTIOUS, {oneRound: true});
             } else if (!result.isSuccess && result.isCritical) {
                 // CF
-                const rollObj = new Roll('1d100');
+                const rollObj = new game.hm3.Roll('1d100');
                 const roll = await rollObj.evaluate();
                 if (roll.total <= 25) {
                     await token.addCondition(Condition.BERSERK);

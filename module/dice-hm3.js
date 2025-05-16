@@ -412,7 +412,7 @@ export class DiceHM3 {
     static async sdrRoll(item, showChatMsg = true) {
         const speaker = ChatMessage.getSpeaker({actor: item.actor});
 
-        let roll = await new Roll(`1d100 + @sb`, {
+        let roll = await new game.hm3.Roll(`1d100 + @sb`, {
             sb: item.system.skillBase.value
         }).evaluate();
 
@@ -1340,7 +1340,7 @@ export class DiceHM3 {
         const diceType = testData.diceSides === 6 ? 'd6' : 'd100';
         const numDice = testData.diceNum > 0 ? testData.diceNum : 1;
         const diceSpec = numDice + diceType;
-        const rollObj = new Roll(diceSpec, testData.data);
+        const rollObj = new game.hm3.Roll(diceSpec, testData.data);
         const roll = await rollObj.evaluate();
         if (!roll) {
             console.error(`Roll evaluation failed, diceSpec=${diceSpec}`);
@@ -1398,7 +1398,7 @@ export class DiceHM3 {
      */
     static hitLocation(items, aim) {
         const hlAim = aim === 'high' || aim === 'low' ? aim : 'mid';
-        let roll = new Roll('1d100');
+        let roll = new game.hm3.Roll('1d100');
         let rollResult = roll.total;
         let result = `Unknown (roll=${rollResult})`;
         let done = false;

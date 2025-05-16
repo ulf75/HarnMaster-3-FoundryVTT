@@ -809,12 +809,12 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     // We now know the results of the attack, roll applicable damage
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
+        atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
     let csImpactRoll = null;
     if (combatResult.outcome.defDice) {
-        csImpactRoll = await new Roll(`${combatResult.outcome.defDice}d${csDie}`).evaluate();
+        csImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.defDice}d${csDie}`).evaluate();
     }
 
     const atkChatData = {
@@ -1049,7 +1049,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
+        atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
@@ -1340,7 +1340,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
+        atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
@@ -1470,8 +1470,8 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     const atkWeaponQuality = atkWeapon.system.weaponQuality + (atkWeapon.system.wqModifier | 0);
     const defWeaponQuality = defWeapon.system.weaponQuality + (defWeapon.system.wqModifier | 0);
 
-    const atkBreakRoll = await new Roll('3d6').evaluate();
-    const defBreakRoll = await new Roll('3d6').evaluate();
+    const atkBreakRoll = await new game.hm3.Roll('3d6').evaluate();
+    const defBreakRoll = await new game.hm3.Roll('3d6').evaluate();
 
     if (atkWeaponQuality <= defWeaponQuality) {
         // Check attacker first, then defender
@@ -1593,7 +1593,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
+        atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
