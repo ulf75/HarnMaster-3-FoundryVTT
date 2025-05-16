@@ -10,6 +10,7 @@ await game.hm3.macros.createInjury({token, name: 'Shock', subType: 'shock', heal
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
     await token.actor.toggleStatusEffect('shock', {active: true, overlay: true});
+    if (!token.player) await token.combatant.update({defeated: true});
     const turnEnds = game.combat?.started && game.combat.combatant.id === token.combatant.id;
     if (turnEnds) {
         await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b> and displays a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. <b>" + token.name + "</b> is incoherent and gazes helplessly at the injuries. <b>Turn Ends.</b>", "Combat 14");
