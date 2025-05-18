@@ -1,6 +1,15 @@
+const SLOWMO = 1;
+
 export class HarnMasterBaseTest {
-    _Alice = null;
-    _Bob = null;
+    NORTH = {dx: 0, dy: -1};
+    NORTH_EAST = {dx: 1, dy: -1};
+    NORTH_WEST = {dx: -1, dy: -1};
+    SOUTH = {dx: 0, dy: 1};
+    SOUTH_EAST = {dx: 1, dy: 1};
+    SOUTH_WEST = {dx: -1, dy: 1};
+
+    actors = new Map();
+    tokens = new Map();
 
     async _preSetup() {}
     async _postSetup() {}
@@ -13,32 +22,86 @@ export class HarnMasterBaseTest {
     async _postTeardown() {}
 
     async #setup() {
-        await this._preSetup();
+        try {
+            await this._preSetup();
+        } catch (error) {
+            return false;
+        }
 
-        // some default actors
-        this._Alice = await this._createActor('Actor.JTK0gIOv6PfxeE1P', 'Alice');
-        this._Bob = await this._createActor('Actor.6WYZs3HBnOOg3YXQ', 'Bob');
+        try {
+            console.log = () => {};
+            console.debug = () => {};
+            console.trace = () => {};
 
-        await this._postSetup();
+            await ChatMessage.deleteDocuments(game.messages.contents.map((m) => m.id));
+
+            // some default actors
+            this.actors.set('Alice', await this._createActor('Actor.JTK0gIOv6PfxeE1P', 'Alice'));
+            this.actors.set('Bob', await this._createActor('Actor.6WYZs3HBnOOg3YXQ', 'Bob'));
+        } catch (error) {
+            return false;
+        }
+
+        try {
+            await this._postSetup();
+        } catch (error) {
+            return false;
+        }
+
+        return true;
     }
 
     async start() {
-        await this.#setup();
+        let success = await this.#setup();
 
-        await this._preTest();
-        await this._test();
-        await this._postTest();
+        if (success) {
+            try {
+                await this._preTest();
+            } catch (error) {
+                success = false;
+            }
+            try {
+                await this._wait(200);
+                if (success) await this._test();
+                await this._wait(200);
+            } catch (error) {
+                success = false;
+            }
+            try {
+                if (success) await this._postTest();
+            } catch (error) {}
+        }
 
-        await this.#teardown();
+        return (await this.#teardown()) && success;
     }
 
     async #teardown() {
-        await this._preTeardown();
+        let success = true;
+        try {
+            await this._preTeardown();
+        } catch (error) {
+            success = false;
+        }
 
-        await this._Alice.delete();
-        await this._Bob.delete();
+        try {
+            for (const token of this.tokens.values()) await token.delete();
+            for (const actor of this.actors.values()) await actor.delete();
 
-        await this._postTeardown();
+            this.actors.clear();
+            this.tokens.clear();
+
+            if (game.combat) await game.combat.delete();
+        } catch (error) {
+            success = false;
+        }
+
+        try {
+            await this._postTeardown();
+        } catch (error) {
+            success = false;
+        }
+
+        return success;
     }
 
     /**
@@ -46,7 +109,7 @@ export class HarnMasterBaseTest {
      * @param {string} actorUuid
      * @param {string} name
      * @param {Object} options
-     * @returns
+     * @returns {HarnMasterToken}
      */
     async _createActor(actorUuid, name, options = {}) {
         const actor = await fromUuid(actorUuid);
@@ -54,7 +117,47 @@ export class HarnMasterBaseTest {
 
         actorObject.name = name;
         actorObject.folder = null;
+        delete actorObject.flags['scene-packer'];
 
-        return Actor.create(actorObject);
+        this.actors.set(name, await Actor.create(actorObject));
+        return this.actors.get(name);
+    }
+
+    async _dropActor(actor, data, dir = {dx: 0, dy: 0}) {
+        data.uuid = actor.uuid;
+        data.type = 'Actor';
+
+        const tokenDoc = await canvas.tokens._onDropActorData({altKey: false, shiftKey: false}, data);
+        this.tokens.set(tokenDoc.name, tokenDoc);
+
+        await this._move(tokenDoc.object, dir);
+
+        return tokenDoc.object;
+    }
+
+    async _move(token, dir = {dx: 0, dy: 0}) {
+        token.control({releaseOthers: true});
+        await game.canvas.activeLayer.moveMany(dir);
+    }
+
+    async _startCombat() {
+        await TokenDocument.createCombatants(this.tokens.values());
+        // for (let t of this.tokens.values()) await t.toggleCombatant();
+        await this._wait();
+        await game.combat.startCombat();
+        await this._wait();
+    }
+
+    /**
+     *
+     * @param {number} ms
+     * @returns
+     */
+    async _wait(ms = 500) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, SLOWMO * ms);
+        });
     }
 }
