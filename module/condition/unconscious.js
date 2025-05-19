@@ -18,7 +18,7 @@ const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 await token.deleteAllMoraleConditions();
 await token.addCondition(game.hm3.Condition.PRONE);
-const almostDying = !token.player && (token.actor.system.shockIndex.value < game.hm3.CONST.COMBAT.THRESHOLD);
+const almostDying = !token.player && (token.actor.system.shockIndex.value < game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD);
 if (almostDying) {
     await token.actor.toggleStatusEffect('dead', {active: true, overlay: true});
     await token.combatant.update({defeated: true});
