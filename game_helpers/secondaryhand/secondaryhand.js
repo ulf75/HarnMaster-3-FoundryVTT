@@ -1,28 +1,22 @@
 let dialogEditor = new Dialog({
     title: game.hm3.Condition.SECONDARY_HAND,
     buttons: {
-        SECONDARY_HAND: {
+        second: {
             label: game.hm3.Condition.SECONDARY_HAND,
             callback: async () => {
-                if (canvas.tokens.controlled.length !== 1) {
-                    ui.notifications.error('Please select ONE token!');
-                } else {
-                    const token = canvas.tokens.controlled[0];
-                    await token.addCondition(game.hm3.Condition.SECONDARY_HAND);
-                }
+                canvas.tokens.controlled.forEach((token) => {
+                    token.addCondition(game.hm3.Condition.SECONDARY_HAND);
+                });
                 dialogEditor.render(true);
             }
         },
 
-        rise: {
+        none: {
             label: `None`,
             callback: async () => {
-                if (canvas.tokens.controlled.length !== 1) {
-                    ui.notifications.error('Please select ONE token!');
-                } else {
-                    const token = canvas.tokens.controlled[0];
+                canvas.tokens.controlled.forEach((token) => {
                     token.getCondition(game.hm3.Condition.SECONDARY_HAND)?.delete();
-                }
+                });
                 dialogEditor.render(true);
             }
         },
