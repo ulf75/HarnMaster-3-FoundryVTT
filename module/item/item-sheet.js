@@ -132,7 +132,7 @@ export class HarnMasterItemSheet extends ItemSheet {
         } else if (this.item.type === ItemType.SKILL) {
             if (this.item.name.includes('Riding')) {
                 const ridingImg = new Map(game.hm3.config.combatSkillIcons).get('riding');
-                const steeds = await this.actor.getSteeds();
+                const steeds = this.actor.getSteeds();
                 data.steeds = [
                     {key: '', label: `No Steed`},
                     ...steeds.map((steed) => {
@@ -140,10 +140,11 @@ export class HarnMasterItemSheet extends ItemSheet {
                     })
                 ];
                 data.isRiding = true;
+                data.mounted = this.actor.system.mounted;
 
                 // Steed linked to Riding skill according to COMBAT 20
                 if (!!this.item.system.actorUuid && this.item.img === ridingImg) {
-                    const steed = await fromUuid(this.item.system.actorUuid);
+                    const steed = fromUuidSync(this.item.system.actorUuid);
                     if (steed) {
                         this.item.img = steed.img;
                         this.item.name += '/' + steed.name;
@@ -151,6 +152,7 @@ export class HarnMasterItemSheet extends ItemSheet {
                 } else if (!this.item.system.actorUuid && this.item.img !== ridingImg) {
                     this.item.img = ridingImg;
                     this.item.name = 'Riding';
+                    this.item.actor.update({'system.mounted': false});
                 }
             }
         }

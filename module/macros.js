@@ -31,7 +31,7 @@ export function createHM3Macro(data, slot) {
 }
 
 async function handleItemMacro(data, slot) {
-    const item = await fromUuid(data.uuid);
+    const item = fromUuidSync(data.uuid);
     if (!item?.system) {
         ui.notifications.warn('No macro exists for that type of object.');
         return null;
@@ -580,7 +580,7 @@ export async function weaponDamageRoll(itemName, aspect = null, myActor = null) 
 }
 
 export async function missileDamageRoll(itemName, range = null, myActor = null) {
-    myActor &&= myActor instanceof Actor ? myActor : await fromUuid(myActor);
+    myActor &&= myActor instanceof Actor ? myActor : fromUuidSync(myActor);
     if (range) {
         if (!HM3.allowedRanges.includes(range)) {
             ui.notifications.warn(`Invalid range requested on damage roll: ${range}`);
@@ -798,7 +798,7 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
         fastforward: noDialog,
         label: `${item.name} Healing Roll`,
         notes: item.system.notes,
-        physicianSkills: await actor.getPartySkills('Physician'),
+        physicianSkills: actor.getPartySkills('Physician'),
         speaker: speaker,
         subType,
         target: item.system.healRate * actor.system.endurance,
@@ -870,7 +870,7 @@ async function treatmentRoll(actor, injury, speaker) {
         },
         label: `${injury.name} Treatment Roll`,
         notes: injury.system.notes,
-        physicianSkills: await actor.getPartySkills('Physician'),
+        physicianSkills: actor.getPartySkills('Physician'),
         speaker: speaker,
         subType: injury.system.subType,
         target: 0,
@@ -1384,7 +1384,7 @@ export async function changeFatigue(newValue, myActor = null) {
 }
 
 export async function changeMissileQuanity(missileName, newValue, myActor = null) {
-    myActor &&= myActor instanceof Actor ? myActor : await fromUuid(myActor);
+    myActor &&= myActor instanceof Actor ? myActor : fromUuidSync(myActor);
     const missile = await combat.getItem(missileName, 'missilegear', myActor);
     const actorParam = {actor: myActor, item: null, speaker: ChatMessage.getSpeaker()};
 
@@ -1424,7 +1424,7 @@ export async function changeMissileQuanity(missileName, newValue, myActor = null
 }
 
 export async function setSkillDevelopmentFlag(skillName, myActor = null) {
-    myActor &&= myActor instanceof Actor ? myActor : await fromUuid(myActor);
+    myActor &&= myActor instanceof Actor ? myActor : fromUuidSync(myActor);
     const skill = await combat.getItem(skillName, 'skill', myActor);
     let speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
 

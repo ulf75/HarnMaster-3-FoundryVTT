@@ -1,3 +1,4 @@
+import {HarnMasterActor} from '../actor/actor.js';
 import {HM3} from '../config.js';
 import {ItemType} from '../hm3-types.js';
 import * as utility from '../utility.js';
@@ -69,7 +70,17 @@ export class HarnMasterItem extends Item {
             switch (itemData.type) {
                 case 'Combat':
                 case 'Physical':
-                    itemData.effectiveMasteryLevel = itemData.masteryLevel - pctPhysPen + sbModifier;
+                    if (this.name.includes('Riding') && itemData.actorUuid) {
+                        const steed = fromUuidSync(itemData.actorUuid);
+                        steed.prepareData();
+                        const ini = steed.items.find((x) => x.name === 'Initiative');
+                        const steedUP = HarnMasterActor.calcUniversalPenalty(steed);
+
+                        itemData.effectiveMasteryLevel =
+                            Math.round((itemData.masteryLevel + ini.system.masteryLevel) / 2) - pctPhysPen - steedUP * 5 + sbModifier;
+                    } else {
+                        itemData.effectiveMasteryLevel = itemData.masteryLevel - pctPhysPen + sbModifier;
+                    }
                     break;
 
                 default:

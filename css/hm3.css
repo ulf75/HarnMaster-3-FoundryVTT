@@ -1495,6 +1495,12 @@ section.highlight {
     text-align: center;
 }
 
+.hm3 .combat .combat-stats .combat-stat a.disabled {
+    color: #9a998f;
+    cursor: default;
+    pointer-events: none;
+}
+
 .hm3 .combat .weapons-list {
     list-style: none;
     margin: 7px 0;

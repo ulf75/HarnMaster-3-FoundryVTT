@@ -313,7 +313,7 @@ Hooks.on('createItem', async (item, info, userId) => {
         if (item.system.selfDestroy && item.parent instanceof Actor) {
             item.effects.forEach((effect) => {
                 if (!effect.getFlag('effectmacro', 'onDisable.script'))
-                    effect.setFlag('effectmacro', 'onDisable.script', `(await fromUuid('${item.uuid}'))?.delete();`);
+                    effect.setFlag('effectmacro', 'onDisable.script', `fromUuidSync('${item.uuid}')?.delete();`);
             });
         }
     }

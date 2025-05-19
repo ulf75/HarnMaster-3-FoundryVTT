@@ -1878,7 +1878,7 @@ export async function getItem(itemName, type, actor) {
         return null;
     }
 
-    let item = await fromUuid(itemName);
+    let item = fromUuidSync(itemName);
 
     if (!item) {
         if (!actor || typeof actor !== 'object') {

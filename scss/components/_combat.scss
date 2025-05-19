@@ -41,6 +41,12 @@
                 padding: 2px;
                 text-align: center;
             }
+
+            a.disabled {
+                color: #9a998f;
+                cursor: default;
+                pointer-events: none;
+            }
         }
     }
 

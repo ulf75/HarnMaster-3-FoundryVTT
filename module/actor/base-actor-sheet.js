@@ -73,7 +73,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     }
                     //
                     if (i.type === ItemType.COMPANION) {
-                        const companion = await fromUuid(i.system.actorUuid);
+                        const companion = fromUuidSync(i.system.actorUuid);
                         i.gender = companion.system.gender || 'Male';
                         i.img = companion.img;
                         i.linkToActor = companion.link;
@@ -207,6 +207,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // default size is '6'
         if (data.adata.size === undefined) data.adata.size = '6';
+
+        data.hasSteed = this.actor.hasLinkedSteed();
 
         return data;
     }
@@ -532,7 +534,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.on('click', '.item-name, .fff-name', async (ev) => {
             const el = ev.currentTarget.querySelector('#companion'); //.dataset; // .innerText;
             const uuid = el.dataset.itemActorUuid;
-            const actor = await fromUuid(uuid);
+            const actor = fromUuidSync(uuid);
             actor.sheet.render(true);
         });
 
@@ -869,6 +871,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Morale Roll
         html.find('.morale-roll').click((ev) => macros.moraleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
 
+        // Mount / Dismount
+        html.find('.mount-action').click(this._onToggleMount.bind(this));
+
         // Toggle carry state
         html.find('.item-carry').click(this._onToggleCarry.bind(this));
 
@@ -1097,6 +1102,14 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             },
             options: {jQuery: false}
         });
+    }
+
+    async _onToggleMount(event) {
+        event.preventDefault();
+        await this.actor.update({'system.mounted': !this.actor.system.mounted});
+        this.actor.prepareData();
+        const riding = this.actor.items.filter((i) => i.name.includes('Riding'));
+        riding[0].sheet.render();
     }
 
     /**

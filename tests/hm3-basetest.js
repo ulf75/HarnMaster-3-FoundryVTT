@@ -112,7 +112,7 @@ export class HarnMasterBaseTest {
      * @returns {HarnMasterToken}
      */
     async _createActor(actorUuid, name, options = {}) {
-        const actor = await fromUuid(actorUuid);
+        const actor = fromUuidSync(actorUuid);
         const actorObject = actor.toObject();
 
         actorObject.name = name;

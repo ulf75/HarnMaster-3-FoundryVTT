@@ -77,6 +77,10 @@
                     {{selectOptions steeds selected=idata.actorUuid valueAttr="key" labelAttr="label"}}
                 </select>
             </div>
+            <div class="resource">
+                <label class="resource-label">Mounted</label>
+                <input type="checkbox" name="mounted" {{ checked mounted }} disabled/>
+            </div>
             {{/if}}
         </div>
 

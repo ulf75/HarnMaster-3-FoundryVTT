@@ -38,29 +38,31 @@ export class HarnMasterActor extends Actor {
         return capital ? p() : p().toLowerCase();
     }
 
-    async getSteeds() {
-        const steeds = this.items.contents.filter((i) => i.type === ItemType.COMPANION && i.system.type === 'Steed');
-        return Promise.all(
-            steeds.map(async (steed) => {
-                return fromUuid(steed.system.actorUuid);
-            })
-        );
+    hasLinkedSteed() {
+        const riding = this.items.filter((i) => i.name.includes('Riding'));
+        if (riding.length === 1 && riding[0].system.actorUuid) return true;
+        return false;
     }
 
-    async getParty() {
+    getSteeds() {
+        const steeds = this.items.contents.filter((i) => i.type === ItemType.COMPANION && i.system.type === 'Steed');
+        return steeds.map((steed) => {
+            return fromUuidSync(steed.system.actorUuid);
+        });
+    }
+
+    getParty() {
         const party = this.items.contents.filter((i) => i.type === ItemType.COMPANION && i.system.type === 'Party');
         return [
             this,
-            ...(await Promise.all(
-                party.map(async (p) => {
-                    return fromUuid(p.system.actorUuid);
-                })
-            ))
+            ...party.map((p) => {
+                return fromUuidSync(p.system.actorUuid);
+            })
         ];
     }
 
-    async getPartySkills(skill) {
-        const party = await this.getParty();
+    getPartySkills(skill) {
+        const party = this.getParty();
         return party
             .map((p) => {
                 return p.items.getName(skill);
@@ -378,6 +380,7 @@ export class HarnMasterActor extends Actor {
         actorData.totalInjuryLevels = 0;
         actorData.encumbrance = 0;
         actorData.condition = 0;
+        actorData.mounted = !!actorData.mounted;
 
         // Calculate endurance (in case Condition not present)
         actorData.endurance = Math.round((actorData.abilities.strength.base + actorData.abilities.stamina.base + actorData.abilities.will.base) / 3);
@@ -476,7 +479,10 @@ export class HarnMasterActor extends Actor {
 
         // The effect of Load on a character’s physical activities. It is equal to Load ÷ Endurance, rounded off to the nearest whole number. (COMBAT 2)
         this.system.encumbrance = Math.floor(this.system.eph.effectiveWeight / this.system.endurance);
-
+        if (this.system.mounted) {
+            this.system.encumbrance = Math.round(this.system.encumbrance / 2 + Number.EPSILON);
+            eph.fatigue = Math.round(eph.fatigue / 2 + Number.EPSILON);
+        }
         // All common character and creature derived data below here
 
         // Since active effects may have modified these values, we must ensure
@@ -547,7 +553,7 @@ export class HarnMasterActor extends Actor {
         this._generateArmorLocationMap(actorData);
 
         // Ensure all EML, AML, and DML are min 5
-        this._setMinEML_AML_DML();
+        this._setMinMaxEML_AML_DML();
 
         // Store "special" skill properties
         this.items.forEach((it) => {
@@ -808,6 +814,29 @@ export class HarnMasterActor extends Actor {
 
                 case 'missilegear':
                     itemData.attackMasteryLevel = Math.max(itemData.attackMasteryLevel, 5);
+                    break;
+            }
+        });
+    }
+
+    _setMinMaxEML_AML_DML() {
+        this.items.forEach((it) => {
+            const itemData = it.system;
+            switch (it.type) {
+                case 'skill':
+                case 'psionic':
+                case 'spell':
+                case 'invocation':
+                    itemData.effectiveMasteryLevel = Math.min(Math.max(itemData.effectiveMasteryLevel, 5), 95);
+                    break;
+
+                case 'weapongear':
+                    itemData.attackMasteryLevel = Math.min(Math.max(itemData.attackMasteryLevel, 5), 95);
+                    itemData.defenseMasteryLevel = Math.min(Math.max(itemData.defenseMasteryLevel, 5), 95);
+                    break;
+
+                case 'missilegear':
+                    itemData.attackMasteryLevel = Math.min(Math.max(itemData.attackMasteryLevel, 5), 95);
                     break;
             }
         });
@@ -1472,11 +1501,13 @@ export class HarnMasterActor extends Actor {
     static calcUniversalPenalty(actor) {
         const data = actor.system;
         data.universalPenalty = data.eph.totalInjuryLevels + data.eph.fatigue;
+        return data.universalPenalty;
     }
 
     static calcPhysicalPenalty(actor) {
         const data = actor.system;
         data.physicalPenalty = data.universalPenalty + data.encumbrance;
+        return data.physicalPenalty;
     }
 
     static calcShockIndex(actor) {
