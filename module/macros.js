@@ -44,7 +44,7 @@ async function handleItemMacro(data, slot) {
 
     let cmdSuffix;
     switch (item.type) {
-        case 'skill':
+        case game.hm3.ItemType.SKILL:
             cmdSuffix = `skillRoll("${item.uuid}");`;
             break;
 

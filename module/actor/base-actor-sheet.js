@@ -1108,7 +1108,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         event.preventDefault();
         await this.actor.update({'system.mounted': !this.actor.system.mounted});
         this.actor.prepareData();
-        const riding = this.actor.items.filter((i) => i.name.includes('Riding'));
+        const riding = this.actor.items.filter((item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding'));
         riding[0].sheet.render();
     }
 

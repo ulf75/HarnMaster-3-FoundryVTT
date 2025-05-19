@@ -39,24 +39,24 @@ export class HarnMasterActor extends Actor {
     }
 
     hasLinkedSteed() {
-        const riding = this.items.filter((i) => i.name.includes('Riding'));
+        const riding = this.items.filter((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
         if (riding.length === 1 && riding[0].system.actorUuid) return true;
         return false;
     }
 
     getSteeds() {
-        const steeds = this.items.contents.filter((i) => i.type === ItemType.COMPANION && i.system.type === 'Steed');
+        const steeds = this.items.contents.filter((item) => item.type === ItemType.COMPANION && item.system.type === 'Steed');
         return steeds.map((steed) => {
             return fromUuidSync(steed.system.actorUuid);
         });
     }
 
     getParty() {
-        const party = this.items.contents.filter((i) => i.type === ItemType.COMPANION && i.system.type === 'Party');
+        const party = this.items.contents.filter((item) => item.type === ItemType.COMPANION && item.system.type === 'Party');
         return [
             this,
-            ...party.map((p) => {
-                return fromUuidSync(p.system.actorUuid);
+            ...party.map((party) => {
+                return fromUuidSync(party.system.actorUuid);
             })
         ];
     }
