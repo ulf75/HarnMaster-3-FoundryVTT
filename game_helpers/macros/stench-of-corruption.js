@@ -9,11 +9,6 @@
 // triggerArgs    : The original arguments from the hook
 // macros         : Short for game.hm3.macros
 
-const SECOND = 1;
-const MINUTE = 60 * SECOND;
-const HOUR = 60 * MINUTE;
-const DAY = 24 * HOUR;
-
 const STENCH_OF_CORRUPTION = 'Stench of Corruption';
 const STENCH_OF_CORRUPTION_ICON = 'systems/hm3/images/icons/svg/distraction.svg';
 const RADIUS = 11; // [ft]
@@ -78,26 +73,26 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
         let seconds, value;
         if (result.isSuccess && result.isCritical) {
             // critical success - all good!
-            seconds = 10 * MINUTE;
+            seconds = 10 * game.hm3.CONST.TIME.MINUTE;
             value = 0;
         } else if (result.isSuccess && !result.isCritical) {
             // marginal success
-            seconds = macros.d6(4) * MINUTE;
+            seconds = macros.d6(4) * game.hm3.CONST.TIME.MINUTE;
             value = -2;
         } else if (!result.isSuccess && !result.isCritical) {
             // marginal failure
-            seconds = macros.d6(8) * MINUTE;
+            seconds = macros.d6(8) * game.hm3.CONST.TIME.MINUTE;
             value = -3;
         } else {
             // critical failure
-            seconds = macros.d6(16) * MINUTE;
+            seconds = macros.d6(16) * game.hm3.CONST.TIME.MINUTE;
             value = -3;
             await macros.createActiveEffect(
                 {
                     token: victimToken,
                     label: 'Violent Retching',
                     type: 'GameTime',
-                    seconds: 20 * SECOND,
+                    seconds: 20 * game.hm3.CONST.TIME.SECOND,
                     icon: STENCH_OF_CORRUPTION_ICON
                 },
                 [{key: 'universalPenalty', value: 4}],

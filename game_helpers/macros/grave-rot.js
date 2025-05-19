@@ -9,11 +9,6 @@
 // triggerArgs    : The original arguments from the hook
 // macros         : Short for game.hm3.macros
 
-const SECOND = 1;
-const MINUTE = 60 * SECOND;
-const HOUR = 60 * MINUTE;
-const DAY = 24 * HOUR;
-
 const GRAVE_ROT = 'Grave Rot';
 const GRAVE_ROT_ICON = 'systems/hm3/images/icons/svg/arm-bandage.svg';
 const CONTAGION_INDEX = 4;
@@ -35,7 +30,7 @@ if (triggerArgs[3].effectiveImpact > 0) {
                 owner: victimActor,
                 label: GRAVE_ROT,
                 type: 'GameTime',
-                postpone: macros.d6(2) * HOUR,
+                postpone: macros.d6(2) * game.hm3.CONST.TIME.HOUR,
                 seconds: 1,
                 icon: GRAVE_ROT_ICON
             },

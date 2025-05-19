@@ -17,12 +17,6 @@ import {Aspect, Condition, InjuryType, ItemType, SkillType} from './hm3-types.js
 import {Mutex} from './mutex.js';
 import * as utility from './utility.js';
 
-export const SECOND = 1;
-export const MINUTE = 60 * SECOND;
-export const HOUR = 60 * MINUTE;
-export const DAY = 60 * HOUR;
-export const INDEFINITE = Number.MAX_SAFE_INTEGER;
-
 /**
  * Create a script macro from an Item drop.
  * Get an existing item macro if one exists, otherwise create a new one.
@@ -2111,7 +2105,7 @@ export async function createCondition(token, condition, conditionOptions = {}) {
                     icon: 'systems/hm3/images/icons/svg/spiked-wall.svg',
                     token,
                     type: 'GameTime',
-                    seconds: INDEFINITE,
+                    seconds: game.hm3.CONST.TIME.INDEFINITE,
                     flags: {
                         effectmacro: {
                             onTurnStart: {
@@ -2195,7 +2189,7 @@ export async function createCondition(token, condition, conditionOptions = {}) {
                     icon: 'systems/hm3/images/icons/svg/arm-sling.svg',
                     token,
                     type: 'GameTime',
-                    seconds: INDEFINITE,
+                    seconds: game.hm3.CONST.TIME.INDEFINITE,
                     flags: {
                         effectmacro: {
                             onTurnStart: {

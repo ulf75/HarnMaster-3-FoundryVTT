@@ -1,5 +1,4 @@
 // const UNCONSCIOUS_ICON = 'systems/hm3/images/icons/svg/shock.svg';
-const MINUTE = 60;
 
 /**
  *
@@ -19,7 +18,7 @@ const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 await token.deleteAllMoraleConditions();
 await token.addCondition(game.hm3.Condition.PRONE);
-const almostDying = !token.player && (token.actor.system.shockIndex.value < 20);
+const almostDying = !token.player && (token.actor.system.shockIndex.value < game.hm3.CONST.COMBAT.THRESHOLD);
 if (almostDying) {
     await token.actor.toggleStatusEffect('dead', {active: true, overlay: true});
     await token.combatant.update({defeated: true});
@@ -68,7 +67,7 @@ if (ok) {
             token,
             icon: CONFIG.statusEffects.find((e) => e.id === 'unconscious').img, // UNCONSCIOUS_ICON
             type: 'GameTime',
-            seconds: game.hm3.macros.d6(2) * MINUTE, // 2d6 minutes
+            seconds: game.hm3.macros.d6(2) * game.hm3.CONST.TIME.MINUTE, // 2d6 minutes
             flags: {
                 effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}, onDisable: {script: ON_DISABLE_MACRO}}
             }

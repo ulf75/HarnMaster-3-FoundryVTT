@@ -2,7 +2,6 @@
 // aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike.
 // Further Initiative rolls are ignored until the battle ends. (COMBAT 16)
 const CONDITION_ICON = 'systems/hm3/images/icons/svg/enrage-white.svg';
-const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
  *
@@ -36,7 +35,7 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is in <b>B
             token,
             icon: CONDITION_ICON,
             type: 'GameTime',
-            seconds: INDEFINITE,
+            seconds: game.hm3.CONST.TIME.INDEFINITE,
             flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
         },
         changes: [{key: 'eph.meleeAMLMod', mode: 2, priority: null, value: '20'}],

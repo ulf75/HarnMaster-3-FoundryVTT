@@ -2,7 +2,6 @@
 // opponents for this purpose, prone enemies are excluded, as are enemies who are themselves
 // engaged by other friendly characters. (COMBAT 11)
 const CONDITION_ICON = 'systems/hm3/images/icons/svg/backup-white.svg';
-const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
  *
@@ -34,7 +33,7 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is <b>${label
             token,
             icon: CONDITION_ICON,
             type: 'GameTime',
-            seconds: INDEFINITE,
+            seconds: game.hm3.CONST.TIME.INDEFINITE,
             flags: {effectmacro: {onTurnStart: {script: ON_TURN_START_MACRO}}}
         },
         changes: [{key: 'eph.outnumbered', mode: 2, priority: null, value: `${options.outnumbered}`}],

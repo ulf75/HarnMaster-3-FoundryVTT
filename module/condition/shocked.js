@@ -1,6 +1,5 @@
 // const SHOCKED_ICON = 'systems/hm3/images/icons/svg/shock.svg';
 const CONDITION_ICON = 'icons/svg/lightning.svg';
-const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 const ON_CREATE_MACRO = (token) => `
 const token = canvas.tokens.get('${token.id}');
@@ -46,7 +45,7 @@ export async function createCondition(token, options = {}) {
             token,
             icon: CONDITION_ICON,
             type: 'GameTime',
-            seconds: INDEFINITE,
+            seconds: game.hm3.CONST.TIME.INDEFINITE,
             flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO(token)}, onTurnStart: {script: ON_TURN_START_MACRO(token)}}}
         },
         changes: [],

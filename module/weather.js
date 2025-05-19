@@ -1,12 +1,6 @@
 const WATCHES_PER_DAY = 6;
 const WATCHES_PER_MONTH = 30 * WATCHES_PER_DAY;
 
-const SECOND = 1;
-const MINUTE = 60 * SECOND;
-const HOUR = 60 * MINUTE;
-const WATCH = 4 * HOUR;
-const DAY = 24 * HOUR;
-
 // Hârnic Weather
 export class Weather {
     static climate = 'cooltemperate';
@@ -117,7 +111,7 @@ export class Weather {
 
     static Watch() {
         const current = this.dateTimeApi.dateToTimestamp({});
-        return Math.floor((current - this.start) / WATCH);
+        return Math.floor((current - this.start) / game.hm3.CONST.TIME.WATCH);
     }
 
     static Temp(weather) {

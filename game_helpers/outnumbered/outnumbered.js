@@ -4,7 +4,6 @@ const OUTNUMBERED41 = 'Outnumbered 4:1';
 const OUTNUMBERED51 = 'Outnumbered 5:1';
 const OUTNUMBERED61 = 'Outnumbered 6:1';
 const OUTNUMBERED_IMG = 'systems/hm3/images/icons/svg/backup.svg';
-const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 if (canvas.tokens.controlled.length !== 1) {
     ui.notifications.error('Please select ONE token!');

@@ -60,6 +60,22 @@ Hooks.once('init', async function () {
         Range,
         SkillType,
 
+        CONST: {
+            COMBAT: {SHOCK_INDEX_THRESHOLD: 20},
+            TIME: {
+                SECOND: 1,
+                MINUTE: 60,
+                HOUR: 60 * 60, // 3600 sec
+                WATCH: 4 * 60 * 60,
+                DAY: 24 * 60 * 60,
+                TENDAY: 10 * 24 * 60 * 60,
+                MONTH: 30 * 24 * 60 * 60,
+                YEAR: 12 * 30 * 24 * 60 * 60,
+                PERMANENT: Number.MAX_SAFE_INTEGER - 1,
+                INDEFINITE: Number.MAX_SAFE_INTEGER
+            }
+        },
+
         combatMutex: new Mutex(),
 
         Gm2GmSays: async (text, source) => {

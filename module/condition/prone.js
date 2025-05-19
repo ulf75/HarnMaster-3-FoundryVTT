@@ -1,6 +1,5 @@
 // const PRONE_ICON = 'systems/hm3/images/icons/svg/falling.svg';
 const CONDITION_ICON = 'icons/svg/falling.svg';
-const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
  *
@@ -77,7 +76,7 @@ if (game.combat?.started) {
             token,
             icon: CONDITION_ICON,
             type: 'GameTime',
-            seconds: INDEFINITE,
+            seconds: game.hm3.CONST.TIME.INDEFINITE,
             flags: {
                 effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}, onDelete: {script: ON_DELETE_MACRO}}
             }

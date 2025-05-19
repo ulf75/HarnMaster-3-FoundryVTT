@@ -1,7 +1,6 @@
 // Character selects and executes any Action Option, with a +10 bonus to EML. If the character’s
 // current morale state is non-normal, it returns to normal. (COMBAT 16)
 const CONDITION_ICON = 'icons/svg/upgrade.svg';
-const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
  *
@@ -26,7 +25,7 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>
     const ON_TURN_START_MACRO = ``;
 
     const type = options.oneRound || options.oneTurn ? 'Combat' : 'GameTime';
-    const seconds = type === 'GameTime' ? INDEFINITE : undefined;
+    const seconds = type === 'GameTime' ? game.hm3.CONST.TIME.INDEFINITE : undefined;
     const rounds = type === 'Combat' && options.oneRound ? 1 : undefined;
     const turns = type === 'Combat' && options.oneTurn ? 1 : undefined;
 

@@ -4,7 +4,6 @@
 // Counterstrike is prohibited. (COMBAT 16)
 const CONDITION_ICON = 'systems/hm3/images/icons/svg/despair-white.svg';
 // const CONDITION_ICON = 'icons/svg/downgrade.svg';
-const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
  *
@@ -38,7 +37,7 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is still <
             token,
             icon: CONDITION_ICON,
             type: 'GameTime',
-            seconds: INDEFINITE,
+            seconds: game.hm3.CONST.TIME.INDEFINITE,
             flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
         },
         changes: [],

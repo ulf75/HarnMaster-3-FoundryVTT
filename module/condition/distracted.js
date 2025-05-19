@@ -1,5 +1,4 @@
 const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction-white.svg';
-const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
  *
@@ -28,7 +27,7 @@ if (!unconscious) {
 }`;
 
     const type = options.oneRound || options.oneTurn ? 'Combat' : 'GameTime';
-    const seconds = type === 'GameTime' ? INDEFINITE : undefined;
+    const seconds = type === 'GameTime' ? game.hm3.CONST.TIME.INDEFINITE : undefined;
     const rounds = type === 'Combat' && options.oneRound ? 1 : undefined;
     const turns = type === 'Combat' && options.oneTurn ? 1 : undefined;
 

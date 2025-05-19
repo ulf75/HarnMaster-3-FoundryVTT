@@ -1,6 +1,5 @@
 // const GRAPPLED_ICON = 'systems/hm3/images/icons/svg/manacles.svg';
 const GRAPPLED_ICON = 'icons/svg/net.svg';
-const INDEFINITE = Number.MAX_SAFE_INTEGER;
 
 /**
  *
@@ -21,7 +20,7 @@ export async function createCondition(token, options = {}) {
             token,
             icon: GRAPPLED_ICON,
             type: 'GameTime',
-            seconds: INDEFINITE
+            seconds: game.hm3.CONST.TIME.INDEFINITE
         },
         changes: [],
         options: {unique: true}
