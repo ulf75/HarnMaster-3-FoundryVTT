@@ -1,4 +1,4 @@
-const SLOWMO = 1;
+const SLOWMO = 3;
 
 export class HarnMasterBaseTest {
     NORTH = {dx: 0, dy: -1};
