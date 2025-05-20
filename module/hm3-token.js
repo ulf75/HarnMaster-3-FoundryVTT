@@ -71,10 +71,7 @@ export class HarnMasterToken extends Token {
      * @returns
      */
     async deleteCondition(condition, postpone = 10) {
-        return setTimeout(
-            () => tokenMutex.runExclusive(async () => await game.hm3.macros.deleteActiveEffect(this.id, this.getCondition(condition)?.id)),
-            postpone
-        );
+        return setTimeout(async () => await game.hm3.macros.deleteActiveEffect(this.id, this.getCondition(condition)?.id), postpone);
     }
 
     /**

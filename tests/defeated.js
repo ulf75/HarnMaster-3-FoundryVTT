@@ -11,9 +11,23 @@ export class TestCase extends game.hm3.BaseTest {
         const bob = await this._dropActor(this.actors.get('Bob'), CENTER, this.SOUTH);
 
         await this._startCombat();
+        await alice.actor.update({'system.fatigue': 3});
+        await alice.addCondition(game.hm3.Condition.UNCONSCIOUS);
+        await this._wait();
+
+        // not yet defeated
+        console.assert(
+            alice.actor.system.shockIndex.value >= game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && !alice.combatant.isDefeated,
+            `HM3 ASSERT | Combatant ${alice.name} IS defeated (Shock Index: ${alice.actor.system.shockIndex.value}).`,
+            alice.combatant
+        );
+
+        await this._resetAllConditions(alice);
+
         await alice.actor.update({'system.fatigue': 4});
         await alice.addCondition(game.hm3.Condition.UNCONSCIOUS);
         await alon.addCondition(game.hm3.Condition.SHOCKED);
+        await bob.addCondition(game.hm3.Condition.DYING);
         await this._wait();
 
         console.assert(

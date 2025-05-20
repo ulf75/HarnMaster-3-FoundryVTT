@@ -140,9 +140,19 @@ export class HarnMasterBaseTest {
         await game.canvas.activeLayer.moveMany(dir);
     }
 
+    async _resetAllConditions(token) {
+        Object.values(game.hm3.Condition).forEach((condition) => {
+            token.deleteCondition(condition);
+        });
+        await token.combatant?.update({defeated: false});
+        token.actor.toggleStatusEffect('dead', {active: false});
+        token.actor.toggleStatusEffect('unconscious', {active: false});
+        token.toggleVisibility({active: true});
+        await this._wait();
+    }
+
     async _startCombat() {
         await TokenDocument.createCombatants(this.tokens.values());
-        // for (let t of this.tokens.values()) await t.toggleCombatant();
         await this._wait();
         await game.combat.startCombat();
         await this._wait();
