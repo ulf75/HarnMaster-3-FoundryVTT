@@ -874,6 +874,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Mount / Dismount
         html.find('.mount-action').click(this._onToggleMount.bind(this));
 
+        // Steed Command Check
+        html.find('.steedcommand-roll').click((ev) => macros.steedCommandRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+
         // Toggle carry state
         html.find('.item-carry').click(this._onToggleCarry.bind(this));
 

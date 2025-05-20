@@ -11,6 +11,7 @@ import * as outnumbered from './condition/outnumbered.js';
 import * as prone from './condition/prone.js';
 import * as shocked from './condition/shocked.js';
 import * as unconscious from './condition/unconscious.js';
+import * as weakened from './condition/weakened.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './dice-hm3.js';
 import {Aspect, Condition, InjuryType, ItemType, SkillType} from './hm3-types.js';
@@ -1301,7 +1302,7 @@ export async function moraleRoll(noDialog = false, myActor = null) {
     }
 
     let token = actorInfo.token;
-    const unconscious = token.hasCondition(Condition.UNCONSCIOUS);
+    const unconscious = token?.hasCondition(Condition.UNCONSCIOUS);
     if (unconscious) {
         ui.notifications.warn(`Token is unconscious.`);
         return null;
@@ -1335,25 +1336,87 @@ export async function moraleRoll(noDialog = false, myActor = null) {
             actorInfo.actor.runCustomMacro(result);
             if (result.isSuccess && result.isCritical) {
                 // CS - Empowered
-                await token.addCondition(Condition.EMPOWERED, {oneTurn: true});
+                await token?.addCondition(Condition.EMPOWERED, {oneTurn: true});
             } else if (!result.isSuccess && !result.isCritical) {
                 // MF - Cautious, turn ends
-                await token.addCondition(Condition.CAUTIOUS, {oneRound: true});
+                await token?.addCondition(Condition.CAUTIOUS, {oneRound: true});
             } else if (!result.isSuccess && result.isCritical) {
                 // CF
                 const rollObj = new game.hm3.Roll('1d100');
                 const roll = await rollObj.evaluate();
                 if (roll.total <= 25) {
-                    await token.addCondition(Condition.BERSERK);
+                    await token?.addCondition(Condition.BERSERK);
                 } else if (roll.total <= 50) {
-                    await token.addCondition(Condition.DESPERATE);
+                    await token?.addCondition(Condition.DESPERATE);
                 } else if (roll.total <= 75) {
-                    await token.addCondition(Condition.BROKEN);
+                    await token?.addCondition(Condition.BROKEN);
                 } else {
-                    await token.addCondition(Condition.CAUTIOUS);
+                    await token?.addCondition(Condition.CAUTIOUS);
                 }
             }
             callOnHooks('hm3.onMoraleRoll', actorInfo.actor, result, stdRollData);
+        }
+        return result;
+    }
+    return null;
+}
+
+export async function steedCommandRoll(noDialog = false, myActor = null) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null});
+    if (!actorInfo) {
+        ui.notifications.warn(`No actor for this action could be determined.`);
+        return null;
+    }
+
+    if (!actorInfo.actor.system.mounted) {
+        ui.notifications.warn(`Actor is not mounted.`);
+        return null;
+    }
+
+    const riding = actorInfo.actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
+    if (!riding) {
+        ui.notifications.warn(`No Riding skill for this actor for this action could be determined.`);
+        return null;
+    }
+
+    let token = actorInfo.token;
+
+    const stdRollData = {
+        actor: actorInfo.actor,
+        fastforward: noDialog || !actorInfo.actor.hasPlayerOwner,
+        label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Steed Command Check`,
+        notes: '',
+        notesData: {},
+        private: !actorInfo.actor.hasPlayerOwner,
+        speaker: actorInfo.speaker,
+        target: riding.system.effectiveMasteryLevel,
+        type: 'SteedCommand-d100'
+    };
+
+    if (actorInfo.actor.isToken) {
+        stdRollData.token = actorInfo.actor.token.id;
+        // token = actorInfo.actor.token;
+    } else {
+        stdRollData.actor = actorInfo.actor.id;
+        // token = actorInfo.actor.prototypeToken;
+        // stdRollData.token = token?.id;
+    }
+
+    const hooksOk = Hooks.call('hm3.preSteedCommandRoll', stdRollData, actorInfo.actor);
+    if (hooksOk) {
+        const result = await DiceHM3.d100StdRoll(stdRollData);
+        if (result) {
+            actorInfo.actor.runCustomMacro(result);
+            if (result.isSuccess && result.isCritical) {
+                // CS - +10 AML COMBAT 21
+                await token?.addCondition(Condition.EMPOWERED, {oneTurn: true});
+            } else if (!result.isSuccess && !result.isCritical) {
+                // MF - -10 AML COMBAT 21
+                await token?.addCondition(Condition.WEAKENED, {oneTurn: true});
+            } else if (!result.isSuccess && result.isCritical) {
+                // CF - Unhorsed (no roll) COMBAT 21
+            }
+            callOnHooks('hm3.onSteedCommandRoll', actorInfo.actor, result, stdRollData);
         }
         return result;
     }
@@ -2219,6 +2282,15 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         case Condition.UNCONSCIOUS:
             {
                 const {effectData, changes, options} = await unconscious.createCondition(token, conditionOptions);
+                effect = await createActiveEffect(effectData, changes, options);
+            }
+            break;
+
+        // Character selects and executes any Action Option, with a +10 bonus to EML. If the character’s
+        // current morale state is non-normal, it returns to normal. (COMBAT 16)
+        case Condition.WEAKENED:
+            {
+                const {effectData, changes, options} = await weakened.createCondition(token, conditionOptions);
                 effect = await createActiveEffect(effectData, changes, options);
             }
             break;

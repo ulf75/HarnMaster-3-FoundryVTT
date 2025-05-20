@@ -84,6 +84,7 @@ export class HarnMasterToken extends Token {
         if (except !== game.hm3.Condition.CAUTIOUS) await this.deleteCondition(game.hm3.Condition.CAUTIOUS);
         if (except !== game.hm3.Condition.DESPERATE) await this.deleteCondition(game.hm3.Condition.DESPERATE);
         if (except !== game.hm3.Condition.EMPOWERED) await this.deleteCondition(game.hm3.Condition.EMPOWERED);
+        if (except !== game.hm3.Condition.WEAKENED) await this.deleteCondition(game.hm3.Condition.WEAKENED);
     }
 
     /**

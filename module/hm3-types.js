@@ -100,7 +100,10 @@ export const Condition = Object.freeze({
     STUNNED: 'Stunned',
 
     /**@constant {string} - MOV to 0. NO skills, spells & psionics. Only PASS actions. Only IGNORE defenses. Plus PRONE. */
-    UNCONSCIOUS: 'Unconscious_' // TODO merge with status effects
+    UNCONSCIOUS: 'Unconscious_', // TODO merge with status effects
+
+    /**@constant {string} - TODO */
+    WEAKENED: 'Weakened'
 });
 
 /**

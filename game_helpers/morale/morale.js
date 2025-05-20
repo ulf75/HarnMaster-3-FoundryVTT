@@ -3,6 +3,7 @@ const BROKEN = game.hm3.Condition.BROKEN;
 const CAUTIOUS = game.hm3.Condition.CAUTIOUS;
 const DESPERATE = game.hm3.Condition.DESPERATE;
 const EMPOWERED = game.hm3.Condition.EMPOWERED;
+const WEAKENED = game.hm3.Condition.WEAKENED;
 
 let dialogEditor = new Dialog(
     {
@@ -81,6 +82,19 @@ let dialogEditor = new Dialog(
                     } else {
                         const token = canvas.tokens.controlled[0];
                         await token.addCondition(EMPOWERED);
+                    }
+                    dialogEditor.render(true);
+                }
+            },
+
+            weakened: {
+                label: WEAKENED,
+                callback: async () => {
+                    if (canvas.tokens.controlled.length !== 1) {
+                        ui.notifications.error('Please select ONE token!');
+                    } else {
+                        const token = canvas.tokens.controlled[0];
+                        await token.addCondition(WEAKENED);
                     }
                     dialogEditor.render(true);
                 }
