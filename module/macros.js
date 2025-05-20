@@ -1415,8 +1415,72 @@ export async function steedCommandRoll(noDialog = false, myActor = null) {
                 await token?.addCondition(Condition.WEAKENED, {oneTurn: true});
             } else if (!result.isSuccess && result.isCritical) {
                 // CF - Unhorsed (no roll) COMBAT 21
+                unhorsingRoll(noDialog, myActor, true);
             }
             callOnHooks('hm3.onSteedCommandRoll', actorInfo.actor, result, stdRollData);
+        }
+        return result;
+    }
+    return null;
+}
+
+export async function unhorsingRoll(noDialog = false, myActor = null, autofail = false) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null});
+    if (!actorInfo) {
+        ui.notifications.warn(`No actor for this action could be determined.`);
+        return null;
+    }
+
+    if (!actorInfo.actor.system.mounted) {
+        ui.notifications.warn(`Actor is not mounted.`);
+        return null;
+    }
+
+    const riding = actorInfo.actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
+    if (!riding) {
+        ui.notifications.warn(`No Riding skill for this actor for this action could be determined.`);
+        return null;
+    }
+
+    let token = actorInfo.token;
+
+    const stdRollData = {
+        actor: actorInfo.actor,
+        fastforward: noDialog,
+        label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Unhorsing Roll`,
+        notes: '',
+        notesData: {},
+        private: !actorInfo.actor.hasPlayerOwner,
+        speaker: actorInfo.speaker,
+        target: riding.system.effectiveMasteryLevel,
+        type: 'SteedCommand-d100'
+    };
+
+    if (actorInfo.actor.isToken) {
+        stdRollData.token = actorInfo.actor.token.id;
+        // token = actorInfo.actor.token;
+    } else {
+        stdRollData.actor = actorInfo.actor.id;
+        // token = actorInfo.actor.prototypeToken;
+        // stdRollData.token = token?.id;
+    }
+
+    const hooksOk = Hooks.call('hm3.preUnhorsingRoll', stdRollData, actorInfo.actor);
+    if (hooksOk) {
+        const result = !autofail ? await DiceHM3.d100StdRoll(stdRollData) : {isSuccess: false, isCritical: false};
+        if (result) {
+            actorInfo.actor.runCustomMacro(result);
+            if (result.isSuccess) {
+                // CS/MS - rider stays in saddle (COMBAT 24)
+                game.hm3.GmSays(`<b>${token.name}</b> stays in the saddle.`, 'Combat 24');
+                if (result.isCritical) {
+                    // CS - rider gains TA (COMBAT 24)
+                }
+            } else {
+                // CF/MF - rider is thrown (COMBAT 24)
+                game.hm3.GmSays(`<b>${token.name}</b> is thrown.`, 'Combat 24');
+            }
+            callOnHooks('hm3.onUnhorsingRoll', actorInfo.actor, result, stdRollData);
         }
         return result;
     }

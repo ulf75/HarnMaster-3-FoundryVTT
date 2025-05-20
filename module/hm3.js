@@ -353,6 +353,7 @@ Hooks.once('ready', async function () {
         console.log = () => {};
         console.debug = () => {};
         console.trace = () => {};
+        game.hm3.runner = () => ui.notifications.info('Please turn on Debug Mode.');
     }
 
     // Determine whether a system migration is required
