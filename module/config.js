@@ -486,9 +486,9 @@ HM3.activeEffectKey = {
     'system.eph.ritualSkillsMod': 'Ritual Skills EML',
     'system.eph.magicSkillsMod': 'Magic Skills EML',
     'system.eph.psionicTalentsMod': 'Psionic Talents EML',
-    'system.universalPenalty': 'Universal Penalty',
-    'system.physicalPenalty': 'Physical Penalty',
     'system.eph.fatigue': 'Fatigue',
+    'system.physicalPenalty': 'Physical Penalty',
+    'system.universalPenalty': 'Universal Penalty',
     'system.encumbrance': 'Encumbrance',
     'system.endurance': 'Endurance',
     'system.eph.totalInjuryLevels': 'Injury Level',
@@ -505,7 +505,8 @@ HM3.activeEffectKey = {
     'system.eph.will': 'Will',
     'system.eph.aura': 'Aura',
     'system.eph.morality': 'Morality',
-    'system.eph.comeliness': 'Comeliness'
+    'system.eph.comeliness': 'Comeliness',
+    'system.eph.unhorsing': 'Unhorsing'
 };
 
 HM3.defaultMagicIconName = 'pentacle';

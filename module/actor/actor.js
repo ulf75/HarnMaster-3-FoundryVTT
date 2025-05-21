@@ -438,6 +438,7 @@ export class HarnMasterActor extends Actor {
         eph.itemDMLMod = 0;
         eph.itemEMLMod = 0;
         eph.itemCustomMod = 0;
+        eph.unhorsing = 0;
 
         Hooks.call('hm3.onActorPrepareBaseData', this);
     }

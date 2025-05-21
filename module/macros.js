@@ -1448,6 +1448,7 @@ export async function unhorsingRoll(noDialog = false, myActor = null, autofail =
         actor: actorInfo.actor,
         fastforward: noDialog,
         label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Unhorsing Roll`,
+        modifier: actorInfo.actor.system.eph.unhorsing || 0,
         notes: '',
         notesData: {},
         private: !actorInfo.actor.hasPlayerOwner,
