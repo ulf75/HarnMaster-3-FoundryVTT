@@ -1332,7 +1332,10 @@ export class DiceHM3 {
         const numDice = testData.diceNum > 0 ? testData.diceNum : 1;
         const diceSpec = numDice + diceType;
         let rollObj = new game.hm3.Roll(diceSpec, testData.data);
+
+        // No Treatment should auto fail with MF
         if (testData.isTreatment && testData.noTreatment) rollObj = new game.hm3.Roll('99', testData.data);
+
         const roll = await rollObj.evaluate();
         if (!roll) {
             console.error(`Roll evaluation failed, diceSpec=${diceSpec}`);
