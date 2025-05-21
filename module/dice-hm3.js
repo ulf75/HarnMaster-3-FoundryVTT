@@ -180,48 +180,36 @@ export class DiceHM3 {
         if (isHealingRoll) {
             if (dialogOptions.subType === InjuryType.HEALING || dialogOptions.subType === InjuryType.SHOCK) {
                 dialogData.isPhysician = true;
-                if (dialogOptions.physicianSkills.length > 0) {
-                    dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
-                        return {
-                            key: Math.round(p.system.effectiveMasteryLevel / 2),
-                            label: `${p.actor.name} (EML/2 ${Math.round(p.system.effectiveMasteryLevel / 2)})`
-                        };
-                    });
-                    dialogData.physicianEml = dialogData.physicianSkills[0].key;
-                } else {
-                    dialogData.physicianSkills = [{key: 0, label: 'Party lacks Physician skill'}];
-                    dialogData.physicianEml = 0;
-                }
+                dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
+                    return {
+                        key: Math.round(p.system.effectiveMasteryLevel / 2),
+                        label: `${p.actor.name} (EML/2 ${Math.round(p.system.effectiveMasteryLevel / 2)})`
+                    };
+                });
+                dialogData.physicianSkills.push({key: 0, label: '3rd Party Physician skill'});
+                dialogData.physicianEml = dialogData.physicianSkills[0].key;
                 dialogData.physicianMod = 'EML/2';
             } else if (dialogOptions.subType === InjuryType.INFECTION) {
                 dialogData.isPhysician = true;
-                if (dialogOptions.physicianSkills.length > 0) {
-                    dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
-                        return {
-                            key: Math.floor(p.system.masteryLevel / 10),
-                            label: `${p.actor.name} (SI ${Math.floor(p.system.masteryLevel / 10)})`
-                        };
-                    });
-                    dialogData.physicianEml = dialogData.physicianSkills[0].key;
-                } else {
-                    dialogData.physicianSkills = [{key: 0, label: 'Party lacks Physician skill'}];
-                    dialogData.physicianEml = 0;
-                }
+                dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
+                    return {
+                        key: Math.floor(p.system.masteryLevel / 10),
+                        label: `${p.actor.name} (SI ${Math.floor(p.system.masteryLevel / 10)})`
+                    };
+                });
+                dialogData.physicianSkills.push({key: 0, label: '3rd Party Physician skill'});
+                dialogData.physicianEml = dialogData.physicianSkills[0].key;
                 dialogData.physicianMod = 'SI';
             }
         }
 
         if (dialogData.isTreatment) {
             dialogData.treatmentModifier = dialogOptions.treatmentTable.eml;
-            if (dialogOptions.physicianSkills.length > 0) {
-                dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
-                    return {key: p.system.effectiveMasteryLevel, label: `${p.actor.name} (EML ${p.system.effectiveMasteryLevel})`};
-                });
-                dialogData.physicianEml = dialogData.physicianSkills[0].key;
-            } else {
-                dialogData.physicianSkills = [{key: 0, label: 'Party lacks Physician skill (No treatment)'}];
-                dialogData.physicianEml = 0;
-            }
+            dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
+                return {key: p.system.effectiveMasteryLevel, label: `${p.actor.name} (EML ${p.system.effectiveMasteryLevel})`};
+            });
+            dialogData.physicianSkills.push({key: 0, label: '3rd Party Physician skill'}, {key: -1, label: 'No Treatment'});
+            dialogData.physicianEml = dialogData.physicianSkills[0].key;
         }
 
         const html = await renderTemplate(dlgTemplate, dialogData);
@@ -251,9 +239,12 @@ export class DiceHM3 {
                     data: null,
                     diceNum: 1,
                     diceSides: 100,
+                    isAbility: dialogOptions.isAbility,
                     isAppraisal,
+                    isTreatment: dialogOptions.isTreatment,
                     modifier: Number(formModifier) + Number(formTreatmentModifier) + Number(moraleModification) + phyBonus,
                     multiplier,
+                    noTreatment: target === -1,
                     target,
                     type: dialogOptions.type
                 });
@@ -1340,7 +1331,8 @@ export class DiceHM3 {
         const diceType = testData.diceSides === 6 ? 'd6' : 'd100';
         const numDice = testData.diceNum > 0 ? testData.diceNum : 1;
         const diceSpec = numDice + diceType;
-        const rollObj = new game.hm3.Roll(diceSpec, testData.data);
+        let rollObj = new game.hm3.Roll(diceSpec, testData.data);
+        if (testData.isTreatment && testData.noTreatment) rollObj = new game.hm3.Roll('99', testData.data);
         const roll = await rollObj.evaluate();
         if (!roll) {
             console.error(`Roll evaluation failed, diceSpec=${diceSpec}`);
