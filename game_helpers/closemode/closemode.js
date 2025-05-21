@@ -1,7 +1,7 @@
 let dialogEditor = new Dialog({
     title: game.hm3.Condition.CLOSE_MODE,
     buttons: {
-        CLOSE_MODE: {
+        closemode: {
             label: game.hm3.Condition.CLOSE_MODE,
             callback: async () => {
                 canvas.tokens.controlled.forEach((token) => {
@@ -11,7 +11,7 @@ let dialogEditor = new Dialog({
             }
         },
 
-        rise: {
+        none: {
             label: `None`,
             callback: async () => {
                 canvas.tokens.controlled.forEach((token) => {
