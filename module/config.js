@@ -301,6 +301,70 @@ HM3.injuryLocations = {
         isFumble: false,
         isAmputate: true,
         effectiveImpact: {ei1: 'M1', ei5: 'M1', ei9: 'S2', ei13: 'S3', ei17: 'G4'}
+    },
+    'Head, horse': {
+        impactType: 'head, horse',
+        probWeight: {'high': 120, 'mid': 120, 'low': 120},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'K4', ei17: 'K5'}
+    },
+    'Neck, horse': {
+        impactType: 'neck, horse',
+        probWeight: {'high': 80, 'mid': 80, 'low': 80},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: true,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'K4', ei17: 'K5'}
+    },
+    'Fore Leg, horse': {
+        impactType: 'fore leg, horse',
+        probWeight: {'high': 50, 'mid': 50, 'low': 50},
+        isStumble: true,
+        isFumble: false,
+        isAmputate: true,
+        effectiveImpact: {ei1: 'M1', ei5: 'M1', ei9: 'S2', ei13: 'S3', ei17: 'G4'}
+    },
+    'Flank, horse': {
+        impactType: 'flank, horse',
+        probWeight: {'high': 150, 'mid': 150, 'low': 150},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'G5'}
+    },
+    'Abdomen, horse': {
+        impactType: 'abdomen, horse',
+        probWeight: {'high': 150, 'mid': 150, 'low': 150},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'K4', ei17: 'K5'}
+    },
+    'Quarter, horse': {
+        impactType: 'quarter, horse',
+        probWeight: {'high': 75, 'mid': 75, 'low': 75},
+        isStumble: true,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K4'}
+    },
+    'Hind Leg, horse': {
+        impactType: 'hind leg, horse',
+        probWeight: {'high': 40, 'mid': 40, 'low': 40},
+        isStumble: true,
+        isFumble: false,
+        isAmputate: true,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K4'}
+    },
+    'Tail, horse': {
+        impactType: 'tail, horse',
+        probWeight: {'high': 20, 'mid': 20, 'low': 20},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: true,
+        effectiveImpact: {ei1: 'M1', ei5: 'M1', ei9: 'S2', ei13: 'S3', ei17: 'G4'}
     }
 };
 
