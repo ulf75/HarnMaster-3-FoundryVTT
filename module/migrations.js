@@ -180,7 +180,7 @@ export async function migrateActorData(actor) {
         updateData['system.-=hasCondition'] = null;
     }
 
-    if (!actorData.hasOwnProperty('macros') || !actorData.macros.hasOwnProperty('type')) {
+    if (!actorData.hasOwnProperty('macros') || !actorData.macros?.hasOwnProperty('type')) {
         updateData['system.macros.command'] = '';
         updateData['system.macros.type'] = 'script';
     }
