@@ -98,6 +98,7 @@ HM3.ITEM_TYPE_LABEL = {
 };
 
 HM3.sunsigns = [
+    {key: 'None'},
     {key: 'Ulandus'},
     {key: 'Ulandus-Aralius'},
     {key: 'Aralius'},
