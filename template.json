@@ -142,7 +142,7 @@
       "ritual": {
         "piety": 0
       },
-      "improveFlag": false
+      "improveFlag": 0
     },
     "spell": {
       "templates": ["base"],
@@ -165,7 +165,7 @@
       },
       "masteryLevel": 0,
       "effectiveMasteryLevel": 0,
-      "improveFlag": false,
+      "improveFlag": 0,
       "fatigue": 0
     },
     "weapongear": {

@@ -277,8 +277,8 @@ export async function skillRoll(itemName, noDialog = false, myActor = null) {
             item.runCustomMacro(result);
             callOnHooks('hm3.onSkillRoll', actor, result, stdRollData, item);
 
-            if (game.settings.get('hm3', 'autoMarkUsedSkills') && !item.system.improveFlag) {
-                item.update({'system.improveFlag': true});
+            if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+                item.update({'system.improveFlag': item.system.improveFlag + 1});
             }
         }
         return result;
@@ -1554,13 +1554,6 @@ export async function changeMissileQuanity(missileName, newValue, myActor = null
 export async function setSkillDevelopmentFlag(skillName, myActor = null) {
     myActor &&= myActor instanceof Actor ? myActor : fromUuidSync(myActor);
     const skill = await combat.getItem(skillName, 'skill', myActor);
-    let speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-
-    if (skill?.type === 'skill') {
-        if (skill.parent) {
-            speaker = ChatMessage.getSpeaker({actor: skill.parent});
-        }
-    }
 
     const actor = getActor(result, myActor);
     if (!actor) {
@@ -1579,7 +1572,7 @@ export async function setSkillDevelopmentFlag(skillName, myActor = null) {
     }
 
     if (!skill.system.improveFlag) {
-        const updateData = {'system.improveFlag': true};
+        const updateData = {'system.improveFlag': 1};
         await skill.update(updateData);
     }
 

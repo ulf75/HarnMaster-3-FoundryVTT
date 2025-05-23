@@ -358,7 +358,7 @@ Hooks.once('ready', async function () {
 
     // Determine whether a system migration is required
     const currentMigrationVersion = game.settings.get('hm3', 'systemMigrationVersion');
-    const NEEDS_MIGRATION_VERSION = '1.2.19'; // Anything older than this must be migrated
+    const NEEDS_MIGRATION_VERSION = '12.0.90'; // Anything older than this must be migrated
 
     if (currentMigrationVersion) {
         let needMigration = foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentMigrationVersion);

@@ -20,6 +20,7 @@ export async function migrateWorld() {
             }
         } catch (err) {
             err.message = `Failed HM3 system migration for Actor ${a.name}: ${err.message}`;
+            ui.notifications.error(err.message, {permanent: true});
             console.error(err);
         }
     }
@@ -35,6 +36,7 @@ export async function migrateWorld() {
             }
         } catch (err) {
             err.message = `Failed HM3 system migration for Item ${i.name}: ${err.message}`;
+            ui.notifications.error(err.message, {permanent: true});
             console.error(err);
         }
     }
@@ -50,6 +52,7 @@ export async function migrateWorld() {
             }
         } catch (err) {
             err.message = `Failed HM3 system migration for Scene ${s.name}: ${err.message}`;
+            ui.notifications.error(err.message, {permanent: true});
             console.error(err);
         }
     }
@@ -276,7 +279,6 @@ export async function migrateActorData(actor) {
     // Migrate Owned Items
     if (!actor.items) return updateData;
 
-    if (!actor.items) return updateData;
     const items = actor.items.reduce((arr, i) => {
         // Migrate the Owned Item
         const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
@@ -337,6 +339,11 @@ export function migrateItemData(item) {
         updateData['system.macros.type'] = 'script';
     }
 
+    if (Object.hasOwn(item.system, 'improveFlag') && typeof item.system.improveFlag === 'boolean') {
+        // If the improveFlag is a boolean, then set it to 1 or 0
+        updateData['system.improveFlag'] = item.system.improveFlag ? 1 : 0;
+    }
+
     if (item.type === 'weapongear') {
         if (item.system.hasOwnProperty('squeeze')) {
             if (item.system.squeeze) {
@@ -393,7 +400,7 @@ export function migrateItemData(item) {
     }
 
     if (item.type === 'armorgear') {
-        if (!item.system.protection.hasOwnProperty('squeeze')) {
+        if (item.system.protection.hasOwnProperty('squeeze')) {
             if (item.system.protection.squeeze) {
                 updateData['flags.hm-gold.squeeze'] = item.system.protection.squeeze;
             }
@@ -456,20 +463,20 @@ export async function migrateSceneData(scene) {
                 t.actorId = null;
                 t.actorData = {};
             } else if (!t.actorLink) {
-                const actorData = foundry.utils.duplicate(t.actorData);
+                const actorData = foundry.utils.duplicate(t.delta);
                 actorData.type = token.actor?.type;
                 const update = await migrateActorData(actorData);
                 ['items', 'effects'].forEach((embeddedName) => {
                     if (!update[embeddedName]?.length) return;
                     const updates = new Map(update[embeddedName].map((u) => [u._id, u]));
-                    t.actorData[embeddedName].forEach((original) => {
+                    t.delta[embeddedName].forEach((original) => {
                         const update = updates.get(original._id);
                         if (update) foundry.utils.mergeObject(original, update);
                     });
                     delete update[embeddedName];
                 });
 
-                foundry.utils.mergeObject(t.actorData, update);
+                foundry.utils.mergeObject(t.delta, update);
             }
             return t;
         })

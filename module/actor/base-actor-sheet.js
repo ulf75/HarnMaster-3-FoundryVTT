@@ -533,9 +533,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         html.on('click', '.item-name, .fff-name', async (ev) => {
             const el = ev.currentTarget.querySelector('#companion'); //.dataset; // .innerText;
-            const uuid = el.dataset.itemActorUuid;
+            const uuid = el?.dataset?.itemActorUuid;
             const actor = fromUuidSync(uuid);
-            actor.sheet.render(true);
+            actor?.sheet.render(true);
         });
 
         html.on('click', '.item-name, .spell-name', (ev) => {
@@ -1181,7 +1181,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Only process skills and psionics, otherwise ignore
         if (item.type === 'skill' || item.type === 'psionic') {
             if (!item.system.improveFlag) {
-                return item.update({'system.improveFlag': true});
+                return item.update({'system.improveFlag': 1});
             } else {
                 return this._improveToggleDialog(item);
             }
@@ -1225,7 +1225,17 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                         performSDR: {
                             label: game.i18n.localize('hm3.SDR.Perform'),
                             callback: async () => {
-                                await this.actor.skillDevRoll(item);
+                                let num = item.system.improveFlag;
+
+                                if (num <= 2) num = 1; // 1, 2
+                                else if (num <= 5) num = 2; // 3, 4, 5
+                                else if (num <= 9) num = 3; // 6, 7, 8, 9
+                                else if (num <= 14) num = 4; // 10, 11, 12, 13, 14
+                                else num = 5; // 15, 16, ...
+
+                                for (let i = 0; i < num; i++) {
+                                    await this.actor.skillDevRoll(item);
+                                }
                                 resolve(true);
                             }
                         },
@@ -1305,8 +1315,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                         },
                         disableFlag: {
                             label: game.i18n.localize('hm3.SDR.DisableFlag'),
-                            callback: async (html) => {
-                                return item.update({'system.improveFlag': false});
+                            callback: async () => {
+                                return item.update({'system.improveFlag': 0});
                             }
                         }
                     },

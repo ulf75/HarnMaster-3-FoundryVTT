@@ -992,12 +992,12 @@ export class HarnMasterActor extends Actor {
             }
 
             await item.update({
-                'system.improveFlag': false,
+                'system.improveFlag': 0,
                 'system.masteryLevel': +item.system.masteryLevel + (result.sdrIncr === 2 ? 2 : 1)
             });
             return true;
         } else {
-            await item.update({'system.improveFlag': false});
+            await item.update({'system.improveFlag': 0});
             return false;
         }
     }
@@ -1011,7 +1011,6 @@ export class HarnMasterActor extends Actor {
         const button = event.currentTarget;
         button.disabled = true;
         const action = button.dataset.action;
-        const weaponType = button.dataset.weaponType;
         const injuryLevel = button.dataset.injuryLevel;
 
         let actor = null;

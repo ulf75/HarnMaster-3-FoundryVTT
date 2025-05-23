@@ -23,7 +23,7 @@
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,
-    "improveFlag": false,
+    "improveFlag": 0,
     "fatigue": 3,
     "ritual": {
       "piety": 0

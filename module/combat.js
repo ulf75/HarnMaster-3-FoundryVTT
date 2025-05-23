@@ -170,8 +170,8 @@ export async function missileAttack(atkToken, defToken, missileItem) {
     if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
         const skill = options.weapon.system.assocSkill;
         atkToken.actor.items.forEach((item) => {
-            if (item.name === skill && !item.system.improveFlag) {
-                item.update({'system.improveFlag': true});
+            if (item.name === skill && item.type === 'skill') {
+                item.update({'system.improveFlag': item.system.improveFlag + 1});
             }
         });
     }
@@ -363,8 +363,8 @@ export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed
     if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
         const skill = options.weapon.system.assocSkill;
         atkToken.actor.items.forEach((item) => {
-            if (item.name === skill && !item.system.improveFlag) {
-                item.update({'system.improveFlag': true});
+            if (item.name === skill && item.type === 'skill') {
+                item.update({'system.improveFlag': item.system.improveFlag + 1});
             }
         });
     }
@@ -954,8 +954,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
         const skill = defWeapon.system.assocSkill;
         defToken.actor.items.forEach((item) => {
-            if (item.name === skill && !item.system.improveFlag) {
-                item.update({'system.improveFlag': true});
+            if (item.name === skill && item.type === 'skill') {
+                item.update({'system.improveFlag': item.system.improveFlag + 1});
             }
         });
     }
@@ -1136,8 +1136,8 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
         defToken.actor.items.forEach((item) => {
-            if (item.name === 'Dodge' && !item.system.improveFlag) {
-                item.update({'system.improveFlag': true});
+            if (item.name === 'Dodge' && item.type === 'skill') {
+                item.update({'system.improveFlag': item.system.improveFlag + 1});
             }
         });
     }
@@ -1431,8 +1431,8 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
         const skill = defWeapon.system.assocSkill;
         defToken.actor.items.forEach((item) => {
-            if (item.name === skill && !item.system.improveFlag) {
-                item.update({'system.improveFlag': true});
+            if (item.name === skill && item.type === 'skill') {
+                item.update({'system.improveFlag': item.system.improveFlag + 1});
             }
         });
     }

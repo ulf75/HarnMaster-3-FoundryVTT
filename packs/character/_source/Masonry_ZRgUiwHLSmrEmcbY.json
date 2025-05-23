@@ -29,7 +29,7 @@
     "ritual": {
       "piety": 0
     },
-    "improveFlag": false
+    "improveFlag": 0
   },
   "_stats": {
     "systemId": "hm3",

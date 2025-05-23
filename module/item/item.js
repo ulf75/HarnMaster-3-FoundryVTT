@@ -107,6 +107,11 @@ export class HarnMasterItem extends Item {
             itemData.injuryLevel = Math.max(itemData.injuryLevel || 0, 0);
             HarnMasterItem.calcInjurySeverity(this);
         }
+
+        if (Object.hasOwn(itemData, 'improveFlag') && typeof itemData.improveFlag === 'boolean') {
+            // If the improveFlag is a boolean, then set it to 1 or 0
+            itemData.improveFlag = itemData.improveFlag ? 1 : 0;
+        }
     }
 
     _prepareArmorLocationData(itemData) {

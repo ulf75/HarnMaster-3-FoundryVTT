@@ -17,7 +17,7 @@
       "command": ""
     },
     "type": "Psyche",
-    "improveFlag": false
+    "improveFlag": 0
   },
   "_stats": {
     "systemId": "hm3",
