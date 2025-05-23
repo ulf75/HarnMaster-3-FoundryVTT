@@ -126,6 +126,7 @@ HM3.sunsigns = [
 
 HM3.defaultCharacterSkills = [
     'Climbing',
+    'Condition',
     'Jumping',
     'Stealth',
     'Throwing',
