@@ -142,58 +142,10 @@ export async function migrateActorData(actor) {
      * -------- ACTOR UPDATES GO HERE -------------
      */
 
-    if (actorData.abilities?.strength.hasOwnProperty('effective')) {
-        updateData['system.abilities.strength.-=effective'] = null;
-    }
-
-    if (actorData.abilities?.stamina.hasOwnProperty('effective')) {
-        updateData['system.abilities.stamina.-=effective'] = null;
-    }
-
-    if (actorData.abilities?.dexterity.hasOwnProperty('effective')) {
-        updateData['system.abilities.dexterity.-=effective'] = null;
-    }
-
-    if (actorData.abilities?.agility.hasOwnProperty('effective')) {
-        updateData['system.abilities.agility.-=effective'] = null;
-    }
-
-    if (actorData.abilities?.intelligence.hasOwnProperty('effective')) {
-        updateData['system.abilities.intelligence.-=effective'] = null;
-    }
-
-    if (actorData.abilities?.aura.hasOwnProperty('effective')) {
-        updateData['system.abilities.aura.-=effective'] = null;
-    }
-
-    if (actorData.abilities?.will.hasOwnProperty('effective')) {
-        updateData['system.abilities.will.-=effective'] = null;
-    }
-
-    if (actorData.abilities?.eyesight.hasOwnProperty('effective')) {
-        updateData['system.abilities.eyesight.-=effective'] = null;
-    }
-
-    if (actorData.abilities?.hearing.hasOwnProperty('effective')) {
-        updateData['system.abilities.hearing.-=effective'] = null;
-    }
-
-    if (actorData.abilities?.smell.hasOwnProperty('effective')) {
-        updateData['system.abilities.smell.-=effective'] = null;
-    }
-
-    if (actorData.abilities?.voice.hasOwnProperty('effective')) {
-        updateData['system.abilities.voice.-=effective'] = null;
-    }
-
     if (actorData.abilities?.hasOwnProperty('comliness')) {
         // Rename 'comliness' to 'comeliness'
         updateData['system.abilities.comeliness.base'] = actorData.abilities.comliness.base;
         updateData['system.abilities.-=comliness'] = null;
-    }
-
-    if (actorData.abilities?.morality.hasOwnProperty('effective')) {
-        updateData['system.abilities.morality.-=effective'] = null;
     }
 
     if (actorData.abilities?.hasOwnProperty('endurance')) {
@@ -224,48 +176,8 @@ export async function migrateActorData(actor) {
         updateData['system.abilities.-=frame'] = null;
     }
 
-    // if (actorData.hasOwnProperty('shockIndex')) {
-    //   updateData['system.-=shockIndex'] = null
-    // }
-
-    if (actorData.hasOwnProperty('dodge')) {
-        updateData['system.-=dodge'] = null;
-    }
-
-    if (actorData.hasOwnProperty('initiative')) {
-        updateData['system.-=initiative'] = null;
-    }
-
-    if (actorData.hasOwnProperty('endurance')) {
-        updateData['system.-=endurance'] = null;
-    }
-
-    if (actorData.move?.hasOwnProperty('effective')) {
-        updateData['system.move.-=effective'] = null;
-    }
-
-    if (actorData.hasOwnProperty('universalPenalty')) {
-        updateData['system.-=universalPenalty'] = null;
-    }
-
-    if (actorData.hasOwnProperty('physicalPenalty')) {
-        updateData['system.-=physicalPenalty'] = null;
-    }
-
-    if (actorData.hasOwnProperty('totalInjuryLevels')) {
-        updateData['system.-=totalInjuryLevels'] = null;
-    }
-
     if (actorData.hasOwnProperty('hasCondition')) {
         updateData['system.-=hasCondition'] = null;
-    }
-
-    if (actorData.hasOwnProperty('encumbrance')) {
-        updateData['system.-=encumbrance'] = null;
-    }
-
-    if (actorData.hasOwnProperty('totalWeight')) {
-        updateData['system.-=totalWeight'] = null;
     }
 
     if (!actorData.hasOwnProperty('macros') || !actorData.macros.hasOwnProperty('type')) {
@@ -481,7 +393,8 @@ export async function migrateSceneData(scene) {
             return t;
         })
     );
-    return {tokens};
+
+    return tokens.length ? {tokens} : {};
 }
 
 /* -------------------------------------------- */
