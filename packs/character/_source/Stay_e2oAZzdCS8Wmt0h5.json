@@ -1,0 +1,48 @@
+{
+  "_id": "e2oAZzdCS8Wmt0h5",
+  "name": "Stay",
+  "type": "skill",
+  "img": "systems/hm3/images/icons/svg/running-dog-silhouette.svg",
+  "effects": [],
+  "folder": "Ij5fwgmSug2RjFKu",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>The ability to stop and remain motionless regardless of temptation and await another command. Except on a CS result, the command must be repeated whenever a new temptation arises.</p>",
+    "source": "Dogs 2",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "type": "Physical",
+    "skillBase": {
+      "value": 0,
+      "formula": "@int, @wil, @wil",
+      "isFormulaValid": true,
+      "SBx": 4,
+      "training": 0
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "ritual": {
+      "piety": 0
+    },
+    "improveFlag": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284333879,
+    "modifiedTime": 1689285072117,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!e2oAZzdCS8Wmt0h5"
+}

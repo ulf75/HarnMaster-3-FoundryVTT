@@ -1,0 +1,48 @@
+{
+  "_id": "xeP96PJER1UGmL0w",
+  "name": "Heel",
+  "type": "skill",
+  "img": "systems/hm3/images/icons/svg/running-dog-silhouette.svg",
+  "effects": [],
+  "folder": "Ij5fwgmSug2RjFKu",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>The ability to walk quietly beside the master's heel without straying. This is thought a sign of a well-trained dog and a competent master.</p>",
+    "source": "Dogs 2",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "type": "Physical",
+    "skillBase": {
+      "value": 0,
+      "formula": "@int, @wil, @wil",
+      "isFormulaValid": true,
+      "SBx": 3,
+      "training": 0
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "ritual": {
+      "piety": 0
+    },
+    "improveFlag": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284333879,
+    "modifiedTime": 1689285072117,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!xeP96PJER1UGmL0w"
+}
