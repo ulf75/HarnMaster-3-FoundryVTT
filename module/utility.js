@@ -604,6 +604,7 @@ export function getActorFromMacro(macro) {
  * @returns truncated number
  */
 export function truncatedOML(value) {
+    if (!game.settings.get('hm3', 'truncateHighValueSkills')) return value;
     if (value <= 70) return value;
     else if (value <= 72) return 71;
     else if (value <= 74) return 72;

@@ -512,7 +512,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         html.find('.character-mancer').click(async (ev) => {
             await this.actor.unsetFlag('hm3', 'CharacterMancer');
-            item.sheet.render(true);
+            this.actor.sheet.render();
         });
 
         // Add Inventory Item

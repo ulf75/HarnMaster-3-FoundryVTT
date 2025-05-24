@@ -1,6 +1,6 @@
 import {HarnMasterActor} from '../actor/actor.js';
 import {HM3} from '../config.js';
-import {ItemType} from '../hm3-types.js';
+import {ItemType, SkillType} from '../hm3-types.js';
 import * as utility from '../utility.js';
 
 /**
@@ -33,7 +33,7 @@ export class HarnMasterItem extends Item {
             }
         }
 
-        if (this.type === 'armorlocation') {
+        if (this.type === ItemType.ARMORLOCATION) {
             this._prepareArmorLocationData(itemData);
         }
 
@@ -58,7 +58,12 @@ export class HarnMasterItem extends Item {
             if (this.actor) {
                 if (itemData.masteryLevel === 0 && itemData.skillBase.SBx) {
                     const OP = Math.round((Number(itemData.skillBase.OP) || 0) / 2);
-                    itemData.masteryLevel = utility.truncatedOML((Number(itemData.skillBase.SBx) + OP) * itemData.skillBase.value);
+                    const val = (Number(itemData.skillBase.SBx) + OP) * itemData.skillBase.value;
+                    if (this.name.includes('Condition') && 5 * itemData.skillBase.value > 70) {
+                        // the regular endurance should be not punished
+                        const diff = 5 * itemData.skillBase.value - 70;
+                        itemData.masteryLevel = utility.truncatedOML(val - diff) + diff;
+                    } else itemData.masteryLevel = utility.truncatedOML(val);
                 }
             }
 
@@ -68,8 +73,8 @@ export class HarnMasterItem extends Item {
 
             // Set EML for skills based on UP/PP
             switch (itemData.type) {
-                case 'Combat':
-                case 'Physical':
+                case SkillType.COMBAT:
+                case SkillType.PHYSICAL:
                     if (this.name.includes('Riding') && itemData.actorUuid) {
                         const steed = fromUuidSync(itemData.actorUuid);
                         steed.prepareData();
@@ -146,7 +151,7 @@ export class HarnMasterItem extends Item {
         // some values directly from the actor.
         if (this.actor) {
             // If a weapon or a missile, get the associated skill
-            if ((this.type === 'weapongear' || this.type === 'missilegear') && !itemData.assocSkill) {
+            if ((this.type === ItemType.WEAPONGEAR || this.type === ItemType.MISSILEGEAR) && !itemData.assocSkill) {
                 updateData['system.assocSkill'] = utility.getAssocSkill(this.name, this.actor.itemTypes.skill, 'None');
                 itemData.assocSkill = updateData['system.assocSkill'];
             }
@@ -154,7 +159,7 @@ export class HarnMasterItem extends Item {
             // If it is a spell, initialize the convocation to the
             // first magic skill found; it is really unimportant what the
             // value is, so long as it is a valid skill for this character
-            if (this.type === 'spell' && !itemData.convocation) {
+            if (this.type === ItemType.SPELL && !itemData.convocation) {
                 // Most spellcasters have two convocations: Neutral and another,
                 // maybe several others.  Most spells are going to be of the
                 // non-Neutral variety.  So, we want to prefer using the non-Neutral
@@ -165,7 +170,7 @@ export class HarnMasterItem extends Item {
                 // convocations, give up and don't make any changes.
                 let hasNeutral = false;
                 for (let skill of this.actor.itemTypes.skill.values()) {
-                    if (skill.system.type === 'Magic') {
+                    if (skill.system.type === SkillType.MAGIC) {
                         if (skill.name === 'Neutral') {
                             hasNeutral = true;
                             continue;
@@ -186,7 +191,7 @@ export class HarnMasterItem extends Item {
             // value is, so long as it is a valid skill for this character
             if (itemData.type === 'invocation' && !itemData.diety) {
                 for (let skill of this.actor.itemTypes.skill.values()) {
-                    if (skill.system.type === 'Ritual') {
+                    if (skill.system.type === SkillType.RITUAL) {
                         updateData['system.diety'] = skill.name;
                         itemData.diety = skill.name;
                         break;
@@ -203,9 +208,9 @@ export class HarnMasterItem extends Item {
         if (!updateData.img) {
             switch (this.type) {
                 case ItemType.SKILL:
-                    if (itemData.type === 'Ritual') {
+                    if (itemData.type === SkillType.RITUAL) {
                         updateData.img = utility.getImagePath(HM3.defaultRitualIconName);
-                    } else if (itemData.type === 'Magic') {
+                    } else if (itemData.type === SkillType.MAGIC) {
                         updateData.img = utility.getImagePath(HM3.defaultMagicIconName);
                     }
                     break;

@@ -177,6 +177,15 @@ export const registerSystemSettings = function () {
         type: Boolean
     });
 
+    game.settings.register('hm3', 'truncateHighValueSkills', {
+        name: 'NEW Truncate High Value Skills',
+        hint: 'If selected, the skills are truncated according to HMA_Rulebook_v1.4.pdf.',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean
+    });
+
     game.settings.register('hm3', 'debugMode', {
         name: 'NEW Debug Mode',
         hint: 'If selected, Debug Mode is active.',

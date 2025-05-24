@@ -1,6 +1,6 @@
 import {HM3} from '../config.js';
 import {DiceHM3} from '../dice-hm3.js';
-import {ItemType} from '../hm3-types.js';
+import {ItemType, SkillType} from '../hm3-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 
@@ -275,7 +275,7 @@ export class HarnMasterActor extends Actor {
     static _setupLocation(locName, templateName) {
         const armorLocationData = foundry.utils.deepClone(game.model.Item.armorlocation);
         foundry.utils.mergeObject(armorLocationData, HM3.injuryLocations[templateName]);
-        return {name: locName, type: 'armorlocation', system: armorLocationData};
+        return {name: locName, type: ItemType.ARMORLOCATION, system: armorLocationData};
     }
 
     /**
@@ -382,28 +382,6 @@ export class HarnMasterActor extends Actor {
         actorData.condition = 0;
         actorData.mounted = !!actorData.mounted;
 
-        // Calculate endurance (in case Condition not present)
-        actorData.endurance = Math.round((actorData.abilities.strength.base + actorData.abilities.stamina.base + actorData.abilities.will.base) / 3);
-
-        // Calculate values based on items
-        actorItems.forEach((it) => {
-            const itemData = it.system;
-            if (it.type === 'injury') {
-                // Calculate total injury levels
-                actorData.totalInjuryLevels += itemData.injuryLevel || 0;
-            } else if (it.type === 'skill' && it.name.toLowerCase() === 'condition') {
-                // if Condition skill is present, use that for endurance instead
-                actorData.endurance = Math.round((itemData.masteryLevel || 5 * actorData.endurance) / 5);
-                actorData.condition = itemData.masteryLevel;
-            }
-        });
-
-        // Safety net: We divide things by endurance, so ensure it is > 0
-        actorData.endurance = Math.max(actorData.endurance, 1);
-
-        eph.effectiveWeight = actorData.loadRating ? Math.max(actorData.totalWeight - actorData.loadRating, 0) : actorData.totalWeight;
-        actorData.encumbrance = Math.floor(eph.effectiveWeight / actorData.endurance);
-
         // Setup temporary work values masking the base values
         eph.move = actorData.move.base;
         eph.fatigue = actorData.fatigue;
@@ -439,6 +417,35 @@ export class HarnMasterActor extends Actor {
         eph.itemEMLMod = 0;
         eph.itemCustomMod = 0;
         eph.unhorsing = 0;
+
+        // Calculate endurance (in case Condition not present)
+        actorData.endurance = Math.round((actorData.abilities.strength.base + actorData.abilities.stamina.base + actorData.abilities.will.base) / 3);
+
+        // Calculate values based on items
+        actorItems.forEach((it) => {
+            const itemData = it.system;
+            if (it.type === ItemType.INJURY) {
+                // Calculate total injury levels
+                actorData.totalInjuryLevels += itemData.injuryLevel || 0;
+            } else if (it.type === ItemType.SKILL && it.name.includes('Condition')) {
+                // if Condition skill is present, use that for endurance instead
+                if (!itemData.masteryLevel) {
+                    actorData.abilities.strength.modified = eph.strength;
+                    actorData.abilities.stamina.modified = eph.stamina;
+                    actorData.abilities.will.modified = eph.will;
+                    it.prepareData();
+                    it.postProcessItems();
+                }
+                actorData.endurance = Math.round((itemData.masteryLevel * actorData.endurance) / 5);
+                actorData.condition = itemData.masteryLevel;
+            }
+        });
+
+        // Safety net: We divide things by endurance, so ensure it is > 0
+        actorData.endurance = Math.max(actorData.endurance, 1);
+
+        eph.effectiveWeight = actorData.loadRating ? Math.max(actorData.totalWeight - actorData.loadRating, 0) : actorData.totalWeight;
+        actorData.encumbrance = Math.floor(eph.effectiveWeight / actorData.endurance);
 
         Hooks.call('hm3.onActorPrepareBaseData', this);
     }
@@ -526,7 +533,7 @@ export class HarnMasterActor extends Actor {
             it.postProcessItems();
 
             // Apply AE based on skill types (not based on individual skills, that comes later)
-            if (['skill', 'psionic'].includes(it.type)) {
+            if ([ItemType.SKILL, ItemType.PSIONIC].includes(it.type)) {
                 this.applySkillTypeActiveEffect(it);
             }
         });
@@ -541,7 +548,7 @@ export class HarnMasterActor extends Actor {
         let combatSkills = {};
         this.items.forEach((it) => {
             const itemData = it.system;
-            if (it.type === 'skill' && (itemData.type === 'Combat' || it.name.toLowerCase() === 'throwing')) {
+            if (it.type === ItemType.SKILL && (itemData.type === SkillType.COMBAT || it.name.toLowerCase() === 'throwing')) {
                 combatSkills[it.name] = {
                     'name': it.name,
                     'eml': itemData.effectiveMasteryLevel
@@ -559,7 +566,7 @@ export class HarnMasterActor extends Actor {
         // Store "special" skill properties
         this.items.forEach((it) => {
             const itemData = it.system;
-            if (it.type === 'skill') {
+            if (it.type === ItemType.SKILL) {
                 switch (it.name.toLowerCase()) {
                     case 'dodge':
                         actorData.dodge = itemData.effectiveMasteryLevel;
@@ -597,7 +604,7 @@ export class HarnMasterActor extends Actor {
         // Find all containergear, and track whether container is carried or not
         const containerCarried = {};
         actorItems.forEach((it) => {
-            if (it.type === 'containergear') {
+            if (it.type === ItemType.CONTAINERGEAR) {
                 containerCarried[it.id] = it.system.isCarried;
             }
         });
@@ -647,7 +654,7 @@ export class HarnMasterActor extends Actor {
 
         // Initialize all container capacity values
         this.items.forEach((it) => {
-            if (it.type === 'containergear') it.system.capacity.value = 0;
+            if (it.type === ItemType.CONTAINERGEAR) it.system.capacity.value = 0;
         });
 
         this.items.forEach((it) => {
@@ -664,26 +671,26 @@ export class HarnMasterActor extends Actor {
             }
 
             switch (it.type) {
-                case 'weapongear':
+                case ItemType.WEAPONGEAR:
                     tempWeight = Math.max(itemData.weight * itemData.quantity, 0);
                     if (!itemData.isCarried) break;
                     eph.totalWeaponWeight += tempWeight;
                     break;
 
-                case 'missilegear':
+                case ItemType.MISSILEGEAR:
                     tempWeight = Math.max(itemData.weight * itemData.quantity, 0);
                     if (!itemData.isCarried) break;
                     eph.totalMissileWeight += tempWeight;
                     break;
 
-                case 'armorgear':
+                case ItemType.ARMORGEAR:
                     tempWeight = Math.max(itemData.weight * itemData.quantity, 0);
                     if (!itemData.isCarried) break;
                     eph.totalArmorWeight += tempWeight;
                     break;
 
-                case 'miscgear':
-                case 'containergear':
+                case ItemType.MISCGEAR:
+                case ItemType.CONTAINERGEAR:
                     tempWeight = Math.max(itemData.weight * itemData.quantity, 0);
                     if (!itemData.isCarried) break;
                     eph.totalMiscGearWeight += tempWeight;
@@ -754,7 +761,7 @@ export class HarnMasterActor extends Actor {
 
         this.items.forEach((it) => {
             const itemData = it.system;
-            if (it.type === 'missilegear') {
+            if (it.type === ItemType.MISSILEGEAR) {
                 // Reset mastery levels in case nothing matches
                 itemData.attackMasteryLevel = 5;
 
@@ -765,7 +772,7 @@ export class HarnMasterActor extends Actor {
                     let skillEml = combatSkills[assocSkill].eml;
                     itemData.attackMasteryLevel = (skillEml || 0) + (itemData.attackModifier || 0);
                 }
-            } else if (it.type === 'weapongear') {
+            } else if (it.type === ItemType.WEAPONGEAR) {
                 // Reset mastery levels in case nothing matches
                 itemData.attackMasteryLevel = 5;
                 itemData.defenseMasteryLevel = 5;
@@ -801,19 +808,19 @@ export class HarnMasterActor extends Actor {
         this.items.forEach((it) => {
             const itemData = it.system;
             switch (it.type) {
-                case 'skill':
-                case 'psionic':
-                case 'spell':
-                case 'invocation':
+                case ItemType.SKILL:
+                case ItemType.PSIONIC:
+                case ItemType.SPELL:
+                case ItemType.INVOCATION:
                     itemData.effectiveMasteryLevel = Math.max(itemData.effectiveMasteryLevel, 5);
                     break;
 
-                case 'weapongear':
+                case ItemType.WEAPONGEAR:
                     itemData.attackMasteryLevel = Math.max(itemData.attackMasteryLevel, 5);
                     itemData.defenseMasteryLevel = Math.max(itemData.defenseMasteryLevel, 5);
                     break;
 
-                case 'missilegear':
+                case ItemType.MISSILEGEAR:
                     itemData.attackMasteryLevel = Math.max(itemData.attackMasteryLevel, 5);
                     break;
             }
@@ -824,19 +831,19 @@ export class HarnMasterActor extends Actor {
         this.items.forEach((it) => {
             const itemData = it.system;
             switch (it.type) {
-                case 'skill':
-                case 'psionic':
-                case 'spell':
-                case 'invocation':
+                case ItemType.SKILL:
+                case ItemType.PSIONIC:
+                case ItemType.SPELL:
+                case ItemType.INVOCATION:
                     itemData.effectiveMasteryLevel = Math.min(Math.max(itemData.effectiveMasteryLevel, 5), 95);
                     break;
 
-                case 'weapongear':
+                case ItemType.WEAPONGEAR:
                     itemData.attackMasteryLevel = Math.min(Math.max(itemData.attackMasteryLevel, 5), 95);
                     itemData.defenseMasteryLevel = Math.min(Math.max(itemData.defenseMasteryLevel, 5), 95);
                     break;
 
-                case 'missilegear':
+                case ItemType.MISSILEGEAR:
                     itemData.attackMasteryLevel = Math.min(Math.max(itemData.attackMasteryLevel, 5), 95);
                     break;
             }
@@ -847,9 +854,9 @@ export class HarnMasterActor extends Actor {
         this._resetAllSpellsAndInvocations();
         this.items.forEach((it) => {
             const itemData = it.system;
-            if (it.type === 'skill' && itemData.type === 'Magic') {
+            if (it.type === ItemType.SKILL && itemData.type === SkillType.MAGIC) {
                 this._setConvocationSpells(it.name, itemData.skillBase.value, itemData.masteryLevel, itemData.effectiveMasteryLevel);
-            } else if (it.type === 'skill' && itemData.type === 'Ritual') {
+            } else if (it.type === ItemType.SKILL && itemData.type === SkillType.RITUAL) {
                 this._setRitualInvocations(it.name, itemData.skillBase.value, itemData.masteryLevel, itemData.effectiveMasteryLevel);
             }
         });
@@ -858,7 +865,7 @@ export class HarnMasterActor extends Actor {
     _resetAllSpellsAndInvocations() {
         this.items.forEach((it) => {
             const itemData = it.system;
-            if (it.type === 'spell' || it.type === 'invocation') {
+            if (it.type === ItemType.SPELL || it.type === ItemType.INVOCATION) {
                 itemData.effectiveMasteryLevel = 0;
                 itemData.skillIndex = 0;
                 itemData.masteryLevel = 0;
@@ -873,7 +880,7 @@ export class HarnMasterActor extends Actor {
         let lcConvocation = convocation.toLowerCase();
         this.items.forEach((it) => {
             const itemData = it.system;
-            if (it.type === 'spell' && itemData.convocation && itemData.convocation.toLowerCase() === lcConvocation) {
+            if (it.type === ItemType.SPELL && itemData.convocation && itemData.convocation.toLowerCase() === lcConvocation) {
                 itemData.effectiveMasteryLevel = eml - itemData.level * 5;
                 itemData.skillIndex = Math.floor(ml / 10);
                 itemData.masteryLevel = ml;
@@ -888,7 +895,7 @@ export class HarnMasterActor extends Actor {
         let lcDiety = diety.toLowerCase();
         this.items.forEach((it) => {
             const itemData = it.system;
-            if (it.type === 'invocation' && itemData.diety && itemData.diety.toLowerCase() === lcDiety) {
+            if (it.type === ItemType.INVOCATION && itemData.diety && itemData.diety.toLowerCase() === lcDiety) {
                 itemData.effectiveMasteryLevel = eml - itemData.circle * 5;
                 itemData.skillIndex = Math.floor(ml / 10);
                 itemData.masteryLevel = ml;
@@ -916,7 +923,7 @@ export class HarnMasterActor extends Actor {
         this.items.forEach((it) => {
             const itemData = it.system;
 
-            if (it.type === 'armorgear' && itemData.isCarried && itemData.isEquipped) {
+            if (it.type === ItemType.ARMORGEAR && itemData.isCarried && itemData.isEquipped) {
                 // Go through all of the armor locations for this armor,
                 // applying this armor's settings to each location
 
@@ -964,7 +971,7 @@ export class HarnMasterActor extends Actor {
         // existing armor locations
         this.items.forEach((it) => {
             const itemData = it.system;
-            if (it.type === 'armorlocation') {
+            if (it.type === ItemType.ARMORLOCATION) {
                 let armorProt = armorArray.find((a) => a.name === itemData.impactType);
 
                 // We will ignore any armorProt if there is no armor values specified
@@ -984,7 +991,7 @@ export class HarnMasterActor extends Actor {
 
         if (result?.sdrIncr) {
             // Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)
-            if (item.type === 'skill' && result.sdrIncr === 2) {
+            if (item.type === ItemType.SKILL && result.sdrIncr === 2) {
                 if (item.system.masteryLevel < 40) {
                     await game.hm3.GmSays(`<h4>${this.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.SkillSpecialty'), 'SKILLS 2');
                     return false;
@@ -1188,7 +1195,7 @@ export class HarnMasterActor extends Actor {
                     const magnitude = Number.parseFloat(val[1]);
                     if (isNaN(magnitude)) return false;
                     const skillName = val[0];
-                    return Array.from(ownedItems).some((i) => i.name === skillName && (i.type === 'skill' || i.type === 'psionic'));
+                    return Array.from(ownedItems).some((i) => i.name === skillName && (i.type === ItemType.SKILL || i.type === ItemType.PSIONIC));
                 } else {
                     return false;
                 }
@@ -1240,7 +1247,7 @@ export class HarnMasterActor extends Actor {
                     if (isNaN(magnitude)) return false;
                     const skillName = val[0];
                     for (let item of this.items.contents) {
-                        if (item.name === skillName && (item.type === 'weapongear' || item.type === 'missilegear')) return true;
+                        if (item.name === skillName && (item.type === ItemType.WEAPONGEAR || item.type === ItemType.MISSILEGEAR)) return true;
                     }
                 }
 
@@ -1255,7 +1262,7 @@ export class HarnMasterActor extends Actor {
                     if (isNaN(magnitude)) return false;
                     const skillName = val[0];
                     for (let item of this.items.contents) {
-                        if (item.name === skillName && item.type === 'weapongear') return true;
+                        if (item.name === skillName && item.type === ItemType.WEAPONGEAR) return true;
                     }
                 }
 
@@ -1360,16 +1367,16 @@ export class HarnMasterActor extends Actor {
         // Organize non-disabled effects by their application priority
         const changes = this.allApplicableEffects(true).reduce((chgs, e) => {
             if (e.disabled || e.duration?.startTime > game.time.worldTime) return chgs;
-            if (!['skill', 'psionic'].includes(skill.type)) return chgs;
+            if (![ItemType.SKILL, ItemType.PSIONIC].includes(skill.type)) return chgs;
             const skillChanges = e.changes.filter(
                 (chg) =>
-                    (chg.key === 'system.eph.commSkillsMod' && skillData.type === 'Communication') ||
-                    (chg.key === 'system.eph.physicalSkillsMod' && skillData.type === 'Physical') ||
-                    (chg.key === 'system.eph.combatSkillsMod' && skillData.type === 'Combat') ||
-                    (chg.key === 'system.eph.craftSkillsMod' && skillData.type === 'Craft') ||
-                    (chg.key === 'system.eph.ritualSkillsMod' && skillData.type === 'Ritual') ||
-                    (chg.key === 'system.eph.magicSkillsMod' && skillData.type === 'Magic') ||
-                    (chg.key === 'system.eph.psionicTalentsMod' && skill.type === 'psionic')
+                    (chg.key === 'system.eph.commSkillsMod' && skillData.type === SkillType.COMMUNICATION) ||
+                    (chg.key === 'system.eph.physicalSkillsMod' && skillData.type === SkillType.PHYSICAL) ||
+                    (chg.key === 'system.eph.combatSkillsMod' && skillData.type === SkillType.COMBAT) ||
+                    (chg.key === 'system.eph.craftSkillsMod' && skillData.type === SkillType.CRAFT) ||
+                    (chg.key === 'system.eph.ritualSkillsMod' && skillData.type === SkillType.RITUAL) ||
+                    (chg.key === 'system.eph.magicSkillsMod' && skillData.type === SkillType.MAGIC) ||
+                    (chg.key === 'system.eph.psionicTalentsMod' && skill.type === ItemType.PSIONIC)
             );
             return chgs.concat(
                 skillChanges.map((c) => {
@@ -1394,7 +1401,7 @@ export class HarnMasterActor extends Actor {
         // Organize non-disabled effects by their application priority
         const changes = this.effects.reduce((chgs, e) => {
             if (e.disabled) return chgs;
-            if (!['weapongear', 'missilegear'].includes(weapon.type)) return chgs;
+            if (![ItemType.WEAPONGEAR, ItemType.MISSILEGEAR].includes(weapon.type)) return chgs;
             const weaponChanges = e.changes.filter(
                 chg => ['system.eph.meleeAMLMod', 'system.eph.meleeDMLMod', 'system.eph.missileAMLMod'].includes(chg.key));
             return chgs.concat(weaponChanges.map(c => {
