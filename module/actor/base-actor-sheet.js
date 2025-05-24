@@ -531,11 +531,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Dump Esoteric Description to Chat
         html.find('.item-dumpdesc').click(this._onDumpEsotericDescription.bind(this));
 
-        html.on('click', '.item-name, .fff-name', async (ev) => {
+        html.on('click', '.fff-name', (ev) => {
             const el = ev.currentTarget.querySelector('#companion'); //.dataset; // .innerText;
-            const uuid = el?.dataset?.itemActorUuid;
+            if (!el) return;
+            const uuid = el.dataset.itemActorUuid;
             const actor = fromUuidSync(uuid);
-            actor?.sheet.render(true);
+            actor.sheet.render(true);
         });
 
         html.on('click', '.item-name, .spell-name', (ev) => {

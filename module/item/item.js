@@ -60,7 +60,7 @@ export class HarnMasterItem extends Item {
                     const OP = Math.round((Number(itemData.skillBase.OP) || 0) / 2);
                     const val = (Number(itemData.skillBase.SBx) + OP) * itemData.skillBase.value;
                     if (this.name.includes('Condition') && 5 * itemData.skillBase.value > 70) {
-                        // the regular endurance should be not punished
+                        // the regular endurance should not be punished
                         const diff = 5 * itemData.skillBase.value - 70;
                         itemData.masteryLevel = utility.truncatedOML(val - diff) + diff;
                     } else itemData.masteryLevel = utility.truncatedOML(val);
