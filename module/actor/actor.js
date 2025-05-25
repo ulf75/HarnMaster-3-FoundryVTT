@@ -1,5 +1,5 @@
 import {HM3} from '../config.js';
-import {DiceHM3} from '../dice-hm3.js';
+import {DiceHM3} from '../hm3-dice.js';
 import {ItemType, SkillType} from '../hm3-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
@@ -8,7 +8,7 @@ import * as utility from '../utility.js';
  * Extend the base Actor by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
-export class HarnMasterActor extends Actor {
+export class ActorHM3 extends Actor {
     get macrolist() {
         return game.macros.contents.filter((m) => m.getFlag('hm3', 'ownerId') === this.id) || [];
     }
@@ -211,10 +211,10 @@ export class HarnMasterActor extends Actor {
             updateData.items = [];
 
             // Add standard skills
-            await HarnMasterActor.addItemsFromPack(HM3.defaultCharacterSkills, ['hm3.character'], updateData.items);
+            await ActorHM3.addItemsFromPack(HM3.defaultCharacterSkills, ['hm3.character'], updateData.items);
 
             // Add standard armor locations
-            HarnMasterActor._createDefaultHumanoidLocations(updateData.items);
+            ActorHM3._createDefaultHumanoidLocations(updateData.items);
         } else if (createData.type === 'creature') {
             updateData['system.description'] = '';
             updateData['system.biography'] =
@@ -223,7 +223,7 @@ export class HarnMasterActor extends Actor {
             updateData.items = [];
 
             // Add standard skills
-            await HarnMasterActor.addItemsFromPack(HM3.defaultCreatureSkills, ['hm3.character'], updateData.items);
+            await ActorHM3.addItemsFromPack(HM3.defaultCreatureSkills, ['hm3.character'], updateData.items);
         } else if (createData.type === 'container') {
             updateData['system.capacity.max'] = 1;
             updateData['system.description'] = '';
@@ -285,32 +285,32 @@ export class HarnMasterActor extends Actor {
      * @param {*} items Array of ItemData elements
      */
     static _createDefaultHumanoidLocations(items) {
-        items.push(HarnMasterActor._setupLocation('Skull', 'Skull'));
-        items.push(HarnMasterActor._setupLocation('Face', 'Face'));
-        items.push(HarnMasterActor._setupLocation('Neck', 'Neck'));
-        items.push(HarnMasterActor._setupLocation('Left Shoulder', 'Shoulder'));
-        items.push(HarnMasterActor._setupLocation('Right Shoulder', 'Shoulder'));
-        items.push(HarnMasterActor._setupLocation('Left Upper Arm', 'Upper Arm'));
-        items.push(HarnMasterActor._setupLocation('Right Upper Arm', 'Upper Arm'));
-        items.push(HarnMasterActor._setupLocation('Left Elbow', 'Elbow'));
-        items.push(HarnMasterActor._setupLocation('Right Elbow', 'Elbow'));
-        items.push(HarnMasterActor._setupLocation('Left Forearm', 'Forearm'));
-        items.push(HarnMasterActor._setupLocation('Right Forearm', 'Forearm'));
-        items.push(HarnMasterActor._setupLocation('Left Hand', 'Hand'));
-        items.push(HarnMasterActor._setupLocation('Right Hand', 'Hand'));
-        items.push(HarnMasterActor._setupLocation('Thorax', 'Thorax'));
-        items.push(HarnMasterActor._setupLocation('Abdomen', 'Abdomen'));
-        items.push(HarnMasterActor._setupLocation('Groin', 'Groin'));
-        items.push(HarnMasterActor._setupLocation('Left Hip', 'Hip'));
-        items.push(HarnMasterActor._setupLocation('Right Hip', 'Hip'));
-        items.push(HarnMasterActor._setupLocation('Left Thigh', 'Thigh'));
-        items.push(HarnMasterActor._setupLocation('Right Thigh', 'Thigh'));
-        items.push(HarnMasterActor._setupLocation('Left Knee', 'Knee'));
-        items.push(HarnMasterActor._setupLocation('Right Knee', 'Knee'));
-        items.push(HarnMasterActor._setupLocation('Left Calf', 'Calf'));
-        items.push(HarnMasterActor._setupLocation('Right Calf', 'Calf'));
-        items.push(HarnMasterActor._setupLocation('Left Foot', 'Foot'));
-        items.push(HarnMasterActor._setupLocation('Right Foot', 'Foot'));
+        items.push(ActorHM3._setupLocation('Skull', 'Skull'));
+        items.push(ActorHM3._setupLocation('Face', 'Face'));
+        items.push(ActorHM3._setupLocation('Neck', 'Neck'));
+        items.push(ActorHM3._setupLocation('Left Shoulder', 'Shoulder'));
+        items.push(ActorHM3._setupLocation('Right Shoulder', 'Shoulder'));
+        items.push(ActorHM3._setupLocation('Left Upper Arm', 'Upper Arm'));
+        items.push(ActorHM3._setupLocation('Right Upper Arm', 'Upper Arm'));
+        items.push(ActorHM3._setupLocation('Left Elbow', 'Elbow'));
+        items.push(ActorHM3._setupLocation('Right Elbow', 'Elbow'));
+        items.push(ActorHM3._setupLocation('Left Forearm', 'Forearm'));
+        items.push(ActorHM3._setupLocation('Right Forearm', 'Forearm'));
+        items.push(ActorHM3._setupLocation('Left Hand', 'Hand'));
+        items.push(ActorHM3._setupLocation('Right Hand', 'Hand'));
+        items.push(ActorHM3._setupLocation('Thorax', 'Thorax'));
+        items.push(ActorHM3._setupLocation('Abdomen', 'Abdomen'));
+        items.push(ActorHM3._setupLocation('Groin', 'Groin'));
+        items.push(ActorHM3._setupLocation('Left Hip', 'Hip'));
+        items.push(ActorHM3._setupLocation('Right Hip', 'Hip'));
+        items.push(ActorHM3._setupLocation('Left Thigh', 'Thigh'));
+        items.push(ActorHM3._setupLocation('Right Thigh', 'Thigh'));
+        items.push(ActorHM3._setupLocation('Left Knee', 'Knee'));
+        items.push(ActorHM3._setupLocation('Right Knee', 'Knee'));
+        items.push(ActorHM3._setupLocation('Left Calf', 'Calf'));
+        items.push(ActorHM3._setupLocation('Right Calf', 'Calf'));
+        items.push(ActorHM3._setupLocation('Left Foot', 'Foot'));
+        items.push(ActorHM3._setupLocation('Right Foot', 'Foot'));
     }
 
     /**
@@ -504,15 +504,15 @@ export class HarnMasterActor extends Actor {
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
         // endurance, move, etc.
-        HarnMasterActor.calcUniversalPenalty(this);
+        ActorHM3.calcUniversalPenalty(this);
         this.applySpecificActiveEffect('system.universalPenalty');
         actorData.universalPenalty = Math.floor(Math.max(actorData.universalPenalty || 0, 0));
 
-        HarnMasterActor.calcPhysicalPenalty(this);
+        ActorHM3.calcPhysicalPenalty(this);
         this.applySpecificActiveEffect('system.physicalPenalty');
         actorData.physicalPenalty = Math.floor(Math.max(actorData.physicalPenalty || 0, 0));
 
-        HarnMasterActor.calcShockIndex(this);
+        ActorHM3.calcShockIndex(this);
 
         // Calculate current Move speed.  Cannot go below 0
         // HEURISTIC: Assume if base move < 25 that user is specifying hexes for movement (use PP as penalty);
@@ -1360,7 +1360,7 @@ export class HarnMasterActor extends Actor {
      * For instance, if the skill is a communication skill, then it will apply the
      * data.eph.commSkillsMod modifier to the effectiveMasteryLevel for that skill.
      *
-     * @param {Item} skill The item representing the skill to apply the active effect to.
+     * @param {ItemHM3} skill The item representing the skill to apply the active effect to.
      */
     applySkillTypeActiveEffect(skill) {
         const skillData = skill.system;
@@ -1499,7 +1499,7 @@ export class HarnMasterActor extends Actor {
         if (sd == 0) {
             prob = z < mean ? 0 : 100;
         } else {
-            prob = Math.round(HarnMasterActor._normalcdf((z - mean) / sd) * 100);
+            prob = Math.round(ActorHM3._normalcdf((z - mean) / sd) * 100);
         }
 
         return prob;
@@ -1519,6 +1519,6 @@ export class HarnMasterActor extends Actor {
 
     static calcShockIndex(actor) {
         const data = actor.system;
-        data.shockIndex.value = HarnMasterActor.normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
+        data.shockIndex.value = ActorHM3.normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
     }
 }

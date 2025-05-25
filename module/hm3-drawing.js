@@ -1,4 +1,4 @@
-export class HarnMasterDrawing extends Drawing {
+export class DrawingHM3 extends Drawing {
     /** @override */
     _onClickLeft(event) {
         if (event.shiftKey && event.ctrlKey) super._onClickLeft2(event);

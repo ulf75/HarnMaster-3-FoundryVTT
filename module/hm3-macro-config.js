@@ -7,7 +7,7 @@ import * as utility from './utility.js';
  * @param {Macro} object     The target macro being configured
  * @param {object} [options]        Additional options which modify this application instance
  */
-export class HM3MacroConfig extends MacroConfig {
+export class MacroConfigHM3 extends MacroConfig {
     /** @override */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {

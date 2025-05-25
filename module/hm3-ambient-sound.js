@@ -1,4 +1,4 @@
-export class HarnMasterAmbientSound extends AmbientSound {
+export class AmbientSoundHM3 extends AmbientSound {
     /** @override */
     _onClickLeft(event) {
         if (event.shiftKey && event.ctrlKey) super._onClickLeft2(event);

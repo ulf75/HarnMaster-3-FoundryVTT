@@ -1,6 +1,6 @@
 const SLOWMO = 3;
 
-export class HarnMasterBaseTest {
+export class BaseTestHM3 {
     NORTH = {dx: 0, dy: -1};
     NORTH_EAST = {dx: 1, dy: -1};
     NORTH_WEST = {dx: -1, dy: -1};
@@ -109,7 +109,7 @@ export class HarnMasterBaseTest {
      * @param {string} actorUuid
      * @param {string} name
      * @param {Object} options
-     * @returns {HarnMasterToken}
+     * @returns {TokenHM3}
      */
     async _createActor(actorUuid, name, options = {}) {
         const actor = fromUuidSync(actorUuid);

@@ -1,4 +1,4 @@
-export class HarnMasterAmbientLight extends AmbientLight {
+export class AmbientLightHM3 extends AmbientLight {
     /** @override */
     _onClickLeft(event) {
         if (event.shiftKey && event.ctrlKey) super._onClickLeft2(event);

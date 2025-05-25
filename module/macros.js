@@ -13,7 +13,7 @@ import * as shocked from './condition/shocked.js';
 import * as unconscious from './condition/unconscious.js';
 import * as weakened from './condition/weakened.js';
 import {HM3} from './config.js';
-import {DiceHM3} from './dice-hm3.js';
+import {DiceHM3} from './hm3-dice.js';
 import {Aspect, Condition, InjuryType, ItemType, SkillType} from './hm3-types.js';
 import {Mutex} from './mutex.js';
 import * as utility from './utility.js';
@@ -1804,7 +1804,7 @@ export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, eff
  * is specified, tries to use token (and will allow it regardless if user is GM.),
  * otherwise returned token will be the combatant whose turn it currently is.
  *
- * @param {HarnMasterToken} token
+ * @param {TokenHM3} token
  */
 function getTokenInCombat(token = null, forceAllow = false) {
     if (token && (game.user.isGM || forceAllow)) {
@@ -2009,7 +2009,7 @@ export function pathIntersectsCircle(circle, line, centerToCenter = true) {
 
 /**
  * TODO
- * @param {HarnMasterToken} token
+ * @param {TokenHM3} token
  * @param {string} name
  * @returns
  */
@@ -2020,7 +2020,7 @@ export function hasActiveEffect(token, name, strict = false) {
 
 /**
  * TODO
- * @param {HarnMasterToken} token
+ * @param {TokenHM3} token
  * @param {string} name
  * @returns
  */
@@ -2157,7 +2157,7 @@ export async function deleteActiveEffect(tokenId, effectId) {
 
 /**
  * Creates a condition on the token.
- * @param {HarnMasterToken} token - The token to apply the condition to
+ * @param {TokenHM3} token - The token to apply the condition to
  * @param {string} condition - The condition to apply
  * @param {Object} [conditionOptions={}] - Options for the condition
  * @param {number} [conditionOptions.numTurns=0] - Number of turns defaults to 0
@@ -2370,9 +2370,9 @@ export async function createCondition(token, condition, conditionOptions = {}) {
  * @param {string} [injuryData.name]
  * @param {string} [injuryData.notes='']
  * @param {string} [injuryData.subType='healing']
- * @param {Token} [injuryData.token]
+ * @param {TokenHM3} [injuryData.token]
  * @param {Object} [options={}]
- * @returns {Promise<HarnMasterItem>}
+ * @returns {Promise<ItemHM3>}
  */
 export async function createInjury(injuryData, options = {}) {
     injuryData = foundry.utils.mergeObject(
@@ -2429,7 +2429,7 @@ export async function createInjury(injuryData, options = {}) {
 
 /**
  *
- * @param {HarnMasterToken} token
+ * @param {TokenHM3} token
  * @param {string} injuryId
  * @param {string} injuryName
  * @returns
@@ -2587,7 +2587,7 @@ export async function drawDebugPoint(p) {
 
 /**
  * Checks if the token can perform a TA (Tactical Advantage) of the given type.
- * @param {HarnMasterToken} token - The token to check
+ * @param {TokenHM3} token - The token to check
  * @returns {boolean} - True if the TA is possible, false otherwise
  */
 export async function isTAPossible(token) {

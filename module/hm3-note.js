@@ -1,4 +1,4 @@
-export class HarnMasterNote extends Note {
+export class NoteHM3 extends Note {
     /** @override */
     _onClickLeft(event) {
         if (event.shiftKey && event.ctrlKey) super._onClickLeft2(event);

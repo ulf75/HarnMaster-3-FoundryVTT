@@ -3,7 +3,7 @@ const GRAPPLED_ICON = 'icons/svg/net.svg';
 
 /**
  *
- * @param {HarnMasterToken} token
+ * @param {TokenHM3} token
  * @param {Object} [options={}] - Options for the condition
  * @param {boolean} [options.oneRoll=false] - Only one roll defaults to false
  * @param {boolean} [options.oneRound=false] - Only one round defaults to false

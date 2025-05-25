@@ -2,7 +2,7 @@
  * Extend the base Macro.
  * @extends {Macro}
  */
-export class HarnMasterMacro extends Macro {
+export class MacroHM3 extends Macro {
     /**
      * Overrides the original implementation by allowing
      * to execute actor macros w/o limited ownership.

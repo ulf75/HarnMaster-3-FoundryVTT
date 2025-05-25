@@ -1,4 +1,4 @@
-export class HarnMasterTile extends Tile {
+export class TileHM3 extends Tile {
     /** @override */
     _onClickLeft(event) {
         if (event.shiftKey && event.ctrlKey) super._onClickLeft2(event);

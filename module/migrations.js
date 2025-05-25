@@ -130,7 +130,7 @@ export async function migrateCompendium(pack) {
 /**
  * Migrate a single Actor to incorporate latest data model changes
  * Return an Object of updateData to be applied
- * @param {Actor} actor   The actor to Update
+ * @param {ActorHM3} actor   The actor to Update
  * @return {Object}       The updateData to apply
  */
 export async function migrateActorData(actor) {

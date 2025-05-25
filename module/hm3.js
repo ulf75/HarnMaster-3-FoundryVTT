@@ -1,32 +1,32 @@
 // Import Modules
-import {HarnMasterBaseTest} from '../tests/hm3-basetest.js';
+import {BaseTestHM3} from '../tests/hm3-basetest.js';
 import {RollMock} from '../tests/rollmock.js';
 import {runner} from '../tests/runner.js';
-import {HarnMasterActor} from './actor/actor.js';
-import {HarnMasterCharacterSheet} from './actor/character-sheet.js';
-import {HarnMasterContainerSheet} from './actor/container-sheet.js';
-import {HarnMasterCreatureSheet} from './actor/creature-sheet.js';
+import {ActorHM3} from './actor/actor.js';
+import {CharacterSheetHM3} from './actor/character-sheet.js';
+import {ContainerSheetHM3} from './actor/container-sheet.js';
+import {CreatureSheetHM3} from './actor/creature-sheet.js';
 import * as combat from './combat.js';
 import {HM3} from './config.js';
-import {DiceHM3} from './dice-hm3.js';
 import * as effect from './effect.js';
-import {HM3ActiveEffectConfig} from './hm3-active-effect-config.js';
-import {HarnMasterActiveEffect} from './hm3-active-effect.js';
-import {HarnMasterAmbientLight} from './hm3-ambient-light.js';
-import {HarnMasterAmbientSound} from './hm3-ambient-sound.js';
-import {HarnMasterCombat} from './hm3-combat.js';
-import {HarnMasterCombatant} from './hm3-combatant.js';
-import {HarnMasterDrawing} from './hm3-drawing.js';
-import {HM3MacroConfig} from './hm3-macro-config.js';
-import {HarnMasterMacro} from './hm3-macro.js';
-import {HarnMasterNote} from './hm3-note.js';
-import {HarnMasterRegion} from './hm3-region.js';
-import {HarnMasterTile} from './hm3-tile.js';
-import {HarnMasterToken, HarnMasterTokenDocument} from './hm3-token.js';
+import {ActiveEffectConfigHM3} from './hm3-active-effect-config.js';
+import {ActiveEffectHM3} from './hm3-active-effect.js';
+import {AmbientLightHM3} from './hm3-ambient-light.js';
+import {AmbientSoundHM3} from './hm3-ambient-sound.js';
+import {CombatHM3} from './hm3-combat.js';
+import {CombatantHM3} from './hm3-combatant.js';
+import {DiceHM3} from './hm3-dice.js';
+import {DrawingHM3} from './hm3-drawing.js';
+import {MacroConfigHM3} from './hm3-macro-config.js';
+import {MacroHM3} from './hm3-macro.js';
+import {NoteHM3} from './hm3-note.js';
+import {RegionHM3} from './hm3-region.js';
+import {TileHM3} from './hm3-tile.js';
+import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
 import {ActorType, Aspect, Condition, Hook, InjuryType, ItemType, Location, MiscItemType, Range, SkillType} from './hm3-types.js';
-import {HarnMasterWall} from './hm3-wall.js';
-import {HarnMasterItemSheet} from './item/item-sheet.js';
-import {HarnMasterItem} from './item/item.js';
+import {WallHM3} from './hm3-wall.js';
+import {ItemSheetHM3} from './item/item-sheet.js';
+import {ItemHM3} from './item/item.js';
 import {registerHooks} from './macro.js';
 import * as macros from './macros.js';
 import * as migrations from './migrations.js';
@@ -41,8 +41,8 @@ Hooks.once('init', async function () {
 
     game.hm3 = {
         DiceHM3,
-        HarnMasterActor,
-        HarnMasterItem,
+        ActorHM3,
+        ItemHM3,
         Roll,
 
         config: HM3,
@@ -130,14 +130,14 @@ Hooks.once('init', async function () {
     //CONFIG.ActiveEffect.sheetClass = HM3ActiveEffectConfig;
 
     // Define custom Document classes
-    CONFIG.Actor.documentClass = HarnMasterActor;
+    CONFIG.Actor.documentClass = ActorHM3;
     CONFIG.Actor.typeLabels = {
         base: 'Base',
         character: 'Character',
         creature: 'Creature',
         container: 'Container'
     };
-    CONFIG.Item.documentClass = HarnMasterItem;
+    CONFIG.Item.documentClass = ItemHM3;
     CONFIG.Item.typeLabels = {
         base: 'Base',
         armorgear: 'Armor',
@@ -155,7 +155,7 @@ Hooks.once('init', async function () {
         trait: 'Trait',
         weapongear: 'Melee Weapon'
     };
-    CONFIG.Combat.documentClass = HarnMasterCombat;
+    CONFIG.Combat.documentClass = CombatHM3;
     CONFIG.TinyMCE.style_formats[0].items.push({
         title: 'Highlight',
         block: 'section',
@@ -163,51 +163,51 @@ Hooks.once('init', async function () {
         wrapper: true
     });
 
-    CONFIG.ActiveEffect.documentClass = HarnMasterActiveEffect;
-    CONFIG.AmbientLight.objectClass = HarnMasterAmbientLight;
-    CONFIG.AmbientSound.objectClass = HarnMasterAmbientSound;
-    CONFIG.Combatant.documentClass = HarnMasterCombatant;
-    CONFIG.Drawing.objectClass = HarnMasterDrawing;
-    CONFIG.Macro.documentClass = HarnMasterMacro;
-    CONFIG.Note.objectClass = HarnMasterNote;
-    CONFIG.Region.objectClass = HarnMasterRegion;
-    CONFIG.Tile.objectClass = HarnMasterTile;
-    CONFIG.Token.documentClass = HarnMasterTokenDocument;
-    CONFIG.Token.objectClass = HarnMasterToken;
-    CONFIG.Wall.objectClass = HarnMasterWall;
+    CONFIG.ActiveEffect.documentClass = ActiveEffectHM3;
+    CONFIG.AmbientLight.objectClass = AmbientLightHM3;
+    CONFIG.AmbientSound.objectClass = AmbientSoundHM3;
+    CONFIG.Combatant.documentClass = CombatantHM3;
+    CONFIG.Drawing.objectClass = DrawingHM3;
+    CONFIG.Macro.documentClass = MacroHM3;
+    CONFIG.Note.objectClass = NoteHM3;
+    CONFIG.Region.objectClass = RegionHM3;
+    CONFIG.Tile.objectClass = TileHM3;
+    CONFIG.Token.documentClass = TokenDocumentHM3;
+    CONFIG.Token.objectClass = TokenHM3;
+    CONFIG.Wall.objectClass = WallHM3;
 
     // Register sheet application classes
     Actors.unregisterSheet('core', ActorSheet);
-    Actors.registerSheet('hm3', HarnMasterCharacterSheet, {
+    Actors.registerSheet('hm3', CharacterSheetHM3, {
         types: ['character'],
         makeDefault: true,
         label: 'Default HarnMaster Character Sheet'
     });
-    Actors.registerSheet('hm3', HarnMasterCreatureSheet, {
+    Actors.registerSheet('hm3', CreatureSheetHM3, {
         types: ['creature'],
         makeDefault: true,
         label: 'Default HarnMaster Creature Sheet'
     });
-    Actors.registerSheet('hm3', HarnMasterContainerSheet, {
+    Actors.registerSheet('hm3', ContainerSheetHM3, {
         types: ['container'],
         makeDefault: true,
         label: 'Default HarnMaster Container Sheet'
     });
 
     DocumentSheetConfig.unregisterSheet(ActiveEffect, 'core', ActiveEffectConfig);
-    DocumentSheetConfig.registerSheet(ActiveEffect, 'hm3', HM3ActiveEffectConfig, {
+    DocumentSheetConfig.registerSheet(ActiveEffect, 'hm3', ActiveEffectConfigHM3, {
         makeDefault: true,
         label: 'Default HarnMaster Active Effect Sheet'
     });
 
     DocumentSheetConfig.unregisterSheet(Macro, 'core', MacroConfig);
-    DocumentSheetConfig.registerSheet(Macro, 'hm3', HM3MacroConfig, {
+    DocumentSheetConfig.registerSheet(Macro, 'hm3', MacroConfigHM3, {
         makeDefault: true,
         label: 'Default HarnMaster Macro Sheet'
     });
 
     Items.unregisterSheet('core', ItemSheet);
-    Items.registerSheet('hm3', HarnMasterItemSheet, {makeDefault: true});
+    Items.registerSheet('hm3', ItemSheetHM3, {makeDefault: true});
 
     // If you need to add Handlebars helpers, here are a few useful examples:
     Handlebars.registerHelper('concat', function () {
@@ -274,9 +274,9 @@ Hooks.on('renderChatMessage', (app, html, data) => {
     combat.displayChatActionButtons(app, html, data);
 });
 
-Hooks.on('renderChatLog', (app, html, data) => HarnMasterActor.chatListeners(html));
+Hooks.on('renderChatLog', (app, html, data) => ActorHM3.chatListeners(html));
 
-Hooks.on('renderChatPopout', (app, html, data) => HarnMasterActor.chatListeners(html));
+Hooks.on('renderChatPopout', (app, html, data) => ActorHM3.chatListeners(html));
 
 /**
  * Active Effects need to expire at certain times, so keep track of that here
@@ -345,7 +345,7 @@ Hooks.once('ready', async function () {
         CONFIG.debug.hm3 = true;
         // CONFIG.debug.hooks = true;
         game.hm3.Roll = RollMock;
-        game.hm3.BaseTest = HarnMasterBaseTest;
+        game.hm3.BaseTest = BaseTestHM3;
         game.hm3.runner = runner;
     } else {
         CONFIG.debug.hm3 = false;
@@ -506,7 +506,7 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
         }
 
         /**
-         * @param {HarnMasterToken} token - The token to check movement
+         * @param {TokenHM3} token - The token to check movement
          * */
         getRanges(token) {
             const actor = token.actor;

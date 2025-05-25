@@ -1,4 +1,4 @@
-export class HarnMasterRegion extends Region {
+export class RegionHM3 extends Region {
     /** @override */
     _onClickLeft(event) {
         if (event.shiftKey && event.ctrlKey) super._onClickLeft2(event);

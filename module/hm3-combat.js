@@ -1,4 +1,4 @@
-export class HarnMasterCombat extends Combat {
+export class CombatHM3 extends Combat {
     /**
      *
      * @override

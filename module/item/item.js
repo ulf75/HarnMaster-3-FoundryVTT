@@ -1,4 +1,4 @@
-import {HarnMasterActor} from '../actor/actor.js';
+import {ActorHM3} from '../actor/actor.js';
 import {HM3} from '../config.js';
 import {ItemType, SkillType} from '../hm3-types.js';
 import * as utility from '../utility.js';
@@ -7,7 +7,7 @@ import * as utility from '../utility.js';
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
  */
-export class HarnMasterItem extends Item {
+export class ItemHM3 extends Item {
     /**
      * Augment the basic Item data model with additional dynamic data.
      */
@@ -47,8 +47,8 @@ export class HarnMasterItem extends Item {
     postProcessItems() {
         const itemData = this.system;
 
-        let pctUnivPen = HarnMasterItem.calcPenaltyPct(this.actor?.system?.universalPenalty);
-        let pctPhysPen = HarnMasterItem.calcPenaltyPct(this.actor?.system?.physicalPenalty);
+        let pctUnivPen = ItemHM3.calcPenaltyPct(this.actor?.system?.universalPenalty);
+        let pctPhysPen = ItemHM3.calcPenaltyPct(this.actor?.system?.physicalPenalty);
 
         if (this.type === ItemType.SKILL) {
             if (!itemData.masteryLevel || itemData.masteryLevel < 0) itemData.masteryLevel = 0;
@@ -79,7 +79,7 @@ export class HarnMasterItem extends Item {
                         const steed = fromUuidSync(itemData.actorUuid);
                         steed.prepareData();
                         const ini = steed.items.find((x) => x.name === 'Initiative');
-                        const steedUP = HarnMasterActor.calcUniversalPenalty(steed);
+                        const steedUP = ActorHM3.calcUniversalPenalty(steed);
 
                         itemData.effectiveMasteryLevel =
                             Math.round((itemData.masteryLevel + ini.system.masteryLevel) / 2) - pctPhysPen - steedUP * 5 + sbModifier;
@@ -110,7 +110,7 @@ export class HarnMasterItem extends Item {
         } else if (this.type === ItemType.INJURY) {
             // Just make sure if injuryLevel is negative, we set it to zero
             itemData.injuryLevel = Math.max(itemData.injuryLevel || 0, 0);
-            HarnMasterItem.calcInjurySeverity(this);
+            ItemHM3.calcInjurySeverity(this);
         }
 
         if (Object.hasOwn(itemData, 'improveFlag') && typeof itemData.improveFlag === 'boolean') {

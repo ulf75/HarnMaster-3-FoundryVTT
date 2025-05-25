@@ -1,4 +1,4 @@
-export class HarnMasterActiveEffect extends ActiveEffect {
+export class ActiveEffectHM3 extends ActiveEffect {
     _prepareDuration() {
         const ret = super._prepareDuration();
 

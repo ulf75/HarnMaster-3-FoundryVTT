@@ -9,7 +9,7 @@ let tokenMutex;
  * Extend the base Token.
  * @extends {Token}
  */
-export class HarnMasterToken extends Token {
+export class TokenHM3 extends Token {
     constructor(...args) {
         super(...args);
         if (!tokenMutex) tokenMutex = new Mutex();
@@ -197,7 +197,7 @@ export class HarnMasterToken extends Token {
     }
 }
 
-export class HarnMasterTokenDocument extends TokenDocument {
+export class TokenDocumentHM3 extends TokenDocument {
     _onCreate(data, options, userId) {
         super._onCreate(data, options, userId);
         this.setFlag('wall-height', 'tokenHeight', this.actor.system.height | 6);

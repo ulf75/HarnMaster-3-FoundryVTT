@@ -1,5 +1,5 @@
 import {HM3} from './config.js';
-import {DiceHM3} from './dice-hm3.js';
+import {DiceHM3} from './hm3-dice.js';
 import {ActorType, Aspect, Condition} from './hm3-types.js';
 import {truncate} from './utility.js';
 
@@ -12,9 +12,9 @@ import {truncate} from './utility.js';
  *
  * No die rolling occurs as a result of this function, only the declaration of the attack.
  *
- * @param atkToken {Token} Token representing attacker
- * @param defToken {Token} Token representing defender
- * @param weaponItem {Item} Missile weapon used by attacker
+ * @param atkToken {TokenHM3} Token representing attacker
+ * @param defToken {TokenHM3} Token representing defender
+ * @param missileItem {ItemHM3} Missile weapon used by attacker
  */
 export async function missileAttack(atkToken, defToken, missileItem) {
     if (!atkToken) {
@@ -188,9 +188,9 @@ export async function missileAttack(atkToken, defToken, missileItem) {
  *
  * No die rolling occurs as a result of this function, only the declaration of the attack.
  *
- * @param atkToken {Token} Token representing attacker
- * @param defToken {Token} Token representing defender
- * @param weaponItem {Item} Melee weapon used by attacker
+ * @param atkToken {TokenHM3} Token representing attacker
+ * @param defToken {TokenHM3} Token representing defender
+ * @param weaponItem {ItemHM3} Melee weapon used by attacker
  */
 export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed = false) {
     if (!atkToken) {
@@ -584,7 +584,7 @@ async function attackDialog(options) {
 /**
  * Determine if the token is valid (must be either a 'creature' or 'character')
  *
- * @param {HarnMasterToken} token
+ * @param {TokenHM3} token
  */
 function isValidToken(token) {
     if (!token) {
@@ -608,7 +608,7 @@ function isValidToken(token) {
 /**
  * Determine default melee weapon based on maximum impact.
  *
- * @param {HarnMasterToken} token
+ * @param {TokenHM3} token
  */
 function defaultMeleeWeapon(token, sortMode = 'highestDmg') {
     if (!isValidToken(token)) return {weapons: [], defaultWeapon: null};
@@ -1150,8 +1150,8 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 /**
  * Resume the attack with the defender performing the "Block" defense.
  *
- * @param {HarnMasterToken} atkToken Token representing the attacker
- * @param {HarnMasterToken} defToken Token representing the defender
+ * @param {TokenHM3} atkToken Token representing the attacker
+ * @param {TokenHM3} defToken Token representing the defender
  * @param {*} type Type of attack: "melee" or "missile"
  * @param {*} weaponName Name of the weapon the attacker is using
  * @param {*} effAML The effective AML (Attack Mastery Level) of the attacker after modifiers applied
@@ -1444,10 +1444,10 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
 /**
  *
- * @param {HarnMasterToken} atkToken
- * @param {HarnMasterItem} atkWeapon
- * @param {HarnMasterToken} defToken
- * @param {HarnMasterItem} defWeapon
+ * @param {TokenHM3} atkToken
+ * @param {ItemHM3} atkWeapon
+ * @param {TokenHM3} defToken
+ * @param {ItemHM3} defWeapon
  * @returns {Promise<{attackWeaponBroke: boolean, defendWeaponBroke: boolean}>} Promise with break info
  */
 export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon) {
@@ -1910,8 +1910,8 @@ export async function getItem(itemName, type, actor) {
 /**
  * Calculates the distance from sourceToken to targetToken in "scene" units (e.g., feet).
  *
- * @param {Token} sourceToken
- * @param {Token} targetToken
+ * @param {TokenHM3} sourceToken
+ * @param {TokenHM3} targetToken
  * @param {Boolean} gridUnits If true, return in grid units, not "scene" units
  */
 export function rangeToTarget(sourceToken, targetToken, gridUnits = false) {

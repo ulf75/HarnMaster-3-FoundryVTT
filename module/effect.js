@@ -132,7 +132,7 @@ export async function checkExpiredActiveEffects() {
  * Checks all of the active effects for a single actor and disables
  * them if their duration has expired.
  *
- * @param {Actor} actor
+ * @param {ActorHM3} actor
  */
 async function disableExpiredAE(actor) {
     for (let effect of actor.allApplicableEffects(true)) {

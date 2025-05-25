@@ -4,7 +4,7 @@ import {HarnMasterBaseActorSheet} from './base-actor-sheet.js';
  * Extend the base HarnMasterBaseActorSheet with some very simple modifications
  * @extends {HarnMasterBaseActorSheet}
  */
-export class HarnMasterCharacterSheet extends HarnMasterBaseActorSheet {
+export class CharacterSheetHM3 extends HarnMasterBaseActorSheet {
     /** @override */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {

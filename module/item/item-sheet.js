@@ -6,7 +6,7 @@ import * as utility from '../utility.js';
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class HarnMasterItemSheet extends ItemSheet {
+export class ItemSheetHM3 extends ItemSheet {
     /** @override */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {

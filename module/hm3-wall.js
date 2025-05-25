@@ -1,4 +1,4 @@
-export class HarnMasterWall extends Wall {
+export class WallHM3 extends Wall {
     /** @override */
     _onClickLeft(event) {
         if (event.shiftKey && event.ctrlKey) super._onClickLeft2(event);
