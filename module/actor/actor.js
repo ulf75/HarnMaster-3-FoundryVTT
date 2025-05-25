@@ -436,7 +436,7 @@ export class ActorHM3 extends Actor {
                     it.prepareData();
                     it.postProcessItems();
                 }
-                actorData.endurance = Math.round((itemData.masteryLevel * actorData.endurance) / 5);
+                actorData.endurance = Math.round((itemData.masteryLevel || 5 * actorData.endurance) / 5);
                 actorData.condition = itemData.masteryLevel;
             }
         });
