@@ -1,4 +1,4 @@
-const tests = ['./defeated.js', './shock.js'];
+const tests = ['./combat/defeated.js', './combat/shock.js'];
 
 export async function runner() {
     for (let i = 0; i < tests.length; i++) {

@@ -24,7 +24,7 @@ export class TestCase extends game.hm3.BaseTest {
 
         await this._resetAllConditions(alice);
 
-        await alice.actor.update({'system.fatigue': 4});
+        await alice.actor.update({'system.fatigue': 5});
         await alice.addCondition(game.hm3.Condition.UNCONSCIOUS);
         await alon.addCondition(game.hm3.Condition.SHOCKED);
         await bob.addCondition(game.hm3.Condition.DYING);

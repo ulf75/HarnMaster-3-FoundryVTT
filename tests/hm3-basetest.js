@@ -116,6 +116,7 @@ export class BaseTestHM3 {
         const actorObject = actor.toObject();
 
         actorObject.name = name;
+        actorObject.prototypeToken.name = name;
         actorObject.folder = null;
         delete actorObject.flags['scene-packer'];
 
@@ -146,6 +147,7 @@ export class BaseTestHM3 {
         });
         await token.combatant?.update({defeated: false});
         token.actor.toggleStatusEffect('dead', {active: false});
+        token.actor.toggleStatusEffect('shock', {active: false});
         token.actor.toggleStatusEffect('unconscious', {active: false});
         token.toggleVisibility({active: true});
         await this._wait();

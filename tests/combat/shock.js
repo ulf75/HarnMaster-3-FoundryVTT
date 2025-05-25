@@ -16,7 +16,7 @@ export class TestCase extends game.hm3.BaseTest {
         await t4.addCondition(game.hm3.Condition.DISTRACTED);
         await t3.addCondition(game.hm3.Condition.SHOCKED);
 
-        await this._wait(7000);
+        await this._wait(3000);
 
         console.assert(t3.combatant.isDefeated, 'Combatant is NOT defeated: %O', t3.combatant);
     }
