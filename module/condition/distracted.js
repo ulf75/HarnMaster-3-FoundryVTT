@@ -12,8 +12,9 @@ const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction-white.svg';
  */
 export async function createCondition(token, options = {}) {
     if (!token) return;
+    const CONDITION = game.hm3.Condition.DISTRACTED;
 
-    const ON_CREATE_MACRO = ``;
+    console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const ON_TURN_START_MACRO = options.oneRound
         ? ``
@@ -34,13 +35,13 @@ if (!unconscious) {
     return {
         effectData: {
             icon: CONDITION_ICON,
-            label: game.hm3.Condition.DISTRACTED,
+            label: CONDITION,
             rounds,
             seconds,
             token,
             turns,
             type,
-            flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
+            flags: {effectmacro: {onTurnStart: {script: ON_TURN_START_MACRO}}}
         },
         changes: [{key: 'eph.meleeDMLMod', mode: 2, priority: null, value: '-10'}],
         options: {selfDestroy: true, unique: true}

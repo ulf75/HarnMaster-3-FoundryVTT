@@ -16,11 +16,15 @@ const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction-white.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
+    const CONDITION = game.hm3.Condition.DESPERATE;
+    console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 await token.deleteAllMoraleConditions(game.hm3.Condition.DESPERATE);
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Desperate</b>, and tries to conclude the battle, one way or the other, as soon as possible. Until the situation changes and a new Initiative Test is passed, the character selects the <b>Most Aggressive</b> option available.", "Combat 16");
+game.hm3.resolveMap.get('${token.id + game.hm3.Condition.DESPERATE}')(true);
 `;
 
     const ON_TURN_START_MACRO = `

@@ -1,0 +1,39 @@
+const CONDITION_ICON = 'systems/hm3/images/icons/svg/arm-sling.svg';
+
+/**
+ *
+ * @param {TokenHM3} token
+ * @param {Object} [options={}] - Options for the condition
+ * @param {boolean} [options.oneRoll=false] - Only one roll defaults to false
+ * @param {boolean} [options.oneRound=false] - Only one round defaults to false
+ * @param {boolean} [options.oneTurn=false] - Only one turn defaults to false
+ * @param {number} [options.outnumbered=1] - Outnumbered defaults to 1
+ * @returns
+ */
+export async function createCondition(token, options = {}) {
+    if (!token) return;
+
+    const CONDITION = game.hm3.Condition.SECONDARY_HAND;
+    console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
+
+    const ON_TURN_START_MACRO = `
+const token = canvas.tokens.get('${token.id}');
+const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
+if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> fights with the <b>Secondary Hand</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 3 & 11", !token.player);
+`;
+
+    return {
+        effectData: {
+            label: CONDITION,
+            token,
+            icon: CONDITION_ICON,
+            type: 'GameTime',
+            seconds: game.hm3.CONST.TIME.INDEFINITE,
+            flags: {
+                effectmacro: {onTurnStart: {script: ON_TURN_START_MACRO}}
+            }
+        },
+        changes: [{key: 'eph.meleeAMLMod', mode: 2, value: '-10'}],
+        options: {unique: true}
+    };
+}

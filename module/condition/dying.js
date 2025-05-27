@@ -1,4 +1,3 @@
-// const DYING_ICON = 'systems/hm3/images/icons/svg/daemon-skull.svg';
 const CONDITION_ICON = 'icons/svg/skull.svg';
 
 /**
@@ -14,6 +13,9 @@ const CONDITION_ICON = 'icons/svg/skull.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
+    const CONDITION = game.hm3.Condition.DYING;
+    console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
@@ -25,7 +27,10 @@ if (!!token.actor.player) {
     await game.hm3.GmSays("<b>" + token.name + "</b> is <b>unconscious</b> due to a <b>Mortal Wound</b> and is <b>Dying</b>. Life-saving measures should be initiated as quickly as possible.", "Combat 14");
 } else {
     await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Dead</b> due to a <b>Mortal Wound</b>.", "Combat 14");
-}`;
+}
+console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
+game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
+`;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
@@ -36,7 +41,7 @@ token.turnEnds();
 
     return {
         effectData: {
-            label: game.hm3.Condition.DYING,
+            label: CONDITION,
             token,
             icon: CONDITION_ICON,
             type: 'GameTime',

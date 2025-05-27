@@ -72,7 +72,10 @@ export class BaseTestHM3 {
             } catch (error) {}
         }
 
-        return (await this.#teardown()) && success;
+        success = (await this.#teardown()) && success;
+        await this._wait();
+
+        return success;
     }
 
     async #teardown() {
@@ -145,11 +148,15 @@ export class BaseTestHM3 {
         Object.values(game.hm3.Condition).forEach((condition) => {
             token.deleteCondition(condition);
         });
+
         await token.combatant?.update({defeated: false});
+
         token.actor.toggleStatusEffect('dead', {active: false});
         token.actor.toggleStatusEffect('shock', {active: false});
         token.actor.toggleStatusEffect('unconscious', {active: false});
+
         token.toggleVisibility({active: true});
+
         await this._wait();
     }
 

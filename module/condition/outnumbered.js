@@ -17,7 +17,11 @@ export async function createCondition(token, options = {}) {
     if (!token) return;
     if ((options?.outnumbered || 1) < 2) return;
 
-    const label = `${game.hm3.Condition.OUTNUMBERED} ${options.outnumbered}:1`;
+    const CONDITION = game.hm3.Condition.OUTNUMBERED;
+    const label = `${CONDITION} ${options.outnumbered}:1`;
+    console.info(`HM3 | Creating condition: ${label} for token: ${token.name}`, options);
+
+    const ON_CREATE_MACRO = ``;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
@@ -34,7 +38,7 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is <b>${label
             icon: CONDITION_ICON,
             type: 'GameTime',
             seconds: game.hm3.CONST.TIME.INDEFINITE,
-            flags: {effectmacro: {onTurnStart: {script: ON_TURN_START_MACRO}}}
+            flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
         },
         changes: [{key: 'eph.outnumbered', mode: 2, priority: null, value: `${options.outnumbered}`}],
         options: {unique: true}

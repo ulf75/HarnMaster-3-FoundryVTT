@@ -2,6 +2,7 @@ import * as combat from './combat.js';
 import * as berserk from './condition/berserk.js';
 import * as broken from './condition/broken.js';
 import * as cautious from './condition/cautious.js';
+import * as closemode from './condition/closemode.js';
 import * as desperate from './condition/desperate.js';
 import * as distracted from './condition/distracted.js';
 import * as dying from './condition/dying.js';
@@ -9,6 +10,7 @@ import * as empowered from './condition/empowered.js';
 import * as grappled from './condition/grappled.js';
 import * as outnumbered from './condition/outnumbered.js';
 import * as prone from './condition/prone.js';
+import * as secondaryhand from './condition/secondaryhand.js';
 import * as shocked from './condition/shocked.js';
 import * as unconscious from './condition/unconscious.js';
 import * as weakened from './condition/weakened.js';
@@ -2125,11 +2127,11 @@ export async function createActiveEffect(effectData, changes = [], options = {})
 
     const effect = await ActiveEffect.create(aeData, {parent: effectData.token.actor});
 
-    if (options.hidden) {
-        await effect.setFlag('hm3', 'hidden', true);
-    }
+    if (options.hidden) await effect.setFlag('hm3', 'hidden', true);
+    if (options.unique) await effect.setFlag('hm3', 'unique', true);
 
     if (options.selfDestroy) {
+        await effect.setFlag('hm3', 'selfDestroy', true);
         await effect.setFlag('effectmacro', 'onDisable.script', `game.hm3.macros.deleteActiveEffect('${effectData.token.id}', '${effect.id}');`);
     }
 
@@ -2144,14 +2146,12 @@ let deleteMutex = new Mutex();
  * @returns {Promise<void>}
  */
 export async function deleteActiveEffect(tokenId, effectId) {
-    if (!tokenId || !effectId) return;
+    if (!tokenId || !effectId || !canvas.tokens.get(tokenId)) return;
     // sometimes effect macros fire twice -> race condition
     await deleteMutex.runExclusive(async () => {
         const token = canvas.tokens.get(tokenId);
-        await token.actor
-            .allApplicableEffects()
-            .find((e) => e.id === effectId)
-            ?.delete();
+        const effect = token.actor.allApplicableEffects().find((e) => e.id === effectId);
+        return effect?.delete();
     });
 }
 
@@ -2168,7 +2168,14 @@ export async function deleteActiveEffect(tokenId, effectId) {
  * @returns {Promise<HarnMasterActiveEffect>}
  */
 export async function createCondition(token, condition, conditionOptions = {}) {
-    if (!token) return;
+    if (!token) return null;
+
+    const uuid = token.id + condition;
+    const callbackPromise = new Promise((resolve) => {
+        game.hm3.resolveMap.set(uuid, (success) => {
+            resolve(success);
+        });
+    });
 
     conditionOptions = foundry.utils.mergeObject(
         {
@@ -2181,22 +2188,19 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         conditionOptions
     );
 
-    let effect;
+    let cond, condData;
     switch (condition) {
         case Condition.BLINDED:
         case Condition.DEAFENED:
         case Condition.INCAPACITATED:
             ui.notifications.info(`Condition '${condition}' not yet implemented.`);
-            break;
+            return null;
 
         // This is a special state of battle frenzy. Any character who enters this mode must take the most
         // aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike.
         // Further Initiative rolls are ignored until the battle ends. (COMBAT 16)
         case Condition.BERSERK:
-            {
-                const {effectData, changes, options} = await berserk.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await berserk.createCondition(token, conditionOptions);
             break;
 
         // The character is unable to fight in any useful way. The only available options are flight or
@@ -2204,160 +2208,83 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         // the character makes a Rest or Pass action option, but can defend if attacked except that
         // Counterstrike is prohibited. (COMBAT 16)
         case Condition.BROKEN:
-            {
-                const {effectData, changes, options} = await broken.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await broken.createCondition(token, conditionOptions);
             break;
 
         // A cautious character will not Engage, must choose Pass if engaged, and cannot select the
         // Counterstrike defense. (COMBAT 16)
         case Condition.CAUTIOUS:
-            {
-                const {effectData, changes, options} = await cautious.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await cautious.createCondition(token, conditionOptions);
             break;
 
         case Condition.CLOSE_MODE:
-            effect = await createActiveEffect(
-                {
-                    label: Condition.CLOSE_MODE,
-                    icon: 'systems/hm3/images/icons/svg/spiked-wall.svg',
-                    token,
-                    type: 'GameTime',
-                    seconds: game.hm3.CONST.TIME.INDEFINITE,
-                    flags: {
-                        effectmacro: {
-                            onTurnStart: {
-                                script: `
-                            const token = canvas.tokens.get('${token.id}');
-                            const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
-                            if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Close Mode</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 11", !token.player);
-                            `
-                            }
-                        }
-                    }
-                },
-                [{key: 'eph.meleeAMLMod', mode: 2, value: '-10'}],
-                {
-                    unique: true
-                }
-            );
+            condData = await closemode.createCondition(token, conditionOptions);
             break;
 
         // Character tries to conclude the battle, one way or the other, as soon as possible. Until
         // the situation changes and a new Initiative Test is passed, the character selects the most
         // aggressive option available. (COMBAT 16)
         case Condition.DESPERATE:
-            {
-                const {effectData, changes, options} = await desperate.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await desperate.createCondition(token, conditionOptions);
             break;
 
         case Condition.DISTRACTED:
-            {
-                const {effectData, changes, options} = await distracted.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await distracted.createCondition(token, conditionOptions);
             break;
 
         case Condition.DYING:
-            {
-                const {effectData, changes, options} = await dying.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await dying.createCondition(token, conditionOptions);
             break;
 
         // Character selects and executes any Action Option, with a +10 bonus to EML. If the character’s
         // current morale state is non-normal, it returns to normal. (COMBAT 16)
         case Condition.EMPOWERED:
-            {
-                const {effectData, changes, options} = await empowered.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await empowered.createCondition(token, conditionOptions);
             break;
 
         case Condition.GRAPPLED:
-            {
-                const {effectData, changes, options} = await grappled.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await grappled.createCondition(token, conditionOptions);
             break;
 
         case Condition.PRONE:
-            {
-                const {effectData, changes, options} = await prone.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await prone.createCondition(token, conditionOptions);
             break;
 
         // A character is outnumbered if exclusively engaged by two or more opponents. When counting
         // opponents for this purpose, prone enemies are excluded, as are enemies who are themselves
         // engaged by other friendly characters. (COMBAT 11)
         case Condition.OUTNUMBERED:
-            {
-                const {effectData, changes, options} = await outnumbered.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await outnumbered.createCondition(token, conditionOptions);
             break;
 
         case Condition.SECONDARY_HAND:
-            effect = await createActiveEffect(
-                {
-                    label: Condition.SECONDARY_HAND,
-                    icon: 'systems/hm3/images/icons/svg/arm-sling.svg',
-                    token,
-                    type: 'GameTime',
-                    seconds: game.hm3.CONST.TIME.INDEFINITE,
-                    flags: {
-                        effectmacro: {
-                            onTurnStart: {
-                                script: `
-                            const token = canvas.tokens.get('${token.id}');
-                            const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
-                            if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> fights with the <b>Secondary Hand</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 3 & 11", !token.player);
-                            `
-                            }
-                        }
-                    }
-                },
-                [{key: 'eph.meleeAMLMod', mode: 2, value: '-10'}],
-                {
-                    unique: true
-                }
-            );
+            condData = await secondaryhand.createCondition(token, conditionOptions);
             break;
 
         case Condition.SHOCKED:
-            {
-                const {effectData, changes, options} = await shocked.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await shocked.createCondition(token, conditionOptions);
             break;
 
         case Condition.UNCONSCIOUS:
-            {
-                const {effectData, changes, options} = await unconscious.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await unconscious.createCondition(token, conditionOptions);
             break;
 
         // Character selects and executes any Action Option, with a +10 bonus to EML. If the character’s
         // current morale state is non-normal, it returns to normal. (COMBAT 16)
         case Condition.WEAKENED:
-            {
-                const {effectData, changes, options} = await weakened.createCondition(token, conditionOptions);
-                effect = await createActiveEffect(effectData, changes, options);
-            }
+            condData = await weakened.createCondition(token, conditionOptions);
             break;
 
         default:
             ui.notifications.error(`${condition} is no valid condition.`);
+            return null;
     }
 
-    return effect;
+    cond = await createActiveEffect(condData.effectData, condData.changes, condData.options);
+    if (cond.hasCreateMacro()) await callbackPromise;
+    game.hm3.resolveMap.delete(uuid);
+
+    return cond ? cond : null;
 }
 
 /**

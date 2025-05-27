@@ -166,6 +166,7 @@ export class TokenHM3 extends Token {
 
         // delay so that other hooks are executed first
         setTimeout(async () => {
+            if (!game.combat?.started) return;
             console.debug(`HM3 | Token ${this.name} started the end of the turn.`);
             game.combat.nextTurn(this.id);
             console.debug(`HM3 | Token ${this.name} has finished the turn.`);

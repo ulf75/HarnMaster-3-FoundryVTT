@@ -13,7 +13,7 @@ export class TestCase extends game.hm3.BaseTest {
         await this._startCombat();
         await alice.actor.update({'system.fatigue': 3});
         await alice.addCondition(game.hm3.Condition.UNCONSCIOUS);
-        await this._wait();
+        // await this._wait();
 
         // not yet defeated
         console.assert(
@@ -28,7 +28,7 @@ export class TestCase extends game.hm3.BaseTest {
         await alice.addCondition(game.hm3.Condition.UNCONSCIOUS);
         await alon.addCondition(game.hm3.Condition.SHOCKED);
         await bob.addCondition(game.hm3.Condition.DYING);
-        await this._wait();
+        // await this._wait();
 
         console.assert(
             alice.actor.system.shockIndex.value < game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && alice.combatant.isDefeated,

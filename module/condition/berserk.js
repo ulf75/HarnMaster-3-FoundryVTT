@@ -16,11 +16,16 @@ const CONDITION_ICON = 'systems/hm3/images/icons/svg/enrage-white.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
+    const CONDITION = game.hm3.Condition.BERSERK;
+    console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-await token.deleteAllMoraleConditions(game.hm3.Condition.BERSERK);
+await token.deleteAllMoraleConditions('${CONDITION}');
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> enters <b>Berserk Mode</b>, and <b>Must</b> take the most aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike. Further Initiative rolls are ignored until the battle ends.", "Combat 18");
+console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
+game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
 `;
 
     const ON_TURN_START_MACRO = `
@@ -31,7 +36,7 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is in <b>B
 
     return {
         effectData: {
-            label: game.hm3.Condition.BERSERK,
+            label: CONDITION,
             token,
             icon: CONDITION_ICON,
             type: 'GameTime',

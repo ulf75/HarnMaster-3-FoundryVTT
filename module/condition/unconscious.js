@@ -12,6 +12,7 @@
  */
 export async function createCondition(token, options = {}) {
     if (!token) return;
+    console.info(`HM3 | Creating condition: ${game.hm3.Condition.UNCONSCIOUS} for token: ${token.name}`, options);
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
@@ -27,6 +28,8 @@ if (almostDying) {
     await game.hm3.GmSays("Overwhelmed by pain, blood loss, and exhaustion, <b>" + token.name + "</b> collapses unconscious onto the battlefield, falling <b>Prone</b> amidst the chaos.", "Combat 14");
     await token.actor.toggleStatusEffect('unconscious', {active: true, overlay: true});
 }
+console.info("HM3 | Condition: ${game.hm3.Condition.UNCONSCIOUS} created for token: ${token.name}");
+game.hm3.resolveMap.get('${token.id + game.hm3.Condition.UNCONSCIOUS}')(true);
 `;
 
     const ON_TURN_START_MACRO = `

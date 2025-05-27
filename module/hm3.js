@@ -77,6 +77,7 @@ Hooks.once('init', async function () {
         },
 
         combatMutex: new Mutex(),
+        resolveMap: new Map(),
 
         Gm2GmSays: async (text, source) => {
             return game.hm3.socket.executeAsGM('GmSays', text, source, true);

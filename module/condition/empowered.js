@@ -15,11 +15,16 @@ const CONDITION_ICON = 'icons/svg/upgrade.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
+    const CONDITION = game.hm3.Condition.EMPOWERED;
+    console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 await token.deleteAllMoraleConditions(game.hm3.Condition.EMPOWERED);
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Empowered</b>, and adds 10 to any EML this turn.", "Combat 16");
+console.info("HM3 | Condition: ${game.hm3.Condition.EMPOWERED} created for token: ${token.name}");
+game.hm3.resolveMap.get('${token.id + game.hm3.Condition.EMPOWERED}')(true);
 `;
 
     const ON_TURN_START_MACRO = ``;

@@ -19,7 +19,7 @@ export class CombatHM3 extends Combat {
         // Berserk is a special state of battle frenzy. Any character who enters this mode must take the most
         // aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike.
         // Further Initiative rolls are ignored until the battle ends. (COMBAT 16)
-        const combatantIds = this.combatants.filter((c) => !c.token.hasCondition(game.hm3.Condition.BERSERK)).map((c) => c.id);
+        const combatantIds = this.combatants.filter((c) => !c.token?.hasCondition(game.hm3.Condition.BERSERK)).map((c) => c.id);
         await this.rollInitiative(combatantIds);
         return super.nextRound();
     }
@@ -28,7 +28,7 @@ export class CombatHM3 extends Combat {
     async nextTurn(tokenId = 'true') {
         if (!game.combat?.started) return;
         return await game.hm3.combatMutex.runExclusive(async () => {
-            if (tokenId === 'true' || tokenId === game.combat.combatant.token.id) {
+            if (game.combat?.started && (tokenId === 'true' || tokenId === game.combat.combatant?.token?.id)) {
                 // Remove the Tactical Advantage flag
                 await game.hm3.socket.executeAsGM('unsetTAFlag');
                 return await super.nextTurn();

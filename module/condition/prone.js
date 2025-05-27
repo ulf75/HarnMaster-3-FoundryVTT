@@ -14,12 +14,17 @@ const CONDITION_ICON = 'icons/svg/falling.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
+    const CONDITION = game.hm3.Condition.PRONE;
+    console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 token.document.setFlag('wall-height', 'tokenHeight', 2);
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, and getting up takes one action. <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
+console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
+game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
 `;
 
     const ON_TURN_START_MACRO = `
@@ -61,7 +66,7 @@ const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 await token.document.setFlag('wall-height', 'tokenHeight', token.actor.system.height | 6);
 if (game.combat?.started) {
-    if (game.combat.combatant.id === token.combatant.id) {
+    if (game.combat.combatant?.id === token.combatant?.id) {
         await game.hm3.GmSays("<b>" + token.name + "</b> rises successfully. <b>Turn ends.</b>", "Combat 11");
         token.turnEnds();
     } else {
@@ -72,7 +77,7 @@ if (game.combat?.started) {
 
     return {
         effectData: {
-            label: game.hm3.Condition.PRONE,
+            label: CONDITION,
             token,
             icon: CONDITION_ICON,
             type: 'GameTime',

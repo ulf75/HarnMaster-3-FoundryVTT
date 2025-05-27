@@ -15,11 +15,16 @@ const CONDITION_ICON = 'icons/svg/downgrade.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
+    const CONDITION = game.hm3.Condition.WEAKENED;
+    console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-await token.deleteAllMoraleConditions(game.hm3.Condition.WEAKENED);
+await token.deleteAllMoraleConditions('${CONDITION}');
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Weakened</b>, and adds -10 to any EML this turn.", "Combat 16");
+console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
+game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
 `;
 
     const ON_TURN_START_MACRO = ``;
@@ -32,7 +37,7 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>
     return {
         effectData: {
             icon: CONDITION_ICON,
-            label: game.hm3.Condition.WEAKENED,
+            label: CONDITION,
             rounds,
             seconds,
             token,

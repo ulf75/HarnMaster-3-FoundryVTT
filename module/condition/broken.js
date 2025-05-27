@@ -3,7 +3,6 @@
 // the character makes a Rest or Pass action option, but can defend if attacked except that
 // Counterstrike is prohibited. (COMBAT 16)
 const CONDITION_ICON = 'systems/hm3/images/icons/svg/despair-white.svg';
-// const CONDITION_ICON = 'icons/svg/downgrade.svg';
 
 /**
  *
@@ -18,11 +17,15 @@ const CONDITION_ICON = 'systems/hm3/images/icons/svg/despair-white.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
+    const CONDITION = game.hm3.Condition.BROKEN;
+    console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
-await token.deleteAllMoraleConditions(game.hm3.Condition.BROKEN);
+await token.deleteAllMoraleConditions('${CONDITION}');
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Broken</b>, and is unable to fight in any useful way. The only available options are flight or surrender. Flight is normally preferable; surrender is a last resort.", "Combat 16");
+game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
 `;
 
     const ON_TURN_START_MACRO = `
@@ -33,7 +36,7 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is still <
 
     return {
         effectData: {
-            label: game.hm3.Condition.BROKEN,
+            label: CONDITION,
             token,
             icon: CONDITION_ICON,
             type: 'GameTime',
