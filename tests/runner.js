@@ -1,5 +1,6 @@
 const tests = new Map([
     ['i01', './infrastructure/condition.js'],
+    ['i02', './infrastructure/morale.js'],
     ['c01', './combat/defeated.js'],
     ['c02', './combat/shock.js']
 ]);
