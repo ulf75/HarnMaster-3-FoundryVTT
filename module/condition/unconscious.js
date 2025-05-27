@@ -54,7 +54,7 @@ if (success) {
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 const ok = (await game.hm3.macros.shockRoll(!token.player, token.actor, token, 2)).isSuccess;
-await token.deleteCondition(game.hm3.Condition.UNCONSCIOUS, 500);
+await token.deleteCondition(game.hm3.Condition.UNCONSCIOUS);
 if (ok) {
     // Combatant is back
     await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and resumes functioning normally. <b>Turn Ends.</b>", "Combat 14");

@@ -57,21 +57,31 @@ export class TokenHM3 extends Token {
     /**
      *
      * @param {Condition} condition
-     * @param {number} [postpone=10]
+     * @param {number} [postpone=0]
      * @returns
      */
-    async disableCondition(condition, postpone = 10) {
-        setTimeout(() => tokenMutex.runExclusive(async () => await this.getCondition(condition)?.update({disabled: true})), postpone);
+    async disableCondition(condition, postpone = 0) {
+        return new Promise((resolve) =>
+            setTimeout(async () => {
+                await this.getCondition(condition)?.update({disabled: true});
+                resolve();
+            }, postpone)
+        );
     }
 
     /**
      * Deletes a condition from a token.
      * @param {Condition} condition
-     * @param {number} [postpone=10]
+     * @param {number} [postpone=0]
      * @returns
      */
-    async deleteCondition(condition, postpone = 10) {
-        return setTimeout(async () => await game.hm3.macros.deleteActiveEffect(this.id, this.getCondition(condition)?.id), postpone);
+    async deleteCondition(condition, postpone = 0) {
+        return new Promise((resolve) =>
+            setTimeout(async () => {
+                await game.hm3.macros.deleteActiveEffect(this.id, this.getCondition(condition)?.id);
+                resolve();
+            }, postpone)
+        );
     }
 
     /**
@@ -236,16 +246,17 @@ export class TokenDocumentHM3 extends TokenDocument {
      * @param {number} [postpone=0]
      * @returns
      */
-    async disableCondition(condition, postpone = 10) {
+    async disableCondition(condition, postpone = 0) {
         return this.object.disableCondition(condition, postpone);
     }
 
     /**
      * Deletes a condition from a token.
      * @param {Condition} condition
+     * @param {number} [postpone=0]
      * @returns
      */
-    async deleteCondition(condition, postpone = 10) {
+    async deleteCondition(condition, postpone = 0) {
         return this.object.deleteCondition(condition, postpone);
     }
 

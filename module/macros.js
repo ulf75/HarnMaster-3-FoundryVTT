@@ -2150,7 +2150,7 @@ export async function deleteActiveEffect(tokenId, effectId) {
     // sometimes effect macros fire twice -> race condition
     await deleteMutex.runExclusive(async () => {
         const token = canvas.tokens.get(tokenId);
-        const effect = token.actor.allApplicableEffects().find((e) => e.id === effectId);
+        const effect = token?.actor?.allApplicableEffects().find((e) => e.id === effectId);
         return effect?.delete();
     });
 }

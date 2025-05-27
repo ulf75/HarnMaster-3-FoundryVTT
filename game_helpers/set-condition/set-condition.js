@@ -40,14 +40,20 @@ let dialogEditor = new Dialog({
         resetAll: {
             label: 'Reset All',
             callback: () => {
-                canvas.tokens.controlled.forEach((token) => {
-                    Object.values(game.hm3.Condition).forEach((condition) => {
-                        token.deleteCondition(condition);
-                    });
-                    token.combatant?.update({defeated: false});
-                    token.actor.toggleStatusEffect('dead', {active: false});
-                    token.actor.toggleStatusEffect('unconscious', {active: false});
-                    token.toggleVisibility({active: true});
+                canvas.tokens.controlled.forEach(async (token) => {
+                    await Promise.all(
+                        Object.values(game.hm3.Condition).map(async (condition) => {
+                            await token.deleteCondition(condition);
+                        })
+                    );
+
+                    await token.combatant?.update({defeated: false});
+
+                    await token.actor.toggleStatusEffect('dead', {active: false});
+                    await token.actor.toggleStatusEffect('shock', {active: false});
+                    await token.actor.toggleStatusEffect('unconscious', {active: false});
+
+                    await token.toggleVisibility({active: true});
                 });
                 dialogEditor.render(true);
             }
