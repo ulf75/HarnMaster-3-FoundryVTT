@@ -27,7 +27,7 @@ if (!unconscious) {
     await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Cautious</b>, and will not Engage, must choose <b>Pass</b> if engaged, and cannot select the Counterstrike defense.", "Combat 16");
     if (token.isEngaged()) {
         await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Cautious</b>, and must choose <b>Pass</b> if engaged. <b>Turn ends.</b>", "Combat 16");
-        token.turnEnds();
+        await token.turnEnds();
     }
 }
 game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
@@ -42,7 +42,7 @@ const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
     await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is still <b>Cautious</b>, and will not Engage, must choose <b>Pass</b> if engaged, and cannot select the Counterstrike defense.", "Combat 16");
     if (token.isEngaged()) {
-        token.turnEnds();
+        await token.turnEnds();
         await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Cautious</b>, and must choose <b>Pass</b> if engaged. <b>Turn ends.</b>", "Combat 16");
     }
 }`;

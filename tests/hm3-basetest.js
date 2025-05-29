@@ -34,6 +34,7 @@ export class BaseTestHM3 {
             console.trace = () => {};
 
             await ChatMessage.deleteDocuments(game.messages.contents.map((m) => m.id));
+            await game.combat?.delete();
 
             // some default actors
             this.actors.set('Alice', await this._createActor('Actor.JTK0gIOv6PfxeE1P', 'Alice'));
@@ -93,7 +94,7 @@ export class BaseTestHM3 {
             this.actors.clear();
             this.tokens.clear();
 
-            if (game.combat) await game.combat.delete();
+            await game.combat?.delete();
         } catch (error) {
             success = false;
         }

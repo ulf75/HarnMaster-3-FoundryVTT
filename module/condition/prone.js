@@ -65,10 +65,10 @@ await Requestor.request({
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 await token.document.setFlag('wall-height', 'tokenHeight', token.actor.system.height | 6);
-if (game.combat?.started) {
-    if (game.combat.combatant?.id === token.combatant?.id) {
+if (game.combat?.started && game.combat.combatant) {
+    if (game.combat.combatant.id === token.combatant?.id) {
         await game.hm3.GmSays("<b>" + token.name + "</b> rises successfully. <b>Turn ends.</b>", "Combat 11");
-        token.turnEnds();
+        await token.turnEnds();
     } else {
         await game.hm3.GmSays("<b>" + token.name + "</b> rises successfully.", "Combat 11");
     }

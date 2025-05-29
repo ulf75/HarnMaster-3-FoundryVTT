@@ -1951,7 +1951,7 @@ export const displayChatActionButtons = function (message, html, data) {
  * @returns True, if no TA has been received so far in this turn.
  */
 async function isFirstTA() {
-    return await game.hm3.socket.executeAsGM('isFirstTA');
+    return game.hm3.socket.executeAsGM('isFirstTA');
 }
 
 /**
@@ -1965,7 +1965,7 @@ export async function setTA(autoend = false) {
         return true;
     } else {
         await game.hm3.GmSays('No more than one <b>Tactical Advantage</b> may be earned per character turn. <b>Turn ends.</b>', 'Combat 12');
-        game.combat.combatant.token.turnEnds();
+        await game.combat.combatant.token.turnEnds();
         return false;
     }
 }

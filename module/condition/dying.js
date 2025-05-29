@@ -21,7 +21,7 @@ const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 await token.deleteAllMoraleConditions();
 await token.actor.toggleStatusEffect('dead', {active: true, overlay: true});
-await token.combatant.update({defeated: true});
+await token.combatant?.update({defeated: true});
 await token.addCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!!token.actor.player) {
     await game.hm3.GmSays("<b>" + token.name + "</b> is <b>unconscious</b> due to a <b>Mortal Wound</b> and is <b>Dying</b>. Life-saving measures should be initiated as quickly as possible.", "Combat 14");
@@ -36,7 +36,7 @@ game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 await game.hm3.GmSays("<b>" + token.name + "</b> stays unconscious due to a <b>Mortal Wound</b>. <b>Turn ends.</b>", "Combat 14");
-token.turnEnds();
+await token.turnEnds();
 `;
 
     return {

@@ -233,6 +233,36 @@ export class ActorHM3 extends Actor {
         this.updateSource(updateData);
     }
 
+    /** @override */
+    // async toggleStatusEffect(statusId, {active, overlay} = {}) {
+    //     const statusMap = new Map([
+    //         ['dead', {name: Condition.DYING, overlay: true}],
+    //         ['downgrade', {name: Condition.WEAKENED, overlay: false}],
+    //         ['prone', {name: Condition.PRONE, overlay: true}],
+    //         ['shock', {name: Condition.SHOCKED, overlay: true}],
+    //         ['unconscious', {name: Condition.UNCONSCIOUS, overlay: true}],
+    //         ['upgrade', {name: Condition.EMPOWERED, overlay: false}]
+    //     ]);
+
+    //     if (statusMap.has(statusId)) {
+    //         const token = this.token.object;
+    //         const condition = statusMap.get(statusId).name;
+    //         active = active === undefined ? !token.hasCondition(condition) : active;
+    //         overlay = overlay === undefined ? statusMap.get(statusId).overlay : overlay;
+    //         if (active) {
+    //             // this.statuses.add(statusId);
+    //             // return token.addCondition(condition, {overlay});
+    //             return macros.createCondition(token, condition, {overlay});
+    //         } else {
+    //             // this.statuses.delete(statusId);
+    //             return token.deleteCondition(condition);
+    //         }
+    //     } else {
+    //         // If the statusId is not recognized, use the default toggleStatusEffect method
+    //         return super.toggleStatusEffect(statusId, {active, overlay: !!overlay});
+    //     }
+    // }
+
     /**
      * Add all of the items from a pack with the specified names
      * @param {*} itemNames Array of item names to include

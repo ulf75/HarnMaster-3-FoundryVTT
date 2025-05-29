@@ -89,7 +89,7 @@ export class MacroConfigHM3 extends MacroConfig {
             utility.getActorFromMacro(this.object)?.sheet.render();
             return ret;
         } else {
-            return await super._updateObject(event, formData);
+            return super._updateObject(event, formData);
         }
     }
 

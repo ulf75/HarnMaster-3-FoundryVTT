@@ -35,7 +35,7 @@ export class Mutex {
     async runExclusive(callback) {
         const release = await this.acquire();
         try {
-            return await callback();
+            return callback();
         } finally {
             release();
         }

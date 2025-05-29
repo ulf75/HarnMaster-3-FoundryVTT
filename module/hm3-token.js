@@ -169,18 +169,21 @@ export class TokenHM3 extends Token {
         return !this.isEngaged() && this.hasEngagementZone();
     }
 
-    turnEnds(postpone = 666) {
+    async turnEnds(postpone = 0) {
         if (!game.combat?.started) return;
 
-        console.debug(`HM3 | Token ${this.name} plans to finish the turn.`);
+        console.info(`HM3 | Token ${this.name} plans to finish the turn.`);
 
         // delay so that other hooks are executed first
-        setTimeout(async () => {
-            if (!game.combat?.started) return;
-            console.debug(`HM3 | Token ${this.name} started the end of the turn.`);
-            game.combat.nextTurn(this.id);
-            console.debug(`HM3 | Token ${this.name} has finished the turn.`);
-        }, postpone);
+        await new Promise((resolve) =>
+            setTimeout(async () => {
+                if (!game.combat?.started) return;
+                console.info(`HM3 | Token ${this.name} started the end of the turn.`);
+                await game.combat.nextTurn(this.id);
+                console.info(`HM3 | Token ${this.name} has finished the turn.`);
+                resolve();
+            }, postpone)
+        );
     }
 
     get dying() {
@@ -292,7 +295,7 @@ export class TokenDocumentHM3 extends TokenDocument {
         return this.object.hasReactionZone();
     }
 
-    turnEnds(postpone = 666) {
+    async turnEnds(postpone = 0) {
         return this.object.turnEnds(postpone);
     }
 

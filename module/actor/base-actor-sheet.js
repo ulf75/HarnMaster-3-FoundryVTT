@@ -319,7 +319,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             // At this point we know this dropped item is Gear coming from an actor,
 
             // Containers are a special case, and they need to be processed specially
-            if (droppedItem.type === ItemType.CONTAINERGEAR) return await this._moveContainer(event, droppedItem);
+            if (droppedItem.type === ItemType.CONTAINERGEAR) return this._moveContainer(event, droppedItem);
 
             // Set the destination container to the closest drop containerid
             droppedItem.system.container = destContainer;
@@ -332,9 +332,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
             if (quantity > 1) {
                 // Ask how many to move
-                return await this._moveQtyDialog(event, droppedItem);
+                return this._moveQtyDialog(event, droppedItem);
             } else {
-                return await this._moveItems(droppedItem, 1);
+                return this._moveItems(droppedItem, 1);
             }
         }
     }
@@ -413,7 +413,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 if (formQtyToMove <= 0) {
                     return false;
                 } else {
-                    return await this._moveItems(item, formQtyToMove);
+                    return this._moveItems(item, formQtyToMove);
                 }
             },
             options: {jQuery: false}
