@@ -7,19 +7,19 @@ const tests = new Map([
 
 export async function runner() {
     for (const test of tests.keys()) {
-        console.info('\n----------------------------------------');
+        console.info('%c\n----------------------------------------', 'color: #b6b4a5');
         console.info(`%cRunning test: ${test}`, 'color: #b6b4a5');
         const Module = await import(tests.get(test));
         if (!Module || !Module.TestCase) {
-            console.error(`Test module for ${test} not found or does not export TestCase.`);
+            console.error(`Test module for "${test}" not found or does not export TestCase.`);
             continue;
         }
         var t = new Module.TestCase();
         const success = await t.start();
         if (success) {
-            console.info(`%cTest ${test} completed successfully.`, 'color: #004d06');
+            console.info(`%cTest "${test}" completed successfully.`, 'color: #00990d');
         } else {
-            console.error(`%cTest ${test} failed.`, 'color: #b30000');
+            console.error(`%cTest "${test}" failed.`, 'color: #b30000');
         }
     }
 }
