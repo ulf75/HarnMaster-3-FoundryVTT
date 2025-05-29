@@ -69,6 +69,7 @@ export class DiceHM3 {
             isCS: roll.isSuccess && roll.isCritical,
             isMF: !roll.isSuccess && !roll.isCritical,
             isMS: roll.isSuccess && !roll.isCritical,
+            isSubstantial: roll.isSubstantial,
             isSuccess: roll.isSuccess,
             modifier: rollData.modifier,
             roll: roll.rollObj.total,
@@ -92,6 +93,7 @@ export class DiceHM3 {
             fluff: rollData.fluff ? (rollData.fluff.startsWith('<p>') ? rollData.fluff : '<p>' + rollData.fluff + '</p>') : undefined,
             fluffResult: fluffResult ? (fluffResult.startsWith('<p>') ? fluffResult : '<p>' + fluffResult + '</p>') : undefined,
             isCritical: roll.isCritical,
+            isSubstantial: roll.isSubstantial,
             isSuccess: roll.isSuccess,
             modifiedTarget: roll.target,
             modifier: Math.abs(roll.modifier),
@@ -1348,6 +1350,7 @@ export class DiceHM3 {
         let description = '';
         let isCrit = false;
         let isSuccess = false;
+        let isSubstantial = false;
 
         if (diceType === 'd100') {
             isCrit = roll.total % 5 === 0;
@@ -1362,6 +1365,20 @@ export class DiceHM3 {
                 description = levelDesc + ' Success';
                 isSuccess = true;
             }
+            // ********** Substantial Failure ***********
+            if (!isSuccess && roll.total > targetNum + (100 - targetNum) / 2) {
+                isSubstantial = true;
+                if (!isCrit) description = 'Substantial Failure';
+                // if (isCrit) description = 'Substantial ' + description;
+                // else description = 'Substantial Failure';
+            }
+            // ********** Substantial Success ***********
+            else if (isSuccess && roll.total <= targetNum / 2) {
+                isSubstantial = true;
+                if (!isCrit) description = 'Substantial Success';
+                // if (isCrit) description = 'Substantial ' + description;
+                // else description = 'Substantial Success';
+            }
         } else {
             isSuccess = roll.total <= targetNum;
             description = isSuccess ? 'Success' : 'Failure';
@@ -1371,6 +1388,7 @@ export class DiceHM3 {
             'description': description,
             'isCapped': baseTargetNum !== targetNum,
             'isCritical': isCrit,
+            'isSubstantial': isSubstantial,
             'isSuccess': isSuccess,
             'modifier': modifier,
             'preData': testData,
