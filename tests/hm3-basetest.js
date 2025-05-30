@@ -88,13 +88,13 @@ export class BaseTestHM3 {
         }
 
         try {
+            await game.combat?.delete();
+
             for (const token of this.tokens.values()) await token.delete();
             for (const actor of this.actors.values()) await actor.delete();
 
             this.actors.clear();
             this.tokens.clear();
-
-            await game.combat?.delete();
         } catch (error) {
             success = false;
         }
@@ -143,6 +143,7 @@ export class BaseTestHM3 {
     async _move(token, dir = {dx: 0, dy: 0}) {
         token.control({releaseOthers: true});
         await game.canvas.activeLayer.moveMany(dir);
+        await this._wait(200);
     }
 
     async _resetAllConditions(token) {
