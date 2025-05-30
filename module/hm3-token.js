@@ -130,18 +130,31 @@ export class TokenHM3 extends Token {
         if (!game.combat?.started) return [];
 
         const all = canvas.scene.tokens.contents;
-        const opponents =
-            this.document.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY
-                ? all.filter((token) =>
-                      [CONST.TOKEN_DISPOSITIONS.HOSTILE, CONST.TOKEN_DISPOSITIONS.NEUTRAL, CONST.TOKEN_DISPOSITIONS.SECRET].includes(
-                          token.disposition
-                      )
-                  )
-                : all.filter((token) =>
-                      [CONST.TOKEN_DISPOSITIONS.FRIENDLY, CONST.TOKEN_DISPOSITIONS.NEUTRAL, CONST.TOKEN_DISPOSITIONS.SECRET].includes(
-                          token.disposition
-                      )
-                  );
+        let opponents = [];
+        if (this.document.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY)
+            opponents = all.filter(
+                (token) =>
+                    [CONST.TOKEN_DISPOSITIONS.HOSTILE, CONST.TOKEN_DISPOSITIONS.NEUTRAL, CONST.TOKEN_DISPOSITIONS.SECRET].includes(
+                        token.disposition
+                    ) && token.id !== this.id
+            );
+        else if (this.document.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE)
+            opponents = all.filter(
+                (token) =>
+                    [CONST.TOKEN_DISPOSITIONS.FRIENDLY, CONST.TOKEN_DISPOSITIONS.NEUTRAL, CONST.TOKEN_DISPOSITIONS.SECRET].includes(
+                        token.disposition
+                    ) && token.id !== this.id
+            );
+        else
+            opponents = all.filter(
+                (token) =>
+                    [
+                        CONST.TOKEN_DISPOSITIONS.FRIENDLY,
+                        CONST.TOKEN_DISPOSITIONS.HOSTILE,
+                        CONST.TOKEN_DISPOSITIONS.NEUTRAL,
+                        CONST.TOKEN_DISPOSITIONS.SECRET
+                    ].includes(token.disposition) && token.id !== this.id
+            );
 
         const engaged = [
             ...opponents
@@ -149,7 +162,7 @@ export class TokenHM3 extends Token {
                 .map((token) => token.object)
         ];
 
-        if (exclusively) return engaged.filter((token) => token.getEngagedTokens().length === 1);
+        if (exclusively) return engaged.filter((token) => token.getEngagedTokens().length <= 1);
         else return engaged;
     }
 
