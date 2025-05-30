@@ -1,4 +1,4 @@
-import {HM3} from './config.js';
+import {HM3} from '../config.js';
 
 /**
  * A form designed for creating and editing an Active Effect on an Actor or Item.
