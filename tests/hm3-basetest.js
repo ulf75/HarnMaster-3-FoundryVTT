@@ -1,4 +1,5 @@
-const SLOWMO = 2; // 1 = normal speed, 2 = half speed, etc.
+const MIN_MS = 50; // minimum wait time in milliseconds
+const SLOWMO = 1; // 1 = normal speed, 2 = half speed, etc.
 
 export class BaseTestHM3 {
     NORTH = {dx: 0, dy: -1};
@@ -142,8 +143,7 @@ export class BaseTestHM3 {
 
     async _move(token, dir = {dx: 0, dy: 0}) {
         token.control({releaseOthers: true});
-        await game.canvas.activeLayer.moveMany(dir);
-        await this._wait();
+        await Promise.all([game.canvas.activeLayer.moveMany(dir), this._wait(Math.max(SLOWMO * MIN_MS, 300) / SLOWMO)]);
     }
 
     async _resetAllConditions(token) {
@@ -174,7 +174,7 @@ export class BaseTestHM3 {
      * @param {number} ms
      * @returns
      */
-    async _wait(ms = 100) {
+    async _wait(ms = MIN_MS) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve();
