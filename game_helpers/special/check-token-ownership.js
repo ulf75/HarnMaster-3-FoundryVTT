@@ -5,8 +5,6 @@
     const ownership = actor.ownership;
     const loggedInPlayers = game.users.filter((user) => user.active && !user.isGM);
 
-    combatant.rollInitiative();
-
     for (let player of loggedInPlayers) {
         const o = ownership[player.id] || 0;
         console.info(`HM3 | Player ${player.name} has ownership ${o} of the actor ${actor.name}.`);

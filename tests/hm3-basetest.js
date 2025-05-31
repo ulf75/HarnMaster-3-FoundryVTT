@@ -1,4 +1,4 @@
-const SLOWMO = 3;
+const SLOWMO = 2; // 1 = normal speed, 2 = half speed, etc.
 
 export class BaseTestHM3 {
     NORTH = {dx: 0, dy: -1};
@@ -62,9 +62,9 @@ export class BaseTestHM3 {
                 success = false;
             }
             try {
-                await this._wait(200);
+                await this._wait();
                 if (success) await this._test();
-                await this._wait(200);
+                await this._wait();
             } catch (error) {
                 success = false;
             }
@@ -73,8 +73,8 @@ export class BaseTestHM3 {
             } catch (error) {}
         }
 
-        success = (await this.#teardown()) && success;
         await this._wait();
+        success = (await this.#teardown()) && success;
 
         return success;
     }
@@ -143,7 +143,7 @@ export class BaseTestHM3 {
     async _move(token, dir = {dx: 0, dy: 0}) {
         token.control({releaseOthers: true});
         await game.canvas.activeLayer.moveMany(dir);
-        await this._wait(200);
+        await this._wait();
     }
 
     async _resetAllConditions(token) {
@@ -174,7 +174,7 @@ export class BaseTestHM3 {
      * @param {number} ms
      * @returns
      */
-    async _wait(ms = 500) {
+    async _wait(ms = 100) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve();

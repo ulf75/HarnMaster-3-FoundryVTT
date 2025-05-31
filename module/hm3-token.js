@@ -51,7 +51,18 @@ export class TokenHM3 extends Token {
      * @returns
      */
     getCondition(condition) {
-        return macros.getActiveEffect(this, condition, true);
+        return macros.getActiveEffect(this, condition, condition === Condition.OUTNUMBERED ? false : true);
+    }
+
+    getConditions() {
+        return Object.values(game.hm3.Condition).filter((c) => this.hasCondition(c));
+    }
+
+    getConditionsWithMacro(macro) {
+        return Object.values(game.hm3.Condition).filter((c) => {
+            const ae = this.getCondition(c);
+            return ae?.flags?.effectMacro && ae.flags.effectmacro[macro]?.script;
+        });
     }
 
     /**

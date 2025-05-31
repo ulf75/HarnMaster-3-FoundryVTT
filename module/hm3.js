@@ -441,6 +441,11 @@ Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
     }
 });
 
+// If the combatant is not already in combat, roll initiative
+Hooks.on('createCombatant', (combatant, options, id) => {
+    combatant.rollInitiative();
+});
+
 Hooks.on('renderSceneConfig', (app, html, data) => {
     const scene = app.object;
     if (app.renderTOTMScene) return;
