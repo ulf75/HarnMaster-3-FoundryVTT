@@ -64,7 +64,10 @@ if (!unconscious) {
             turns,
             type,
             flags: {
-                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
+                effectmacro: {
+                    onCreate: {script: ON_CREATE_MACRO},
+                    onTurnStart: {script: ON_TURN_START_MACRO}
+                },
                 hm3: {uuid}
             }
         },

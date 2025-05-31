@@ -12,7 +12,9 @@ const CONDITION_ICON = 'icons/svg/lightning.svg';
  */
 export async function createCondition(token, options = {}) {
     if (!token) return;
-    console.info(`HM3 | Creating condition: ${game.hm3.Condition.SHOCKED} for token: ${token.name}`, options);
+
+    const CONDITION = game.hm3.Condition.SHOCKED;
+    console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
 
@@ -33,7 +35,7 @@ if (!unconscious) {
         await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b> and displays a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. <b>" + token.name + "</b> is incoherent and gazes helplessly at the injuries.", "Combat 14");
     }
 }
-console.info("HM3 | Condition: ${game.hm3.Condition.SHOCKED} created for token: ${token.name}");
+console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
 game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
@@ -46,11 +48,11 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shoc
 
     return {
         effectData: {
-            label: game.hm3.Condition.SHOCKED,
-            token,
             icon: CONDITION_ICON,
-            type: 'GameTime',
+            label: CONDITION,
             seconds: game.hm3.CONST.TIME.INDEFINITE,
+            token,
+            type: 'GameTime',
             flags: {
                 effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
                 hm3: {uuid}

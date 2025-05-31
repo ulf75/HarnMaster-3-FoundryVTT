@@ -78,7 +78,7 @@ export class TokenHM3 extends Token {
     async deleteCondition(condition, postpone = 0) {
         return new Promise((resolve) =>
             setTimeout(async () => {
-                await game.hm3.macros.deleteActiveEffect(this.id, this.getCondition(condition)?.id);
+                await game.hm3.macros.deleteCondition(this, this.getCondition(condition));
                 resolve();
             }, postpone)
         );

@@ -44,7 +44,10 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is in <b>B
             token,
             type: 'GameTime',
             flags: {
-                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
+                effectmacro: {
+                    onCreate: {script: ON_CREATE_MACRO},
+                    onTurnStart: {script: ON_TURN_START_MACRO}
+                },
                 hm3: {uuid}
             }
         },

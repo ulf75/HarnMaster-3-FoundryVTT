@@ -75,6 +75,8 @@ if (game.combat?.started && game.combat.combatant) {
         await game.hm3.GmSays("<b>" + token.name + "</b> rises successfully.", "Combat 11");
     }
 }
+console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
+game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     return {
@@ -85,7 +87,11 @@ if (game.combat?.started && game.combat.combatant) {
             token,
             type: 'GameTime',
             flags: {
-                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}, onDelete: {script: ON_DELETE_MACRO}},
+                effectmacro: {
+                    onCreate: {script: ON_CREATE_MACRO},
+                    onTurnStart: {script: ON_TURN_START_MACRO},
+                    onDelete: {script: ON_DELETE_MACRO}
+                },
                 hm3: {uuid}
             }
         },

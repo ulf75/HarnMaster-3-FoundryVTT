@@ -2294,6 +2294,25 @@ export async function createCondition(token, condition, conditionOptions = {}) {
     }
 }
 
+export async function deleteCondition(token, condition) {
+    if (!token || !condition || !condition?.id) return null;
+
+    if (!condition.hasDeleteMacro()) {
+        return deleteActiveEffect(token.id, condition.id);
+    } else {
+        const uuid = condition.flags.hm3.uuid;
+        const callbackPromise = new Promise((resolve) => {
+            game.hm3.resolveMap.set(uuid, (success) => {
+                game.hm3.resolveMap.delete(uuid);
+                resolve(success);
+            });
+        });
+        const ret = await deleteActiveEffect(token.id, condition.id);
+        await callbackPromise;
+        return ret;
+    }
+}
+
 /**
  *
  * @param {Object} injuryData
