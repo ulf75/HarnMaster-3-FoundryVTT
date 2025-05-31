@@ -25,9 +25,9 @@ await token.deleteAllMoraleConditions();
 await token.addCondition(game.hm3.Condition.PRONE);
 const almostDying = !token.player && (token.actor.system.shockIndex.value < game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD);
 if (almostDying) {
-    await token.actor.toggleStatusEffect('dead', {active: true, overlay: true});
+    await token.actor.toggleStatusEffect('unconscious', {active: true, overlay: true});
     await token.combatant.update({defeated: true});
-    await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Dead</b> due to <b>Too Many Wounds</b>.", "House Rule");
+    await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Defeated</b> due to <b>Too Many Wounds</b>.", "House Rule");
 } else if (!token.dying) {
     await game.hm3.GmSays("Overwhelmed by pain, blood loss, and exhaustion, <b>" + token.name + "</b> collapses unconscious onto the battlefield, falling <b>Prone</b> amidst the chaos.", "Combat 14");
     await token.actor.toggleStatusEffect('unconscious', {active: true, overlay: true});
