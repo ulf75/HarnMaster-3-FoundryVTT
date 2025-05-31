@@ -1917,9 +1917,6 @@ export async function getItem(itemName, type, actor) {
 export function rangeToTarget(sourceToken, targetToken, gridUnits = false) {
     if (!sourceToken || !targetToken || !canvas.scene || !canvas.scene.grid) return 9999;
 
-    // If the current scene is marked "Theatre of the Mind", then range is always 0
-    if (canvas.scene.getFlag('hm3', 'isTotm')) return 0;
-
     const distance = game.hm3.macros.distanceBtwnTwoTokens(sourceToken.id, targetToken.id);
     // console.info(`Distance = ${truncate(distance, 0)}, gridUnits=${gridUnits}`);
     if (gridUnits) return truncate(distance / canvas.dimensions.distance, 0);
