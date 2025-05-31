@@ -17,6 +17,8 @@ export async function createCondition(token, options = {}) {
     const CONDITION = game.hm3.Condition.PRONE;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
+    const uuid = foundry.utils.randomID();
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
@@ -24,7 +26,7 @@ await token.document.setFlag('wall-height', 'tokenHeight', 2);
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, and getting up takes one action. <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
 console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
-game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
+game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = `
@@ -77,13 +79,14 @@ if (game.combat?.started && game.combat.combatant) {
 
     return {
         effectData: {
-            label: CONDITION,
-            token,
             icon: CONDITION_ICON,
-            type: 'GameTime',
+            label: CONDITION,
             seconds: game.hm3.CONST.TIME.INDEFINITE,
+            token,
+            type: 'GameTime',
             flags: {
-                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}, onDelete: {script: ON_DELETE_MACRO}}
+                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}, onDelete: {script: ON_DELETE_MACRO}},
+                hm3: {uuid}
             }
         },
         changes: [],

@@ -16,6 +16,8 @@ export async function createCondition(token, options = {}) {
     const CONDITION = game.hm3.Condition.SECONDARY_HAND;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
+    const uuid = foundry.utils.randomID();
+
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
@@ -30,7 +32,8 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> fights with t
             type: 'GameTime',
             seconds: game.hm3.CONST.TIME.INDEFINITE,
             flags: {
-                effectmacro: {onTurnStart: {script: ON_TURN_START_MACRO}}
+                effectmacro: {onTurnStart: {script: ON_TURN_START_MACRO}},
+                hm3: {uuid}
             }
         },
         changes: [{key: 'eph.meleeAMLMod', mode: 2, value: '-10'}],

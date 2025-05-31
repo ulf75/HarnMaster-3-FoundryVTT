@@ -1,7 +1,22 @@
-// const SHOCKED_ICON = 'systems/hm3/images/icons/svg/shock.svg';
 const CONDITION_ICON = 'icons/svg/lightning.svg';
 
-const ON_CREATE_MACRO = (token) => `
+/**
+ *
+ * @param {TokenHM3} token
+ * @param {Object} [options={}] - Options for the condition
+ * @param {boolean} [options.oneRoll=false] - Only one roll defaults to false
+ * @param {boolean} [options.oneRound=false] - Only one round defaults to false
+ * @param {boolean} [options.oneTurn=false] - Only one turn defaults to false
+ * @param {number} [options.outnumbered=1] - Outnumbered defaults to 1
+ * @returns
+ */
+export async function createCondition(token, options = {}) {
+    if (!token) return;
+    console.info(`HM3 | Creating condition: ${game.hm3.Condition.SHOCKED} for token: ${token.name}`, options);
+
+    const uuid = foundry.utils.randomID();
+
+    const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
@@ -19,29 +34,15 @@ if (!unconscious) {
     }
 }
 console.info("HM3 | Condition: ${game.hm3.Condition.SHOCKED} created for token: ${token.name}");
-game.hm3.resolveMap.get('${token.id + game.hm3.Condition.SHOCKED}')(true);
+game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
-const ON_TURN_START_MACRO = (token) => `
+    const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b>. Shock prevents the use of skills, spells, and psionic talents. In a combat situation, a character in <b>Shock</b> may Rest, Walk/Crawl (at half move), or be led away; the character will <b>Ignore</b> any attacks.", "Combat 18");
 `;
-
-/**
- *
- * @param {TokenHM3} token
- * @param {Object} [options={}] - Options for the condition
- * @param {boolean} [options.oneRoll=false] - Only one roll defaults to false
- * @param {boolean} [options.oneRound=false] - Only one round defaults to false
- * @param {boolean} [options.oneTurn=false] - Only one turn defaults to false
- * @param {number} [options.outnumbered=1] - Outnumbered defaults to 1
- * @returns
- */
-export async function createCondition(token, options = {}) {
-    if (!token) return;
-    console.info(`HM3 | Creating condition: ${game.hm3.Condition.SHOCKED} for token: ${token.name}`, options);
 
     return {
         effectData: {
@@ -50,7 +51,10 @@ export async function createCondition(token, options = {}) {
             icon: CONDITION_ICON,
             type: 'GameTime',
             seconds: game.hm3.CONST.TIME.INDEFINITE,
-            flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO(token)}, onTurnStart: {script: ON_TURN_START_MACRO(token)}}}
+            flags: {
+                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
+                hm3: {uuid}
+            }
         },
         changes: [],
         options: {unique: true}

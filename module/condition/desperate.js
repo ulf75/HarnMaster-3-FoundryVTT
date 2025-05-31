@@ -19,12 +19,14 @@ export async function createCondition(token, options = {}) {
     const CONDITION = game.hm3.Condition.DESPERATE;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
+    const uuid = foundry.utils.randomID();
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 await token.deleteAllMoraleConditions(game.hm3.Condition.DESPERATE);
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Desperate</b>, and tries to conclude the battle, one way or the other, as soon as possible. Until the situation changes and a new Initiative Test is passed, the character selects the <b>Most Aggressive</b> option available.", "Combat 16");
-game.hm3.resolveMap.get('${token.id + game.hm3.Condition.DESPERATE}')(true);
+game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = `
@@ -35,12 +37,15 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is still <
 
     return {
         effectData: {
-            label: game.hm3.Condition.DESPERATE,
-            token,
             icon: CONDITION_ICON,
-            type: 'GameTime',
+            label: CONDITION,
             seconds: game.hm3.CONST.TIME.INDEFINITE,
-            flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
+            token,
+            type: 'GameTime',
+            flags: {
+                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
+                hm3: {uuid}
+            }
         },
         changes: [],
         options: {unique: true}

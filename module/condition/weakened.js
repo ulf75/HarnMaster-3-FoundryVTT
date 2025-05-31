@@ -18,13 +18,15 @@ export async function createCondition(token, options = {}) {
     const CONDITION = game.hm3.Condition.WEAKENED;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
+    const uuid = foundry.utils.randomID();
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 await token.deleteAllMoraleConditions('${CONDITION}');
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Weakened</b>, and adds -10 to any EML this turn.", "Combat 16");
 console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
-game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
+game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = ``;
@@ -43,7 +45,10 @@ game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
             token,
             turns,
             type,
-            flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
+            flags: {
+                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
+                hm3: {uuid}
+            }
         },
         changes: [{key: 'eph.meleeAMLMod', mode: 2, priority: null, value: '-10'}], // TODO must be a general bonus on ALL skills
         options: {selfDestroy: true, unique: true}

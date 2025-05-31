@@ -21,6 +21,8 @@ export async function createCondition(token, options = {}) {
     const label = `${CONDITION} ${options.outnumbered}:1`;
     console.info(`HM3 | Creating condition: ${label} for token: ${token.name}`, options);
 
+    const uuid = foundry.utils.randomID();
+
     const ON_CREATE_MACRO = ``;
 
     const ON_TURN_START_MACRO = `
@@ -33,12 +35,15 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is <b>${label
 
     return {
         effectData: {
-            label,
-            token,
             icon: CONDITION_ICON,
-            type: 'GameTime',
+            label,
             seconds: game.hm3.CONST.TIME.INDEFINITE,
-            flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
+            token,
+            type: 'GameTime',
+            flags: {
+                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
+                hm3: {uuid}
+            }
         },
         changes: [{key: 'eph.outnumbered', mode: 2, priority: null, value: `${options.outnumbered}`}],
         options: {unique: true}

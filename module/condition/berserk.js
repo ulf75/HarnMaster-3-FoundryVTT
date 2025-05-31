@@ -19,13 +19,15 @@ export async function createCondition(token, options = {}) {
     const CONDITION = game.hm3.Condition.BERSERK;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
+    const uuid = foundry.utils.randomID();
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 await token.deleteAllMoraleConditions('${CONDITION}');
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> enters <b>Berserk Mode</b>, and <b>Must</b> take the most aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike. Further Initiative rolls are ignored until the battle ends.", "Combat 18");
 console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
-game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
+game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = `
@@ -36,12 +38,15 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is in <b>B
 
     return {
         effectData: {
-            label: CONDITION,
-            token,
             icon: CONDITION_ICON,
-            type: 'GameTime',
+            label: CONDITION,
             seconds: game.hm3.CONST.TIME.INDEFINITE,
-            flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
+            token,
+            type: 'GameTime',
+            flags: {
+                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
+                hm3: {uuid}
+            }
         },
         changes: [{key: 'eph.meleeAMLMod', mode: 2, priority: null, value: '20'}],
         options: {unique: true}

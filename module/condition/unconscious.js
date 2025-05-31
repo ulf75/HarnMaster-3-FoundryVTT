@@ -12,7 +12,11 @@
  */
 export async function createCondition(token, options = {}) {
     if (!token) return;
-    console.info(`HM3 | Creating condition: ${game.hm3.Condition.UNCONSCIOUS} for token: ${token.name}`, options);
+
+    const CONDITION = game.hm3.Condition.UNCONSCIOUS;
+    console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
+
+    const uuid = foundry.utils.randomID();
 
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
@@ -28,8 +32,8 @@ if (almostDying) {
     await game.hm3.GmSays("Overwhelmed by pain, blood loss, and exhaustion, <b>" + token.name + "</b> collapses unconscious onto the battlefield, falling <b>Prone</b> amidst the chaos.", "Combat 14");
     await token.actor.toggleStatusEffect('unconscious', {active: true, overlay: true});
 }
-console.info("HM3 | Condition: ${game.hm3.Condition.UNCONSCIOUS} created for token: ${token.name}");
-game.hm3.resolveMap.get('${token.id + game.hm3.Condition.UNCONSCIOUS}')(true);
+console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
+game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = `
@@ -42,7 +46,7 @@ if (success) {
     // Combatant regains consciousness
     await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and starts coming back to full senses, though stability remains uncertain. Another <b>Shock Roll</b> is needed.", "Combat 14");
     await token.actor.toggleStatusEffect('unconscious', {active: false});
-    token.disableCondition(game.hm3.Condition.UNCONSCIOUS, 500); // postpone a bit
+    token.disableCondition('${CONDITION}', 500); // postpone a bit
 } else {
     // Combatant stays unconscious
     await game.hm3.GmSays("<b>" + token.name + "</b> stays unconscious. <b>Turn ends.</b>", "Combat 14");
@@ -54,7 +58,7 @@ if (success) {
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 const ok = (await game.hm3.macros.shockRoll(!token.player, token.actor, token, 2)).isSuccess;
-await token.deleteCondition(game.hm3.Condition.UNCONSCIOUS);
+await token.deleteCondition('${CONDITION}');
 if (ok) {
     // Combatant is back
     await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and resumes functioning normally. <b>Turn Ends.</b>", "Combat 14");
@@ -66,13 +70,14 @@ if (ok) {
 
     return {
         effectData: {
-            label: game.hm3.Condition.UNCONSCIOUS,
+            label: CONDITION,
             token,
             icon: CONFIG.statusEffects.find((e) => e.id === 'unconscious').img, // UNCONSCIOUS_ICON
             type: 'GameTime',
             seconds: game.hm3.macros.d6(2) * game.hm3.CONST.TIME.MINUTE, // 2d6 minutes
             flags: {
-                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}, onDisable: {script: ON_DISABLE_MACRO}}
+                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}, onDisable: {script: ON_DISABLE_MACRO}},
+                hm3: {uuid}
             }
         },
         changes: [],

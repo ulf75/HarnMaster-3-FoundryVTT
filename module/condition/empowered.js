@@ -18,13 +18,15 @@ export async function createCondition(token, options = {}) {
     const CONDITION = game.hm3.Condition.EMPOWERED;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
+    const uuid = foundry.utils.randomID();
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 await token.deleteAllMoraleConditions(game.hm3.Condition.EMPOWERED);
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Empowered</b>, and adds 10 to any EML this turn.", "Combat 16");
-console.info("HM3 | Condition: ${game.hm3.Condition.EMPOWERED} created for token: ${token.name}");
-game.hm3.resolveMap.get('${token.id + game.hm3.Condition.EMPOWERED}')(true);
+console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
+game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = ``;
@@ -37,13 +39,16 @@ game.hm3.resolveMap.get('${token.id + game.hm3.Condition.EMPOWERED}')(true);
     return {
         effectData: {
             icon: CONDITION_ICON,
-            label: game.hm3.Condition.EMPOWERED,
+            label: CONDITION,
             rounds,
             seconds,
             token,
             turns,
             type,
-            flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
+            flags: {
+                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
+                hm3: {uuid}
+            }
         },
         changes: [{key: 'eph.meleeAMLMod', mode: 2, priority: null, value: '10'}], // TODO must be a general bonus on ALL skills
         options: {selfDestroy: true, unique: true}

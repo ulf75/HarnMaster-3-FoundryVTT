@@ -18,6 +18,8 @@ export async function createCondition(token, options = {}) {
     const CONDITION = game.hm3.Condition.CAUTIOUS;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
+    const uuid = foundry.utils.randomID();
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
@@ -30,7 +32,7 @@ if (!unconscious) {
         await token.turnEnds();
     }
 }
-game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
+game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = options.oneRound
@@ -61,7 +63,10 @@ if (!unconscious) {
             token,
             turns,
             type,
-            flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
+            flags: {
+                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
+                hm3: {uuid}
+            }
         },
         changes: [],
         options: {selfDestroy: true, unique: true}

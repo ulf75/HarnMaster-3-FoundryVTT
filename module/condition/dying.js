@@ -16,6 +16,8 @@ export async function createCondition(token, options = {}) {
     const CONDITION = game.hm3.Condition.DYING;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
+    const uuid = foundry.utils.randomID();
+
     const ON_CREATE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
@@ -29,7 +31,7 @@ if (!!token.actor.player) {
     await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Dead</b> due to a <b>Mortal Wound</b>.", "Combat 14");
 }
 console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
-game.hm3.resolveMap.get('${token.id + CONDITION}')(true);
+game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = `
@@ -41,12 +43,15 @@ await token.turnEnds();
 
     return {
         effectData: {
+            icon: CONDITION_ICON,
             label: CONDITION,
             token,
-            icon: CONDITION_ICON,
             type: 'GameTime',
             seconds: game.hm3.CONST.TIME.INDEFINITE,
-            flags: {effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}}}
+            flags: {
+                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
+                hm3: {uuid}
+            }
         },
         changes: [],
         options: {unique: true}

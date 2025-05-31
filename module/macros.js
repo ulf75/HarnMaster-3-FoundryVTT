@@ -2170,14 +2170,6 @@ export async function deleteActiveEffect(tokenId, effectId) {
 export async function createCondition(token, condition, conditionOptions = {}) {
     if (!token) return null;
 
-    const uuid = token.id + condition;
-    const callbackPromise = new Promise((resolve) => {
-        game.hm3.resolveMap.set(uuid, (success) => {
-            game.hm3.resolveMap.delete(uuid);
-            resolve(success);
-        });
-    });
-
     conditionOptions = foundry.utils.mergeObject(
         {
             numTurns: 0,
@@ -2282,17 +2274,24 @@ export async function createCondition(token, condition, conditionOptions = {}) {
             return null;
     }
 
-    cond = await createActiveEffect(condData.effectData, condData.changes, condData.options);
-    if (!cond) {
-        ui.notifications.error(`Could not create condition ${condition} on token ${token.name}.`);
-        return null;
+    const onCreateScript = condData.effectData.flags.effectmacro?.onCreate?.script;
+    if (!onCreateScript || onCreateScript?.trim().length === 0) {
+        return createActiveEffect(condData.effectData, condData.changes, condData.options);
+    } else {
+        const uuid = condData.effectData.flags.hm3.uuid;
+        const callbackPromise = new Promise((resolve) => {
+            game.hm3.resolveMap.set(uuid, (success) => {
+                game.hm3.resolveMap.delete(uuid);
+                resolve(success);
+            });
+        });
+
+        cond = await createActiveEffect(condData.effectData, condData.changes, condData.options);
+        // if (conditionOptions.overlay) cond.updateSource({'flags.core.overlay': true});
+        await callbackPromise;
+
+        return cond;
     }
-
-    if (conditionOptions.overlay) cond.updateSource({'flags.core.overlay': true});
-    if (cond.hasCreateMacro()) await callbackPromise;
-    else game.hm3.resolveMap.delete(uuid);
-
-    return cond;
 }
 
 /**
