@@ -1,4 +1,4 @@
-import * as utility from './utility.js';
+import * as utility from '../utility.js';
 
 /**
  * A form designed for creating and editing an Macro on an Actor or Item.
