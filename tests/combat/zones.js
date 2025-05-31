@@ -58,7 +58,10 @@ export class TestCase extends game.hm3.BaseTest {
         console.assert(!alice.hasReactionZone(), 'Token HAS a Reaction Zone: %O', alice);
         console.assert(alice.isEngaged(), 'Token is NOT engaged: %O', alice);
         console.assert(!alice.isEngaged(true), 'Token IS exclusively engaged: %O', alice);
-
-        await this._wait(2000);
+        console.assert(!bob.isEngaged(true), 'Token IS exclusively engaged: %O', bob);
+        console.assert(!alon.isEngaged(true), 'Token IS exclusively engaged: %O', alon);
+        console.assert(bob.isEngaged(), 'Token is NOT engaged: %O', bob);
+        console.assert(alon.isEngaged(), 'Token is NOT engaged: %O', alon);
+        console.assert(alice.hasCondition(game.hm3.Condition.OUTNUMBERED + ' 2:1'), 'Token has NO Outnumbered condition: %O', alice);
     }
 }

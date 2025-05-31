@@ -42,7 +42,7 @@ export class TokenHM3 extends Token {
      * @returns
      */
     hasCondition(condition) {
-        return macros.hasActiveEffect(this, condition, true);
+        return macros.hasActiveEffect(this, condition, condition === Condition.OUTNUMBERED ? false : true);
     }
 
     /**
@@ -156,14 +156,17 @@ export class TokenHM3 extends Token {
                     ].includes(token.disposition) && token.id !== this.id
             );
 
-        const engaged = [
+        let engaged = [
             ...opponents
                 .filter((tokenDoc) => rangeToTarget(this, tokenDoc.object) < 5.1 && tokenDoc.object.hasEngagementZone())
                 .map((token) => token.object)
         ];
 
-        if (exclusively) return engaged.filter((token) => token.getEngagedTokens().length <= 1);
-        else return engaged;
+        if (exclusively) engaged = [...engaged.filter((token) => token.getEngagedTokens().length <= 1)];
+
+        // console.info(`HM3 | Token ${this.name} ${exclusively ? 'exclusively ' : ''}engaged with ${engaged.length} tokens:`, engaged);
+
+        return engaged;
     }
 
     /**
@@ -171,7 +174,9 @@ export class TokenHM3 extends Token {
      * @returns true, if this token is engaged in combat (COMBAT 6)
      */
     isEngaged(exclusively = false) {
-        return game.combat?.started && this.getEngagedTokens(exclusively).length > 0;
+        return (
+            game.combat?.started && (exclusively ? this.getEngagedTokens(exclusively).length === 1 : this.getEngagedTokens(exclusively).length > 0)
+        );
     }
 
     /**

@@ -653,7 +653,7 @@ async function updateOutnumbered(aeName = 'true') {
             game.hm3.Condition.UNCONSCIOUS
         ].includes(aeName)
     ) {
-        console.debug(`HM3 | Run updateOutnumbered(aeName = ${aeName})`);
+        console.info(`HM3 | Run updateOutnumbered(aeName = ${aeName})`);
         await outMutex.runExclusive(async () => await combat.updateOutnumbered());
     }
 }
