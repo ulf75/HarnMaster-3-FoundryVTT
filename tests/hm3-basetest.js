@@ -22,10 +22,16 @@ export class BaseTestHM3 {
     async _preTeardown() {}
     async _postTeardown() {}
 
+    /**
+     * Sets up the test environment, including deleting existing messages and combat, creating default actors, and preparing the console.
+     * @private
+     * @returns {Promise<boolean>} Returns true if setup was successful, false otherwise.
+     */
     async #setup() {
         try {
             await this._preSetup();
         } catch (error) {
+            console.error('Error in pre-setup:', error);
             return false;
         }
 
@@ -41,18 +47,24 @@ export class BaseTestHM3 {
             this.actors.set('Alice', await this._createActor('Actor.JTK0gIOv6PfxeE1P', 'Alice'));
             this.actors.set('Bob', await this._createActor('Actor.6WYZs3HBnOOg3YXQ', 'Bob'));
         } catch (error) {
+            console.error('Error during setup:', error);
             return false;
         }
 
         try {
             await this._postSetup();
         } catch (error) {
+            console.error('Error in post-setup:', error);
             return false;
         }
 
         return true;
     }
 
+    /**
+     * Starts the test by setting up the environment, running pre-test and post-test hooks, and tearing down the environment after the test.
+     * @returns {Promise<boolean>} Returns true if the test was successful, false otherwise.
+     */
     async start() {
         let success = await this.#setup();
 
@@ -61,6 +73,7 @@ export class BaseTestHM3 {
                 await this._preTest();
             } catch (error) {
                 success = false;
+                console.error('Error in pre-test:', error);
             }
             try {
                 await this._wait();
@@ -68,10 +81,13 @@ export class BaseTestHM3 {
                 await this._wait();
             } catch (error) {
                 success = false;
+                console.error('Error during test execution:', error);
             }
             try {
                 if (success) await this._postTest();
-            } catch (error) {}
+            } catch (error) {
+                console.error('Error in post-test:', error);
+            }
         }
 
         await this._wait();
@@ -80,12 +96,18 @@ export class BaseTestHM3 {
         return success;
     }
 
+    /**
+     * Cleans up the test environment, deleting actors and tokens, and resetting combat.
+     * @private
+     * @returns {Promise<boolean>} Returns true if teardown was successful, false otherwise.
+     */
     async #teardown() {
         let success = true;
         try {
             await this._preTeardown();
         } catch (error) {
             success = false;
+            console.error('Error in pre-teardown:', error);
         }
 
         try {
@@ -98,17 +120,78 @@ export class BaseTestHM3 {
             this.tokens.clear();
         } catch (error) {
             success = false;
+            console.error('Error during teardown:', error);
         }
 
         try {
             await this._postTeardown();
         } catch (error) {
             success = false;
+            console.error('Error in post-teardown:', error);
         }
 
         return success;
     }
 
+    /**
+     * Extracts the buttons from the last chat message and returns them as a Map.
+     * @param {number} messageNr - The index of the chat message to extract buttons from. Defaults to the last message.
+     * @returns {Map<string, Object>} A Map where the key is the button label and the value is an object containing button properties.
+     * @protected
+     */
+    _defButtonsFromChatMsg(messageNr = game.messages.contents.length - 1) {
+        const html = document.createElement('div');
+        html.innerHTML = game.messages.contents[messageNr].content;
+        const htmlDefButtons = html.getElementsByClassName('card-buttons')[0].firstElementChild;
+
+        return new Map(
+            Array.from(htmlDefButtons.children).map((button) => {
+                button.onclick = async (event) => {
+                    return CONFIG.Actor.documentClass._onChatCardAction({
+                        altKey: true,
+                        currentTarget: button,
+                        preventDefault: () => event.preventDefault()
+                    });
+                };
+                return [
+                    button.innerHTML,
+                    {
+                        action: button.dataset.action,
+                        aim: button.dataset.aim,
+                        aspect: button.dataset.aspect,
+                        atkTokenId: button.dataset.atkTokenId,
+                        button,
+                        defTokenId: button.dataset.defTokenId,
+                        effAml: button.dataset.effAml,
+                        grappleAtk: button.dataset.grappleAtk,
+                        impactMod: button.dataset.impactMod,
+                        visibleActorId: button.dataset.visibleActorId,
+                        weapon: button.dataset.weapon,
+                        weaponType: button.dataset.weaponType
+                    }
+                ];
+            })
+        );
+    }
+
+    async _defResult(def, defButtons, roll = []) {
+        if (!defButtons || !['Block', 'Counterstrike', 'Dodge', 'Ignore'].includes(def)) return null;
+        const button = defButtons.get(def)?.button;
+        if (!button) return null;
+
+        game.hm3.Roll.D100_RESULTS.push(...roll);
+
+        const res = await Promise.all([
+            button.click(),
+            new Promise((resolve) => {
+                Hooks.once(`hm3.on${def}Resume`, (result) => {
+                    resolve(result);
+                });
+            })
+        ]);
+
+        return res[1];
+    }
     /**
      *
      * @param {string} actorUuid
@@ -146,6 +229,11 @@ export class BaseTestHM3 {
         await Promise.all([game.canvas.activeLayer.moveMany(dir), this._wait(Math.max(SLOWMO * MIN_MS, 300) / SLOWMO)]);
     }
 
+    /**
+     * Resets all conditions on the token, including combatant status and visibility.
+     * @param {TokenHM3} token - The token to reset conditions for.
+     * @returns {Promise<void>}
+     */
     async _resetAllConditions(token) {
         await Promise.all(
             Object.values(game.hm3.Condition).map(async (condition) => {

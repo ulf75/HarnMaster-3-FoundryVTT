@@ -31,7 +31,6 @@ if (!!token.actor.player) {
     await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Dead</b> due to a <b>Mortal Wound</b>.", "Combat 14");
 }
 console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
-game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = `

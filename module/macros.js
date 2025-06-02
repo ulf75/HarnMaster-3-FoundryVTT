@@ -1602,7 +1602,7 @@ export async function weaponAttack(itemName = null, noDialog = false, myToken = 
 
     const hooksOk = Hooks.call('hm3.preMeleeAttack', combatant, targetToken, weapon, unarmed);
     if (hooksOk) {
-        const result = await combat.meleeAttack(combatant.token, targetToken, weapon, unarmed);
+        const result = await combat.meleeAttack(combatant.token, targetToken, {weaponItem: weapon, unarmed, noDialog});
         Hooks.call('hm3.onMeleeAttack', result, combatant, targetToken, weapon, unarmed);
         return result;
     }
@@ -1643,7 +1643,17 @@ export async function missileAttack(itemName = null, noDialog = false, myToken =
  * @param {*} atkImpactMod Additional modifier to impact
  * @param {boolean} isGrappleAtk
  */
-export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod, isGrappleAtk) {
+export async function meleeCounterstrikeResume(
+    atkTokenId,
+    defTokenId,
+    atkWeaponName,
+    atkEffAML,
+    atkAim,
+    atkAspect,
+    atkImpactMod,
+    isGrappleAtk,
+    noDialog = false
+) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1707,7 +1717,7 @@ export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeapon
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
+export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk, noDialog = false) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1741,7 +1751,7 @@ export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function blockResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
+export async function blockResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk, noDialog = false) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1756,7 +1766,7 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
 
     const hooksOk = Hooks.call('hm3.preBlockResume', atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
     if (hooksOk) {
-        const result = await combat.blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
+        const result = await combat.blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk, noDialog);
         Hooks.call('hm3.onBlockResume', result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
         return result;
     }
@@ -1775,7 +1785,7 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
+export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk, noDialog = false) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -2274,8 +2284,24 @@ export async function createCondition(token, condition, conditionOptions = {}) {
             return null;
     }
 
+    Object.keys(condData.effectData.flags?.effectmacro || {}).forEach((v) => {
+        const condMacro = condData.effectData.flags.effectmacro[v];
+        condMacro.script =
+            'let success=true;try{' +
+            condMacro.script.trim() +
+            `}catch(error){success=false;game.hm3.gmconsole('error','Error in Condition "${condition}" - Effect Macro "${v}"',error);} finally{const res=game.hm3.resolveMap.get('${condData.effectData.flags.hm3.uuid}');if(res)res(success);}`;
+        if (typeof js_beautify === 'function') {
+            condMacro.script = js_beautify(condMacro.script, {
+                indent_size: 2,
+                space_in_empty_paren: true
+            }).trim();
+        } else {
+            condMacro.script = condMacro.script.trim();
+        }
+    });
+
     const onCreateScript = condData.effectData.flags.effectmacro?.onCreate?.script;
-    if (!onCreateScript || onCreateScript?.trim().length === 0) {
+    if (!onCreateScript || onCreateScript?.length === 0) {
         return createActiveEffect(condData.effectData, condData.changes, condData.options);
     } else {
         const uuid = condData.effectData.flags.hm3.uuid;

@@ -1127,7 +1127,7 @@ export class ActorHM3 extends Actor {
                 break;
 
             case 'dodge':
-                macros.dodgeResume(
+                return macros.dodgeResume(
                     atkToken.id,
                     defToken.id,
                     button.dataset.weaponType,
@@ -1136,7 +1136,8 @@ export class ActorHM3 extends Actor {
                     button.dataset.aim,
                     button.dataset.aspect,
                     button.dataset.impactMod,
-                    button.dataset.grappleAtk === 'true'
+                    button.dataset.grappleAtk === 'true',
+                    event.shiftKey || event.ctrlKey || event.altKey
                 );
                 break;
 
@@ -1150,7 +1151,8 @@ export class ActorHM3 extends Actor {
                     button.dataset.aim,
                     button.dataset.aspect,
                     button.dataset.impactMod,
-                    button.dataset.grappleAtk === 'true'
+                    button.dataset.grappleAtk === 'true',
+                    event.shiftKey || event.ctrlKey || event.altKey
                 );
                 break;
 
@@ -1164,7 +1166,8 @@ export class ActorHM3 extends Actor {
                     button.dataset.aim,
                     button.dataset.aspect,
                     button.dataset.impactMod,
-                    button.dataset.grappleAtk === 'true'
+                    button.dataset.grappleAtk === 'true',
+                    event.shiftKey || event.ctrlKey || event.altKey
                 );
                 break;
 
@@ -1177,7 +1180,8 @@ export class ActorHM3 extends Actor {
                     button.dataset.aim,
                     button.dataset.aspect,
                     button.dataset.impactMod,
-                    button.dataset.grappleAtk === 'true'
+                    button.dataset.grappleAtk === 'true',
+                    event.shiftKey || event.ctrlKey || event.altKey
                 );
                 break;
 

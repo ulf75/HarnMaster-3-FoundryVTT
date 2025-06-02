@@ -32,7 +32,6 @@ if (!unconscious) {
         await token.turnEnds();
     }
 }
-game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = options.oneRound

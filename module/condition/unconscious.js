@@ -33,7 +33,6 @@ if (almostDying) {
     await token.actor.toggleStatusEffect('unconscious', {active: true, overlay: true});
 }
 console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
-game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = `

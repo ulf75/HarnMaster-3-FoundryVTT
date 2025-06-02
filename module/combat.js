@@ -192,7 +192,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
  * @param defToken {TokenHM3} Token representing defender
  * @param weaponItem {ItemHM3} Melee weapon used by attacker
  */
-export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed = false) {
+export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarmed = false, noDialog = false} = {}) {
     if (!atkToken) {
         ui.notifications.warn(`No attacker token identified.`);
         return null;
@@ -253,6 +253,7 @@ export async function meleeAttack(atkToken, defToken, weaponItem = null, unarmed
         type: 'Attack',
         attackerName: atkToken.name,
         defenderName: defToken.name,
+        noDialog,
         unarmed
     };
 
@@ -389,7 +390,11 @@ async function selectWeaponDialog(options) {
     const dialogOptions = {
         title: `${options.name} Select Weapon`
     };
-    dialogOptions.weapons = options.weapons.map((w) => w.name);
+    dialogOptions.weapons = options.weapons.map((w) => {
+        return {
+            key: w.name
+        };
+    });
     dialogOptions.defaultWeapon = options.defaultWeapon;
     dialogOptions.defaultModifier = options.defaultModifier || 0;
     if (options.modifierType) {
@@ -399,19 +404,27 @@ async function selectWeaponDialog(options) {
 
     const dlghtml = await renderTemplate(queryWeaponDialog, dialogOptions);
 
-    // Request weapon name
-    return Dialog.prompt({
-        title: dialogOptions.title,
-        content: dlghtml.trim(),
-        label: 'OK',
-        callback: (html) => {
-            const form = html[0].querySelector('form');
-            const formAddlModifier = form.addlModifier ? parseInt(form.addlModifier.value) : 0;
-            const formWeapon = form.weapon.value;
+    if (!options.noDialog) {
+        // Request weapon name
+        return Dialog.prompt({
+            title: dialogOptions.title,
+            content: dlghtml.trim(),
+            label: 'OK',
+            callback: (html) => {
+                const form = html[0].querySelector('form');
+                const formAddlModifier = form.addlModifier ? parseInt(form.addlModifier.value) : 0;
+                const formWeapon = form.weapon.value;
 
-            return {weapon: formWeapon, addlModifier: formAddlModifier};
-        }
-    });
+                return {weapon: formWeapon, addlModifier: formAddlModifier};
+            }
+        });
+    } else {
+        // No dialog, just return the default weapon and modifier
+        return {
+            weapon: options.defaultWeapon.name,
+            addlModifier: options.defaultModifier || 0
+        };
+    }
 }
 
 /**
@@ -531,54 +544,69 @@ async function attackDialog(options) {
     const attackDialogTemplate = 'systems/hm3/templates/dialog/attack-dialog.html';
     const dlghtml = await renderTemplate(attackDialogTemplate, dialogOptions);
 
-    // Request weapon details
-    return Dialog.prompt({
-        title: dialogOptions.title,
-        content: dlghtml.trim(),
-        label: options.type,
-        callback: (html) => {
-            const form = html[0].querySelector('form');
-            const formRange = form.range ? form.range.value : null;
-            const isGrappleAtk = form[3]?.checked || false;
+    const evaluate = (form, formRange, isGrappleAtk) => {
+        const result = {
+            addlModifier: form.addlModifier ? parseInt(form.addlModifier.value) : 0,
+            aim: form.aim ? form.aim.value : null,
+            aspect: form.weaponAspect ? form.weaponAspect.value : null,
+            impactMod: 0,
+            isGrappleAtk,
+            range: formRange,
+            rangeExceedsExtreme: dialogOptions.rangeExceedsExtreme,
+            weapon: options.weapon
+        };
 
-            // const addlModifier = (form.addlModifier ? parseInt(form.addlModifier.value) : 0) + (form.aim?.value !== 'Mid' ? -10 : 0);
-            const result = {
-                weapon: options.weapon,
-                aspect: form.weaponAspect ? form.weaponAspect.value : null,
-                aim: form.aim ? form.aim.value : null,
-                addlModifier: form.addlModifier ? parseInt(form.addlModifier.value) : 0,
-                range: formRange,
-                rangeExceedsExtreme: dialogOptions.rangeExceedsExtreme,
-                impactMod: 0,
-                isGrappleAtk
-            };
-
-            if (formRange) {
-                // Grab range and impact mod (from selected range) for missile weapon
-                if (formRange.startsWith('Short')) {
-                    result.range = 'Short';
-                    result.rangeMod = 0;
-                } else if (formRange.startsWith('Medium')) {
-                    result.range = 'Medium';
-                    result.rangeMod = -20;
-                } else if (formRange.startsWith('Long')) {
-                    result.range = 'Long';
-                    result.rangeMod = -40;
-                } else {
-                    result.range = 'Extreme';
-                    result.rangeMod = -80;
-                }
-                result.impactMod =
-                    dialogOptions.ranges.filter((r) => {
-                        return r.key === result.range;
-                    })[0].impact || 0;
+        if (formRange) {
+            // Grab range and impact mod (from selected range) for missile weapon
+            if (formRange.startsWith('Short')) {
+                result.range = 'Short';
+                result.rangeMod = 0;
+            } else if (formRange.startsWith('Medium')) {
+                result.range = 'Medium';
+                result.rangeMod = -20;
+            } else if (formRange.startsWith('Long')) {
+                result.range = 'Long';
+                result.rangeMod = -40;
             } else {
-                // Grab impact mod (from selected aspect) for melee weapon
-                result.impactMod = dialogOptions.aspects[result.aspect] || 0;
+                result.range = 'Extreme';
+                result.rangeMod = -80;
             }
-            return result;
+            result.impactMod =
+                dialogOptions.ranges.filter((r) => {
+                    return r.key === result.range;
+                })[0].impact || 0;
+        } else {
+            // Grab impact mod (from selected aspect) for melee weapon
+            result.impactMod = dialogOptions.aspects[result.aspect] || 0;
         }
-    });
+        return result;
+    };
+
+    if (!options.noDialog) {
+        // Request weapon details
+        return Dialog.prompt({
+            title: dialogOptions.title,
+            content: dlghtml.trim(),
+            label: options.type,
+            callback: (html) => {
+                const form = html[0].querySelector('form');
+                const formRange = form.range ? form.range.value : null;
+                const isGrappleAtk = form[3]?.checked || false;
+
+                return evaluate(form, formRange, isGrappleAtk);
+            }
+        });
+    } else {
+        return evaluate(
+            {
+                weaponAspect: {value: dialogOptions.defaultAspect},
+                aim: {value: dialogOptions.defaultAim},
+                addlModifier: {value: dialogOptions.defaultModifier}
+            },
+            dialogOptions.defaultRange,
+            false
+        );
+    }
 }
 
 /**
@@ -1159,7 +1187,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
+export async function blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk, noDialog = false) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
@@ -1230,12 +1258,13 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     }
 
     const options = {
-        name: defToken.name,
-        prompt: prompt,
-        weapons: weapons,
-        defaultWeapon: defaultWeapon,
         defaultModifier: defaultModifier,
-        modifierType: 'Defense'
+        defaultWeapon: defaultWeapon,
+        modifierType: 'Defense',
+        name: defToken.name,
+        noDialog,
+        prompt: prompt,
+        weapons: weapons
     };
     const dialogResult = await selectWeaponDialog(options);
 

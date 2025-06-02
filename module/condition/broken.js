@@ -27,7 +27,6 @@ const token = canvas.tokens.get('${token.id}');
 await token.deleteAllMoraleConditions('${CONDITION}');
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Broken</b>, and is unable to fight in any useful way. The only available options are flight or surrender. Flight is normally preferable; surrender is a last resort.", "Combat 16");
-game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = `

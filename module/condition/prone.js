@@ -26,7 +26,6 @@ await token.document.setFlag('wall-height', 'tokenHeight', 2);
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> falls prone, and getting up takes one action. <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.", "Combat 11");
 console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
-game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     const ON_TURN_START_MACRO = `
@@ -76,7 +75,6 @@ if (game.combat?.started && game.combat.combatant) {
     }
 }
 console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
-game.hm3.resolveMap.get('${uuid}')(true);
 `;
 
     return {

@@ -79,6 +79,9 @@ Hooks.once('init', async function () {
         combatMutex: new Mutex(),
         resolveMap: new Map(),
 
+        gmconsole: async (level, msg, error) => {
+            return game.hm3.socket.executeAsGM('gmConsole', game.user.name, level, msg, error);
+        },
         Gm2GmSays: async (text, source) => {
             return game.hm3.socket.executeAsGM('GmSays', text, source, true);
         },
@@ -550,6 +553,7 @@ Hooks.once('ready', () => {
     socket.register('unsetTAFlag', unsetTAFlag);
     socket.register('weaponBroke', weaponBroke);
     socket.register('GmSays', gmSays);
+    socket.register('gmConsole', gmConsole);
     socket.register('updateOutnumbered', updateOutnumbered);
 
     game.hm3['socket'] = socket;
@@ -601,6 +605,47 @@ async function weaponBroke(tokenId, weaponId, atkWeaponDiff) {
  */
 async function gmSays(content, source, gmonly) {
     return game.hm3.GmSays(content, source, gmonly);
+}
+
+/**
+ * Log a message to the console as GM proxy for socketlib
+ * @param {string} user - The name of the user
+ * @param {string} level - The log level (trace, debug, info, warn, error)
+ * @param {string} msg - The message to log
+ * @param {Error} error - The error object (if any)
+ * @returns {void}
+ */
+function gmConsole(user, level, msg, error) {
+    const message = `\n\nUSER ERROR\nMsg....: ${msg}\nUser...: ${user}\nError..: ${error.message}\n\n%O`;
+
+    switch (level) {
+        case 'trace':
+            if (game.settings.get('hm3', 'debugMode')) {
+                console.trace(message, error);
+            }
+            break;
+        case 'debug':
+            if (game.settings.get('hm3', 'debugMode')) {
+                console.debug(message, error);
+            }
+            break;
+        case 'info':
+        case 'log':
+            console.info(message, error);
+            ui.notifications.info(`${user} logged a GM message: ${msg}`, {permanent: true});
+            break;
+        case 'warn':
+            console.warn(message, error);
+            ui.notifications.warn(`${user} logged a GM message: ${msg}`, {permanent: true});
+            break;
+        case 'error':
+            console.error(message, error);
+            ui.notifications.error(`${user} logged a GM message: ${msg}`, {permanent: true});
+            break;
+        default:
+            console.warn(`Unknown log level: ${level}.`, error);
+            break;
+    }
 }
 
 let outMutex = new Mutex();
