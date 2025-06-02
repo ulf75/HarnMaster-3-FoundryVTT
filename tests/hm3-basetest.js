@@ -1,5 +1,5 @@
 const MIN_MS = 50; // minimum wait time in milliseconds
-const SLOWMO = 1; // 1 = normal speed, 2 = half speed, etc.
+const SLOWMO = 10; // 1 = normal speed, 2 = half speed, etc.
 
 export class BaseTestHM3 {
     NORTH = {dx: 0, dy: -1};
@@ -42,6 +42,8 @@ export class BaseTestHM3 {
 
             await ChatMessage.deleteDocuments(game.messages.contents.map((m) => m.id));
             await game.combat?.delete();
+
+            game.togglePause(false);
 
             // some default actors
             this.actors.set('Alice', await this._createActor('Actor.JTK0gIOv6PfxeE1P', 'Alice'));
@@ -118,6 +120,8 @@ export class BaseTestHM3 {
 
             this.actors.clear();
             this.tokens.clear();
+
+            game.togglePause(true);
         } catch (error) {
             success = false;
             console.error('Error during teardown:', error);
