@@ -243,7 +243,7 @@ export class TokenHM3 extends Token {
 export class TokenDocumentHM3 extends TokenDocument {
     _onCreate(data, options, userId) {
         super._onCreate(data, options, userId);
-        this.setFlag('wall-height', 'tokenHeight', this.actor.system.height | 6);
+        if (this.testUserPermission(game.user, 'OWNER')) this.setFlag('wall-height', 'tokenHeight', this.actor.system.height | 6);
     }
     /**
      *
