@@ -189,7 +189,7 @@ export class ActorHM3 extends Actor {
     /** @override */
     async _onCreate(data, options, userId) {
         await super._onCreate(data, options, userId);
-        await this.setFlag('hm3', 'CharacterMancer', true);
+        if (this.testUserPermission(game.user, 'OWNER')) await this.setFlag('hm3', 'CharacterMancer', true);
     }
 
     /** @override */
