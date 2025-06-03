@@ -446,7 +446,7 @@ Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
 
 // If the combatant is not already in combat, roll initiative
 Hooks.on('createCombatant', (combatant, options, id) => {
-    combatant.rollInitiative();
+    if (combatant.testUserPermission(game.user, 'OWNER')) combatant.rollInitiative();
 });
 
 Hooks.once('dragRuler.ready', (SpeedProvider) => {
