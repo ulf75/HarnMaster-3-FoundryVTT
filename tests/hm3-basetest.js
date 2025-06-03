@@ -43,7 +43,7 @@ export class BaseTestHM3 {
             await ChatMessage.deleteDocuments(game.messages.contents.map((m) => m.id));
             await game.combat?.delete();
 
-            game.togglePause(false);
+            game.togglePause(false, true);
 
             // some default actors
             this.actors.set('Alice', await this._createActor('Actor.JTK0gIOv6PfxeE1P', 'Alice'));
@@ -121,7 +121,7 @@ export class BaseTestHM3 {
             this.actors.clear();
             this.tokens.clear();
 
-            game.togglePause(true);
+            game.togglePause(true, true);
         } catch (error) {
             success = false;
             console.error('Error during teardown:', error);
