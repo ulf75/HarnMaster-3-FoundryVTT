@@ -9,6 +9,10 @@ export class BaseTestHM3 {
     SOUTH_EAST = {dx: 1, dy: 1};
     SOUTH_WEST = {dx: -1, dy: 1};
 
+    GM_USER_ID = 'uWIcxMD0zdnOha1B';
+    ALICE_USER_ID = 'tzYR3eEvJND21kVc';
+    INEN_USER_ID = 'ok0UravePcb5JK70';
+
     actors = new Map();
     tokens = new Map();
 
@@ -48,6 +52,7 @@ export class BaseTestHM3 {
             // some default actors
             this.actors.set('Alice', await this._createActor('Actor.JTK0gIOv6PfxeE1P', 'Alice'));
             this.actors.set('Bob', await this._createActor('Actor.6WYZs3HBnOOg3YXQ', 'Bob'));
+            this.actors.set('Inen', await this._createActor('Actor.xbdJx9yLoAAC6xUb', 'Inen'));
         } catch (error) {
             console.error('Error during setup:', error);
             return false;
@@ -138,25 +143,32 @@ export class BaseTestHM3 {
     }
 
     /**
-     * Extracts the buttons from the last chat message and returns them as a Map.
-     * @param {number} messageNr - The index of the chat message to extract buttons from. Defaults to the last message.
-     * @returns {Map<string, Object>} A Map where the key is the button label and the value is an object containing button properties.
-     * @protected
+     * Retrieves the defend buttons from a chat message by its number.
+     * @param {number} messageNr - The index of the chat message to retrieve buttons from.
+     * @returns {Array<Array<string, Object>>} An array of defend buttons with their associated data.
      */
-    _defButtonsFromChatMsg(messageNr = game.messages.contents.length - 1) {
+    static DefButtonsFromChatMsgProxy(messageNr) {
         const html = document.createElement('div');
         html.innerHTML = game.messages.contents[messageNr].content;
         const htmlDefButtons = html.getElementsByClassName('card-buttons')[0].firstElementChild;
 
-        return new Map(
-            Array.from(htmlDefButtons.children).map((button) => {
-                button.onclick = async (event) => {
-                    return CONFIG.Actor.documentClass._onChatCardAction({
-                        altKey: true,
-                        currentTarget: button,
-                        preventDefault: () => event.preventDefault()
-                    });
-                };
+        return Array.from(htmlDefButtons.children)
+            .filter((button) => {
+                const actor = button.dataset.visibleActorId ? game.actors.get(button.dataset.visibleActorId) : null;
+                if (!actor || !actor.isOwner) {
+                    return false;
+                }
+                return true;
+            })
+            .map((button) => {
+                // button.onclick = async (event) => {
+                //     return CONFIG.Actor.documentClass._onChatCardAction({
+                //         altKey: true,
+                //         currentTarget: button,
+                //         preventDefault: () => event.preventDefault()
+                //     });
+                // };
+
                 return [
                     button.innerHTML,
                     {
@@ -174,8 +186,17 @@ export class BaseTestHM3 {
                         weaponType: button.dataset.weaponType
                     }
                 ];
-            })
-        );
+            });
+    }
+
+    /**
+     * Retrieves the defend buttons from the latest chat message for a specific user.
+     * @param {string} userId - The ID of the user to retrieve defend buttons for.
+     * @param {number} messageNr - The index of the chat message to retrieve buttons from (default is the last message).
+     * @returns {Promise<Map<string, Object>>} A map of defend buttons with their associated data.
+     */
+    async _defButtonsFromChatMsg(userId = game.user.id, messageNr = game.messages.contents.length - 1) {
+        return new Map(await game.hm3.socket.executeAsUser('defButtonsFromChatMsg', userId, messageNr));
     }
 
     async _defResult(def, defButtons, roll = []) {

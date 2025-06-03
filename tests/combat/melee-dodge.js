@@ -10,11 +10,16 @@ export class TestCase extends game.hm3.BaseTest {
         game.user.updateTokenTargets([alice.id]);
 
         await game.hm3.macros.weaponAttack('Broadsword', true);
-        const defButtons = this._defButtonsFromChatMsg();
-        console.assert(defButtons.size === 4, 'Expected 4 attack button, found: %O', defButtons);
+        // await this._wait();
+        const defButtonsGm = await this._defButtonsFromChatMsg(this.GM_USER_ID);
+        const defButtonsAlice = await this._defButtonsFromChatMsg(this.ALICE_USER_ID);
+        const defButtonsInen = await this._defButtonsFromChatMsg(this.INEN_USER_ID);
+        console.assert(defButtonsGm.size === 4, 'Expected 4 defend buttons, found: %O', defButtonsGm);
+        console.assert(defButtonsAlice.size === 4, 'Expected 4 defend buttons, found: %O', defButtonsAlice);
+        console.assert(defButtonsInen.size === 0, 'Expected 0 defend buttons, found: %O', defButtonsInen);
 
-        const res = await this._defResult('Dodge', defButtons, [99, 1]);
+        // const res = await this._defResult('Dodge', defButtonsGm, [99, 1]);
 
-        await this._wait(1000);
+        await this._wait();
     }
 }

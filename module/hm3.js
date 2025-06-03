@@ -345,12 +345,15 @@ Hooks.on('dropCanvasData', async (canvas, data) => {
  * we should perform a data migration.
  */
 Hooks.once('ready', async function () {
+    game.hm3['socket'] = socketlib.registerSystem('hm3');
+
     if (game.settings.get('hm3', 'debugMode')) {
         CONFIG.debug.hm3 = true;
         // CONFIG.debug.hooks = true;
         game.hm3.Roll = RollMock;
         game.hm3.BaseTest = BaseTestHM3;
         game.hm3.runner = runner;
+        game.hm3.socket.register('defButtonsFromChatMsg', game.hm3.BaseTest.DefButtonsFromChatMsgProxy);
     } else {
         CONFIG.debug.hm3 = false;
         CONFIG.debug.hooks = false;
@@ -544,10 +547,8 @@ Handlebars.registerHelper('endswith', function (op1, op2) {
     return op1.endsWith(op2);
 });
 
-let socket;
-
 Hooks.once('ready', () => {
-    socket = socketlib.registerSystem('hm3');
+    const socket = game.hm3.socket;
     socket.register('isFirstTA', isFirstTA);
     socket.register('setTAFlag', setTAFlag);
     socket.register('unsetTAFlag', unsetTAFlag);
@@ -555,8 +556,6 @@ Hooks.once('ready', () => {
     socket.register('GmSays', gmSays);
     socket.register('gmConsole', gmConsole);
     socket.register('updateOutnumbered', updateOutnumbered);
-
-    game.hm3['socket'] = socket;
 });
 
 function isFirstTA() {

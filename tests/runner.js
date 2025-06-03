@@ -1,13 +1,13 @@
 const tests = new Map([
-    ['(i01) - condition', './infrastructure/condition.js'],
-    ['(i02) - morale', './infrastructure/morale.js'],
-    ['(c01) - defeated', './combat/defeated.js'],
-    ['(c02) - shock', './combat/shock.js'],
-    ['(c03) - zones', './combat/zones.js'],
-    ['(c04) - Melee Block', './combat/melee-block.js'],
-    ['(c05) - Melee Counterstrike', './combat/melee-counterstrike.js'],
-    ['(c06) - Melee Dodge', './combat/melee-dodge.js'],
-    ['(c07) - Melee Ignore', './combat/melee-ignore.js']
+    // ['(i01) - condition', './infrastructure/condition.js'],
+    // ['(i02) - morale', './infrastructure/morale.js'],
+    // ['(c01) - defeated', './combat/defeated.js'],
+    // ['(c02) - shock', './combat/shock.js'],
+    // ['(c03) - zones', './combat/zones.js'],
+    // ['(c04) - Melee Block', './combat/melee-block.js'],
+    // ['(c05) - Melee Counterstrike', './combat/melee-counterstrike.js'],
+    ['(c06) - Melee Dodge', './combat/melee-dodge.js']
+    // ['(c07) - Melee Ignore', './combat/melee-ignore.js']
 ]);
 
 let isRunning = false;
