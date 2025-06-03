@@ -429,7 +429,6 @@ export class ActorHM3 extends Actor {
         eph.morality = actorData.abilities.morality.base;
         eph.comeliness = actorData.abilities.comeliness.base;
         eph.endurance = actorData.endurance;
-        eph.totalInjuryLevels = actorData.totalInjuryLevels;
 
         eph.meleeAMLMod = 0;
         eph.meleeDMLMod = 0;
@@ -474,6 +473,7 @@ export class ActorHM3 extends Actor {
         // Safety net: We divide things by endurance, so ensure it is > 0
         actorData.endurance = Math.max(actorData.endurance, 1);
 
+        eph.totalInjuryLevels = actorData.totalInjuryLevels;
         eph.effectiveWeight = actorData.loadRating ? Math.max(actorData.totalWeight - actorData.loadRating, 0) : actorData.totalWeight;
         actorData.encumbrance = Math.floor(eph.effectiveWeight / actorData.endurance);
 
