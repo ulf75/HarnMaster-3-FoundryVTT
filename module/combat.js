@@ -851,7 +851,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         atkAspect: atkAspect,
         atkIsCritical: atkRoll.isCritical,
         atkIsSuccess: atkRoll.isSuccess,
-        atkRollResult: atkRoll.description,
+        atkRollResult: atkRoll.description.replace('Substantial', 'Marginal'),
         atkTokenId: atkToken.id,
         atkWeaponBroke: weaponBroke.attackWeaponBroke,
         attacker: atkToken.name,
@@ -892,7 +892,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         atkIsCritical: csRoll.isCritical,
         atkIsSuccess: csRoll.isSuccess,
         atkProne: atkToken.hasCondition(Condition.PRONE),
-        atkRollResult: csRoll.description,
+        atkRollResult: csRoll.description.replace('Substantial', 'Marginal'),
         atkTokenId: defToken.id,
         attacker: defToken.name,
         attackRoll: csRoll.rollObj.total,
@@ -1090,7 +1090,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         atkIsCritical: atkRoll.isCritical,
         atkIsSuccess: atkRoll.isSuccess,
         atkProne: atkToken.hasCondition(Condition.PRONE),
-        atkRollResult: atkRoll.description,
+        atkRollResult: atkRoll.description.replace('Substantial', 'Marginal'),
         atkTokenId: atkToken.id,
         attacker: atkToken.name,
         attackRoll: atkRoll.rollObj.total,
@@ -1101,7 +1101,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         defIsCritical: defRoll.isCritical,
         defIsSuccess: defRoll.isSuccess,
         defProne: defToken.hasCondition(Condition.PRONE),
-        defRollResult: defRoll.description,
+        defRollResult: defRoll.description.replace('Substantial', 'Marginal'),
         defTokenId: defToken.id,
         dta: combatResult.outcome.dta,
         effAML: effAML,
@@ -1383,7 +1383,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         atkIsCritical: atkRoll.isCritical,
         atkIsSuccess: atkRoll.isSuccess,
         atkProne: atkToken.hasCondition(Condition.PRONE),
-        atkRollResult: atkRoll.description,
+        atkRollResult: atkRoll.description.replace('Substantial', 'Marginal'),
         atkTokenId: atkToken.id,
         atkWeaponBroke: weaponBroke.attackWeaponBroke,
         attacker: atkToken.name,
@@ -1396,7 +1396,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         defIsCritical: defRoll.isCritical,
         defIsSuccess: defRoll.isSuccess,
         defProne: defToken.hasCondition(Condition.PRONE),
-        defRollResult: defRoll.description,
+        defRollResult: defRoll.description.replace('Substantial', 'Marginal'),
         defTokenId: defToken.id,
         defWeaponBroke: weaponBroke.defendWeaponBroke,
         dta: combatResult.outcome.dta,
@@ -1633,7 +1633,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         atkDice: combatResult.outcome.atkDice,
         atkIsCritical: atkRoll.isCritical,
         atkIsSuccess: atkRoll.isSuccess,
-        atkRollResult: atkRoll.description,
+        atkRollResult: atkRoll.description.replace('Substantial', 'Marginal'),
         atkTokenId: atkToken.id,
         attacker: atkToken.name,
         attackRoll: atkRoll.rollObj.total,
@@ -1737,64 +1737,64 @@ export function meleeCombatResult(
 
     const result = {
         atkHold: !!outcome.atkHold,
-        csDesc: isGrappleDef ? 'Grapple attempt unsuccessful.' : 'Counterstrike misses.',
+        csDesc: isGrappleDef ? 'Grapple attempt unsuccessful' : 'Counterstrike misses',
         defHold: !!outcome.defHold,
-        desc: isGrappleAtk ? 'Grapple attempt unsuccessful.' : 'Attack misses.',
+        desc: isGrappleAtk ? 'Grapple attempt unsuccessful' : 'Attack misses',
         outcome: outcome
     };
 
     if (defense !== 'counterstrike') {
         if (outcome.atkHold) {
-            result.desc = `Attacker obtains hold.`;
+            result.desc = `Attacker obtains hold`;
         } else if (outcome.atkDice) {
-            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact, atkDie)} impact.`;
+            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact, atkDie)} impact`;
         } else if (outcome.atkFumble && outcome.defFumble) {
-            result.desc = 'Both attacker and defender fumble.';
+            result.desc = 'Both attacker and defender fumble';
         } else if (outcome.atkFumble) {
-            result.desc = `Attacker fumbles.`;
+            result.desc = `Attacker fumbles`;
         } else if (outcome.defFumble) {
-            result.desc = `Defender fumbles.`;
+            result.desc = `Defender fumbles`;
         } else if (outcome.defStumble && outcome.atkStumble) {
-            result.desc = `Both attacker and defender stumble.`;
+            result.desc = `Both attacker and defender stumble`;
         } else if (outcome.atkStumble) {
-            result.desc = `Attacker stumbles.`;
+            result.desc = `Attacker stumbles`;
         } else if (outcome.defStumble) {
-            result.desc = `Defender stumbles.`;
+            result.desc = `Defender stumbles`;
         } else if (outcome.block) {
-            result.desc = `Attack blocked.`;
+            result.desc = `Attack blocked`;
         } else if (outcome.dta) {
-            result.desc = `Defender gains a Tactical Advantage.`;
+            result.desc = `Defender gains a Tactical Advantage`;
         }
     } else {
         if (outcome.atkHold && outcome.defHold) {
-            result.desc = `Both attacker and defender obtain hold.`;
+            result.desc = `Both attacker and defender obtain hold`;
         } else if (outcome.atkHold) {
-            result.desc = `Attacker obtains hold.`;
+            result.desc = `Attacker obtains hold`;
         } else if (outcome.atkDice) {
-            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact, atkDie)} impact.`;
+            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact, atkDie)} impact`;
         } else if (outcome.atkFumble) {
-            result.desc = `Attacker fumbles.`;
+            result.desc = `Attacker fumbles`;
         } else if (outcome.atkStumble) {
-            result.desc = `Attacker stumbles.`;
+            result.desc = `Attacker stumbles`;
         }
 
         if (outcome.atkHold && outcome.defHold) {
-            result.desc = `Both attacker and defender obtain hold.`;
+            result.desc = `Both attacker and defender obtain hold`;
         } else if (outcome.defHold) {
-            result.csDesc = `Defender obtains hold.`;
+            result.csDesc = `Defender obtains hold`;
         } else if (outcome.defDice) {
-            result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact, defDie)} impact.`;
+            result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact, defDie)} impact`;
         } else if (outcome.defFumble) {
-            result.csDesc = 'Counterstriker fumbles.';
+            result.csDesc = 'Counterstriker fumbles';
         } else if (outcome.defStumble) {
-            result.csDesc = 'Counterstriker stumbles.';
+            result.csDesc = 'Counterstriker stumbles';
         } else if (outcome.block) {
             result.desc = 'Attacker blocked.';
-            result.csDesc = `Counterstriker blocked.`;
+            result.csDesc = `Counterstriker blocked`;
         } else if (outcome.dta) {
             result.csDesc = `Counterstriker gains a Tactical Advantage!`;
         } else if (outcome.miss) {
-            result.csDesc = `Counterstrike misses.`;
+            result.csDesc = `Counterstrike misses`;
         }
     }
 

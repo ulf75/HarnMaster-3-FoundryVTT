@@ -16,6 +16,10 @@ export class BaseTestHM3 {
     actors = new Map();
     tokens = new Map();
 
+    async _prerequisites() {
+        return true;
+    }
+
     async _preSetup() {}
     async _postSetup() {}
 
@@ -73,6 +77,12 @@ export class BaseTestHM3 {
      * @returns {Promise<boolean>} Returns true if the test was successful, false otherwise.
      */
     async start() {
+        const pre = await this._prerequisites();
+        if (pre !== true) {
+            ui.notifications.error('Prerequisites not met, skipping test: ' + pre);
+            return false;
+        }
+
         let success = await this.#setup();
 
         if (success) {
@@ -161,14 +171,6 @@ export class BaseTestHM3 {
                 return true;
             })
             .map((button) => {
-                // button.onclick = async (event) => {
-                //     return CONFIG.Actor.documentClass._onChatCardAction({
-                //         altKey: true,
-                //         currentTarget: button,
-                //         preventDefault: () => event.preventDefault()
-                //     });
-                // };
-
                 return [
                     button.innerHTML,
                     {
@@ -181,6 +183,7 @@ export class BaseTestHM3 {
                         effAml: button.dataset.effAml,
                         grappleAtk: button.dataset.grappleAtk,
                         impactMod: button.dataset.impactMod,
+                        messageNr,
                         visibleActorId: button.dataset.visibleActorId,
                         weapon: button.dataset.weapon,
                         weaponType: button.dataset.weaponType
@@ -196,27 +199,40 @@ export class BaseTestHM3 {
      * @returns {Promise<Map<string, Object>>} A map of defend buttons with their associated data.
      */
     async _defButtonsFromChatMsg(userId = game.user.id, messageNr = game.messages.contents.length - 1) {
-        return new Map(await game.hm3.socket.executeAsUser('defButtonsFromChatMsg', userId, messageNr));
+        return game.hm3.socket.executeAsUser('defButtonsFromChatMsg', userId, messageNr);
     }
 
-    async _defResult(def, defButtons, roll = []) {
-        if (!defButtons || !['Block', 'Counterstrike', 'Dodge', 'Ignore'].includes(def)) return null;
-        const button = defButtons.get(def)?.button;
+    static async DefActionProxy(def, {messageNr, roll}) {
+        if (!['Block', 'Counterstrike', 'Dodge', 'Ignore'].includes(def)) return null;
+        const defButtons = BaseTestHM3.DefButtonsFromChatMsgProxy(messageNr);
+        const button = new Map(defButtons).get(def)?.button;
         if (!button) return null;
 
         game.hm3.Roll.D100_RESULTS.push(...roll);
 
-        const res = await Promise.all([
-            button.click(),
+        button.onclick = async (event) => {
+            return CONFIG.Actor.documentClass._onChatCardAction({
+                altKey: true,
+                currentTarget: button,
+                preventDefault: () => event.preventDefault()
+            });
+        };
+
+        return Promise.all([
             new Promise((resolve) => {
                 Hooks.once(`hm3.on${def}Resume`, (result) => {
                     resolve(result);
                 });
-            })
+            }),
+            button.click()
         ]);
-
-        return res[1];
     }
+
+    async _defAction(def, {messageNr = game.messages.contents.length - 1, unsetTAFlag = false, userId = game.user.id, roll = []} = {}) {
+        if (unsetTAFlag) await game.hm3.socket.executeAsGM('unsetTAFlag');
+        return game.hm3.socket.executeAsUser('defAction', userId, def, {messageNr, roll});
+    }
+
     /**
      *
      * @param {string} actorUuid

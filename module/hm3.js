@@ -354,6 +354,7 @@ Hooks.once('ready', async function () {
         game.hm3.BaseTest = BaseTestHM3;
         game.hm3.runner = runner;
         game.hm3.socket.register('defButtonsFromChatMsg', game.hm3.BaseTest.DefButtonsFromChatMsgProxy);
+        game.hm3.socket.register('defAction', game.hm3.BaseTest.DefActionProxy);
     } else {
         CONFIG.debug.hm3 = false;
         CONFIG.debug.hooks = false;
