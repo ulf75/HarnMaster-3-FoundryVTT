@@ -2101,7 +2101,7 @@ export async function createActiveEffect(effectData, changes = [], options = {})
     });
 
     if (options.unique && hasActiveEffect(effectData.token, effectData.label)) {
-        if (game.user.isGM) ui.notifications.info(`Effect ${effectData.label} is unique and already exists.`);
+        if (game.user.isGM) ui.notifications.info(`HM3 | Effect ${effectData.label} is unique and already exists.`);
         return null;
     }
 
@@ -2284,12 +2284,22 @@ export async function createCondition(token, condition, conditionOptions = {}) {
             return null;
     }
 
+    if (condData.options.unique && token.hasCondition(condition)) {
+        if (game.user.isGM) ui.notifications.info(`HM3 | Condition ${condition} is unique and already exists.`);
+        return null;
+    }
+
+    if (condData.options.overlay) {
+        condData.effectData.flags.core = {overlay: true};
+    }
+
     Object.keys(condData.effectData.flags?.effectmacro || {}).forEach((v) => {
         const condMacro = condData.effectData.flags.effectmacro[v];
         condMacro.script =
             'let success=true;try{' +
             condMacro.script.trim() +
-            `}catch(error){success=false;game.hm3.gmconsole('error','Error in Condition "${condition}" - Effect Macro "${v}"',error);} finally{const res=game.hm3.resolveMap.get('${condData.effectData.flags.hm3.uuid}');if(res)res(success);}`;
+            `}catch(error){success=false;game.hm3.gmconsole('error','Error in Condition "${condition}" - Effect Macro "${v}"',error);} 
+            finally{Hooks.callAllUsers('hm3.${condData.effectData.flags.hm3.uuid}', success);}`;
         if (typeof js_beautify === 'function') {
             condMacro.script = js_beautify(condMacro.script, {
                 indent_size: 2,
@@ -2305,18 +2315,18 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         return createActiveEffect(condData.effectData, condData.changes, condData.options);
     } else {
         const uuid = condData.effectData.flags.hm3.uuid;
-        const callbackPromise = new Promise((resolve) => {
-            game.hm3.resolveMap.set(uuid, (success) => {
-                game.hm3.resolveMap.delete(uuid);
+        const callbackPromise = new Promise((resolve, reject) => {
+            let timer;
+            Hooks.once(`hm3.${uuid}`, (success) => {
+                if (timer) clearTimeout(timer);
                 resolve(success);
             });
+            timer = setTimeout(() => reject({error: `HM3 | Timeout in 'onCreate' callback for Condition ${condition}!`, condData}), 5000);
         });
 
-        cond = await createActiveEffect(condData.effectData, condData.changes, condData.options);
-        // if (conditionOptions.overlay) cond.updateSource({'flags.core.overlay': true});
-        await callbackPromise;
+        const res = await Promise.allSettled([callbackPromise, createActiveEffect(condData.effectData, condData.changes, condData.options)]);
 
-        return cond;
+        return res[1].value;
     }
 }
 
@@ -2327,15 +2337,23 @@ export async function deleteCondition(token, condition) {
         return deleteActiveEffect(token.id, condition.id);
     } else {
         const uuid = condition.flags.hm3.uuid;
-        const callbackPromise = new Promise((resolve) => {
-            game.hm3.resolveMap.set(uuid, (success) => {
-                game.hm3.resolveMap.delete(uuid);
+        const callbackPromise = new Promise((resolve, reject) => {
+            let timer;
+            Hooks.once(`hm3.${uuid}`, (success) => {
+                if (timer) clearTimeout(timer);
                 resolve(success);
             });
+            timer = setTimeout(() => reject({error: `HM3 | Timeout in 'onDelete' callback for Condition ${condition.name}!`, condition}), 5000);
         });
-        const ret = await deleteActiveEffect(token.id, condition.id);
-        await callbackPromise;
-        return ret;
+
+        let ret = null;
+        try {
+            ret = await Promise.allSettled([callbackPromise, deleteActiveEffect(token.id, condition.id)]);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            return ret[1].value;
+        }
     }
 }
 
@@ -2448,7 +2466,14 @@ export async function createInjuryHelper(injuryData) {
 
     // Make the healing rolls at midnight (besides poison & shock rolls)
     if (scDate) {
-        startTime = SimpleCalendar.api.dateToTimestamp({year: scDate.year, month: scDate.month, day: scDate.day, hour: 0, minute: 0, seconds: 0});
+        startTime = SimpleCalendar.api.dateToTimestamp({
+            year: scDate.year,
+            month: scDate.month,
+            day: scDate.day,
+            hour: 0,
+            minute: 0,
+            seconds: 0
+        });
     }
 
     return createActiveEffect(

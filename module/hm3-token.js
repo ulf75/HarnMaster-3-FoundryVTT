@@ -115,8 +115,12 @@ export class TokenHM3 extends Token {
         return game.users.find((u) => !u.isGM && this.actor.testUserPermission(u, 'OWNER')) || null;
     }
 
+    isInjured() {
+        return this.actor.items.filter((item) => item.type === game.hm3.ItemType.INJURY).length > 0;
+    }
+
     hasInjury(id) {
-        return !!token.actor.items.find((i) => i.id === id);
+        return !!this.actor.items.find((i) => i.id === id);
     }
 
     /**
@@ -302,6 +306,10 @@ export class TokenDocumentHM3 extends TokenDocument {
 
     get player() {
         return this.object.player;
+    }
+
+    isInjured() {
+        return this.object.isInjured();
     }
 
     hasInjury(id) {
