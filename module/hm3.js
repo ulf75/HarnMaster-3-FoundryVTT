@@ -77,7 +77,6 @@ Hooks.once('init', async function () {
         },
 
         combatMutex: new Mutex(),
-        resolveMap: new Map(),
 
         gmconsole: async (level, msg, error) => {
             return game.hm3.socket.executeAsGM('gmConsole', game.user.name, level, msg, error);
@@ -296,20 +295,30 @@ Hooks.on('updateCombat', async (combat, updateData) => {
     await effect.checkExpiredActiveEffects();
 });
 
+Hooks.on('hm3.onShockIndexReduced', async (actor, old, current) => {
+    if (game.combat?.started && actor.parent instanceof TokenDocumentHM3 && !actor.parent.player) {
+        if (actor.parent.hasCondition(game.hm3.Condition.UNCONSCIOUS) && actor.testUserPermission(game.user, 'OWNER')) {
+            await actor.parent.deleteCondition(game.hm3.Condition.UNCONSCIOUS);
+            await actor.parent.addCondition(game.hm3.Condition.UNCONSCIOUS);
+            Hooks.call('hm3.onShockIndexReduced2', actor, old, current);
+        }
+    }
+});
+
 Hooks.on('updateCombatant', async (combatant, info, updateData, userId) => {
-    return game.hm3.socket.executeAsGM('updateOutnumbered');
+    return updateOutnumbered({hook: 'updateCombatant'});
 });
 
 Hooks.on('createActiveEffect', async (activeEffect, info, userId) => {
-    return game.hm3.socket.executeAsGM('updateOutnumbered', activeEffect.name);
+    return updateOutnumbered({aeName: activeEffect.name, hook: 'createActiveEffect'});
 });
 
-Hooks.on('updateActiveEffect', async (activeEffect, info, userId) => {
-    return game.hm3.socket.executeAsGM('updateOutnumbered', activeEffect.name);
-});
+// Hooks.on('updateActiveEffect', async (activeEffect, info, userId) => {
+//     return updateOutnumbered({aeName: activeEffect.name, hook: 'updateActiveEffect'});
+// });
 
 Hooks.on('deleteActiveEffect', async (activeEffect, info, userId) => {
-    return game.hm3.socket.executeAsGM('updateOutnumbered', activeEffect.name);
+    return updateOutnumbered({aeName: activeEffect.name, hook: 'deleteActiveEffect'});
 });
 
 Hooks.on('createItem', async (item, info, userId) => {
@@ -549,6 +558,10 @@ Handlebars.registerHelper('endswith', function (op1, op2) {
 });
 
 Hooks.once('ready', () => {
+    Hooks.callAllUsers = (hook, ...args) => {
+        game.hm3.socket.executeForEveryone('callAllUsers', hook, ...args);
+    };
+
     const socket = game.hm3.socket;
     socket.register('isFirstTA', isFirstTA);
     socket.register('setTAFlag', setTAFlag);
@@ -556,7 +569,7 @@ Hooks.once('ready', () => {
     socket.register('weaponBroke', weaponBroke);
     socket.register('GmSays', gmSays);
     socket.register('gmConsole', gmConsole);
-    socket.register('updateOutnumbered', updateOutnumbered);
+    socket.register('callAllUsers', callAllUsers);
 });
 
 function isFirstTA() {
@@ -648,28 +661,29 @@ function gmConsole(user, level, msg, error) {
     }
 }
 
+function callAllUsers(hook, ...args) {
+    Hooks.callAll(hook, ...args);
+}
+
 let outMutex = new Mutex();
 /**
  * Update outnumbered status for combatants
  * @param {string} aeName - The name of the active effect
  * @returns {Promise<void>}
  */
-async function updateOutnumbered(aeName = 'true') {
-    if (!game.combat?.started) return;
-    if (
-        aeName === 'true' ||
-        [
-            game.hm3.Condition.CAUTIOUS,
-            game.hm3.Condition.DISTRACTED,
-            game.hm3.Condition.DYING,
-            game.hm3.Condition.GRAPPLED,
-            game.hm3.Condition.INCAPACITATED,
-            game.hm3.Condition.PRONE,
-            game.hm3.Condition.SHOCKED,
-            game.hm3.Condition.UNCONSCIOUS
-        ].includes(aeName)
-    ) {
-        console.info(`HM3 | Run updateOutnumbered(aeName = ${aeName})`);
-        await outMutex.runExclusive(async () => await combat.updateOutnumbered());
+async function updateOutnumbered({aeName = 'true', hook = 'nohook'} = {}) {
+    if (game.combat?.started && game.user.isGM) {
+        if (aeName === 'true' || combat.outnumberedConditions().includes(aeName)) {
+            return outMutex.runExclusive(async () => {
+                console.info(`HM3 | Run updateOutnumbered (aeName = ${aeName}, hook = ${hook})`);
+                const {changed, tokens} = await combat.updateOutnumbered();
+                if (changed) Hooks.call('hm3.onOutnumberedChanged', tokens, aeName, hook);
+                return true;
+            });
+        }
     }
+
+    Hooks.call('hm3.onOutnumbered', aeName, hook);
+
+    return true;
 }

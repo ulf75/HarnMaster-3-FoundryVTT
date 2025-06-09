@@ -1996,6 +1996,23 @@ export async function setTA(autoend = false) {
     }
 }
 
+/**
+ *
+ * @returns {string[]}
+ */
+export function outnumberedConditions() {
+    return [
+        game.hm3.Condition.CAUTIOUS,
+        game.hm3.Condition.DISTRACTED,
+        game.hm3.Condition.DYING,
+        game.hm3.Condition.GRAPPLED,
+        game.hm3.Condition.INCAPACITATED,
+        game.hm3.Condition.PRONE,
+        game.hm3.Condition.SHOCKED,
+        game.hm3.Condition.UNCONSCIOUS
+    ];
+}
+
 export async function updateOutnumbered() {
     const all = canvas.scene.tokens.contents;
     const friendly = all.filter((t) => t.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY);
@@ -2023,6 +2040,7 @@ export async function updateOutnumbered() {
         engaged.set(hDoc.object.id, e);
     });
 
+    const tokens = [];
     for (let i = 0; i < all.length; i++) {
         const token = all[i];
         const e = engaged.get(token.id);
@@ -2033,17 +2051,27 @@ export async function updateOutnumbered() {
                 // Outnumbered
                 const label = `${Condition.OUTNUMBERED} ${exclusivelyEngaged.length}:1`;
                 if (!token.hasCondition(label)) {
-                    await game.hm3.macros.getActiveEffect(token, Condition.OUTNUMBERED, false)?.delete();
+                    await token.deleteCondition(Condition.OUTNUMBERED);
                     await token.addCondition(Condition.OUTNUMBERED, {outnumbered: exclusivelyEngaged.length});
+                    tokens.push(token);
                 }
             } else {
                 // Not outnumbered
-                await game.hm3.macros.getActiveEffect(token, Condition.OUTNUMBERED, false)?.delete();
+                if (token.hasCondition(Condition.OUTNUMBERED)) {
+                    await token.deleteCondition(Condition.OUTNUMBERED);
+                    tokens.push(token);
+                }
             }
         } else {
             // Not outnumbered
-            await game.hm3.macros.getActiveEffect(token, Condition.OUTNUMBERED, false)?.delete();
+            if (token.hasCondition(Condition.OUTNUMBERED)) {
+                await token.deleteCondition(Condition.OUTNUMBERED);
+                tokens.push(token);
+            }
         }
     }
-    // await new Promise((resolve) => setTimeout(resolve, 500));
+
+    console.info(`HM3 | Outnumbered updated: `, tokens.length > 0, tokens);
+
+    return {changed: tokens.length > 0, tokens};
 }
