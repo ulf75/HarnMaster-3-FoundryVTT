@@ -15,7 +15,7 @@ let dialogEditor = new Dialog({
             label: `None`,
             callback: async () => {
                 canvas.tokens.controlled.forEach((token) => {
-                    token.getCondition(game.hm3.Condition.SECONDARY_HAND)?.delete();
+                    token.deleteCondition(game.hm3.Condition.SECONDARY_HAND);
                 });
                 dialogEditor.render(true);
             }

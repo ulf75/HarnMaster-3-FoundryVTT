@@ -15,7 +15,7 @@ let dialogEditor = new Dialog({
             label: `Rise`,
             callback: async () => {
                 canvas.tokens.controlled.forEach((token) => {
-                    token.getCondition(game.hm3.Condition.PRONE)?.delete();
+                    token.deleteCondition(game.hm3.Condition.PRONE);
                 });
                 dialogEditor.render(true);
             }
