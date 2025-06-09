@@ -25,7 +25,6 @@ const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
 await game.hm3.macros.createInjury({token, name: 'Shock', subType: 'shock', healRate: 4, notes: 'Started: ' + dateTime?.date + ' - ' + dateTime?.time});
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
-    await token.actor.toggleStatusEffect('shock', {active: true, overlay: true});
     if (!token.player) await token.combatant.update({defeated: true});
     const turnEnds = game.combat?.started && game.combat.combatant.id === token.combatant.id;
     if (turnEnds) {
@@ -53,11 +52,14 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shoc
             token,
             type: 'GameTime',
             flags: {
-                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
+                effectmacro: {
+                    onCreate: {script: ON_CREATE_MACRO},
+                    onTurnStart: {script: ON_TURN_START_MACRO}
+                },
                 hm3: {uuid}
             }
         },
         changes: [],
-        options: {unique: true}
+        options: {overlay: true, unique: true}
     };
 }

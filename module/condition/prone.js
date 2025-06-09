@@ -48,7 +48,7 @@ await Requestor.request({
             label: 'Rise',
             command: async function () {
                 const token = canvas.tokens.get('${token.id}');
-                token.getCondition(game.hm3.Condition.PRONE)?.delete();
+                await token.deleteCondition(game.hm3.Condition.PRONE);
             }
         },
         {
@@ -94,6 +94,6 @@ console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
             }
         },
         changes: [],
-        options: {unique: true}
+        options: {overlay: true, unique: true}
     };
 }

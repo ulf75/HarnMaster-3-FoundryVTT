@@ -22,7 +22,6 @@ export async function createCondition(token, options = {}) {
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 await token.deleteAllMoraleConditions();
-await token.actor.toggleStatusEffect('dead', {active: true, overlay: true});
 await token.combatant?.update({defeated: true});
 await token.addCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!!token.actor.player) {
@@ -48,7 +47,10 @@ await token.turnEnds();
             type: 'GameTime',
             seconds: game.hm3.CONST.TIME.INDEFINITE,
             flags: {
-                effectmacro: {onCreate: {script: ON_CREATE_MACRO}, onTurnStart: {script: ON_TURN_START_MACRO}},
+                effectmacro: {
+                    onCreate: {script: ON_CREATE_MACRO},
+                    onTurnStart: {script: ON_TURN_START_MACRO}
+                },
                 hm3: {uuid}
             }
         },

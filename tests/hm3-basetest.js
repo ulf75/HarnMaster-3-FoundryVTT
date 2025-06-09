@@ -1,5 +1,5 @@
 const MIN_MS = 50; // minimum wait time in milliseconds
-const SLOWMO = 10; // 1 = normal speed, 2 = half speed, etc.
+const SLOWMO = 1; // 1 = normal speed, 2 = half speed, etc.
 
 export class BaseTestHM3 {
     NORTH = {dx: 0, dy: -1};
@@ -283,10 +283,6 @@ export class BaseTestHM3 {
         );
 
         await token.combatant?.update({defeated: false});
-
-        await token.actor.toggleStatusEffect('dead', {active: false});
-        await token.actor.toggleStatusEffect('shock', {active: false});
-        await token.actor.toggleStatusEffect('unconscious', {active: false});
 
         await token.toggleVisibility({active: true});
     }

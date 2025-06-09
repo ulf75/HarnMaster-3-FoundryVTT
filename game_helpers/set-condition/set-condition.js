@@ -49,10 +49,6 @@ let dialogEditor = new Dialog({
 
                     await token.combatant?.update({defeated: false});
 
-                    await token.actor.toggleStatusEffect('dead', {active: false});
-                    await token.actor.toggleStatusEffect('shock', {active: false});
-                    await token.actor.toggleStatusEffect('unconscious', {active: false});
-
                     await token.toggleVisibility({active: true});
                 });
                 dialogEditor.render(true);
