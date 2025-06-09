@@ -166,7 +166,11 @@ export class ActorHM3 extends Actor {
             render: (html) => {
                 if (!this.hasTypeData) return;
                 html[0].querySelector('[name="type"]').addEventListener('change', (e) => {
-                    html[0].querySelector('[name="name"]').placeholder = this.implementation.defaultName({type: e.target.value, parent, pack});
+                    html[0].querySelector('[name="name"]').placeholder = this.implementation.defaultName({
+                        type: e.target.value,
+                        parent,
+                        pack
+                    });
                 });
             },
             callback: (html) => {
@@ -403,7 +407,7 @@ export class ActorHM3 extends Actor {
         actorData.dodge = 0;
         actorData.initiative = 0;
         actorData.endurance = 0;
-        actorData.shockIndex = {value: 0, max: 100};
+        if (!actorData.shockIndex) actorData.shockIndex = {value: -1, max: 100};
         actorData.move.effective = 0;
         actorData.universalPenalty = 0;
         actorData.physicalPenalty = 0;
@@ -1553,6 +1557,22 @@ export class ActorHM3 extends Actor {
 
     static calcShockIndex(actor) {
         const data = actor.system;
+        const old = data.shockIndex.value;
         data.shockIndex.value = ActorHM3.normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
+        if (actor.testUserPermission(game.user, 'OWNER')) {
+            if (data.shockIndex.value !== old) {
+                actor.update({'system.shockIndex': data.shockIndex}).then(() => {
+                    Hooks.call('hm3.onCalcShockIndex', actor, old, data.shockIndex.value);
+                    Hooks.call('hm3.onShockIndexChanged', actor, old, data.shockIndex.value);
+                    if (data.shockIndex.value < old) {
+                        Hooks.call('hm3.onShockIndexReduced', actor, old, data.shockIndex.value);
+                    } else if (data.shockIndex.value > old) {
+                        Hooks.call('hm3.onShockIndexIncreased', actor, old, data.shockIndex.value);
+                    }
+                });
+            } else {
+                Hooks.call('hm3.onCalcShockIndex', actor, old, data.shockIndex.value);
+            }
+        }
     }
 }
