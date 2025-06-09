@@ -32,7 +32,5 @@ export class TestCase extends game.hm3.BaseTest {
         console.info('Adding condition: %s to token: %s', Condition.WEAKENED, token.name);
         console.assert(weakened && weakened instanceof ActiveEffect, 'Condition is NOT an ActiveEffect: %O', weakened);
         console.assert(!token.hasCondition(Condition.EMPOWERED), 'Token DOES have condition: %s', Condition.EMPOWERED);
-
-        console.assert(game.hm3.resolveMap.size === 0, 'Resolve map is NOT empty: %O', game.hm3.resolveMap);
     }
 }

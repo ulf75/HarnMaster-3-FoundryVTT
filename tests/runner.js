@@ -1,9 +1,9 @@
 const tests = new Map([
-    // ['(i01) - condition', './infrastructure/condition.js'],
-    // ['(i02) - morale', './infrastructure/morale.js'],
-    // ['(c01) - defeated', './combat/defeated.js'],
-    // ['(c02) - shock', './combat/shock.js'],
-    // ['(c03) - zones', './combat/zones.js'],
+    ['(i01) - condition', './infrastructure/condition.js'],
+    ['(i02) - morale', './infrastructure/morale.js'],
+    ['(c01) - defeated', './combat/defeated.js'],
+    ['(c02) - shock', './combat/shock.js'],
+    ['(c03) - zones', './combat/zones.js'],
     // ['(c04) - Melee Block', './combat/melee-block.js'],
     // ['(c05) - Melee Counterstrike', './combat/melee-counterstrike.js'],
     ['(c06) - Melee Dodge', './combat/melee-dodge.js']
@@ -18,7 +18,8 @@ export async function runner() {
         return;
     }
     isRunning = true;
-    console.info('%c\n\nRunning tests...', 'color: #b6b4a5');
+    console.clear();
+    console.info('%cRunning tests...', 'color: #b6b4a5');
     for (const test of tests.keys()) {
         console.info('%c\n----------------------------------------', 'color: #b6b4a5');
         console.info(`%cRunning test: ${test}`, 'color: #b6b4a5');
