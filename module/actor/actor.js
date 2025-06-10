@@ -412,6 +412,7 @@ export class ActorHM3 extends Actor {
         actorData.universalPenalty = 0;
         actorData.physicalPenalty = 0;
         actorData.totalInjuryLevels = 0;
+        if (!actorData.injuryLevels) actorData.injuryLevels = {value: 0, max: 6};
         actorData.encumbrance = 0;
         actorData.condition = 0;
         actorData.mounted = !!actorData.mounted;
@@ -454,6 +455,7 @@ export class ActorHM3 extends Actor {
         // Calculate endurance (in case Condition not present)
         actorData.endurance = Math.round((actorData.abilities.strength.base + actorData.abilities.stamina.base + actorData.abilities.will.base) / 3);
 
+        const oldTotalInjuryLevels = actorData.injuryLevels.value;
         // Calculate values based on items
         actorItems.forEach((it) => {
             const itemData = it.system;
@@ -480,6 +482,19 @@ export class ActorHM3 extends Actor {
         eph.totalInjuryLevels = actorData.totalInjuryLevels;
         eph.effectiveWeight = actorData.loadRating ? Math.max(actorData.totalWeight - actorData.loadRating, 0) : actorData.totalWeight;
         actorData.encumbrance = Math.floor(eph.effectiveWeight / actorData.endurance);
+
+        if (oldTotalInjuryLevels !== actorData.totalInjuryLevels) {
+            if (this.testUserPermission(game.user, 'OWNER')) {
+                setTimeout(() => {
+                    actorData.injuryLevels.value = actorData.totalInjuryLevels;
+                    this.update({'system.injuryLevels': actorData.injuryLevels}).then(() =>
+                        Hooks.call('hm3.onTotalInjuryLevelsChanged', oldTotalInjuryLevels, actorData.totalInjuryLevels)
+                    );
+                }, 250);
+            } else {
+                Hooks.call('hm3.onTotalInjuryLevelsChanged', oldTotalInjuryLevels, actorData.totalInjuryLevels);
+            }
+        }
 
         Hooks.call('hm3.onActorPrepareBaseData', this);
     }

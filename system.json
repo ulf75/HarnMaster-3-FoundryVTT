@@ -87,5 +87,6 @@
     "distance": 5,
     "units": "ft"
   },
-  "primaryTokenAttribute": "shockIndex"
+  "primaryTokenAttribute": "shockIndex",
+  "secondaryTokenAttribute": "injuryLevels"
 }

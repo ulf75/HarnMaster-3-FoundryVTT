@@ -264,7 +264,7 @@ export class TokenDocumentHM3 extends TokenDocument {
      * @returns
      */
     hasCondition(condition) {
-        return this.object.hasCondition(condition);
+        return this.object?.hasCondition(condition) || false;
     }
 
     /**
@@ -305,7 +305,7 @@ export class TokenDocumentHM3 extends TokenDocument {
     }
 
     get player() {
-        return this.object.player;
+        return this.object?.player || false;
     }
 
     isInjured() {
