@@ -485,12 +485,13 @@ export class ActorHM3 extends Actor {
 
         if (oldTotalInjuryLevels !== actorData.totalInjuryLevels) {
             if (this.testUserPermission(game.user, 'OWNER')) {
+                // postpone a bit, otherwise the Splatter module will not work
                 setTimeout(() => {
                     actorData.injuryLevels.value = actorData.totalInjuryLevels;
                     this.update({'system.injuryLevels': actorData.injuryLevels}).then(() =>
                         Hooks.call('hm3.onTotalInjuryLevelsChanged', oldTotalInjuryLevels, actorData.totalInjuryLevels)
                     );
-                }, 250);
+                }, 400);
             } else {
                 Hooks.call('hm3.onTotalInjuryLevelsChanged', oldTotalInjuryLevels, actorData.totalInjuryLevels);
             }
