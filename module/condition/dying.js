@@ -55,6 +55,6 @@ await token.turnEnds();
             }
         },
         changes: [],
-        options: {unique: true}
+        options: {overlay: true, unique: true}
     };
 }

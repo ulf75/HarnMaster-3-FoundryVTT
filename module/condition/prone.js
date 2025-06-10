@@ -94,6 +94,13 @@ console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
             }
         },
         changes: [],
-        options: {overlay: true, unique: true}
+        options: {
+            overlay: !(
+                token.hasCondition(game.hm3.Condition.DYING) ||
+                token.hasCondition(game.hm3.Condition.UNCONSCIOUS) ||
+                token.hasCondition(game.hm3.Condition.SHOCKED)
+            ),
+            unique: true
+        }
     };
 }

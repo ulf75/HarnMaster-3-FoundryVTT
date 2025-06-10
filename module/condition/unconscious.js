@@ -82,6 +82,6 @@ if (ok) {
             }
         },
         changes: [],
-        options: {overlay: true, unique: true}
+        options: {overlay: !token.hasCondition(game.hm3.Condition.DYING), unique: true}
     };
 }

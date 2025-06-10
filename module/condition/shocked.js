@@ -25,7 +25,7 @@ const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
 await game.hm3.macros.createInjury({token, name: 'Shock', subType: 'shock', healRate: 4, notes: 'Started: ' + dateTime?.date + ' - ' + dateTime?.time});
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
-    if (!token.player) await token.combatant.update({defeated: true});
+    if (game.combat?.started && !token.player) await token.combatant.update({defeated: true});
     const turnEnds = game.combat?.started && game.combat.combatant.id === token.combatant.id;
     if (turnEnds) {
         await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b> and displays a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. <b>" + token.name + "</b> is incoherent and gazes helplessly at the injuries. <b>Turn Ends.</b>", "Combat 14");
@@ -60,6 +60,6 @@ if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shoc
             }
         },
         changes: [],
-        options: {overlay: true, unique: true}
+        options: {overlay: !(token.hasCondition(game.hm3.Condition.DYING) || token.hasCondition(game.hm3.Condition.UNCONSCIOUS)), unique: true}
     };
 }
