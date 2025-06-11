@@ -2603,3 +2603,23 @@ export async function isTAPossible(token) {
 
     return !cautious && !distracted && !unconscious && (await game.hm3.socket.executeAsGM('isFirstTA'));
 }
+
+export async function updateOverlay(token) {
+    let condition = null;
+
+    if (token.hasCondition(Condition.DYING)) {
+        condition = token.getCondition(Condition.DYING);
+        if (condition.testUserPermission(game.user, 'OWNER')) await condition.setFlag('core', 'overlay', true);
+    } else if (token.hasCondition(Condition.UNCONSCIOUS)) {
+        condition = token.getCondition(Condition.UNCONSCIOUS);
+        if (condition.testUserPermission(game.user, 'OWNER')) await condition.setFlag('core', 'overlay', true);
+    } else if (token.hasCondition(Condition.SHOCKED)) {
+        condition = token.getCondition(Condition.SHOCKED);
+        if (condition.testUserPermission(game.user, 'OWNER')) await condition.setFlag('core', 'overlay', true);
+    } else if (token.hasCondition(Condition.PRONE)) {
+        condition = token.getCondition(Condition.PRONE);
+        if (condition.testUserPermission(game.user, 'OWNER')) await condition.setFlag('core', 'overlay', true);
+    }
+
+    return condition;
+}

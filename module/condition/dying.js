@@ -39,6 +39,13 @@ await game.hm3.GmSays("<b>" + token.name + "</b> stays unconscious due to a <b>M
 await token.turnEnds();
 `;
 
+    const ON_DELETE_MACRO = `
+const token = canvas.tokens.get('${token.id}');
+if (!token) return;
+game.hm3.macros.updateOverlay(token);
+console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
+`;
+
     return {
         effectData: {
             icon: CONDITION_ICON,
@@ -49,7 +56,8 @@ await token.turnEnds();
             flags: {
                 effectmacro: {
                     onCreate: {script: ON_CREATE_MACRO},
-                    onTurnStart: {script: ON_TURN_START_MACRO}
+                    onTurnStart: {script: ON_TURN_START_MACRO},
+                    onDelete: {script: ON_DELETE_MACRO}
                 },
                 hm3: {uuid}
             }

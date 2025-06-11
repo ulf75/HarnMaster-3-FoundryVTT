@@ -74,6 +74,7 @@ if (game.combat?.started && game.combat.combatant) {
         await game.hm3.GmSays("<b>" + token.name + "</b> rises successfully.", "Combat 11");
     }
 }
+game.hm3.macros.updateOverlay(token);
 console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
 `;
 

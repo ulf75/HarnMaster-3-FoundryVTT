@@ -65,6 +65,13 @@ if (ok) {
     await token.addCondition(game.hm3.Condition.SHOCKED);
 }`;
 
+    const ON_DELETE_MACRO = `
+const token = canvas.tokens.get('${token.id}');
+if (!token) return;
+game.hm3.macros.updateOverlay(token);
+console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
+`;
+
     return {
         effectData: {
             label: CONDITION,
@@ -76,7 +83,8 @@ if (ok) {
                 effectmacro: {
                     onCreate: {script: ON_CREATE_MACRO},
                     onTurnStart: {script: ON_TURN_START_MACRO},
-                    onDisable: {script: ON_DISABLE_MACRO}
+                    onDisable: {script: ON_DISABLE_MACRO},
+                    onDelete: {script: ON_DELETE_MACRO}
                 },
                 hm3: {uuid}
             }
