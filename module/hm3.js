@@ -393,7 +393,10 @@ Hooks.once('ready', async function () {
     Hooks.on('hotbarDrop', (bar, data, slot) => macros.createHM3Macro(data, slot));
 
     // if not exists, create and set
-    if (!game.settings.get('hm3', 'actorMacrosFolderId') || (game.actors.contents.length > 0 && !game.actors.contents[0].macrofolder)) {
+    if (
+        !game.settings.get('hm3', 'actorMacrosFolderId') ||
+        (game.actors.contents.length > 0 && !game.actors.contents[0].macrofolder)
+    ) {
         const folder = await Folder.create({
             name: 'Actor Macros (DO NOT DELETE)',
             type: 'Macro',
@@ -445,7 +448,9 @@ Hooks.once('ready', async function () {
     }
 
     if (!game.user.can('MACRO_SCRIPT')) {
-        ui.notifications.warn('You do not have permission to run JavaScript macros, so all skill and esoterics macros have been disabled.');
+        ui.notifications.warn(
+            'You do not have permission to run JavaScript macros, so all skill and esoterics macros have been disabled.'
+        );
     }
 });
 

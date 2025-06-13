@@ -372,7 +372,9 @@ export class ActorHM3 extends Actor {
         // Prepare data items unique to containers
         if (this.type === 'container') {
             actorData.capacity.value = actorData.totalWeight;
-            actorData.capacity.pct = Math.round(((actorData.capacity.max - actorData.capacity.value) / (actorData.capacity.max || 1)) * 100);
+            actorData.capacity.pct = Math.round(
+                ((actorData.capacity.max - actorData.capacity.value) / (actorData.capacity.max || 1)) * 100
+            );
             actorData.capacity.pct = Math.max(Math.min(actorData.capacity.pct, 100), 0); // ensure value is between 0 and 100 inclusive)
             return;
         }
@@ -453,7 +455,9 @@ export class ActorHM3 extends Actor {
         eph.unhorsing = 0;
 
         // Calculate endurance (in case Condition not present)
-        actorData.endurance = Math.round((actorData.abilities.strength.base + actorData.abilities.stamina.base + actorData.abilities.will.base) / 3);
+        actorData.endurance = Math.round(
+            (actorData.abilities.strength.base + actorData.abilities.stamina.base + actorData.abilities.will.base) / 3
+        );
 
         const oldTotalInjuryLevels = actorData.injuryLevels.value;
         // Calculate values based on items
@@ -480,7 +484,9 @@ export class ActorHM3 extends Actor {
         actorData.endurance = Math.max(actorData.endurance, 1);
 
         eph.totalInjuryLevels = actorData.totalInjuryLevels;
-        eph.effectiveWeight = actorData.loadRating ? Math.max(actorData.totalWeight - actorData.loadRating, 0) : actorData.totalWeight;
+        eph.effectiveWeight = actorData.loadRating
+            ? Math.max(actorData.totalWeight - actorData.loadRating, 0)
+            : actorData.totalWeight;
         actorData.encumbrance = Math.floor(eph.effectiveWeight / actorData.endurance);
 
         if (oldTotalInjuryLevels !== actorData.totalInjuryLevels) {
@@ -569,7 +575,10 @@ export class ActorHM3 extends Actor {
         // 25+ means they are specifying feet (and use PP*5 as penalty); unlikely many characters will have
         // a base Agility of <= 4 and will want to specify the base move speed in feet.
         // Eventually we will standardize on "feet" and this heuristic can be removed.
-        actorData.move.effective = Math.max(eph.move - (actorData.move.base < 25 ? actorData.physicalPenalty : actorData.physicalPenalty * 5), 0);
+        actorData.move.effective = Math.max(
+            eph.move - (actorData.move.base < 25 ? actorData.physicalPenalty : actorData.physicalPenalty * 5),
+            0
+        );
 
         // Setup effective abilities (accounting for UP and PP)
         this._setupEffectiveAbilities(actorData);
@@ -778,17 +787,32 @@ export class ActorHM3 extends Actor {
         const eph = this.system.eph;
 
         // Affected by physical penalty
-        actorData.abilities.strength.effective = Math.max(Math.round(eph.strength + Number.EPSILON) - actorData.physicalPenalty, 0);
+        actorData.abilities.strength.effective = Math.max(
+            Math.round(eph.strength + Number.EPSILON) - actorData.physicalPenalty,
+            0
+        );
         actorData.abilities.stamina.effective = Math.max(Math.round(eph.stamina + Number.EPSILON) - actorData.physicalPenalty, 0);
         actorData.abilities.agility.effective = Math.max(Math.round(eph.agility + Number.EPSILON) - actorData.physicalPenalty, 0);
-        actorData.abilities.dexterity.effective = Math.max(Math.round(eph.dexterity + Number.EPSILON) - actorData.physicalPenalty, 0);
+        actorData.abilities.dexterity.effective = Math.max(
+            Math.round(eph.dexterity + Number.EPSILON) - actorData.physicalPenalty,
+            0
+        );
 
         // Affected by universal penalty
-        actorData.abilities.intelligence.effective = Math.max(Math.round(eph.intelligence + Number.EPSILON) - actorData.universalPenalty, 0);
+        actorData.abilities.intelligence.effective = Math.max(
+            Math.round(eph.intelligence + Number.EPSILON) - actorData.universalPenalty,
+            0
+        );
         actorData.abilities.aura.effective = Math.max(Math.round(eph.aura + Number.EPSILON) - actorData.universalPenalty, 0);
         actorData.abilities.will.effective = Math.max(Math.round(eph.will + Number.EPSILON) - actorData.universalPenalty, 0);
-        actorData.abilities.eyesight.effective = Math.max(Math.round(eph.eyesight + Number.EPSILON) - actorData.universalPenalty, 0);
-        actorData.abilities.hearing.effective = Math.max(Math.round(eph.hearing + Number.EPSILON) - actorData.universalPenalty, 0);
+        actorData.abilities.eyesight.effective = Math.max(
+            Math.round(eph.eyesight + Number.EPSILON) - actorData.universalPenalty,
+            0
+        );
+        actorData.abilities.hearing.effective = Math.max(
+            Math.round(eph.hearing + Number.EPSILON) - actorData.universalPenalty,
+            0
+        );
         actorData.abilities.smell.effective = Math.max(Math.round(eph.smell + Number.EPSILON) - actorData.universalPenalty, 0);
         actorData.abilities.voice.effective = Math.max(Math.round(eph.voice + Number.EPSILON) - actorData.universalPenalty, 0);
 
@@ -905,9 +929,19 @@ export class ActorHM3 extends Actor {
         this.items.forEach((it) => {
             const itemData = it.system;
             if (it.type === ItemType.SKILL && itemData.type === SkillType.MAGIC) {
-                this._setConvocationSpells(it.name, itemData.skillBase.value, itemData.masteryLevel, itemData.effectiveMasteryLevel);
+                this._setConvocationSpells(
+                    it.name,
+                    itemData.skillBase.value,
+                    itemData.masteryLevel,
+                    itemData.effectiveMasteryLevel
+                );
             } else if (it.type === ItemType.SKILL && itemData.type === SkillType.RITUAL) {
-                this._setRitualInvocations(it.name, itemData.skillBase.value, itemData.masteryLevel, itemData.effectiveMasteryLevel);
+                this._setRitualInvocations(
+                    it.name,
+                    itemData.skillBase.value,
+                    itemData.masteryLevel,
+                    itemData.effectiveMasteryLevel
+                );
             }
         });
     }
@@ -1043,7 +1077,10 @@ export class ActorHM3 extends Actor {
             // Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)
             if (item.type === ItemType.SKILL && result.sdrIncr === 2) {
                 if (item.system.masteryLevel < 40) {
-                    await game.hm3.GmSays(`<h4>${this.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.SkillSpecialty'), 'SKILLS 2');
+                    await game.hm3.GmSays(
+                        `<h4>${this.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.SkillSpecialty'),
+                        'SKILLS 2'
+                    );
                     return false;
                 }
             }
@@ -1249,7 +1286,9 @@ export class ActorHM3 extends Actor {
                     const magnitude = Number.parseFloat(val[1]);
                     if (isNaN(magnitude)) return false;
                     const skillName = val[0];
-                    return Array.from(ownedItems).some((i) => i.name === skillName && (i.type === ItemType.SKILL || i.type === ItemType.PSIONIC));
+                    return Array.from(ownedItems).some(
+                        (i) => i.name === skillName && (i.type === ItemType.SKILL || i.type === ItemType.PSIONIC)
+                    );
                 } else {
                     return false;
                 }
@@ -1301,7 +1340,8 @@ export class ActorHM3 extends Actor {
                     if (isNaN(magnitude)) return false;
                     const skillName = val[0];
                     for (let item of this.items.contents) {
-                        if (item.name === skillName && (item.type === ItemType.WEAPONGEAR || item.type === ItemType.MISSILEGEAR)) return true;
+                        if (item.name === skillName && (item.type === ItemType.WEAPONGEAR || item.type === ItemType.MISSILEGEAR))
+                            return true;
                     }
                 }
 

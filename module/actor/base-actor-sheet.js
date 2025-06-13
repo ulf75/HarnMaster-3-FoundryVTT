@@ -62,12 +62,15 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     }
                     // Dormant psionic talents may be invisible for players (ML20 or less (Psionics 3))
                     if (i.type === ItemType.PSIONIC) {
-                        i.system.visible = String(!game.settings.get('hm3', 'dormantPsionicTalents') || i.system.masteryLevel > 20 || game.user.isGM);
+                        i.system.visible = String(
+                            !game.settings.get('hm3', 'dormantPsionicTalents') || i.system.masteryLevel > 20 || game.user.isGM
+                        );
                     }
                     //
                     if (i.type === ItemType.TRAIT) {
                         if (i.system.type === 'Psyche') {
-                            const sev = data.config.psycheSeverity.find((v) => v.key === parseInt(i.system.severity))?.label || 'Mild';
+                            const sev =
+                                data.config.psycheSeverity.find((v) => v.key === parseInt(i.system.severity))?.label || 'Mild';
                             i.psycheName = sev + ' ' + i.name;
                         }
                     }
@@ -372,7 +375,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         if (failure) {
-            ui.notifications.error(`Error duing move of items from source to destination, container has been only partially moved!`);
+            ui.notifications.error(
+                `Error duing move of items from source to destination, container has been only partially moved!`
+            );
             return null;
         }
 
@@ -778,7 +783,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
                 const tokens = this.actor.getActiveTokens(true);
                 if (tokens.length == 0) {
-                    ui.notifications.warn(`There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`);
+                    ui.notifications.warn(
+                        `There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`
+                    );
                     return null;
                 } else if (tokens.length > 1) {
                     ui.notifications.warn(
@@ -802,7 +809,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
                 const tokens = this.actor.getActiveTokens(true);
                 if (tokens.length == 0) {
-                    ui.notifications.warn(`There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`);
+                    ui.notifications.warn(
+                        `There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`
+                    );
                     return null;
                 } else if (tokens.length > 1) {
                     ui.notifications.warn(
@@ -876,7 +885,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.mount-action').click(this._onToggleMount.bind(this));
 
         // Steed Command Check
-        html.find('.steedcommand-roll').click((ev) => macros.steedCommandRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+        html.find('.steedcommand-roll').click((ev) =>
+            macros.steedCommandRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor)
+        );
 
         // Unhorsing Roll
         html.find('.unhorsing-roll').click((ev) => macros.unhorsingRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
@@ -958,7 +969,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (!data.notes) updateData['system.notes'] = otherData.notes;
         if (!data.source) updateData['system.source'] = otherData.source;
         if (!data.description) updateData['system.description'] = otherData.description;
-        if (!data.macros.type || data.macros.type !== otherData.macros.type) updateData['system.macros.type'] = otherData.macros.type;
+        if (!data.macros.type || data.macros.type !== otherData.macros.type)
+            updateData['system.macros.type'] = otherData.macros.type;
         if (!data.macros.command) updateData['system.macros.command'] = otherData.macros.command;
         updateData['img'] = other.img;
 
@@ -1098,7 +1110,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 const result = await Item.create(updateData, {parent: this.actor});
 
                 if (!result) {
-                    throw new Error(`Error creating item '${updateData.name}' of type '${updateData.type}' on character '${this.actor.name}'`);
+                    throw new Error(
+                        `Error creating item '${updateData.name}' of type '${updateData.type}' on character '${this.actor.name}'`
+                    );
                 }
 
                 // Bring up edit dialog to complete creating item
@@ -1210,7 +1224,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Condition skill is maxed out (SKILLS 9)
         if (item.type === 'skill' && item.name === 'Condition') {
             if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
-                await game.hm3.GmSays(`<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.ConditionSkillMax'), 'SKILLS 9');
+                await game.hm3.GmSays(
+                    `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.ConditionSkillMax'),
+                    'SKILLS 9'
+                );
                 return;
             }
         }
@@ -1248,7 +1265,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                     // Once opened, Development Rolls are made only for Combat Experience (SKILLS 18)
                                     if (item.name === 'Initiative') {
                                         await game.hm3.GmSays(
-                                            `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.InitiativeExperience'),
+                                            `<h4>${this.actor.name}: ${item.name}</h4>` +
+                                                game.i18n.localize('hm3.SDR.InitiativeExperience'),
                                             'SKILLS 18'
                                         );
                                         return;
@@ -1257,7 +1275,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                     // can be increased beyond ML70 except by actual combat experience (SKILLS 18)
                                     else if (item.system.masteryLevel >= 70) {
                                         await game.hm3.GmSays(
-                                            `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.CombatExperience'),
+                                            `<h4>${this.actor.name}: ${item.name}</h4>` +
+                                                game.i18n.localize('hm3.SDR.CombatExperience'),
                                             'SKILLS 18'
                                         );
                                         return;

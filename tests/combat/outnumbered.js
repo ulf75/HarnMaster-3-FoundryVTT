@@ -13,7 +13,11 @@ export class TestCase extends game.hm3.BaseTest {
 
         await this._startCombat();
 
-        console.assert(alice.hasCondition(Condition.OUTNUMBERED + ' 2:1'), `HM3 ASSERT | Combatant ${alice.name} is NOT outnumbered.`, alice);
+        console.assert(
+            alice.hasCondition(Condition.OUTNUMBERED + ' 2:1'),
+            `HM3 ASSERT | Combatant ${alice.name} is NOT outnumbered.`,
+            alice
+        );
         console.assert(!alon.hasCondition(Condition.OUTNUMBERED), `HM3 ASSERT | Combatant ${alon.name} IS outnumbered.`, alon);
         console.assert(!bob.hasCondition(Condition.OUTNUMBERED), `HM3 ASSERT | Combatant ${bob.name} IS outnumbered.`, bob);
 

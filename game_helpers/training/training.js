@@ -178,7 +178,8 @@
 
                     const _price = html.find('#price')[0];
                     const price = _price.options[_price.selectedIndex].text;
-                    const priceMultiplier = (prices.get(price).min + (await new Roll(prices.get(price).die).evaluate()).total) / 100;
+                    const priceMultiplier =
+                        (prices.get(price).min + (await new Roll(prices.get(price).die).evaluate()).total) / 100;
 
                     const _quality = html.find('#quality')[0];
                     const quality = _quality.options[_quality.selectedIndex].text;
@@ -191,7 +192,12 @@
                     else if (trainer.includes('Unguilded')) trainingFactor = TRAINING_FACTOR_UNGUILDED;
 
                     let actualPrice = Math.round(
-                        trainingFactor * (days / 30) * monthlyPrice * priceMultiplier * (isGroupRate ? GROUP_RATE_FACTOR : 1) * qualityMultiplier
+                        trainingFactor *
+                            (days / 30) *
+                            monthlyPrice *
+                            priceMultiplier *
+                            (isGroupRate ? GROUP_RATE_FACTOR : 1) *
+                            qualityMultiplier
                     );
 
                     actualPrice -= actualPrice % 6;

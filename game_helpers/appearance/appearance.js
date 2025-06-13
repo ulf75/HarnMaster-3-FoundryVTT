@@ -131,7 +131,9 @@
                     else if (comeliness >= 16) comelinessStr = 'Handsome';
                     else if (comeliness >= 13) comelinessStr = 'Attractive';
 
-                    const compTable = game.tables.getName(`08a ${species === 'Human' && isIvinian ? 'Khuzdul' : species} Complexion`);
+                    const compTable = game.tables.getName(
+                        `08a ${species === 'Human' && isIvinian ? 'Khuzdul' : species} Complexion`
+                    );
                     const compRoll = new game.hm3.Roll('1d100');
                     const compDraw = await compTable.draw({roll: compRoll, recursive: true, displayChat: false});
                     const complexion = compDraw.results[0].text;
@@ -199,9 +201,11 @@
 
                         let index = description.indexOf('Height');
                         index = description.indexOf('<p>', index) + 3;
-                        description = [description.slice(0, index), `${height}" (${Math.round(height * 2.54)} cm)`, description.slice(index)].join(
-                            ''
-                        );
+                        description = [
+                            description.slice(0, index),
+                            `${height}" (${Math.round(height * 2.54)} cm)`,
+                            description.slice(index)
+                        ].join('');
 
                         index = description.indexOf('Frame');
                         index = description.indexOf('<p>', index) + 3;

@@ -1,6 +1,13 @@
 (async () => {
     const groups = {
-        'group1': ['S1dW6oJHOu5jlY2q', 'CkKjZQsDdoclFncK', 'FTiraUuJgNlKIBoy', 'XBYxz7drjOM5LKnk', '9EThXxtZPio34zw9', 'OsD3luRCZVfYkEIm'],
+        'group1': [
+            'S1dW6oJHOu5jlY2q',
+            'CkKjZQsDdoclFncK',
+            'FTiraUuJgNlKIBoy',
+            'XBYxz7drjOM5LKnk',
+            '9EThXxtZPio34zw9',
+            'OsD3luRCZVfYkEIm'
+        ],
         'group2': ['Gw5yK3JaWtbzCrkv', '0Aeu2UHjJvzLzmNA', 'aNXK5Ribm4A8kqmu', 'OsD3luRCZVfYkEIm']
     };
     const ownerships = {'inherit': -1, 'none': 0, 'limited': 1, 'observer': 2, 'owner': 3};

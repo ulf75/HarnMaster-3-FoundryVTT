@@ -62,6 +62,10 @@ export class TestCase extends game.hm3.BaseTest {
         console.assert(!alon.isEngaged(true), 'Token IS exclusively engaged: %O', alon);
         console.assert(bob.isEngaged(), 'Token is NOT engaged: %O', bob);
         console.assert(alon.isEngaged(), 'Token is NOT engaged: %O', alon);
-        console.assert(alice.hasCondition(game.hm3.Condition.OUTNUMBERED + ' 2:1'), 'Token has NO Outnumbered condition: %O', alice);
+        console.assert(
+            alice.hasCondition(game.hm3.Condition.OUTNUMBERED + ' 2:1'),
+            'Token has NO Outnumbered condition: %O',
+            alice
+        );
     }
 }

@@ -82,7 +82,10 @@ export class ItemHM3 extends Item {
                         const steedUP = ActorHM3.calcUniversalPenalty(steed);
 
                         itemData.effectiveMasteryLevel =
-                            Math.round((itemData.masteryLevel + ini.system.masteryLevel) / 2) - pctPhysPen - steedUP * 5 + sbModifier;
+                            Math.round((itemData.masteryLevel + ini.system.masteryLevel) / 2) -
+                            pctPhysPen -
+                            steedUP * 5 +
+                            sbModifier;
                     } else {
                         itemData.effectiveMasteryLevel = itemData.masteryLevel - pctPhysPen + sbModifier;
                     }

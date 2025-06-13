@@ -149,16 +149,20 @@ export class TokenHM3 extends Token {
         if (this.document.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY)
             opponents = all.filter(
                 (token) =>
-                    [CONST.TOKEN_DISPOSITIONS.HOSTILE, CONST.TOKEN_DISPOSITIONS.NEUTRAL, CONST.TOKEN_DISPOSITIONS.SECRET].includes(
-                        token.disposition
-                    ) && token.id !== this.id
+                    [
+                        CONST.TOKEN_DISPOSITIONS.HOSTILE,
+                        CONST.TOKEN_DISPOSITIONS.NEUTRAL,
+                        CONST.TOKEN_DISPOSITIONS.SECRET
+                    ].includes(token.disposition) && token.id !== this.id
             );
         else if (this.document.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE)
             opponents = all.filter(
                 (token) =>
-                    [CONST.TOKEN_DISPOSITIONS.FRIENDLY, CONST.TOKEN_DISPOSITIONS.NEUTRAL, CONST.TOKEN_DISPOSITIONS.SECRET].includes(
-                        token.disposition
-                    ) && token.id !== this.id
+                    [
+                        CONST.TOKEN_DISPOSITIONS.FRIENDLY,
+                        CONST.TOKEN_DISPOSITIONS.NEUTRAL,
+                        CONST.TOKEN_DISPOSITIONS.SECRET
+                    ].includes(token.disposition) && token.id !== this.id
             );
         else
             opponents = all.filter(
@@ -190,7 +194,8 @@ export class TokenHM3 extends Token {
      */
     isEngaged(exclusively = false) {
         return (
-            game.combat?.started && (exclusively ? this.getEngagedTokens(exclusively).length === 1 : this.getEngagedTokens(exclusively).length > 0)
+            game.combat?.started &&
+            (exclusively ? this.getEngagedTokens(exclusively).length === 1 : this.getEngagedTokens(exclusively).length > 0)
         );
     }
 

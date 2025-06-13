@@ -33,7 +33,11 @@ export async function onManageMacro(event, owner) {
     event.preventDefault();
     const a = event.currentTarget;
     const li = a.closest('li');
-    const clickOnName = !!(li.firstElementChild?.className?.includes('macro-name') && a.dataset.action !== 'create' && a.dataset.action !== 'delete');
+    const clickOnName = !!(
+        li.firstElementChild?.className?.includes('macro-name') &&
+        a.dataset.action !== 'create' &&
+        a.dataset.action !== 'delete'
+    );
     const action = clickOnName ? 'edit' : a.dataset.action;
     let macro = li.dataset.macroId ? game.macros.get(li.dataset.macroId) : null;
     switch (action) {

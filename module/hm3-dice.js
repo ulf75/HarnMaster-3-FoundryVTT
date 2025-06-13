@@ -90,7 +90,11 @@ export class DiceHM3 {
 
         const chatTemplateData = {
             description: roll.description,
-            fluff: rollData.fluff ? (rollData.fluff.startsWith('<p>') ? rollData.fluff : '<p>' + rollData.fluff + '</p>') : undefined,
+            fluff: rollData.fluff
+                ? rollData.fluff.startsWith('<p>')
+                    ? rollData.fluff
+                    : '<p>' + rollData.fluff + '</p>'
+                : undefined,
             fluffResult: fluffResult ? (fluffResult.startsWith('<p>') ? fluffResult : '<p>' + fluffResult + '</p>') : undefined,
             isCritical: roll.isCritical,
             isSubstantial: roll.isSubstantial,
@@ -233,8 +237,10 @@ export class DiceHM3 {
 
                 let target = !isNaN(Number(formTarget)) ? Number(formTarget) : dialogOptions.target;
                 if (dialogOptions.isAbility) target = dialogOptions.effSkillBase * multiplier;
-                if (isAppraisal) target = Math.max(dialogOptions.target + dialogOptions.effSkillBase, 5 * dialogOptions.effSkillBase);
-                if (dialogOptions.isTreatment) target = !isNaN(Number(formPhysicianEml)) ? Number(formPhysicianEml) : dialogOptions.target;
+                if (isAppraisal)
+                    target = Math.max(dialogOptions.target + dialogOptions.effSkillBase, 5 * dialogOptions.effSkillBase);
+                if (dialogOptions.isTreatment)
+                    target = !isNaN(Number(formPhysicianEml)) ? Number(formPhysicianEml) : dialogOptions.target;
                 const phyBonus = !isNaN(Number(formPhysicianEml)) && dialogData.isPhysician ? Number(formPhysicianEml) : 0;
 
                 return DiceHM3.rollTest({

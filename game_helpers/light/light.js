@@ -31,8 +31,12 @@ let dialogEditor = new Dialog({
         none: {
             label: `None`,
             callback: () => {
-                token?.document.update({light: {dim: 0, bright: 0, color: '#000000', alpha: 1, attenuation: 0.5, animation: {type: 'none'}}});
-                light?.document.update({config: {dim: 0, bright: 0, color: '#000000', alpha: 1, attenuation: 0.5, animation: {type: 'none'}}});
+                token?.document.update({
+                    light: {dim: 0, bright: 0, color: '#000000', alpha: 1, attenuation: 0.5, animation: {type: 'none'}}
+                });
+                light?.document.update({
+                    config: {dim: 0, bright: 0, color: '#000000', alpha: 1, attenuation: 0.5, animation: {type: 'none'}}
+                });
                 dialogEditor.render(true);
             }
         },

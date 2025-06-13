@@ -117,9 +117,15 @@ function askWeaponMacro(weaponUuid, slot, img) {
                 enhAttackButton: {
                     label: 'Automated Combat',
                     callback: async (html) => {
-                        return applyMacro(`${item.name} Automated Combat`, `await game.hm3.macros.weaponAttack("${weaponUuid}");`, slot, img, {
-                            'hm3.itemMacro': false
-                        });
+                        return applyMacro(
+                            `${item.name} Automated Combat`,
+                            `await game.hm3.macros.weaponAttack("${weaponUuid}");`,
+                            slot,
+                            img,
+                            {
+                                'hm3.itemMacro': false
+                            }
+                        );
                     }
                 },
                 attackButton: {
@@ -485,7 +491,16 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
  */
 export async function testAbilityD100RollAlt(options) {
     options = foundry.utils.mergeObject(
-        {ability: null, noDialog: false, myActor: null, multiplier: 5, blind: false, private: false, fluff: null, fluffResult: null},
+        {
+            ability: null,
+            noDialog: false,
+            myActor: null,
+            multiplier: 5,
+            blind: false,
+            private: false,
+            fluff: null,
+            fluffResult: null
+        },
         options
     );
 
@@ -782,7 +797,10 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
     const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.INJURY);
     const subType = item.system.subType || InjuryType.HEALING;
 
-    if (subType === InjuryType.HEALING && (isNaN(item.system.injuryLevel) || item.system?.injuryLevel < 1 || item.system?.injuryLevel > 5)) {
+    if (
+        subType === InjuryType.HEALING &&
+        (isNaN(item.system.injuryLevel) || item.system?.injuryLevel < 1 || item.system?.injuryLevel > 5)
+    ) {
         ui.notifications.warn(`No valid injury level specified.`);
         return null;
     }
@@ -866,7 +884,9 @@ async function treatmentRoll(actor, injury, speaker) {
         fastforward: false,
         fluff,
         fluffResult: {
-            CS: treatment + `<p>Excellent work! ${treatmentTable.cs === 7 ? 'EE' : 'H' + treatmentTable.cs} is the best result possible.</p>`,
+            CS:
+                treatment +
+                `<p>Excellent work! ${treatmentTable.cs === 7 ? 'EE' : 'H' + treatmentTable.cs} is the best result possible.</p>`,
             MS: treatment + `<p>Good work. ${treatmentTable.ms === 7 ? 'EE' : 'H' + treatmentTable.ms} is a solid result.</p>`,
             MF: treatment + `<p>Lousy work. H${treatmentTable.mf} is just as bad as without treatment.</p>`,
             CF: treatment + `<p>Catastrophic work! H${treatmentTable.cf} is worse than without treatment.</p>`
@@ -1717,7 +1737,18 @@ export async function meleeCounterstrikeResume(
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk, noDialog = false) {
+export async function dodgeResume(
+    atkTokenId,
+    defTokenId,
+    type,
+    weaponName,
+    effAML,
+    aim,
+    aspect,
+    impactMod,
+    isGrappleAtk,
+    noDialog = false
+) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1730,10 +1761,43 @@ export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effA
         return null;
     }
 
-    const hooksOk = Hooks.call('hm3.preDodgeResume', atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
+    const hooksOk = Hooks.call(
+        'hm3.preDodgeResume',
+        atkToken,
+        defToken,
+        type,
+        weaponName,
+        effAML,
+        aim,
+        aspect,
+        impactMod,
+        isGrappleAtk
+    );
     if (hooksOk) {
-        const result = await combat.dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
-        Hooks.call('hm3.onDodgeResume', result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
+        const result = await combat.dodgeResume(
+            atkToken,
+            defToken,
+            type,
+            weaponName,
+            effAML,
+            aim,
+            aspect,
+            impactMod,
+            isGrappleAtk
+        );
+        Hooks.call(
+            'hm3.onDodgeResume',
+            result,
+            atkToken,
+            defToken,
+            type,
+            weaponName,
+            effAML,
+            aim,
+            aspect,
+            impactMod,
+            isGrappleAtk
+        );
         return result;
     }
     return null;
@@ -1751,7 +1815,18 @@ export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function blockResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk, noDialog = false) {
+export async function blockResume(
+    atkTokenId,
+    defTokenId,
+    type,
+    weaponName,
+    effAML,
+    aim,
+    aspect,
+    impactMod,
+    isGrappleAtk,
+    noDialog = false
+) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1764,10 +1839,44 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
         return null;
     }
 
-    const hooksOk = Hooks.call('hm3.preBlockResume', atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
+    const hooksOk = Hooks.call(
+        'hm3.preBlockResume',
+        atkToken,
+        defToken,
+        type,
+        weaponName,
+        effAML,
+        aim,
+        aspect,
+        impactMod,
+        isGrappleAtk
+    );
     if (hooksOk) {
-        const result = await combat.blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk, noDialog);
-        Hooks.call('hm3.onBlockResume', result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
+        const result = await combat.blockResume(
+            atkToken,
+            defToken,
+            type,
+            weaponName,
+            effAML,
+            aim,
+            aspect,
+            impactMod,
+            isGrappleAtk,
+            noDialog
+        );
+        Hooks.call(
+            'hm3.onBlockResume',
+            result,
+            atkToken,
+            defToken,
+            type,
+            weaponName,
+            effAML,
+            aim,
+            aspect,
+            impactMod,
+            isGrappleAtk
+        );
         return result;
     }
     return null;
@@ -1785,7 +1894,18 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk, noDialog = false) {
+export async function ignoreResume(
+    atkTokenId,
+    defTokenId,
+    type,
+    weaponName,
+    effAML,
+    aim,
+    aspect,
+    impactMod,
+    isGrappleAtk,
+    noDialog = false
+) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1798,10 +1918,43 @@ export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, eff
         return null;
     }
 
-    const hooksOk = Hooks.call('hm3.preIgnoreResume', atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
+    const hooksOk = Hooks.call(
+        'hm3.preIgnoreResume',
+        atkToken,
+        defToken,
+        type,
+        weaponName,
+        effAML,
+        aim,
+        aspect,
+        impactMod,
+        isGrappleAtk
+    );
     if (hooksOk) {
-        const result = await combat.ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
-        Hooks.call('hm3.onIgnoreResume', result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk);
+        const result = await combat.ignoreResume(
+            atkToken,
+            defToken,
+            type,
+            weaponName,
+            effAML,
+            aim,
+            aspect,
+            impactMod,
+            isGrappleAtk
+        );
+        Hooks.call(
+            'hm3.onIgnoreResume',
+            result,
+            atkToken,
+            defToken,
+            type,
+            weaponName,
+            effAML,
+            aim,
+            aspect,
+            impactMod,
+            isGrappleAtk
+        );
         return result;
     }
     return null;
@@ -1943,7 +2096,13 @@ export function callOnHooks(hook, actor, result, rollData, item = null) {
     if (foundMacro && !foundMacro.hasPlayerOwner) {
         const token = actor?.isToken ? actor.token : null;
 
-        utility.executeMacroScript(foundMacro, {actor: actor, token: token, rollResult: rollResult, rollData: rollData, item: item});
+        utility.executeMacroScript(foundMacro, {
+            actor: actor,
+            token: token,
+            rollResult: rollResult,
+            rollData: rollData,
+            item: item
+        });
     }
 
     if (item) {
@@ -2041,7 +2200,9 @@ export function getActiveEffect(token, name, strict = false) {
         ? token.actor.allApplicableEffects().find((v) => v.name === name)
         : token.actor
               .allApplicableEffects()
-              .find((v) => v.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(v.name.toLowerCase()));
+              .find(
+                  (v) => v.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(v.name.toLowerCase())
+              );
 }
 
 /**
@@ -2142,7 +2303,11 @@ export async function createActiveEffect(effectData, changes = [], options = {})
 
     if (options.selfDestroy) {
         await effect.setFlag('hm3', 'selfDestroy', true);
-        await effect.setFlag('effectmacro', 'onDisable.script', `game.hm3.macros.deleteActiveEffect('${effectData.token.id}', '${effect.id}');`);
+        await effect.setFlag(
+            'effectmacro',
+            'onDisable.script',
+            `game.hm3.macros.deleteActiveEffect('${effectData.token.id}', '${effect.id}');`
+        );
     }
 
     return effect;
@@ -2321,10 +2486,16 @@ export async function createCondition(token, condition, conditionOptions = {}) {
                 if (timer) clearTimeout(timer);
                 resolve(success);
             });
-            timer = setTimeout(() => reject({error: `HM3 | Timeout in 'onCreate' callback for Condition ${condition}!`, condData}), 5000);
+            timer = setTimeout(
+                () => reject({error: `HM3 | Timeout in 'onCreate' callback for Condition ${condition}!`, condData}),
+                5000
+            );
         });
 
-        const res = await Promise.allSettled([callbackPromise, createActiveEffect(condData.effectData, condData.changes, condData.options)]);
+        const res = await Promise.allSettled([
+            callbackPromise,
+            createActiveEffect(condData.effectData, condData.changes, condData.options)
+        ]);
 
         return res[1].value;
     }
@@ -2343,7 +2514,10 @@ export async function deleteCondition(token, condition) {
                 if (timer) clearTimeout(timer);
                 resolve(success);
             });
-            timer = setTimeout(() => reject({error: `HM3 | Timeout in 'onDelete' callback for Condition ${condition.name}!`, condition}), 5000);
+            timer = setTimeout(
+                () => reject({error: `HM3 | Timeout in 'onDelete' callback for Condition ${condition.name}!`, condition}),
+                5000
+            );
         });
 
         let ret = null;

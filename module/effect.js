@@ -10,7 +10,8 @@ export async function onManageActiveEffect(event, owner) {
     const action = a.dataset.action;
 
     let effect;
-    if (owner instanceof Actor) effect = li.dataset.effectId ? owner.allApplicableEffects().find((e) => e.id === li.dataset.effectId) : null;
+    if (owner instanceof Actor)
+        effect = li.dataset.effectId ? owner.allApplicableEffects().find((e) => e.id === li.dataset.effectId) : null;
     if (owner instanceof Item) effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
 
     switch (action) {
@@ -62,7 +63,9 @@ export async function onManageActiveEffect(event, owner) {
 
         case 'delete':
             if (effect.parent instanceof Item && effect.parent?.parent instanceof Actor)
-                return ui.notifications.info(`This effect (${effect.name}) originates from an item (${effect.parent.name}) and cannot be deleted.`);
+                return ui.notifications.info(
+                    `This effect (${effect.name}) originates from an item (${effect.parent.name}) and cannot be deleted.`
+                );
             return new Dialog({
                 title: 'Delete Active Effect',
                 content: '<p>Are you sure?</p><p>This active effect will be permanently deleted and cannot be recovered.</p>',

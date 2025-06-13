@@ -228,7 +228,10 @@ export class BaseTestHM3 {
         ]);
     }
 
-    async _defAction(def, {messageNr = game.messages.contents.length - 1, unsetTAFlag = false, userId = game.user.id, roll = []} = {}) {
+    async _defAction(
+        def,
+        {messageNr = game.messages.contents.length - 1, unsetTAFlag = false, userId = game.user.id, roll = []} = {}
+    ) {
         if (unsetTAFlag) await game.hm3.socket.executeAsGM('unsetTAFlag');
         return game.hm3.socket.executeAsUser('defAction', userId, def, {messageNr, roll});
     }
@@ -283,8 +286,6 @@ export class BaseTestHM3 {
         );
 
         await token.combatant?.update({defeated: false});
-
-        await token.toggleVisibility({active: true});
     }
 
     async _startCombat() {

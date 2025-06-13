@@ -297,7 +297,8 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
 
     dialogResult.addlModifier += dialogResult.aim === 'Mid' ? 0 : -10;
 
-    const atkCloseMode = atkToken.hasCondition(Condition.CLOSE_MODE) && (dialogResult.aspect === 'Blunt' || dialogResult.aspect === 'Edged');
+    const atkCloseMode =
+        atkToken.hasCondition(Condition.CLOSE_MODE) && (dialogResult.aspect === 'Blunt' || dialogResult.aspect === 'Edged');
     dialogResult.addlModifier += atkCloseMode ? -10 : 0;
 
     const effAML = dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier;
@@ -505,10 +506,18 @@ async function attackDialog(options) {
 
         const isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
         const dist = canvas.dimensions.distance;
-        const shortDesc = `Short (${isGridDistanceUnits ? weaponData.range.short / dist + ' hex' : weaponData.range.short + ' ft'}/+0)`;
-        const mediumDesc = `Medium (${isGridDistanceUnits ? weaponData.range.medium / dist + ' hex' : weaponData.range.medium + ' ft'}/-20)`;
-        const longDesc = `Long (${isGridDistanceUnits ? weaponData.range.long / dist + ' hex' : weaponData.range.long + ' ft'}/-40)`;
-        const extremeDesc = `Extreme (${isGridDistanceUnits ? weaponData.range.extreme / dist + ' hex' : weaponData.range.extreme + ' ft'}/-80)`;
+        const shortDesc = `Short (${
+            isGridDistanceUnits ? weaponData.range.short / dist + ' hex' : weaponData.range.short + ' ft'
+        }/+0)`;
+        const mediumDesc = `Medium (${
+            isGridDistanceUnits ? weaponData.range.medium / dist + ' hex' : weaponData.range.medium + ' ft'
+        }/-20)`;
+        const longDesc = `Long (${
+            isGridDistanceUnits ? weaponData.range.long / dist + ' hex' : weaponData.range.long + ' ft'
+        }/-40)`;
+        const extremeDesc = `Extreme (${
+            isGridDistanceUnits ? weaponData.range.extreme / dist + ' hex' : weaponData.range.extreme + ' ft'
+        }/-80)`;
         dialogOptions.ranges = [
             {key: 'Short', label: shortDesc, impact: weaponData.impact.short},
             {key: 'Medium', label: mediumDesc, impact: weaponData.impact.medium},
@@ -690,7 +699,16 @@ function defaultMeleeWeapon(token, sortMode = 'highestDmg') {
  * @param {*} atkAspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} atkImpactMod Additional modifier to impact
  */
-export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod, isGrappleAtk) {
+export async function meleeCounterstrikeResume(
+    atkToken,
+    defToken,
+    atkWeaponName,
+    atkEffAML,
+    atkAim,
+    atkAspect,
+    atkImpactMod,
+    isGrappleAtk
+) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
@@ -734,7 +752,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     if (!csDialogResult) return null;
 
     const atkCloseMode = atkToken.hasCondition(Condition.CLOSE_MODE) && (atkAspect === 'Blunt' || atkAspect === 'Edged');
-    const defCloseMode = defToken.hasCondition(Condition.CLOSE_MODE) && (csDialogResult.aspect === 'Blunt' || csDialogResult.aspect === 'Edged');
+    const defCloseMode =
+        defToken.hasCondition(Condition.CLOSE_MODE) && (csDialogResult.aspect === 'Blunt' || csDialogResult.aspect === 'Edged');
 
     csDialogResult.addlModifier += defCloseMode ? -10 : 0;
 
@@ -804,9 +823,12 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
             try {
                 await game.hm3.socket.executeAsGM('weaponBroke', atkToken.id, atkWeapon.id, weaponBroke.atkWeaponDiff);
             } catch (ex) {
-                ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${atkToken?.actor?.name}`, {
-                    permanent: true
-                });
+                ui.notifications.warn(
+                    `You do not have permissions to perform this operation on ${item?.name} from ${atkToken?.actor?.name}`,
+                    {
+                        permanent: true
+                    }
+                );
             } finally {
                 combatResult.outcome.dta = true;
             }
@@ -816,9 +838,12 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
             try {
                 await game.hm3.socket.executeAsGM('weaponBroke', defToken.id, defWeapon.id, weaponBroke.defWeaponDiff);
             } catch (ex) {
-                ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`, {
-                    permanent: true
-                });
+                ui.notifications.warn(
+                    `You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`,
+                    {
+                        permanent: true
+                    }
+                );
             } finally {
                 combatResult.outcome.ata = true;
             }
@@ -1200,7 +1225,18 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
  * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
  * @param {*} impactMod Additional modifier to impact
  */
-export async function blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk, noDialog = false) {
+export async function blockResume(
+    atkToken,
+    defToken,
+    type,
+    weaponName,
+    effAML,
+    aim,
+    aspect,
+    impactMod,
+    isGrappleAtk,
+    noDialog = false
+) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
@@ -1341,9 +1377,12 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
             try {
                 await game.hm3.socket.executeAsGM('weaponBroke', atkToken.id, atkWeapon.id, weaponBroke.atkWeaponDiff);
             } catch (ex) {
-                ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${atkToken?.actor?.name}`, {
-                    permanent: true
-                });
+                ui.notifications.warn(
+                    `You do not have permissions to perform this operation on ${item?.name} from ${atkToken?.actor?.name}`,
+                    {
+                        permanent: true
+                    }
+                );
             } finally {
                 combatResult.outcome.dta = true;
             }
@@ -1353,9 +1392,12 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
             try {
                 await game.hm3.socket.executeAsGM('weaponBroke', defToken.id, defWeapon.id, weaponBroke.defWeaponDiff);
             } catch (ex) {
-                ui.notifications.warn(`You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`, {
-                    permanent: true
-                });
+                ui.notifications.warn(
+                    `You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`,
+                    {
+                        permanent: true
+                    }
+                );
             } finally {
                 combatResult.outcome.ata = true;
             }
@@ -2009,7 +2051,10 @@ export async function setTA(autoend = false) {
         await game.hm3.socket.executeAsGM('setTAFlag');
         return true;
     } else {
-        await game.hm3.GmSays('No more than one <b>Tactical Advantage</b> may be earned per character turn. <b>Turn ends.</b>', 'Combat 12');
+        await game.hm3.GmSays(
+            'No more than one <b>Tactical Advantage</b> may be earned per character turn. <b>Turn ends.</b>',
+            'Combat 12'
+        );
         await game.combat.combatant.token.turnEnds();
         return false;
     }
@@ -2048,13 +2093,17 @@ export async function updateOutnumbered() {
 
     friendly.forEach((fDoc) => {
         const e = [
-            ...hostile.filter((hDoc) => rangeToTarget(fDoc.object, hDoc.object) < 5.1 && hDoc.object.hasEngagementZone()).map((t) => t.object)
+            ...hostile
+                .filter((hDoc) => rangeToTarget(fDoc.object, hDoc.object) < 5.1 && hDoc.object.hasEngagementZone())
+                .map((t) => t.object)
         ];
         engaged.set(fDoc.object.id, e);
     });
     hostile.forEach((hDoc) => {
         const e = [
-            ...friendly.filter((fDoc) => rangeToTarget(fDoc.object, hDoc.object) < 5.1 && fDoc.object.hasEngagementZone()).map((t) => t.object)
+            ...friendly
+                .filter((fDoc) => rangeToTarget(fDoc.object, hDoc.object) < 5.1 && fDoc.object.hasEngagementZone())
+                .map((t) => t.object)
         ];
         engaged.set(hDoc.object.id, e);
     });
