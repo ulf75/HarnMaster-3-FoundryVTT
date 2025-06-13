@@ -296,6 +296,10 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
     }
 
     dialogResult.addlModifier += dialogResult.aim === 'Mid' ? 0 : -10;
+
+    const atkCloseMode = atkToken.hasCondition(Condition.CLOSE_MODE) && (dialogResult.aspect === 'Blunt' || dialogResult.aspect === 'Edged');
+    dialogResult.addlModifier += atkCloseMode ? -10 : 0;
+
     const effAML = dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier;
 
     // Prepare for Chat Message
@@ -318,7 +322,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         aim: dialogResult.aim,
         aspect: dialogResult.aspect,
         atkBerserk: atkToken.hasCondition(Condition.BERSERK),
-        atkCloseMode: atkToken.hasCondition(Condition.CLOSE_MODE),
+        atkCloseMode,
         atkProne: atkToken.hasCondition(Condition.PRONE),
         atkTokenId: atkToken.id,
         attacker: atkToken.name,
@@ -729,6 +733,11 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     const csDialogResult = await attackDialog(options);
     if (!csDialogResult) return null;
 
+    const atkCloseMode = atkToken.hasCondition(Condition.CLOSE_MODE) && (atkAspect === 'Blunt' || atkAspect === 'Edged');
+    const defCloseMode = defToken.hasCondition(Condition.CLOSE_MODE) && (csDialogResult.aspect === 'Blunt' || csDialogResult.aspect === 'Edged');
+
+    csDialogResult.addlModifier += defCloseMode ? -10 : 0;
+
     // Roll Attacker's Attack
     const atkRoll = await DiceHM3.rollTest({
         data: {},
@@ -849,6 +858,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         addlWeaponImpact: 0, // in future, maybe ask this in dialog?
         atkAim: atkAim,
         atkAspect: atkAspect,
+        atkCloseMode,
         atkIsCritical: atkRoll.isCritical,
         atkIsSuccess: atkRoll.isSuccess,
         atkRollResult: atkRoll.description.replace('Substantial', 'Marginal'),
@@ -888,7 +898,6 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         atkAim: csDialogResult.aim,
         atkAspect: csDialogResult.aspect,
         atkBerserk: atkToken.hasCondition(Condition.BERSERK),
-        atkCloseMode: atkToken.hasCondition(Condition.CLOSE_MODE),
         atkIsCritical: csRoll.isCritical,
         atkIsSuccess: csRoll.isSuccess,
         atkProne: atkToken.hasCondition(Condition.PRONE),
@@ -898,6 +907,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         attackRoll: csRoll.rollObj.total,
         attackWeapon: csDialogResult.weapon.name,
         defBerserk: defToken.hasCondition(Condition.BERSERK),
+        defCloseMode,
         defender: atkToken.name,
         defenseRoll: 0,
         defProne: defToken.hasCondition(Condition.PRONE),
@@ -1080,6 +1090,8 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
+    const atkCloseMode = atkToken.hasCondition(Condition.CLOSE_MODE) && (aspect === 'Blunt' || aspect === 'Edged');
+
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
     const chatData = {
         addlModifierAbs: Math.abs(defaultModifier),
@@ -1087,6 +1099,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         addlWeaponImpact: 0, // in future, maybe ask this in dialog?
         atkAim: aim,
         atkAspect: aspect,
+        atkCloseMode,
         atkIsCritical: atkRoll.isCritical,
         atkIsSuccess: atkRoll.isSuccess,
         atkProne: atkToken.hasCondition(Condition.PRONE),
@@ -1372,6 +1385,8 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
+    const atkCloseMode = atkToken.hasCondition(Condition.CLOSE_MODE) && (aspect === 'Blunt' || aspect === 'Edged');
+
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
     const chatData = {
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
@@ -1380,6 +1395,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         ata: combatResult.outcome.ata,
         atkAim: aim,
         atkAspect: aspect,
+        atkCloseMode,
         atkIsCritical: atkRoll.isCritical,
         atkIsSuccess: atkRoll.isSuccess,
         atkProne: atkToken.hasCondition(Condition.PRONE),
@@ -1625,11 +1641,14 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
+    const atkCloseMode = atkToken.hasCondition(Condition.CLOSE_MODE) && (aspect === 'Blunt' || aspect === 'Edged');
+
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
     const chatData = {
         addlWeaponImpact: 0, // in future, maybe ask this in dialog?
         atkAim: aim,
         atkAspect: aspect,
+        atkCloseMode,
         atkDice: combatResult.outcome.atkDice,
         atkIsCritical: atkRoll.isCritical,
         atkIsSuccess: atkRoll.isSuccess,
