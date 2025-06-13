@@ -17,7 +17,8 @@ export class TestCase extends game.hm3.BaseTest {
 
         // not yet defeated
         console.assert(
-            alice.actor.system.shockIndex.value >= game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && !alice.combatant.isDefeated,
+            alice.actor.system.shockIndex.value >= game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD &&
+                !alice.combatant.isDefeated,
             `HM3 ASSERT | Combatant ${alice.name} IS defeated (Shock Index: ${alice.actor.system.shockIndex.value}).`,
             alice.combatant
         );
@@ -30,11 +31,16 @@ export class TestCase extends game.hm3.BaseTest {
         await bob.addCondition(game.hm3.Condition.DYING);
 
         console.assert(
-            alice.actor.system.shockIndex.value < game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && !alice.combatant.isDefeated,
+            alice.actor.system.shockIndex.value < game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD &&
+                !alice.combatant.isDefeated,
             `HM3 ASSERT | Combatant ${alice.name} IS defeated (Shock Index: ${alice.actor.system.shockIndex.value}).`,
             alice.combatant
         );
-        console.assert(alon.combatant.isDefeated, `HM3 ASSERT | Combatant ${alon.name} is NOT defeated.`, alon.combatant);
+        console.assert(
+            alon.combatant.isDefeated,
+            `HM3 ASSERT | Combatant ${alon.name} is NOT defeated.`,
+            alon.combatant
+        );
         console.assert(bob.combatant.isDefeated, `HM3 ASSERT | Combatant ${bob.name} is NOT defeated.`, bob.combatant);
 
         await this._resetAllConditions(bob);

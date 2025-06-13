@@ -20,12 +20,20 @@ export class TestCase extends game.hm3.BaseTest {
 
         const desperate = await token.addCondition(Condition.DESPERATE);
         console.info('Adding condition: %s to token: %s', Condition.DESPERATE, token.name);
-        console.assert(desperate && desperate instanceof ActiveEffect, 'Condition is NOT an ActiveEffect: %O', desperate);
+        console.assert(
+            desperate && desperate instanceof ActiveEffect,
+            'Condition is NOT an ActiveEffect: %O',
+            desperate
+        );
         console.assert(!token.hasCondition(Condition.CAUTIOUS), 'Token DOES have condition: %s', Condition.CAUTIOUS);
 
         const empowered = await token.addCondition(Condition.EMPOWERED);
         console.info('Adding condition: %s to token: %s', Condition.EMPOWERED, token.name);
-        console.assert(empowered && empowered instanceof ActiveEffect, 'Condition is NOT an ActiveEffect: %O', empowered);
+        console.assert(
+            empowered && empowered instanceof ActiveEffect,
+            'Condition is NOT an ActiveEffect: %O',
+            empowered
+        );
         console.assert(!token.hasCondition(Condition.DESPERATE), 'Token DOES have condition: %s', Condition.DESPERATE);
 
         const weakened = await token.addCondition(Condition.WEAKENED);

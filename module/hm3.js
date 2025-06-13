@@ -15,7 +15,18 @@ import {CombatantHM3} from './hm3-combatant.js';
 import {DiceHM3} from './hm3-dice.js';
 import {MacroHM3} from './hm3-macro.js';
 import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
-import {ActorType, Aspect, Condition, Hook, InjuryType, ItemType, Location, MiscItemType, Range, SkillType} from './hm3-types.js';
+import {
+    ActorType,
+    Aspect,
+    Condition,
+    Hook,
+    InjuryType,
+    ItemType,
+    Location,
+    MiscItemType,
+    Range,
+    SkillType
+} from './hm3-types.js';
 import {ActiveEffectConfigHM3} from './hm3/hm3-active-effect-config.js';
 import {AmbientLightHM3} from './hm3/hm3-ambient-light.js';
 import {AmbientSoundHM3} from './hm3/hm3-ambient-sound.js';
@@ -238,7 +249,8 @@ Hooks.once('init', async function () {
     let extraFonts =
         'Martel=Martel;Roboto=Roboto;Lakise=Lakise;Runic=Runic;Lankorian Blackhand=Lankorian Blackhand;Amasis MT Medium=Amasis MT Medium';
     // Configure the TinyMCE font drop-down (note: Monk's Enhanced Journal will overwrite this)
-    CONFIG.TinyMCE.font_formats = (CONFIG.TinyMCE.font_formats ? CONFIG.TinyMCE.font_formats : defaultFonts) + ';' + extraFonts;
+    CONFIG.TinyMCE.font_formats =
+        (CONFIG.TinyMCE.font_formats ? CONFIG.TinyMCE.font_formats : defaultFonts) + ';' + extraFonts;
     // Register the extra fonts within Foundry itsel (e.g. Text drawing tool)
     //    let fontFamilies = extraFonts.split(";").map(f => f.split("=")[0]).filter(f => f.length);
     //    fontFamilies.forEach(f => CONFIG.fontFamilies.push(f));
@@ -248,7 +260,9 @@ Hooks.once('init', async function () {
         'Lankorian Blackhand': {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Lankorian-Blackhand.otf']}]},
         'Amasis MT Medium': {
             editor: true,
-            fonts: [{urls: ['./systems/hm3/fonts/amasis-mt-medium.ttf', './systems/hm3/fonts/amasis-mt-medium-italic.ttf']}]
+            fonts: [
+                {urls: ['./systems/hm3/fonts/amasis-mt-medium.ttf', './systems/hm3/fonts/amasis-mt-medium-italic.ttf']}
+            ]
         }
     });
 

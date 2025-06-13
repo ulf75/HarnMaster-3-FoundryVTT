@@ -62,7 +62,14 @@ export class Weather {
         const data = game.settings.get('hm3', 'weather');
         if (data.weather.length === 1) {
             // 1st initialization
-            this.start = this.dateTimeApi.dateToTimestamp({year: 720, month: 0, day: 0, hour: 0, minute: 0, seconds: 0});
+            this.start = this.dateTimeApi.dateToTimestamp({
+                year: 720,
+                month: 0,
+                day: 0,
+                hour: 0,
+                minute: 0,
+                seconds: 0
+            });
             let idx = 0;
             const weather = [];
             for (let i = 0; i < WATCHES_PER_MONTH; i++) {
@@ -224,11 +231,43 @@ const weatherData = {
             /* 12 */ {idx: 12, temp: 'Cool', night: 'Frzg', force: 1, dir: 'NE', cover: 'Half', precipitation: []},
             /* 13 */ {idx: 13, temp: 'Warm', night: 'Cool', force: 0, dir: 'SE', cover: 'No', precipitation: ['Fog']},
             /* 14 */ {idx: 14, temp: 'Hot', night: 'Warm', force: 0, dir: 'S', cover: 'No', precipitation: ['Fog']},
-            /* 15 */ {idx: 15, temp: 'Warm', night: 'Warm', force: 0, dir: 'SW', cover: 'Half', precipitation: ['Thunder']},
+            /* 15 */ {
+                idx: 15,
+                temp: 'Warm',
+                night: 'Warm',
+                force: 0,
+                dir: 'SW',
+                cover: 'Half',
+                precipitation: ['Thunder']
+            },
             /* 16 */ {idx: 16, temp: 'Cool', night: 'Cold', force: 1, dir: 'NW', cover: 'No', precipitation: []},
-            /* 17 */ {idx: 17, temp: 'Cool', night: 'Cool', force: 2, dir: 'SW', cover: 'Half', precipitation: ['Rain']},
-            /* 18 */ {idx: 18, temp: 'Cool', night: 'Cool', force: 2, dir: 'SW', cover: 'Full', precipitation: ['SteadyRain']},
-            /* 19 */ {idx: 19, temp: 'Cold', night: 'Cold', force: 2, dir: 'NW', cover: 'Half', precipitation: ['Snow']},
+            /* 17 */ {
+                idx: 17,
+                temp: 'Cool',
+                night: 'Cool',
+                force: 2,
+                dir: 'SW',
+                cover: 'Half',
+                precipitation: ['Rain']
+            },
+            /* 18 */ {
+                idx: 18,
+                temp: 'Cool',
+                night: 'Cool',
+                force: 2,
+                dir: 'SW',
+                cover: 'Full',
+                precipitation: ['SteadyRain']
+            },
+            /* 19 */ {
+                idx: 19,
+                temp: 'Cold',
+                night: 'Cold',
+                force: 2,
+                dir: 'NW',
+                cover: 'Half',
+                precipitation: ['Snow']
+            },
             /* 20 */ {idx: 20, temp: 'Cold', night: 'Cold', force: 1, dir: 'NW', cover: 'Full', precipitation: []}
         ],
         Summer: [
@@ -236,64 +275,224 @@ const weatherData = {
             /* 02 */ {idx: 2, temp: 'Warm', night: 'Warm', force: 0, dir: 'NE', cover: 'Half', precipitation: ['Rain']},
             /* 03 */ {idx: 3, temp: 'Hot', night: 'Cool', force: 0, dir: 'SE', cover: 'No', precipitation: []},
             /* 04 */ {idx: 4, temp: 'Hot', night: 'Warm', force: 0, dir: 'S', cover: 'No', precipitation: []},
-            /* 05 */ {idx: 5, temp: 'Warm', night: 'Warm', force: 0, dir: 'SW', cover: 'Half', precipitation: ['Thunder']},
+            /* 05 */ {
+                idx: 5,
+                temp: 'Warm',
+                night: 'Warm',
+                force: 0,
+                dir: 'SW',
+                cover: 'Half',
+                precipitation: ['Thunder']
+            },
             /* 06 */ {idx: 6, temp: 'Warm', night: 'Cool', force: 0, dir: 'S', cover: 'Half', precipitation: []},
-            /* 07 */ {idx: 7, temp: 'Cool', night: 'Cool', force: 1, dir: 'SW', cover: 'Full', precipitation: ['SteadyRain']},
+            /* 07 */ {
+                idx: 7,
+                temp: 'Cool',
+                night: 'Cool',
+                force: 1,
+                dir: 'SW',
+                cover: 'Full',
+                precipitation: ['SteadyRain']
+            },
             /* 08 */ {idx: 8, temp: 'Cool', night: 'Cool', force: 2, dir: 'NW', cover: 'Full', precipitation: ['Rain']},
             /* 09 */ {idx: 9, temp: 'Warm', night: 'Cool', force: 1, dir: 'SW', cover: 'Half', precipitation: []},
             /* 10 */ {idx: 10, temp: 'Warm', night: 'Cool', force: 1, dir: 'NW', cover: 'No', precipitation: []},
             /* 11 */ {idx: 11, temp: 'Warm', night: 'Cool', force: 1, dir: 'N', cover: 'No', precipitation: []},
             /* 12 */ {idx: 12, temp: 'Hot', night: 'Cool', force: 0, dir: 'NE', cover: 'No', precipitation: ['Fog']},
-            /* 13 */ {idx: 13, temp: 'Hot', night: 'Warm', force: 0, dir: 'SE', cover: 'Half', precipitation: ['Thunder']},
+            /* 13 */ {
+                idx: 13,
+                temp: 'Hot',
+                night: 'Warm',
+                force: 0,
+                dir: 'SE',
+                cover: 'Half',
+                precipitation: ['Thunder']
+            },
             /* 14 */ {idx: 14, temp: 'Warm', night: 'Cool', force: 0, dir: 'S', cover: 'Half', precipitation: []},
             /* 15 */ {idx: 15, temp: 'Warm', night: 'Warm', force: 0, dir: 'SW', cover: 'Half', precipitation: []},
             /* 16 */ {idx: 16, temp: 'Warm', night: 'Cool', force: 1, dir: 'SW', cover: 'Half', precipitation: []},
             /* 17 */ {idx: 17, temp: 'Cool', night: 'Cool', force: 2, dir: 'SW', cover: 'Full', precipitation: []},
-            /* 18 */ {idx: 18, temp: 'Cool', night: 'Cool', force: 1, dir: 'SW', cover: 'Full', precipitation: ['Rain']},
-            /* 19 */ {idx: 19, temp: 'Cool', night: 'Cool', force: 1, dir: 'SW', cover: 'Full', precipitation: ['SteadyRain']},
-            /* 20 */ {idx: 20, temp: 'Cold', night: 'Cold', force: 0, dir: 'NW', cover: 'Full', precipitation: ['SteadyRain']}
+            /* 18 */ {
+                idx: 18,
+                temp: 'Cool',
+                night: 'Cool',
+                force: 1,
+                dir: 'SW',
+                cover: 'Full',
+                precipitation: ['Rain']
+            },
+            /* 19 */ {
+                idx: 19,
+                temp: 'Cool',
+                night: 'Cool',
+                force: 1,
+                dir: 'SW',
+                cover: 'Full',
+                precipitation: ['SteadyRain']
+            },
+            /* 20 */ {
+                idx: 20,
+                temp: 'Cold',
+                night: 'Cold',
+                force: 0,
+                dir: 'NW',
+                cover: 'Full',
+                precipitation: ['SteadyRain']
+            }
         ],
         Autumn: [
             /* 01 */ {idx: 1, temp: 'Cool', night: 'Cold', force: 0, dir: 'N', cover: 'No', precipitation: ['Fog']},
             /* 02 */ {idx: 2, temp: 'Warm', night: 'Cool', force: 0, dir: 'N', cover: 'Half', precipitation: []},
             /* 03 */ {idx: 3, temp: 'Warm', night: 'Cool', force: 0, dir: 'NE', cover: 'No', precipitation: ['Fog']},
             /* 04 */ {idx: 4, temp: 'Hot', night: 'Warm', force: 0, dir: 'SE', cover: 'No', precipitation: ['Fog']},
-            /* 05 */ {idx: 5, temp: 'Hot', night: 'Warm', force: 0, dir: 'S', cover: 'Half', precipitation: ['Thunder']},
+            /* 05 */ {
+                idx: 5,
+                temp: 'Hot',
+                night: 'Warm',
+                force: 0,
+                dir: 'S',
+                cover: 'Half',
+                precipitation: ['Thunder']
+            },
             /* 06 */ {idx: 6, temp: 'Warm', night: 'Warm', force: 0, dir: 'SW', cover: 'Full', precipitation: ['Rain']},
-            /* 07 */ {idx: 7, temp: 'Cool', night: 'Cool', force: 1, dir: 'NW', cover: 'Full', precipitation: ['SteadyRain']},
-            /* 08 */ {idx: 8, temp: 'Cold', night: 'Cold', force: 1, dir: 'SW', cover: 'Full', precipitation: ['SteadyRain']},
-            /* 09 */ {idx: 9, temp: 'Cold', night: 'Cold', force: 2, dir: 'NW', cover: 'Full', precipitation: ['SteadyRain']},
+            /* 07 */ {
+                idx: 7,
+                temp: 'Cool',
+                night: 'Cool',
+                force: 1,
+                dir: 'NW',
+                cover: 'Full',
+                precipitation: ['SteadyRain']
+            },
+            /* 08 */ {
+                idx: 8,
+                temp: 'Cold',
+                night: 'Cold',
+                force: 1,
+                dir: 'SW',
+                cover: 'Full',
+                precipitation: ['SteadyRain']
+            },
+            /* 09 */ {
+                idx: 9,
+                temp: 'Cold',
+                night: 'Cold',
+                force: 2,
+                dir: 'NW',
+                cover: 'Full',
+                precipitation: ['SteadyRain']
+            },
             /* 10 */ {idx: 10, temp: 'Cold', night: 'Cold', force: 1, dir: 'N', cover: 'Full', precipitation: []},
             /* 11 */ {idx: 11, temp: 'Cold', night: 'Cold', force: 2, dir: 'N', cover: 'Full', precipitation: []},
-            /* 12 */ {idx: 12, temp: 'Cool', night: 'Cool', force: 1, dir: 'NE', cover: 'Full', precipitation: ['Rain']},
+            /* 12 */ {
+                idx: 12,
+                temp: 'Cool',
+                night: 'Cool',
+                force: 1,
+                dir: 'NE',
+                cover: 'Full',
+                precipitation: ['Rain']
+            },
             /* 13 */ {idx: 13, temp: 'Warm', night: 'Cool', force: 0, dir: 'SE', cover: 'Half', precipitation: ['Fog']},
-            /* 14 */ {idx: 14, temp: 'Cool', night: 'Cool', force: 1, dir: 'S', cover: 'Full', precipitation: ['SteadyRain']},
+            /* 14 */ {
+                idx: 14,
+                temp: 'Cool',
+                night: 'Cool',
+                force: 1,
+                dir: 'S',
+                cover: 'Full',
+                precipitation: ['SteadyRain']
+            },
             /* 15 */ {idx: 15, temp: 'Cool', night: 'Cool', force: 2, dir: 'SW', cover: 'Full', precipitation: []},
             /* 16 */ {idx: 16, temp: 'Warm', night: 'Cool', force: 1, dir: 'S', cover: 'Half', precipitation: ['Rain']},
             /* 17 */ {idx: 17, temp: 'Warm', night: 'Cool', force: 1, dir: 'SW', cover: 'No', precipitation: []},
             /* 18 */ {idx: 18, temp: 'Cool', night: 'Cold', force: 2, dir: 'NW', cover: 'Half', precipitation: []},
-            /* 19 */ {idx: 19, temp: 'Cold', night: 'Frzg', force: 2, dir: 'SW', cover: 'Full', precipitation: ['Snow']},
+            /* 19 */ {
+                idx: 19,
+                temp: 'Cold',
+                night: 'Frzg',
+                force: 2,
+                dir: 'SW',
+                cover: 'Full',
+                precipitation: ['Snow']
+            },
             /* 20 */ {idx: 20, temp: 'Frzg', night: 'Frzg', force: 1, dir: 'NW', cover: 'Half', precipitation: []}
         ],
         Winter: [
-            /* 01 */ {idx: 1, temp: 'Cold', night: 'Frzg', force: 0, dir: 'N', cover: 'Full', precipitation: ['SteadySnow']},
+            /* 01 */ {
+                idx: 1,
+                temp: 'Cold',
+                night: 'Frzg',
+                force: 0,
+                dir: 'N',
+                cover: 'Full',
+                precipitation: ['SteadySnow']
+            },
             /* 02 */ {idx: 2, temp: 'Frzg', night: 'Frzg', force: 1, dir: 'NW', cover: 'Full', precipitation: ['Snow']},
             /* 03 */ {idx: 3, temp: 'Cold', night: 'Cold', force: 2, dir: 'N', cover: 'Full', precipitation: []},
             /* 04 */ {idx: 4, temp: 'Cool', night: 'Cold', force: 1, dir: 'NE', cover: 'Half', precipitation: []},
             /* 05 */ {idx: 5, temp: 'Warm', night: 'Cold', force: 0, dir: 'SE', cover: 'No', precipitation: ['Fog']},
             /* 06 */ {idx: 6, temp: 'Cool', night: 'Frzg', force: 0, dir: 'S', cover: 'Half', precipitation: ['Rain']},
-            /* 07 */ {idx: 7, temp: 'Cold', night: 'Cold', force: 1, dir: 'SW', cover: 'Full', precipitation: ['SteadyRain']},
+            /* 07 */ {
+                idx: 7,
+                temp: 'Cold',
+                night: 'Cold',
+                force: 1,
+                dir: 'SW',
+                cover: 'Full',
+                precipitation: ['SteadyRain']
+            },
             /* 08 */ {idx: 8, temp: 'Cold', night: 'Cold', force: 0, dir: 'NW', cover: 'Full', precipitation: ['Snow']},
             /* 09 */ {idx: 9, temp: 'Cool', night: 'Cool', force: 1, dir: 'SW', cover: 'Full', precipitation: ['Rain']},
-            /* 10 */ {idx: 10, temp: 'Cold', night: 'Cold', force: 1, dir: 'NW', cover: 'Full', precipitation: ['Snow']},
-            /* 11 */ {idx: 11, temp: 'Cold', night: 'Cold', force: 2, dir: 'N', cover: 'Full', precipitation: ['SteadySnow']},
+            /* 10 */ {
+                idx: 10,
+                temp: 'Cold',
+                night: 'Cold',
+                force: 1,
+                dir: 'NW',
+                cover: 'Full',
+                precipitation: ['Snow']
+            },
+            /* 11 */ {
+                idx: 11,
+                temp: 'Cold',
+                night: 'Cold',
+                force: 2,
+                dir: 'N',
+                cover: 'Full',
+                precipitation: ['SteadySnow']
+            },
             /* 12 */ {idx: 12, temp: 'Frzg', night: 'Frzg', force: 1, dir: 'N', cover: 'Full', precipitation: []},
             /* 13 */ {idx: 13, temp: 'Cool', night: 'Frzg', force: 2, dir: 'NE', cover: 'No', precipitation: []},
             /* 14 */ {idx: 14, temp: 'Cool', night: 'Cold', force: 1, dir: 'SE', cover: 'Half', precipitation: []},
             /* 15 */ {idx: 15, temp: 'Cool', night: 'Frzg', force: 1, dir: 'S', cover: 'No', precipitation: []},
-            /* 16 */ {idx: 16, temp: 'Cool', night: 'Cold', force: 2, dir: 'SW', cover: 'Half', precipitation: ['Rain']},
-            /* 17 */ {idx: 17, temp: 'Cold', night: 'Frzg', force: 1, dir: 'NW', cover: 'Full', precipitation: ['SteadySnow']},
-            /* 18 */ {idx: 18, temp: 'Cold', night: 'Cold', force: 2, dir: 'SW', cover: 'Full', precipitation: ['Snow']},
+            /* 16 */ {
+                idx: 16,
+                temp: 'Cool',
+                night: 'Cold',
+                force: 2,
+                dir: 'SW',
+                cover: 'Half',
+                precipitation: ['Rain']
+            },
+            /* 17 */ {
+                idx: 17,
+                temp: 'Cold',
+                night: 'Frzg',
+                force: 1,
+                dir: 'NW',
+                cover: 'Full',
+                precipitation: ['SteadySnow']
+            },
+            /* 18 */ {
+                idx: 18,
+                temp: 'Cold',
+                night: 'Cold',
+                force: 2,
+                dir: 'SW',
+                cover: 'Full',
+                precipitation: ['Snow']
+            },
             /* 19 */ {idx: 19, temp: 'Cold', night: 'Cold', force: 1, dir: 'SW', cover: 'Half', precipitation: []},
             /* 20 */ {idx: 20, temp: 'Cold', night: 'Cold', force: 1, dir: 'NW', cover: 'Full', precipitation: []}
         ]

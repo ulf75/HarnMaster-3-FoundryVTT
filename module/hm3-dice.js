@@ -80,7 +80,8 @@ export class DiceHM3 {
 
         const multiplier = roll.preData.multiplier || rollData.multiplier || 5;
         let title = rollData.label;
-        if (rollData.isAbility) title = rollData.label.replace(`${rollData.skill} Roll`, `${rollData.skill} x${multiplier} Roll`);
+        if (rollData.isAbility)
+            title = rollData.label.replace(`${rollData.skill} Roll`, `${rollData.skill} x${multiplier} Roll`);
         if (roll.preData.isAppraisal) title = rollData.label.replace('Skill Test', 'Appraisal Test');
         let fluffResult = null;
         if (rollData.fluffResult) {
@@ -95,7 +96,11 @@ export class DiceHM3 {
                     ? rollData.fluff
                     : '<p>' + rollData.fluff + '</p>'
                 : undefined,
-            fluffResult: fluffResult ? (fluffResult.startsWith('<p>') ? fluffResult : '<p>' + fluffResult + '</p>') : undefined,
+            fluffResult: fluffResult
+                ? fluffResult.startsWith('<p>')
+                    ? fluffResult
+                    : '<p>' + fluffResult + '</p>'
+                : undefined,
             isCritical: roll.isCritical,
             isSubstantial: roll.isSubstantial,
             isSuccess: roll.isSuccess,
@@ -212,9 +217,15 @@ export class DiceHM3 {
         if (dialogData.isTreatment) {
             dialogData.treatmentModifier = dialogOptions.treatmentTable.eml;
             dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
-                return {key: p.system.effectiveMasteryLevel, label: `${p.actor.name} (EML ${p.system.effectiveMasteryLevel})`};
+                return {
+                    key: p.system.effectiveMasteryLevel,
+                    label: `${p.actor.name} (EML ${p.system.effectiveMasteryLevel})`
+                };
             });
-            dialogData.physicianSkills.push({key: 0, label: '3rd Party Physician skill'}, {key: -1, label: 'No Treatment'});
+            dialogData.physicianSkills.push(
+                {key: 0, label: '3rd Party Physician skill'},
+                {key: -1, label: 'No Treatment'}
+            );
             dialogData.physicianEml = dialogData.physicianSkills[0].key;
         }
 
@@ -238,10 +249,14 @@ export class DiceHM3 {
                 let target = !isNaN(Number(formTarget)) ? Number(formTarget) : dialogOptions.target;
                 if (dialogOptions.isAbility) target = dialogOptions.effSkillBase * multiplier;
                 if (isAppraisal)
-                    target = Math.max(dialogOptions.target + dialogOptions.effSkillBase, 5 * dialogOptions.effSkillBase);
+                    target = Math.max(
+                        dialogOptions.target + dialogOptions.effSkillBase,
+                        5 * dialogOptions.effSkillBase
+                    );
                 if (dialogOptions.isTreatment)
                     target = !isNaN(Number(formPhysicianEml)) ? Number(formPhysicianEml) : dialogOptions.target;
-                const phyBonus = !isNaN(Number(formPhysicianEml)) && dialogData.isPhysician ? Number(formPhysicianEml) : 0;
+                const phyBonus =
+                    !isNaN(Number(formPhysicianEml)) && dialogData.isPhysician ? Number(formPhysicianEml) : 0;
 
                 return DiceHM3.rollTest({
                     data: null,
@@ -250,7 +265,8 @@ export class DiceHM3 {
                     isAbility: dialogOptions.isAbility,
                     isAppraisal,
                     isTreatment: dialogOptions.isTreatment,
-                    modifier: Number(formModifier) + Number(formTreatmentModifier) + Number(moraleModification) + phyBonus,
+                    modifier:
+                        Number(formModifier) + Number(formTreatmentModifier) + Number(moraleModification) + phyBonus,
                     multiplier,
                     noTreatment: target === -1,
                     target,
@@ -655,8 +671,17 @@ export class DiceHM3 {
                 const formImpact = form.impact.value;
                 const formAspect = form.aspect.value;
                 const formAim = form.aim.value;
-                const formAddToCharSheet = dialogData.askRecordInjury ? form.addToCharSheet.checked : recordInjury === 'enable';
-                return DiceHM3._calcInjury(formLocation, formImpact, formAspect, formAddToCharSheet, formAim, dialogOptions);
+                const formAddToCharSheet = dialogData.askRecordInjury
+                    ? form.addToCharSheet.checked
+                    : recordInjury === 'enable';
+                return DiceHM3._calcInjury(
+                    formLocation,
+                    formImpact,
+                    formAspect,
+                    formAddToCharSheet,
+                    formAim,
+                    dialogOptions
+                );
             }
         });
     }
@@ -1456,7 +1481,8 @@ export class DiceHM3 {
         const blind =
             options.blind ||
             game.settings.get('core', 'rollMode') === CONST.DICE_ROLL_MODES.BLIND ||
-            ((HM3.blindRolls.includes(options.skill) || options.isAppraisal) && !!game.settings.get('hm3', 'blindGmMode'));
+            ((HM3.blindRolls.includes(options.skill) || options.isAppraisal) &&
+                !!game.settings.get('hm3', 'blindGmMode'));
         const rollMode = blind
             ? CONST.DICE_ROLL_MODES.BLIND
             : options.private

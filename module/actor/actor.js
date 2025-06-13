@@ -45,14 +45,18 @@ export class ActorHM3 extends Actor {
     }
 
     getSteeds() {
-        const steeds = this.items.contents.filter((item) => item.type === ItemType.COMPANION && item.system.type === 'Steed');
+        const steeds = this.items.contents.filter(
+            (item) => item.type === ItemType.COMPANION && item.system.type === 'Steed'
+        );
         return steeds.map((steed) => {
             return fromUuidSync(steed.system.actorUuid);
         });
     }
 
     getParty() {
-        const party = this.items.contents.filter((item) => item.type === ItemType.COMPANION && item.system.type === 'Party');
+        const party = this.items.contents.filter(
+            (item) => item.type === ItemType.COMPANION && item.system.type === 'Party'
+        );
         return [
             this,
             ...party.map((party) => {
@@ -208,7 +212,9 @@ export class ActorHM3 extends Actor {
         const updateData = {};
 
         if (createData.type === 'character') {
-            updateData['system.description'] = await (await fetch('systems/hm3/module/actor/character-description.html')).text();
+            updateData['system.description'] = await (
+                await fetch('systems/hm3/module/actor/character-description.html')
+            ).text();
             updateData['system.biography'] =
                 '<h1>Data</h1>\n<table style="width: 95%;" border="1">\n<tbody>\n<tr>\n<td style="padding: 2px; width: 143.6px;"><strong>Birthdate</strong></td>\n<td style="padding: 2px; width: 432px;">&nbsp;</td>\n</tr>\n<tr>\n<td style="padding: 2px; width: 143.6px;"><strong>Birthplace</strong></td>\n<td style="padding: 2px; width: 432px;">&nbsp;</td>\n</tr>\n<tr>\n<td style="padding: 2px; width: 143.6px;"><strong>Sibling Rank</strong></td>\n<td style="padding: 2px; width: 432px;">x of y</td>\n</tr>\n<tr>\n<td style="padding: 2px; width: 143.6px;"><strong>Parent(s)</strong></td>\n<td style="padding: 2px; width: 432px;">&nbsp;</td>\n</tr>\n<tr>\n<td style="padding: 2px; width: 143.6px;"><strong>Parent Occupation</strong></td>\n<td style="padding: 2px; width: 432px;">&nbsp;</td>\n</tr>\n<tr>\n<td style="padding: 2px; width: 143.6px;"><strong>Estrangement</strong></td>\n<td style="padding: 2px; width: 432px;">&nbsp;</td>\n</tr>\n<tr>\n<td style="padding: 2px; width: 143.6px;"><strong>Clanhead</strong></td>\n<td style="padding: 2px; width: 432px;">&nbsp;</td>\n</tr>\n<tr>\n<td style="padding: 2px; width: 143.6px;"><strong>Medical Traits</strong></td>\n<td style="padding: 2px; width: 432px;">&nbsp;</td>\n</tr>\n<tr>\n<td style="padding: 2px; width: 143.6px;"><strong>Psyche Traits</strong></td>\n<td style="padding: 2px; width: 432px;">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Life Story</h1>';
             updateData['system.bioImage'] = 'systems/hm3/images/svg/knight-silhouette.svg';
@@ -286,7 +292,8 @@ export class ActorHM3 extends Actor {
                             const clone = item.toObject();
                             clone.effects = clone.effects.contents;
                             // Set the created time for added items
-                            if (clone.system?.hasOwnProperty('createdTime')) clone.system.createdTime = game.time.worldTime;
+                            if (clone.system?.hasOwnProperty('createdTime'))
+                                clone.system.createdTime = game.time.worldTime;
                             itemAry.push(clone);
                             // Ensure we don't continue looking for the itemName after we have found one
                             itNames = itNames.filter((i) => i !== item.name);
@@ -607,7 +614,10 @@ export class ActorHM3 extends Actor {
         let combatSkills = {};
         this.items.forEach((it) => {
             const itemData = it.system;
-            if (it.type === ItemType.SKILL && (itemData.type === SkillType.COMBAT || it.name.toLowerCase() === 'throwing')) {
+            if (
+                it.type === ItemType.SKILL &&
+                (itemData.type === SkillType.COMBAT || it.name.toLowerCase() === 'throwing')
+            ) {
                 combatSkills[it.name] = {
                     'name': it.name,
                     'eml': itemData.effectiveMasteryLevel
@@ -761,7 +771,9 @@ export class ActorHM3 extends Actor {
                 if (cid && cid != 'on-person') {
                     const container = this.items.get(cid);
                     if (container) {
-                        container.system.capacity.value = utility.truncate(container.system.capacity.value + tempWeight);
+                        container.system.capacity.value = utility.truncate(
+                            container.system.capacity.value + tempWeight
+                        );
                     } else {
                         // If container is set and is not 'on-person', but if we can't find the container,
                         // move the item back to 'on-person'.
@@ -779,7 +791,8 @@ export class ActorHM3 extends Actor {
         eph.totalMissileWeight = utility.truncate(eph.totalMissileWeight);
         eph.totalMiscGearWeight = utility.truncate(eph.totalMiscGearWeight);
 
-        eph.totalGearWeight = eph.totalWeaponWeight + eph.totalMissileWeight + eph.totalArmorWeight + eph.totalMiscGearWeight;
+        eph.totalGearWeight =
+            eph.totalWeaponWeight + eph.totalMissileWeight + eph.totalArmorWeight + eph.totalMiscGearWeight;
         eph.totalGearWeight = utility.truncate(eph.totalGearWeight);
     }
 
@@ -791,8 +804,14 @@ export class ActorHM3 extends Actor {
             Math.round(eph.strength + Number.EPSILON) - actorData.physicalPenalty,
             0
         );
-        actorData.abilities.stamina.effective = Math.max(Math.round(eph.stamina + Number.EPSILON) - actorData.physicalPenalty, 0);
-        actorData.abilities.agility.effective = Math.max(Math.round(eph.agility + Number.EPSILON) - actorData.physicalPenalty, 0);
+        actorData.abilities.stamina.effective = Math.max(
+            Math.round(eph.stamina + Number.EPSILON) - actorData.physicalPenalty,
+            0
+        );
+        actorData.abilities.agility.effective = Math.max(
+            Math.round(eph.agility + Number.EPSILON) - actorData.physicalPenalty,
+            0
+        );
         actorData.abilities.dexterity.effective = Math.max(
             Math.round(eph.dexterity + Number.EPSILON) - actorData.physicalPenalty,
             0
@@ -803,8 +822,14 @@ export class ActorHM3 extends Actor {
             Math.round(eph.intelligence + Number.EPSILON) - actorData.universalPenalty,
             0
         );
-        actorData.abilities.aura.effective = Math.max(Math.round(eph.aura + Number.EPSILON) - actorData.universalPenalty, 0);
-        actorData.abilities.will.effective = Math.max(Math.round(eph.will + Number.EPSILON) - actorData.universalPenalty, 0);
+        actorData.abilities.aura.effective = Math.max(
+            Math.round(eph.aura + Number.EPSILON) - actorData.universalPenalty,
+            0
+        );
+        actorData.abilities.will.effective = Math.max(
+            Math.round(eph.will + Number.EPSILON) - actorData.universalPenalty,
+            0
+        );
         actorData.abilities.eyesight.effective = Math.max(
             Math.round(eph.eyesight + Number.EPSILON) - actorData.universalPenalty,
             0
@@ -813,8 +838,14 @@ export class ActorHM3 extends Actor {
             Math.round(eph.hearing + Number.EPSILON) - actorData.universalPenalty,
             0
         );
-        actorData.abilities.smell.effective = Math.max(Math.round(eph.smell + Number.EPSILON) - actorData.universalPenalty, 0);
-        actorData.abilities.voice.effective = Math.max(Math.round(eph.voice + Number.EPSILON) - actorData.universalPenalty, 0);
+        actorData.abilities.smell.effective = Math.max(
+            Math.round(eph.smell + Number.EPSILON) - actorData.universalPenalty,
+            0
+        );
+        actorData.abilities.voice.effective = Math.max(
+            Math.round(eph.voice + Number.EPSILON) - actorData.universalPenalty,
+            0
+        );
 
         // Not affected by any penalties
         actorData.abilities.comeliness.effective = Math.max(Math.round(eph.comeliness + Number.EPSILON), 0);
@@ -868,7 +899,8 @@ export class ActorHM3 extends Actor {
                 let assocSkill = itemData.assocSkill;
                 if (typeof combatSkills[assocSkill] !== 'undefined') {
                     let skillEml = combatSkills[assocSkill].eml;
-                    itemData.attackMasteryLevel = (skillEml || 0) + (itemData.attack || 0) + (itemData.attackModifier || 0);
+                    itemData.attackMasteryLevel =
+                        (skillEml || 0) + (itemData.attack || 0) + (itemData.attackModifier || 0);
                     itemData.defenseMasteryLevel = (skillEml || 0) + (itemData.defense || 0);
                 }
             }
@@ -964,7 +996,11 @@ export class ActorHM3 extends Actor {
         let lcConvocation = convocation.toLowerCase();
         this.items.forEach((it) => {
             const itemData = it.system;
-            if (it.type === ItemType.SPELL && itemData.convocation && itemData.convocation.toLowerCase() === lcConvocation) {
+            if (
+                it.type === ItemType.SPELL &&
+                itemData.convocation &&
+                itemData.convocation.toLowerCase() === lcConvocation
+            ) {
                 itemData.effectiveMasteryLevel = eml - itemData.level * 5;
                 itemData.skillIndex = Math.floor(ml / 10);
                 itemData.masteryLevel = ml;
@@ -1000,7 +1036,16 @@ export class ActorHM3 extends Actor {
         Object.keys(ilMap).forEach((ilName) => {
             const name = ilMap[ilName].impactType;
             if (name != 'base' && name != 'custom') {
-                armorMap[ilName] = {name: name, blunt: 0, edged: 0, piercing: 0, fire: 0, squeeze: 0, tear: 0, layers: ''};
+                armorMap[ilName] = {
+                    name: name,
+                    blunt: 0,
+                    edged: 0,
+                    piercing: 0,
+                    fire: 0,
+                    squeeze: 0,
+                    tear: 0,
+                    layers: ''
+                };
             }
         });
 
@@ -1022,11 +1067,23 @@ export class ActorHM3 extends Actor {
                         const AQ = itemData.armorQuality | 0;
                         // Add this armor's protection to the location
                         if (itemData.hasOwnProperty('protection')) {
-                            armorMap[l].blunt += Math.min(2 * itemData.protection.blunt, itemData.protection.blunt + AQ);
-                            armorMap[l].edged += Math.min(2 * itemData.protection.edged, itemData.protection.edged + AQ);
-                            armorMap[l].piercing += Math.min(2 * itemData.protection.piercing, itemData.protection.piercing + AQ);
+                            armorMap[l].blunt += Math.min(
+                                2 * itemData.protection.blunt,
+                                itemData.protection.blunt + AQ
+                            );
+                            armorMap[l].edged += Math.min(
+                                2 * itemData.protection.edged,
+                                itemData.protection.edged + AQ
+                            );
+                            armorMap[l].piercing += Math.min(
+                                2 * itemData.protection.piercing,
+                                itemData.protection.piercing + AQ
+                            );
                             armorMap[l].fire += Math.min(2 * itemData.protection.fire, itemData.protection.fire + AQ);
-                            armorMap[l].squeeze += Math.min(2 * itemData.protection.squeeze, itemData.protection.squeeze + AQ);
+                            armorMap[l].squeeze += Math.min(
+                                2 * itemData.protection.squeeze,
+                                itemData.protection.squeeze + AQ
+                            );
                             armorMap[l].tear += Math.min(2 * itemData.protection.tear, itemData.protection.tear + AQ);
                         } else {
                             console.warn(`HM3 | item has no 'protection' property`);
@@ -1259,7 +1316,12 @@ export class ActorHM3 extends Actor {
                 break;
 
             case 'throwdown':
-                macros.throwDownRoll(atkToken.id, defToken.id, Number(button.dataset.atkDice), Number(button.dataset.defDice));
+                macros.throwDownRoll(
+                    atkToken.id,
+                    defToken.id,
+                    Number(button.dataset.atkDice),
+                    Number(button.dataset.defDice)
+                );
                 break;
         }
 
@@ -1340,7 +1402,10 @@ export class ActorHM3 extends Actor {
                     if (isNaN(magnitude)) return false;
                     const skillName = val[0];
                     for (let item of this.items.contents) {
-                        if (item.name === skillName && (item.type === ItemType.WEAPONGEAR || item.type === ItemType.MISSILEGEAR))
+                        if (
+                            item.name === skillName &&
+                            (item.type === ItemType.WEAPONGEAR || item.type === ItemType.MISSILEGEAR)
+                        )
                             return true;
                     }
                 }

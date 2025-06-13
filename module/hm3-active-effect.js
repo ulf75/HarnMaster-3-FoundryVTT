@@ -36,6 +36,8 @@ export class ActiveEffectHM3 extends ActiveEffect {
     }
 
     hasTurnStartMacro() {
-        return this.flags?.effectmacro?.onTurnStart?.script && this.flags?.effectmacro?.onTurnStart?.script?.trim() !== '';
+        return (
+            this.flags?.effectmacro?.onTurnStart?.script && this.flags?.effectmacro?.onTurnStart?.script?.trim() !== ''
+        );
     }
 }

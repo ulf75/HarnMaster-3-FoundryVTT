@@ -270,7 +270,10 @@ export class BaseTestHM3 {
 
     async _move(token, dir = {dx: 0, dy: 0}) {
         token.control({releaseOthers: true});
-        await Promise.allSettled([game.canvas.activeLayer.moveMany(dir), this._wait(Math.max(SLOWMO * MIN_MS, 300) / SLOWMO)]);
+        await Promise.allSettled([
+            game.canvas.activeLayer.moveMany(dir),
+            this._wait(Math.max(SLOWMO * MIN_MS, 300) / SLOWMO)
+        ]);
     }
 
     /**

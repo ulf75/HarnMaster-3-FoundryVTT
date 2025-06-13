@@ -138,7 +138,9 @@ export class TokenHM3 extends Token {
         const shocked = this.hasCondition(Condition.SHOCKED);
         const unconscious = this.hasCondition(Condition.UNCONSCIOUS);
 
-        return !cautious && !distracted && !this.dying && !grappled && !incapacitated && !prone && !shocked && !unconscious;
+        return (
+            !cautious && !distracted && !this.dying && !grappled && !incapacitated && !prone && !shocked && !unconscious
+        );
     }
 
     getEngagedTokens(exclusively = false) {
@@ -195,7 +197,9 @@ export class TokenHM3 extends Token {
     isEngaged(exclusively = false) {
         return (
             game.combat?.started &&
-            (exclusively ? this.getEngagedTokens(exclusively).length === 1 : this.getEngagedTokens(exclusively).length > 0)
+            (exclusively
+                ? this.getEngagedTokens(exclusively).length === 1
+                : this.getEngagedTokens(exclusively).length > 0)
         );
     }
 
@@ -252,7 +256,8 @@ export class TokenHM3 extends Token {
 export class TokenDocumentHM3 extends TokenDocument {
     _onCreate(data, options, userId) {
         super._onCreate(data, options, userId);
-        if (this.testUserPermission(game.user, 'OWNER')) this.setFlag('wall-height', 'tokenHeight', this.actor.system.height | 6);
+        if (this.testUserPermission(game.user, 'OWNER'))
+            this.setFlag('wall-height', 'tokenHeight', this.actor.system.height | 6);
     }
     /**
      *

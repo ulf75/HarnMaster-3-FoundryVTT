@@ -99,8 +99,12 @@ async function executeHook(...args) {
                     const actorId = macro.getFlag('hm3', 'ownerId') || null;
                     await macro.execute({
                         macroActor: game.actors.get(actorId) || null,
-                        macroTokens: actorId ? canvas.scene.tokens.contents.filter((t) => t.actor.id === actorId) : null,
-                        allOtherTokens: actorId ? canvas.scene.tokens.contents.filter((t) => t.actor.id !== actorId) : null,
+                        macroTokens: actorId
+                            ? canvas.scene.tokens.contents.filter((t) => t.actor.id === actorId)
+                            : null,
+                        allOtherTokens: actorId
+                            ? canvas.scene.tokens.contents.filter((t) => t.actor.id !== actorId)
+                            : null,
                         triggerArgs: args, // original args from the hook
                         macros: game.hm3.macros // convenience
                     });

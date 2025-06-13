@@ -63,14 +63,17 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     // Dormant psionic talents may be invisible for players (ML20 or less (Psionics 3))
                     if (i.type === ItemType.PSIONIC) {
                         i.system.visible = String(
-                            !game.settings.get('hm3', 'dormantPsionicTalents') || i.system.masteryLevel > 20 || game.user.isGM
+                            !game.settings.get('hm3', 'dormantPsionicTalents') ||
+                                i.system.masteryLevel > 20 ||
+                                game.user.isGM
                         );
                     }
                     //
                     if (i.type === ItemType.TRAIT) {
                         if (i.system.type === 'Psyche') {
                             const sev =
-                                data.config.psycheSeverity.find((v) => v.key === parseInt(i.system.severity))?.label || 'Mild';
+                                data.config.psycheSeverity.find((v) => v.key === parseInt(i.system.severity))?.label ||
+                                'Mild';
                             i.psycheName = sev + ' ' + i.name;
                         }
                     }
@@ -284,7 +287,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Gear coming from world items list
         if (droppedItem.pack || !droppedItem.type?.endsWith('gear') || !droppedItem.parent) {
             const closestContainer = event.target.closest('[data-container-id]');
-            const destContainer = closestContainer?.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';
+            const destContainer = closestContainer?.dataset.containerId
+                ? closestContainer.dataset.containerId
+                : 'on-person';
 
             const newItem = (await super._onDropItem(event, data))[0];
             // If the item is some type of gear (other than containergear), then
@@ -300,7 +305,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
             // Destination containerid: set to 'on-person' if a containerid can't be found
             const closestContainer = event.target.closest('[data-container-id]');
-            const destContainer = closestContainer?.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';
+            const destContainer = closestContainer?.dataset.containerId
+                ? closestContainer.dataset.containerId
+                : 'on-person';
 
             // Dropping an item into the same actor (Token or Linked)
             if (
@@ -470,7 +477,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         if (!itemData.type.endsWith('gear')) {
             if (actor.type === ActorType.CONTAINER) {
-                ui.notifications.warn(`You may only place physical objects in a container; drop of ${itemData.name} refused.`);
+                ui.notifications.warn(
+                    `You may only place physical objects in a container; drop of ${itemData.name} refused.`
+                );
                 return false;
             }
 
@@ -870,7 +879,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.shock-roll').click((ev) => macros.shockRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
 
         // Stumble Roll
-        html.find('.stumble-roll').click((ev) => macros.stumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+        html.find('.stumble-roll').click((ev) =>
+            macros.stumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor)
+        );
 
         // Fumble Roll
         html.find('.fumble-roll').click((ev) => macros.fumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
@@ -890,7 +901,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         );
 
         // Unhorsing Roll
-        html.find('.unhorsing-roll').click((ev) => macros.unhorsingRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+        html.find('.unhorsing-roll').click((ev) =>
+            macros.unhorsingRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor)
+        );
 
         // Toggle carry state
         html.find('.item-carry').click(this._onToggleCarry.bind(this));
@@ -1129,7 +1142,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         event.preventDefault();
         await this.actor.update({'system.mounted': !this.actor.system.mounted});
         this.actor.prepareData();
-        const riding = this.actor.items.filter((item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding'));
+        const riding = this.actor.items.filter(
+            (item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding')
+        );
         riding[0].sheet.render();
     }
 
@@ -1296,10 +1311,15 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                                     for (let i = 0; i < num; i++) {
                                                         // Condition skill is maxed out (SKILLS 9)
                                                         if (item.type === 'skill' && item.name === 'Condition') {
-                                                            if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
+                                                            if (
+                                                                item.system.masteryLevel >=
+                                                                7 * item.system.skillBase.value
+                                                            ) {
                                                                 await game.hm3.GmSays(
                                                                     `<h4>${this.actor.name}: ${item.name}</h4>` +
-                                                                        game.i18n.localize('hm3.SDR.ConditionSkillMax') +
+                                                                        game.i18n.localize(
+                                                                            'hm3.SDR.ConditionSkillMax'
+                                                                        ) +
                                                                         `<p>(${num - i} SDRs left)</p>`,
                                                                     'SKILLS 9'
                                                                 );

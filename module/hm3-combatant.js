@@ -14,7 +14,9 @@ export class CombatantHM3 extends Combatant {
             this.actor.system.initiative += iniSkill.system.skillBase.value / 10;
             if (mark) iniSkill.update({'system.improveFlag': iniSkill.system.improveFlag + 1});
         } else {
-            const iniSkill = this.actor.items.find((item) => item.type === game.hm3.ItemType.SKILL && item.name === 'Initiative');
+            const iniSkill = this.actor.items.find(
+                (item) => item.type === game.hm3.ItemType.SKILL && item.name === 'Initiative'
+            );
             this.actor.system.initiative = !this.token?.hasCondition(game.hm3.Condition.SHOCKED)
                 ? iniSkill.system.effectiveMasteryLevel
                 : 0;

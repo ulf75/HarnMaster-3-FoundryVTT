@@ -79,12 +79,18 @@
 
                         if (page) {
                             page.ownership = foundry.utils.deepClone(os);
-                            await page.update({'ownership': page.ownership}, {diff: false, recursive: false, noHook: true});
+                            await page.update(
+                                {'ownership': page.ownership},
+                                {diff: false, recursive: false, noHook: true}
+                            );
                             await journal.update();
                             console.info(page);
                         } else if (journal) {
                             journal.ownership = foundry.utils.deepClone(os);
-                            await journal.update({'ownership': journal.ownership}, {diff: false, recursive: false, noHook: true});
+                            await journal.update(
+                                {'ownership': journal.ownership},
+                                {diff: false, recursive: false, noHook: true}
+                            );
                             // await journal.update();
                             console.info(journal);
                         }
@@ -105,7 +111,10 @@
                         console.info(os);
 
                         A.ownership = foundry.utils.deepClone(os);
-                        await A.update({'ownership': foundry.utils.deepClone(os)}, {diff: false, recursive: false, noHook: true});
+                        await A.update(
+                            {'ownership': foundry.utils.deepClone(os)},
+                            {diff: false, recursive: false, noHook: true}
+                        );
                     }
                 }
             })();

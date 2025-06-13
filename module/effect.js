@@ -68,7 +68,8 @@ export async function onManageActiveEffect(event, owner) {
                 );
             return new Dialog({
                 title: 'Delete Active Effect',
-                content: '<p>Are you sure?</p><p>This active effect will be permanently deleted and cannot be recovered.</p>',
+                content:
+                    '<p>Are you sure?</p><p>This active effect will be permanently deleted and cannot be recovered.</p>',
                 buttons: {
                     yes: {
                         icon: '<i class="fas fa-check"></i>',

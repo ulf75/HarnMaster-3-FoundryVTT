@@ -34,12 +34,20 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
     if (isFriendlyTokenMoving) {
         console.info('to: ' + token.name);
         victimToken = token;
-        const stop = macros.pathIntersectsCircle({center: canvas.tokens.get(token.id).center, radius: RADIUS}, {p1, p2}, true);
+        const stop = macros.pathIntersectsCircle(
+            {center: canvas.tokens.get(token.id).center, radius: RADIUS},
+            {p1, p2},
+            true
+        );
         if (!!stop) stops.push({stop, victimToken: token});
     } else {
         friendlyTokens.forEach((t) => {
             console.info('to: ' + t.name);
-            const stop = macros.pathIntersectsCircle({center: canvas.tokens.get(t.id).center, radius: RADIUS}, {p1, p2}, true);
+            const stop = macros.pathIntersectsCircle(
+                {center: canvas.tokens.get(t.id).center, radius: RADIUS},
+                {p1, p2},
+                true
+            );
             if (!!stop) stops.push({stop, victimToken: t});
         });
     }
@@ -48,7 +56,8 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
         game.togglePause(true, true);
         if (isFriendlyTokenMoving) {
             stops.sort(
-                (a, b) => (p1.x - a.stop.x) ** 2 + (p1.y - a.stop.y) ** 2 - ((p1.x - b.stop.x) ** 2 + (p1.y - b.stop.y) ** 2)
+                (a, b) =>
+                    (p1.x - a.stop.x) ** 2 + (p1.y - a.stop.y) ** 2 - ((p1.x - b.stop.x) ** 2 + (p1.y - b.stop.y) ** 2)
             );
             const tl = canvas.grid.getTopLeftPoint(stops[0].stop);
             const pos = token.getSnappedPosition(stops[0].stop, {mode: CONST.GRID_SNAPPING_MODES.CENTER});

@@ -11,7 +11,13 @@ export class RollMock extends Roll {
     static D100_RESULTS = [];
     static D6_RESULTS = [];
 
-    async evaluate({minimize = false, maximize = false, allowStrings = false, allowInteractive = true, ...options} = {}) {
+    async evaluate({
+        minimize = false,
+        maximize = false,
+        allowStrings = false,
+        allowInteractive = true,
+        ...options
+    } = {}) {
         const isD6 = this._formula.includes('d6');
         const hasValue = CONFIG.debug.hm3 && (isD6 ? RollMock.D6_RESULTS.length > 0 : RollMock.D100_RESULTS.length > 0);
         if (hasValue) {

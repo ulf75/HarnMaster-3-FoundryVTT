@@ -32,7 +32,10 @@
                         `Player ${player.name} does not have observer ownership or higher of the journal ${journal.name}. Will be changed to 2 (observer).`
                     );
                     journal.ownership[player.id] = 2;
-                    await journal.update({'ownership': journal.ownership}, {diff: false, recursive: false, noHook: true});
+                    await journal.update(
+                        {'ownership': journal.ownership},
+                        {diff: false, recursive: false, noHook: true}
+                    );
                     // await journal.update();
                     console.info(journal);
                 }

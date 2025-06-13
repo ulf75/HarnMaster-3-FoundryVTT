@@ -69,7 +69,9 @@ console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
         },
         changes: [],
         options: {
-            overlay: !(token.hasCondition(game.hm3.Condition.DYING) || token.hasCondition(game.hm3.Condition.UNCONSCIOUS)),
+            overlay: !(
+                token.hasCondition(game.hm3.Condition.DYING) || token.hasCondition(game.hm3.Condition.UNCONSCIOUS)
+            ),
             unique: true
         }
     };

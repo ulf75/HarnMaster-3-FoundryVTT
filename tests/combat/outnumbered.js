@@ -18,13 +18,33 @@ export class TestCase extends game.hm3.BaseTest {
             `HM3 ASSERT | Combatant ${alice.name} is NOT outnumbered.`,
             alice
         );
-        console.assert(!alon.hasCondition(Condition.OUTNUMBERED), `HM3 ASSERT | Combatant ${alon.name} IS outnumbered.`, alon);
-        console.assert(!bob.hasCondition(Condition.OUTNUMBERED), `HM3 ASSERT | Combatant ${bob.name} IS outnumbered.`, bob);
+        console.assert(
+            !alon.hasCondition(Condition.OUTNUMBERED),
+            `HM3 ASSERT | Combatant ${alon.name} IS outnumbered.`,
+            alon
+        );
+        console.assert(
+            !bob.hasCondition(Condition.OUTNUMBERED),
+            `HM3 ASSERT | Combatant ${bob.name} IS outnumbered.`,
+            bob
+        );
 
         await alon.addCondition(Condition.PRONE);
 
-        console.assert(!alice.hasCondition(Condition.OUTNUMBERED), `HM3 ASSERT | Combatant ${alice.name} IS outnumbered.`, alice);
-        console.assert(!alon.hasCondition(Condition.OUTNUMBERED), `HM3 ASSERT | Combatant ${alon.name} IS outnumbered.`, alon);
-        console.assert(!bob.hasCondition(Condition.OUTNUMBERED), `HM3 ASSERT | Combatant ${bob.name} IS outnumbered.`, bob);
+        console.assert(
+            !alice.hasCondition(Condition.OUTNUMBERED),
+            `HM3 ASSERT | Combatant ${alice.name} IS outnumbered.`,
+            alice
+        );
+        console.assert(
+            !alon.hasCondition(Condition.OUTNUMBERED),
+            `HM3 ASSERT | Combatant ${alon.name} IS outnumbered.`,
+            alon
+        );
+        console.assert(
+            !bob.hasCondition(Condition.OUTNUMBERED),
+            `HM3 ASSERT | Combatant ${bob.name} IS outnumbered.`,
+            bob
+        );
     }
 }

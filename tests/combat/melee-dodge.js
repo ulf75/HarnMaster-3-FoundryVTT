@@ -26,7 +26,12 @@ export class TestCase extends game.hm3.BaseTest {
         const messageNr = new Map(defButtonsGm).get('Dodge').messageNr;
 
         // ACF / DCF
-        let res = await this._defAction('Dodge', {messageNr, roll: [100, 100], userId: this.ALICE_USER_ID, unsetTAFlag: true});
+        let res = await this._defAction('Dodge', {
+            messageNr,
+            roll: [100, 100],
+            userId: this.ALICE_USER_ID,
+            unsetTAFlag: true
+        });
         console.assert(!res[0].dta, 'DTA true');
         console.assert(!res[0].hasAttackHit, 'Attack hit');
         console.assert(!res[0].isAtkFumbleRoll, 'Atk Fumble');
@@ -35,7 +40,12 @@ export class TestCase extends game.hm3.BaseTest {
         console.assert(res[0].isDefStumbleRoll, 'No Def Stumble');
 
         // ACF / DMF
-        res = await this._defAction('Dodge', {messageNr, roll: [100, 99], userId: this.ALICE_USER_ID, unsetTAFlag: true});
+        res = await this._defAction('Dodge', {
+            messageNr,
+            roll: [100, 99],
+            userId: this.ALICE_USER_ID,
+            unsetTAFlag: true
+        });
         console.assert(!res[0].dta, 'DTA true');
         console.assert(!res[0].hasAttackHit, 'Attack hit');
         console.assert(!res[0].isAtkFumbleRoll, 'Atk Fumble');
@@ -44,7 +54,12 @@ export class TestCase extends game.hm3.BaseTest {
         console.assert(!res[0].isDefStumbleRoll, 'Def Stumble');
 
         // ACF / DMS
-        res = await this._defAction('Dodge', {messageNr, roll: [100, 1], userId: this.ALICE_USER_ID, unsetTAFlag: true});
+        res = await this._defAction('Dodge', {
+            messageNr,
+            roll: [100, 1],
+            userId: this.ALICE_USER_ID,
+            unsetTAFlag: true
+        });
         console.assert(res[0].dta, 'DTA false');
         console.assert(!res[0].hasAttackHit, 'Attack hit');
         console.assert(!res[0].isAtkFumbleRoll, 'Atk Fumble');
@@ -53,7 +68,12 @@ export class TestCase extends game.hm3.BaseTest {
         console.assert(!res[0].isDefStumbleRoll, 'Def Stumble');
 
         // ACF / DCS
-        res = await this._defAction('Dodge', {messageNr, roll: [100, 5], userId: this.ALICE_USER_ID, unsetTAFlag: true});
+        res = await this._defAction('Dodge', {
+            messageNr,
+            roll: [100, 5],
+            userId: this.ALICE_USER_ID,
+            unsetTAFlag: true
+        });
         console.assert(res[0].dta, 'DTA false');
         console.assert(!res[0].hasAttackHit, 'Attack hit');
         console.assert(!res[0].isAtkFumbleRoll, 'Atk Fumble');
@@ -62,7 +82,12 @@ export class TestCase extends game.hm3.BaseTest {
         console.assert(!res[0].isDefStumbleRoll, 'Def Stumble');
 
         // AMF / DCF
-        res = await this._defAction('Dodge', {messageNr, roll: [99, 100], userId: this.ALICE_USER_ID, unsetTAFlag: true});
+        res = await this._defAction('Dodge', {
+            messageNr,
+            roll: [99, 100],
+            userId: this.ALICE_USER_ID,
+            unsetTAFlag: true
+        });
         console.assert(!res[0].dta, 'DTA true');
         console.assert(!res[0].hasAttackHit, 'Attack hit');
         console.assert(!res[0].isAtkFumbleRoll, 'Atk Fumble');
@@ -71,7 +96,12 @@ export class TestCase extends game.hm3.BaseTest {
         console.assert(res[0].isDefStumbleRoll, 'No Def Stumble');
 
         // AMF / DMF
-        res = await this._defAction('Dodge', {messageNr, roll: [99, 99], userId: this.ALICE_USER_ID, unsetTAFlag: true});
+        res = await this._defAction('Dodge', {
+            messageNr,
+            roll: [99, 99],
+            userId: this.ALICE_USER_ID,
+            unsetTAFlag: true
+        });
         console.assert(!res[0].dta, 'DTA true');
         console.assert(!res[0].hasAttackHit, 'Attack hit');
         console.assert(!res[0].isAtkFumbleRoll, 'Atk Fumble');
@@ -98,7 +128,12 @@ export class TestCase extends game.hm3.BaseTest {
         console.assert(!res[0].isDefStumbleRoll, 'Def Stumble');
 
         // AMS / DCF
-        res = await this._defAction('Dodge', {messageNr, roll: [1, 100], userId: this.ALICE_USER_ID, unsetTAFlag: true});
+        res = await this._defAction('Dodge', {
+            messageNr,
+            roll: [1, 100],
+            userId: this.ALICE_USER_ID,
+            unsetTAFlag: true
+        });
         console.assert(!res[0].dta, 'DTA true');
         console.assert(res[0].hasAttackHit, 'Attack does not hit');
         console.assert(!res[0].isAtkFumbleRoll, 'Atk Fumble');
@@ -134,7 +169,12 @@ export class TestCase extends game.hm3.BaseTest {
         console.assert(!res[0].isDefStumbleRoll, 'Def Stumble');
 
         // ACS / DCF
-        res = await this._defAction('Dodge', {messageNr, roll: [5, 100], userId: this.ALICE_USER_ID, unsetTAFlag: true});
+        res = await this._defAction('Dodge', {
+            messageNr,
+            roll: [5, 100],
+            userId: this.ALICE_USER_ID,
+            unsetTAFlag: true
+        });
         console.assert(!res[0].dta, 'DTA true');
         console.assert(res[0].hasAttackHit, 'Attack does not hit');
         console.assert(!res[0].isAtkFumbleRoll, 'Atk Fumble');
@@ -143,7 +183,12 @@ export class TestCase extends game.hm3.BaseTest {
         console.assert(!res[0].isDefStumbleRoll, 'Def Stumble');
 
         // ACS / DCF
-        res = await this._defAction('Dodge', {messageNr, roll: [5, 100], userId: this.ALICE_USER_ID, unsetTAFlag: true});
+        res = await this._defAction('Dodge', {
+            messageNr,
+            roll: [5, 100],
+            userId: this.ALICE_USER_ID,
+            unsetTAFlag: true
+        });
         console.assert(!res[0].dta, 'DTA true');
         console.assert(res[0].hasAttackHit, 'Attack does not hit');
         console.assert(!res[0].isAtkFumbleRoll, 'Atk Fumble');

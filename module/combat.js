@@ -298,7 +298,8 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
     dialogResult.addlModifier += dialogResult.aim === 'Mid' ? 0 : -10;
 
     const atkCloseMode =
-        atkToken.hasCondition(Condition.CLOSE_MODE) && (dialogResult.aspect === 'Blunt' || dialogResult.aspect === 'Edged');
+        atkToken.hasCondition(Condition.CLOSE_MODE) &&
+        (dialogResult.aspect === 'Blunt' || dialogResult.aspect === 'Edged');
     dialogResult.addlModifier += atkCloseMode ? -10 : 0;
 
     const effAML = dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier;
@@ -333,10 +334,25 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         defTokenId: defToken.id,
         effAML: effAML,
         hasBlock:
-            !(defBerserk || defDesperate || defGrappled || defIncapacitated || defShocked || defStunned || defUnconscious) &&
-            !dialogResult.isGrappleAtk,
+            !(
+                defBerserk ||
+                defDesperate ||
+                defGrappled ||
+                defIncapacitated ||
+                defShocked ||
+                defStunned ||
+                defUnconscious
+            ) && !dialogResult.isGrappleAtk,
         hasCounterstrike: !(defBroken || defCautious || defIncapacitated || defShocked || defStunned || defUnconscious),
-        hasDodge: !(defBerserk || defDesperate || defGrappled || defIncapacitated || defShocked || defStunned || defUnconscious),
+        hasDodge: !(
+            defBerserk ||
+            defDesperate ||
+            defGrappled ||
+            defIncapacitated ||
+            defShocked ||
+            defStunned ||
+            defUnconscious
+        ),
         hasIgnore: true,
         impactMod: dialogResult.impactMod,
         isGrappleAtk: !!dialogResult.isGrappleAtk,
@@ -751,9 +767,11 @@ export async function meleeCounterstrikeResume(
     const csDialogResult = await attackDialog(options);
     if (!csDialogResult) return null;
 
-    const atkCloseMode = atkToken.hasCondition(Condition.CLOSE_MODE) && (atkAspect === 'Blunt' || atkAspect === 'Edged');
+    const atkCloseMode =
+        atkToken.hasCondition(Condition.CLOSE_MODE) && (atkAspect === 'Blunt' || atkAspect === 'Edged');
     const defCloseMode =
-        defToken.hasCondition(Condition.CLOSE_MODE) && (csDialogResult.aspect === 'Blunt' || csDialogResult.aspect === 'Edged');
+        defToken.hasCondition(Condition.CLOSE_MODE) &&
+        (csDialogResult.aspect === 'Blunt' || csDialogResult.aspect === 'Edged');
 
     csDialogResult.addlModifier += defCloseMode ? -10 : 0;
 
@@ -1266,7 +1284,9 @@ export async function blockResume(
     // can either block with a shield (at full DML) or with a melee weapon (at 1/2 DML).
     if (type === 'missile') {
         atkWeapon = atkToken.actor.itemTypes.missilegear.find((w) => w.name === weaponName);
-        const highVelocityMissile = /\bbow\b|shortbow|longbow|crossbow|\bsling\b|\barrow\b|\bbolt\b|\bbullet\b/i.test(weaponName);
+        const highVelocityMissile = /\bbow\b|shortbow|longbow|crossbow|\bsling\b|\barrow\b|\bbolt\b|\bbullet\b/i.test(
+            weaponName
+        );
 
         if (highVelocityMissile) {
             if (!shields.length) {
@@ -1292,7 +1312,9 @@ export async function blockResume(
     let defaultWeapon = defAvailWeapons[0];
 
     if (weapons.length === 0) {
-        return ui.notifications.warn(`${defToken.name} has no weapons that can be used for blocking, block defense refused.`);
+        return ui.notifications.warn(
+            `${defToken.name} has no weapons that can be used for blocking, block defense refused.`
+        );
     }
 
     let defaultModifier = 0;

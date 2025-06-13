@@ -184,7 +184,8 @@
                     const _quality = html.find('#quality')[0];
                     const quality = _quality.options[_quality.selectedIndex].text;
                     const qualityMultiplier = Number(qualities.get(quality).multi);
-                    const ML = qualities.get(quality).min + (await new Roll(qualities.get(quality).die).evaluate()).total;
+                    const ML =
+                        qualities.get(quality).min + (await new Roll(qualities.get(quality).die).evaluate()).total;
 
                     let trainingFactor = 0;
                     if (trainer.includes('Military')) trainingFactor = TRAINING_FACTOR_MILITARY;

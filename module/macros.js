@@ -183,9 +183,15 @@ function askMissileMacro(name, slot, img, actorSuffix) {
                 enhAttackButton: {
                     label: 'Automated Combat',
                     callback: async (html) => {
-                        return applyMacro(`${name} Automated Combat`, `game.hm3.macros.missileAttack("${name}");`, slot, img, {
-                            'hm3.itemMacro': false
-                        });
+                        return applyMacro(
+                            `${name} Automated Combat`,
+                            `game.hm3.macros.missileAttack("${name}");`,
+                            slot,
+                            img,
+                            {
+                                'hm3.itemMacro': false
+                            }
+                        );
                     }
                 },
                 attackButton: {
@@ -504,7 +510,11 @@ export async function testAbilityD100RollAlt(options) {
         options
     );
 
-    const actorInfo = getActor({actor: options.myActor, item: null, speaker: ChatMessage.getSpeaker({actor: options.myActor})});
+    const actorInfo = getActor({
+        actor: options.myActor,
+        item: null,
+        speaker: ChatMessage.getSpeaker({actor: options.myActor})
+    });
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
@@ -854,7 +864,8 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
 }
 
 async function treatmentRoll(actor, injury, speaker) {
-    const treatmentTable = HM3.treatmentTable[injury.system.aspect || Aspect.BLUNT][Math.floor(injury.system.injuryLevel / 2)];
+    const treatmentTable =
+        HM3.treatmentTable[injury.system.aspect || Aspect.BLUNT][Math.floor(injury.system.injuryLevel / 2)];
 
     let fluff =
         `<p><b>Injury:</b> ${treatmentTable.injury}</p><p><b>Description:</b> ${treatmentTable.desc}</p><p><b>Treatment:</b> ${treatmentTable.treatment}</p>`.trim();
@@ -886,8 +897,12 @@ async function treatmentRoll(actor, injury, speaker) {
         fluffResult: {
             CS:
                 treatment +
-                `<p>Excellent work! ${treatmentTable.cs === 7 ? 'EE' : 'H' + treatmentTable.cs} is the best result possible.</p>`,
-            MS: treatment + `<p>Good work. ${treatmentTable.ms === 7 ? 'EE' : 'H' + treatmentTable.ms} is a solid result.</p>`,
+                `<p>Excellent work! ${
+                    treatmentTable.cs === 7 ? 'EE' : 'H' + treatmentTable.cs
+                } is the best result possible.</p>`,
+            MS:
+                treatment +
+                `<p>Good work. ${treatmentTable.ms === 7 ? 'EE' : 'H' + treatmentTable.ms} is a solid result.</p>`,
             MF: treatment + `<p>Lousy work. H${treatmentTable.mf} is just as bad as without treatment.</p>`,
             CF: treatment + `<p>Catastrophic work! H${treatmentTable.cf} is worse than without treatment.</p>`
         },
@@ -1521,7 +1536,8 @@ export async function changeFatigue(newValue, myActor = null) {
     if (/^\s*[+-]/.test(newValue)) {
         // relative change
         const changeValue = parseInt(newValue, 10);
-        if (!isNaN(changeValue)) updateData['system.fatigue'] = Math.max(actorInfo.actor.system.fatigue + changeValue, 0);
+        if (!isNaN(changeValue))
+            updateData['system.fatigue'] = Math.max(actorInfo.actor.system.fatigue + changeValue, 0);
     } else {
         const value = parseInt(newValue, 10);
         if (!isNaN(value)) updateData['system.fatigue'] = value;
@@ -2201,7 +2217,9 @@ export function getActiveEffect(token, name, strict = false) {
         : token.actor
               .allApplicableEffects()
               .find(
-                  (v) => v.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(v.name.toLowerCase())
+                  (v) =>
+                      v.name.toLowerCase().includes(name.toLowerCase()) ||
+                      name.toLowerCase().includes(v.name.toLowerCase())
               );
 }
 
@@ -2515,7 +2533,8 @@ export async function deleteCondition(token, condition) {
                 resolve(success);
             });
             timer = setTimeout(
-                () => reject({error: `HM3 | Timeout in 'onDelete' callback for Condition ${condition.name}!`, condition}),
+                () =>
+                    reject({error: `HM3 | Timeout in 'onDelete' callback for Condition ${condition.name}!`, condition}),
                 5000
             );
         });

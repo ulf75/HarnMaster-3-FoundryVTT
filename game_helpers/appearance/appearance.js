@@ -176,7 +176,11 @@
 
                     const medicalTable = game.tables.getName(`09 ${gender} Medical`);
                     const medicalRoll = new game.hm3.Roll('1d100');
-                    const medicalDraw = await medicalTable.draw({roll: medicalRoll, recursive: true, displayChat: false});
+                    const medicalDraw = await medicalTable.draw({
+                        roll: medicalRoll,
+                        recursive: true,
+                        displayChat: false
+                    });
                     const medical = medicalDraw.results[0].text;
 
                     const mentalTable = game.tables.getName(`10 Mental Disorder`);
@@ -221,7 +225,9 @@
 
                         index = description.indexOf('Appearance');
                         index = description.indexOf('<p>', index) + 3;
-                        description = [description.slice(0, index), `${comelinessStr}`, description.slice(index)].join('');
+                        description = [description.slice(0, index), `${comelinessStr}`, description.slice(index)].join(
+                            ''
+                        );
 
                         index = description.indexOf('Complexion');
                         index = description.indexOf('<p>', index) + 3;
