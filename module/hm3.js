@@ -305,6 +305,10 @@ Hooks.on('hm3.onShockIndexReduced', async (actor, old, current) => {
     }
 });
 
+Hooks.on('updateCombat', async (combat, updateData) => {
+    return updateOutnumbered({hook: 'updateCombat'});
+});
+
 Hooks.on('updateCombatant', async (combatant, info, updateData, userId) => {
     return updateOutnumbered({hook: 'updateCombatant'});
 });
@@ -678,12 +682,12 @@ async function updateOutnumbered({aeName = 'true', hook = 'nohook'} = {}) {
                 console.info(`HM3 | Run updateOutnumbered (aeName = ${aeName}, hook = ${hook})`);
                 const {changed, tokens} = await combat.updateOutnumbered();
                 if (changed) Hooks.call('hm3.onOutnumberedChanged', tokens, aeName, hook);
+                Hooks.call('hm3.onOutnumbered', aeName, hook);
                 return true;
             });
         }
+        Hooks.call('hm3.onOutnumbered', aeName, hook);
     }
-
-    Hooks.call('hm3.onOutnumbered', aeName, hook);
 
     return true;
 }

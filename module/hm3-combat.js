@@ -4,9 +4,22 @@ export class CombatHM3 extends Combat {
      * @override
      */
     async startCombat() {
-        // Initially remove the Tactical Advantage flag
-        await game.hm3.socket.executeAsGM('unsetTAFlag');
-        return super.startCombat();
+        return (
+            await Promise.allSettled([
+                // Wait for the first outnumbered calculation
+                new Promise((resolve) => {
+                    let timer = setTimeout(() => resolve(), 3000);
+                    Hooks.once('hm3.onOutnumbered', () => {
+                        clearTimeout(timer);
+                        resolve();
+                    });
+                }),
+                // Remove the Tactical Advantage flag
+                game.hm3.socket.executeAsGM('unsetTAFlag'),
+                // Start the combat
+                super.startCombat()
+            ])
+        )[2].value;
     }
 
     /**
