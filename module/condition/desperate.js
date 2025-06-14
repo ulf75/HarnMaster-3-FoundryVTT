@@ -26,14 +26,14 @@ const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 await token.deleteAllMoraleConditions(game.hm3.Condition.DESPERATE);
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
-if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Desperate</b>, and tries to conclude the battle, one way or the other, as soon as possible. Until the situation changes and a new Initiative Test is passed, the character selects the <b>Most Aggressive</b> option available.", "Combat 16");
+if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Desperate</b>, and tries to conclude the battle, one way or the other, as soon as possible. Until the situation changes and a new Initiative Test is passed, the character selects the <b>Most Aggressive</b> option available.", "Combat 16", !token.player);
 `;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
-if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is still <b>Desperate</b>, and tries to conclude the battle, one way or the other, as soon as possible. Until the situation changes and a new Initiative Test is passed, the character selects the <b>Most Aggressive</b> option available.", "Combat 16");
+if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is still <b>Desperate</b>, and tries to conclude the battle, one way or the other, as soon as possible. Until the situation changes and a new Initiative Test is passed, the character selects the <b>Most Aggressive</b> option available.", "Combat 16", !token.player);
 `;
 
     return {

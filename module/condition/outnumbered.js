@@ -31,7 +31,7 @@ if (!token) return;
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is <b>${label}</b>, and gets -${
         (options.outnumbered - 1) * 10
-    } on <b>All</b> defense rolls including counterattack.", "Combat 11");
+    } on <b>All</b> defense rolls including counterattack.", "Combat 11", !token.player);
 `;
 
     return {
