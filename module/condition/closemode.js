@@ -20,6 +20,7 @@ export async function createCondition(token, options = {}) {
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
+if (!token) return;
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Close Mode</b>, and gets -10 on <b>All</b> attack rolls. Any <b>Thrusting Weapon</b> (such as a Spear, or a Sword employing Point aspect) ignore Close Mode modifiers.", "Combat 11", !token.player);
 `;

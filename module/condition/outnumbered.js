@@ -27,6 +27,7 @@ export async function createCondition(token, options = {}) {
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
+if (!token) return;
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is <b>${label}</b>, and gets -${
         (options.outnumbered - 1) * 10
