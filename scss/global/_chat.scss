@@ -1,31 +1,36 @@
 #chat-form {
     textarea {
-        background: url(/systems/hm3/ui/background.webp) no-repeat;
+        background: url(/systems/hm3/ui/parchment.jpg) repeat;
+        // background: url(/systems/hm3/ui/background.webp) no-repeat;
         background-size: cover;
         color: $hm3-text;
     }
 }
 
 .chat-message {
-    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    // background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
     color: $hm3-text;
 }
 
 .chat-message.emote {
-    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    // background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
     box-shadow: inset 0 0 0 2000px rgba(243, 237, 222, 0.6);
 }
 
 .chat-message.whisper {
-    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    // background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
     box-shadow: inset 0 0 0 2000px rgba(232, 232, 239, 0.6);
 }
 
 .chat-message.blind {
-    background: url(/systems/hm3/ui/background.webp) no-repeat;
+    background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    // background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
     box-shadow: inset 0 0 0 2000px rgba(245, 234, 245, 0.6);
 }
@@ -35,20 +40,21 @@
     color: $hm3-text;
 
     .card-header {
-        text-align: center;
-        padding: 3px 0;
-        border-top: 2px groove #fff;
+        // background-color: $hm3-header-bg;
         border-bottom: 2px groove #fff;
-        background-color: $hm3-header-bg;
+        border-top: 2px groove #fff;
+        padding: 3px 0;
+        text-align: center;
 
         h3 {
+            border-bottom: unset;
+            color: $hm3-header;
             flex: 1;
-            margin: 0;
-            line-height: 25px;
             font-family: $font-headers-chat;
             font-size: 20px;
             font-weight: 550;
-            color: $hm3-header;
+            line-height: 25px;
+            margin: 0;
         }
 
         h4 {
@@ -124,8 +130,8 @@
     }
 
     .card-footer {
+        // border-top: 2px groove #fff;
         padding: 3px 0;
-        border-top: 2px groove #fff;
         text-align: center;
     }
 

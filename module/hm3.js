@@ -10,6 +10,7 @@ import * as combat from './combat.js';
 import {HM3} from './config.js';
 import * as effect from './effect.js';
 import {ActiveEffectHM3} from './hm3-active-effect.js';
+import {ChatMessageHM3} from './hm3-chatmessage.js';
 import {CombatHM3} from './hm3-combat.js';
 import {CombatantHM3} from './hm3-combatant.js';
 import {DiceHM3} from './hm3-dice.js';
@@ -102,7 +103,7 @@ Hooks.once('init', async function () {
                 : `<div class="chat-card gmsays"><blockquote lang="en"><p>${text}</p></blockquote></div>`;
             const msg = {
                 content,
-                speaker: ChatMessage.getSpeaker({alias: 'Gamemaster says...'}),
+                speaker: ChatMessageHM3.getSpeaker({alias: 'Simon says...', user: game.user}),
                 type: CONST.CHAT_MESSAGE_STYLES.OTHER
             };
 
@@ -180,6 +181,7 @@ Hooks.once('init', async function () {
     CONFIG.ActiveEffect.documentClass = ActiveEffectHM3;
     CONFIG.AmbientLight.objectClass = AmbientLightHM3;
     CONFIG.AmbientSound.objectClass = AmbientSoundHM3;
+    CONFIG.ChatMessage.documentClass = ChatMessageHM3;
     CONFIG.Combatant.documentClass = CombatantHM3;
     CONFIG.Drawing.objectClass = DrawingHM3;
     CONFIG.Macro.documentClass = MacroHM3;

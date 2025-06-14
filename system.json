@@ -27,7 +27,7 @@
   },
   "scripts": ["https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.3/beautify.js"],
   "esmodules": ["module/hm3.js"],
-  "styles": ["css/hm3.css"],
+  "styles": ["css/hm3.css", "css/addl.css"],
   "languages": [
     {
       "lang": "en",
