@@ -11999,6 +11999,7 @@ dialog.dnd5e2.application {
 :is(.chat-popout, #chat-log, .chat-log) .message .message-header {
     border-bottom: 2px groove #fff;
     padding-bottom: 0.375rem;
+    margin-bottom: 0.175rem;
 }
 :is(.chat-popout, #chat-log, .chat-log) .message .message-header .message-delete {
     /* display: none; */
