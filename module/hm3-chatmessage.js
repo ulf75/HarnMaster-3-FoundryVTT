@@ -79,16 +79,16 @@ export class ChatMessageHM3 extends ChatMessage {
         html.querySelector('.whisper-to')?.remove();
 
         // Context menu
-        const metadata = html.querySelector('.message-metadata');
-        const deleteButton = metadata.querySelector('.message-delete');
-        if (!game.user.isGM) deleteButton?.remove();
-        else deleteButton?.querySelector('i').classList.add('fa-fw');
-        const anchor = document.createElement('a');
-        // anchor.setAttribute('aria-label', game.i18n.localize('DND5E.AdditionalControls'));
-        anchor.classList.add('chat-control');
-        anchor.dataset.contextMenu = '';
-        anchor.innerHTML = '<i class="fas fa-ellipsis-vertical fa-fw"></i>';
-        metadata.appendChild(anchor);
+        // const metadata = html.querySelector('.message-metadata');
+        // const deleteButton = metadata.querySelector('.message-delete');
+        // if (!game.user.isGM) deleteButton?.remove();
+        // else deleteButton?.querySelector('i').classList.add('fa-fw');
+        // const anchor = document.createElement('a');
+        // // anchor.setAttribute('aria-label', game.i18n.localize('DND5E.AdditionalControls'));
+        // anchor.classList.add('chat-control');
+        // anchor.dataset.contextMenu = '';
+        // anchor.innerHTML = '<i class="fas fa-ellipsis-vertical fa-fw"></i>';
+        // metadata.appendChild(anchor);
 
         // SVG icons
         html.querySelectorAll('i.dnd5e-icon').forEach((el) => {

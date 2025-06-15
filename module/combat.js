@@ -246,7 +246,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
 
     // display dialog, get aspect, aim, and addl damage
     const options = {

@@ -11997,10 +11997,11 @@ dialog.dnd5e2.application {
     mix-blend-mode: luminosity;
 }
 :is(.chat-popout, #chat-log, .chat-log) .message .message-header {
-    margin-bottom: 0.375rem;
+    border-bottom: 2px groove #fff;
+    padding-bottom: 0.375rem;
 }
 :is(.chat-popout, #chat-log, .chat-log) .message .message-header .message-delete {
-    display: none;
+    /* display: none; */
 }
 :is(.chat-popout, #chat-log, .chat-log) .message .message-header .message-sender {
     display: flex;

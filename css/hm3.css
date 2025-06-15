@@ -286,20 +286,19 @@ section.highlight {
 }
 
 .chat-card .card-header {
-    border-bottom: 2px groove #fff;
-    border-top: 2px groove #fff;
-    padding: 3px 0;
+    padding: 4px 0;
     text-align: center;
 }
 
 .chat-card .card-header h3 {
     border-bottom: unset;
     color: #454545;
+    display: block;
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
     font-family: 'Amasis MT Medium';
-    font-size: 20px;
+    font-size: var(--font-size-20);
     font-weight: 550;
     line-height: 25px;
     margin: 0;
@@ -315,11 +314,6 @@ section.highlight {
     font-size: 15px;
     font-weight: 550;
     color: #454545;
-}
-
-.chat-card .card-header h3:hover {
-    color: #111;
-    text-shadow: 0 0 10px #d57681;
 }
 
 .chat-card .mingap {
@@ -437,14 +431,14 @@ section.highlight {
 .chat-card.gmsays blockquote {
     border-left: none;
     color: #454545;
-    font-size: large;
+    font-size: var(--font-size-15);
     font-style: normal;
     margin: auto;
     text-align: center;
 }
 
 .chat-card.gmsays blockquote p {
-    font-size: large;
+    font-size: var(--font-size-15);
     margin: 0;
 }
 
@@ -461,7 +455,7 @@ section.highlight {
 
 .chat-card.gmsays blockquote cite {
     color: #454545;
-    font-size: medium;
+    font-size: var(--font-size-14);
     font-style: normal;
     font-variant-caps: small-caps;
     margin-top: 1rem;
