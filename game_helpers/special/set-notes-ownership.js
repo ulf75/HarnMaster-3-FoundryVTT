@@ -1,6 +1,6 @@
 (async () => {
-    if (canvas.tokens.controlled.length === 0) {
-        ui.notifications.warn('Please select at least one token to set ownership for.');
+    if (canvas.notes.controlled.length === 0) {
+        ui.notifications.warn('Please select at least one note to set ownership for.');
         return;
     }
 
