@@ -8,6 +8,7 @@ import * as distracted from './condition/distracted.js';
 import * as dying from './condition/dying.js';
 import * as empowered from './condition/empowered.js';
 import * as grappled from './condition/grappled.js';
+import * as insensate from './condition/insensate.js';
 import * as outnumbered from './condition/outnumbered.js';
 import * as prone from './condition/prone.js';
 import * as secondaryhand from './condition/secondaryhand.js';
@@ -2223,6 +2224,8 @@ export function getActiveEffect(token, name, strict = false) {
               );
 }
 
+let createMutex = new Mutex();
+
 /**
  * TODO
  * @param {Object} effectData - Data to create the effect
@@ -2246,89 +2249,91 @@ export function getActiveEffect(token, name, strict = false) {
  * @returns {Promise<HarnMasterActiveEffect>}
  */
 export async function createActiveEffect(effectData, changes = [], options = {}) {
-    effectData = foundry.utils.mergeObject(
-        {
-            flags: [],
-            icon: 'icons/svg/aura.svg',
-            label: null,
-            postpone: 0,
-            rounds: 1,
-            seconds: null,
-            startRound: null,
-            startTime: null,
-            startTurn: null,
-            token: null,
-            turns: 0,
-            type: null // 'GameTime' | 'Combat'
-        },
-        effectData
-    );
-
-    // mandatory
-    if (!effectData.label || !effectData.token || !effectData.type) {
-        console.error('HM3 | Macro "createActiveEffect" needs label, token & type as mandatory input!');
-        return null;
-    }
-
-    options = foundry.utils.mergeObject({hidden: false, selfDestroy: false, unique: false}, options);
-
-    changes = changes.map((change) => {
-        change = foundry.utils.mergeObject({key: '', value: 0, mode: 2, priority: null}, change);
-        const keys = getObjectKeys(effectData.token.actor.system);
-        change.key = 'system.' + keys.find((v) => v.includes(change.key));
-        return change;
-    });
-
-    if (options.unique && hasActiveEffect(effectData.token, effectData.label)) {
-        if (game.user.isGM) ui.notifications.info(`HM3 | Effect ${effectData.label} is unique and already exists.`);
-        return null;
-    }
-
-    const aeData = {
-        changes,
-        flags: effectData.flags,
-        icon: effectData.icon,
-        label: effectData.label,
-        origin: effectData.token.actor.uuid
-    };
-
-    if (effectData.type === 'GameTime') {
-        const postpone = effectData.postpone;
-        const startTime = effectData.startTime || game.time.worldTime + postpone;
-        const seconds = effectData.seconds === null ? null : effectData.seconds || 1;
-
-        aeData['duration.startTime'] = startTime;
-        aeData['duration.seconds'] = seconds;
-    } else if (effectData.type === 'Combat' && !!game.combats.active?.current) {
-        const startRound = effectData.startRound || game.combats.active.current.round || 1;
-        const startTurn = effectData.startTurn || game.combats.active.current.turn || 0;
-        const rounds = effectData.rounds;
-        const turns = effectData.turns;
-
-        aeData['duration.combat'] = game.combats.active.id;
-        aeData['duration.startRound'] = startRound;
-        aeData['duration.startTurn'] = startTurn;
-        aeData['duration.rounds'] = rounds;
-        aeData['duration.turns'] = turns;
-    } else {
-        return null;
-    }
-
-    const effect = await ActiveEffect.create(aeData, {parent: effectData.token.actor});
-
-    if (options.hidden) await effect.setFlag('hm3', 'hidden', true);
-    if (options.unique) await effect.setFlag('hm3', 'unique', true);
-
-    if (options.selfDestroy) {
-        await effect.setFlag('hm3', 'selfDestroy', true);
-        await effect.setFlag(
-            'effectmacro',
-            'onDisable.script',
-            `game.hm3.macros.deleteActiveEffect('${effectData.token.id}', '${effect.id}');`
+    return createMutex.runExclusive(async () => {
+        effectData = foundry.utils.mergeObject(
+            {
+                flags: [],
+                icon: 'icons/svg/aura.svg',
+                label: null,
+                postpone: 0,
+                rounds: 1,
+                seconds: null,
+                startRound: null,
+                startTime: null,
+                startTurn: null,
+                token: null,
+                turns: 0,
+                type: null // 'GameTime' | 'Combat'
+            },
+            effectData
         );
-    }
 
-    return effect;
+        // mandatory
+        if (!effectData.label || !effectData.token || !effectData.type) {
+            console.error('HM3 | Macro "createActiveEffect" needs label, token & type as mandatory input!');
+            return null;
+        }
+
+        options = foundry.utils.mergeObject({hidden: false, selfDestroy: false, unique: false}, options);
+
+        changes = changes.map((change) => {
+            change = foundry.utils.mergeObject({key: '', value: 0, mode: 2, priority: null}, change);
+            const keys = getObjectKeys(effectData.token.actor.system);
+            change.key = 'system.' + keys.find((v) => v.includes(change.key));
+            return change;
+        });
+
+        if (options.unique && hasActiveEffect(effectData.token, effectData.label)) {
+            if (game.user.isGM) ui.notifications.info(`HM3 | Effect ${effectData.label} is unique and already exists.`);
+            return null;
+        }
+
+        const aeData = {
+            changes,
+            flags: effectData.flags,
+            icon: effectData.icon,
+            label: effectData.label,
+            origin: effectData.token.actor.uuid
+        };
+
+        if (effectData.type === 'GameTime') {
+            const postpone = effectData.postpone;
+            const startTime = effectData.startTime || game.time.worldTime + postpone;
+            const seconds = effectData.seconds === null ? null : effectData.seconds || 1;
+
+            aeData['duration.startTime'] = startTime;
+            aeData['duration.seconds'] = seconds;
+        } else if (effectData.type === 'Combat' && !!game.combats.active?.current) {
+            const startRound = effectData.startRound || game.combats.active.current.round || 1;
+            const startTurn = effectData.startTurn || game.combats.active.current.turn || 0;
+            const rounds = effectData.rounds;
+            const turns = effectData.turns;
+
+            aeData['duration.combat'] = game.combats.active.id;
+            aeData['duration.startRound'] = startRound;
+            aeData['duration.startTurn'] = startTurn;
+            aeData['duration.rounds'] = rounds;
+            aeData['duration.turns'] = turns;
+        } else {
+            return null;
+        }
+
+        const effect = await ActiveEffect.create(aeData, {parent: effectData.token.actor});
+
+        if (options.hidden) await effect.setFlag('hm3', 'hidden', true);
+        if (options.unique) await effect.setFlag('hm3', 'unique', true);
+
+        if (options.selfDestroy) {
+            await effect.setFlag('hm3', 'selfDestroy', true);
+            await effect.setFlag(
+                'effectmacro',
+                'onDisable.script',
+                `game.hm3.macros.deleteActiveEffect('${effectData.token.id}', '${effect.id}');`
+            );
+        }
+
+        return effect;
+    });
 }
 
 let deleteMutex = new Mutex();
@@ -2433,6 +2438,10 @@ export async function createCondition(token, condition, conditionOptions = {}) {
             condData = await grappled.createCondition(token, conditionOptions);
             break;
 
+        case Condition.INSENSATE:
+            condData = await insensate.createCondition(token, conditionOptions);
+            break;
+
         case Condition.PRONE:
             condData = await prone.createCondition(token, conditionOptions);
             break;
@@ -2493,7 +2502,7 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         }
     });
 
-    const onCreateScript = condData.effectData.flags.effectmacro?.onCreate?.script;
+    const onCreateScript = condData.effectData.flags?.effectmacro?.onCreate?.script;
     if (!onCreateScript || onCreateScript?.length === 0) {
         return createActiveEffect(condData.effectData, condData.changes, condData.options);
     } else {

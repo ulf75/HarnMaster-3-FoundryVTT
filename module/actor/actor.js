@@ -1,6 +1,6 @@
 import {HM3} from '../config.js';
 import {DiceHM3} from '../hm3-dice.js';
-import {ItemType, SkillType} from '../hm3-types.js';
+import {Condition, ItemType, SkillType} from '../hm3-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 
@@ -497,17 +497,7 @@ export class ActorHM3 extends Actor {
         actorData.encumbrance = Math.floor(eph.effectiveWeight / actorData.endurance);
 
         if (oldTotalInjuryLevels !== actorData.totalInjuryLevels) {
-            if (this.testUserPermission(game.user, 'OWNER')) {
-                // postpone a bit, otherwise the Splatter module will not work
-                setTimeout(() => {
-                    actorData.injuryLevels.value = actorData.totalInjuryLevels;
-                    this.update({'system.injuryLevels': actorData.injuryLevels}).then(() =>
-                        Hooks.call('hm3.onTotalInjuryLevelsChanged', oldTotalInjuryLevels, actorData.totalInjuryLevels)
-                    );
-                }, 400);
-            } else {
-                Hooks.call('hm3.onTotalInjuryLevelsChanged', oldTotalInjuryLevels, actorData.totalInjuryLevels);
-            }
+            Hooks.call('hm3.onTotalInjuryLevelsChanged', this, oldTotalInjuryLevels, actorData.totalInjuryLevels);
         }
 
         Hooks.call('hm3.onActorPrepareBaseData', this);
@@ -1679,7 +1669,17 @@ export class ActorHM3 extends Actor {
     static calcShockIndex(actor) {
         const data = actor.system;
         const old = data.shockIndex.value;
-        data.shockIndex.value = ActorHM3.normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
+
+        if (actor.allApplicableEffects(true).find((effect) => effect.name === Condition.INSENSATE)) {
+            data.shockIndex.value = Math.max(100 - Math.round(100 * (data.totalInjuryLevels / data.endurance)), 0);
+        } else {
+            data.shockIndex.value = ActorHM3.normProb(
+                data.endurance,
+                data.universalPenalty * 3.5,
+                data.universalPenalty
+            );
+        }
+
         if (actor.testUserPermission(game.user, 'OWNER')) {
             if (data.shockIndex.value !== old) {
                 actor.update({'system.shockIndex': data.shockIndex}).then(() => {

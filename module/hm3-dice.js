@@ -1,5 +1,5 @@
 import {HM3} from './config.js';
-import {Aspect, InjuryType} from './hm3-types.js';
+import {Aspect, Condition, InjuryType} from './hm3-types.js';
 import * as utility from './utility.js';
 
 export class DiceHM3 {
@@ -528,6 +528,7 @@ export class DiceHM3 {
         const chatTemplateData = foundry.utils.mergeObject(
             {
                 opponentTokenId: rollData.atkToken.id,
+                isShockRoll: result.injuryLevel > 0 && !rollData.token?.hasCondition(Condition.INSENSATE),
                 title: `${rollData.actor.token ? rollData.actor.token.name : rollData.actor.name} Injury`,
                 visibleActorId: rollData.actor.id
             },
@@ -761,6 +762,10 @@ export class DiceHM3 {
             result.injuryLevelText = armorLocationData.effectiveImpact.ei5;
         } else {
             result.injuryLevelText = armorLocationData.effectiveImpact.ei1;
+        }
+
+        if (dialogOptions.token.hasCondition(Condition.INSENSATE) && result.injuryLevelText[0] === 'K') {
+            result.injuryLevelText = result.injuryLevelText.replace('K', 'G');
         }
 
         // Calculate injury level and whether it is a kill shot.

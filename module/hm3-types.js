@@ -84,6 +84,9 @@ export const Condition = Object.freeze({
     /**@constant {string} - NO skills, spells & psionics. Only MOVE, PASS or REST actions. Only IGNORE defenses. */
     INCAPACITATED: 'Incapacitated',
 
+    /**@constant {string} - No shock rolls, need IL equal to END to 'die'. */
+    INSENSATE: 'Insensate',
+
     /**@constant {string} - TODO */
     OUTNUMBERED: 'Outnumbered',
 
@@ -100,7 +103,7 @@ export const Condition = Object.freeze({
     STUNNED: 'Stunned',
 
     /**@constant {string} - MOV to 0. NO skills, spells & psionics. Only PASS actions. Only IGNORE defenses. Plus PRONE. */
-    UNCONSCIOUS: 'Unconscious_', // TODO merge with status effects
+    UNCONSCIOUS: 'Unconscious',
 
     /**@constant {string} - TODO */
     WEAKENED: 'Weakened'

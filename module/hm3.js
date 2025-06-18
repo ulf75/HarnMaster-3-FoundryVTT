@@ -321,6 +321,21 @@ Hooks.on('hm3.onShockIndexReduced', async (actor, old, current) => {
     }
 });
 
+Hooks.on('hm3.onTotalInjuryLevelsChanged', async (actor, oldValue, newValue) => {
+    const insensate = actor.allApplicableEffects(true).find((effect) => effect.name === Condition.INSENSATE);
+    if (insensate) {
+        actor.system.injuryLevels.max = actor.system.endurance;
+    }
+
+    actor.system.injuryLevels.value = newValue;
+    if (actor.testUserPermission(game.user, 'OWNER')) {
+        await actor.update({'system.injuryLevels': actor.system.injuryLevels});
+        if (insensate && newValue >= actor.system.injuryLevels.max) {
+            await actor.token.addCondition(Condition.DYING);
+        }
+    }
+});
+
 Hooks.on('updateCombat', async (combat, updateData) => {
     return updateOutnumbered({hook: 'updateCombat'});
 });

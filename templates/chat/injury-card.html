@@ -119,7 +119,7 @@
             <button data-action="kill" data-visible-actor-id="{{visibleActorId}}" data-opponent-token-id="{{opponentTokenId}}" data-injury-level="{{injuryLevel}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Kill Roll</button>
             {{/if}}
 
-            {{#if injuryLevel}}
+            {{#if isShockRoll}}
             <button data-action="shock" data-visible-actor-id="{{visibleActorId}}" data-opponent-token-id="{{opponentTokenId}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Shock Roll</button>
             {{/if}}
 
