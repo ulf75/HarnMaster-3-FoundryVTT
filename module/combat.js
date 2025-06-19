@@ -64,7 +64,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
     const range = rangeToTarget(atkToken, defToken);
 
     const options = {
@@ -141,7 +141,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         origAML: missileItem.system.attackMasteryLevel,
         effAML: effAML,
         impactMod: dialogResult.impactMod,
-        hasDodge: !(grappled || incapacitated || shocked || stunned || unconscious),
+        hasDodge: !(grappled || incapacitated || shocked || stunned || unconscious) && defToken.actor.system.dodge > 0,
         hasBlock: !(grappled || incapacitated || shocked || stunned || unconscious),
         hasCounterstrike: false, // not possible against missile attacks
         hasIgnore: true,
@@ -344,15 +344,16 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
                 defUnconscious
             ) && !dialogResult.isGrappleAtk,
         hasCounterstrike: !(defBroken || defCautious || defIncapacitated || defShocked || defStunned || defUnconscious),
-        hasDodge: !(
-            defBerserk ||
-            defDesperate ||
-            defGrappled ||
-            defIncapacitated ||
-            defShocked ||
-            defStunned ||
-            defUnconscious
-        ),
+        hasDodge:
+            !(
+                defBerserk ||
+                defDesperate ||
+                defGrappled ||
+                defIncapacitated ||
+                defShocked ||
+                defStunned ||
+                defUnconscious
+            ) && defToken.actor.system.dodge > 0,
         hasIgnore: true,
         impactMod: dialogResult.impactMod,
         isGrappleAtk: !!dialogResult.isGrappleAtk,
@@ -731,7 +732,7 @@ export async function meleeCounterstrikeResume(
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
 
     // Get weapon with maximum impact
     const options = defaultMeleeWeapon(defToken);
@@ -986,7 +987,7 @@ export async function meleeCounterstrikeResume(
 
     let messageData = {
         user: game.user.id,
-        speaker: speaker,
+        speaker: ChatMessage.getSpeaker({token: atkToken}),
         content: html.trim()
     };
     if (combatResult.outcome.atkDice) {
@@ -1010,7 +1011,7 @@ export async function meleeCounterstrikeResume(
 
     messageData = {
         user: game.user.id,
-        speaker: speaker,
+        speaker: ChatMessage.getSpeaker({token: defToken}),
         content: html.trim()
     };
     if (combatResult.outcome.defDice) {
@@ -1065,7 +1066,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
 
     const atkRoll = await DiceHM3.rollTest({
         data: {},
@@ -1623,7 +1624,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     let html = await renderTemplate(chatTemplate, chatData);
 
     messageData.content = html.trim();
-    messageData.speaker = ChatMessage.getSpeaker({token: defToken.document});
+    messageData.speaker = ChatMessage.getSpeaker({token: atkToken});
     messageData.roll = atkBreakRoll;
 
     const messageOptions = {};
@@ -1644,7 +1645,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     html = await renderTemplate(chatTemplate, chatData);
 
     messageData.content = html.trim();
-    messageData.speaker = ChatMessage.getSpeaker({token: defToken.document});
+    messageData.speaker = ChatMessage.getSpeaker({token: defToken});
     messageData.roll = defBreakRoll;
 
     ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
@@ -1672,7 +1673,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
 
     const atkRoll = await DiceHM3.rollTest({
         data: {},
