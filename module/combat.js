@@ -796,7 +796,7 @@ export async function meleeCounterstrikeResume(
         target: atkEffAML
     });
 
-    const csEffEML = csDialogResult.weapon.system.attackMasteryLevel;
+    const csEffEML = game.hm3.macros.HM100Check(csDialogResult.weapon.system.attackMasteryLevel);
 
     // Roll Counterstrike Attack
     const csRoll = await DiceHM3.rollTest({
@@ -929,7 +929,7 @@ export async function meleeCounterstrikeResume(
         defRollResult: '',
         defTokenId: defToken.id,
         defWeaponBroke: weaponBroke.defendWeaponBroke,
-        effAML: atkEffAML,
+        effAML: game.hm3.macros.HM100Check(atkEffAML),
         effDML: 0,
         hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.atkDice,
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
@@ -969,9 +969,9 @@ export async function meleeCounterstrikeResume(
         defRollResult: '',
         defTokenId: atkToken.id,
         dta: combatResult.outcome.dta,
-        effAML: csEffEML + csDialogResult.addlModifier,
+        effAML: game.hm3.macros.HM100Check(csEffEML + csDialogResult.addlModifier),
         effDML: 0,
-        effEML: csEffEML + csDialogResult.addlModifier,
+        effEML: game.hm3.macros.HM100Check(csEffEML + csDialogResult.addlModifier),
         hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.defDice,
         impactRoll: csImpactRoll ? csImpactRoll.dice[0].values.join(' + ') : null,
         isAtkFumbleRoll: combatResult.outcome.defFumble,
@@ -1087,7 +1087,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         target: effAML
     });
 
-    const effDML = defToken.actor.system.dodge;
+    const effDML = game.hm3.macros.HM100Check(defToken.actor.system.dodge);
 
     let defaultModifier = 0;
     if (defToken.actor?.system?.eph?.outnumbered > 1) {
@@ -1172,9 +1172,9 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         defRollResult: defRoll.description.replace('Substantial', 'Marginal'),
         defTokenId: defToken.id,
         dta: combatResult.outcome.dta,
-        effAML: effAML,
-        effDML: effDML + defaultModifier,
-        effEML: effDML + defaultModifier,
+        effAML,
+        effDML: game.hm3.macros.HM100Check(effDML + defaultModifier),
+        effEML: game.hm3.macros.HM100Check(effDML + defaultModifier),
         hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.atkDice,
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
         isAtkFumbleRoll: combatResult.outcome.atkFumble,
@@ -1356,7 +1356,7 @@ export async function blockResume(
     let effDML;
     const defWeapon = defToken.actor.itemTypes.weapongear.find((w) => w.name === dialogResult.weapon);
     if (defWeapon) {
-        effDML = defWeapon.system.defenseMasteryLevel;
+        effDML = game.hm3.macros.HM100Check(defWeapon.system.defenseMasteryLevel);
     } else {
         effDML = 5;
     }
@@ -1365,7 +1365,7 @@ export async function blockResume(
     // a shield, then it will defend at 1/2 DML.
     if (type === 'missile') {
         if (!shields.some((s) => s.name === dialogResult.weapon.name)) {
-            effDML = Math.max(Math.round(effDML / 2), 5);
+            effDML = game.hm3.macros.HM100Check(effDML / 2);
         }
     }
 
@@ -1492,9 +1492,9 @@ export async function blockResume(
         defTokenId: defToken.id,
         defWeaponBroke: weaponBroke.defendWeaponBroke,
         dta: combatResult.outcome.dta,
-        effAML: effAML,
-        effDML: effDML + dialogResult.addlModifier,
-        effEML: effDML + dialogResult.addlModifier,
+        effAML,
+        effDML: game.hm3.macros.HM100Check(effDML + dialogResult.addlModifier),
+        effEML: game.hm3.macros.HM100Check(effDML + dialogResult.addlModifier),
         hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.atkDice,
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
         isAtkFumbleRoll: combatResult.outcome.atkFumble,
