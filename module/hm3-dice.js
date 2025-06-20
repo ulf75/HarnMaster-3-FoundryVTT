@@ -493,8 +493,9 @@ export class DiceHM3 {
             let hitLocations = DiceHM3._getHitLocations(rollData.actor.items);
 
             const dialogOptions = {
-                hitLocations: hitLocations,
+                actor: rollData.actor,
                 data: rollData.actor.system,
+                hitLocations: hitLocations,
                 items: rollData.actor.items,
                 name: rollData.actor.token ? rollData.actor.token.name : rollData.actor.name
             };
@@ -527,8 +528,8 @@ export class DiceHM3 {
 
         const chatTemplateData = foundry.utils.mergeObject(
             {
-                opponentTokenId: rollData.atkToken.id,
-                isShockRoll: result.injuryLevel > 0 && !rollData.token?.hasCondition(Condition.INSENSATE),
+                opponentTokenId: rollData.atkToken?.id,
+                isShockRoll: result.injuryLevel > 0 && !rollData.actor.token?.hasCondition(Condition.INSENSATE),
                 title: `${rollData.actor.token ? rollData.actor.token.name : rollData.actor.name} Injury`,
                 visibleActorId: rollData.actor.id
             },
@@ -666,12 +667,13 @@ export class DiceHM3 {
             title: dialogOptions.label,
             content: html.trim(),
             label: 'Determine Injury',
-            callback: (html) => {
+            callback: async (html) => {
                 const form = html[0].querySelector('form');
-                const formLocation = form.location.value;
-                const formImpact = form.impact.value;
-                const formAspect = form.aspect.value;
                 const formAim = form.aim.value;
+                const formAspect = form.aspect.value;
+                const formDice = form.dice.value;
+                const formImpact = (await new Roll(formDice + '+' + form.impact.value).evaluate()).total;
+                const formLocation = form.location.value;
                 const formAddToCharSheet = dialogData.askRecordInjury
                     ? form.addToCharSheet.checked
                     : recordInjury === 'enable';
@@ -764,7 +766,7 @@ export class DiceHM3 {
             result.injuryLevelText = armorLocationData.effectiveImpact.ei1;
         }
 
-        if (dialogOptions.token.hasCondition(Condition.INSENSATE) && result.injuryLevelText[0] === 'K') {
+        if (dialogOptions.actor.token.hasCondition(Condition.INSENSATE) && result.injuryLevelText[0] === 'K') {
             result.injuryLevelText = result.injuryLevelText.replace('K', 'G');
         }
 
