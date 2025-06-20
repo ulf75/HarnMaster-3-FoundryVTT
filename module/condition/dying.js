@@ -42,6 +42,7 @@ await token.turnEnds();
     const ON_DELETE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
+await token.combatant?.update({defeated: false});
 game.hm3.macros.updateOverlay(token);
 console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
 `;
