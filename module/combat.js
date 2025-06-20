@@ -111,7 +111,9 @@ export async function missileAttack(atkToken, defToken, missileItem) {
     }
 
     dialogResult.addlModifier += dialogResult.aim === 'Mid' ? 0 : -10;
-    const effAML = dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod;
+    const effAML = game.hm3.macros.HM100Check(
+        dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod
+    );
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
@@ -146,7 +148,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
         addlModifierSign: dialogResult.addlModifier < 0 ? '-' : '+',
         origAML: missileItem.system.attackMasteryLevel,
-        effAML: effAML,
+        effAML,
         impactMod: dialogResult.impactMod,
         hasDodge: !(grappled || incapacitated || shocked || stunned || unconscious) && defToken.actor.system.dodge > 0,
         hasBlock: !(grappled || incapacitated || shocked || stunned || unconscious) && !noHighVelocityBlockAvailable,
@@ -309,7 +311,9 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         (dialogResult.aspect === 'Blunt' || dialogResult.aspect === 'Edged');
     dialogResult.addlModifier += atkCloseMode ? -10 : 0;
 
-    const effAML = dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier;
+    const effAML = game.hm3.macros.HM100Check(
+        dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier
+    );
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
@@ -339,7 +343,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         defender: defToken.name,
         defProne,
         defTokenId: defToken.id,
-        effAML: effAML,
+        effAML,
         hasBlock:
             !(
                 defBerserk ||
