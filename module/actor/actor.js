@@ -1670,7 +1670,7 @@ export class ActorHM3 extends Actor {
         const data = actor.system;
         const old = data.shockIndex.value;
 
-        if (actor.allApplicableEffects(true).find((effect) => effect.name === Condition.INSENSATE)) {
+        if (actor.allApplicableEffects(true).find((effect) => effect.name === Condition.INANIMATE)) {
             data.shockIndex.value = Math.max(100 - Math.round(100 * (data.totalInjuryLevels / data.endurance)), 0);
         } else {
             data.shockIndex.value = ActorHM3.normProb(

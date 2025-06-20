@@ -322,15 +322,15 @@ Hooks.on('hm3.onShockIndexReduced', async (actor, old, current) => {
 });
 
 Hooks.on('hm3.onTotalInjuryLevelsChanged', async (actor, oldValue, newValue) => {
-    const insensate = actor.allApplicableEffects(true).find((effect) => effect.name === Condition.INSENSATE);
-    if (insensate) {
+    const inanimate = actor.allApplicableEffects(true).find((effect) => effect.name === Condition.INANIMATE);
+    if (inanimate) {
         actor.system.injuryLevels.max = actor.system.endurance;
     }
 
     actor.system.injuryLevels.value = newValue;
     if (actor.testUserPermission(game.user, 'OWNER')) {
         await actor.update({'system.injuryLevels': actor.system.injuryLevels});
-        if (insensate && newValue >= actor.system.injuryLevels.max) {
+        if (inanimate && newValue >= actor.system.injuryLevels.max) {
             await actor.token.addCondition(Condition.DYING);
         }
     }

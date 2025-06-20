@@ -13,7 +13,7 @@ const CONDITION_ICON = 'systems/hm3/images/icons/svg/skeleton-white.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
-    const CONDITION = game.hm3.Condition.INSENSATE;
+    const CONDITION = game.hm3.Condition.INANIMATE;
 
     return {
         effectData: {

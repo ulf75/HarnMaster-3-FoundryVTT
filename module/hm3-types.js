@@ -81,11 +81,11 @@ export const Condition = Object.freeze({
     /**@constant {string} - MOV to 0. Only GRAPPLE_ATTACK or PASS actions. Only GRAPPLE or IGNORE defenses. */
     GRAPPLED: 'Grappled',
 
+    /**@constant {string} - No shock rolls, need IL equal to END to 'die'. */
+    INANIMATE: 'Inanimate',
+
     /**@constant {string} - NO skills, spells & psionics. Only MOVE, PASS or REST actions. Only IGNORE defenses. */
     INCAPACITATED: 'Incapacitated',
-
-    /**@constant {string} - No shock rolls, need IL equal to END to 'die'. */
-    INSENSATE: 'Insensate',
 
     /**@constant {string} - TODO */
     OUTNUMBERED: 'Outnumbered',

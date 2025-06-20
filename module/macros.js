@@ -8,7 +8,7 @@ import * as distracted from './condition/distracted.js';
 import * as dying from './condition/dying.js';
 import * as empowered from './condition/empowered.js';
 import * as grappled from './condition/grappled.js';
-import * as insensate from './condition/insensate.js';
+import * as inanimate from './condition/inanimate.js';
 import * as outnumbered from './condition/outnumbered.js';
 import * as prone from './condition/prone.js';
 import * as secondaryhand from './condition/secondaryhand.js';
@@ -2445,8 +2445,8 @@ export async function createCondition(token, condition, conditionOptions = {}) {
             condData = await grappled.createCondition(token, conditionOptions);
             break;
 
-        case Condition.INSENSATE:
-            condData = await insensate.createCondition(token, conditionOptions);
+        case Condition.INANIMATE:
+            condData = await inanimate.createCondition(token, conditionOptions);
             break;
 
         case Condition.PRONE:
