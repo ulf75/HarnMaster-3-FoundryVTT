@@ -120,6 +120,13 @@ export async function missileAttack(atkToken, defToken, missileItem) {
     const shocked = defToken.hasCondition(Condition.SHOCKED);
     const stunned = defToken.hasCondition(Condition.STUNNED);
     const unconscious = defToken.hasCondition(Condition.UNCONSCIOUS);
+    const atkIsHighVelocityMissile = /\bbow\b|shortbow|longbow|crossbow|\bsling\b|\barrow\b|\bbolt\b|\bbullet\b/i.test(
+        missileItem.name
+    );
+    const defHasShields = defToken.actor.itemTypes.weapongear.filter(
+        (w) => w.system.isEquipped && /shield|\bbuckler\b/i.test(w.name)
+    );
+    const noHighVelocityBlockAvailable = atkIsHighVelocityMissile && defHasShields.length === 0;
 
     const chatTemplateData = {
         title: `${missileItem.name} Missile Attack`,
@@ -142,7 +149,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         effAML: effAML,
         impactMod: dialogResult.impactMod,
         hasDodge: !(grappled || incapacitated || shocked || stunned || unconscious) && defToken.actor.system.dodge > 0,
-        hasBlock: !(grappled || incapacitated || shocked || stunned || unconscious),
+        hasBlock: !(grappled || incapacitated || shocked || stunned || unconscious) && !noHighVelocityBlockAvailable,
         hasCounterstrike: false, // not possible against missile attacks
         hasIgnore: true,
         visibleActorId: defToken.actor.id
