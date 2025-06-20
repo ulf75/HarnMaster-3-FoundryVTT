@@ -2137,14 +2137,21 @@ export function callOnHooks(hook, actor, result, rollData, item = null) {
  * @returns
  */
 export function distanceBtwnTwoTokens(sourceTokenId, targetTokenId, gridUnits = false) {
-    const source = canvas.tokens.get(sourceTokenId)?.center;
-    const target = canvas.tokens.get(targetTokenId)?.center;
+    const source = canvas.tokens.get(sourceTokenId);
+    const target = canvas.tokens.get(targetTokenId);
 
     if (!source || !target || !canvas.scene || !canvas.scene.grid) return 9999;
 
-    const distance = canvas.grid.measurePath([source, target]).distance;
-    if (gridUnits) return utility.truncate(distance / canvas.dimensions.distance, 0);
-    return utility.truncate(distance, 0);
+    const sourceElevation = source.document?.elevation || 0;
+    const targetElevation = target.document?.elevation || 0;
+
+    let distance = utility.truncate(canvas.grid.measurePath([source.center, target.center]).distance, 0);
+    distance = Math.sqrt(distance ** 2 + (sourceElevation - targetElevation) ** 2);
+    distance = Math.ceil(distance / canvas.dimensions.distance) * canvas.dimensions.distance;
+
+    if (gridUnits) return distance / canvas.dimensions.distance;
+
+    return distance;
 }
 
 /**

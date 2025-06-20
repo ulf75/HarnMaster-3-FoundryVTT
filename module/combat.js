@@ -2030,7 +2030,7 @@ export async function getItem(itemName, type, actor) {
 export function rangeToTarget(sourceToken, targetToken, gridUnits = false) {
     if (!sourceToken || !targetToken || !canvas.scene || !canvas.scene.grid) return 9999;
 
-    const distance = game.hm3.macros.distanceBtwnTwoTokens(sourceToken.id, targetToken.id);
+    const distance = game.hm3.macros.distanceBtwnTwoTokens(sourceToken.id, targetToken.id); // [ft]
     // console.info(`Distance = ${truncate(distance, 0)}, gridUnits=${gridUnits}`);
     if (gridUnits) return truncate(distance / canvas.dimensions.distance, 0);
     return truncate(distance, 0);
