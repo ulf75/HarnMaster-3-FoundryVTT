@@ -162,18 +162,19 @@ export class DiceHM3 {
 
         dialogData.gear = '0';
         dialogData.gears = [
-            {key: '0', label: 'No climbing gear'},
-            {key: '10', label: 'Ordinary climbing gear'},
-            {key: '20', label: 'Good climbing gear'}
+            {key: '0', label: 'No climbing gear (+0 EML)'},
+            {key: '10', label: 'Ordinary climbing gear (+10 EML)'},
+            {key: '20', label: 'Good climbing gear (+20 EML)'}
         ];
 
         const html = await renderTemplate(dlgTemplate, dialogData);
 
         // Create the dialog window
         return Dialog.prompt({
-            title: dialogOptions.label,
             content: html.trim(),
             label: 'Roll',
+            options: {width: 470},
+            title: dialogOptions.label,
             callback: (html) => {
                 const form = html[0].querySelector('form');
                 const formModifier = form.modifier.value;
@@ -189,11 +190,12 @@ export class DiceHM3 {
                         const MF = {'Easy': 0, 'Hard': -5, 'Very Hard': -10};
 
                         if (result.isSuccess) {
-                            if (result.isCritical) return `${progress} +${CS[formDifficulty]}' (${formDifficulty})`;
+                            if (result.isCritical)
+                                return `<p>${progress} +${CS[formDifficulty]}' (${formDifficulty})</p>`;
                             else
-                                return `${progress} +${
+                                return `<p>${progress} +${
                                     result.isSubstantial ? MS[formDifficulty] + 5 : MS[formDifficulty]
-                                }' (${formDifficulty})`;
+                                }' (${formDifficulty})</p>`;
                         } else {
                             if (!result.isCritical)
                                 return `<p>${progress} ${
