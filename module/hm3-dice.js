@@ -57,6 +57,7 @@ export class DiceHM3 {
                 type: rollData.type
             });
         else if (rollData.skill.includes('Climbing')) roll = await DiceHM3.d100ClimbingDialog(dialogOptions);
+        else if (rollData.skill.includes('Jumping')) roll = await DiceHM3.d100JumpingDialog(dialogOptions);
         else roll = await DiceHM3.d100StdDialog(dialogOptions);
 
         // If user cancelled the roll, then return immediately
@@ -184,30 +185,108 @@ export class DiceHM3 {
                 let target = dialogOptions.target;
                 return DiceHM3.rollTest({
                     addlInfoCallback: (result) => {
-                        const progress = 'Vertical progress:';
+                        const progress = `Vertical progress (${formDifficulty}):`;
                         const CS = {'Easy': 30, 'Hard': 20, 'Very Hard': 10};
                         const MS = {'Easy': 15, 'Hard': 10, 'Very Hard': 5};
                         const MF = {'Easy': 0, 'Hard': -5, 'Very Hard': -10};
 
                         if (result.isSuccess) {
-                            if (result.isCritical)
-                                return `<p>${progress} +${CS[formDifficulty]}' (${formDifficulty})</p>`;
-                            else
-                                return `<p>${progress} +${
-                                    result.isSubstantial ? MS[formDifficulty] + 5 : MS[formDifficulty]
-                                }' (${formDifficulty})</p>`;
+                            if (result.isCritical) return `<p>${progress} +${CS[formDifficulty]} ft</p>`;
+                            else {
+                                const d = utility.truncate(
+                                    result.isSubstantial ? MS[formDifficulty] * 1.25 : MS[formDifficulty],
+                                    0
+                                );
+                                return `<p>${progress} +${d} ft</p>`;
+                            }
                         } else {
-                            if (!result.isCritical)
-                                return `<p>${progress} ${
-                                    result.isSubstantial ? MF[formDifficulty] - 5 : MF[formDifficulty]
-                                }' (${formDifficulty})</p><p>Negative progress indicates the character has encountered an obstacle and been forced to backtrack.</p>`;
-                            else return `${dialogOptions.name} loses grip and falls.`;
+                            if (!result.isCritical) {
+                                const d = utility.truncate(
+                                    result.isSubstantial ? MF[formDifficulty] * 1.25 : MF[formDifficulty],
+                                    0
+                                );
+                                return `<p>${progress} ${d} ft</p><p>Negative progress indicates the character has encountered an obstacle and been forced to backtrack.</p>`;
+                            } else return `${dialogOptions.name} loses grip and falls.`;
                         }
                     },
                     data: null,
                     diceNum: 1,
                     diceSides: 100,
                     modifier: Number(formModifier) + Number(formGear),
+                    target,
+                    type: dialogOptions.type
+                });
+            }
+        });
+    }
+
+    static async d100JumpingDialog(dialogOptions) {
+        // Render modal dialog
+        let dlgTemplate = 'systems/hm3/templates/dialog/jumping-test-dialog.html';
+        let dialogData = {
+            effSkillBase: dialogOptions.effSkillBase,
+            modifier: dialogOptions.modifier,
+            target: dialogOptions.target
+        };
+
+        dialogData.jump = 'Long';
+        dialogData.jumps = [{key: 'Long'}, {key: 'High'}];
+
+        dialogData.start = '1';
+        dialogData.starts = [
+            {key: '1', label: 'Running start'},
+            {key: '2', label: 'Standing jump'}
+        ];
+
+        const html = await renderTemplate(dlgTemplate, dialogData);
+
+        // Create the dialog window
+        return Dialog.prompt({
+            content: html.trim(),
+            label: 'Roll',
+            title: dialogOptions.label,
+            callback: (html) => {
+                const form = html[0].querySelector('form');
+                const formModifier = form.modifier.value;
+                const formJump = form.jumps.value;
+                const formStart = form.starts.value;
+                const formLabel = dialogData.starts[form.starts.selectedIndex].label;
+                const start = Number(formStart);
+                const height = 5 / start; // [ft]
+
+                let target = dialogOptions.target;
+                return DiceHM3.rollTest({
+                    addlInfoCallback: (result) => {
+                        const jump = `${formJump} jump (${formLabel}):`;
+                        const CS = {'High': 1, 'Long': 3};
+                        const MS = {'High': 0.75, 'Long': 2};
+                        const MF = {'High': 0.5, 'Long': 1};
+
+                        if (result.isSuccess) {
+                            if (result.isCritical) {
+                                const d = utility.truncate(height * CS[formJump], 0);
+                                return `<p>${jump} ${d} ft</p>`;
+                            } else {
+                                const d = utility.truncate(
+                                    height * (result.isSubstantial ? MS[formJump] * 1.25 : MS[formJump]),
+                                    0
+                                );
+                                return `<p>${jump} ${d} ft</p>`;
+                            }
+                        } else {
+                            if (!result.isCritical) {
+                                const d = utility.truncate(
+                                    height * (result.isSubstantial ? MF[formJump] * 0.75 : MF[formJump]),
+                                    0
+                                );
+                                return `<p>${jump} ${d} ft</p>`;
+                            } else return `${dialogOptions.name} stumbles.`;
+                        }
+                    },
+                    data: null,
+                    diceNum: 1,
+                    diceSides: 100,
+                    modifier: Number(formModifier),
                     target,
                     type: dialogOptions.type
                 });
