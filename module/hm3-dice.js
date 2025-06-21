@@ -37,6 +37,7 @@ export class DiceHM3 {
             isTreatment: rollData.type === 'treatment' || false,
             label: rollData.label,
             modifier: rollData.modifier || 0,
+            name: speaker.alias,
             physicianSkills: rollData.physicianSkills || [],
             skill: rollData.skill,
             subType: rollData.subType || InjuryType.HEALING,
@@ -46,18 +47,22 @@ export class DiceHM3 {
         };
 
         // Create the Roll instance
-        const roll = rollData.fastforward
-            ? await DiceHM3.rollTest({
-                  type: rollData.type,
-                  diceSides: 100,
-                  diceNum: 1,
-                  modifier: rollData.modifier || 0,
-                  target: rollData.target
-              })
-            : await DiceHM3.d100StdDialog(dialogOptions);
+        let roll;
+        if (rollData.fastforward)
+            roll = await DiceHM3.rollTest({
+                diceNum: 1,
+                diceSides: 100,
+                modifier: rollData.modifier || 0,
+                target: rollData.target,
+                type: rollData.type
+            });
+        else if (rollData.skill.includes('Climbing')) roll = await DiceHM3.d100ClimbingDialog(dialogOptions);
+        else roll = await DiceHM3.d100StdDialog(dialogOptions);
 
         // If user cancelled the roll, then return immediately
         if (!roll) return null;
+
+        const addlInfo = roll.preData.addlInfoCallback ? roll.preData.addlInfoCallback(roll) : undefined;
 
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.html';
@@ -76,7 +81,7 @@ export class DiceHM3 {
             rollText: roll.description,
             target: rollData.target || roll.target - roll.modifier
         });
-        const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : '';
+        let renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : '';
 
         const multiplier = roll.preData.multiplier || rollData.multiplier || 5;
         let title = rollData.label;
@@ -90,6 +95,7 @@ export class DiceHM3 {
         }
 
         const chatTemplateData = {
+            addlInfo,
             description: roll.description,
             fluff: rollData.fluff
                 ? rollData.fluff.startsWith('<p>')
@@ -140,6 +146,71 @@ export class DiceHM3 {
         await roll.rollObj.toMessage(messageData, messageOptions);
 
         return chatTemplateData;
+    }
+
+    static async d100ClimbingDialog(dialogOptions) {
+        // Render modal dialog
+        let dlgTemplate = 'systems/hm3/templates/dialog/climbing-test-dialog.html';
+        let dialogData = {
+            effSkillBase: dialogOptions.effSkillBase,
+            modifier: dialogOptions.modifier,
+            target: dialogOptions.target
+        };
+
+        dialogData.difficulty = 'Easy';
+        dialogData.difficulties = [{key: 'Easy'}, {key: 'Hard'}, {key: 'Very Hard'}];
+
+        dialogData.gear = '0';
+        dialogData.gears = [
+            {key: '0', label: 'No climbing gear'},
+            {key: '10', label: 'Ordinary climbing gear'},
+            {key: '20', label: 'Good climbing gear'}
+        ];
+
+        const html = await renderTemplate(dlgTemplate, dialogData);
+
+        // Create the dialog window
+        return Dialog.prompt({
+            title: dialogOptions.label,
+            content: html.trim(),
+            label: 'Roll',
+            callback: (html) => {
+                const form = html[0].querySelector('form');
+                const formModifier = form.modifier.value;
+                const formDifficulty = form.difficulties.value;
+                const formGear = form.gears.value;
+
+                let target = dialogOptions.target;
+                return DiceHM3.rollTest({
+                    addlInfoCallback: (result) => {
+                        const progress = 'Vertical progress:';
+                        const CS = {'Easy': 30, 'Hard': 20, 'Very Hard': 10};
+                        const MS = {'Easy': 15, 'Hard': 10, 'Very Hard': 5};
+                        const MF = {'Easy': 0, 'Hard': -5, 'Very Hard': -10};
+
+                        if (result.isSuccess) {
+                            if (result.isCritical) return `${progress} +${CS[formDifficulty]}' (${formDifficulty})`;
+                            else
+                                return `${progress} +${
+                                    result.isSubstantial ? MS[formDifficulty] + 5 : MS[formDifficulty]
+                                }' (${formDifficulty})`;
+                        } else {
+                            if (!result.isCritical)
+                                return `<p>${progress} ${
+                                    result.isSubstantial ? MF[formDifficulty] - 5 : MF[formDifficulty]
+                                }' (${formDifficulty})</p><p>Negative progress indicates the character has encountered an obstacle and been forced to backtrack.</p>`;
+                            else return `${dialogOptions.name} loses grip and falls.`;
+                        }
+                    },
+                    data: null,
+                    diceNum: 1,
+                    diceSides: 100,
+                    modifier: Number(formModifier) + Number(formGear),
+                    target,
+                    type: dialogOptions.type
+                });
+            }
+        });
     }
 
     /**
@@ -343,7 +414,7 @@ export class DiceHM3 {
             !rollData.noTA &&
             ['fumble', 'kill', 'shock', 'stumble'].includes(rollData.type) &&
             (await game.hm3.macros.isTAPossible(canvas.tokens.get(rollData.token)));
-        const addlInfo = !roll.isSuccess && isTAPossible ? 'Opponent gains a Tactical Advantage.' : '';
+        const addlInfo = !roll.isSuccess && isTAPossible ? '<p>Opponent gains a Tactical Advantage.</p>' : '';
 
         const chatTemplateData = {
             addlInfo,
