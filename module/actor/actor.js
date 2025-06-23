@@ -416,12 +416,12 @@ export class ActorHM3 extends Actor {
         actorData.dodge = 0;
         actorData.initiative = 0;
         actorData.endurance = 0;
-        if (!actorData.shockIndex) actorData.shockIndex = {value: -1, max: 100};
+        // if (!actorData.shockIndex) actorData.shockIndex = {value: 100, max: 100};
         actorData.move.effective = 0;
         actorData.universalPenalty = 0;
         actorData.physicalPenalty = 0;
         actorData.totalInjuryLevels = 0;
-        if (!actorData.injuryLevels) actorData.injuryLevels = {value: 0, max: 6};
+        // if (!actorData.injuryLevels) actorData.injuryLevels = {value: 0, max: 6};
         actorData.encumbrance = 0;
         actorData.condition = 0;
         actorData.mounted = !!actorData.mounted;
