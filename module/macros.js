@@ -790,7 +790,6 @@ export async function injuryRoll(myActor = null, rollData = {}) {
     rollData.notesData = {};
     rollData.actor = actorInfo.actor;
     rollData.speaker = actorInfo.speaker;
-    rollData.name = actorInfo.actor.token ? actorInfo.actor.token.name : actorInfo.actor.name;
     rollData.notes = '';
 
     const hooksOk = Hooks.call('hm3.preInjuryRoll', rollData, actorInfo.actor);
@@ -1164,6 +1163,11 @@ export async function fumbleRoll(noDialog = false, myActor = null, opponentToken
     if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
+    }
+    // Sometimes fumble rolls were set for animals with DEX 0. They have to make a stumble roll instead.
+    if (actorInfo.actor.system.abilities.dexterity.base <= 0) {
+        if (game.user.isGM) ui.notifications.warn(`Fumble target is not set for ${actorInfo.token.name}.`);
+        return stumbleRoll(noDialog, myActor, opponentToken, token);
     }
 
     const stdRollData = {

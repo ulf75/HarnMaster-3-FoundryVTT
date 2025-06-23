@@ -1218,7 +1218,6 @@ export class ActorHM3 extends Actor {
                     attackWeapon: button.dataset.attackWeapon,
                     impact: button.dataset.impact,
                     items: token.actor.items,
-                    name: token.name,
                     token,
                     tokenId: token.id
                 });

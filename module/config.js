@@ -35,13 +35,35 @@ HM3.itemTypes = [
     {key: 'weapongear', label: 'Weapon Gear'}
 ];
 
-HM3.skillTypes = [{key: 'Craft'}, {key: 'Physical'}, {key: 'Communication'}, {key: 'Combat'}, {key: 'Magic'}, {key: 'Ritual'}];
+HM3.skillTypes = [
+    {key: 'Craft'},
+    {key: 'Physical'},
+    {key: 'Communication'},
+    {key: 'Combat'},
+    {key: 'Magic'},
+    {key: 'Ritual'}
+];
 
 HM3.traitTypes = [{key: 'Physical'}, {key: 'Psyche'}];
 
-HM3.companionTypes = [{key: 'Animal'}, {key: 'Connection'}, {key: 'Foe'}, {key: 'Follower'}, {key: 'Friend'}, {key: 'Party'}, {key: 'Steed'}];
+HM3.companionTypes = [
+    {key: 'Animal'},
+    {key: 'Connection'},
+    {key: 'Foe'},
+    {key: 'Follower'},
+    {key: 'Friend'},
+    {key: 'Party'},
+    {key: 'Steed'}
+];
 
-HM3.cultures = [{key: 'Feudal'}, {key: 'Imperial'}, {key: 'Khuzdul'}, {key: 'Sindarin'}, {key: 'Tribal'}, {key: 'Viking'}];
+HM3.cultures = [
+    {key: 'Feudal'},
+    {key: 'Imperial'},
+    {key: 'Khuzdul'},
+    {key: 'Sindarin'},
+    {key: 'Tribal'},
+    {key: 'Viking'}
+];
 
 HM3.socialClasses = [{key: 'Slave'}, {key: 'Serf'}, {key: 'Unguilded'}, {key: 'Guilded'}, {key: 'Noble'}];
 
@@ -304,6 +326,46 @@ HM3.injuryLocations = {
         isAmputate: true,
         effectiveImpact: {ei1: 'M1', ei5: 'M1', ei9: 'S2', ei13: 'S3', ei17: 'G4'}
     },
+    'Head, humanoid simple': {
+        impactType: 'head, humanoid simple',
+        probWeight: {'high': 300, 'mid': 100, 'low': 0},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'K4', ei17: 'K5'}
+    },
+    'Neck, humanoid simple': {
+        impactType: 'neck, humanoid simple',
+        probWeight: {'high': 150, 'mid': 50, 'low': 0},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: true,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'K4', ei17: 'K5'}
+    },
+    'Arm, humanoid simple': {
+        impactType: 'arm, humanoid simple',
+        probWeight: {'high': 200, 'mid': 140, 'low': 60},
+        isStumble: false,
+        isFumble: true,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K4'}
+    },
+    'Body, humanoid simple': {
+        impactType: 'body, humanoid simple',
+        probWeight: {'high': 150, 'mid': 310, 'low': 240},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'K4', ei17: 'K5'}
+    },
+    'Leg, humanoid simple': {
+        impactType: 'leg, humanoid simple',
+        probWeight: {'high': 0, 'mid': 130, 'low': 320},
+        isStumble: true,
+        isFumble: false,
+        isAmputate: true,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K4'}
+    },
     'Head, horse': {
         impactType: 'head, horse',
         probWeight: {'high': 120, 'mid': 120, 'low': 120},
@@ -371,85 +433,359 @@ HM3.injuryLocations = {
 };
 
 HM3.stdSkills = {
-    'Axe': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@str, @str, @dex, Ahnu, Feniri, Angberelius', 'SBx': 3}, 'type': 'Combat'},
-    'Blowgun': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@sta, @dex, @eye, Hirin:2, Tarael, Nadai', 'SBx': 4}, 'type': 'Combat'},
-    'Bow': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@str, @dex, @eye, Hirin, Tarael, Nadai', 'SBx': 2}, 'type': 'Combat'},
-    'Club': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@str, @str, @dex, Ulandus, Aralius', 'SBx': 4}, 'type': 'Combat'},
-    'Dagger': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@dex, @dex, @eye, Angberelius:2, Nadai:2', 'SBx': 3}, 'type': 'Combat'},
+    'Axe': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@str, @str, @dex, Ahnu, Feniri, Angberelius', 'SBx': 3},
+        'type': 'Combat'
+    },
+    'Blowgun': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@sta, @dex, @eye, Hirin:2, Tarael, Nadai', 'SBx': 4},
+        'type': 'Combat'
+    },
+    'Bow': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@str, @dex, @eye, Hirin, Tarael, Nadai', 'SBx': 2},
+        'type': 'Combat'
+    },
+    'Club': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@str, @str, @dex, Ulandus, Aralius', 'SBx': 4},
+        'type': 'Combat'
+    },
+    'Dagger': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@dex, @dex, @eye, Angberelius:2, Nadai:2', 'SBx': 3},
+        'type': 'Combat'
+    },
     'Dodge': {'source': 'HM3 Skills 21', 'skillBase': {'formula': '@agl, @agl, @agl', 'SBx': 5}, 'type': 'Combat'},
-    'Flail': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@dex, @dex, @dex, Hirin, Tarael, Nadai', 'SBx': 1}, 'type': 'Combat'},
+    'Flail': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@dex, @dex, @dex, Hirin, Tarael, Nadai', 'SBx': 1},
+        'type': 'Combat'
+    },
     'Initiative': {'source': 'HM3 Skills 18', 'skillBase': {'formula': '@agl, @wil, @wil', 'SBx': 4}, 'type': 'Combat'},
-    'Net': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@dex, @dex, @eye, Masara, Skorus, Lado', 'SBx': 1}, 'type': 'Combat'},
-    'Polearm': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@str, @str, @dex, Angberelius, Aralius', 'SBx': 2}, 'type': 'Combat'},
-    'Riding': {'source': 'HM3 Skills 18', 'skillBase': {'formula': '@dex, @agl, @wil, Ulandus, Aralius', 'SBx': 1}, 'type': 'Combat'},
-    'Shield': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@str, @dex, @dex, Ulandus, Lado, Masara', 'SBx': 3}, 'type': 'Combat'},
-    'Sling': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@dex, @dex, @eye, Hirin, Tarael, Nadai', 'SBx': 1}, 'type': 'Combat'},
-    'Spear': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@str, @str, @dex, Aralius, Feniri, Ulandus', 'SBx': 3}, 'type': 'Combat'},
-    'Sword': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@str, @dex, @dex, Angberelius:3, Ahnu, Nadai', 'SBx': 3}, 'type': 'Combat'},
-    'Unarmed': {'source': 'HM3 Skills 18', 'skillBase': {'formula': '@str, @dex, @agl, Madada:2, Lado:2, Ulandus:2', 'SBx': 4}, 'type': 'Combat'},
-    'Whip': {'source': 'HM3 Skills 19', 'skillBase': {'formula': '@dex, @dex, @eye, Hirin, Nadai', 'SBx': 1}, 'type': 'Combat'},
+    'Net': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@dex, @dex, @eye, Masara, Skorus, Lado', 'SBx': 1},
+        'type': 'Combat'
+    },
+    'Polearm': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@str, @str, @dex, Angberelius, Aralius', 'SBx': 2},
+        'type': 'Combat'
+    },
+    'Riding': {
+        'source': 'HM3 Skills 18',
+        'skillBase': {'formula': '@dex, @agl, @wil, Ulandus, Aralius', 'SBx': 1},
+        'type': 'Combat'
+    },
+    'Shield': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@str, @dex, @dex, Ulandus, Lado, Masara', 'SBx': 3},
+        'type': 'Combat'
+    },
+    'Sling': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@dex, @dex, @eye, Hirin, Tarael, Nadai', 'SBx': 1},
+        'type': 'Combat'
+    },
+    'Spear': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@str, @str, @dex, Aralius, Feniri, Ulandus', 'SBx': 3},
+        'type': 'Combat'
+    },
+    'Sword': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@str, @dex, @dex, Angberelius:3, Ahnu, Nadai', 'SBx': 3},
+        'type': 'Combat'
+    },
+    'Unarmed': {
+        'source': 'HM3 Skills 18',
+        'skillBase': {'formula': '@str, @dex, @agl, Madada:2, Lado:2, Ulandus:2', 'SBx': 4},
+        'type': 'Combat'
+    },
+    'Whip': {
+        'source': 'HM3 Skills 19',
+        'skillBase': {'formula': '@dex, @dex, @eye, Hirin, Nadai', 'SBx': 1},
+        'type': 'Combat'
+    },
 
-    'Acting': {'source': 'HM3 Skills 11', 'skillBase': {'formula': '@agl, @voi, @int, Tarael, Tai', 'SBx': 2}, 'type': 'Communication'},
-    'Awareness': {'source': 'HM3 Skills 11', 'skillBase': {'formula': '@eye, @hrg, @sml, Hirin:2, Tarael:2', 'SBx': 4}, 'type': 'Communication'},
-    'Intrigue': {'source': 'HM3 Skills 11', 'skillBase': {'formula': '@int, @aur, @wil, Tai, Tarael, Skorus', 'SBx': 3}, 'type': 'Communication'},
+    'Acting': {
+        'source': 'HM3 Skills 11',
+        'skillBase': {'formula': '@agl, @voi, @int, Tarael, Tai', 'SBx': 2},
+        'type': 'Communication'
+    },
+    'Awareness': {
+        'source': 'HM3 Skills 11',
+        'skillBase': {'formula': '@eye, @hrg, @sml, Hirin:2, Tarael:2', 'SBx': 4},
+        'type': 'Communication'
+    },
+    'Intrigue': {
+        'source': 'HM3 Skills 11',
+        'skillBase': {'formula': '@int, @aur, @wil, Tai, Tarael, Skorus', 'SBx': 3},
+        'type': 'Communication'
+    },
     'Language': {'source': 'HM3 Skills 10', 'skillBase': {'formula': '@voi, @int, @wil, Tai'}, 'type': 'Communication'},
-    'Lovecraft': {'source': 'HM3 Skills 11', 'skillBase': {'formula': '@cml, @agl, @voi, Masara, Angberelius', 'SBx': 3}, 'type': 'Communication'},
-    'Mental Conflict': {'source': 'HM3 Skills 12', 'skillBase': {'formula': '@aur, @wil, @wil', 'SBx': 3}, 'type': 'Communication'},
-    'Musician': {'source': 'HM3 Skills 12', 'skillBase': {'formula': '@dex, @hrg, @hrg, Masara, Angberelius', 'SBx': 1}, 'type': 'Communication'},
-    'Oratory': {'source': 'HM3 Skills 12', 'skillBase': {'formula': '@cml, @voi, @int, Tarael'}, 'type': 'Communication', 'SBx': 2},
-    'Rhetoric': {'source': 'HM3 Skills 12', 'skillBase': {'formula': '@voi, @int, @wil, Tai, Tarael, Skorus', 'SBx': 3}, 'type': 'Communication'},
-    'Script': {'source': 'HM3 Skills 11', 'skillBase': {'formula': '@dex, @eye, @int, Tarael, Tai'}, 'type': 'Communication'},
-    'Singing': {'source': 'HM3 Skills 12', 'skillBase': {'formula': '@hrg, @voi, @voi, Masara', 'SBx': 3}, 'type': 'Communication'},
+    'Lovecraft': {
+        'source': 'HM3 Skills 11',
+        'skillBase': {'formula': '@cml, @agl, @voi, Masara, Angberelius', 'SBx': 3},
+        'type': 'Communication'
+    },
+    'Mental Conflict': {
+        'source': 'HM3 Skills 12',
+        'skillBase': {'formula': '@aur, @wil, @wil', 'SBx': 3},
+        'type': 'Communication'
+    },
+    'Musician': {
+        'source': 'HM3 Skills 12',
+        'skillBase': {'formula': '@dex, @hrg, @hrg, Masara, Angberelius', 'SBx': 1},
+        'type': 'Communication'
+    },
+    'Oratory': {
+        'source': 'HM3 Skills 12',
+        'skillBase': {'formula': '@cml, @voi, @int, Tarael'},
+        'type': 'Communication',
+        'SBx': 2
+    },
+    'Rhetoric': {
+        'source': 'HM3 Skills 12',
+        'skillBase': {'formula': '@voi, @int, @wil, Tai, Tarael, Skorus', 'SBx': 3},
+        'type': 'Communication'
+    },
+    'Script': {
+        'source': 'HM3 Skills 11',
+        'skillBase': {'formula': '@dex, @eye, @int, Tarael, Tai'},
+        'type': 'Communication'
+    },
+    'Singing': {
+        'source': 'HM3 Skills 12',
+        'skillBase': {'formula': '@hrg, @voi, @voi, Masara', 'SBx': 3},
+        'type': 'Communication'
+    },
 
-    'Agriculture': {'source': 'HM3 Skills 13', 'skillBase': {'formula': '@str, @sta, @wil, Ulandus:2, Aralius:2', 'SBx': 2}, 'type': 'Craft'},
-    'Alchemy': {'source': 'HM3 Skills 13', 'skillBase': {'formula': '@sml, @int, @aur, Skorus:3, Tai:2, Masara:2', 'SBx': 1}, 'type': 'Craft'},
-    'Animalcraft': {'source': 'HM3 Skills 13', 'skillBase': {'formula': '@agl, @voi, @wil, Ulandus, Aralius', 'SBx': 1}, 'type': 'Craft'},
-    'Astrology': {'source': 'HM3 Skills 13', 'skillBase': {'formula': '@eye, @int, @aur, Tarael', 'SBx': 1}, 'type': 'Craft'},
-    'Brewing': {'source': 'HM3 Skills 13', 'skillBase': {'formula': '@dex, @sml, @sml, Skorus:3, Tai:2, Masara:2', 'SBx': 2}, 'type': 'Craft'},
-    'Ceramics': {'source': 'HM3 Skills 13', 'skillBase': {'formula': '@dex, @dex, @eye, Ulandus:2, Aralius:2', 'SBx': 2}, 'type': 'Craft'},
-    'Cookery': {'source': 'HM3 Skills 13', 'skillBase': {'formula': '@dex, @sml, @sml, Skorus', 'SBx': 3}, 'type': 'Craft'},
-    'Drawing': {'source': 'HM3 Skills 13', 'skillBase': {'formula': '@dex, @eye, @eye, Skorus, Tai', 'SBx': 2}, 'type': 'Craft'},
-    'Embalming': {'source': 'HM3 Skills 14', 'skillBase': {'formula': '@dex, @eye, @sml, Skorus, Ulandus', 'SBx': 1}, 'type': 'Craft'},
-    'Engineering': {'source': 'HM3 Skills 14', 'skillBase': {'formula': '@dex, @int, @int, Ulandus:2, Aralius:2, Feniri', 'SBx': 1}, 'type': 'Craft'},
-    'Fishing': {'source': 'HM3 Skills 14', 'skillBase': {'formula': '@dex, @eye, @wil, Masara:2, Lado:2', 'SBx': 3}, 'type': 'Craft'},
-    'Fletching': {'source': 'HM3 Skills 15', 'skillBase': {'formula': '@dex, @dex, @eye, Hirin:2, Tarael, Nadai', 'SBx': 1}, 'type': 'Craft'},
-    'Folklore': {'source': 'HM3 Skills 15', 'skillBase': {'formula': '@voi, @int, @int, Tai:2', 'SBx': 3}, 'type': 'Craft'},
-    'Foraging': {'source': 'HM3 Skills 15', 'skillBase': {'formula': '@dex, @sml, @int, Ulandus:2, Aralius:2', 'SBx': 3}, 'type': 'Craft'},
-    'Glassworking': {'source': 'HM3 Skills 15', 'skillBase': {'formula': '@dex, @eye, @wil, Feniri:2', 'SBx': 1}, 'type': 'Craft'},
-    'Heraldry': {'source': 'HM3 Skills 15', 'skillBase': {'formula': '@dex, @eye, @wil, Skorus, Tai', 'SBx': 1}, 'type': 'Craft'},
-    'Herblore': {'source': 'HM3 Skills 15', 'skillBase': {'formula': '@eye, @sml, @int, Ulandus:3, Aralius:2', 'SBx': 1}, 'type': 'Craft'},
-    'Hidework': {'source': 'HM3 Skills 15', 'skillBase': {'formula': '@dex, @sml, @wil, Ulandis, Aralius', 'SBx': 2}, 'type': 'Craft'},
-    'Hunting': {'source': 'HM3 Skills 16', 'skillBase': {'formula': '@agl, @sml, @int, Ulandus:2, Aralius:2', 'SBx': 1}, 'type': 'Craft'},
-    'Inkcraft': {'source': 'HM3 Skills 16', 'skillBase': {'formula': '@eye, @sml, @int, Skorus:2, Tai', 'SBx': 1}, 'type': 'Craft'},
-    'Jewelcraft': {'source': 'HM3 Skills 16', 'skillBase': {'formula': '@dex, @eye, @wil, Feniri:3, Tarael, Aralius', 'SBx': 1}, 'type': 'Craft'},
-    'Law': {'source': 'HM3 Skills 16', 'skillBase': {'formula': '@voi, @int, @wil, Tarael, Tai', 'SBx': 1}, 'type': 'Craft'},
-    'Lockcraft': {'source': 'HM3 Skills 16', 'skillBase': {'formula': '@dex, @eye, @wil, Feniri', 'SBx': 1}, 'type': 'Craft'},
+    'Agriculture': {
+        'source': 'HM3 Skills 13',
+        'skillBase': {'formula': '@str, @sta, @wil, Ulandus:2, Aralius:2', 'SBx': 2},
+        'type': 'Craft'
+    },
+    'Alchemy': {
+        'source': 'HM3 Skills 13',
+        'skillBase': {'formula': '@sml, @int, @aur, Skorus:3, Tai:2, Masara:2', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Animalcraft': {
+        'source': 'HM3 Skills 13',
+        'skillBase': {'formula': '@agl, @voi, @wil, Ulandus, Aralius', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Astrology': {
+        'source': 'HM3 Skills 13',
+        'skillBase': {'formula': '@eye, @int, @aur, Tarael', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Brewing': {
+        'source': 'HM3 Skills 13',
+        'skillBase': {'formula': '@dex, @sml, @sml, Skorus:3, Tai:2, Masara:2', 'SBx': 2},
+        'type': 'Craft'
+    },
+    'Ceramics': {
+        'source': 'HM3 Skills 13',
+        'skillBase': {'formula': '@dex, @dex, @eye, Ulandus:2, Aralius:2', 'SBx': 2},
+        'type': 'Craft'
+    },
+    'Cookery': {
+        'source': 'HM3 Skills 13',
+        'skillBase': {'formula': '@dex, @sml, @sml, Skorus', 'SBx': 3},
+        'type': 'Craft'
+    },
+    'Drawing': {
+        'source': 'HM3 Skills 13',
+        'skillBase': {'formula': '@dex, @eye, @eye, Skorus, Tai', 'SBx': 2},
+        'type': 'Craft'
+    },
+    'Embalming': {
+        'source': 'HM3 Skills 14',
+        'skillBase': {'formula': '@dex, @eye, @sml, Skorus, Ulandus', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Engineering': {
+        'source': 'HM3 Skills 14',
+        'skillBase': {'formula': '@dex, @int, @int, Ulandus:2, Aralius:2, Feniri', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Fishing': {
+        'source': 'HM3 Skills 14',
+        'skillBase': {'formula': '@dex, @eye, @wil, Masara:2, Lado:2', 'SBx': 3},
+        'type': 'Craft'
+    },
+    'Fletching': {
+        'source': 'HM3 Skills 15',
+        'skillBase': {'formula': '@dex, @dex, @eye, Hirin:2, Tarael, Nadai', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Folklore': {
+        'source': 'HM3 Skills 15',
+        'skillBase': {'formula': '@voi, @int, @int, Tai:2', 'SBx': 3},
+        'type': 'Craft'
+    },
+    'Foraging': {
+        'source': 'HM3 Skills 15',
+        'skillBase': {'formula': '@dex, @sml, @int, Ulandus:2, Aralius:2', 'SBx': 3},
+        'type': 'Craft'
+    },
+    'Glassworking': {
+        'source': 'HM3 Skills 15',
+        'skillBase': {'formula': '@dex, @eye, @wil, Feniri:2', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Heraldry': {
+        'source': 'HM3 Skills 15',
+        'skillBase': {'formula': '@dex, @eye, @wil, Skorus, Tai', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Herblore': {
+        'source': 'HM3 Skills 15',
+        'skillBase': {'formula': '@eye, @sml, @int, Ulandus:3, Aralius:2', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Hidework': {
+        'source': 'HM3 Skills 15',
+        'skillBase': {'formula': '@dex, @sml, @wil, Ulandis, Aralius', 'SBx': 2},
+        'type': 'Craft'
+    },
+    'Hunting': {
+        'source': 'HM3 Skills 16',
+        'skillBase': {'formula': '@agl, @sml, @int, Ulandus:2, Aralius:2', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Inkcraft': {
+        'source': 'HM3 Skills 16',
+        'skillBase': {'formula': '@eye, @sml, @int, Skorus:2, Tai', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Jewelcraft': {
+        'source': 'HM3 Skills 16',
+        'skillBase': {'formula': '@dex, @eye, @wil, Feniri:3, Tarael, Aralius', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Law': {
+        'source': 'HM3 Skills 16',
+        'skillBase': {'formula': '@voi, @int, @wil, Tarael, Tai', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Lockcraft': {
+        'source': 'HM3 Skills 16',
+        'skillBase': {'formula': '@dex, @eye, @wil, Feniri', 'SBx': 1},
+        'type': 'Craft'
+    },
     'Lore': {'source': 'HM3 Skills 16', 'skillBase': {'formula': '@eye, @int, @int, Tai:2', 'SBx': 1}, 'type': 'Craft'},
-    'Masonry': {'source': 'HM3 Skills 16', 'skillBase': {'formula': '@str, @dex, @int, Ulandus:2, Aralius:2', 'SBx': 1}, 'type': 'Craft'},
-    'Mathematics': {'source': 'HM3 Skills 16', 'skillBase': {'formula': '@int, @int, @wil, Tai:3, Tarael, Skorus', 'SBx': 1}, 'type': 'Craft'},
-    'Metalcraft': {'source': 'HM3 Skills 16', 'skillBase': {'formula': '@str, @dex, @wil, Feniri:3, Ahnu, Angberelius', 'SBx': 1}, 'type': 'Craft'},
-    'Milling': {'source': 'HM3 Skills 16', 'skillBase': {'formula': '@str, @dex, @sml, Ulandus', 'SBx': 2}, 'type': 'Craft'},
-    'Mining': {'source': 'HM3 Skills 16', 'skillBase': {'formula': '@str, @eye, @int, Ulandus:2, Aralius:2, Feniri', 'SBx': 1}, 'type': 'Craft'},
-    'Perfumery': {'source': 'HM3 Skills 16', 'skillBase': {'formula': '@sml, @sml, @int, Hirin, Skorus, Tarael', 'SBx': 1}, 'type': 'Craft'},
-    'Physician': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@dex, @eye, @int, Masara:2, Skorus, Tai', 'SBx': 1}, 'type': 'Craft'},
-    'Piloting': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@dex, @eye, @int, Lado:3, Masara', 'SBx': 1}, 'type': 'Craft'},
-    'Runecraft': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@int, @aur, @aur, Tai:2, Skorus', 'SBx': 1}, 'type': 'Craft'},
-    'Seamanship': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@str, @dex, @agl, Lado:3, Masara, Skorus', 'SBx': 2}, 'type': 'Craft'},
-    'Shipwright': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@str, @dex, @int, Lado:3, Masara', 'SBx': 1}, 'type': 'Craft'},
-    'Survival': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@str, @dex, @int, Ulandus:2, Aralius', 'SBx': 3}, 'type': 'Craft'},
-    'Tarotry': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@int, @aur, @wil, Tarael:2, Tai:2, Skorus, Hirin', 'SBx': 1}, 'type': 'Craft'},
-    'Textilecraft': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@dex, @dex, @eye, Ulandus, Aralius', 'SBx': 2}, 'type': 'Craft'},
-    'Timbercraft': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@str, @dex, @agl, Ulandus:3, Aralius', 'SBx': 2}, 'type': 'Craft'},
-    'Tracking': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@eye, @sml, @wil, Ulandus:3, Aralius:3', 'SBx': 2}, 'type': 'Craft'},
-    'Trapping': {'source': 'Barbarians 6', 'skillBase': {'formula': '@agl, @dex, @eye, Ulandus:2, Aralius:2', 'SBx': 2}, 'type': 'Craft'},
-    'Weaponcraft': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@str, @dex, @wil, Feniri:3, Ahnu, Angberelius', 'SBx': 1}, 'type': 'Craft'},
-    'Weatherlore': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@int, @eye, @sml, Hirin, Tarael, Masada, Lado', 'SBx': 3}, 'type': 'Craft'},
-    'Woodcraft': {'source': 'HM3 Skills 17', 'skillBase': {'formula': '@dex, @dex, @wil, Ulandus:2, Aralius, Lado', 'SBx': 2}, 'type': 'Craft'},
+    'Masonry': {
+        'source': 'HM3 Skills 16',
+        'skillBase': {'formula': '@str, @dex, @int, Ulandus:2, Aralius:2', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Mathematics': {
+        'source': 'HM3 Skills 16',
+        'skillBase': {'formula': '@int, @int, @wil, Tai:3, Tarael, Skorus', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Metalcraft': {
+        'source': 'HM3 Skills 16',
+        'skillBase': {'formula': '@str, @dex, @wil, Feniri:3, Ahnu, Angberelius', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Milling': {
+        'source': 'HM3 Skills 16',
+        'skillBase': {'formula': '@str, @dex, @sml, Ulandus', 'SBx': 2},
+        'type': 'Craft'
+    },
+    'Mining': {
+        'source': 'HM3 Skills 16',
+        'skillBase': {'formula': '@str, @eye, @int, Ulandus:2, Aralius:2, Feniri', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Perfumery': {
+        'source': 'HM3 Skills 16',
+        'skillBase': {'formula': '@sml, @sml, @int, Hirin, Skorus, Tarael', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Physician': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@dex, @eye, @int, Masara:2, Skorus, Tai', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Piloting': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@dex, @eye, @int, Lado:3, Masara', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Runecraft': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@int, @aur, @aur, Tai:2, Skorus', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Seamanship': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@str, @dex, @agl, Lado:3, Masara, Skorus', 'SBx': 2},
+        'type': 'Craft'
+    },
+    'Shipwright': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@str, @dex, @int, Lado:3, Masara', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Survival': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@str, @dex, @int, Ulandus:2, Aralius', 'SBx': 3},
+        'type': 'Craft'
+    },
+    'Tarotry': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@int, @aur, @wil, Tarael:2, Tai:2, Skorus, Hirin', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Textilecraft': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@dex, @dex, @eye, Ulandus, Aralius', 'SBx': 2},
+        'type': 'Craft'
+    },
+    'Timbercraft': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@str, @dex, @agl, Ulandus:3, Aralius', 'SBx': 2},
+        'type': 'Craft'
+    },
+    'Tracking': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@eye, @sml, @wil, Ulandus:3, Aralius:3', 'SBx': 2},
+        'type': 'Craft'
+    },
+    'Trapping': {
+        'source': 'Barbarians 6',
+        'skillBase': {'formula': '@agl, @dex, @eye, Ulandus:2, Aralius:2', 'SBx': 2},
+        'type': 'Craft'
+    },
+    'Weaponcraft': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@str, @dex, @wil, Feniri:3, Ahnu, Angberelius', 'SBx': 1},
+        'type': 'Craft'
+    },
+    'Weatherlore': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@int, @eye, @sml, Hirin, Tarael, Masada, Lado', 'SBx': 3},
+        'type': 'Craft'
+    },
+    'Woodcraft': {
+        'source': 'HM3 Skills 17',
+        'skillBase': {'formula': '@dex, @dex, @wil, Ulandus:2, Aralius, Lado', 'SBx': 2},
+        'type': 'Craft'
+    },
 
     'Fyvria': {
         'source': 'HM Magic, Shek-pvar 6',
         'skillBase': {
-            'formula': '@aur, @aur, @sml, Ulandus:3, Aralius:2, Feneri:1, Angberelius:-1, Nadai:-2, Hirin:-3, Tarael:-2, Tai:-1, Masara, Lado:2',
+            'formula':
+                '@aur, @aur, @sml, Ulandus:3, Aralius:2, Feneri:1, Angberelius:-1, Nadai:-2, Hirin:-3, Tarael:-2, Tai:-1, Masara, Lado:2',
             'SBx': 3
         },
         'type': 'Magic'
@@ -457,7 +793,8 @@ HM3.stdSkills = {
     'Jmorvi': {
         'source': 'HM Magic, Shek-pvar 6',
         'skillBase': {
-            'formula': '@aur, @aur, @str, Ulandus, Aralius:2, Feneri:3, Ahnu:2, Angberelius:1, Hirin:-1, Tarael:-2, Tai:-3, Skorus:-2, Masara:-1',
+            'formula':
+                '@aur, @aur, @str, Ulandus, Aralius:2, Feneri:3, Ahnu:2, Angberelius:1, Hirin:-1, Tarael:-2, Tai:-3, Skorus:-2, Masara:-1',
             'SBx': 3
         },
         'type': 'Magic'
@@ -465,7 +802,8 @@ HM3.stdSkills = {
     'Lyahvi': {
         'source': 'HM Magic, Shek-Pvar 6',
         'skillBase': {
-            'formula': '@aur, @aur, @eye, Ulandus:-3, Aralius:-2,Feneri:-1, Angberelius, Nadai:2, Hirin:3, Tarael:2, Tai,Masara:-1, Lado:-2',
+            'formula':
+                '@aur, @aur, @eye, Ulandus:-3, Aralius:-2,Feneri:-1, Angberelius, Nadai:2, Hirin:3, Tarael:2, Tai,Masara:-1, Lado:-2',
             'SBx': 3
         },
         'type': 'Magic'
@@ -473,7 +811,8 @@ HM3.stdSkills = {
     'Odivshe': {
         'source': 'HM Magic, Shek-pvar 6',
         'skillBase': {
-            'formula': '@aur, @aur, @dex, Ulandus, Feneri:-1, Ahnu:-2, Angberelius:-3, Nadai:-2, Hirin:-1, Tai:1, Skorus:2, Masara:3, Lado:2',
+            'formula':
+                '@aur, @aur, @dex, Ulandus, Feneri:-1, Ahnu:-2, Angberelius:-3, Nadai:-2, Hirin:-1, Tai:1, Skorus:2, Masara:3, Lado:2',
             'SBx': 3
         },
         'type': 'Magic'
@@ -481,7 +820,8 @@ HM3.stdSkills = {
     'Peleahn': {
         'source': 'HM Magic, Shek-pvar 6',
         'skillBase': {
-            'formula': '@aur, @aur, @agl, Ulandus:-1, Feneri, Ahnu:2, Angberelius:3, Nadai:2, Hirin, Tai:-1, Skorus:-2, Masara:-3, Lado:-2',
+            'formula':
+                '@aur, @aur, @agl, Ulandus:-1, Feneri, Ahnu:2, Angberelius:3, Nadai:2, Hirin, Tai:-1, Skorus:-2, Masara:-3, Lado:-2',
             'SBx': 3
         },
         'type': 'Magic'
@@ -489,34 +829,99 @@ HM3.stdSkills = {
     'Savorya': {
         'source': 'HM Magic, Shek-pvar 6',
         'skillBase': {
-            'formula': '@aur, @aur, @int, Ulandus:-1, Aralius:-2, Feneri:-3, Ahnu:-2, Angberelius:-1, Hirin:1, Tarael:2, Tai:3, Skorus:2, Masara',
+            'formula':
+                '@aur, @aur, @int, Ulandus:-1, Aralius:-2, Feneri:-3, Ahnu:-2, Angberelius:-1, Hirin:1, Tarael:2, Tai:3, Skorus:2, Masara',
             'SBx': 3
         },
         'type': 'Magic'
     },
-    'Neutral': {'source': 'HM Magic, Shek-pvar 6', 'skillBase': {'formula': '@aur, @aur, @wil', 'SBx': 1}, 'type': 'Magic'},
+    'Neutral': {
+        'source': 'HM Magic, Shek-pvar 6',
+        'skillBase': {'formula': '@aur, @aur, @wil', 'SBx': 1},
+        'type': 'Magic'
+    },
 
-    'Acrobatics': {'source': 'HM3 Skills 8', 'skillBase': {'formula': '@str, @agl, @agl, Nadai:2, Hirin', 'SBx': 2}, 'type': 'Physical'},
-    'Climbing': {'source': 'HM3 Skills 8', 'skillBase': {'formula': '@str, @dex, @agl, Ulandus:2, Aralius:2', 'SBx': 4}, 'type': 'Physical'},
-    'Condition': {'source': 'HM3 Skills 9', 'skillBase': {'formula': '@str, @sta, @wil, Ulandus, Lado', 'SBx': 5}, 'type': 'Physical'},
-    'Dancing': {'source': 'HM3 Skills 9', 'skillBase': {'formula': '@Dex, @agl, @agl, Tarael:2, Hirin, Tai', 'SBx': 2}, 'type': 'Physical'},
-    'Jumping': {'source': 'HM3 Skills 9', 'skillBase': {'formula': '@str, @agl, @agl, Nadai:2, Hirin:2', 'SBx': 4}, 'type': 'Physical'},
-    'Legerdemain': {'source': 'HM3 Skills 9', 'skillBase': {'formula': '@dex, @dex, @wil, Skorus:2, Tai:2, Tarael:2', 'SBx': 1}, 'type': 'Physical'},
-    'Skiing': {'source': 'HM3 Skills 9', 'skillBase': {'formula': '@str, @dex, @agl, Masara:2, Skorus, Lado', 'SBx': 1}, 'type': 'Physical'},
-    'Stealth': {'source': 'HM3 Skills 9', 'skillBase': {'formula': '@agl, @hrg, @wil, Hirin:2, Tarael:2, Tai:2', 'SBx': 3}, 'type': 'Physical'},
-    'Swimming': {'source': 'HM3 Skills 9', 'skillBase': {'formula': '@sta, @dex, @agl, Skorus, Masara:3, Lado:3', 'SBx': 1}, 'type': 'Physical'},
-    'Throwing': {'source': 'HM3 Skills 10', 'skillBase': {'formula': '@str, @dex, @eye, Hirin:2, Tarael, Nadai', 'SBx': 4}, 'type': 'Physical'},
+    'Acrobatics': {
+        'source': 'HM3 Skills 8',
+        'skillBase': {'formula': '@str, @agl, @agl, Nadai:2, Hirin', 'SBx': 2},
+        'type': 'Physical'
+    },
+    'Climbing': {
+        'source': 'HM3 Skills 8',
+        'skillBase': {'formula': '@str, @dex, @agl, Ulandus:2, Aralius:2', 'SBx': 4},
+        'type': 'Physical'
+    },
+    'Condition': {
+        'source': 'HM3 Skills 9',
+        'skillBase': {'formula': '@str, @sta, @wil, Ulandus, Lado', 'SBx': 5},
+        'type': 'Physical'
+    },
+    'Dancing': {
+        'source': 'HM3 Skills 9',
+        'skillBase': {'formula': '@Dex, @agl, @agl, Tarael:2, Hirin, Tai', 'SBx': 2},
+        'type': 'Physical'
+    },
+    'Jumping': {
+        'source': 'HM3 Skills 9',
+        'skillBase': {'formula': '@str, @agl, @agl, Nadai:2, Hirin:2', 'SBx': 4},
+        'type': 'Physical'
+    },
+    'Legerdemain': {
+        'source': 'HM3 Skills 9',
+        'skillBase': {'formula': '@dex, @dex, @wil, Skorus:2, Tai:2, Tarael:2', 'SBx': 1},
+        'type': 'Physical'
+    },
+    'Skiing': {
+        'source': 'HM3 Skills 9',
+        'skillBase': {'formula': '@str, @dex, @agl, Masara:2, Skorus, Lado', 'SBx': 1},
+        'type': 'Physical'
+    },
+    'Stealth': {
+        'source': 'HM3 Skills 9',
+        'skillBase': {'formula': '@agl, @hrg, @wil, Hirin:2, Tarael:2, Tai:2', 'SBx': 3},
+        'type': 'Physical'
+    },
+    'Swimming': {
+        'source': 'HM3 Skills 9',
+        'skillBase': {'formula': '@sta, @dex, @agl, Skorus, Masara:3, Lado:3', 'SBx': 1},
+        'type': 'Physical'
+    },
+    'Throwing': {
+        'source': 'HM3 Skills 10',
+        'skillBase': {'formula': '@str, @dex, @eye, Hirin:2, Tarael, Nadai', 'SBx': 4},
+        'type': 'Physical'
+    },
 
-    'Agrik': {'source': 'HM Religion, Agrik 1', 'skillBase': {'formula': '@voi, @int, @str, Nadai:2, Angberelius, Ahnu', 'SBx': 1}, 'type': 'Ritual'},
-    'Halea': {'source': 'HM Religion, Halea 1', 'skillBase': {'formula': '@voi, @int, @cml, Tarael:2, Hirin, Masara', 'SBx': 1}, 'type': 'Ritual'},
-    'Ilvir': {'source': 'HM Religion, Ilvir 1', 'skillBase': {'formula': '@voi, @int, @aur, Skorus:2, Tai, Ulandus', 'SBx': 1}, 'type': 'Ritual'},
+    'Agrik': {
+        'source': 'HM Religion, Agrik 1',
+        'skillBase': {'formula': '@voi, @int, @str, Nadai:2, Angberelius, Ahnu', 'SBx': 1},
+        'type': 'Ritual'
+    },
+    'Halea': {
+        'source': 'HM Religion, Halea 1',
+        'skillBase': {'formula': '@voi, @int, @cml, Tarael:2, Hirin, Masara', 'SBx': 1},
+        'type': 'Ritual'
+    },
+    'Ilvir': {
+        'source': 'HM Religion, Ilvir 1',
+        'skillBase': {'formula': '@voi, @int, @aur, Skorus:2, Tai, Ulandus', 'SBx': 1},
+        'type': 'Ritual'
+    },
     'Larani': {
         'source': 'HM Religion, Larani 1',
         'skillBase': {'formula': '@voi, @int, @wil, Angberelius:2, Ahnu, Feniri', 'SBx': 1},
         'type': 'Ritual'
     },
-    'Morgath': {'source': 'HM Religion, Morgath 1', 'skillBase': {'formula': '@voi, @int, @aur, Lado:2, Ahnu, Masara', 'SBx': 1}, 'type': 'Ritual'},
-    'Naveh': {'source': 'HM Religion, Naveh 1', 'skillBase': {'formula': '@voi, @int, @wil, Masara:2, Skorus, Tarael', 'SBx': 1}, 'type': 'Ritual'},
+    'Morgath': {
+        'source': 'HM Religion, Morgath 1',
+        'skillBase': {'formula': '@voi, @int, @aur, Lado:2, Ahnu, Masara', 'SBx': 1},
+        'type': 'Ritual'
+    },
+    'Naveh': {
+        'source': 'HM Religion, Naveh 1',
+        'skillBase': {'formula': '@voi, @int, @wil, Masara:2, Skorus, Tarael', 'SBx': 1},
+        'type': 'Ritual'
+    },
     'Peoni': {
         'source': 'HM Religion, Peoni 1',
         'skillBase': {'formula': '@voi, @int, @dex, Aralius:2, Angberelius, Ulandus', 'SBx': 1},
@@ -527,7 +932,11 @@ HM3.stdSkills = {
         'skillBase': {'formula': '@voi, @int, @str, Feniri:2, Aralius, Lado', 'SBx': 1},
         'type': 'Ritual'
     },
-    'Siem': {'source': 'HM Religion, Siem 1', 'skillBase': {'formula': '@voi, @int, @aur, Hirin:2, Feniri, Ulandus', 'SBx': 1}, 'type': 'Ritual'},
+    'Siem': {
+        'source': 'HM Religion, Siem 1',
+        'skillBase': {'formula': '@voi, @int, @aur, Hirin:2, Feniri, Ulandus', 'SBx': 1},
+        'type': 'Ritual'
+    },
     "Save K'nor": {
         'source': "HM Religion, Save K'nor 1",
         'skillBase': {'formula': '@voi, @int, @int, Tai:2, Tarael, Skorus', 'SBx': 1},
@@ -2323,27 +2732,157 @@ HM3.treatmentTable = {
     Blunt: [
         {injury: 'Bruise', desc: 'Welts/Swelling', treatment: 'Compress', eml: 30, nt: 5, cf: 4, mf: 5, ms: 6, cs: 7},
         {injury: 'Fracture', desc: 'Simple Fracture', treatment: 'Splint', eml: 20, nt: 4, cf: 3, mf: 4, ms: 5, cs: 6},
-        {injury: 'Crush', desc: 'Compound Fracture/Bleeder', treatment: 'Surgery/Splint', eml: 10, nt: 3, cf: 2, mf: 3, ms: 4, cs: 5}
+        {
+            injury: 'Crush',
+            desc: 'Compound Fracture/Bleeder',
+            treatment: 'Surgery/Splint',
+            eml: 10,
+            nt: 3,
+            cf: 2,
+            mf: 3,
+            ms: 4,
+            cs: 5
+        }
     ],
     Edged: [
-        {injury: 'Minor Cut/Tear', desc: 'Cut/Gash 1-2" long', treatment: 'Clean & Dress', eml: 30, nt: 5, cf: 4, mf: 5, ms: 6, cs: 7},
-        {injury: 'Serious Cut/Tear', desc: 'Cut/Gash 2-6" long', treatment: 'Surgery', eml: 20, nt: 4, cf: 3, mf: 4, ms: 5, cs: 6},
-        {injury: 'Grievous Cut/Tear', desc: 'Cut/Gash over 6" long/Bleeder', treatment: 'Surgery', eml: 10, nt: 3, cf: 2, mf: 3, ms: 4, cs: 5}
+        {
+            injury: 'Minor Cut/Tear',
+            desc: 'Cut/Gash 1-2" long',
+            treatment: 'Clean & Dress',
+            eml: 30,
+            nt: 5,
+            cf: 4,
+            mf: 5,
+            ms: 6,
+            cs: 7
+        },
+        {
+            injury: 'Serious Cut/Tear',
+            desc: 'Cut/Gash 2-6" long',
+            treatment: 'Surgery',
+            eml: 20,
+            nt: 4,
+            cf: 3,
+            mf: 4,
+            ms: 5,
+            cs: 6
+        },
+        {
+            injury: 'Grievous Cut/Tear',
+            desc: 'Cut/Gash over 6" long/Bleeder',
+            treatment: 'Surgery',
+            eml: 10,
+            nt: 3,
+            cf: 2,
+            mf: 3,
+            ms: 4,
+            cs: 5
+        }
     ],
     Fire: [
-        {injury: 'Minor Burn', desc: '1st Degree Burn/Blisters', treatment: 'Compress', eml: 30, nt: 5, cf: 4, mf: 5, ms: 6, cs: 7},
-        {injury: 'Serious Burn', desc: '2nd Degree Burn/Open Wound', treatment: 'Clean & Dress', eml: 15, nt: 3, cf: 2, mf: 3, ms: 4, cs: 5},
-        {injury: 'Grievous Burn', desc: '3rd Degree Burn/Charred Skin', treatment: 'Clean & Dress', eml: 5, nt: 2, cf: 1, mf: 2, ms: 3, cs: 4}
+        {
+            injury: 'Minor Burn',
+            desc: '1st Degree Burn/Blisters',
+            treatment: 'Compress',
+            eml: 30,
+            nt: 5,
+            cf: 4,
+            mf: 5,
+            ms: 6,
+            cs: 7
+        },
+        {
+            injury: 'Serious Burn',
+            desc: '2nd Degree Burn/Open Wound',
+            treatment: 'Clean & Dress',
+            eml: 15,
+            nt: 3,
+            cf: 2,
+            mf: 3,
+            ms: 4,
+            cs: 5
+        },
+        {
+            injury: 'Grievous Burn',
+            desc: '3rd Degree Burn/Charred Skin',
+            treatment: 'Clean & Dress',
+            eml: 5,
+            nt: 2,
+            cf: 1,
+            mf: 2,
+            ms: 3,
+            cs: 4
+        }
     ],
     Frost: [
-        {injury: 'Minor Frost', desc: 'Chilled Flesh/Shivering', treatment: 'Warming', eml: 50, nt: 5, cf: 4, mf: 5, ms: 7, cs: 7},
-        {injury: 'Serious Frost', desc: '2nd Degree Frostbite', treatment: 'Warming', eml: 25, nt: 4, cf: 3, mf: 4, ms: 5, cs: 7},
-        {injury: 'Grievous Frost', desc: '3rd Degree Frostbite', treatment: 'Amputate', eml: 10, nt: 0, cf: 0, mf: 0, ms: 0, cs: 0}
+        {
+            injury: 'Minor Frost',
+            desc: 'Chilled Flesh/Shivering',
+            treatment: 'Warming',
+            eml: 50,
+            nt: 5,
+            cf: 4,
+            mf: 5,
+            ms: 7,
+            cs: 7
+        },
+        {
+            injury: 'Serious Frost',
+            desc: '2nd Degree Frostbite',
+            treatment: 'Warming',
+            eml: 25,
+            nt: 4,
+            cf: 3,
+            mf: 4,
+            ms: 5,
+            cs: 7
+        },
+        {
+            injury: 'Grievous Frost',
+            desc: '3rd Degree Frostbite',
+            treatment: 'Amputate',
+            eml: 10,
+            nt: 0,
+            cf: 0,
+            mf: 0,
+            ms: 0,
+            cs: 0
+        }
     ],
     Piercing: [
-        {injury: 'Minor Stab/Bite', desc: 'Puncture 1" deep', treatment: 'Clean & Dress', eml: 25, nt: 5, cf: 4, mf: 5, ms: 6, cs: 7},
-        {injury: 'Serious Stab/Bite', desc: 'Puncture 3" deep', treatment: 'Clean & Dress', eml: 15, nt: 4, cf: 3, mf: 4, ms: 5, cs: 6},
-        {injury: 'Grievous Stab/Bite', desc: 'Deep Puncture/Bleeder', treatment: 'Surgery', eml: 5, nt: 3, cf: 2, mf: 3, ms: 4, cs: 5}
+        {
+            injury: 'Minor Stab/Bite',
+            desc: 'Puncture 1" deep',
+            treatment: 'Clean & Dress',
+            eml: 25,
+            nt: 5,
+            cf: 4,
+            mf: 5,
+            ms: 6,
+            cs: 7
+        },
+        {
+            injury: 'Serious Stab/Bite',
+            desc: 'Puncture 3" deep',
+            treatment: 'Clean & Dress',
+            eml: 15,
+            nt: 4,
+            cf: 3,
+            mf: 4,
+            ms: 5,
+            cs: 6
+        },
+        {
+            injury: 'Grievous Stab/Bite',
+            desc: 'Deep Puncture/Bleeder',
+            treatment: 'Surgery',
+            eml: 5,
+            nt: 3,
+            cf: 2,
+            mf: 3,
+            ms: 4,
+            cs: 5
+        }
     ]
 };
 

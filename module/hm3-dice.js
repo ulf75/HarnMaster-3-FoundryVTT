@@ -659,8 +659,7 @@ export class DiceHM3 {
                 actor: rollData.actor,
                 data: rollData.actor.system,
                 hitLocations: hitLocations,
-                items: rollData.actor.items,
-                name: rollData.actor.token ? rollData.actor.token.name : rollData.actor.name
+                items: rollData.actor.items
             };
 
             // Create the Roll instance
