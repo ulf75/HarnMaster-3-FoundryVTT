@@ -1399,6 +1399,19 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
                 };
 
                 const dex = await DiceHM3.d100StdRoll(stdRollData);
+                if (!dex.isSuccess && dex.isCritical) {
+                    await DiceHM3.injuryRoll({
+                        actor: actorInfo.actor,
+                        aim: 'Mid',
+                        aspect: Aspect.BLUNT,
+                        impact: 1,
+                        items: actorInfo.actor.items,
+                        location: `${dx(2) === 1 ? 'Right' : 'Left'} Shoulder`,
+                        name: `Character has wrenched one arm.`,
+                        noArmor: true,
+                        speaker: actorInfo.speaker
+                    });
+                }
             }
 
             let success = false;

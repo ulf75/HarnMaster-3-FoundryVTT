@@ -667,7 +667,7 @@ export class DiceHM3 {
             result = await DiceHM3.injuryDialog(dialogOptions);
         } else {
             result = DiceHM3._calcInjury(
-                'Random',
+                rollData.location ? rollData.location : 'Random',
                 rollData.impact,
                 rollData.aspect,
                 game.settings.get('hm3', 'addInjuryToActorSheet') !== 'disable',
@@ -758,10 +758,13 @@ export class DiceHM3 {
             locationName = `${result.location} ${injuryDesc[result.aspect][sev]}`;
         }
 
+        const from = result.atkToken?.name;
         const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
-        const notes = dateTime
-            ? `From '${result.atkToken?.name}' in '${game.scenes.current.name}', ${dateTime.date} ${dateTime.yearPostfix} (Aspect: ${result.aspect})`
-            : `From '${result.atkToken?.name}' in '${game.scenes.current.name}' (Aspect: ${result.aspect})`;
+        let notes = '';
+        notes += from ? `From '${from}' in '${game.scenes.current.name}' ` : `In '${game.scenes.current.name}' `;
+        notes += dateTime
+            ? `${dateTime.date} ${dateTime.yearPostfix} (Aspect: ${result.aspect})`
+            : `(Aspect: ${result.aspect})`;
 
         let item = Item.create(
             {
@@ -869,27 +872,28 @@ export class DiceHM3 {
         const enableLimbInjuries = game.settings.get('hm3', 'limbInjuries');
 
         const result = {
-            type: 'injury',
-            isRandom: location === 'Random',
-            name: dialogOptions.name,
+            addToCharSheet: addToCharSheet,
             aim: aim,
-            aspect: aspect,
-            location: location,
-            impact: impact,
             armorType: 'None',
             armorValue: 0,
+            aspect: aspect,
             effectiveImpact: impact,
-            isInjured: false,
+            impact: impact,
             injuryLevel: 0,
             injuryLevelText: 'NA',
-            isBleeder: false,
-            isFumbleRoll: false,
-            isFumble: false,
-            isStumbleRoll: false,
-            isStumble: false,
             isAmputate: false,
+            isBleeder: false,
+            isFumble: false,
+            isFumbleRoll: false,
+            isInjured: false,
             isKillShot: false,
-            addToCharSheet: addToCharSheet
+            isRandom: location === 'Random',
+            isStumble: false,
+            isStumbleRoll: false,
+            location: location,
+            name: dialogOptions.name,
+            noArmor: dialogOptions.noArmor || false,
+            type: 'injury'
         };
 
         // determine location of injury
@@ -900,18 +904,21 @@ export class DiceHM3 {
         const armorLocationData = armorLocationItem.system;
 
         result.location = armorLocationItem.name;
-        result.armorType = armorLocationData.layers === '' ? 'None' : armorLocationData.layers;
+        result.armorType = armorLocationData.layers === '' || dialogOptions.noArmor ? 'None' : armorLocationData.layers;
 
         // determine effective impact (impact - armor)
-        if (aspect === Aspect.BLUNT) {
-            result.armorValue = armorLocationData.blunt;
-        } else if (aspect === Aspect.EDGED) {
-            result.armorValue = armorLocationData.edged;
-        } else if (aspect === Aspect.PIERCING) {
-            result.armorValue = armorLocationData.piercing;
-        } else {
-            result.armorValue = armorLocationData.fire;
+        if (!dialogOptions.noArmor) {
+            if (aspect === Aspect.BLUNT) {
+                result.armorValue = armorLocationData.blunt;
+            } else if (aspect === Aspect.EDGED) {
+                result.armorValue = armorLocationData.edged;
+            } else if (aspect === Aspect.PIERCING) {
+                result.armorValue = armorLocationData.piercing;
+            } else {
+                result.armorValue = armorLocationData.fire;
+            }
         }
+
         result.effectiveImpact = Math.max(impact - result.armorValue, 0);
 
         // Determine Injury Level
