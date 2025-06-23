@@ -783,7 +783,7 @@
                     <div class="combat-stat-value">{{adata.endurance}}</div>
                 </div>
             </div>
-            <div class="items-list combat-stats grid grid-fixed-row {{#if hasRwPermission}}grid-6col{{else}}grid-5col{{/if}}">
+            <div class="items-list combat-stats grid grid-fixed-row {{#if isGM}}grid-7col{{else}}grid-6col{{/if}}">
                 <div class="combat-stat flexrow" id="combat-injuryroll">
                     <div class="item-dice">
                         <i class="active fas fa-dice-d20"></i>
@@ -816,7 +816,14 @@
                     <label class="combat-stat-label tooltip"><a class="damage-roll"
                             title="Damage Roll">Damage</a></label>
                 </div>
-                {{#if hasRwPermission}}
+                <div class="combat-stat flexrow" id="combat-fallingroll">
+                    <div class="item-dice">
+                        <i class="active fas fa-dice-d20"></i>
+                    </div>
+                    <label class="combat-stat-label tooltip"><a class="falling-roll"
+                            title="Falling Roll">Falling</a></label>
+                </div>                
+                {{#if isGM}}
                 <div class="combat-stat flexrow" id="combat-moraleroll">
                     <div class="item-dice">
                         <i class="active fas fa-dice-d20"></i>

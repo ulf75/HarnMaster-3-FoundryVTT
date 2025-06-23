@@ -5,8 +5,9 @@
     </div>
     {{/if}}
 
-    <header class="card-header flexrow">
+    <header class="card-header flexcol">
         <h3 class="header-title">{{title}}</h3>
+        <h4 class="subtitle">{{name}}</h4>
     </header>
 
     {{#if notes}}
@@ -81,12 +82,16 @@
     </div>
     {{/if}}
 
+    {{#if falling}}
+    <div class="card-buttons">
+        <button data-action="falling" data-visible-actor-id="{{visibleActorId}}" data-token-id="{{tokenId}}">Falling</button>
+    </div>
+    {{/if}}
+
     {{#if ota}}
     <div class="card-buttons">
-        {{#if ota}}
         <button data-action="ota-attack" data-visible-actor-id="{{visibleActorId}}" data-atk-token-id="{{atkTokenId}}">Initiate TA Attack</button>
         <!-- <button data-action="ata-attack"  data-visible-actor-id="{{visibleAtkActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}">Initiate TA Attack</button> -->
-        {{/if}}
     </div>
     {{/if}}
 </div>

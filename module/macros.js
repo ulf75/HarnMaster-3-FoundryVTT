@@ -1295,6 +1295,186 @@ export async function throwDownRoll(atkTokenId, defTokenId, atkDice, defDice) {
     return null;
 }
 
+export async function fallingRoll(noDialog = false, myActor = null, token = null) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null});
+    if (!actorInfo) {
+        ui.notifications.warn(`No actor for this action could be determined.`);
+        return null;
+    }
+
+    let dlgTemplate = 'systems/hm3/templates/dialog/falling-test-dialog.html';
+    let dialogData = {
+        clear: true,
+        grabbing: false,
+        height: 6,
+        modifier: 0
+    };
+
+    const dodgeSkill = actorInfo.actor.items.find((item) => item.type === ItemType.SKILL && item.name === 'Dodge');
+    const acrobaticsSkill = actorInfo.actor.items.find(
+        (item) => item.type === ItemType.SKILL && item.name === 'Acrobatics'
+    );
+
+    dialogData.skill = 'Dodge';
+    dialogData.skills = [{key: 'Dodge'}];
+    if (acrobaticsSkill) {
+        dialogData.skill = 'Acrobatics';
+        dialogData.skills = [{key: 'Acrobatics'}, {key: 'Dodge'}];
+    }
+
+    dialogData.surface = '0';
+    dialogData.surfaces = [
+        {key: '-3', label: 'Deep Water (3 feet or more) (-3d6)'},
+        {key: '-2', label: 'Shallow Water (less than 3 feet) (-2d6)'},
+        {key: '-1', label: 'Soft Ground (mud, bog, etc.) (-1d6)'},
+        {key: '0', label: 'Normal Ground (grass, earth, etc.) (+0)'},
+        {key: '1', label: 'Hard Ground (paving stone, etc.) (+1d6)'},
+        {key: '2', label: 'Rocky Ground (+2d6)'}
+    ];
+
+    const html = await renderTemplate(dlgTemplate, dialogData);
+
+    // Create the dialog window
+    let dlg = await Dialog.prompt({
+        content: html.trim(),
+        label: 'Roll',
+        options: {width: 550},
+        title: 'Falling Test',
+        callback: async (html) => {
+            const form = html[0].querySelector('form');
+            const formClear = form.clear.checked;
+            const formGrabbing = form.grabbing.checked;
+            const formHeight = Number(form.height.value);
+            const formModifier = Number(form.modifier.value);
+            const formSkill = form.skills.value;
+            const formSurface = Number(form.surfaces.value);
+
+            let dice = Math.ceil(formHeight / 10 + Number.EPSILON); // 1d6 per 10 feet of fall
+            dice += formSurface; // Add surface modifier
+
+            if (formGrabbing) {
+                const effSkillBase = actorInfo.actor.system.abilities.dexterity.effective; // Use Dexterity for grabbing
+
+                const stdRollData = {
+                    actor: actorInfo.actor,
+                    effSkillBase,
+                    fastforward: true,
+                    isAbility: true,
+                    label: `d100 Dexterity Roll`,
+                    multiplier: 5,
+                    name: `${actorInfo.token.name} tries to grab something while falling.`,
+                    notes: '',
+                    notesData: {},
+                    numdice: 1,
+                    skill: 'Dexterity',
+                    speaker: actorInfo.speaker,
+                    target: effSkillBase * 5, // Target is Dexterity EML * 5
+                    type: 'dexterity-d100'
+                };
+                if (actorInfo.actor.isToken) {
+                    stdRollData.token = actorInfo.actor.token.id;
+                } else {
+                    stdRollData.actor = actorInfo.actor.id;
+                    stdRollData.token = token?.id;
+                }
+
+                stdRollData.addlInfoCallback = (result) => {
+                    const progress = `Fall modifier:`;
+
+                    if (result.isSuccess) {
+                        if (result.isCritical) {
+                            dice += -3; // Critical success reduces fall damage by 3d6
+                            return `<p>${progress} -3d6</p>`;
+                        } else {
+                            dice += -2; // Success reduces fall damage by 2d6
+                            return `<p>${progress} -2d6</p>`;
+                        }
+                    } else {
+                        if (result.isCritical) {
+                            return `<p>${actorInfo.token.name} has wrenched one arm, giving a Blunt Minor Injury (M1).</p>`;
+                        } else {
+                            return `<p>No effect</p>`;
+                        }
+                    }
+                };
+
+                const dex = await DiceHM3.d100StdRoll(stdRollData);
+            }
+
+            let success = false;
+            if (formClear && formHeight > 15) {
+                let target =
+                    formSkill === 'Acrobatics'
+                        ? acrobaticsSkill.system.effectiveMasteryLevel
+                        : dodgeSkill.system.effectiveMasteryLevel;
+                target = game.hm3.macros.HM100Check(target + formModifier);
+
+                const stdRollData = {
+                    actor: actorInfo.actor,
+                    fastforward: true,
+                    label: `${formSkill} Skill Test`,
+                    name: `${actorInfo.token.name} tries to avoid falling damage.`,
+                    notes: '',
+                    notesData: {},
+                    numdice: 1,
+                    skill: formSkill,
+                    speaker: actorInfo.speaker,
+                    target,
+                    type: 'falling'
+                };
+                if (actorInfo.actor.isToken) {
+                    stdRollData.token = actorInfo.actor.token.id;
+                } else {
+                    stdRollData.actor = actorInfo.actor.id;
+                    stdRollData.token = token?.id;
+                }
+
+                stdRollData.addlInfoCallback = (result) => {
+                    const progress = `Fall modifier:`;
+                    const CS = {'Dodge': -2, 'Acrobatics': -3};
+                    const MS = {'Dodge': -1, 'Acrobatics': -2};
+                    const MF = {'Dodge': 1, 'Acrobatics': 0};
+                    const CF = {'Dodge': 2, 'Acrobatics': 1};
+
+                    if (result.isSuccess) {
+                        if (result.isCritical) {
+                            dice += CS[stdRollData.skill];
+                            return `<p>${progress} ${CS[stdRollData.skill]}d6</p>`;
+                        } else {
+                            dice += MS[stdRollData.skill];
+                            return `<p>${progress} ${MS[stdRollData.skill]}d6</p>`;
+                        }
+                    } else {
+                        if (result.isCritical) {
+                            dice += CF[stdRollData.skill];
+                            return `<p>${progress} +${CF[stdRollData.skill]}d6</p>`;
+                        } else {
+                            dice += MF[stdRollData.skill];
+                            return `<p>${progress} +${MF[stdRollData.skill]}d6</p>`;
+                        }
+                    }
+                };
+
+                const dodge = await DiceHM3.d100StdRoll(stdRollData);
+                success = dodge.isSuccess;
+            }
+
+            dice = Math.max(dice, 0);
+            await DiceHM3.injuryRoll({
+                actor: actorInfo.actor,
+                aim: success ? 'Low' : 'Mid',
+                aspect: Aspect.BLUNT,
+                impact: (await new Roll(dice + 'd6').evaluate()).total,
+                items: actorInfo.actor.items,
+                name: `Falling from ${formHeight} feet with ${dice}d6 blunt damage.`,
+                speaker: actorInfo.speaker
+            });
+        }
+    });
+
+    return null;
+}
+
 export async function genericDamageRoll(myActor = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
     if (!actorInfo) {

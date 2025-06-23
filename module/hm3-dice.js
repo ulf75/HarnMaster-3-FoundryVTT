@@ -63,7 +63,11 @@ export class DiceHM3 {
         // If user cancelled the roll, then return immediately
         if (!roll) return null;
 
-        const addlInfo = roll.preData.addlInfoCallback ? roll.preData.addlInfoCallback(roll) : undefined;
+        const addlInfo = rollData.addlInfoCallback
+            ? rollData.addlInfoCallback(roll)
+            : roll.preData.addlInfoCallback
+            ? roll.preData.addlInfoCallback(roll)
+            : undefined;
 
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.html';
@@ -98,6 +102,7 @@ export class DiceHM3 {
         const chatTemplateData = {
             addlInfo,
             description: roll.description,
+            falling: dialogOptions.falling,
             fluff: rollData.fluff
                 ? rollData.fluff.startsWith('<p>')
                     ? rollData.fluff
@@ -113,6 +118,7 @@ export class DiceHM3 {
             isSuccess: roll.isSuccess,
             modifiedTarget: roll.target,
             modifier: Math.abs(roll.modifier),
+            name: rollData.name || '',
             notes: renderedNotes,
             origTarget: rollData.target || roll.target - roll.modifier,
             plusMinus: roll.modifier < 0 ? '-' : '+',
@@ -121,7 +127,9 @@ export class DiceHM3 {
             rollValue: roll.rollObj.total,
             showResult: false,
             title,
-            type: roll.type
+            tokenId: speaker.token,
+            type: roll.type,
+            visibleActorId: speaker.actor
         };
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
@@ -206,7 +214,10 @@ export class DiceHM3 {
                                     0
                                 );
                                 return `<p>${progress} ${d} ft</p><p>Negative progress indicates the character has encountered an obstacle and been forced to backtrack.</p>`;
-                            } else return `${dialogOptions.name} loses grip and falls.`;
+                            } else {
+                                dialogOptions.falling = true;
+                                return `${dialogOptions.name} loses grip and falls.`;
+                            }
                         }
                     },
                     data: null,
@@ -1535,7 +1546,7 @@ export class DiceHM3 {
         const modifier = Number(testData.modifier);
         const baseTargetNum = Number(testData.target) + modifier;
         // Ensure target num is between 9 and 95; always a 5% chance of success/failure
-        const targetNum = diceType === 'd100' ? Math.max(Math.min(baseTargetNum, 95), 5) : baseTargetNum;
+        const targetNum = diceType === 'd100' ? game.hm3.macros.HM100Check(baseTargetNum) : baseTargetNum;
 
         let description = '';
         let isCrit = false;

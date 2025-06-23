@@ -1313,6 +1313,10 @@ export class ActorHM3 extends Actor {
                     Number(button.dataset.defDice)
                 );
                 break;
+
+            case 'falling':
+                macros.fallingRoll(false, actor, token);
+                break;
         }
 
         button.disabled = false;
