@@ -1526,6 +1526,11 @@ export async function moraleRoll(noDialog = false, myActor = null) {
         return null;
     }
 
+    if (actorInfo.token?.hasCondition(Condition.INANIMATE)) {
+        ui.notifications.warn(`Token is inanimate, and immunne to morale.`);
+        return null;
+    }
+
     const ini = actorInfo.actor.items.find((x) => x.name === 'Initiative');
     if (!ini) {
         ui.notifications.warn(`No Initiative skill for this actor for this action could be determined.`);

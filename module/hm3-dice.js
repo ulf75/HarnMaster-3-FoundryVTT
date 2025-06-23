@@ -56,8 +56,8 @@ export class DiceHM3 {
                 target: rollData.target,
                 type: rollData.type
             });
-        else if (rollData.skill.includes('Climbing')) roll = await DiceHM3.d100ClimbingDialog(dialogOptions);
-        else if (rollData.skill.includes('Jumping')) roll = await DiceHM3.d100JumpingDialog(dialogOptions);
+        else if (rollData.skill?.includes('Climbing')) roll = await DiceHM3.d100ClimbingDialog(dialogOptions);
+        else if (rollData.skill?.includes('Jumping')) roll = await DiceHM3.d100JumpingDialog(dialogOptions);
         else roll = await DiceHM3.d100StdDialog(dialogOptions);
 
         // If user cancelled the roll, then return immediately

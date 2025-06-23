@@ -563,7 +563,7 @@
                 </div>
             </div>
             <div class="combat-stat flexrow"></div>
-            <div class="items-list combat-stats grid grid-fixed-row grid-5col">
+            <div class="items-list combat-stats grid grid-fixed-row {{#if isGM}}grid-7col{{else}}grid-6col{{/if}}">
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
                         <i class="active fas fa-dice-d20"></i>
@@ -594,6 +594,22 @@
                     </div>
                     <label class="combat-stat-label tooltip"><a class="damage-roll" title="Damage Roll">Damage</a><span class="tooltiptext">Roll damage not associated with any specific weapon</span></label>
                 </div>
+                <div class="combat-stat flexrow" id="combat-fallingroll">
+                    <div class="item-dice">
+                        <i class="active fas fa-dice-d20"></i>
+                    </div>
+                    <label class="combat-stat-label tooltip"><a class="falling-roll"
+                            title="Falling Roll">Falling</a></label>
+                </div>                
+                {{#if isGM}}
+                <div class="combat-stat flexrow" id="combat-moraleroll">
+                    <div class="item-dice">
+                        <i class="active fas fa-dice-d20"></i>
+                    </div>
+                    <label class="combat-stat-label tooltip"><a class="morale-roll"
+                            title="Morale Roll">Morale</a></label>
+                </div>
+                {{/if}}
             </div>
 
             <!-- Weapons -->
