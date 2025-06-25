@@ -818,25 +818,27 @@ export async function meleeCounterstrikeResume(
         await game.dice3d.showForRoll(cRoll, game.user, true);
     }
 
-    const atkDie = atkToken.actor.type === ActorType.CREATURE ? atkToken.actor.system.size : 6;
-    const csDie = defToken.actor.type === ActorType.CREATURE ? defToken.actor.system.size : 6;
+    const atkDie = atkToken.actor.type === ActorType.CREATURE ? Number(atkToken.actor.system.size) : 6;
+    const csDie = defToken.actor.type === ActorType.CREATURE ? Number(defToken.actor.system.size) : 6;
 
     // Grapple
     const isGrappleDef = csDialogResult.isGrappleAtk;
 
     const atkResult = `${atkRoll.isCritical ? 'c' : 'm'}${atkRoll.isSuccess ? 's' : 'f'}`;
     const defResult = `${csRoll.isCritical ? 'c' : 'm'}${csRoll.isSuccess ? 's' : 'f'}`;
-    const combatResult = meleeCombatResult(
-        atkResult,
-        defResult,
-        isGrappleDef ? 'grapple' : 'counterstrike',
-        atkImpactMod,
-        csDialogResult.impactMod,
-        isGrappleAtk,
-        isGrappleDef,
+    const combatResult = meleeCombatResult({
+        atkAddlImpact: Number(atkImpactMod),
         atkDie,
-        csDie
-    );
+        atkResult,
+        atkToken,
+        defAddlImpact: csDialogResult.impactMod,
+        defDie: csDie,
+        defense: isGrappleDef ? 'grapple' : 'counterstrike',
+        defResult,
+        defToken,
+        isGrappleAtk,
+        isGrappleDef
+    });
 
     // If there was a block, check whether a weapon broke
     const atkWeapon = atkToken.actor.itemTypes.weapongear.find((w) => w.name === atkWeaponName);
@@ -1124,7 +1126,16 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     const defResult = `${defRoll.isCritical ? 'c' : 'm'}${defRoll.isSuccess ? 's' : 'f'}`;
     let combatResult = null;
     if (type === 'melee') {
-        combatResult = meleeCombatResult(atkResult, defResult, 'dodge', impactMod, 0, isGrappleAtk, false, atkDie);
+        combatResult = meleeCombatResult({
+            atkAddlImpact: impactMod,
+            atkDie,
+            atkResult,
+            atkToken,
+            defense: 'dodge',
+            defResult,
+            defToken,
+            isGrappleAtk
+        });
     } else {
         combatResult = missileCombatResult(atkResult, defResult, 'dodge', impactMod);
     }
@@ -1390,11 +1401,20 @@ export async function blockResume(
     const atkResult = `${atkRoll.isCritical ? 'c' : 'm'}${atkRoll.isSuccess ? 's' : 'f'}`;
     const defResult = `${defRoll.isCritical ? 'c' : 'm'}${defRoll.isSuccess ? 's' : 'f'}`;
 
-    const atkDie = atkToken.actor.type === ActorType.CREATURE ? atkToken.actor.system.size : 6;
+    const atkDie = atkToken.actor.type === ActorType.CREATURE ? Number(atkToken.actor.system.size) : 6;
 
     let combatResult;
     if (type === 'melee') {
-        combatResult = meleeCombatResult(atkResult, defResult, 'block', impactMod, 0, isGrappleAtk, false, atkDie);
+        combatResult = meleeCombatResult({
+            atkAddlImpact: Number(impactMod),
+            atkDie,
+            atkResult,
+            atkToken,
+            defense: 'block',
+            defResult,
+            defToken,
+            isGrappleAtk
+        });
     } else {
         combatResult = missileCombatResult(atkResult, defResult, 'block', impactMod);
     }
@@ -1694,20 +1714,26 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         target: effAML
     });
 
-    const effDML = 0;
-
     if (game.dice3d) {
         const aRoll = atkRoll.rollObj;
         aRoll.dice[0].options.colorset = 'glitterparty';
         await game.dice3d.showForRoll(aRoll, game.user, true);
     }
 
-    const atkDie = atkToken.actor.type === ActorType.CREATURE ? atkToken.actor.system.size : 6;
+    const atkDie = atkToken.actor.type === ActorType.CREATURE ? Number(atkToken.actor.system.size) : 6;
 
     const atkResult = `${atkRoll.isCritical ? 'c' : 'm'}${atkRoll.isSuccess ? 's' : 'f'}`;
     let combatResult;
     if (type === 'melee') {
-        combatResult = meleeCombatResult(atkResult, null, 'ignore', impactMod, 0, isGrappleAtk, false, atkDie);
+        combatResult = meleeCombatResult({
+            atkAddlImpact: Number(impactMod),
+            atkDie,
+            atkResult,
+            atkToken,
+            defense: 'ignore',
+            defToken,
+            isGrappleAtk
+        });
     } else {
         combatResult = missileCombatResult(atkResult, null, 'ignore', impactMod);
     }
@@ -1805,17 +1831,19 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
  * @param {boolean} [isGrappleAtk=false]
  * @param {boolean} [isGrappleDef=false]
  */
-export function meleeCombatResult(
-    atkResult,
-    defResult,
-    defense,
+export function meleeCombatResult({
     atkAddlImpact = 0,
-    defAddlImpact = 0,
-    isGrappleAtk = false,
-    isGrappleDef = false,
     atkDie = 6,
-    defDie = 6
-) {
+    atkResult,
+    atkToken,
+    defAddlImpact = 0,
+    defDie = 6,
+    defense,
+    defResult = null,
+    defToken,
+    isGrappleAtk = false,
+    isGrappleDef = false
+}) {
     let outcome = null;
     let index = null;
     const defenseTable = isGrappleAtk ? HM3.grappleCombatTable[defense] : HM3.meleeCombatTable[defense];
@@ -1830,12 +1858,25 @@ export function meleeCombatResult(
 
     if (!outcome) return null;
 
+    if (outcome.atkFumble && atkToken?.hasCondition(Condition.NO_FUMBLE)) {
+        outcome.atkFumble = false;
+    }
+    if (outcome.defFumble && defToken?.hasCondition(Condition.NO_FUMBLE)) {
+        outcome.defFumble = false;
+    }
+    if (outcome.atkStumble && atkToken?.hasCondition(Condition.NO_STUMBLE)) {
+        outcome.atkStumble = false;
+    }
+    if (outcome.defStumble && defToken?.hasCondition(Condition.NO_STUMBLE)) {
+        outcome.defStumble = false;
+    }
+
     const result = {
         atkHold: !!outcome.atkHold,
         csDesc: isGrappleDef ? 'Grapple attempt unsuccessful' : 'Counterstrike misses',
         defHold: !!outcome.defHold,
         desc: isGrappleAtk ? 'Grapple attempt unsuccessful' : 'Attack misses',
-        outcome: outcome
+        outcome
     };
 
     if (defense !== 'counterstrike') {

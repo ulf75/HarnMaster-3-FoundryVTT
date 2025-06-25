@@ -88,6 +88,12 @@ export const Condition = Object.freeze({
     INCAPACITATED: 'Incapacitated',
 
     /**@constant {string} - TODO */
+    NO_FUMBLE: 'No Fumble',
+
+    /**@constant {string} - TODO */
+    NO_STUMBLE: 'No Stumble',
+
+    /**@constant {string} - TODO */
     OUTNUMBERED: 'Outnumbered',
 
     /**@constant {string} - MOV to 0. +20 EML for all engaged enemies. Only PASS or RISE actions. */

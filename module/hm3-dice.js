@@ -992,13 +992,13 @@ export class DiceHM3 {
         result.isBleeder = enableBloodloss && result.injuryLevel >= 4 && result.aspect != Aspect.FIRE;
 
         // Optional Rule - Limb Injuries (Combat 14)
-        if (armorLocationData.isFumble) {
+        if (armorLocationData.isFumble && !dialogOptions.actor.token.hasCondition(Condition.NO_FUMBLE)) {
             result.isFumble = enableLimbInjuries && result.injuryLevel >= 4;
             result.isFumbleRoll = enableLimbInjuries || (!result.isFumble && result.injuryLevel >= 2);
         }
 
         // Optional Rule - Limb Injuries (Combat 14)
-        if (armorLocationData.isStumble) {
+        if (armorLocationData.isStumble && !dialogOptions.actor.token.hasCondition(Condition.NO_STUMBLE)) {
             result.isStumble = enableLimbInjuries && result.injuryLevel >= 4;
             result.isStumbleRoll = enableLimbInjuries || (!result.isStumble && result.injuryLevel >= 2);
         }

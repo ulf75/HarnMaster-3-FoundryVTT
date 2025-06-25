@@ -9,6 +9,8 @@ import * as dying from './condition/dying.js';
 import * as empowered from './condition/empowered.js';
 import * as grappled from './condition/grappled.js';
 import * as inanimate from './condition/inanimate.js';
+import * as nofumble from './condition/nofumble.js';
+import * as nostumble from './condition/nostumble.js';
 import * as outnumbered from './condition/outnumbered.js';
 import * as prone from './condition/prone.js';
 import * as secondaryhand from './condition/secondaryhand.js';
@@ -2651,8 +2653,12 @@ export async function createCondition(token, condition, conditionOptions = {}) {
             condData = await inanimate.createCondition(token, conditionOptions);
             break;
 
-        case Condition.PRONE:
-            condData = await prone.createCondition(token, conditionOptions);
+        case Condition.NO_FUMBLE:
+            condData = await nofumble.createCondition(token, conditionOptions);
+            break;
+
+        case Condition.NO_STUMBLE:
+            condData = await nostumble.createCondition(token, conditionOptions);
             break;
 
         // A character is outnumbered if exclusively engaged by two or more opponents. When counting
@@ -2660,6 +2666,10 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         // engaged by other friendly characters. (COMBAT 11)
         case Condition.OUTNUMBERED:
             condData = await outnumbered.createCondition(token, conditionOptions);
+            break;
+
+        case Condition.PRONE:
+            condData = await prone.createCondition(token, conditionOptions);
             break;
 
         case Condition.SECONDARY_HAND:
