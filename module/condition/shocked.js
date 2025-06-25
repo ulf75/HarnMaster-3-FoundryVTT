@@ -11,7 +11,10 @@ const CONDITION_ICON = 'icons/svg/lightning.svg';
  * @returns
  */
 export async function createCondition(token, options = {}) {
-    if (!token) return;
+    if (!token) return false;
+
+    // Inanimate creatures cannot be shocked
+    if (token.hasCondition(game.hm3.Condition.INANIMATE)) return false;
 
     const CONDITION = game.hm3.Condition.SHOCKED;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);

@@ -15,7 +15,10 @@ const CONDITION_ICON = 'systems/hm3/images/icons/svg/despair-white.svg';
  * @returns
  */
 export async function createCondition(token, options = {}) {
-    if (!token) return;
+    if (!token) return false;
+
+    // Inanimate creatures are immune to morale conditions
+    if (token.hasCondition(game.hm3.Condition.INANIMATE)) return false;
 
     const CONDITION = game.hm3.Condition.BROKEN;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);

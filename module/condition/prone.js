@@ -12,7 +12,9 @@ const CONDITION_ICON = 'icons/svg/falling.svg';
  * @returns
  */
 export async function createCondition(token, options = {}) {
-    if (!token) return;
+    if (!token) return false;
+
+    if (token.hasCondition(game.hm3.Condition.NO_STUMBLE)) return false;
 
     const CONDITION = game.hm3.Condition.PRONE;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);

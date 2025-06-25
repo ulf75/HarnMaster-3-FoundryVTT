@@ -13,7 +13,10 @@ const CONDITION_ICON = 'icons/svg/downgrade.svg';
  * @returns
  */
 export async function createCondition(token, options = {}) {
-    if (!token) return;
+    if (!token) return false;
+
+    // Inanimate creatures are immune to morale conditions
+    if (token.hasCondition(game.hm3.Condition.INANIMATE)) return false;
 
     const CONDITION = game.hm3.Condition.WEAKENED;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);

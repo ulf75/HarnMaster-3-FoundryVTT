@@ -2596,7 +2596,7 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         case Condition.BLINDED:
         case Condition.DEAFENED:
         case Condition.INCAPACITATED:
-            ui.notifications.info(`Condition '${condition}' not yet implemented.`);
+            if (game.user.isGM) ui.notifications.info(`Condition '${condition}' not yet implemented.`);
             return null;
 
         // This is a special state of battle frenzy. Any character who enters this mode must take the most
@@ -2691,8 +2691,13 @@ export async function createCondition(token, condition, conditionOptions = {}) {
             break;
 
         default:
-            ui.notifications.error(`${condition} is no valid condition.`);
+            if (game.user.isGM) ui.notifications.error(`${condition} is no valid condition.`);
             return null;
+    }
+
+    if (!condData) {
+        if (game.user.isGM) ui.notifications.error(`Condition ${condition} could not be created.`);
+        return null;
     }
 
     if (condData.options.unique && token.hasCondition(condition)) {
