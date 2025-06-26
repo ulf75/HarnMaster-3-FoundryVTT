@@ -978,8 +978,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             return;
         }
 
-        const data = item.data;
-        const otherData = other.data;
+        const data = item.system;
+        const otherData = other.system;
         const updateData = {};
 
         if (!data.notes) updateData['system.notes'] = otherData.notes;
