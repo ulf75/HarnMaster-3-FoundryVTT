@@ -350,9 +350,17 @@ HM3.injuryLocations = {
         isAmputate: false,
         effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K4'}
     },
-    'Body, humanoid simple': {
-        impactType: 'body, humanoid simple',
-        probWeight: {'high': 150, 'mid': 310, 'low': 240},
+    'Thorax, humanoid simple': {
+        impactType: 'thorax, humanoid simple',
+        probWeight: {'high': 100, 'mid': 170, 'low': 70},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K5'}
+    },
+    'Abdomen, humanoid simple': {
+        impactType: 'abdomen, humanoid simple',
+        probWeight: {'high': 50, 'mid': 140, 'low': 170},
         isStumble: false,
         isFumble: false,
         isAmputate: false,
