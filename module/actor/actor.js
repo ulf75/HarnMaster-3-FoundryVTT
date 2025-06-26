@@ -185,8 +185,6 @@ export class ActorHM3 extends Actor {
                 if (documentTypes.length === 1) data.type = documentTypes[0];
                 if (!data.name?.trim()) data.name = this.implementation.defaultName({type: data.type, parent, pack});
                 const createOptions = {parent, pack, renderSheet: true};
-                if (!data.initDefaults) createOptions.skipDefaults = true;
-                delete data['initDefaults'];
                 return this.create(data, createOptions);
             },
             rejectClose: false,
@@ -205,7 +203,7 @@ export class ActorHM3 extends Actor {
         await super._preCreate(createData, options, user);
 
         // If the created actor has items (only applicable to duplicated actors) bypass the new actor creation logic
-        if (options.skipDefaults || createData.items) return;
+        if (!createData.initDefaults || createData.items) return;
 
         // Setup default Actor type specific data.
 
@@ -352,6 +350,23 @@ export class ActorHM3 extends Actor {
         items.push(ActorHM3._setupLocation('Right Calf', 'Calf'));
         items.push(ActorHM3._setupLocation('Left Foot', 'Foot'));
         items.push(ActorHM3._setupLocation('Right Foot', 'Foot'));
+    }
+
+    /**
+     * Add armorlocation items to the items array for all of the locations for
+     * a humanoid, simplified
+     *
+     * @param {*} items Array of ItemData elements
+     */
+    static _createSimpleHumanoidLocations(items) {
+        items.push(ActorHM3._setupLocation('Head', 'Head, humanoid simple'));
+        items.push(ActorHM3._setupLocation('Neck', 'Neck, humanoid simple'));
+        items.push(ActorHM3._setupLocation('Left Arm', 'Arm, humanoid simple'));
+        items.push(ActorHM3._setupLocation('Right Arm', 'Arm, humanoid simple'));
+        items.push(ActorHM3._setupLocation('Thorax', 'Thorax, humanoid simple'));
+        items.push(ActorHM3._setupLocation('Abdomen', 'Abdomen, humanoid simple'));
+        items.push(ActorHM3._setupLocation('Left Leg', 'Leg, humanoid simple'));
+        items.push(ActorHM3._setupLocation('Right Leg', 'Leg, humanoid simple'));
     }
 
     /**
