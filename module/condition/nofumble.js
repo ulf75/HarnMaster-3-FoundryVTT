@@ -1,4 +1,4 @@
-const CONDITION_ICON = 'systems/hm3/images/icons/svg/no-fumble-white.svg';
+const CONDITION_ICON = 'systems/hm3/images/icons/svg/no-fumble.svg';
 
 /**
  *
