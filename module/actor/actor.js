@@ -404,7 +404,7 @@ export class ActorHM3 extends Actor {
 
     /**
      * Add armorlocation items to the items array for all of the locations for
-     * a humanoid, simplified
+     * a horse
      *
      * @param {*} items Array of ItemData elements
      */
