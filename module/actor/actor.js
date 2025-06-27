@@ -159,6 +159,14 @@ export class ActorHM3 extends Actor {
             content: `<div class="form-group">
             <label class="init-checkbox">Initialize default skills &amp; locations</label>
             <input type="checkbox" name="initDefaults" checked />
+            </div>
+            <div class="form-group">
+            <label class="location-dropdown">Locations</label>
+            <select name="locations" id="locations">
+              <option value="default-humanoid">Default Humanoid</option>
+              <option value="simplified-humanoid">Simplified Humanoid</option>
+              <option value="default-horse">Default Horse</option>
+            </select>
             </div>`
         });
 
@@ -221,8 +229,19 @@ export class ActorHM3 extends Actor {
             // Add standard skills
             await ActorHM3.addItemsFromPack(HM3.defaultCharacterSkills, ['hm3.character'], updateData.items);
 
-            // Add standard armor locations
-            ActorHM3._createDefaultHumanoidLocations(updateData.items);
+            switch (createData.locations) {
+                case 'simplified-humanoid':
+                    ActorHM3._createSimpleHumanoidLocations(updateData.items);
+                    break;
+                case 'default-horse':
+                    ActorHM3._createHorseLocations(updateData.items);
+                    break;
+                case 'default-humanoid':
+                default:
+                    // Add standard armor locations
+                    ActorHM3._createDefaultHumanoidLocations(updateData.items);
+                    break;
+            }
         } else if (createData.type === 'creature') {
             updateData['system.description'] = '';
             updateData['system.biography'] =
@@ -232,6 +251,20 @@ export class ActorHM3 extends Actor {
 
             // Add standard skills
             await ActorHM3.addItemsFromPack(HM3.defaultCreatureSkills, ['hm3.character'], updateData.items);
+
+            switch (createData.locations) {
+                case 'simplified-humanoid':
+                    ActorHM3._createSimpleHumanoidLocations(updateData.items);
+                    break;
+                case 'default-horse':
+                    ActorHM3._createHorseLocations(updateData.items);
+                    break;
+                case 'default-humanoid':
+                default:
+                    // Add standard armor locations
+                    ActorHM3._createDefaultHumanoidLocations(updateData.items);
+                    break;
+            }
         } else if (createData.type === 'container') {
             updateData['system.capacity.max'] = 1;
             updateData['system.description'] = '';
@@ -367,6 +400,27 @@ export class ActorHM3 extends Actor {
         items.push(ActorHM3._setupLocation('Abdomen', 'Abdomen, humanoid simple'));
         items.push(ActorHM3._setupLocation('Left Leg', 'Leg, humanoid simple'));
         items.push(ActorHM3._setupLocation('Right Leg', 'Leg, humanoid simple'));
+    }
+
+    /**
+     * Add armorlocation items to the items array for all of the locations for
+     * a humanoid, simplified
+     *
+     * @param {*} items Array of ItemData elements
+     */
+    static _createHorseLocations(items) {
+        items.push(ActorHM3._setupLocation('Head', 'Head, horse'));
+        items.push(ActorHM3._setupLocation('Neck', 'Neck, horse'));
+        items.push(ActorHM3._setupLocation('Left Fore Leg', 'Fore Leg, horse'));
+        items.push(ActorHM3._setupLocation('Right Fore Leg', 'Fore Leg, horse'));
+        items.push(ActorHM3._setupLocation('Left Flank (Thorax)', 'Flank, horse'));
+        items.push(ActorHM3._setupLocation('Right Flank (Thorax)', 'Flank, horse'));
+        items.push(ActorHM3._setupLocation('Abdomen', 'Abdomen, horse'));
+        items.push(ActorHM3._setupLocation('Left Quarter', 'Quarter, horse'));
+        items.push(ActorHM3._setupLocation('Right Quarter', 'Quarter, horse'));
+        items.push(ActorHM3._setupLocation('Left Hind Leg', 'Hind Leg, horse'));
+        items.push(ActorHM3._setupLocation('Right Hind Leg', 'Hind Leg, horse'));
+        items.push(ActorHM3._setupLocation('Tail', 'Tail, horse'));
     }
 
     /**
