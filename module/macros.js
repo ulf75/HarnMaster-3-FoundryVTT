@@ -2716,14 +2716,7 @@ export async function createCondition(token, condition, conditionOptions = {}) {
             condMacro.script.trim() +
             `}catch(error){success=false;game.hm3.gmconsole('error','Error in Condition "${condition}" - Effect Macro "${v}"',error);} 
             finally{Hooks.callAllUsers('hm3.${condData.effectData.flags.hm3.uuid}', success);}`;
-        if (typeof js_beautify === 'function') {
-            condMacro.script = js_beautify(condMacro.script, {
-                indent_size: 2,
-                space_in_empty_paren: true
-            }).trim();
-        } else {
-            condMacro.script = condMacro.script.trim();
-        }
+        condMacro.script = utility.beautify(condMacro.script);
     });
 
     const onCreateScript = condData.effectData.flags?.effectmacro?.onCreate?.script;

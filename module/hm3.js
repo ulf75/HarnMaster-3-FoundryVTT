@@ -44,6 +44,7 @@ import * as macros from './macros.js';
 import * as migrations from './migrations.js';
 import {Mutex} from './mutex.js';
 import {registerSystemSettings} from './settings.js';
+import * as utility from './utility.js';
 import {Weather} from './weather.js';
 
 Hooks.once('init', async function () {
@@ -365,6 +366,10 @@ Hooks.on('createItem', async (item, info, userId) => {
             });
         }
     }
+});
+
+Hooks.on('preUpdateMacro', async (macro, updateData, options, userId) => {
+    if (updateData.command) updateData.command = utility.beautify(updateData.command);
 });
 
 Hooks.on('dropCanvasData', async (canvas, data) => {
