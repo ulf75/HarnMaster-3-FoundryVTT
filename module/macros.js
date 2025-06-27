@@ -1077,6 +1077,11 @@ export async function shockRoll(noDialog = false, myActor = null, token = null, 
         return null;
     }
 
+    if (actorInfo.token?.hasCondition(Condition.INANIMATE)) {
+        ui.notifications.warn(`Token is inanimate, and immunne to shock.`);
+        return null;
+    }
+
     let hooksOk = false;
     let stdRollData = null;
     stdRollData = {
@@ -1124,6 +1129,11 @@ export async function stumbleRoll(noDialog = false, myActor = null, opponentToke
         return null;
     }
 
+    if (actorInfo.token?.hasCondition(Condition.NO_STUMBLE)) {
+        ui.notifications.warn(`Token has No Stumble feat.`);
+        return null;
+    }
+
     const stdRollData = {
         fastforward: noDialog,
         label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Stumble Roll`,
@@ -1166,6 +1176,12 @@ export async function fumbleRoll(noDialog = false, myActor = null, opponentToken
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
+
+    if (actorInfo.token?.hasCondition(Condition.NO_FUMBLE)) {
+        ui.notifications.warn(`Token has No Fumble feat.`);
+        return null;
+    }
+
     // Sometimes fumble rolls were set for animals with DEX 0. They have to make a stumble roll instead.
     if (actorInfo.actor.system.abilities.dexterity.base <= 0) {
         if (game.user.isGM) ui.notifications.warn(`Fumble target is not set for ${actorInfo.token.name}.`);
