@@ -485,12 +485,12 @@ export class ActorHM3 extends Actor {
         actorData.dodge = 0;
         actorData.initiative = 0;
         actorData.endurance = 0;
-        // if (!actorData.shockIndex) actorData.shockIndex = {value: 100, max: 100};
+        if (!actorData.shockIndex) actorData.shockIndex = {value: 100, max: 100};
         actorData.move.effective = 0;
         actorData.universalPenalty = 0;
         actorData.physicalPenalty = 0;
         actorData.totalInjuryLevels = 0;
-        // if (!actorData.injuryLevels) actorData.injuryLevels = {value: 0, max: 6};
+        if (!actorData.injuryLevels) actorData.injuryLevels = {value: 0, max: 6};
         actorData.encumbrance = 0;
         actorData.condition = 0;
         actorData.mounted = !!actorData.mounted;
@@ -558,6 +558,16 @@ export class ActorHM3 extends Actor {
 
         // Safety net: We divide things by endurance, so ensure it is > 0
         actorData.endurance = Math.max(actorData.endurance, 1);
+
+        if (this.allApplicableEffects(true).find((effect) => effect.name === Condition.INANIMATE)) {
+            // If the actor is Inanimate, ensure max injury levels is equal to endurance
+            if (actorData.injuryLevels.max !== actorData.endurance) {
+                setTimeout(() => this.update({'system.injuryLevels.max': actorData.endurance}), 500);
+            }
+        } else if (actorData.injuryLevels.max !== 6) {
+            // If the actor is not Inanimate, ensure max injury levels is 6
+            setTimeout(() => this.update({'system.injuryLevels.max': 6}), 500);
+        }
 
         eph.totalInjuryLevels = actorData.totalInjuryLevels;
         eph.effectiveWeight = actorData.loadRating

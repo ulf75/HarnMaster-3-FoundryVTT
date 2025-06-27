@@ -8,17 +8,17 @@ import * as utility from '../utility.js';
  * @extends {Item}
  */
 export class ItemHM3 extends Item {
-    #impactTypeChanged = false;
+    _impactTypeChanged = false;
 
     /**
      * @override
      */
     async _preUpdate(changed, options, user) {
         // Reset the impactTypeChanged flag
-        this.#impactTypeChanged = false;
+        this._impactTypeChanged = false;
         if (changed.type === ItemType.ARMORLOCATION && changed.system.impactType !== this.system.impactType) {
             // If the impactType has changed, then we need to update the armor location data
-            this.#impactTypeChanged = true;
+            this._impactTypeChanged = true;
         }
 
         return super._preUpdate(changed, options, user);
@@ -140,7 +140,7 @@ export class ItemHM3 extends Item {
 
     _prepareArmorLocationData(itemData) {
         // If impactType isn't custom, then set all properties from the selected impactType
-        if (itemData.impactType !== 'custom' && this.#impactTypeChanged) {
+        if (itemData.impactType !== 'custom' && this._impactTypeChanged) {
             Object.keys(HM3.injuryLocations).forEach((key) => {
                 if (HM3.injuryLocations[key].impactType === itemData.impactType) {
                     foundry.utils.mergeObject(itemData, HM3.injuryLocations[key]);

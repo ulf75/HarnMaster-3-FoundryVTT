@@ -185,15 +185,15 @@ export async function migrateActorData(actor) {
         updateData['system.macros.type'] = 'script';
     }
 
-    // if (!actorData.hasOwnProperty('shockIndex')) {
-    updateData['system.shockIndex.value'] = 100;
-    updateData['system.shockIndex.max'] = 100;
-    // }
+    if (!actorData.hasOwnProperty('shockIndex')) {
+        updateData['system.shockIndex.value'] = 100;
+        updateData['system.shockIndex.max'] = 100;
+    }
 
-    // if (!actorData.hasOwnProperty('injuryLevels')) {
-    updateData['system.injuryLevels.value'] = 0;
-    updateData['system.injuryLevels.max'] = 6;
-    // }
+    if (!actorData.hasOwnProperty('injuryLevels')) {
+        updateData['system.injuryLevels.value'] = 0;
+        updateData['system.injuryLevels.max'] = 6;
+    }
 
     // Remove deprecated fields
     _migrateRemoveDeprecated(actor, updateData);
