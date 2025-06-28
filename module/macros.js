@@ -1078,7 +1078,7 @@ export async function shockRoll(noDialog = false, myActor = null, token = null, 
     }
 
     if (actorInfo.token?.hasCondition(Condition.INANIMATE)) {
-        ui.notifications.warn(`Token is inanimate, and immunne to shock.`);
+        ui.notifications.warn(`Token is inanimate, and immune to shock.`);
         return null;
     }
 
@@ -1549,7 +1549,7 @@ export async function moraleRoll(noDialog = false, myActor = null) {
     }
 
     if (actorInfo.token?.hasCondition(Condition.INANIMATE)) {
-        ui.notifications.warn(`Token is inanimate, and immunne to morale.`);
+        ui.notifications.warn(`Token is inanimate, and immune to morale.`);
         return null;
     }
 
