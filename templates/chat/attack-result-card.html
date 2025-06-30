@@ -97,7 +97,7 @@
     </div>
 
     <div class="card-content center">
-        <span class="result-desc">{{resultDesc}}</span>
+        <span class="result-desc">{{{resultDesc}}}</span>
     </div>
 
     {{#if atkWeaponBroke}}
@@ -135,7 +135,6 @@
     {{/if}}
     {{/if}}
 
-    {{#if (or hasAttackHit ata dta isAtkFumbleRoll isAtkStumbleRoll isAtkHold isDefFumbleRoll isDefStumbleRoll isDefHold)}}
     <div class="card-buttons">
         {{#if hasAttackHit}}
             <button data-action="injury" data-visible-actor-id="{{visibleDefActorId}}" data-token-id="{{defTokenId}}" data-atk-token-id="{{atkTokenId}}" data-attack-Weapon="{{attackWeapon}}" data-aim="{{atkAim}}" data-aspect="{{atkAspect}}" data-impact="{{totalImpact}}">Calculate {{defender}} Injury</button>
@@ -172,6 +171,13 @@
         {{#if isDefHold}}
         <button data-action="throwdown" data-visible-actor-id="{{visibleDefActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}" data-atk-dice="{{atkDice}}" data-def-dice="{{defDice}}" {{#if defTokenId}}data-token-id="{{defTokenId}}"{{else}}data-actor-id="{{visibleDefActorId}}"{{/if}}>Throw down Attacker</button>
         {{/if}}
+
+        {{#if isAtkWillShockRoll}}
+            <button data-action="willshock" data-visible-actor-id="{{visibleAtkActorId}}" data-token-id="{{atkTokenId}}" data-atk-token-id="{{defTokenId}}">Attacker Mental Shock Roll</button>
+        {{/if}}
+
+        {{#if isDefWillShockRoll}}
+            <button data-action="willshock" data-visible-actor-id="{{visibleDefActorId}}" data-token-id="{{defTokenId}}" data-atk-token-id="{{atkTokenId}}">Defender Mental Shock Roll</button>
+        {{/if}}
     </div>
-    {{/if}}
 </div>

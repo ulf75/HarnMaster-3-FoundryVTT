@@ -1,6 +1,7 @@
 import {HM3} from './config.js';
 import {DiceHM3} from './hm3-dice.js';
-import {ActorType, Aspect, Condition} from './hm3-types.js';
+import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
+import {ActorType, Aspect, Condition, ItemType} from './hm3-types.js';
 import {truncate} from './utility.js';
 
 /**
@@ -132,38 +133,182 @@ export async function missileAttack(atkToken, defToken, missileItem) {
 
     const chatTemplateData = {
         title: `${missileItem.name} Missile Attack`,
-        attacker: atkToken.name,
-        atkTokenId: atkToken.id,
-        defender: defToken.name,
-        defTokenId: defToken.id,
-        weaponType: 'missile',
-        weaponName: missileItem.name,
-        rangeText: dialogResult.range,
-        rangeExceedsExtreme: dialogResult.rangeExceedsExtreme,
-        rangeModSign: dialogResult.rangeMod < 0 ? '-' : '+',
-        rangeModifierAbs: Math.abs(dialogResult.rangeMod),
-        rangeDist: Math.round(range),
-        aim: dialogResult.aim,
-        aspect: dialogResult.aspect,
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
         addlModifierSign: dialogResult.addlModifier < 0 ? '-' : '+',
-        origAML: missileItem.system.attackMasteryLevel,
+        aim: dialogResult.aim,
+        aspect: dialogResult.aspect,
+        atkTokenId: atkToken.id,
+        attacker: atkToken.name,
+        defender: defToken.name,
+        defTokenId: defToken.id,
         effAML,
-        impactMod: dialogResult.impactMod,
-        hasDodge: !(grappled || incapacitated || shocked || stunned || unconscious) && defToken.actor.system.dodge > 0,
         hasBlock: !(grappled || incapacitated || shocked || stunned || unconscious) && !noHighVelocityBlockAvailable,
         hasCounterstrike: false, // not possible against missile attacks
+        hasDodge: !(grappled || incapacitated || shocked || stunned || unconscious) && defToken.actor.system.dodge > 0,
+        hasEsoteric: false,
         hasIgnore: true,
-        visibleActorId: defToken.actor.id
+        impactMod: dialogResult.impactMod,
+        origAML: missileItem.system.attackMasteryLevel,
+        rangeDist: Math.round(range),
+        rangeExceedsExtreme: dialogResult.rangeExceedsExtreme,
+        rangeModifierAbs: Math.abs(dialogResult.rangeMod),
+        rangeModSign: dialogResult.rangeMod < 0 ? '-' : '+',
+        rangeText: dialogResult.range,
+        visibleActorId: defToken.actor.id,
+        weaponName: missileItem.name,
+        weaponType: 'missile'
     };
+    chatTemplateData.oneButton =
+        [
+            chatTemplateData.hasBlock,
+            chatTemplateData.hasCounterstrike,
+            chatTemplateData.hasDodge,
+            chatTemplateData.hasEsoteric,
+            chatTemplate.hasIgnore
+        ].filter(Boolean).length === 1;
 
     const html = await renderTemplate(chatTemplate, chatTemplateData);
 
     const messageData = {
-        user: game.user.id,
-        speaker: speaker,
         content: html.trim(),
-        type: CONST.CHAT_MESSAGE_STYLES.OTHER
+        speaker,
+        type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+        user: game.user.id
+    };
+
+    // Create a chat message
+    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    await ChatMessage.create(messageData, {});
+
+    if (game.settings.get('hm3', 'combatAudio')) {
+        foundry.audio.AudioHelper.play({src: 'sounds/drums.wav', autoplay: true, loop: false}, true);
+    }
+
+    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+        const skill = options.weapon.system.assocSkill;
+        atkToken.actor.items.forEach((item) => {
+            if (item.name === skill && item.type === 'skill') {
+                item.update({'system.improveFlag': item.system.improveFlag + 1});
+            }
+        });
+    }
+
+    return chatTemplateData;
+}
+
+export async function esotericAttack(atkToken, defToken, esotericItem) {
+    if (!atkToken) {
+        ui.notifications.warn(`No attacker token identified.`);
+        return null;
+    }
+
+    if (!isValidToken(atkToken)) {
+        ui.notifications.error(`Attack token not valid.`);
+        console.error(`HM3 | esotericAttack atkToken=${atkToken} is not valid.`);
+        return null;
+    }
+    console.assert(atkToken instanceof TokenDocumentHM3, `atkToken is not a TokenHM3 instance: ${atkToken}`);
+
+    if (!defToken) {
+        ui.notifications.warn(`No defender token identified.`);
+        return null;
+    }
+
+    if (!isValidToken(defToken)) {
+        ui.notifications.error(`Defender token not valid.`);
+        console.error(`HM3 | esotericAttack defToken=${defToken} is not valid.`);
+        return null;
+    }
+    console.assert(defToken instanceof TokenHM3, `defToken is not a TokenHM3 instance: ${defToken}`);
+
+    if (!atkToken.isOwner) {
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
+        return null;
+    }
+
+    if (atkToken.hasCondition(Condition.BROKEN)) {
+        ui.notifications.warn(`You cannot attack while you are '${Condition.BROKEN}'.`);
+        return null;
+    }
+
+    if (atkToken.hasCondition(Condition.CAUTIOUS)) {
+        ui.notifications.warn(`You cannot attack while you are '${Condition.CAUTIOUS}'.`);
+        return null;
+    }
+
+    if (atkToken.hasCondition(Condition.SHOCKED)) {
+        ui.notifications.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
+        return null;
+    }
+
+    if (atkToken.hasCondition(Condition.UNCONSCIOUS)) {
+        ui.notifications.warn(`You cannot attack while you are '${Condition.UNCONSCIOUS}'.`);
+        return null;
+    }
+
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
+    const distance = rangeToTarget(atkToken, defToken);
+
+    const options = {
+        attackerName: atkToken.name,
+        defenderName: defToken.name,
+        distance,
+        maxDistance: esotericItem.system.masteryLevel,
+        type: esotericItem.name,
+        weapon: esotericItem
+    };
+
+    if (options.distance > options.maxDistance) {
+        const msg = `Target ${defToken.name} is outside of ${esotericItem.name} range for attacker ${atkToken.name}; range=${distance}/${options.maxDistance}.`;
+        ui.notifications.warn(msg);
+        return null;
+    }
+
+    const dialogResult = await esotericAttackDialog(options);
+
+    // If user cancelled the dialog, then return immediately
+    if (!dialogResult) return null;
+
+    const effAML = game.hm3.macros.HM100Check(esotericItem.system.effectiveMasteryLevel + dialogResult.addlModifier);
+
+    // Prepare for Chat Message
+    const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
+    const chatTemplateData = {
+        title: `${esotericItem.name} Esoteric Attack`,
+        addlInfo: dialogResult.addlInfo,
+        addlModifierAbs: Math.abs(dialogResult.addlModifier),
+        addlModifierSign: dialogResult.addlModifier < 0 ? '-' : '+',
+        atkTokenId: atkToken.id,
+        attacker: atkToken.name,
+        defender: defToken.name,
+        defTokenId: defToken.id,
+        effAML,
+        hasBlock: false,
+        hasCounterstrike: false,
+        hasDodge: false,
+        hasEsoteric: true,
+        hasIgnore: false,
+        origAML: esotericItem.system.effectiveMasteryLevel,
+        visibleActorId: defToken.actor.id,
+        weaponName: esotericItem.name,
+        weaponType: 'esoteric'
+    };
+    chatTemplateData.oneButton =
+        [
+            chatTemplateData.hasBlock,
+            chatTemplateData.hasCounterstrike,
+            chatTemplateData.hasDodge,
+            chatTemplateData.hasEsoteric,
+            chatTemplate.hasIgnore
+        ].filter(Boolean).length === 1;
+
+    const html = await renderTemplate(chatTemplate, chatTemplateData);
+
+    const messageData = {
+        content: html.trim(),
+        speaker,
+        type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+        user: game.user.id
     };
 
     const messageOptions = {};
@@ -172,12 +317,8 @@ export async function missileAttack(atkToken, defToken, missileItem) {
     ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
     await ChatMessage.create(messageData, messageOptions);
 
-    if (game.settings.get('hm3', 'combatAudio')) {
-        foundry.audio.AudioHelper.play({src: 'sounds/drums.wav', autoplay: true, loop: false}, true);
-    }
-
     if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
-        const skill = options.weapon.system.assocSkill;
+        const skill = esotericItem;
         atkToken.actor.items.forEach((item) => {
             if (item.name === skill && item.type === 'skill') {
                 item.update({'system.improveFlag': item.system.improveFlag + 1});
@@ -365,6 +506,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
                 defStunned ||
                 defUnconscious
             ) && defToken.actor.system.dodge > 0,
+        hasEsoteric: false,
         hasIgnore: true,
         impactMod: dialogResult.impactMod,
         isGrappleAtk: !!dialogResult.isGrappleAtk,
@@ -374,6 +516,14 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         weaponName: weaponItem.name,
         weaponType: 'melee'
     };
+    chatTemplateData.oneButton =
+        [
+            chatTemplateData.hasBlock,
+            chatTemplateData.hasCounterstrike,
+            chatTemplateData.hasDodge,
+            chatTemplateData.hasEsoteric,
+            chatTemplate.hasIgnore
+        ].filter(Boolean).length === 1;
 
     const html = await renderTemplate(chatTemplate, chatTemplateData);
 
@@ -501,7 +651,7 @@ async function attackDialog(options) {
     }
 
     if (!options.weapon) {
-        ui.notifications.warn(`${attackerName} has no equipped weapons available for attack.`);
+        ui.notifications.warn(`${options.attackerName} has no equipped weapons available for attack.`);
         return null;
     }
 
@@ -650,6 +800,60 @@ async function attackDialog(options) {
     }
 }
 
+async function esotericAttackDialog(options) {
+    if (!options.weapon) {
+        ui.notifications.warn(`${options.attackerName} has no esoteric weapons available for attack.`);
+        return null;
+    }
+
+    const dialogOptions = {
+        defaultModifier: options.defaultModifier || 0,
+        weapon: options.weapon.name
+    };
+
+    if (options.weapon.type === ItemType.SKILL && options.weapon.name.includes('Mental Conflict')) {
+        dialogOptions.isMentalConflict = true;
+        dialogOptions.addlInfo = 'Type: ';
+        dialogOptions.mentalConflictType = 'possession';
+        dialogOptions.mentalConflictTypes = [
+            {key: 'possession', label: 'Possession'},
+            {key: 'conflict', label: 'Ethereal Conflict'},
+            {key: 'artifact', label: 'Artifact Control'}
+        ];
+    } else {
+        // Not an esoteric weapon!!
+        return null;
+    }
+
+    dialogOptions.title = `${options.attackerName} vs. ${options.defenderName} ${options.type} with ${options.weapon.name}`;
+
+    const attackDialogTemplate = 'systems/hm3/templates/dialog/esoteric-attack-dialog.html';
+    const dlghtml = await renderTemplate(attackDialogTemplate, dialogOptions);
+
+    // Request weapon details
+    return Dialog.prompt({
+        title: dialogOptions.title,
+        content: dlghtml.trim(),
+        label: options.type,
+        callback: (html) => {
+            const form = html[0].querySelector('form');
+            const formRange = form.range ? form.range.value : null;
+            const formMentalConflict = form.mentalConflictType
+                ? form.mentalConflictType[form.mentalConflictType.selectedIndex].innerHTML
+                : null;
+
+            const result = {
+                addlModifier: form.addlModifier ? parseInt(form.addlModifier.value) : 0,
+                addlInfo: dialogOptions.isMentalConflict ? dialogOptions.addlInfo + formMentalConflict : null,
+                range: formRange,
+                weapon: options.weapon
+            };
+
+            return result;
+        }
+    });
+}
+
 /**
  * Determine if the token is valid (must be either a 'creature' or 'character')
  *
@@ -712,6 +916,22 @@ function defaultMeleeWeapon(token, sortMode = 'highestDmg') {
     return {
         weapons,
         defaultWeapon: weapons[0]
+    };
+}
+
+function defaultEsotericWeapon(token) {
+    if (!isValidToken(token)) return {weapons: [], defaultWeapon: null};
+
+    const mc = token.actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Mental Conflict'));
+
+    if (!mc) {
+        ui.notifications.warn(`${token.name} has no equipped Esoteric weapons, attack refused.`);
+        return {weapons: [], defaultWeapon: null};
+    }
+
+    return {
+        weapons: [mc],
+        defaultWeapon: mc
     };
 }
 
@@ -999,23 +1219,19 @@ export async function meleeCounterstrikeResume(
     let html = await renderTemplate(chatTemplate, atkChatData);
 
     let messageData = {
-        user: game.user.id,
+        content: html.trim(),
         speaker: ChatMessage.getSpeaker({token: atkToken}),
-        content: html.trim()
+        style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+        user: game.user.id
     };
     if (combatResult.outcome.atkDice) {
         messageData.roll = atkImpactRoll;
         messageData.sound = CONFIG.sounds.dice;
-        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
-    } else {
-        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
-
-    const messageOptions = {};
 
     // Create a chat message
     ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
-    await ChatMessage.create(messageData, messageOptions);
+    await ChatMessage.create(messageData, {});
 
     /*-----------------------------------------------------
      *    Counterstrike Chat
@@ -1023,21 +1239,19 @@ export async function meleeCounterstrikeResume(
     html = await renderTemplate(chatTemplate, csChatData);
 
     messageData = {
-        user: game.user.id,
+        content: html.trim(),
         speaker: ChatMessage.getSpeaker({token: defToken}),
-        content: html.trim()
+        style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+        user: game.user.id
     };
     if (combatResult.outcome.defDice) {
         messageData.roll = csImpactRoll;
         messageData.sound = CONFIG.sounds.dice;
-        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
-    } else {
-        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
 
     // Create a chat message
     ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
-    await ChatMessage.create(messageData, messageOptions);
+    await ChatMessage.create(messageData, {});
 
     if (combatResult.outcome.atkHold) {
         await defToken.addCondition(Condition.GRAPPLED);
@@ -1250,6 +1464,133 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     }
 
     if (turnEnds) await setTA(true);
+
+    return chatData;
+}
+
+export async function esotericResume(atkToken, defToken, atkWeaponName, atkEffAML) {
+    if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
+    if (!defToken.isOwner) {
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
+        return null;
+    }
+
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
+
+    const atkRoll = await DiceHM3.rollTest({
+        data: {},
+        diceSides: 100,
+        diceNum: 1,
+        modifier: 0,
+        target: atkEffAML
+    });
+
+    const esotericWpns = defaultEsotericWeapon(defToken);
+    const effDML = game.hm3.macros.HM100Check(esotericWpns.defaultWeapon.system.effectiveMasteryLevel);
+
+    let defaultModifier = 0;
+    // Living Entity (versus artifact): +10
+    if (atkToken.hasCondition(Condition.INANIMATE) && !defToken.hasCondition(Condition.INANIMATE)) {
+        defaultModifier += 10;
+    }
+    // Native Spirit/Aura: +10
+    defaultModifier += 10;
+
+    // Unconscious/Sleeping Party: -10
+    if (defToken.hasCondition(Condition.UNCONSCIOUS)) {
+        defaultModifier -= 10;
+    }
+
+    const defRoll = await DiceHM3.rollTest({
+        data: {},
+        diceSides: 100,
+        diceNum: 1,
+        modifier: defaultModifier,
+        target: effDML
+    });
+
+    if (game.dice3d) {
+        const aRoll = atkRoll.rollObj;
+        aRoll.dice[0].options.colorset = 'glitterparty';
+        await game.dice3d.showForRoll(aRoll, game.user, true);
+
+        const dRoll = defRoll.rollObj;
+        dRoll.dice[0].options.colorset = 'bloodmoon';
+        await game.dice3d.showForRoll(dRoll, game.user, true);
+    }
+
+    const atkResult = `${atkRoll.isCritical ? 'c' : 'm'}${atkRoll.isSuccess ? 's' : 'f'}`;
+    const defResult = `${defRoll.isCritical ? 'c' : 'm'}${defRoll.isSuccess ? 's' : 'f'}`;
+    const combatResult = esotericCombatResult({
+        atkResult,
+        atkToken,
+        defense: 'mentalConflict',
+        defResult,
+        defToken
+    });
+
+    if (combatResult.outcome.atkFatigue) {
+        game.hm3.socket.executeAsGM('fatigueReceived', atkToken.id, combatResult.outcome.atkFatigue);
+    }
+    if (combatResult.outcome.defFatigue) {
+        game.hm3.socket.executeAsGM('fatigueReceived', defToken.id, combatResult.outcome.defFatigue);
+    }
+
+    const title = 'Esoteric Attack Result';
+    const chatData = {
+        addlModifierAbs: Math.abs(defaultModifier),
+        addlModifierSign: defaultModifier < 0 ? '-' : '+',
+        addlWeaponImpact: 0, // in future, maybe ask this in dialog?
+        // atkEffAML,
+        atkIsCritical: atkRoll.isCritical,
+        atkIsSuccess: atkRoll.isSuccess,
+        atkRollResult: atkRoll.description.replace('Substantial', 'Marginal'),
+        atkTokenId: atkToken.id,
+        attacker: atkToken.name,
+        attackRoll: atkRoll.rollObj.total,
+        attackWeapon: atkWeaponName,
+        defender: defToken.name,
+        defense: esotericWpns.defaultWeapon.name,
+        defenseRoll: defRoll.rollObj.total,
+        defIsCritical: defRoll.isCritical,
+        defIsSuccess: defRoll.isSuccess,
+        defRollResult: defRoll.description.replace('Substantial', 'Marginal'),
+        defTokenId: defToken.id,
+        effAML: atkEffAML,
+        effDML: game.hm3.macros.HM100Check(effDML + defaultModifier),
+        effEML: game.hm3.macros.HM100Check(effDML + defaultModifier),
+        hasAttackHit: false,
+        impactRoll: 0,
+        isAtkWillShockRoll: !!combatResult.outcome.atkFatigue && !atkToken.hasCondition(Condition.INANIMATE),
+        isDefWillShockRoll: !!combatResult.outcome.defFatigue && !defToken.hasCondition(Condition.INANIMATE),
+        mlType: 'ML',
+        origEML: effDML,
+        resultDesc: combatResult.desc,
+        title,
+        totalImpact: combatResult.outcome.atkFatigue,
+        visibleAtkActorId: atkToken.actor.id,
+        visibleDefActorId: defToken.actor.id,
+        weaponImpact: combatResult.outcome.atkFatigue
+    };
+
+    const chatTemplate = 'systems/hm3/templates/chat/attack-result-card.html';
+    const html = await renderTemplate(chatTemplate, chatData);
+    const messageData = {
+        content: html.trim(),
+        speaker: speaker,
+        style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+        user: game.user.id
+    };
+
+    // Create a chat message
+    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    await ChatMessage.create(messageData, {});
+
+    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+        esotericWpns.defaultWeapon.update({
+            'system.improveFlag': (esotericWpns.defaultWeapon.system.improveFlag || 0) + 1
+        });
+    }
 
     return chatData;
 }
@@ -1932,6 +2273,44 @@ export function meleeCombatResult({
         } else if (outcome.miss) {
             result.csDesc = `Counterstrike misses`;
         }
+    }
+
+    return result;
+}
+
+export function esotericCombatResult({atkResult, atkToken, defense, defResult, defToken}) {
+    let outcome = null;
+    let index = null;
+    const defenseTable = HM3.mentalConflictCombatTable[defense];
+    if (defenseTable) {
+        if (defense === 'ignore') {
+            index = atkResult;
+        } else {
+            index = `${atkResult}:${defResult}`;
+        }
+        outcome = defenseTable[index];
+    }
+
+    if (!outcome) return null;
+
+    const result = {
+        desc: '',
+        outcome
+    };
+
+    if (outcome.atkFatigue === outcome.defFatigue) {
+        result.desc = `<p>Stalemate, both attacker and defender lose ${outcome.atkFatigue} Fatigue Level${
+            outcome.atkFatigue > 1 ? 's' : ''
+        }</p>`;
+        result.csDesc = result.desc;
+    } else if (outcome.atkFatigue) {
+        result.desc = `<p>Defender was able to successfully withstand the esoteric attack</p><p>Attacker receives ${
+            outcome.atkFatigue
+        } Fatigue level${outcome.atkFatigue > 1 ? 's' : ''}</p>`;
+    } else if (outcome.defFatigue) {
+        result.desc = `<p>Estoric Attack successful</p><p>Defender receives ${outcome.defFatigue} Fatigue Level${
+            outcome.defFatigue > 1 ? 's' : ''
+        }</p>`;
     }
 
     return result;

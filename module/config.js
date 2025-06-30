@@ -1283,6 +1283,30 @@ HM3.defaultItemIcons = new Map(
         .concat(HM3.psionicTalentIcons)
 );
 
+HM3.mentalConflictCombatTable = {
+    'mentalConflict': {
+        'cf:cf': {atkFatigue: 4, defFatigue: 4},
+        'mf:cf': {atkFatigue: 0, defFatigue: 1},
+        'ms:cf': {atkFatigue: 0, defFatigue: 3},
+        'cs:cf': {atkFatigue: 0, defFatigue: 4},
+
+        'cf:mf': {atkFatigue: 1, defFatigue: 0},
+        'mf:mf': {atkFatigue: 3, defFatigue: 3},
+        'ms:mf': {atkFatigue: 0, defFatigue: 2},
+        'cs:mf': {atkFatigue: 0, defFatigue: 3},
+
+        'cf:ms': {atkFatigue: 3, defFatigue: 0},
+        'mf:ms': {atkFatigue: 2, defFatigue: 0},
+        'ms:ms': {atkFatigue: 2, defFatigue: 2},
+        'cs:ms': {atkFatigue: 0, defFatigue: 1},
+
+        'cf:cs': {atkFatigue: 4, defFatigue: 0},
+        'mf:cs': {atkFatigue: 3, defFatigue: 0},
+        'ms:cs': {atkFatigue: 1, defFatigue: 0},
+        'cs:cs': {atkFatigue: 1, defFatigue: 1}
+    }
+};
+
 HM3.meleeCombatTable = {
     'block': {
         'cf:cf': {

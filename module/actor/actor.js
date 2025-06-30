@@ -201,6 +201,22 @@ export class ActorHM3 extends Actor {
     }
 
     /** @override */
+    async _preUpdate(changes, options, user) {
+        if (changes.system) {
+            // Make sure, that fatigue is a positive number incl 0
+            if (
+                Object.hasOwn(changes.system, 'fatigue') &&
+                (changes.system.fatigue === null || changes.system.fatigue === undefined || changes.system.fatigue < 0)
+            ) {
+                changes.system.fatigue = 0;
+                options.diff = false;
+            }
+        }
+
+        return super._preUpdate(changes, options, user);
+    }
+
+    /** @override */
     async _onCreate(data, options, userId) {
         await super._onCreate(data, options, userId);
         if (this.testUserPermission(game.user, 'OWNER')) await this.setFlag('hm3', 'CharacterMancer', true);
@@ -497,7 +513,7 @@ export class ActorHM3 extends Actor {
 
         // Setup temporary work values masking the base values
         eph.move = actorData.move.base;
-        eph.fatigue = actorData.fatigue;
+        eph.fatigue = actorData.fatigue || 0;
         eph.strength = actorData.abilities.strength.base;
         eph.stamina = actorData.abilities.stamina.base;
         eph.dexterity = actorData.abilities.dexterity.base;
@@ -621,7 +637,7 @@ export class ActorHM3 extends Actor {
         this.system.encumbrance = Math.floor(this.system.eph.effectiveWeight / this.system.endurance);
         if (this.system.mounted) {
             this.system.encumbrance = Math.round(this.system.encumbrance / 2 + Number.EPSILON);
-            eph.fatigue = Math.round(eph.fatigue / 2 + Number.EPSILON);
+            eph.fatigue = Math.round(eph.fatigue / 2 + Number.EPSILON) || 0;
         }
         // All common character and creature derived data below here
 
@@ -631,7 +647,7 @@ export class ActorHM3 extends Actor {
         actorData.endurance = Math.max(Math.round(actorData.endurance + Number.EPSILON), 0);
         actorData.move.effective = Math.max(Math.round(eph.move + Number.EPSILON), 0);
         eph.totalInjuryLevels = Math.max(Math.round(eph.totalInjuryLevels + Number.EPSILON), 0);
-        eph.fatigue = Math.max(Math.round(eph.fatigue + Number.EPSILON), 0);
+        eph.fatigue = Math.max(Math.round(eph.fatigue + Number.EPSILON), 0) || 0;
 
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
@@ -1367,8 +1383,32 @@ export class ActorHM3 extends Actor {
                 );
                 break;
 
+            case 'esoteric':
+                macros.esotericResume(
+                    atkToken.id,
+                    defToken.id,
+                    button.dataset.weapon,
+                    button.dataset.effAml,
+                    event.shiftKey || event.ctrlKey || event.altKey
+                );
+                break;
+
             case 'shock':
                 macros.shockRoll(false, actor, token);
+                break;
+
+            case 'willshock':
+                macros.willShockRoll({
+                    atkToken,
+                    attackerId: button.dataset.atkTokenId,
+                    attackWeapon: button.dataset.attackWeapon,
+                    impact: button.dataset.impact,
+                    items: token.actor.items,
+                    myActor: token.actor,
+                    noDialog: event.shiftKey || event.ctrlKey || event.altKey,
+                    token,
+                    tokenId: token.id
+                });
                 break;
 
             case 'kill':
@@ -1394,6 +1434,10 @@ export class ActorHM3 extends Actor {
 
             case 'falling':
                 macros.fallingRoll(false, actor, token);
+                break;
+
+            default:
+                console.warn(`HM3 | Action=${action}; No handler for this action`);
                 break;
         }
 
@@ -1738,7 +1782,7 @@ export class ActorHM3 extends Actor {
 
     static calcUniversalPenalty(actor) {
         const data = actor.system;
-        data.universalPenalty = data.eph.totalInjuryLevels + data.eph.fatigue;
+        data.universalPenalty = data.eph.totalInjuryLevels + (data.eph.fatigue || 0);
         return data.universalPenalty;
     }
 

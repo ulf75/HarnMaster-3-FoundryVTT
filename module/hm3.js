@@ -612,6 +612,7 @@ Hooks.once('ready', () => {
     socket.register('setTAFlag', setTAFlag);
     socket.register('unsetTAFlag', unsetTAFlag);
     socket.register('weaponBroke', weaponBroke);
+    socket.register('fatigueReceived', fatigueReceived);
     socket.register('GmSays', gmSays);
     socket.register('gmConsole', gmConsole);
     socket.register('callAllUsers', callAllUsers);
@@ -651,6 +652,13 @@ async function weaponBroke(tokenId, weaponId, atkWeaponDiff) {
         'system.isEquipped': false,
         'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
         'system.wqModifier': (item.system.wqModifier | 0) - atkWeaponDiff
+    });
+}
+
+async function fatigueReceived(tokenId, fatigue) {
+    const t = canvas.tokens.get(tokenId);
+    return t.actor.update({
+        'system.fatigue': (t.actor.system.fatigue || 0) + fatigue
     });
 }
 

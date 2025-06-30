@@ -82,6 +82,13 @@
                 <input type="checkbox" name="mounted" {{ checked mounted }} disabled/>
             </div>
             {{/if}}
+            {{#if isMentalConflict}}{{#if isGM}}
+            <p style="margin: 0;">&nbsp;</p>
+            <div class="resource">
+                <label class="resource-label">Attack Option</label>
+                <input type="checkbox" name="system.isEquipped" {{ checked idata.isEquipped }}/>
+            </div>
+            {{/if}}{{/if}}
         </div>
 
         {{!-- Description Tab --}}

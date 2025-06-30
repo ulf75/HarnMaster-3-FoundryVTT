@@ -46,6 +46,7 @@
     </div>
     {{/if}}
     
+    {{#unless hasEsoteric}}
     <div class="grid grid-2col">
         <div class="card-content center">
             <div class="flexrow">
@@ -61,6 +62,7 @@
             </div>
         </div>
     </div>
+    {{/unless}}
 
     {{#if rangeDist}}
     <div class="card-content flex-group-center">
@@ -104,8 +106,14 @@
     </div>
     {{/if}}
 
+     {{#if addlInfo}}
+    <div class="card-content center result-desc">
+        {{{addlInfo}}}
+    </div>
+    {{/if}}
+    
     <div class="card-buttons">
-        <div class="grid grid-2col mingap">
+        {{#unless oneButton}}<div class="grid grid-2col mingap">{{/unless}}
             {{#if hasDodge}}
             <button data-action="dodge" data-visible-actor-id="{{visibleActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}"
                 data-eff-aml="{{effAML}}" data-weapon-type="{{weaponType}}" data-weapon="{{weaponName}}"
@@ -123,6 +131,11 @@
                 data-eff-aml="{{effAML}}" data-weapon-type="{{weaponType}}" data-weapon="{{weaponName}}"
                 data-aim="{{aim}}" data-aspect="{{aspect}}" data-impact-mod="{{impactMod}}" data-grapple-atk="{{isGrappleAtk}}">Block</button>
             {{/if}}
+
+            {{#if hasEsoteric}}
+            <button data-action="esoteric" data-visible-actor-id="{{visibleActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}"
+                data-eff-aml="{{effAML}}" data-weapon-type="{{weaponType}}" data-weapon="{{weaponName}}">{{weaponName}}</button>
+            {{/if}}
         
             {{#if hasIgnore}}
             <button data-action="ignore" data-visible-actor-id="{{visibleActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}"
@@ -130,5 +143,5 @@
                 data-aim="{{aim}}" data-aspect="{{aspect}}" data-impact-mod="{{impactMod}}" data-grapple-atk="{{isGrappleAtk}}">Ignore</button>
             {{/if}}
         </div>
-    </div>
+    {{#unless oneButton}}</div>{{/unless}}
 </div>

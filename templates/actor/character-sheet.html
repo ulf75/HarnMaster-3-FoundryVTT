@@ -757,7 +757,7 @@
                     <div class="item-dice"></div>
                     <label for="system.fatigue" class="combat-stat-label">Fatigue</label>
                     <!-- <div class="combat-eff-fatigue">{{adata.eph.fatigue}} / </div> -->
-                    <input class="combat-fatigue-input" type="text" name="system.fatigue" value="{{adata.fatigue}}"
+                    <input class="combat-fatigue-input" type="number" min="0" name="system.fatigue" value="{{adata.fatigue}}"
                         data-dtype="Number" />
                 </div>
                 <div class="combat-stat flexrow" id="combat-stat-initiative">
@@ -1039,6 +1039,33 @@
                     {{/each}}
                 </ol>
             </ol>
+
+            <!-- Esoteric Attacks -->
+            {{#if hasEsotericAtk}}
+            <ol class="items-list missiles-list">
+                <li class="items-header missile flexrow">
+                    <h3 class="item-name missile-name">Esoteric Attacks<a class="more-info"
+                        data-journal-entry="Sheet - Combat Tab"><i
+                            class="far fa-question-circle"></i></a></h3>
+                    <div class="item-detail missile-attack">EML</div>
+                    <div class="item-detail missile-short">Range</div>
+                    <div class="item-detail missile-notes">Notes</div>
+                </li>
+                <ol class="item-list missile-list">
+                    {{#each esotericAtkOptions as |item id|}}
+                        <li class="item missile flexrow" data-item-id="{{item._id}}" data-item-name="{{system.name}}">
+                            <div class="item-name missile-name esoteric-attack flexrow">
+                                <div class="item-image" style="background-image: url('{{item.img}}')"></div>
+                                <h4>{{item.name}}</h4>
+                            </div>
+                            <div class="item-detail missile-attack">{{system.effectiveMasteryLevel}}</div>
+                            <div class="item-detail missile-short">{{system.masteryLevel}} ft</div>
+                            <div class="item-detail missile-notes">{{system.notes}}</div>
+                        </li>
+                    {{/each}}
+                </ol>
+            </ol>
+            {{/if}}
 
             <!-- Injuries -->
             <ol class="items-list injuries-list">

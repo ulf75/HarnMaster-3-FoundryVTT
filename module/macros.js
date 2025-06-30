@@ -1083,8 +1083,7 @@ export async function shockRoll(noDialog = false, myActor = null, token = null, 
     }
 
     let hooksOk = false;
-    let stdRollData = null;
-    stdRollData = {
+    const stdRollData = {
         fastforward: noDialog,
         label: `Shock Roll`,
         notes: '',
@@ -1116,6 +1115,48 @@ export async function shockRoll(noDialog = false, myActor = null, token = null, 
             }
 
             callOnHooks('hm3.onShockRoll', actorInfo.actor, result, stdRollData);
+        }
+        return result;
+    }
+    return null;
+}
+
+export async function willShockRoll({myActor = null, noDialog = false, token = null}) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null, token});
+    if (!actorInfo) {
+        ui.notifications.warn(`No actor for this action could be determined.`);
+        return null;
+    }
+
+    if (actorInfo.token?.hasCondition(Condition.INANIMATE)) {
+        ui.notifications.warn(`Token is inanimate, and immune to shock.`);
+        return null;
+    }
+
+    let hooksOk = false;
+    const stdRollData = {
+        fastforward: noDialog,
+        label: `Mental Shock Roll`,
+        notes: '',
+        notesData: {},
+        numdice: actorInfo.actor.system.universalPenalty,
+        speaker: actorInfo.speaker,
+        target: actorInfo.actor.system.abilities.will.base,
+        type: 'willshock'
+    };
+    if (actorInfo.actor.isToken) {
+        stdRollData.token = actorInfo.actor.token.id;
+    } else {
+        stdRollData.actor = actorInfo.actor.id;
+        stdRollData.token = token?.id;
+    }
+
+    hooksOk = Hooks.call('hm3.preWillShockRoll', stdRollData, actorInfo.actor);
+    if (hooksOk) {
+        const result = await DiceHM3.d6Roll(stdRollData);
+
+        if (result) {
+            callOnHooks('hm3.onWillShockRoll', actorInfo.actor, result, stdRollData);
         }
         return result;
     }
@@ -1887,6 +1928,27 @@ export async function missileAttack(itemName = null, noDialog = false, myToken =
     return null;
 }
 
+export async function esotericAttack(itemName = null, noDialog = false, myToken = null, forceAllow = false) {
+    const combatant = getTokenInCombat(myToken, forceAllow);
+    if (!combatant) return null;
+
+    const targetToken = getUserTargetedToken(combatant);
+    if (!targetToken) return null;
+
+    let esoteric = null;
+    if (itemName) {
+        esoteric = await combat.getItem(itemName, 'skill', combatant.actor);
+    }
+
+    const hooksOk = Hooks.call('hm3.preEsotericAttack', combatant, targetToken, esoteric);
+    if (hooksOk) {
+        const result = await combat.esotericAttack(combatant.token, targetToken, esoteric);
+        Hooks.call('hm3.onEsotericAttack', result, combatant, targetToken, esoteric);
+        return result;
+    }
+    return null;
+}
+
 /**
  * Resume the attack with the defender performing the "Counterstrike" defense.
  * Note that this defense is only applicable to melee attacks.
@@ -2114,6 +2176,28 @@ export async function blockResume(
             impactMod,
             isGrappleAtk
         );
+        return result;
+    }
+    return null;
+}
+
+export async function esotericResume(atkTokenId, defTokenId, atkWeaponName, atkEffAML, noDialog = false) {
+    const atkToken = canvas.tokens.get(atkTokenId);
+    if (!atkToken) {
+        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        return null;
+    }
+
+    const defToken = canvas.tokens.get(defTokenId);
+    if (!defToken) {
+        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        return null;
+    }
+
+    const hooksOk = Hooks.call('hm3.preEsotericResume', atkToken, defToken, atkWeaponName, atkEffAML);
+    if (hooksOk) {
+        const result = await combat.esotericResume(atkToken, defToken, atkWeaponName, atkEffAML);
+        Hooks.call('hm3.onEsotericResume', result, atkToken, defToken, atkWeaponName, atkEffAML);
         return result;
     }
     return null;
@@ -2441,9 +2525,9 @@ export function hasActiveEffect(token, name, strict = false) {
  */
 export function getActiveEffect(token, name, strict = false) {
     return strict
-        ? token.actor.allApplicableEffects().find((v) => v.name === name)
+        ? token.actor.allApplicableEffects(true).find((v) => v.name === name)
         : token.actor
-              .allApplicableEffects()
+              .allApplicableEffects(true)
               .find(
                   (v) =>
                       v.name.toLowerCase().includes(name.toLowerCase()) ||

@@ -216,6 +216,16 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         data.hasSteed = this.actor.hasLinkedSteed();
 
+        // Check for esoteric attack options
+        data.esotericAtkOptions = [];
+        const mc = this.actor.items.find(
+            (item) => item.type === ItemType.SKILL && item.name.includes('Mental Conflict') && item.system.isEquipped
+        );
+        data.hasEsotericAtk = !!mc; // TODO more to come
+        if (data.hasEsotericAtk) {
+            if (mc) data.esotericAtkOptions.push(mc);
+        }
+
         return data;
     }
 
@@ -291,7 +301,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 ? closestContainer.dataset.containerId
                 : 'on-person';
 
-            const newItem = (await super._onDropItem(event, data))[0];
+            let newItem = await super._onDropItem(event, data);
+            if (!newItem) return;
+            newItem = newItem[0];
             // If the item is some type of gear (other than containergear), then
             // make sure we set the container to the same as the dropped location
             // (this allows people to move items into containers easily)
@@ -836,6 +848,32 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             macros.missileAttack(item?.uuid, false, token);
         });
 
+        // Esoteric Attack
+        html.find('.esoteric-attack').click((ev) => {
+            // If we are a synthetic actor, token will be set
+            let token = this.actor.token;
+            if (!token) {
+                // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
+                const tokens = this.actor.getActiveTokens(true);
+                if (tokens.length == 0) {
+                    ui.notifications.warn(
+                        `There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`
+                    );
+                    return null;
+                } else if (tokens.length > 1) {
+                    ui.notifications.warn(
+                        `There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`
+                    );
+                    return null;
+                }
+                token = tokens[0];
+            }
+
+            const li = $(ev.currentTarget).parents('.item');
+            const item = this.actor.items.get(li.data('itemId'));
+            macros.esotericAttack(item?.uuid, false, token);
+        });
+
         // Weapon Attack Roll
         html.find('.weapon-attack-roll').click((ev) => {
             const li = $(ev.currentTarget).parents('.item');
@@ -1024,7 +1062,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     updateData['system.skillBase.formula'] = otherData.skillBase.formula;
                     updateData['system.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
                 }
-                updateData['system.fatigue'] = otherData.fatigue;
+                updateData['system.fatigue'] = otherData.fatigue || 0;
                 break;
         }
 
