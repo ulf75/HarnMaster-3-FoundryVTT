@@ -25,9 +25,18 @@ const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
-    await game.hm3.GmSays("<b>" + token.name + "</b> remains <b>Distracted</b> and <b>Must</b> take the <b>Pass</b> action. All Defense actions suffer a -10 penalty to EML. <b>Turn ends.</b>", "House Rule", !token.player);
+    await game.hm3.GmSays({
+        text:
+            '<b>' +
+            token.name +
+            '</b> remains <b>Distracted</b> and <b>Must</b> take the <b>Pass</b> action. All Defense actions suffer a -10 penalty to EML. <b>Turn ends.</b>',
+        source: 'House Rule',
+        gmonly: !token.player,
+        token
+    });
     await token.turnEnds();
-}`;
+}
+`;
 
     const type = options.oneRound || options.oneTurn ? 'Combat' : 'GameTime';
     const seconds = type === 'GameTime' ? game.hm3.CONST.TIME.INDEFINITE : undefined;

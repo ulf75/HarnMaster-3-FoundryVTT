@@ -94,31 +94,60 @@ Hooks.once('init', async function () {
         gmconsole: async (level, msg, error) => {
             return game.hm3.socket.executeAsGM('gmConsole', game.user.name, level, msg, error);
         },
-        Gm2GmSays: async (text, source) => {
-            return game.hm3.socket.executeAsGM('GmSays', text, source, true);
+        Gm2GmSays: async (text, source, token = null) => {
+            return game.hm3.socket.executeAsGM('GmSays', {
+                gmonly: true,
+                sendingUserId: game.user.id,
+                source,
+                text,
+                tokenId: token ? token.id : null
+            });
         },
-        GmSays: async (text, source, gmonly = false) => {
+        GmSays: async ({gmonly = false, sendingUser = null, source = null, text = null, token = null}) => {
+            console.assert(text, 'Parameter text not set');
+            console.assert(game.user.isGM ? true : token, 'Parameter token not set');
+            if (!text) return;
+
             const gmUsers = game.users.filter((user) => user.isGM).map((user) => user.id);
             const content = !!source
                 ? `<div class="chat-card gmsays"><blockquote lang="en"><p>${text}</p><cite>&ndash; ${source}</cite></blockquote></div>`
                 : `<div class="chat-card gmsays"><blockquote lang="en"><p>${text}</p></blockquote></div>`;
+            const speaker = game.user.isGM
+                ? ChatMessageHM3.getSpeaker({alias: 'Simon says...', user: game.user})
+                : ChatMessageHM3.getSpeaker({token});
             const msg = {
                 content,
-                speaker: ChatMessageHM3.getSpeaker({alias: 'Simon says...', user: game.user}),
+                speaker,
                 type: CONST.CHAT_MESSAGE_STYLES.OTHER
             };
 
             // If the message is GM only, send it to the GM users
             if (gmonly && game.user.isGM) {
                 msg['whisper'] = gmUsers;
-                console.info(`HM3 | GM only: ${text.replaceAll('<b>', '').replaceAll('</b>', '')}`);
-                return ChatMessage.create(msg);
+                console.info(
+                    `HM3 [GmSays] | GM only: ${text
+                        .replaceAll('<b>', '')
+                        .replaceAll('</b>', '')
+                        .replaceAll('<h4>', '')
+                        .replaceAll('</h4>', '')
+                        .replaceAll('<p>', '')
+                        .replaceAll('</p>', '')}`
+                );
+                return await ChatMessage.create(msg);
             }
 
             // If the message is not GM only, send it to all users
             else if (!gmonly) {
-                console.info(`HM3 | ${text.replaceAll('<b>', '').replaceAll('</b>', '')}`);
-                return ChatMessage.create(msg);
+                console.info(
+                    `HM3 [GmSays] | ${text
+                        .replaceAll('<b>', '')
+                        .replaceAll('</b>', '')
+                        .replaceAll('<h4>', '')
+                        .replaceAll('</h4>', '')
+                        .replaceAll('<p>', '')
+                        .replaceAll('</p>', '')}`
+                );
+                return await ChatMessage.create(msg);
             }
         }
     };
@@ -669,8 +698,14 @@ async function fatigueReceived(tokenId, fatigue) {
  * @param {boolean} gmonly - If true, send the message only to the GM
  * @returns {Promise<ChatMessage>} - The created chat message
  */
-async function gmSays(content, source, gmonly) {
-    return game.hm3.GmSays(content, source, gmonly);
+async function gmSays({gmonly, sendingUserId, source, text, tokenId}) {
+    return game.hm3.GmSays({
+        gmonly,
+        sendingUser: game.users.get(sendingUserId),
+        source,
+        text,
+        token: canvas.tokens.get(tokenId)
+    });
 }
 
 /**

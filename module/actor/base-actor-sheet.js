@@ -1280,10 +1280,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Condition skill is maxed out (SKILLS 9)
         if (item.type === 'skill' && item.name === 'Condition') {
             if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
-                await game.hm3.GmSays(
-                    `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.ConditionSkillMax'),
-                    'SKILLS 9'
-                );
+                await game.hm3.GmSays({
+                    text: `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.ConditionSkillMax'),
+                    source: 'SKILLS 9'
+                });
                 return;
             }
         }
@@ -1320,21 +1320,23 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                 if (item.type === 'skill' && item.system.type === 'Combat') {
                                     // Once opened, Development Rolls are made only for Combat Experience (SKILLS 18)
                                     if (item.name === 'Initiative') {
-                                        await game.hm3.GmSays(
-                                            `<h4>${this.actor.name}: ${item.name}</h4>` +
+                                        await game.hm3.GmSays({
+                                            text:
+                                                `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                 game.i18n.localize('hm3.SDR.InitiativeExperience'),
-                                            'SKILLS 18'
-                                        );
+                                            source: 'SKILLS 18'
+                                        });
                                         return;
                                     }
                                     // Weapon Skills may be developed by practice/training as normal, but no weapon skill
                                     // can be increased beyond ML70 except by actual combat experience (SKILLS 18)
                                     else if (item.system.masteryLevel >= 70) {
-                                        await game.hm3.GmSays(
-                                            `<h4>${this.actor.name}: ${item.name}</h4>` +
+                                        await game.hm3.GmSays({
+                                            text:
+                                                `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                 game.i18n.localize('hm3.SDR.CombatExperience'),
-                                            'SKILLS 18'
-                                        );
+                                            source: 'SKILLS 18'
+                                        });
                                         return;
                                     }
                                 }
@@ -1356,34 +1358,36 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                                                 item.system.masteryLevel >=
                                                                 7 * item.system.skillBase.value
                                                             ) {
-                                                                await game.hm3.GmSays(
-                                                                    `<h4>${this.actor.name}: ${item.name}</h4>` +
+                                                                await game.hm3.GmSays({
+                                                                    text:
+                                                                        `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                                         game.i18n.localize(
                                                                             'hm3.SDR.ConditionSkillMax'
                                                                         ) +
                                                                         `<p>(${num - i} SDRs left)</p>`,
-                                                                    'SKILLS 9'
-                                                                );
+                                                                    source: 'SKILLS 9'
+                                                                });
                                                                 break;
                                                             }
                                                         }
                                                         if (item.type === 'skill' && item.system.type === 'Combat') {
                                                             if (item.system.masteryLevel >= 70) {
-                                                                await game.hm3.GmSays(
-                                                                    `<h4>${this.actor.name}: ${item.name}</h4>` +
+                                                                await game.hm3.GmSays({
+                                                                    text:
+                                                                        `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                                         game.i18n.localize('hm3.SDR.CombatExperience') +
                                                                         `<p>(${num - i} SDRs left)</p>`,
-                                                                    'SKILLS 18'
-                                                                );
+                                                                    source: 'SKILLS 18'
+                                                                });
                                                                 break;
                                                             }
                                                         }
 
                                                         if (await this.actor.skillDevRoll(item, false)) success++;
                                                     }
-                                                    await game.hm3.GmSays(
-                                                        `<h4>${this.actor.name}: ${item.name}</h4>${success}/${num} SDRs succeeded`
-                                                    );
+                                                    await game.hm3.GmSays({
+                                                        text: `<h4>${this.actor.name}: ${item.name}</h4>${success}/${num} SDRs succeeded`
+                                                    });
                                                     resolve(true);
                                                 }
                                             }

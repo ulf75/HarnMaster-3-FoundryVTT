@@ -26,31 +26,59 @@ const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 await token.deleteAllMoraleConditions();
 await token.addCondition(game.hm3.Condition.PRONE);
-const almostDying = !token.player && (token.actor.system.shockIndex.value < game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD);
+const almostDying = !token.player && token.actor.system.shockIndex.value < game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD;
 if (almostDying) {
     await token.combatant?.update({defeated: true});
-    await game.hm3.GmSays("<b>" + token.name + "</b> is <b>Defeated</b> due to <b>Too Many Wounds</b>.", "House Rule");
+    await game.hm3.GmSays({
+        text: '<b>' + token.name + '</b> is <b>Defeated</b> due to <b>Too Many Wounds</b>.',
+        source: 'House Rule',
+        token
+    });
 } else if (!token.dying) {
-    await game.hm3.GmSays("Overwhelmed by pain, blood loss, and exhaustion, <b>" + token.name + "</b> collapses unconscious onto the battlefield, falling <b>Prone</b> amidst the chaos.", "Combat 14");
+    await game.hm3.GmSays({
+        text:
+            'Overwhelmed by pain, blood loss, and exhaustion, <b>' +
+            token.name +
+            '</b> collapses unconscious onto the battlefield, falling <b>Prone</b> amidst the chaos.',
+        source: 'Combat 14',
+        token
+    });
 }
-console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
+console.info('HM3 | Condition: ${CONDITION} created for token: ${token.name}');
 `;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 if (token.dying || token.combatant.isDefeated) return;
-await game.hm3.GmSays("<b>" + token.name + "</b> needs a successful <b>Shock</b> roll to regain consciousness.", "Combat 14", !token.player);
+await game.hm3.GmSays({
+    text: '<b>' + token.name + '</b> needs a successful <b>Shock</b> roll to regain consciousness.',
+    source: 'Combat 14',
+    gmonly: !token.player,
+    token
+});
 const success = (await game.hm3.macros.shockRoll(!token.player, token.actor, token, 1)).isSuccess;
 if (success) {
     // Combatant regains consciousness
-    await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and starts coming back to full senses, though stability remains uncertain. Another <b>Shock Roll</b> is needed.", "Combat 14");
+    await game.hm3.GmSays({
+        text:
+            '<b>' +
+            token.name +
+            '</b> regains consciousness and starts coming back to full senses, though stability remains uncertain. Another <b>Shock Roll</b> is needed.',
+        source: 'Combat 14',
+        token
+    });
     token.disableCondition('${CONDITION}', 500); // postpone a bit
 } else {
     // Combatant stays unconscious
-    await game.hm3.GmSays("<b>" + token.name + "</b> stays unconscious. <b>Turn ends.</b>", "Combat 14");
+    await game.hm3.GmSays({
+        text: '<b>' + token.name + '</b> stays unconscious. <b>Turn ends.</b>',
+        source: 'Combat 14',
+        token
+    });
     await token.turnEnds();
-}`;
+}
+`;
 
     // On disable (regain consciousness), make a last SHOCK roll (SKILLS 22, COMBAT 14)
     const ON_DISABLE_MACRO = `
@@ -61,12 +89,16 @@ const ok = (await game.hm3.macros.shockRoll(!token.player, token.actor, token, 2
 await token.deleteCondition('${CONDITION}');
 if (ok) {
     // Combatant is back
-    await game.hm3.GmSays("<b>" + token.name + "</b> regains consciousness and resumes functioning normally. <b>Turn Ends.</b>", "Combat 14");
+    await game.hm3.GmSays({
+        text: '<b>' + token.name + '</b> regains consciousness and resumes functioning normally. <b>Turn Ends.</b>',
+        source: 'Combat 14'
+    });
     await token.turnEnds();
 } else {
     // Combatant is now SHOCKED
     await token.addCondition(game.hm3.Condition.SHOCKED);
-}`;
+}
+`;
 
     const ON_DELETE_MACRO = `
 const token = canvas.tokens.get('${token.id}');

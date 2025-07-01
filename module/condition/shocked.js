@@ -25,26 +25,58 @@ export async function createCondition(token, options = {}) {
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
-await game.hm3.macros.createInjury({token, name: 'Shock', subType: 'shock', healRate: 4, notes: 'Started: ' + dateTime?.date + ' - ' + dateTime?.time});
+await game.hm3.macros.createInjury({
+    token,
+    name: 'Shock',
+    subType: 'shock',
+    healRate: 4,
+    notes: 'Started: ' + dateTime?.date + ' - ' + dateTime?.time
+});
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
     if (game.combat?.started && !token.player) await token.combatant.update({defeated: true});
     const turnEnds = game.combat?.started && game.combat.combatant.id === token.combatant.id;
     if (turnEnds) {
-        await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b> and displays a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. <b>" + token.name + "</b> is incoherent and gazes helplessly at the injuries. <b>Turn Ends.</b>", "Combat 14");
+        await game.hm3.GmSays({
+            text:
+                '<b>' +
+                token.name +
+                '</b> is in <b>Shock</b> and displays a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. <b>' +
+                token.name +
+                '</b> is incoherent and gazes helplessly at the injuries. <b>Turn Ends.</b>',
+            source: 'Combat 14',
+            token
+        });
         await token.turnEnds();
     } else {
-        await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b> and displays a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. <b>" + token.name + "</b> is incoherent and gazes helplessly at the injuries.", "Combat 14");
+        await game.hm3.GmSays({
+            text:
+                '<b>' +
+                token.name +
+                '</b> is in <b>Shock</b> and displays a variety of symptoms including pallor, cold sweats, weakness, nausea, thirst, and groaning. <b>' +
+                token.name +
+                '</b> is incoherent and gazes helplessly at the injuries.',
+            source: 'Combat 14',
+            token
+        });
     }
 }
-console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
+console.info('HM3 | Condition: ${CONDITION} created for token: ${token.name}');
 `;
 
     const ON_TURN_START_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
-if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> is in <b>Shock</b>. Shock prevents the use of skills, spells, and psionic talents. In a combat situation, a character in <b>Shock</b> may Rest, Walk/Crawl (at half move), or be led away; the character will <b>Ignore</b> any attacks.", "Combat 18");
+if (!unconscious)
+    await game.hm3.GmSays({
+        text:
+            '<b>' +
+            token.name +
+            '</b> is in <b>Shock</b>. Shock prevents the use of skills, spells, and psionic talents. In a combat situation, a character in <b>Shock</b> may Rest, Walk/Crawl (at half move), or be led away; the character will <b>Ignore</b> any attacks.',
+        source: 'Combat 18',
+        token
+    });
 `;
 
     const ON_DELETE_MACRO = `

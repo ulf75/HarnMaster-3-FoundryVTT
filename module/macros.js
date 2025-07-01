@@ -1057,10 +1057,10 @@ export async function killRoll(options) {
                 // DYING!!!
                 await options.token?.addCondition(game.hm3.Condition.DYING);
             } else {
-                await game.hm3.GmSays(
-                    `<b>${options.token.name}</b> just survives this <b>Fatal</b> wound, and makes a normal <b>Shock</b> roll.`,
-                    'Combat 14'
-                );
+                await game.hm3.GmSays({
+                    text: `<b>${options.token.name}</b> just survives this <b>Fatal</b> wound, and makes a normal <b>Shock</b> roll.`,
+                    source: 'Combat 14'
+                });
             }
 
             callOnHooks('hm3.onKillRoll', actorInfo.actor, result, stdRollData);
@@ -1772,13 +1772,13 @@ export async function unhorsingRoll(noDialog = false, myActor = null, autofail =
             actorInfo.actor.runCustomMacro(result);
             if (result.isSuccess) {
                 // CS/MS - rider stays in saddle (COMBAT 24)
-                game.hm3.GmSays(`<b>${token.name}</b> stays in the saddle.`, 'Combat 24');
+                await game.hm3.GmSays({text: `<b>${token.name}</b> stays in the saddle.`, source: 'Combat 24'});
                 if (result.isCritical) {
                     // CS - rider gains TA (COMBAT 24)
                 }
             } else {
                 // CF/MF - rider is thrown (COMBAT 24)
-                game.hm3.GmSays(`<b>${token.name}</b> is thrown.`, 'Combat 24');
+                await game.hm3.GmSays({text: `<b>${token.name}</b> is thrown.`, source: 'Combat 24'});
             }
             callOnHooks('hm3.onUnhorsingRoll', actorInfo.actor, result, stdRollData);
         }

@@ -22,7 +22,13 @@ export async function createCondition(token, options = {}) {
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
-if (!unconscious) await game.hm3.GmSays("<b>" + token.name + "</b> fights with the <b>Secondary Hand</b>, and gets -10 on <b>All</b> attack rolls.", "Combat 3 & 11", !token.player);
+if (!unconscious)
+    await game.hm3.GmSays({
+        text:
+            '<b>' + token.name + '</b> fights with the <b>Secondary Hand</b>, and gets -10 on <b>All</b> attack rolls.',
+        source: 'Combat 3 & 11',
+        gmonly: !token.player
+    });
 `;
 
     return {

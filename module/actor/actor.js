@@ -1219,10 +1219,10 @@ export class ActorHM3 extends Actor {
             // Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)
             if (item.type === ItemType.SKILL && result.sdrIncr === 2) {
                 if (item.system.masteryLevel < 40) {
-                    await game.hm3.GmSays(
-                        `<h4>${this.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.SkillSpecialty'),
-                        'SKILLS 2'
-                    );
+                    await game.hm3.GmSays({
+                        text: `<h4>${this.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.SkillSpecialty'),
+                        source: 'SKILLS 2'
+                    });
                     return false;
                 }
             }
