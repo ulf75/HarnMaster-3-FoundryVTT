@@ -274,7 +274,7 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
     const chatTemplateData = {
-        title: `${esotericItem.name} Esoteric Attack`,
+        title: `Esoteric Attack`,
         addlInfo: dialogResult.addlInfo,
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
         addlModifierSign: dialogResult.addlModifier < 0 ? '-' : '+',
@@ -813,7 +813,7 @@ async function esotericAttackDialog(options) {
 
     if (options.weapon.type === ItemType.SKILL && options.weapon.name.includes('Mental Conflict')) {
         dialogOptions.isMentalConflict = true;
-        dialogOptions.addlInfo = 'Type: ';
+        dialogOptions.addlInfo = 'Mental Conflict Type: ';
         dialogOptions.mentalConflictType = 'possession';
         dialogOptions.mentalConflictTypes = [
             {key: 'possession', label: 'Possession'},
