@@ -115,12 +115,42 @@ export class TokenHM3 extends Token {
         return game.users.find((u) => !u.isGM && this.actor.testUserPermission(u, 'OWNER')) || null;
     }
 
+    getInjuries() {
+        return this.actor.items.filter((item) => item.type === game.hm3.ItemType.INJURY);
+    }
+
     isInjured() {
-        return this.actor.items.filter((item) => item.type === game.hm3.ItemType.INJURY).length > 0;
+        return this.getInjuries().length > 0;
     }
 
     hasInjury(id) {
         return !!this.actor.items.find((i) => i.id === id);
+    }
+
+    hasSeriousInjuries() {
+        return this.getInjuries().filter((item) => item.system.injuryLevel >= 2).length > 0;
+    }
+
+    hasGreviousInjuries() {
+        return this.getInjuries().filter((item) => item.system.injuryLevel >= 4).length > 0;
+    }
+
+    hasSeriousLegInjuries() {
+        return (
+            this.getInjuries().filter(
+                (item) =>
+                    /\b|leg|hip|thigh|knee|calf|foot|\b/i.test(item.name.toLowerCase()) && item.system.injuryLevel >= 2
+            ).length > 0
+        );
+    }
+
+    hasGreviousLegInjuries() {
+        return (
+            this.getInjuries().filter(
+                (item) =>
+                    /\b|leg|hip|thigh|knee|calf|foot|\b/i.test(item.name.toLowerCase()) && item.system.injuryLevel >= 4
+            ).length > 0
+        );
     }
 
     /**
