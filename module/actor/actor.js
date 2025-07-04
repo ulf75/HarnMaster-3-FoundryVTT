@@ -304,7 +304,7 @@ export class ActorHM3 extends Actor {
         let totalWeightLow = 0;
         let numArmorLocations = 0;
         updateData.items.forEach((it) => {
-            if (it.type === 'armorlocation') {
+            if (it.type === ItemType.ARMORLOCATION) {
                 totalWeightHigh += it.system.probWeight['high'];
                 totalWeightMid += it.system.probWeight['mid'];
                 totalWeightLow += it.system.probWeight['low'];

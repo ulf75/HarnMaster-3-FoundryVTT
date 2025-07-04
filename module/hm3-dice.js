@@ -1,5 +1,5 @@
 import {HM3} from './config.js';
-import {Aspect, Condition, InjuryType} from './hm3-types.js';
+import {Aspect, Condition, InjuryType, ItemType} from './hm3-types.js';
 import * as utility from './utility.js';
 
 export class DiceHM3 {
@@ -796,7 +796,7 @@ export class DiceHM3 {
 
         // get a list of unique hit location names
         items.forEach((it) => {
-            if (it.type === 'armorlocation') {
+            if (it.type === ItemType.ARMORLOCATION) {
                 if (hitLocations.indexOf(it.name) === -1) {
                     hitLocations.push(it.name);
                 }
@@ -1022,7 +1022,7 @@ export class DiceHM3 {
             let totalWeight = 0;
             let numArmorLocations = 0;
             items.forEach((it) => {
-                if (it.type === 'armorlocation') {
+                if (it.type === ItemType.ARMORLOCATION) {
                     totalWeight += it.system.probWeight[lcAim];
                     numArmorLocations++;
                 }
@@ -1058,7 +1058,7 @@ export class DiceHM3 {
             // find the location that meets that number
             let done = false;
             items.forEach((it) => {
-                if (!done && it.type === 'armorlocation') {
+                if (!done && it.type === ItemType.ARMORLOCATION) {
                     rollWeight -= it.system.probWeight[lcAim];
                     if (rollWeight <= 0) {
                         result = it;
@@ -1069,7 +1069,7 @@ export class DiceHM3 {
         } else {
             // Not random, let's just find the designated item
             items.forEach((it) => {
-                if (result === null && it.type === 'armorlocation' && it.name === location) {
+                if (result === null && it.type === ItemType.ARMORLOCATION && it.name === location) {
                     result = it;
                 }
             });

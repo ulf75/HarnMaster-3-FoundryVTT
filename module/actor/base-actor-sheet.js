@@ -44,6 +44,21 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
         data.customSunSign = game.settings.get('hm3', 'customSunSign');
         data.actor = foundry.utils.deepClone(this.actor);
+
+        let totalWeightHigh = 0;
+        let totalWeightMid = 0;
+        let totalWeightLow = 0;
+        this.actor.items.forEach((it) => {
+            if (it.type === ItemType.ARMORLOCATION) {
+                totalWeightHigh += it.system.probWeight['high'];
+                totalWeightMid += it.system.probWeight['mid'];
+                totalWeightLow += it.system.probWeight['low'];
+            }
+        });
+        totalWeightHigh /= 100;
+        totalWeightMid /= 100;
+        totalWeightLow /= 100;
+
         data.items = (
             await Promise.all(
                 this.actor.items.map(async (i) => {
@@ -59,6 +74,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                         ].includes(i.type)
                     ) {
                         i.system.weightT = utility.truncate(i.system.weight, 3);
+                    }
+                    //
+                    if (i.type === ItemType.ARMORLOCATION) {
+                        i.probHigh = utility.truncate(i.system.probWeight.high / totalWeightHigh, 1);
+                        i.probMid = utility.truncate(i.system.probWeight.mid / totalWeightMid, 1);
+                        i.probLow = utility.truncate(i.system.probWeight.low / totalWeightLow, 1);
                     }
                     // Dormant psionic talents may be invisible for players (ML20 or less (Psionics 3))
                     if (i.type === ItemType.PSIONIC) {
@@ -1094,7 +1115,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             extraLabel = 'Gear Type';
         } else {
             switch (dataset.type) {
-                case 'armorlocation':
+                case ItemType.ARMORLOCATION:
                     name = utility.createUniqueName('New Location', this.actor.itemTypes.armorlocation);
                     break;
 
