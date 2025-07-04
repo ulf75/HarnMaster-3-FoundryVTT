@@ -264,7 +264,7 @@ export class ActorHM3 extends Actor {
                 case 'default-humanoid':
                 default:
                     // Add standard armor locations
-                    ActorHM3._createDefaultHumanoidLocations(updateData.items);
+                    ActorHM3._createDefaultHumanoidLocations(updateData.items, false);
                     break;
             }
         } else if (createData.type === 'creature') {
@@ -287,7 +287,7 @@ export class ActorHM3 extends Actor {
                 case 'default-humanoid':
                 default:
                     // Add standard armor locations
-                    ActorHM3._createDefaultHumanoidLocations(updateData.items);
+                    ActorHM3._createDefaultHumanoidLocations(updateData.items, false);
                     break;
             }
         } else if (createData.type === 'container') {
@@ -297,37 +297,29 @@ export class ActorHM3 extends Actor {
             updateData['img'] = 'systems/hm3/images/icons/svg/chest.svg';
         }
         this.updateSource(updateData);
+
+        // Sanity Check
+        let totalWeightHigh = 0;
+        let totalWeightMid = 0;
+        let totalWeightLow = 0;
+        let numArmorLocations = 0;
+        updateData.items.forEach((it) => {
+            if (it.type === 'armorlocation') {
+                totalWeightHigh += it.system.probWeight['high'];
+                totalWeightMid += it.system.probWeight['mid'];
+                totalWeightLow += it.system.probWeight['low'];
+                numArmorLocations++;
+            }
+        });
+
+        if (totalWeightHigh % 100 || totalWeightMid % 100 || totalWeightLow % 100) {
+            if (game.user.isGM)
+                ui.notifications.warn(
+                    `Armor prob weight is NOT equal to 100, 1000 or 10000. ${this.name}: ${totalWeightHigh} | ${totalWeightMid} | ${totalWeightLow}`,
+                    {permanent: true}
+                );
+        }
     }
-
-    /** @override */
-    // async toggleStatusEffect(statusId, {active, overlay} = {}) {
-    //     const statusMap = new Map([
-    //         ['dead', {name: Condition.DYING, overlay: true}],
-    //         ['downgrade', {name: Condition.WEAKENED, overlay: false}],
-    //         ['prone', {name: Condition.PRONE, overlay: true}],
-    //         ['shock', {name: Condition.SHOCKED, overlay: true}],
-    //         ['unconscious', {name: Condition.UNCONSCIOUS, overlay: true}],
-    //         ['upgrade', {name: Condition.EMPOWERED, overlay: false}]
-    //     ]);
-
-    //     if (statusMap.has(statusId)) {
-    //         const token = this.token.object;
-    //         const condition = statusMap.get(statusId).name;
-    //         active = active === undefined ? !token.hasCondition(condition) : active;
-    //         overlay = overlay === undefined ? statusMap.get(statusId).overlay : overlay;
-    //         if (active) {
-    //             // this.statuses.add(statusId);
-    //             // return token.addCondition(condition, {overlay});
-    //             return macros.createCondition(token, condition, {overlay});
-    //         } else {
-    //             // this.statuses.delete(statusId);
-    //             return token.deleteCondition(condition);
-    //         }
-    //     } else {
-    //         // If the statusId is not recognized, use the default toggleStatusEffect method
-    //         return super.toggleStatusEffect(statusId, {active, overlay: !!overlay});
-    //     }
-    // }
 
     /**
      * Add all of the items from a pack with the specified names
@@ -372,6 +364,9 @@ export class ActorHM3 extends Actor {
     static _setupLocation(locName, templateName) {
         const armorLocationData = foundry.utils.deepClone(game.model.Item.armorlocation);
         foundry.utils.mergeObject(armorLocationData, HM3.injuryLocations[templateName]);
+        armorLocationData.probWeight.high *= 10;
+        armorLocationData.probWeight.mid *= 10;
+        armorLocationData.probWeight.low *= 10;
         return {name: locName, type: ItemType.ARMORLOCATION, system: armorLocationData};
     }
 
@@ -381,9 +376,11 @@ export class ActorHM3 extends Actor {
      *
      * @param {*} items Array of ItemData elements
      */
-    static _createDefaultHumanoidLocations(items) {
+    static _createDefaultHumanoidLocations(items, face = true) {
         items.push(ActorHM3._setupLocation('Skull', 'Skull'));
-        items.push(ActorHM3._setupLocation('Face', 'Face'));
+        face
+            ? items.push(ActorHM3._setupLocation('Face', 'Face'))
+            : ActorHM3._createDefaultHumanoidFaceLocations(items);
         items.push(ActorHM3._setupLocation('Neck', 'Neck'));
         items.push(ActorHM3._setupLocation('Left Shoulder', 'Shoulder'));
         items.push(ActorHM3._setupLocation('Right Shoulder', 'Shoulder'));
@@ -408,6 +405,18 @@ export class ActorHM3 extends Actor {
         items.push(ActorHM3._setupLocation('Right Calf', 'Calf'));
         items.push(ActorHM3._setupLocation('Left Foot', 'Foot'));
         items.push(ActorHM3._setupLocation('Right Foot', 'Foot'));
+    }
+
+    static _createDefaultHumanoidFaceLocations(items) {
+        items.push(ActorHM3._setupLocation('Jaw', 'Jaw'));
+        items.push(ActorHM3._setupLocation('Left Eye', 'Eye'));
+        items.push(ActorHM3._setupLocation('Right Eye', 'Eye'));
+        items.push(ActorHM3._setupLocation('Left Cheek', 'Cheek'));
+        items.push(ActorHM3._setupLocation('Right Cheek', 'Cheek'));
+        items.push(ActorHM3._setupLocation('Nose', 'Nose'));
+        items.push(ActorHM3._setupLocation('Left Ear', 'Ear'));
+        items.push(ActorHM3._setupLocation('Right Ear', 'Ear'));
+        items.push(ActorHM3._setupLocation('Mouth', 'Mouth'));
     }
 
     /**

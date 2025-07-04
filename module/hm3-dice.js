@@ -1033,12 +1033,13 @@ export class DiceHM3 {
                 return null;
             }
 
-            if (!(totalWeight === 100 || totalWeight === 1000)) {
+            if (totalWeight % 100) {
                 if (game.user.isGM)
                     ui.notifications.warn(
-                        `Armor prob weight is NOT equal to 100 or 1000. ${location} ${aim} ${
+                        `Armor prob weight is NOT equal to 100, 1000 or 10000. ${location} ${aim} ${
                             items.contents.length ? items.contents[0].parent.name : 'Unknown'
-                        } ${totalWeight}`
+                        } ${totalWeight}`,
+                        {permanent: true}
                     );
             }
 

@@ -163,7 +163,7 @@ HM3.defaultCharacterSkills = [
     'Dodge'
 ];
 
-HM3.defaultCreatureSkills = ['Awareness', 'Initiative', 'Unarmed', 'Dodge'];
+HM3.defaultCreatureSkills = ['Awareness', 'Condition', 'Initiative', 'Unarmed', 'Dodge'];
 
 HM3.injuryLocations = {
     'Custom': {
@@ -248,7 +248,7 @@ HM3.injuryLocations = {
     },
     'Abdomen': {
         impactType: 'abdomen',
-        probWeight: {'high': 60, 'mid': 100, 'low': 100},
+        probWeight: {'high': 50, 'mid': 100, 'low': 100},
         isStumble: false,
         isFumble: false,
         isAmputate: false,
@@ -272,7 +272,7 @@ HM3.injuryLocations = {
     },
     'Thigh': {
         impactType: 'thigh',
-        probWeight: {'high': 0, 'mid': 40, 'low': 100},
+        probWeight: {'high': 0, 'mid': 40, 'low': 105},
         isStumble: true,
         isFumble: false,
         isAmputate: true,
@@ -325,6 +325,54 @@ HM3.injuryLocations = {
         isFumble: false,
         isAmputate: true,
         effectiveImpact: {ei1: 'M1', ei5: 'M1', ei9: 'S2', ei13: 'S3', ei17: 'G4'}
+    },
+    'Jaw': {
+        impactType: 'face, jaw',
+        probWeight: {'high': 150 * (150 / 1000), 'mid': 50 * (150 / 1000), 'low': 0},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K5'}
+    },
+    'Eye': {
+        impactType: 'face, eye',
+        probWeight: {'high': 150 * (75 / 1000), 'mid': 50 * (75 / 1000), 'low': 0},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K5'}
+    },
+    'Cheek': {
+        impactType: 'face, cheek',
+        probWeight: {'high': 150 * (175 / 1000), 'mid': 50 * (175 / 1000), 'low': 0},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K5'}
+    },
+    'Nose': {
+        impactType: 'face, nose',
+        probWeight: {'high': 150 * (150 / 1000), 'mid': 50 * (150 / 1000), 'low': 0},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K5'}
+    },
+    'Ear': {
+        impactType: 'face, ear',
+        probWeight: {'high': 150 * (50 / 1000), 'mid': 50 * (50 / 1000), 'low': 0},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K5'}
+    },
+    'Mouth': {
+        impactType: 'face, mouth',
+        probWeight: {'high': 150 * (100 / 1000), 'mid': 50 * (100 / 1000), 'low': 0},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K5'}
     },
     'Head, humanoid simple': {
         impactType: 'head, humanoid simple',
