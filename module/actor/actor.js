@@ -100,6 +100,15 @@ export class ActorHM3 extends Actor {
         return effects;
     }
 
+    /**
+     *
+     * @param {Condition} condition
+     * @returns
+     */
+    hasCondition(condition) {
+        return macros.hasActiveEffect(this, condition, condition === Condition.OUTNUMBERED ? false : true);
+    }
+
     static defaultName({type, parent, pack} = {}) {
         const documentName = this.metadata.name;
         let collection;
@@ -575,7 +584,7 @@ export class ActorHM3 extends Actor {
         // Safety net: We divide things by endurance, so ensure it is > 0
         actorData.endurance = Math.max(actorData.endurance, 1);
 
-        if (this.allApplicableEffects(true).find((effect) => effect.name === Condition.INANIMATE)) {
+        if (this.hasCondition(Condition.INANIMATE)) {
             // If the actor is Inanimate, ensure max injury levels is equal to endurance
             if (actorData.injuryLevels.max !== actorData.endurance) {
                 setTimeout(() => this.update({'system.injuryLevels.max': actorData.endurance}), 500);
@@ -1796,7 +1805,7 @@ export class ActorHM3 extends Actor {
         const data = actor.system;
         const old = data.shockIndex.value;
 
-        if (actor.allApplicableEffects(true).find((effect) => effect.name === Condition.INANIMATE)) {
+        if (actor.hasCondition(Condition.INANIMATE)) {
             data.shockIndex.value = Math.max(100 - Math.round(100 * (data.totalInjuryLevels / data.endurance)), 0);
         } else {
             data.shockIndex.value = ActorHM3.normProb(

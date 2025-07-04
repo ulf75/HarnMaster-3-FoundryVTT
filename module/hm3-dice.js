@@ -691,7 +691,7 @@ export class DiceHM3 {
         const chatTemplateData = foundry.utils.mergeObject(
             {
                 opponentTokenId: rollData.atkToken?.id,
-                isShockRoll: result.injuryLevel > 0 && !rollData.actor.token?.hasCondition(Condition.INANIMATE),
+                isShockRoll: result.injuryLevel > 0 && !rollData.actor.hasCondition(Condition.INANIMATE),
                 title: `${rollData.actor.token ? rollData.actor.token.name : rollData.actor.name} Injury`,
                 visibleActorId: rollData.actor.id
             },
@@ -935,7 +935,7 @@ export class DiceHM3 {
             result.injuryLevelText = armorLocationData.effectiveImpact.ei1;
         }
 
-        if (dialogOptions.actor.token.hasCondition(Condition.INANIMATE) && result.injuryLevelText[0] === 'K') {
+        if (dialogOptions.actor.hasCondition(Condition.INANIMATE) && result.injuryLevelText[0] === 'K') {
             result.injuryLevelText = result.injuryLevelText.replace('K', 'G');
         }
 

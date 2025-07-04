@@ -352,7 +352,7 @@ Hooks.on('hm3.onShockIndexReduced', async (actor, old, current) => {
 });
 
 Hooks.on('hm3.onTotalInjuryLevelsChanged', async (actor, oldValue, newValue) => {
-    const inanimate = actor.allApplicableEffects(true).find((effect) => effect.name === Condition.INANIMATE);
+    const inanimate = actor.hasCondition(Condition.INANIMATE);
     if (inanimate) {
         actor.system.injuryLevels.max = actor.system.endurance;
     }

@@ -1,3 +1,4 @@
+import {ActorHM3} from './actor/actor.js';
 import * as combat from './combat.js';
 import * as berserk from './condition/berserk.js';
 import * as broken from './condition/broken.js';
@@ -19,6 +20,7 @@ import * as unconscious from './condition/unconscious.js';
 import * as weakened from './condition/weakened.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './hm3-dice.js';
+import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
 import {Aspect, Condition, InjuryType, ItemType, SkillType} from './hm3-types.js';
 import {Mutex} from './mutex.js';
 import * as utility from './utility.js';
@@ -2508,31 +2510,39 @@ export function pathIntersectsCircle(circle, line, centerToCenter = true) {
 
 /**
  * TODO
- * @param {TokenHM3} token
+ * @param {ActorHM3|TokenHM3|TokenDocumentHM3} actorOrToken
  * @param {string} name
  * @returns
  */
-export function hasActiveEffect(token, name, strict = false) {
-    const ae = getActiveEffect(token, name, strict);
+export function hasActiveEffect(actorOrToken, name, strict = false) {
+    const ae = getActiveEffect(actorOrToken, name, strict);
     return !!ae && !!ae?.active;
 }
 
 /**
  * TODO
- * @param {TokenHM3} token
+ * @param {ActorHM3|TokenHM3|TokenDocumentHM3} actorOrToken
  * @param {string} name
  * @returns
  */
-export function getActiveEffect(token, name, strict = false) {
-    return strict
-        ? token.actor.allApplicableEffects(true).find((v) => v.name === name)
-        : token.actor
-              .allApplicableEffects(true)
-              .find(
-                  (v) =>
-                      v.name.toLowerCase().includes(name.toLowerCase()) ||
-                      name.toLowerCase().includes(v.name.toLowerCase())
-              );
+export function getActiveEffect(actorOrToken, name, strict = false) {
+    let actor = actorOrToken instanceof ActorHM3 ? actorOrToken : null;
+    if (!actor) {
+        actor =
+            actorOrToken instanceof TokenHM3 || actorOrToken instanceof TokenDocumentHM3 ? actorOrToken.actor : null;
+    }
+
+    if (actor) {
+        return strict
+            ? actor.allApplicableEffects(true).find((v) => v.name === name)
+            : actor
+                  .allApplicableEffects(true)
+                  .find(
+                      (v) =>
+                          v.name.toLowerCase().includes(name.toLowerCase()) ||
+                          name.toLowerCase().includes(v.name.toLowerCase())
+                  );
+    } else return null;
 }
 
 let createMutex = new Mutex();
