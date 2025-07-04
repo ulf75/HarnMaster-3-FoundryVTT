@@ -992,13 +992,13 @@ export class DiceHM3 {
         result.isBleeder = enableBloodloss && result.injuryLevel >= 4 && result.aspect != Aspect.FIRE;
 
         // Optional Rule - Limb Injuries (Combat 14)
-        if (armorLocationData.isFumble && !dialogOptions.actor.token.hasCondition(Condition.NO_FUMBLE)) {
+        if (armorLocationData.isFumble && !dialogOptions.actor.hasCondition(Condition.NO_FUMBLE)) {
             result.isFumble = enableLimbInjuries && result.injuryLevel >= 4;
             result.isFumbleRoll = enableLimbInjuries || (!result.isFumble && result.injuryLevel >= 2);
         }
 
         // Optional Rule - Limb Injuries (Combat 14)
-        if (armorLocationData.isStumble && !dialogOptions.actor.token.hasCondition(Condition.NO_STUMBLE)) {
+        if (armorLocationData.isStumble && !dialogOptions.actor.hasCondition(Condition.NO_STUMBLE)) {
             result.isStumble = enableLimbInjuries && result.injuryLevel >= 4;
             result.isStumbleRoll = enableLimbInjuries || (!result.isStumble && result.injuryLevel >= 2);
         }
@@ -1032,6 +1032,15 @@ export class DiceHM3 {
             if (numArmorLocations === 0) {
                 return null;
             }
+
+            console.assert(
+                totalWeight === 100 || totalWeight === 1000,
+                'Armor prob weight is NOT equal to 100 or 1000.',
+                location,
+                aim,
+                items.contents.length ? items.contents[0].parent.name : 'Unknown',
+                totalWeight
+            );
 
             // At this point, we know we found armorlocations,
             // but it is possible that they all have a weight
