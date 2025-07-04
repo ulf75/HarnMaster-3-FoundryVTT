@@ -2511,21 +2511,21 @@ export function pathIntersectsCircle(circle, line, centerToCenter = true) {
 /**
  * TODO
  * @param {ActorHM3|TokenHM3|TokenDocumentHM3} actorOrToken
- * @param {string} name
+ * @param {string} aeName
  * @returns
  */
-export function hasActiveEffect(actorOrToken, name, strict = false) {
-    const ae = getActiveEffect(actorOrToken, name, strict);
+export function hasActiveEffect(actorOrToken, aeName, strict = false) {
+    const ae = getActiveEffect(actorOrToken, aeName, strict);
     return !!ae && !!ae?.active;
 }
 
 /**
  * TODO
  * @param {ActorHM3|TokenHM3|TokenDocumentHM3} actorOrToken
- * @param {string} name
+ * @param {string} aeName
  * @returns
  */
-export function getActiveEffect(actorOrToken, name, strict = false) {
+export function getActiveEffect(actorOrToken, aeName, strict = false) {
     let actor = actorOrToken instanceof ActorHM3 ? actorOrToken : null;
     if (!actor) {
         actor =
@@ -2534,13 +2534,13 @@ export function getActiveEffect(actorOrToken, name, strict = false) {
 
     if (actor) {
         return strict
-            ? actor.allApplicableEffects(true).find((v) => v.name === name)
+            ? actor.allApplicableEffects(true).find((ae) => ae.name === aeName)
             : actor
                   .allApplicableEffects(true)
                   .find(
-                      (v) =>
-                          v.name.toLowerCase().includes(name.toLowerCase()) ||
-                          name.toLowerCase().includes(v.name.toLowerCase())
+                      (ae) =>
+                          ae.name.toLowerCase().includes(aeName.toLowerCase()) ||
+                          aeName.toLowerCase().includes(ae.name.toLowerCase())
                   );
     } else return null;
 }
