@@ -1033,14 +1033,14 @@ export class DiceHM3 {
                 return null;
             }
 
-            console.assert(
-                totalWeight === 100 || totalWeight === 1000,
-                'Armor prob weight is NOT equal to 100 or 1000.',
-                location,
-                aim,
-                items.contents.length ? items.contents[0].parent.name : 'Unknown',
-                totalWeight
-            );
+            if (!(totalWeight === 100 || totalWeight === 1000)) {
+                if (game.user.isGM)
+                    ui.notifications.warn(
+                        `Armor prob weight is NOT equal to 100 or 1000. ${location} ${aim} ${
+                            items.contents.length ? items.contents[0].parent.name : 'Unknown'
+                        } ${totalWeight}`
+                    );
+            }
 
             // At this point, we know we found armorlocations,
             // but it is possible that they all have a weight
