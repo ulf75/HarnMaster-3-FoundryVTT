@@ -1080,7 +1080,7 @@ export async function shockRoll(noDialog = false, myActor = null, token = null, 
         return null;
     }
 
-    if (actorInfo.token?.hasCondition(Condition.INANIMATE)) {
+    if (actorInfo.actor?.hasCondition(Condition.INANIMATE)) {
         ui.notifications.warn(`Token is inanimate, and immune to shock.`);
         return null;
     }
@@ -1131,7 +1131,7 @@ export async function willShockRoll({myActor = null, noDialog = false, token = n
         return null;
     }
 
-    if (actorInfo.token?.hasCondition(Condition.INANIMATE)) {
+    if (actorInfo.actor?.hasCondition(Condition.INANIMATE)) {
         ui.notifications.warn(`Token is inanimate, and immune to shock.`);
         return null;
     }
@@ -1173,7 +1173,7 @@ export async function stumbleRoll(noDialog = false, myActor = null, opponentToke
         return null;
     }
 
-    if (actorInfo.token?.hasCondition(Condition.NO_STUMBLE)) {
+    if (actorInfo.actor?.hasCondition(Condition.NO_STUMBLE)) {
         ui.notifications.warn(`Token has No Stumble feat.`);
         return null;
     }
@@ -1221,7 +1221,7 @@ export async function fumbleRoll(noDialog = false, myActor = null, opponentToken
         return null;
     }
 
-    if (actorInfo.token?.hasCondition(Condition.NO_FUMBLE)) {
+    if (actorInfo.actor?.hasCondition(Condition.NO_FUMBLE)) {
         ui.notifications.warn(`Token has No Fumble feat.`);
         return null;
     }
@@ -1592,7 +1592,7 @@ export async function moraleRoll(noDialog = false, myActor = null) {
         return null;
     }
 
-    if (actorInfo.token?.hasCondition(Condition.INANIMATE)) {
+    if (actorInfo.actor?.hasCondition(Condition.INANIMATE)) {
         ui.notifications.warn(`Token is inanimate, and immune to morale.`);
         return null;
     }
@@ -1604,7 +1604,7 @@ export async function moraleRoll(noDialog = false, myActor = null) {
     }
 
     let token = actorInfo.token;
-    const unconscious = token?.hasCondition(Condition.UNCONSCIOUS);
+    const unconscious = actorInfo.actor?.hasCondition(Condition.UNCONSCIOUS);
     if (unconscious) {
         ui.notifications.warn(`Token is unconscious.`);
         return null;
