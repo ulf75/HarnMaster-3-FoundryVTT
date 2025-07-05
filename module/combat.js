@@ -449,6 +449,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
 
     const atkCloseMode =
         atkToken.hasCondition(Condition.CLOSE_MODE) &&
+        !options.unarmed &&
         (dialogResult.aspect === 'Blunt' || dialogResult.aspect === 'Edged');
     dialogResult.addlModifier += atkCloseMode ? -10 : 0;
 
@@ -645,8 +646,6 @@ async function attackDialog(options) {
 
         if (result) {
             options.weapon = options.weapons.find((w) => result.weapon === w.name);
-            // If an attack is carried out unarmed, you can select the GRAPPLE option.
-            options.unarmed = options.weapon.system.assocSkill.toLowerCase().includes('unarmed');
         }
     }
 
@@ -654,6 +653,9 @@ async function attackDialog(options) {
         ui.notifications.warn(`${options.attackerName} has no equipped weapons available for attack.`);
         return null;
     }
+
+    // If an attack is carried out unarmed, you can select the GRAPPLE option.
+    options.unarmed = options.weapon.system.assocSkill.toLowerCase().includes('unarmed');
 
     const dialogOptions = {
         weapon: options.weapon.name,
@@ -744,6 +746,7 @@ async function attackDialog(options) {
             isGrappleAtk,
             range: formRange,
             rangeExceedsExtreme: dialogOptions.rangeExceedsExtreme,
+            unarmed: options.unarmed,
             weapon: options.weapon
         };
 
@@ -935,6 +938,14 @@ function defaultEsotericWeapon(token) {
     };
 }
 
+export function isWpnUnarmed(weapon, token) {
+    if (typeof weapon === 'string' || weapon instanceof String) {
+        weapon = token?.actor?.items.find((item) => item.name === weapon);
+    }
+
+    return !!weapon?.system?.assocSkill?.toLowerCase().includes('unarmed');
+}
+
 /**
  * Resume the attack with the defender performing the "Counterstrike" defense.
  * Note that this defense is only applicable to melee attacks.
@@ -962,8 +973,6 @@ export async function meleeCounterstrikeResume(
         ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
-
-    const speaker = ChatMessage.getSpeaker({token: atkToken});
 
     // Get weapon with maximum impact
     const options = defaultMeleeWeapon(defToken);
@@ -1000,9 +1009,12 @@ export async function meleeCounterstrikeResume(
     if (!csDialogResult) return null;
 
     const atkCloseMode =
-        atkToken.hasCondition(Condition.CLOSE_MODE) && (atkAspect === 'Blunt' || atkAspect === 'Edged');
+        atkToken.hasCondition(Condition.CLOSE_MODE) &&
+        !isWpnUnarmed(atkWeaponName, atkToken) &&
+        (atkAspect === 'Blunt' || atkAspect === 'Edged');
     const defCloseMode =
         defToken.hasCondition(Condition.CLOSE_MODE) &&
+        !csDialogResult.unarmed &&
         (csDialogResult.aspect === 'Blunt' || csDialogResult.aspect === 'Edged');
 
     csDialogResult.addlModifier += defCloseMode ? -10 : 0;
@@ -1370,7 +1382,10 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
-    const atkCloseMode = atkToken.hasCondition(Condition.CLOSE_MODE) && (aspect === 'Blunt' || aspect === 'Edged');
+    const atkCloseMode =
+        atkToken.hasCondition(Condition.CLOSE_MODE) &&
+        !isWpnUnarmed(weaponName, atkToken) &&
+        (aspect === 'Blunt' || aspect === 'Edged');
 
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
     const chatData = {
@@ -1822,7 +1837,10 @@ export async function blockResume(
         atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
-    const atkCloseMode = atkToken.hasCondition(Condition.CLOSE_MODE) && (aspect === 'Blunt' || aspect === 'Edged');
+    const atkCloseMode =
+        atkToken.hasCondition(Condition.CLOSE_MODE) &&
+        !isWpnUnarmed(weaponName, atkToken) &&
+        (aspect === 'Blunt' || aspect === 'Edged');
 
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
     const chatData = {
@@ -2084,7 +2102,10 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
     }
 
-    const atkCloseMode = atkToken.hasCondition(Condition.CLOSE_MODE) && (aspect === 'Blunt' || aspect === 'Edged');
+    const atkCloseMode =
+        atkToken.hasCondition(Condition.CLOSE_MODE) &&
+        !isWpnUnarmed(weaponName, atkToken) &&
+        (aspect === 'Blunt' || aspect === 'Edged');
 
     const title = isGrappleAtk ? 'Grapple Result' : 'Attack Result';
     const chatData = {
