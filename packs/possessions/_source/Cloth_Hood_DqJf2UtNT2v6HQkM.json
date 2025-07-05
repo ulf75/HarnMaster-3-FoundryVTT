@@ -30,7 +30,7 @@
     },
     "material": "Cloth",
     "armorQuality": 0,
-    "locations": ["Skull", "Neck"],
+    "locations": ["Skull", "Ear", "Neck"],
     "protection": {
       "blunt": 1,
       "edged": 1,

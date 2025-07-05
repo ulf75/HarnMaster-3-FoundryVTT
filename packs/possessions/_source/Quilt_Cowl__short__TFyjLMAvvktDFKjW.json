@@ -30,7 +30,7 @@
     },
     "material": "Quilt",
     "armorQuality": 0,
-    "locations": ["Skull", "Neck"],
+    "locations": ["Skull", "Ear", "Jaw", "Neck"],
     "protection": {
       "blunt": 5,
       "edged": 3,

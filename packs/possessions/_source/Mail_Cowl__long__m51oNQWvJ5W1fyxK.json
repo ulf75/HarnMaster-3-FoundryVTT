@@ -30,7 +30,7 @@
     },
     "material": "Mail",
     "armorQuality": 0,
-    "locations": ["Skull", "Neck", "Shoulder"],
+    "locations": ["Skull", "Ear", "Jaw", "Neck", "Shoulder"],
     "protection": {
       "blunt": 2,
       "edged": 8,
