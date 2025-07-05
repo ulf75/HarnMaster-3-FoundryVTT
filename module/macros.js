@@ -2533,7 +2533,7 @@ export function getActiveEffect(actorOrToken, aeName, strict = false) {
             actorOrToken instanceof TokenHM3 || actorOrToken instanceof TokenDocumentHM3 ? actorOrToken.actor : null;
     }
 
-    if (actor) {
+    if (actor && aeName) {
         return strict
             ? actor.allApplicableEffects(true).find((ae) => ae.name === aeName)
             : actor

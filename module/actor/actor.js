@@ -109,6 +109,15 @@ export class ActorHM3 extends Actor {
         return macros.hasActiveEffect(this, condition, condition === Condition.OUTNUMBERED ? false : true);
     }
 
+    /**
+     *
+     * @param {Condition} condition
+     * @returns
+     */
+    getCondition(condition) {
+        return macros.getActiveEffect(this, condition, condition === Condition.OUTNUMBERED ? false : true);
+    }
+
     static defaultName({type, parent, pack} = {}) {
         const documentName = this.metadata.name;
         let collection;

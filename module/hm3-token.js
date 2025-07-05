@@ -42,7 +42,7 @@ export class TokenHM3 extends Token {
      * @returns
      */
     hasCondition(condition) {
-        return macros.hasActiveEffect(this, condition, condition === Condition.OUTNUMBERED ? false : true);
+        return this.actor.hasCondition(condition);
     }
 
     /**
@@ -51,7 +51,7 @@ export class TokenHM3 extends Token {
      * @returns
      */
     getCondition(condition) {
-        return macros.getActiveEffect(this, condition, condition === Condition.OUTNUMBERED ? false : true);
+        return this.actor.getCondition(condition);
     }
 
     getConditions() {
