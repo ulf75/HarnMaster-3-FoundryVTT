@@ -1341,7 +1341,7 @@ export async function throwDownRoll(atkTokenId, defTokenId, atkDice, defDice) {
             visibleDefActorId: defToken.actor.id
         };
 
-        let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.html';
+        let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.hbs';
 
         const html = await renderTemplate(chatTemplate, chatData);
 
@@ -1368,7 +1368,7 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
         return null;
     }
 
-    let dlgTemplate = 'systems/hm3/templates/dialog/falling-test-dialog.html';
+    let dlgTemplate = 'systems/hm3/templates/dialog/falling-test-dialog.hbs';
     let dialogData = {
         clear: true,
         grabbing: false,

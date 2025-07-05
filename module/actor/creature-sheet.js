@@ -23,9 +23,9 @@ export class CreatureSheetHM3 extends HarnMasterBaseActorSheet {
      */
     get template() {
         if (!game.user.isGM && this.actor.limited) {
-            return 'systems/hm3/templates/actor/creature-limited.html';
+            return 'systems/hm3/templates/actor/creature-limited.hbs';
         } else {
-            return 'systems/hm3/templates/actor/creature-sheet.html';
+            return 'systems/hm3/templates/actor/creature-sheet.hbs';
         }
     }
 }

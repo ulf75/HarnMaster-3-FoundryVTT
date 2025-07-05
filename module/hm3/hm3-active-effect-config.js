@@ -11,7 +11,7 @@ export class ActiveEffectConfigHM3 extends ActiveEffectConfig {
     /** @override */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            template: 'systems/hm3/templates/effect/active-effect-config.html'
+            template: 'systems/hm3/templates/effect/active-effect-config.hbs'
         });
     }
 

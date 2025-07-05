@@ -117,7 +117,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
     );
 
     // Prepare for Chat Message
-    const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
+    const chatTemplate = 'systems/hm3/templates/chat/attack-card.hbs';
     const grappled = defToken.hasCondition(Condition.GRAPPLED);
     const incapacitated = defToken.hasCondition(Condition.INCAPACITATED);
     const shocked = defToken.hasCondition(Condition.SHOCKED);
@@ -272,7 +272,7 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
     const effAML = game.hm3.macros.HM100Check(esotericItem.system.effectiveMasteryLevel + dialogResult.addlModifier);
 
     // Prepare for Chat Message
-    const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
+    const chatTemplate = 'systems/hm3/templates/chat/attack-card.hbs';
     const chatTemplateData = {
         title: `Esoteric Attack`,
         addlInfo: dialogResult.addlInfo,
@@ -458,7 +458,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
     );
 
     // Prepare for Chat Message
-    const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
+    const chatTemplate = 'systems/hm3/templates/chat/attack-card.hbs';
 
     const defBerserk = defToken.hasCondition(Condition.BERSERK);
     const defBroken = defToken.hasCondition(Condition.BROKEN);
@@ -569,7 +569,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
  * @param {Object} options
  */
 async function selectWeaponDialog(options) {
-    let queryWeaponDialog = 'systems/hm3/templates/dialog/query-weapon-dialog.html';
+    let queryWeaponDialog = 'systems/hm3/templates/dialog/query-weapon-dialog.hbs';
 
     const dialogOptions = {
         title: `${options.name} Select Weapon`
@@ -734,7 +734,7 @@ async function attackDialog(options) {
 
     dialogOptions.title = `${options.attackerName} vs. ${options.defenderName} ${options.type} with ${options.weapon.name}`;
 
-    const attackDialogTemplate = 'systems/hm3/templates/dialog/attack-dialog.html';
+    const attackDialogTemplate = 'systems/hm3/templates/dialog/attack-dialog.hbs';
     const dlghtml = await renderTemplate(attackDialogTemplate, dialogOptions);
 
     const evaluate = (form, formRange, isGrappleAtk) => {
@@ -830,7 +830,7 @@ async function esotericAttackDialog(options) {
 
     dialogOptions.title = `${options.attackerName} vs. ${options.defenderName} ${options.type} with ${options.weapon.name}`;
 
-    const attackDialogTemplate = 'systems/hm3/templates/dialog/esoteric-attack-dialog.html';
+    const attackDialogTemplate = 'systems/hm3/templates/dialog/esoteric-attack-dialog.hbs';
     const dlghtml = await renderTemplate(attackDialogTemplate, dialogOptions);
 
     // Request weapon details
@@ -1223,7 +1223,7 @@ export async function meleeCounterstrikeResume(
         weaponImpact: csDialogResult.impactMod
     };
 
-    let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.html';
+    let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.hbs';
 
     /*-----------------------------------------------------
      *    Attack Chat
@@ -1436,7 +1436,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         weaponImpact: impactMod
     };
 
-    let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.html';
+    let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.hbs';
 
     const html = await renderTemplate(chatTemplate, chatData);
 
@@ -1588,7 +1588,7 @@ export async function esotericResume(atkToken, defToken, atkWeaponName, atkEffAM
         weaponImpact: combatResult.outcome.atkFatigue
     };
 
-    const chatTemplate = 'systems/hm3/templates/chat/attack-result-card.html';
+    const chatTemplate = 'systems/hm3/templates/chat/attack-result-card.hbs';
     const html = await renderTemplate(chatTemplate, chatData);
     const messageData = {
         content: html.trim(),
@@ -1893,7 +1893,7 @@ export async function blockResume(
         weaponImpact: impactMod
     };
 
-    let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.html';
+    let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.hbs';
 
     const html = await renderTemplate(chatTemplate, chatData);
 
@@ -1999,7 +1999,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
         user: game.user.id
     };
 
-    const chatTemplate = 'systems/hm3/templates/chat/weapon-break-card.html';
+    const chatTemplate = 'systems/hm3/templates/chat/weapon-break-card.hbs';
 
     // Prepare and generate Attack Weapon Break chat message
 
@@ -2149,7 +2149,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         weaponImpact: impactMod
     };
 
-    let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.html';
+    let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.hbs';
 
     const html = await renderTemplate(chatTemplate, chatData);
 

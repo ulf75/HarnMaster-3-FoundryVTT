@@ -70,7 +70,7 @@ export class DiceHM3 {
             : undefined;
 
         // Prepare for Chat Message
-        const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.html';
+        const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.hbs';
 
         const notesData = foundry.utils.mergeObject(rollData.notesData, {
             actor: speaker.alias,
@@ -159,7 +159,7 @@ export class DiceHM3 {
 
     static async d100ClimbingDialog(dialogOptions) {
         // Render modal dialog
-        let dlgTemplate = 'systems/hm3/templates/dialog/climbing-test-dialog.html';
+        let dlgTemplate = 'systems/hm3/templates/dialog/climbing-test-dialog.hbs';
         let dialogData = {
             effSkillBase: dialogOptions.effSkillBase,
             modifier: dialogOptions.modifier,
@@ -233,7 +233,7 @@ export class DiceHM3 {
 
     static async d100JumpingDialog(dialogOptions) {
         // Render modal dialog
-        let dlgTemplate = 'systems/hm3/templates/dialog/jumping-test-dialog.html';
+        let dlgTemplate = 'systems/hm3/templates/dialog/jumping-test-dialog.hbs';
         let dialogData = {
             effSkillBase: dialogOptions.effSkillBase,
             modifier: dialogOptions.modifier,
@@ -314,7 +314,7 @@ export class DiceHM3 {
      */
     static async d100StdDialog(dialogOptions) {
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/standard-test-dialog.html';
+        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/standard-test-dialog.hbs';
         let dialogData = {
             effSkillBase: dialogOptions.effSkillBase,
             fluff: dialogOptions.fluff || null,
@@ -491,7 +491,7 @@ export class DiceHM3 {
         if (!roll) return null;
 
         // Prepare for Chat Message
-        const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.html';
+        const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.hbs';
 
         const notesData = foundry.utils.mergeObject(rollData.notesData, {
             actor: speaker.alias,
@@ -557,7 +557,7 @@ export class DiceHM3 {
      */
     static async d6Dialog(dialogOptions) {
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/standard-test-dialog.html';
+        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/standard-test-dialog.hbs';
         let dialogData = {
             target: dialogOptions.target,
             modifier: dialogOptions.modifier
@@ -598,7 +598,7 @@ export class DiceHM3 {
 
         const re = RegExp('(([^)]+))');
         const specMatch = item.name.match(/\(([^\)]+)\)/);
-        const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.html';
+        const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.hbs';
 
         const chatTemplateData = {
             title: `${item.name} Skill Development Roll`,
@@ -686,7 +686,7 @@ export class DiceHM3 {
         }
 
         // Prepare for Chat Message
-        const chatTemplate = 'systems/hm3/templates/chat/injury-card.html';
+        const chatTemplate = 'systems/hm3/templates/chat/injury-card.hbs';
 
         const chatTemplateData = foundry.utils.mergeObject(
             {
@@ -815,7 +815,7 @@ export class DiceHM3 {
         const recordInjury = game.settings.get('hm3', 'addInjuryToActorSheet');
 
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/injury-dialog.html';
+        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/injury-dialog.hbs';
         let dialogData = {
             aim: 'mid',
             location: 'Random',
@@ -1114,7 +1114,7 @@ export class DiceHM3 {
         if (!roll) return null;
 
         // Prepare for Chat Message
-        const chatTemplate = 'systems/hm3/templates/chat/damage-card.html';
+        const chatTemplate = 'systems/hm3/templates/chat/damage-card.hbs';
 
         let title = 'Other Weapon Damage';
         if (rollData.weapon != '') {
@@ -1225,7 +1225,7 @@ export class DiceHM3 {
      */
     static async damageDialog(dialogOptions) {
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/damage-dialog.html';
+        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/damage-dialog.hbs';
         let dialogData = {
             weapon: dialogOptions.weapon,
             damageDice: 1,
@@ -1279,7 +1279,7 @@ export class DiceHM3 {
         if (!roll) return null;
 
         // Prepare for Chat Message
-        const chatTemplate = 'systems/hm3/templates/chat/missile-attack-card.html';
+        const chatTemplate = 'systems/hm3/templates/chat/missile-attack-card.hbs';
 
         const notesData = foundry.utils.mergeObject(rollData.notesData, {
             actor: speaker.alias,
@@ -1337,7 +1337,7 @@ export class DiceHM3 {
 
     static async missileAttackDialog(dialogOptions) {
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/attack-dialog.html';
+        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/attack-dialog.hbs';
 
         let dialogData = {
             aimLocations: ['High', 'Mid', 'Low'],
@@ -1436,7 +1436,7 @@ export class DiceHM3 {
         if (!roll) return null;
 
         // Prepare for Chat Message
-        const chatTemplate = 'systems/hm3/templates/chat/missile-damage-card.html';
+        const chatTemplate = 'systems/hm3/templates/chat/missile-damage-card.hbs';
 
         let title = 'Missile Damage';
         if (rollData.name != '') {
@@ -1502,7 +1502,7 @@ export class DiceHM3 {
 
     static async missileDamageDialog(dialogOptions) {
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/missile-damage-dialog.html';
+        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/missile-damage-dialog.hbs';
         let dialogData = {
             name: dialogOptions.name,
             ranges: dialogOptions.ranges,

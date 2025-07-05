@@ -27,7 +27,7 @@ export class Weather {
         const preArray = data.weather[this.lastWatch].precipitation || weather.precipitation;
         const DT = this.dateTimeApi.currentDateTimeDisplay();
         const datetime = DT.date + DT.yearPostfix + ' ' + DT.time.substring(0, DT.time.length - 3);
-        const chatTemplate = 'systems/hm3/templates/chat/weather-card.html';
+        const chatTemplate = 'systems/hm3/templates/chat/weather-card.hbs';
         const chatData = {
             climate: 'Climate: Cool Temperate',
             cover: cover(weather.cover),

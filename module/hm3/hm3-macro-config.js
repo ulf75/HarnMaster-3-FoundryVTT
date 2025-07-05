@@ -19,9 +19,9 @@ export class MacroConfigHM3 extends MacroConfig {
     /** @override */
     get template() {
         if (this.object.limited) {
-            return 'systems/hm3/templates/dialog/macro-config-limited.html';
+            return 'systems/hm3/templates/dialog/macro-config-limited.hbs';
         } else {
-            return 'systems/hm3/templates/dialog/macro-config.html';
+            return 'systems/hm3/templates/dialog/macro-config.hbs';
         }
     }
 

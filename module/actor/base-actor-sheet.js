@@ -434,7 +434,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // Render modal dialog
-        let dlgTemplate = 'systems/hm3/templates/dialog/item-qty.html';
+        let dlgTemplate = 'systems/hm3/templates/dialog/item-qty.hbs';
         let dialogData = {
             itemName: item.name,
             sourceName: item.parent.name,
@@ -1142,7 +1142,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // Render modal dialog
-        let dlgTemplate = 'systems/hm3/templates/dialog/create-item.html';
+        let dlgTemplate = 'systems/hm3/templates/dialog/create-item.hbs';
         let dialogData = {
             type: dataset.type,
             title: name,
@@ -1467,7 +1467,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     chatData.title = `Psionic Talent`;
                 }
 
-                const chatTemplate = 'systems/hm3/templates/chat/esoteric-desc-card.html';
+                const chatTemplate = 'systems/hm3/templates/chat/esoteric-desc-card.hbs';
 
                 const html = await renderTemplate(chatTemplate, chatData);
 

@@ -20,7 +20,7 @@ export class ItemSheetHM3 extends ItemSheet {
     /** @override */
     get template() {
         const path = 'systems/hm3/templates/item';
-        return `${path}/${this.item.type}-sheet.html`;
+        return `${path}/${this.item.type}-sheet.hbs`;
     }
 
     /* -------------------------------------------- */

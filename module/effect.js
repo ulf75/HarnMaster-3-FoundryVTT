@@ -16,7 +16,7 @@ export async function onManageActiveEffect(event, owner) {
 
     switch (action) {
         case 'create':
-            const dlgTemplate = 'systems/hm3/templates/dialog/active-effect-start.html';
+            const dlgTemplate = 'systems/hm3/templates/dialog/active-effect-start.hbs';
             const dialogData = {
                 gameTime: game.time.worldTime
             };
