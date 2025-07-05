@@ -16,6 +16,7 @@ const CONDITION_ICON = 'systems/hm3/images/icons/svg/backup-white.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
     if ((options?.outnumbered || 1) < 2) return;
+    if (token.hasCondition(game.hm3.Condition.NO_OUTNUMBERED)) return false;
 
     const CONDITION = game.hm3.Condition.OUTNUMBERED;
     const label = `${CONDITION} ${options.outnumbered}:1`;
