@@ -417,15 +417,15 @@ export class ActorHM3 extends Actor {
     }
 
     static _createDefaultHumanoidFaceLocations(items) {
-        items.push(ActorHM3._setupLocation('Jaw', 'Jaw'));
         items.push(ActorHM3._setupLocation('Left Eye', 'Eye'));
         items.push(ActorHM3._setupLocation('Right Eye', 'Eye'));
-        items.push(ActorHM3._setupLocation('Left Cheek', 'Cheek'));
-        items.push(ActorHM3._setupLocation('Right Cheek', 'Cheek'));
         items.push(ActorHM3._setupLocation('Nose', 'Nose'));
         items.push(ActorHM3._setupLocation('Left Ear', 'Ear'));
         items.push(ActorHM3._setupLocation('Right Ear', 'Ear'));
+        items.push(ActorHM3._setupLocation('Left Cheek', 'Cheek'));
+        items.push(ActorHM3._setupLocation('Right Cheek', 'Cheek'));
         items.push(ActorHM3._setupLocation('Mouth', 'Mouth'));
+        items.push(ActorHM3._setupLocation('Jaw', 'Jaw'));
     }
 
     /**
