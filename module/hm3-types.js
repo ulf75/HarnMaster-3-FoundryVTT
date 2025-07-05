@@ -91,6 +91,9 @@ export const Condition = Object.freeze({
     NO_FUMBLE: 'No Fumble',
 
     /**@constant {string} - TODO */
+    NO_OUTNUMBERED: 'No Outnumbered',
+
+    /**@constant {string} - TODO */
     NO_STUMBLE: 'No Stumble',
 
     /**@constant {string} - TODO */

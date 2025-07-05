@@ -2586,6 +2586,7 @@ export async function updateOutnumbered() {
     const tokens = [];
     for (let i = 0; i < all.length; i++) {
         const token = all[i];
+        if (token.hasCondition(Condition.NO_OUTNUMBERED)) continue;
         const e = engaged.get(token.id);
         if (e && e.length > 1) {
             const exclusivelyEngaged = [...e.filter((t) => engaged.get(t.id).length === 1)];

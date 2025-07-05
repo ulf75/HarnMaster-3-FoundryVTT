@@ -11,6 +11,7 @@ import * as empowered from './condition/empowered.js';
 import * as grappled from './condition/grappled.js';
 import * as inanimate from './condition/inanimate.js';
 import * as nofumble from './condition/nofumble.js';
+import * as nooutnumbered from './condition/nooutnumbered.js';
 import * as nostumble from './condition/nostumble.js';
 import * as outnumbered from './condition/outnumbered.js';
 import * as prone from './condition/prone.js';
@@ -2765,6 +2766,10 @@ export async function createCondition(token, condition, conditionOptions = {}) {
 
         case Condition.NO_FUMBLE:
             condData = await nofumble.createCondition(token, conditionOptions);
+            break;
+
+        case Condition.NO_OUTNUMBERED:
+            condData = await nooutnumbered.createCondition(token, conditionOptions);
             break;
 
         case Condition.NO_STUMBLE:
