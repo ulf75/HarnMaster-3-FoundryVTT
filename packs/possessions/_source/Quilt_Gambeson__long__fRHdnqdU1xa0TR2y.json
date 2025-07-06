@@ -2,7 +2,7 @@
   "_id": "fRHdnqdU1xa0TR2y",
   "name": "Quilt Gambeson (long)",
   "type": "armorgear",
-  "img": "systems/hm3/images/icons/svg/armor.svg",
+  "img": "systems/hm3/images/webp/gear/quilt-gambeson-long.webp",
   "effects": [],
   "folder": "JD5aWyIFHJQTSkqB",
   "flags": {
@@ -30,7 +30,19 @@
     },
     "material": "Quilt",
     "armorQuality": 0,
-    "locations": ["Neck", "Forearm", "Elbow", "Upper Arm", "Shoulder", "Thorax", "Abdomen", "Hip", "Groin", "Thigh", "Knee"],
+    "locations": [
+      "Neck",
+      "Forearm",
+      "Elbow",
+      "Upper Arm",
+      "Shoulder",
+      "Thorax",
+      "Abdomen",
+      "Hip",
+      "Groin",
+      "Thigh",
+      "Knee"
+    ],
     "protection": {
       "blunt": 5,
       "edged": 3,
