@@ -1,17 +1,12 @@
 {
+  "_id": "YxQiBvHs9uo4o2BH",
   "name": "Leather Gloves",
   "type": "armorgear",
   "img": "systems/hm3/images/webp/gear/leather-gloves.webp",
   "effects": [],
   "folder": "JD5aWyIFHJQTSkqB",
   "flags": {
-    "core": {},
-    "exportSource": {
-      "world": "test",
-      "system": "hm3",
-      "coreVersion": "12.343",
-      "systemVersion": "12.0.99"
-    }
+    "core": {}
   },
   "system": {
     "notes": "",
@@ -51,5 +46,6 @@
     "createdTime": 1751892644461,
     "modifiedTime": 1751892671825,
     "lastModifiedBy": "uWIcxMD0zdnOha1B"
-  }
+  },
+  "_key": "!item!YxQiBvHs9uo4o2BH"
 }
