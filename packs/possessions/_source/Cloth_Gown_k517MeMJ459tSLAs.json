@@ -2,7 +2,7 @@
   "_id": "k517MeMJ459tSLAs",
   "name": "Cloth Gown",
   "type": "armorgear",
-  "img": "systems/hm3/images/icons/svg/dress.svg",
+  "img": "systems/hm3/images/webp/gear/cloth-gown.webp",
   "effects": [],
   "folder": "JD5aWyIFHJQTSkqB",
   "flags": {
@@ -30,7 +30,19 @@
     },
     "material": "Cloth",
     "armorQuality": 0,
-    "locations": ["Upper Arm", "Shoulder", "Thorax", "Abdomen", "Hip", "Groin", "Forearm", "Elbow", "Thigh", "Knee", "Calf"],
+    "locations": [
+      "Upper Arm",
+      "Shoulder",
+      "Thorax",
+      "Abdomen",
+      "Hip",
+      "Groin",
+      "Forearm",
+      "Elbow",
+      "Thigh",
+      "Knee",
+      "Calf"
+    ],
     "protection": {
       "blunt": 1,
       "edged": 1,
