@@ -1,0 +1,55 @@
+{
+  "name": "Leather Gloves",
+  "type": "armorgear",
+  "img": "systems/hm3/images/webp/gear/leather-gloves.webp",
+  "effects": [],
+  "folder": "JD5aWyIFHJQTSkqB",
+  "flags": {
+    "core": {},
+    "exportSource": {
+      "world": "test",
+      "system": "hm3",
+      "coreVersion": "12.343",
+      "systemVersion": "12.0.99"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "<h3>Leather Armour</h3><p>Armour made by weaponcrafters from thick rawhide, to be worn alone or as a base for ring or scale. Leather garments, typically made by clothiers, used for everyday wear are thinner and not designed for protection.</p>",
+    "source": "HM3 Combat 4",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 16,
+    "weight": 0.8,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Leather",
+    "armorQuality": 0,
+    "locations": ["Hand"],
+    "protection": {
+      "blunt": 2,
+      "edged": 4,
+      "piercing": 3,
+      "fire": 3
+    },
+    "size": 6
+  },
+  "_stats": {
+    "coreVersion": "12.343",
+    "systemId": "hm3",
+    "systemVersion": "12.0.99",
+    "createdTime": 1751892644461,
+    "modifiedTime": 1751892671825,
+    "lastModifiedBy": "uWIcxMD0zdnOha1B"
+  }
+}
