@@ -168,6 +168,22 @@ Hooks.once('init', async function () {
     // Set System Globals
     CONFIG.HM3 = HM3;
 
+    CONFIG.canvasTextStyle = new PIXI.TextStyle({
+        fontFamily: 'Amasis MT Medium',
+        fontSize: 36,
+        fill: '#FFFFFF',
+        stroke: '#111111',
+        strokeThickness: 1,
+        dropShadow: true,
+        dropShadowColor: '#000000',
+        dropShadowBlur: 2,
+        dropShadowAngle: 0,
+        dropShadowDistance: 0,
+        align: 'center',
+        wordWrap: false,
+        padding: 1
+    });
+
     // Register system settings
     registerSystemSettings();
 
