@@ -101,12 +101,14 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     //
                     if (i.type === ItemType.COMPANION) {
                         const companion = fromUuidSync(i.system.actorUuid);
-                        i.gender = companion.system.gender || 'Male';
-                        i.img = companion.img;
-                        i.linkToActor = companion.link;
-                        i.name = companion.name;
-                        i.occupation = companion.system.occupation || 'Unknown';
-                        i.species = companion.system.species || 'Unknown';
+                        if (companion) {
+                            i.gender = companion.system.gender || 'Male';
+                            i.img = companion.img;
+                            i.linkToActor = companion.link;
+                            i.name = companion.name;
+                            i.occupation = companion.system.occupation || 'Unknown';
+                            i.species = companion.system.species || 'Unknown';
+                        }
                     }
 
                     // The range can also be displayed in grids (hex). Can be changed in the settings.

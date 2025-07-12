@@ -93,15 +93,17 @@ export class ItemHM3 extends Item {
                 case SkillType.PHYSICAL:
                     if (this.name.includes('Riding') && itemData.actorUuid) {
                         const steed = fromUuidSync(itemData.actorUuid);
-                        steed.prepareData();
-                        const ini = steed.items.find((x) => x.name === 'Initiative');
-                        const steedUP = ActorHM3.calcUniversalPenalty(steed);
+                        if (steed) {
+                            steed.prepareData();
+                            const ini = steed.items.find((x) => x.name === 'Initiative');
+                            const steedUP = ActorHM3.calcUniversalPenalty(steed);
 
-                        itemData.effectiveMasteryLevel =
-                            Math.round((itemData.masteryLevel + ini.system.masteryLevel) / 2) -
-                            pctPhysPen -
-                            steedUP * 5 +
-                            sbModifier;
+                            itemData.effectiveMasteryLevel =
+                                Math.round((itemData.masteryLevel + ini.system.masteryLevel) / 2) -
+                                pctPhysPen -
+                                steedUP * 5 +
+                                sbModifier;
+                        }
                     } else {
                         itemData.effectiveMasteryLevel = itemData.masteryLevel - pctPhysPen + sbModifier;
                     }

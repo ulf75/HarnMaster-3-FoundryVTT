@@ -175,11 +175,11 @@ export class ActorHM3 extends Actor {
             ),
             hasTypes: this.hasTypeData,
             content: `<div class="form-group">
-            <label class="init-checkbox">Initialize default skills &amp; locations</label>
-            <input type="checkbox" name="initDefaults" checked />
+            <label for="initDefaults" class="init-checkbox">Initialize default skills &amp; locations</label>
+            <input type="checkbox" id="initDefaults" name="initDefaults" checked />
             </div>
             <div class="form-group">
-            <label class="location-dropdown">Locations</label>
+            <label for="locations" class="location-dropdown">Locations</label>
             <select name="locations" id="locations">
               <option value="default-humanoid">Default Humanoid</option>
               <option value="simplified-humanoid">Simplified Humanoid</option>
@@ -219,20 +219,20 @@ export class ActorHM3 extends Actor {
     }
 
     /** @override */
-    async _preUpdate(changes, options, user) {
-        if (changes.system) {
-            // Make sure, that fatigue is a positive number incl 0
-            if (
-                Object.hasOwn(changes.system, 'fatigue') &&
-                (changes.system.fatigue === null || changes.system.fatigue === undefined || changes.system.fatigue < 0)
-            ) {
-                changes.system.fatigue = 0;
-                options.diff = false;
-            }
-        }
+    // async _preUpdate(changes, options, user) {
+    //     if (changes.system) {
+    //         // Make sure, that fatigue is a positive number incl 0
+    //         if (
+    //             Object.hasOwn(changes.system, 'fatigue') &&
+    //             (changes.system.fatigue === null || changes.system.fatigue === undefined || changes.system.fatigue < 0)
+    //         ) {
+    //             changes.system.fatigue = 0;
+    //             options.diff = false;
+    //         }
+    //     }
 
-        return super._preUpdate(changes, options, user);
-    }
+    //     return super._preUpdate(changes, options, user);
+    // }
 
     /** @override */
     async _onCreate(data, options, userId) {
