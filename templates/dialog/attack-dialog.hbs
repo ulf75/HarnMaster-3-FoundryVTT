@@ -1,60 +1,62 @@
 <form>
     {{#if defaultAspect}}
-        <div class='form-group'>
-            <label for='weaponAspect'>Weapon Aspect:</label>
-            <select name='weaponAspect'>
-                {{#select defaultAspect}}
-                    {{#each aspects as |value key|}}
-                        <option value='{{key}}'>{{key}}{{#if (gt value -1)}} ({{value}}){{/if}}</option>
-                    {{/each}}
-                {{/select}}
-            </select>
-        </div>
+    <div class="form-group">
+        <label for="weaponAspect">Weapon Aspect:</label>
+        <select name="weaponAspect">
+            {{#select defaultAspect}}
+            {{#each aspects as |value key|}}
+            <option value="{{ key }}">{{ key }}{{#if (gt value -1)}} ({{ value }}){{/if}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+    </div>
     {{/if}}
 
     {{#if distance}}
-        <div class='form-group'>
-            <label>Distance:</label>
-            {{#if isGridDistanceUnits}}
-                <span>{{distanceGrid}} hex</span>
-            {{else}}
-                <span>{{distance}} ft</span>
-            {{/if}}
-        </div>
+    <div class="form-group">
+        <label>Distance:</label>
+        {{#if isGridDistanceUnits}}
+        <span>{{ distanceGrid }} hex</span>
+        {{else}}
+        <span>{{ distance }} ft</span>
+        {{/if}}
+    </div>
     {{/if}}
 
     {{#if ranges}}
-        {{#if rangeExceedsExtreme}}
-            <div class='form-group'>
-                <div>WARNING: Distance exceeds the extreme range for this weapon.<br />
-                    Please consult with your GM before continuing this attack.</div>
-            </div>
-        {{/if}}
-
-        <div class='form-group'>
-            <label>Range (Max Distance):</label>
-            <select name='range'>
-                {{selectOptions ranges selected=defaultRange valueAttr='key' labelAttr='label'}}
-            </select>
+    {{#if rangeExceedsExtreme}}
+    <div class="form-group">
+        <div>
+            WARNING: Distance exceeds the extreme range for this weapon.<br />
+            Please consult with your GM before continuing this attack.
         </div>
+    </div>
     {{/if}}
 
-    <div class='form-group'>
+    <div class="form-group">
+        <label>Range (Max Distance):</label>
+        <select name="range">
+            {{selectOptions ranges selected=defaultRange valueAttr='key' labelAttr='label'}}
+        </select>
+    </div>
+    {{/if}}
+
+    <div class="form-group">
         <label>Aim:</label>
-        <select name='aim'>
+        <select name="aim">
             {{selectOptions aimLocations selected=defaultAim valueAttr='key' labelAttr='label'}}
         </select>
     </div>
 
-    <div class='form-group'>
-        <label>Additional {{type}} Modifier:</label>
-        <input type='number' name='addlModifier' value='{{defaultModifier}}' />
+    <div class="form-group">
+        <label>Additional {{ type }} Modifier:</label>
+        <input type="number" name="addlModifier" value="{{ defaultModifier }}" />
     </div>
 
     {{#if unarmed}}
-        <div class='form-group'>
-            <label>Grapple Attack?</label>
-            <input type='checkbox' name='grapple' />
-        </div>
+    <div class="form-group">
+        <label>Grapple Attack?</label>
+        <input type="checkbox" name="grapple" />
+    </div>
     {{/if}}
 </form>

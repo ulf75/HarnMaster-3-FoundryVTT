@@ -1,36 +1,35 @@
-<div class='hm3 chat-card item-card' data-actor-id='{{actorId}}'>
-    <header class='card-header flexcol'>
-        <h3 class='title'>{{title}}</h3>
-        <h4 class='subtitle'>{{climate}} ({{season}})</h4>
+<div class="hm3 chat-card item-card" data-actor-id="{{ actorId }}">
+    <header class="card-header flexcol">
+        <h3 class="title">{{ title }}</h3>
+        <h4 class="subtitle">{{ climate }} ({{ season }})</h4>
     </header>
 
-    <div class='card-content center'>
-        <span class='value'>{{datetime}}</span>
+    <div class="card-content center">
+        <span class="value">{{ datetime }}</span>
     </div>
 
-    <div class='card-content center'>
-        <span class='label'>Temperature:</span>
-        <span class='value'>{{temp}}</span>
+    <div class="card-content center">
+        <span class="label">Temperature:</span>
+        <span class="value">{{ temp }}</span>
     </div>
 
-    <div class='card-content center'>
-        <span class='label'>Wind:</span>
-        <span class='value'>{{force}} from {{dir}}</span>
+    <div class="card-content center">
+        <span class="label">Wind:</span>
+        <span class="value">{{ force }} from {{ dir }}</span>
     </div>
 
-    <div class='card-content center'>
-        <span class='label'>Cloud Cover:</span>
-        <span class='value'>{{cover}}</span>
+    <div class="card-content center">
+        <span class="label">Cloud Cover:</span>
+        <span class="value">{{ cover }}</span>
         <!-- <span class="value">{{cover}} &{{coverIcon}}</span> -->
     </div>
 
     {{#if hasPrecipitation}}
-        <div class='card-content center precipitation'>
-            <span class='label'>Precipitation</span>
-        </div>
-        <div class='card-content center'>
-            <span class='value'>{{precipitation}}</span>
-        </div>
+    <div class="card-content center precipitation">
+        <span class="label">Precipitation</span>
+    </div>
+    <div class="card-content center">
+        <span class="value">{{ precipitation }}</span>
+    </div>
     {{/if}}
-
 </div>

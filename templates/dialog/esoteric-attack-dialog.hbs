@@ -1,28 +1,26 @@
 <form>
-
     {{#if isEsotericCombat}}
-        <div class='form-group'>
-            <label>Type:</label>
-            <select name='mentalConflictType'>
-                {{selectOptions mentalConflictTypes selected=mentalConflictType valueAttr='key' labelAttr='label'}}
-            </select>
-        </div>
+    <div class="form-group">
+        <label>Type:</label>
+        <select name="mentalConflictType">
+            {{selectOptions mentalConflictTypes selected=mentalConflictType valueAttr='key' labelAttr='label'}}
+        </select>
+    </div>
     {{/if}}
 
     {{#if distance}}
-        <div class='form-group'>
-            <label>Distance:</label>
-            {{#if isGridDistanceUnits}}
-                <span>{{distanceGrid}} hex</span>
-            {{else}}
-                <span>{{distance}} ft</span>
-            {{/if}}
-        </div>
+    <div class="form-group">
+        <label>Distance:</label>
+        {{#if isGridDistanceUnits}}
+        <span>{{ distanceGrid }} hex</span>
+        {{else}}
+        <span>{{ distance }} ft</span>
+        {{/if}}
+    </div>
     {{/if}}
 
-    <div class='form-group'>
-        <label>Additional {{type}} Modifier:</label>
-        <input type='number' name='addlModifier' value='{{defaultModifier}}' />
+    <div class="form-group">
+        <label>Additional {{ type }} Modifier:</label>
+        <input type="number" name="addlModifier" value="{{ defaultModifier }}" />
     </div>
-
 </form>

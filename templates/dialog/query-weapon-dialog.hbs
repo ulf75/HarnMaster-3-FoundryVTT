@@ -1,17 +1,17 @@
-<form id='weapon-query'>
-    <p>{{prompt}}<br /></p>
+<form id="weapon-query">
+    <p>{{ prompt }}<br /></p>
 
-    <div class='form-group'>
+    <div class="form-group">
         <label>Weapon:</label>
-        <select name='weapon'>
+        <select name="weapon">
             {{selectOptions weapons selected=defaultWeapon valueAttr='key' labelAttr='key'}}
         </select>
     </div>
 
     {{#if modifierType}}
-        <div class='form-group'>
-            <label>Addl {{modifierType}} Modifier:</label>
-            <input type='number' name='addlModifier' value='{{defaultModifier}}' />
-        </div>
+    <div class="form-group">
+        <label>Addl {{ modifierType }} Modifier:</label>
+        <input type="number" name="addlModifier" value="{{ defaultModifier }}" />
+    </div>
     {{/if}}
 </form>
