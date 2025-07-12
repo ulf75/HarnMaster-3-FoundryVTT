@@ -5,39 +5,41 @@
         <input readonly type="text" name="target" value="{{target}}" />
     </div> -->
 
-    <div class="form-group">
+    <div class='form-group'>
         <label>Height [ft]:</label>
-        <input type="text" name="height" value="{{height}}" />
+        <input type='text' name='height' value='{{height}}' />
     </div>
 
-    <div class="form-group"> 
+    <div class='form-group'>
         <label>Landing surface:</label>
-        <select name="surfaces">
-            {{selectOptions surfaces selected=surface valueAttr="key" labelAttr="label"}}
+        <select name='surfaces'>
+            {{selectOptions surfaces selected=surface valueAttr='key' labelAttr='label'}}
         </select>
     </div>
 
-    <p>In a clear fall of more than 15 feet, Acrobatics or Dodge can be used to moderate the fall, by landing on one’s feet rather than one’s head.</p>
-    <div class="form-group">
+    <p>In a clear fall of more than 15 feet, Acrobatics or Dodge can be used to moderate the fall, by landing on one’s
+        feet rather than one’s head.</p>
+    <div class='form-group'>
         <label>Clear fall:</label>
-        <input type="checkbox" name="clear" value="{{clear}}" data-dtype="Boolean" checked />
+        <input type='checkbox' name='clear' value='{{clear}}' data-dtype='Boolean' checked />
     </div>
-    <div class="form-group">
+    <div class='form-group'>
         <label>Skill:</label>
-        <select name="skills">
-            {{selectOptions skills selected=skill valueAttr="key" labelAttr="key"}}
+        <select name='skills'>
+            {{selectOptions skills selected=skill valueAttr='key' labelAttr='key'}}
         </select>
     </div>
 
-    <div class="form-group">
+    <div class='form-group'>
         <label>Modifier:</label>
-        <input type="text" name="modifier" value="{{modifier}}" />
+        <input type='text' name='modifier' value='{{modifier}}' />
     </div>
 
-    <p>A character may be able to stop falling by grabbing protrusions, bushes, etc. This rarely stops the fall, but may slow it and reduce landing impact.</p>
-    <div class="form-group">
+    <p>A character may be able to stop falling by grabbing protrusions, bushes, etc. This rarely stops the fall, but may
+        slow it and reduce landing impact.</p>
+    <div class='form-group'>
         <label>Grabbing:</label>
-        <input type="checkbox" name="grabbing" value="{{grabbing}}" data-dtype="Boolean" />
+        <input type='checkbox' name='grabbing' value='{{grabbing}}' data-dtype='Boolean' />
     </div>
 
 </form>

@@ -1,22 +1,40 @@
-<form class="{{cssClass}} sheet flexcol" autocomplete="off">
+<form class='{{cssClass}} sheet flexcol' autocomplete='off'>
 
-    {{!-- Sheet Header --}}
-    <header class="sheet-header sheet-header-character">
-        <div class="flexrow">
-            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
-            <div class="flexcol header-fields">
-                <div class="flexrow name-attribute">
-                    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
-                    <div class="header-stat-block">
-                        <div class="penalties flexrow">
-                            <div class="capacity-label">Max Capacity</div>
-                            <input class="capacity-value" type="number" name="system.capacity.max" value="{{adata.capacity.max}}" data-dtype="Number"/>
+    {{! Sheet Header }}
+    <header class='sheet-header sheet-header-character'>
+        <div class='flexrow'>
+            <img
+                class='profile-img'
+                src='{{actor.img}}'
+                data-edit='img'
+                title='{{actor.name}}'
+                height='100'
+                width='100'
+            />
+            <div class='flexcol header-fields'>
+                <div class='flexrow name-attribute'>
+                    <h1 class='charname'><input
+                            name='name'
+                            type='text'
+                            value='{{actor.name}}'
+                            placeholder='Name'
+                        /></h1>
+                    <div class='header-stat-block'>
+                        <div class='penalties flexrow'>
+                            <div class='capacity-label'>Max Capacity</div>
+                            <input
+                                class='capacity-value'
+                                type='number'
+                                name='system.capacity.max'
+                                value='{{adata.capacity.max}}'
+                                data-dtype='Number'
+                            />
                         </div>
-                        <div class="endurance flexrow">
-                            <span class="label">Capacity: {{adata.capacity.value}}</span>
+                        <div class='endurance flexrow'>
+                            <span class='label'>Capacity: {{adata.capacity.value}}</span>
                         </div>
-                        <div class="endbar">
-                            <span class="bar" style="width: {{adata.capacity.pct}}%"></span>
+                        <div class='endbar'>
+                            <span class='bar' style='width: {{adata.capacity.pct}}%'></span>
                         </div>
                     </div>
                 </div>
@@ -24,13 +42,27 @@
         </div>
     </header>
 
-    {{!-- Sheet Body --}}
-    <section class="sheet-body">
-        <div class="facade">
-            <div class="flexrow">
-                <img class="facade-image" src="{{adata.bioImage}}" data-edit="system.bioImage" title="{{actor.name}}" height="300" width="200" />
-                <div class="facade-description">
-                    {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
+    {{! Sheet Body }}
+    <section class='sheet-body'>
+        <div class='facade'>
+            <div class='flexrow'>
+                <img
+                    class='facade-image'
+                    src='{{adata.bioImage}}'
+                    data-edit='system.bioImage'
+                    title='{{actor.name}}'
+                    height='300'
+                    width='200'
+                />
+                <div class='facade-description'>
+                    {{editor
+                        descriptionHTML
+                        target='system.description'
+                        button=true
+                        engine='prosemirror'
+                        owner=owner
+                        editable=editable
+                    }}
                 </div>
             </div>
         </div>

@@ -1,28 +1,28 @@
 <form>
 
-    <div class="form-group">
-        <label>Target:</label>
-        <input readonly type="text" name="target" value="{{target}}" />
+    <div class='form-group'>
+        <label for='target'>Target:</label>
+        <input readonly type='text' id='target' name='target' value='{{target}}' />
     </div>
 
-    <div class="form-group">
+    <div class='form-group'>
         <label>Difficulty:</label>
-        <select name="difficulties">
-            {{selectOptions difficulties selected=difficulty valueAttr="key" labelAttr="key"}}
+        <select name='difficulties'>
+            {{selectOptions difficulties selected=difficulty valueAttr='key' labelAttr='key'}}
         </select>
     </div>
 
     <p> If the character has good climbing gear (rope and grappling hook) increase EML by 10–20 points.</p>
-    <div class="form-group"> 
+    <div class='form-group'>
         <label>Climbing Gear:</label>
-        <select name="gears">
-            {{selectOptions gears selected=gear valueAttr="key" labelAttr="label"}}
+        <select name='gears'>
+            {{selectOptions gears selected=gear valueAttr='key' labelAttr='label'}}
         </select>
     </div>
 
-    <div class="form-group">
+    <div class='form-group'>
         <label>Modifier:</label>
-        <input type="text" name="modifier" value="{{modifier}}" />
+        <input type='text' name='modifier' value='{{modifier}}' />
     </div>
 
 </form>

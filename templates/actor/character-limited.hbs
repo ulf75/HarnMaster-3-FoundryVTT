@@ -1,13 +1,25 @@
-<form class="{{cssClass}} sheet flexcol" autocomplete="off">
+<form class='{{cssClass}} sheet flexcol' autocomplete='off'>
 
-    {{!-- Sheet Header --}}
-    <header class="sheet-header sheet-header-character">
-        <div class="flexrow">
-            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
-            <div class="flexcol header-fields">
-                <div class="flexrow name-attribute">
-                    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
-                    <div class="header-stat-block">
+    {{! Sheet Header }}
+    <header class='sheet-header sheet-header-character'>
+        <div class='flexrow'>
+            <img
+                class='profile-img'
+                src='{{actor.img}}'
+                data-edit='img'
+                title='{{actor.name}}'
+                height='100'
+                width='100'
+            />
+            <div class='flexcol header-fields'>
+                <div class='flexrow name-attribute'>
+                    <h1 class='charname'><input
+                            name='name'
+                            type='text'
+                            value='{{actor.name}}'
+                            placeholder='Name'
+                        /></h1>
+                    <div class='header-stat-block'>
                         <!-- <div class="penalties flexrow">
                         </div>
                         <div class="endurance flexrow">
@@ -18,33 +30,57 @@
                         </div> -->
                     </div>
                 </div>
-                <div class="header-attributes">
-                    <ol class="flexrow">
-                        <li class="attribute species flexcol">
-                            <label class="label">Race</label>
-                            <input class="value" type="text" name="system.species" value="{{adata.species}}" data-dtype="String"/>
+                <div class='header-attributes'>
+                    <ol class='flexrow'>
+                        <li class='attribute species flexcol'>
+                            <label for='system.species' class='label'>Race</label>
+                            <input
+                                class='value'
+                                type='text'
+                                id='system.species'
+                                name='system.species'
+                                value='{{adata.species}}'
+                                data-dtype='String'
+                            />
                         </li>
-                        <li class="attribute gender flexcol">
-                            <label class="label">Gender</label>
-                            <input class="value" type="text" name="system.gender" value="{{adata.gender}}" data-dtype="String"/>
+                        <li class='attribute gender flexcol'>
+                            <label for='system.gender' class='label'>Gender</label>
+                            <input
+                                class='value'
+                                type='text'
+                                id='system.gender'
+                                name='system.gender'
+                                value='{{adata.gender}}'
+                                data-dtype='String'
+                            />
                         </li>
-                        <!-- <li class="attribute occupation flexcol">
-                            <label class="label">Occupation</label>
-                            <input class="value" type="text" name="system.occupation" value="{{adata.occupation}}" data-dtype="String"/>
-                        </li> -->
                     </ol>
                 </div>
             </div>
         </div>
     </header>
 
-    {{!-- Sheet Body --}}
-    <section class="sheet-body">
-        <div class="facade">
-            <div class="flexrow">
-                <img class="facade-image" src="{{adata.bioImage}}" data-edit="system.bioImage" title="{{actor.name}}" height="300" width="200" />
-                <div class="facade-description">
-                    {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
+    {{! Sheet Body }}
+    <section class='sheet-body'>
+        <div class='facade'>
+            <div class='flexrow'>
+                <img
+                    class='facade-image'
+                    src='{{adata.bioImage}}'
+                    data-edit='system.bioImage'
+                    title='{{actor.name}}'
+                    height='300'
+                    width='200'
+                />
+                <div class='facade-description'>
+                    {{editor
+                        descriptionHTML
+                        target='system.description'
+                        button=true
+                        engine='prosemirror'
+                        owner=owner
+                        editable=editable
+                    }}
                 </div>
             </div>
         </div>

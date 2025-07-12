@@ -1,63 +1,63 @@
 <form>
     {{#if (and isTreatment fluff)}}
-    <div class="fluff">
-        {{{fluff}}}
-    </div>
+        <div class='fluff'>
+            {{{fluff}}}
+        </div>
     {{/if}}
     {{#if isAbility}}
-    <div class="form-group">
-        <label>Eff Ability Base:</label>
-        <input readonly type="text" name="effSkillBase" value="{{effSkillBase}}" />
-    </div>
-    <div class="form-group">
-      <label>Multiplier:</label>
-      <select name="multipliers">
-          {{selectOptions multipliers selected=multiplier valueAttr="key" labelAttr="label"}}
-      </select>
-    </div>
+        <div class='form-group'>
+            <label>Eff Ability Base:</label>
+            <input readonly type='text' name='effSkillBase' value='{{effSkillBase}}' />
+        </div>
+        <div class='form-group'>
+            <label>Multiplier:</label>
+            <select name='multipliers'>
+                {{selectOptions multipliers selected=multiplier valueAttr='key' labelAttr='label'}}
+            </select>
+        </div>
     {{else}}
-    <div class="form-group">
-        {{#if isTreatment}}
-        <label>Physician EML:</label>
-        <select name="physicianEml">
-            {{selectOptions physicianSkills selected=physicianEml valueAttr="key" labelAttr="label"}}
-        </select>
-        {{else}}
-        <label>Target:</label>
-        <input readonly type="text" name="target" value="{{target}}" />
-        {{/if}}
-    </div>
+        <div class='form-group'>
+            {{#if isTreatment}}
+                <label>Physician EML:</label>
+                <select name='physicianEml'>
+                    {{selectOptions physicianSkills selected=physicianEml valueAttr='key' labelAttr='label'}}
+                </select>
+            {{else}}
+                <label>Target:</label>
+                <input readonly type='text' name='target' value='{{target}}' />
+            {{/if}}
+        </div>
     {{/if}}
     {{#if isPhysician}}
-    <div class="form-group">
-        <label>Physician ({{physicianMod}}):</label>
-        <select name="physicianEml">
-            {{selectOptions physicianSkills selected=physicianEml valueAttr="key" labelAttr="label"}}
-        </select>
-    </div>
+        <div class='form-group'>
+            <label>Physician ({{physicianMod}}):</label>
+            <select name='physicianEml'>
+                {{selectOptions physicianSkills selected=physicianEml valueAttr='key' labelAttr='label'}}
+            </select>
+        </div>
     {{/if}}
     {{#if isTreatment}}
-    <div class="form-group">
-        <label>Treatment Modifier:</label>
-        <input readonly type="text" name="treatmentModifier" value="{{treatmentModifier}}" />
-    </div>
+        <div class='form-group'>
+            <label>Treatment Modifier:</label>
+            <input readonly type='text' name='treatmentModifier' value='{{treatmentModifier}}' />
+        </div>
     {{/if}}
     {{#if isMorale}}
-    <div class="form-group">
-        <label>Modification:</label>
-        <select name="moraleModifications">
-            {{selectOptions moraleModifications selected=moraleModification valueAttr="key" labelAttr="label"}}
-        </select>
-    </div>
+        <div class='form-group'>
+            <label>Modification:</label>
+            <select name='moraleModifications'>
+                {{selectOptions moraleModifications selected=moraleModification valueAttr='key' labelAttr='label'}}
+            </select>
+        </div>
     {{/if}}
-    <div class="form-group">
+    <div class='form-group'>
         <label>Modifier:</label>
-        <input type="text" name="modifier" value="{{modifier}}" />
+        <input type='text' name='modifier' value='{{modifier}}' />
     </div>
     {{#if isCraftOrLore}}
-    <div class="form-group">
-        <label>Analysis / Appraisal?</label>
-        <input type="checkbox" name="appraisal" />
-    </div>
+        <div class='form-group'>
+            <label>Analysis / Appraisal?</label>
+            <input type='checkbox' name='appraisal' />
+        </div>
     {{/if}}
 </form>

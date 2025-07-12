@@ -49,6 +49,13 @@
                 <label class="resource-label">Note</label>
                 <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
+            {{#if isEsotericCombat}}{{#if isGM}}
+            <p style="margin: 0;">&nbsp;</p>
+            <div class="resource">
+                <label class="resource-label">Attack Option</label>
+                <input type="checkbox" name="system.isEquipped" {{ checked idata.isEquipped }}/>
+            </div>
+            {{/if}}{{/if}}
         </div>
 
         {{!-- Description Tab --}}

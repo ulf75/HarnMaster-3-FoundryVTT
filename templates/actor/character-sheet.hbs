@@ -5,7 +5,7 @@
             <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
-                    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" />
+                    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" autocomplete="false" />
                     </h1>
                     <div class="header-stat-block">
                         <div class="penalties flexrow">
@@ -23,16 +23,16 @@
                 <div class="header-attributes">
                     <ol class="flexrow">
                         <li class="attribute occupation flexcol">
-                            <label class="label">Occupation</label>
-                            <input class="value" type="text" name="system.occupation" value="{{adata.occupation}}"
+                            <label for="system.occupation" class="label">Occupation</label>
+                            <input class="value" type="text" id="system.occupation" name="system.occupation" value="{{adata.occupation}}"
                                 data-dtype="String" />
                         </li>
                         <li class="attribute move flexcol">
-                            <label class="label">Move</label>
+                            <label for="system.move.base" class="label">Move</label>
                             <div class="flexrow move-values">
                                 <span class="move-eff">{{adata.move.effective}}</span>
                                 <span class="sep">/</span>
-                                <input class="move-base" type="number" name="system.move.base" value="{{adata.move.base}}"
+                                <input class="move-base" type="number" id="system.move.base" name="system.move.base" value="{{adata.move.base}}"
                                     data-dtype="Number" />
                             </div>
                         </li>
@@ -319,27 +319,25 @@
                 <div class="profile-params">
                     <div class="flexrow profile-item">
                         <div class="attribute sunsign flexrow">
-                            <label class="label">Sunsign</label>
+                            <label for="system.sunsign" class="label">Sunsign</label>
                             {{#if customSunSign}}
-                            <input class="value" type="text" name="system.sunsign" value="{{adata.sunsign}}" data-dtype="String" />
+                            <input class="value" type="text" id="system.sunsign" name="system.sunsign" value="{{adata.sunsign}}" data-dtype="String" />
                             {{else}}
-                            <select class="value" name="system.sunsign" data-dtype="String">
+                            <select class="value" id="system.sunsign" name="system.sunsign" data-dtype="String">
                                 {{selectOptions config.sunsigns selected=adata.sunsign valueAttr="key" labelAttr="key"}}
                             </select>
                             {{/if}}
                         </div>
                         <div class="attribute species flexrow">
-                            <label class="label">Race</label>
-                            <input class="value" type="text" name="system.species" value="{{adata.species}}"
+                            <label for="system.species" class="label">Race</label>
+                            <input class="value" type="text" id="system.species" name="system.species" value="{{adata.species}}"
                                 data-dtype="String" />
                         </div>
                         <div class="attribute gender flexrow">
-                            <label class="label">Gender</label>
-                            <select class="value" name="system.gender">
+                            <label for="system.gender" class="label">Gender</label>
+                            <select class="value" id="system.gender" name="system.gender">
                                 {{selectOptions config.gender selected=adata.gender valueAttr="key" labelAttr="key"}}
                             </select>
-                            <!-- <input class="value" type="text" name="system.gender" value="{{adata.gender}}"
-                                data-dtype="String" /> -->
                         </div>
                     </div>
                 </div>
@@ -756,8 +754,7 @@
                 <div class="combat-stat flexrow" id="combat-stat-fatigue">
                     <div class="item-dice"></div>
                     <label for="system.fatigue" class="combat-stat-label">Fatigue</label>
-                    <!-- <div class="combat-eff-fatigue">{{adata.eph.fatigue}} / </div> -->
-                    <input class="combat-fatigue-input" type="number" min="0" name="system.fatigue" value="{{adata.fatigue}}"
+                    <input class="combat-fatigue-input" type="number" min="0" id="system.fatigue" name="system.fatigue" value="{{adata.fatigue}}"
                         data-dtype="Number" />
                 </div>
                 <div class="combat-stat flexrow" id="combat-stat-initiative">
