@@ -85,7 +85,8 @@
                     data-dtype="Boolean"
                     {{checked
                     idata.unknownValue}} />
-                <label class="resource-label">Unknown Value</label>If checked, the value is not displayed to the players.
+                <label class="resource-label">Unknown Value</label>
+                If checked, the value is not displayed to the players.
                 {{else}}
                 <input
                     type="checkbox"
@@ -95,7 +96,8 @@
                     {{checked
                     idata.unknownValue}}
                     disabled />
-                <label class="resource-label">Unknown Value</label>Only available, if strict mode is turned on.
+                <label class="resource-label">Unknown Value</label>
+                Only available, if strict mode is turned on.
                 {{/if}}
             </div>
             {{/if}}
@@ -151,9 +153,12 @@
                     <h3 class="effect-name flexrow">Effect</h3>
                     <div class="effect-duration">Duration</div>
                     <div class="effect-changes">Changes</div>
-                    <a class="effect-controls effect-control" title="Add Effect" data-action="create"
-                        ><span class="active"><i class="fas fa-plus"></i> Add</span></a
-                    >
+                    <a class="effect-controls effect-control" title="Add Effect" data-action="create">
+                        <span class="active">
+                            <i class="fas fa-plus"></i>
+                            Add
+                        </span>
+                    </a>
                 </li>
 
                 <ol class="effect-list item-list">
@@ -166,15 +171,15 @@
                         <div class="effect-ele effect-duration">{{ effect.duration.label }}</div>
                         <div class="effect-ele effect-changes">{{ effect.changes }}</div>
                         <div class="effect-controls">
-                            <a class="effect-control" data-action="toggle"
-                                ><i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i
-                            ></a>
-                            <a class="effect-control" data-action="edit"
-                                ><i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i
-                            ></a>
-                            <a class="effect-control" data-action="delete"
-                                ><i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i
-                            ></a>
+                            <a class="effect-control" data-action="toggle">
+                                <i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i>
+                            </a>
+                            <a class="effect-control" data-action="edit">
+                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i>
+                            </a>
+                            <a class="effect-control" data-action="delete">
+                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i>
+                            </a>
                         </div>
                     </li>
                     {{/each}}

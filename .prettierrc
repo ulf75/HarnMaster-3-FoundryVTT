@@ -16,9 +16,11 @@
                 "bracketSameLine": true,
                 "bracketSpacing": false,
                 "endOfLine": "lf",
+                "htmlWhitespaceSensitivity": "ignore",
                 "parser": "angular",
                 "printWidth": 140,
                 "semi": false,
+                "singleAttributePerLine": true,
                 "singleQuote": false,
                 "trailingComma": "all",
                 "useTabs": false

@@ -2,7 +2,9 @@
     <header class="sheet-header">
         <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
         <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{ item.name }}" placeholder="Name" /></h1>
+            <h1 class="charname">
+                <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+            </h1>
             <div class="flexrow">
                 <label>In Container:</label>
                 <select name="system.container">
@@ -114,7 +116,10 @@
                         {{/each}}
                         {{/select}}
                     </select>
-                    <a class="armorgear-location-add" data-location="{{ idata.targetLocation }}"><i class="fas fa-plus"></i> Add</a>
+                    <a class="armorgear-location-add" data-location="{{ idata.targetLocation }}">
+                        <i class="fas fa-plus"></i>
+                        Add
+                    </a>
                 </div>
                 {{/if}}
                 <ol class="grid grid-fixed-row grid-4col" id="armorgear-location-display">
@@ -122,9 +127,9 @@
                     <li class="armor-location">
                         <span class="name">{{ this }}</span>
                         {{#if hasRwPermission}}
-                        <a class="armorgear-location-delete" data-location="{{ this }}" title="Delete Location"
-                            ><i class="fas fa-trash"></i
-                        ></a>
+                        <a class="armorgear-location-delete" data-location="{{ this }}" title="Delete Location">
+                            <i class="fas fa-trash"></i>
+                        </a>
                         {{/if}}
                     </li>
                     {{/each}}
@@ -140,7 +145,8 @@
                     data-dtype="Boolean"
                     {{checked
                     idata.unknownValue}} />
-                <label class="resource-label">Unknown Value</label>If checked, the value is not displayed to the players.
+                <label class="resource-label">Unknown Value</label>
+                If checked, the value is not displayed to the players.
                 {{else}}
                 <input
                     type="checkbox"
@@ -150,7 +156,8 @@
                     {{checked
                     idata.unknownValue}}
                     disabled />
-                <label class="resource-label">Unknown Value</label>Only available, if strict mode is turned on.
+                <label class="resource-label">Unknown Value</label>
+                Only available, if strict mode is turned on.
                 {{/if}}
             </div>
             {{/if}}
@@ -205,9 +212,12 @@
                     <h3 class="effect-name flexrow">Effect</h3>
                     <div class="effect-duration">Duration</div>
                     <div class="effect-changes">Changes</div>
-                    <a class="effect-controls effect-control" title="Add Effect" data-action="create"
-                        ><span class="active"><i class="fas fa-plus"></i> Add</span></a
-                    >
+                    <a class="effect-controls effect-control" title="Add Effect" data-action="create">
+                        <span class="active">
+                            <i class="fas fa-plus"></i>
+                            Add
+                        </span>
+                    </a>
                 </li>
 
                 <ol class="effect-list item-list">
@@ -220,15 +230,15 @@
                         <div class="effect-ele effect-duration">{{ effect.duration.label }}</div>
                         <div class="effect-ele effect-changes">{{ effect.changes }}</div>
                         <div class="effect-controls">
-                            <a class="effect-control" data-action="toggle"
-                                ><i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i
-                            ></a>
-                            <a class="effect-control" data-action="edit"
-                                ><i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i
-                            ></a>
-                            <a class="effect-control" data-action="delete"
-                                ><i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i
-                            ></a>
+                            <a class="effect-control" data-action="toggle">
+                                <i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i>
+                            </a>
+                            <a class="effect-control" data-action="edit">
+                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i>
+                            </a>
+                            <a class="effect-control" data-action="delete">
+                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i>
+                            </a>
                         </div>
                     </li>
                     {{/each}}

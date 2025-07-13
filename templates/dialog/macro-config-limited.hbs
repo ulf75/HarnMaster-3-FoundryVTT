@@ -1,7 +1,9 @@
 <form class="{{ cssClass }} flexcol" spellcheck="false" autocomplete="off">
     <header class="sheet-header">
         <img src="{{ data.img }}" data-edit="img" title="{{ data.name }}" height="64" width="64" />
-        <h1><input name="name" type="text" value="{{ data.name }}" placeholder="{{localize &quot;Name&quot;}}" /></h1>
+        <h1>
+            <input name="name" type="text" value="{{ data.name }}" placeholder="{{localize &quot;Name&quot;}}" />
+        </h1>
     </header>
 
     <div class="form-group">
@@ -31,7 +33,13 @@
     </div>
 
     <footer class="sheet-footer flexrow">
-        <button type="submit"><i class="fas fa-save"></i> {{localize 'MACRO.Save'}}</button>
-        <button class="execute" type="button"><i class="fas fa-dice-d20"></i> {{localize 'MACRO.Execute'}}</button>
+        <button type="submit">
+            <i class="fas fa-save"></i>
+            {{localize 'MACRO.Save'}}
+        </button>
+        <button class="execute" type="button">
+            <i class="fas fa-dice-d20"></i>
+            {{localize 'MACRO.Execute'}}
+        </button>
     </footer>
 </form>

@@ -3,7 +3,9 @@
         <div class="flexrow">
             <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
             <div class="header-fields flexcol">
-                <h1 class="charname"><input name="name" type="text" value="{{ item.name }}" placeholder="Name" /></h1>
+                <h1 class="charname">
+                    <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+                </h1>
             </div>
         </div>
     </header>
@@ -33,7 +35,8 @@
             {{#if isGM}}
             <div class="resource artifact flexrow">
                 <input type="checkbox" name="system.hidden" value="{{ idata.hidden }}" data-dtype="Boolean" {{checked idata.hidden}} />
-                <label class="resource-label">Hidden</label>If checked, the effect is not displayed to the players.
+                <label class="resource-label">Hidden</label>
+                If checked, the effect is not displayed to the players.
             </div>
             <div class="resource artifact flexrow">
                 <input
@@ -43,7 +46,8 @@
                     data-dtype="Boolean"
                     {{checked
                     idata.selfDestroy}} />
-                <label class="resource-label">Self Destroy</label>If checked, the item & effect will be deleted after completion.
+                <label class="resource-label">Self Destroy</label>
+                If checked, the item & effect will be deleted after completion.
             </div>
             {{/if}}
         </div>
@@ -60,9 +64,12 @@
                     <h3 class="effect-name flexrow">Effect</h3>
                     <div class="effect-duration">Duration</div>
                     <div class="effect-changes">Changes</div>
-                    <a class="effect-controls effect-control" title="Add Effect" data-action="create"
-                        ><span class="active"><i class="fas fa-plus"></i> Add</span></a
-                    >
+                    <a class="effect-controls effect-control" title="Add Effect" data-action="create">
+                        <span class="active">
+                            <i class="fas fa-plus"></i>
+                            Add
+                        </span>
+                    </a>
                 </li>
 
                 <ol class="effect-list item-list">
@@ -75,15 +82,15 @@
                         <div class="effect-ele effect-duration">{{ effect.duration.label }}</div>
                         <div class="effect-ele effect-changes">{{ effect.changes }}</div>
                         <div class="effect-controls">
-                            <a class="effect-control" data-action="toggle"
-                                ><i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i
-                            ></a>
-                            <a class="effect-control" data-action="edit"
-                                ><i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i
-                            ></a>
-                            <a class="effect-control" data-action="delete"
-                                ><i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i
-                            ></a>
+                            <a class="effect-control" data-action="toggle">
+                                <i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i>
+                            </a>
+                            <a class="effect-control" data-action="edit">
+                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i>
+                            </a>
+                            <a class="effect-control" data-action="delete">
+                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i>
+                            </a>
                         </div>
                     </li>
                     {{/each}}

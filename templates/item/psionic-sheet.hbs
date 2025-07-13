@@ -2,7 +2,9 @@
     <header class="sheet-header">
         <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
         <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{ item.name }}" placeholder="Name" /></h1>
+            <h1 class="charname">
+                <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+            </h1>
         </div>
     </header>
 
@@ -36,14 +38,15 @@
                 </div>
             </div>
             <div class="resource">
-                <label class="resource-label tooltip"
-                    >Skill Base Formula<span class="tooltiptext"
-                        >Enter a formula to automatically calculate skill base. For example: "@str, @sta, @wil, Ulandus, Aralius:2". This
+                <label class="resource-label tooltip">
+                    Skill Base Formula
+                    <span class="tooltiptext">
+                        Enter a formula to automatically calculate skill base. For example: "@str, @sta, @wil, Ulandus, Aralius:2". This
                         will average strength, stamina, and will; if Ulandus sunsign, add 1; if Aralius sunsign, add 2. There must always be
                         exactly three attributes. Valid attributes are: @str, @sta, @dex, @agl, @int, @aur, @wil, @eye, @hrg, @sml, @voi,
-                        @cml, @mor</span
-                    ></label
-                >
+                        @cml, @mor
+                    </span>
+                </label>
                 <input type="text" name="system.skillBase.formula" value="{{ idata.skillBase.formula }}" data-dtype="String" />
                 {{#unless idata.skillBase.isFormulaValid}}
                 <div class="error">Error: Invalid SkillBase Formula!</div>
@@ -94,9 +97,12 @@
                     <h3 class="effect-name flexrow">Effect</h3>
                     <div class="effect-duration">Duration</div>
                     <div class="effect-changes">Changes</div>
-                    <a class="effect-controls effect-control" title="Add Effect" data-action="create"
-                        ><span class="active"><i class="fas fa-plus"></i> Add</span></a
-                    >
+                    <a class="effect-controls effect-control" title="Add Effect" data-action="create">
+                        <span class="active">
+                            <i class="fas fa-plus"></i>
+                            Add
+                        </span>
+                    </a>
                 </li>
 
                 <ol class="effect-list item-list">
@@ -109,15 +115,15 @@
                         <div class="effect-ele effect-duration">{{ effect.duration.label }}</div>
                         <div class="effect-ele effect-changes">{{ effect.changes }}</div>
                         <div class="effect-controls">
-                            <a class="effect-control" data-action="toggle"
-                                ><i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i
-                            ></a>
-                            <a class="effect-control" data-action="edit"
-                                ><i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i
-                            ></a>
-                            <a class="effect-control" data-action="delete"
-                                ><i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i
-                            ></a>
+                            <a class="effect-control" data-action="toggle">
+                                <i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i>
+                            </a>
+                            <a class="effect-control" data-action="edit">
+                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i>
+                            </a>
+                            <a class="effect-control" data-action="delete">
+                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i>
+                            </a>
                         </div>
                     </li>
                     {{/each}}
