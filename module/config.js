@@ -46,6 +46,8 @@ HM3.skillTypes = [
 
 HM3.traitTypes = [{key: 'Physical'}, {key: 'Psyche'}];
 
+HM3.containerTypes = [{key: 'Container'}, {key: 'Group'}];
+
 HM3.companionTypes = [
     {key: 'Animal'},
     {key: 'Connection'},
@@ -3001,3 +3003,8 @@ HM3.blindRolls = [
     'Tarotry',
     'Weatherlore'
 ];
+
+HM3.esotericCombatItems = {
+    attack: ['Mental Bolt'],
+    defense: ['Mental Conflict', 'Negation']
+};

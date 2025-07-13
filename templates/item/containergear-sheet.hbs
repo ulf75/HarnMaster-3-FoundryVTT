@@ -1,19 +1,23 @@
 <form class="{{ cssClass }}" autocomplete="off">
-    <header class="sheet-header">
-        <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
-        <div class="header-fields flexcol">
-            <h1 class="charname"><input name="name" type="text" value="{{ item.name }}" placeholder="Name" /></h1>
-            <div class="skill-type flexrow">
-                <label for="system.type" class="label">Type</label>
-                <select class="value" id="system.type" name="system.type">
-                    {{selectOptions config.traitTypes selected=idata.type valueAttr="key" labelAttr="key"}}
-                </select>
-            </div>
-            <div class="flexrow">
-                <label>In Container:</label>
-                <select name="system.container">
-                    {{selectOptions containers selected=idata.container valueAttr="key" labelAttr="label"}}
-                </select>
+    <header class="sheet-header skill-header">
+        <div class="flexrow">
+            <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
+            <div class="header-fields flexcol">
+                <h1 class="charname">
+                    <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+                </h1>
+                <div class="skill-type flexrow">
+                    <label for="system.type" class="label">Type</label>
+                    <select class="value" id="system.type" name="system.type">
+                        {{selectOptions config.containerTypes selected=idata.type valueAttr="key" labelAttr="key"}}
+                    </select>
+                </div>
+                <div class="flexrow">
+                    <label>In Container:</label>
+                    <select name="system.container">
+                        {{selectOptions containers selected=idata.container valueAttr="key" labelAttr="label"}}
+                    </select>
+                </div>
             </div>
         </div>
     </header>
@@ -31,6 +35,7 @@
     <section class="sheet-body">
         {{!-- Properties Tab --}}
         <div class="tab properties" data-group="primary" data-tab="properties">
+            {{#unless (eq idata.type "Group")}}
             <div class="grid grid-fixed-row grid-4col">
                 <div class="resource">
                     <label class="resource-label">Quantity</label>
@@ -59,6 +64,7 @@
                     {{#unless hasRwPermission}}disabled{{/unless}} />
                 </div>
             </div>
+            {{/unless}}
             <div class="resource">
                 <label class="resource-label">Source</label>
                 <input type="text" name="system.source" value="{{ idata.source }}" data-dtype="String"
@@ -68,6 +74,7 @@
                 <label class="resource-label">Note</label>
                 <input type="text" name="system.notes" value="{{ idata.notes }}" data-dtype="String" />
             </div>
+            {{#unless (eq idata.type "Group")}}
             {{#if isGM}}
             <div class="resource artifact flexrow">
                 {{#if strictMode}}
@@ -133,6 +140,7 @@
                 </div>
             </fieldset>
             {{/if}}
+            {{/unless}}
         </div>
 
         {{!-- Description Tab --}}

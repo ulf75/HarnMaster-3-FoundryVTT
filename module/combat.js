@@ -815,7 +815,7 @@ async function esotericAttackDialog(options) {
     };
 
     if (options.weapon.type === ItemType.SKILL && options.weapon.name.includes('Mental Conflict')) {
-        dialogOptions.isMentalConflict = true;
+        dialogOptions.isEsotericCombat = true;
         dialogOptions.addlInfo = 'Mental Conflict Type: ';
         dialogOptions.mentalConflictType = 'possession';
         dialogOptions.mentalConflictTypes = [
@@ -847,7 +847,7 @@ async function esotericAttackDialog(options) {
 
             const result = {
                 addlModifier: form.addlModifier ? parseInt(form.addlModifier.value) : 0,
-                addlInfo: dialogOptions.isMentalConflict ? dialogOptions.addlInfo + formMentalConflict : null,
+                addlInfo: dialogOptions.isEsotericCombat ? dialogOptions.addlInfo + formMentalConflict : null,
                 range: formRange,
                 weapon: options.weapon
             };

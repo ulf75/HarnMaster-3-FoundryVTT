@@ -129,10 +129,10 @@ export class ItemSheetHM3 extends ItemSheet {
                 data.isPsycheTrait = true;
                 if (isNaN(parseInt(data.idata.severity))) data.idata.severity = 5;
             }
+        } else if (this.item.type === ItemType.CONTAINERGEAR) {
+            if (data.idata.type === undefined) data.idata.type = 'Container';
         } else if (this.item.type === ItemType.SKILL) {
-            if (this.item.name.includes('Mental Conflict')) {
-                data.isMentalConflict = true;
-            } else if (this.item.name.includes('Riding')) {
+            if (this.item.name.includes('Riding')) {
                 const ridingImg = new Map(game.hm3.config.combatSkillIcons).get('riding');
                 const steeds = this.actor.getSteeds();
                 data.steeds = [
@@ -180,6 +180,13 @@ export class ItemSheetHM3 extends ItemSheet {
                 'sourceName': effect.sourceName
             };
         });
+
+        if (
+            game.hm3.config.esotericCombatItems.attack.includes(this.item.name) ||
+            game.hm3.config.esotericCombatItems.defense.includes(this.item.name)
+        ) {
+            data.isEsotericCombat = true;
+        }
 
         return data;
     }

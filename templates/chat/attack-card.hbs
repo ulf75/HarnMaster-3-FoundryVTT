@@ -96,24 +96,17 @@
 
     <div class="card-content flex-group-center">
         <span class="label">Effective AML:</span>
-        <span class="value"
-            >{{ origAML }} {{#if rangeDist}}{{ rangeModSign }} {{ rangeModifierAbs }}
-            {{/if
-
-
-            }}{{#if addlModifierAbs
-
-
-
-            }}{{ addlModifierSign }} {{ addlModifierAbs }} {{/if}}= <strong>{{ effAML }}</strong></span
-        >
+        <span class="value">
+            {{ origAML }} {{#if rangeDist}}{{ rangeModSign }} {{ rangeModifierAbs }} {{/if}} {{#if addlModifierAbs}}{{ addlModifierSign }}
+            {{ addlModifierAbs }} {{/if}}= <strong>{{ effAML }}</strong>
+        </span>
     </div>
     {{else}}
     <div class="card-content flex-group-center">
         <span class="label">AML:</span>
         <span class="value"
-            ><strong>{{ effAML }}</strong></span
-        >
+            ><strong>{{ effAML }}</strong>
+        </span>
     </div>
     {{/if}}
 
