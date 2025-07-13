@@ -15,6 +15,7 @@
                 "arrowParens": "always",
                 "bracketSpacing": false,
                 "endOfLine": "lf",
+                "printWidth": 140,
                 "semi": false,
                 "trailingComma": "all",
                 "useTabs": false,
