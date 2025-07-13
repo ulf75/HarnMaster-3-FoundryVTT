@@ -13,14 +13,15 @@
             "files": "*.hbs",
             "options": {
                 "arrowParens": "always",
+                "bracketSameLine": true,
                 "bracketSpacing": false,
                 "endOfLine": "lf",
+                "parser": "angular",
                 "printWidth": 140,
                 "semi": false,
+                "singleQuote": false,
                 "trailingComma": "all",
-                "useTabs": false,
-                "parser": "angular",
-                "singleQuote": false
+                "useTabs": false
             }
         },
         {

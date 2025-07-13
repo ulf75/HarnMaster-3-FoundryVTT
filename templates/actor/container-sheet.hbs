@@ -16,8 +16,7 @@
                                 type="number"
                                 name="system.capacity.max"
                                 value="{{ adata.capacity.max }}"
-                                data-dtype="Number"
-                            />
+                                data-dtype="Number" />
                         </div>
                         <div class="endurance flexrow">
                             <span class="label">Contents Wt.: {{ adata.eph.totalGearWeight }}</span>
@@ -49,8 +48,7 @@
                     data-edit="system.bioImage"
                     title="{{ actor.name }}"
                     height="300"
-                    width="200"
-                />
+                    width="200" />
                 <div class="facade-description">
                     {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
                 </div>
@@ -88,8 +86,7 @@
                     type="text"
                     name="system.gearNameFilter"
                     placeholder="Filter gear by name..."
-                    data-dtype="String"
-                />
+                    data-dtype="String" />
             </div>
             {{#each containers as |citem cid|}}
             <ol class="items-list gear-list">
@@ -124,8 +121,7 @@
                         data-item-id="{{ item.id }}"
                         data-item-name="{{ item.name }}"
                         data-container-id="{{ cid }}"
-                        data-container-name="{{ citem.name }}"
-                    >
+                        data-container-name="{{ citem.name }}">
                         <div class="item-name gear-name flexrow">
                             <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
                             <h4>{{ item.name }}</h4>

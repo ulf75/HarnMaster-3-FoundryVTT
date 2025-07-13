@@ -31,8 +31,7 @@
                                 id="system.species"
                                 name="system.species"
                                 value="{{ adata.species }}"
-                                data-dtype="String"
-                            />
+                                data-dtype="String" />
                         </li>
                         <li class="attribute creature-size flexcol">
                             <label class="label">Size</label>
@@ -51,8 +50,7 @@
                                     type="number"
                                     name="system.move.base"
                                     value="{{ adata.move.base }}"
-                                    data-dtype="Number"
-                                />
+                                    data-dtype="Number" />
                             </div>
                         </li>
                     </ol>
@@ -86,8 +84,7 @@
                     data-edit="system.bioImage"
                     title="{{ actor.name }}"
                     height="300"
-                    width="200"
-                />
+                    width="200" />
                 <div class="facade-description">
                     {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
                 </div>
@@ -113,8 +110,7 @@
                                     type="number"
                                     name="system.abilities.strength.base"
                                     value="{{ adata.abilities.strength.base }}"
-                                    data-dtype="Number"
-                                />
+                                    data-dtype="Number" />
                             </div>
                             <div class="item-dice">
                                 <a class="ability-d100-roll" data-ability="strength" title="d100 Strength Roll"
@@ -136,8 +132,7 @@
                                     type="number"
                                     name="system.abilities.stamina.base"
                                     value="{{ adata.abilities.stamina.base }}"
-                                    data-dtype="Number"
-                                />
+                                    data-dtype="Number" />
                             </div>
                             <div class="item-dice">
                                 <a class="ability-d100-roll" data-ability="stamina" title="d100 Stamina Roll"
@@ -161,8 +156,7 @@
                                     type="number"
                                     name="system.abilities.dexterity.base"
                                     value="{{ adata.abilities.dexterity.base }}"
-                                    data-dtype="Number"
-                                />
+                                    data-dtype="Number" />
                             </div>
                             <div class="item-dice">
                                 <a class="ability-d100-roll" data-ability="dexterity" title="d100 Dexterity Roll"
@@ -184,8 +178,7 @@
                                     type="number"
                                     name="system.abilities.agility.base"
                                     value="{{ adata.abilities.agility.base }}"
-                                    data-dtype="Number"
-                                />
+                                    data-dtype="Number" />
                             </div>
                             <div class="item-dice">
                                 <a class="ability-d100-roll" data-ability="agility" title="d100 Agility Roll"
@@ -209,8 +202,7 @@
                                     type="number"
                                     name="system.abilities.intelligence.base"
                                     value="{{ adata.abilities.intelligence.base }}"
-                                    data-dtype="Number"
-                                />
+                                    data-dtype="Number" />
                             </div>
                             <div class="item-dice">
                                 <a class="ability-d100-roll" data-ability="intelligence" title="d100 Intelligence Roll"
@@ -232,8 +224,7 @@
                                     type="number"
                                     name="system.abilities.aura.base"
                                     value="{{ adata.abilities.aura.base }}"
-                                    data-dtype="Number"
-                                />
+                                    data-dtype="Number" />
                             </div>
                             <div class="item-dice">
                                 <a class="ability-d100-roll" data-ability="aura" title="d100 Aura Roll"><i class="fas fa-dice-d20"></i></a>
@@ -253,8 +244,7 @@
                                     type="number"
                                     name="system.abilities.will.base"
                                     value="{{ adata.abilities.will.base }}"
-                                    data-dtype="Number"
-                                />
+                                    data-dtype="Number" />
                             </div>
                             <div class="item-dice">
                                 <a class="ability-d100-roll" data-ability="will" title="d100 Will Roll"><i class="fas fa-dice-d20"></i></a>
@@ -278,8 +268,7 @@
                                     type="number"
                                     name="system.abilities.eyesight.base"
                                     value="{{ adata.abilities.eyesight.base }}"
-                                    data-dtype="Number"
-                                />
+                                    data-dtype="Number" />
                             </div>
                             <div class="item-dice">
                                 <a class="ability-d100-roll" data-ability="eyesight" title="d100 Eyesight Roll"
@@ -301,8 +290,7 @@
                                     type="number"
                                     name="system.abilities.hearing.base"
                                     value="{{ adata.abilities.hearing.base }}"
-                                    data-dtype="Number"
-                                />
+                                    data-dtype="Number" />
                             </div>
                             <div class="item-dice">
                                 <a class="ability-d100-roll" data-ability="hearing" title="d100 Hearing Roll"
@@ -324,8 +312,7 @@
                                     type="number"
                                     name="system.abilities.smell.base"
                                     value="{{ adata.abilities.smell.base }}"
-                                    data-dtype="Number"
-                                />
+                                    data-dtype="Number" />
                             </div>
                             <div class="item-dice">
                                 <a class="ability-d100-roll" data-ability="smell" title="d100 Smell Roll"
@@ -347,8 +334,7 @@
                                     type="number"
                                     name="system.abilities.voice.base"
                                     value="{{ adata.abilities.voice.base }}"
-                                    data-dtype="Number"
-                                />
+                                    data-dtype="Number" />
                             </div>
                             <div class="item-dice">
                                 <a class="ability-d100-roll" data-ability="voice" title="d100 Voice Roll"
@@ -466,8 +452,7 @@
                     type="text"
                     name="system.skillNameFilter"
                     placeholder="Filter skills by name..."
-                    data-dtype="String"
-                />
+                    data-dtype="String" />
             </div>
             <!-- Physical Skills -->
             <ol class="items-list skills-list">
@@ -660,8 +645,7 @@
                         id="system.fatigue"
                         name="system.fatigue"
                         value="{{ adata.fatigue }}"
-                        data-dtype="Number"
-                    />
+                        data-dtype="Number" />
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice"></div>
@@ -763,11 +747,9 @@
                     <li
                         class="item weapon {{#unless system.isCarried}}nocarry{{/unless}} flexrow"
                         data-item-id="{{ item.id }}"
-                        data-item-name="{{ system.name }}"
-                    >
+                        data-item-name="{{ system.name }}">
                         <div
-                            class="item-name weapon-name {{#if (and system.isEquipped system.isCarried)}}melee-weapon-attack{{/if}} flexrow"
-                        >
+                            class="item-name weapon-name {{#if (and system.isEquipped system.isCarried)}}melee-weapon-attack{{/if}} flexrow">
                             <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
                             <h4>{{ item.name }}</h4>
                         </div>
@@ -779,12 +761,8 @@
                         <div class="item-detail weapon-blunt"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail weapon-blunt {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                            {{#if (and system.isEquipped system.isCarried)
-
-
-
-
-                            }}<a
+                            {{#if (and system.isEquipped system.isCarried)}}
+                            <a
                                 class="weapon-damage-roll"
                                 title="{{ item.name }} Blunt Damage Roll"
                                 data-weapon="{{ item.name }}"
@@ -797,12 +775,8 @@
                         <div class="item-detail weapon-edged"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail weapon-edged {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                            {{#if (and system.isEquipped system.isCarried)
-
-
-
-
-                            }}<a
+                            {{#if (and system.isEquipped system.isCarried)}}
+                            <a
                                 class="weapon-damage-roll"
                                 title="{{ item.name }} Edged Damage Roll"
                                 data-weapon="{{ item.name }}"
@@ -815,12 +789,8 @@
                         <div class="item-detail weapon-piercing"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail weapon-piercing {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                            {{#if (and system.isEquipped system.isCarried)
-
-
-
-
-                            }}<a
+                            {{#if (and system.isEquipped system.isCarried)}}
+                            <a
                                 class="weapon-damage-roll"
                                 title="{{ item.name }} Piercing Damage Roll"
                                 data-weapon="{{ item.name }}"
@@ -830,21 +800,13 @@
                         </div>
                         {{/if}}
                         <div class="item-detail weapon-attack {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                            {{#if (and system.isEquipped system.isCarried)
-
-
-
-
-                            }}<a class="weapon-attack-roll" title="{{ item.name }} Attack Roll">{{ system.attackMasteryLevel }}</a
+                            {{#if (and system.isEquipped system.isCarried)}}
+                            <a class="weapon-attack-roll" title="{{ item.name }} Attack Roll">{{ system.attackMasteryLevel }}</a
                             >{{else}}{{ system.attackMasteryLevel }}{{/if}}
                         </div>
                         <div class="item-detail weapon-defense {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                            {{#if (and system.isEquipped system.isCarried)
-
-
-
-
-                            }}<a class="weapon-defend-roll" title="{{ item.name }} Defense Roll">{{ system.defenseMasteryLevel }}</a
+                            {{#if (and system.isEquipped system.isCarried)}}
+                            <a class="weapon-defend-roll" title="{{ item.name }} Defense Roll">{{ system.defenseMasteryLevel }}</a
                             >{{else}}{{ system.defenseMasteryLevel }}{{/if}}
                         </div>
                         <div class="item-detail weapon-notes">{{ system.notes }}</div>
@@ -877,11 +839,9 @@
                     <li
                         class="item missile {{#unless system.isCarried}}nocarry{{/unless}} flexrow"
                         data-item-id="{{ item._id }}"
-                        data-item-name="{{ system.name }}"
-                    >
+                        data-item-name="{{ system.name }}">
                         <div
-                            class="item-name missile-name {{#if (and system.isEquipped system.isCarried)}}missile-weapon-attack{{/if}} flexrow"
-                        >
+                            class="item-name missile-name {{#if (and system.isEquipped system.isCarried)}}missile-weapon-attack{{/if}} flexrow">
                             <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
                             <h4>{{ item.name }}</h4>
                         </div>
@@ -891,12 +851,8 @@
                         <div class="item-detail missile-short"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail missile-short {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                            {{#if (and system.isEquipped system.isCarried)
-
-
-
-
-                            }}<a
+                            {{#if (and system.isEquipped system.isCarried)}}
+                            <a
                                 class="missile-damage-roll"
                                 title="{{ item.name }} Short-Range Damage Roll"
                                 data-weapon="{{ item.name }}"
@@ -909,12 +865,8 @@
                         <div class="item-detail missile-medium"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail missile-medium {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                            {{#if (and system.isEquipped system.isCarried)
-
-
-
-
-                            }}<a
+                            {{#if (and system.isEquipped system.isCarried)}}
+                            <a
                                 class="missile-damage-roll"
                                 title="{{ item.name }} Medium-Range Damage Roll"
                                 data-weapon="{{ item.name }}"
@@ -927,12 +879,8 @@
                         <div class="item-detail missile-long"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail missile-long {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                            {{#if (and system.isEquipped system.isCarried)
-
-
-
-
-                            }}<a
+                            {{#if (and system.isEquipped system.isCarried)}}
+                            <a
                                 class="missile-damage-roll"
                                 title="{{ item.name }} Long-Range Damage Roll"
                                 data-weapon="{{ item.name }}"
@@ -945,12 +893,8 @@
                         <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail missile-extreme {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                            {{#if (and system.isEquipped system.isCarried)
-
-
-
-
-                            }}<a
+                            {{#if (and system.isEquipped system.isCarried)}}
+                            <a
                                 class="missile-damage-roll"
                                 title="{{ item.name }} Extreme-Range Damage Roll"
                                 data-weapon="{{ item.name }}"
@@ -960,12 +904,8 @@
                         </div>
                         {{/if}}
                         <div class="item-detail missile-attack {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
-                            {{#if (and system.isEquipped system.isCarried)
-
-
-
-
-                            }}<a class="missile-attack-roll" title="Missile Attack Roll">{{ system.attackMasteryLevel }}</a
+                            {{#if (and system.isEquipped system.isCarried)}}
+                            <a class="missile-attack-roll" title="Missile Attack Roll">{{ system.attackMasteryLevel }}</a
                             >{{else}}{{ system.attackMasteryLevel }}{{/if}}
                         </div>
                         <div class="item-detail missile-notes">{{ system.notes }}</div>
@@ -1178,8 +1118,7 @@
                     type="text"
                     name="system.gearNameFilter"
                     placeholder="Filter gear by name..."
-                    data-dtype="String"
-                />
+                    data-dtype="String" />
             </div>
             {{#each containers as |citem cid|}}
             <ol class="items-list gear-list">
@@ -1193,8 +1132,7 @@
                     <div class="item-detail gear-weight">Weight</div>
                     <div class="item-detail gear-notes">Notes</div>
                     <div
-                        class="item detail gear-capacity {{#if (gt citem.system.capacity.value citem.system.capacity.max)}}overcapacity{{/if}}"
-                    >
+                        class="item detail gear-capacity {{#if (gt citem.system.capacity.value citem.system.capacity.max)}}overcapacity{{/if}}">
                         Capacity: {{ citem.system.capacity.value }}/{{ citem.system.capacity.max }}
                     </div>
                     <div class="item-controls">
@@ -1216,8 +1154,7 @@
                         data-item-id="{{ item.id }}"
                         data-item-name="{{ item.name }}"
                         data-container-id="{{ cid }}"
-                        data-container-name="{{ citem.name }}"
-                    >
+                        data-container-name="{{ citem.name }}">
                         <div class="item-name gear-name flexrow">
                             <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
                             <h4>{{ item.name }}</h4>
@@ -1258,8 +1195,7 @@
                     type="text"
                     name="system.macrosNameFilter"
                     placeholder="Filter macros by name..."
-                    data-dtype="String"
-                />
+                    data-dtype="String" />
             </div>
             <ol class="macros-list">
                 <li class="macros-header flexrow">
@@ -1278,8 +1214,7 @@
                     <li
                         class="macro {{#if macro.disabled}}disabled{{/if}} flexrow"
                         data-macro-name="{{ macro.name }}"
-                        data-macro-id="{{ macro._id }}"
-                    >
+                        data-macro-id="{{ macro._id }}">
                         <div class="macro-name flexrow">
                             <div class="macro-image" style="background-image: url('{{ macro.img }}')"></div>
                             <h4>{{ macro.name }}</h4>
@@ -1306,8 +1241,7 @@
                     type="text"
                     name="system.effectsNameFilter"
                     placeholder="Filter effects by name..."
-                    data-dtype="String"
-                />
+                    data-dtype="String" />
             </div>
             <ol class="effects-list">
                 <li class="effects-header flexrow">
@@ -1326,8 +1260,7 @@
                     <li
                         class="effect {{#if effect.disabled}}disabled{{/if}} flexrow"
                         data-effect-name="{{ effect.name }}"
-                        data-effect-id="{{ effect.id }}"
-                    >
+                        data-effect-id="{{ effect.id }}">
                         <div class="effect-name flexrow">
                             <div class="effect-image" style="background-image: url('{{ effect.img }}')"></div>
                             <h4>{{ effect.name }}</h4>
