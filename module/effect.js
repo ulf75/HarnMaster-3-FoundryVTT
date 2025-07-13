@@ -119,8 +119,8 @@ export async function checkExpiredActiveEffects() {
     // Handle game actors first
     for (let actor of game.actors.values()) {
         if (actor.isOwner && actor.allApplicableEffects(true)?.length) {
-            await disableExpiredAE(actor);
-            actor.sheet.render();
+            const changed = await disableExpiredAE(actor);
+            if (changed) actor.sheet.render();
         }
     }
 
@@ -139,14 +139,17 @@ export async function checkExpiredActiveEffects() {
  * @param {ActorHM3} actor
  */
 async function disableExpiredAE(actor) {
+    let changed = false;
     for (let effect of actor.allApplicableEffects(true)) {
         if (!effect.disabled) {
             const duration = effect.duration;
             if (duration.type !== 'none') {
                 if (duration.remaining <= 0) {
                     await effect.update({'disabled': true});
+                    changed = true;
                 }
             }
         }
     }
+    return changed;
 }
