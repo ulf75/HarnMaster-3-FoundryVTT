@@ -80,27 +80,23 @@
                 <div class="grid grid-row grid-4col">
                     <div class="armorgear-protection-item" id="armorgear-blunt">
                         <label class="label">Blunt</label>
-                        <input class="value" type="number" name="system.protection.blunt" value="{{
-                            idata.protection.blunt
-                        }}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        <input class="value" type="number" name="system.protection.blunt" value="{{ idata.protection.blunt }}"
+                        data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
                     </div>
                     <div class="armorgear-protection-item" id="armorgear-edged">
                         <label class="label">Edged</label>
-                        <input class="value" type="number" name="system.protection.edged" value="{{
-                            idata.protection.edged
-                        }}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        <input class="value" type="number" name="system.protection.edged" value="{{ idata.protection.edged }}"
+                        data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
                     </div>
                     <div class="armorgear-protection-item" id="armorgear-piercing">
                         <label class="label">Piercing</label>
-                        <input class="value" type="number" name="system.protection.piercing" value="{{
-                            idata.protection.piercing
-                        }}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        <input class="value" type="number" name="system.protection.piercing" value="{{ idata.protection.piercing }}"
+                        data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
                     </div>
                     <div class="armorgear-protection-item" id="armorgear-fire">
                         <label class="label">Fire</label>
-                        <input class="value" type="number" name="system.protection.fire" value="{{
-                            idata.protection.fire
-                        }}" data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        <input class="value" type="number" name="system.protection.fire" value="{{ idata.protection.fire }}"
+                        data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
                     </div>
                 </div>
             </fieldset>
@@ -118,9 +114,7 @@
                         {{/each}}
                         {{/select}}
                     </select>
-                    <a class="armorgear-location-add" data-location="{{ idata.targetLocation }}"
-                        ><i class="fas fa-plus"></i> Add</a
-                    >
+                    <a class="armorgear-location-add" data-location="{{ idata.targetLocation }}"><i class="fas fa-plus"></i> Add</a>
                 </div>
                 {{/if}}
                 <ol class="grid grid-fixed-row grid-4col" id="armorgear-location-display">
@@ -147,8 +141,7 @@
                     {{checked
                     idata.unknownValue}}
                 />
-                <label class="resource-label">Unknown Value</label>If checked, the value is not displayed to the
-                players.
+                <label class="resource-label">Unknown Value</label>If checked, the value is not displayed to the players.
                 {{else}}
                 <input
                     type="checkbox"
@@ -193,21 +186,11 @@
                     </div>
                     <div class="resource" id="armorgear-artifact-charges">
                         <label class="resource-label">Charges</label>
-                        <input
-                            type="number"
-                            name="system.arcane.charges"
-                            value="{{ idata.arcane.charges }}"
-                            data-dtype="Number"
-                        />
+                        <input type="number" name="system.arcane.charges" value="{{ idata.arcane.charges }}" data-dtype="Number" />
                     </div>
                     <div class="resource" id="armorgear-artifact-ego">
                         <label class="resource-label">Ego/Will</label>
-                        <input
-                            type="number"
-                            name="system.arcane.ego"
-                            value="{{ idata.arcane.ego }}"
-                            data-dtype="Number"
-                        />
+                        <input type="number" name="system.arcane.ego" value="{{ idata.arcane.ego }}" data-dtype="Number" />
                     </div>
                 </div>
             </fieldset>
@@ -242,9 +225,7 @@
                         <div class="effect-ele effect-changes">{{ effect.changes }}</div>
                         <div class="effect-controls">
                             <a class="effect-control" data-action="toggle"
-                                ><i
-                                    class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"
-                                ></i
+                                ><i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i
                             ></a>
                             <a class="effect-control" data-action="edit"
                                 ><i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i

@@ -34,13 +34,7 @@
             <div class="grid grid-fixed-row grid-4col">
                 <div class="resource">
                     <label class="resource-label">Quantity</label>
-                    <input
-                        type="number"
-                        name="system.quantity"
-                        value="{{ idata.quantity }}"
-                        readonly
-                        data-dtype="Number"
-                    />
+                    <input type="number" name="system.quantity" value="{{ idata.quantity }}" readonly data-dtype="Number" />
                 </div>
                 <div class="resource">
                     <label class="resource-label">Weight</label>
@@ -85,8 +79,7 @@
                     {{checked
                     idata.unknownValue}}
                 />
-                <label class="resource-label">Unknown Value</label>If checked, the value is not displayed to the
-                players.
+                <label class="resource-label">Unknown Value</label>If checked, the value is not displayed to the players.
                 {{else}}
                 <input
                     type="checkbox"
@@ -131,21 +124,11 @@
                     </div>
                     <div class="resource">
                         <label class="resource-label">Charges</label>
-                        <input
-                            type="number"
-                            name="system.arcane.charges"
-                            value="{{ idata.arcane.charges }}"
-                            data-dtype="Number"
-                        />
+                        <input type="number" name="system.arcane.charges" value="{{ idata.arcane.charges }}" data-dtype="Number" />
                     </div>
                     <div class="resource">
                         <label class="resource-label">Ego/Will</label>
-                        <input
-                            type="number"
-                            name="system.arcane.ego"
-                            value="{{ idata.arcane.ego }}"
-                            data-dtype="Number"
-                        />
+                        <input type="number" name="system.arcane.ego" value="{{ idata.arcane.ego }}" data-dtype="Number" />
                     </div>
                 </div>
             </fieldset>
@@ -180,9 +163,7 @@
                         <div class="effect-ele effect-changes">{{ effect.changes }}</div>
                         <div class="effect-controls">
                             <a class="effect-control" data-action="toggle"
-                                ><i
-                                    class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"
-                                ></i
+                                ><i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i
                             ></a>
                             <a class="effect-control" data-action="edit"
                                 ><i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i

@@ -52,8 +52,8 @@
                 <div></div>
                 <div class="resource" id="missilegear-quality">
                     <label class="resource-label">Weapon Quality</label>
-                    <input type="number" name="system.weaponQuality" value="{{ idata.weaponQuality }}"
-                    data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                    <input type="number" name="system.weaponQuality" value="{{ idata.weaponQuality }}" data-dtype="Number"
+                    {{#unless hasRwPermission}}disabled{{/unless}} />
                 </div>
                 <div class="resource" id="missilegear=weaponaspect">
                     <label class="resource-label" for="system.weaponAspect">Weapon Aspect</label>
@@ -101,13 +101,7 @@
                     {{/if}}
                     <div class="range-value" id="missilegear-range-short">
                         {{#if isGridDistanceUnits}}
-                        <input
-                            type="text"
-                            name="system.range.short"
-                            value="{{ rangeGrid.short }}"
-                            data-dtype="Number"
-                            disabled
-                        />
+                        <input type="text" name="system.range.short" value="{{ rangeGrid.short }}" data-dtype="Number" disabled />
                         {{else}}
                         <input type="text" name="system.range.short" value="{{ idata.range.short }}" data-dtype="Number"
                         {{#unless hasRwPermission}}disabled{{/unless}} />
@@ -115,27 +109,15 @@
                     </div>
                     <div class="range-value" id="missilegear-range-medium">
                         {{#if isGridDistanceUnits}}
-                        <input
-                            type="text"
-                            name="system.range.medium"
-                            value="{{ rangeGrid.medium }}"
-                            data-dtype="Number"
-                            disabled
-                        />
+                        <input type="text" name="system.range.medium" value="{{ rangeGrid.medium }}" data-dtype="Number" disabled />
                         {{else}}
-                        <input type="text" name="system.range.medium" value="{{ idata.range.medium }}"
-                        data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        <input type="text" name="system.range.medium" value="{{ idata.range.medium }}" data-dtype="Number"
+                        {{#unless hasRwPermission}}disabled{{/unless}} />
                         {{/if}}
                     </div>
                     <div class="range-value" id="missilegear-range-long">
                         {{#if isGridDistanceUnits}}
-                        <input
-                            type="text"
-                            name="system.range.long"
-                            value="{{ rangeGrid.long }}"
-                            data-dtype="Number"
-                            disabled
-                        />
+                        <input type="text" name="system.range.long" value="{{ rangeGrid.long }}" data-dtype="Number" disabled />
                         {{else}}
                         <input type="text" name="system.range.long" value="{{ idata.range.long }}" data-dtype="Number"
                         {{#unless hasRwPermission}}disabled{{/unless}} />
@@ -143,36 +125,30 @@
                     </div>
                     <div class="range-value" id="missilegear-range-extreme">
                         {{#if isGridDistanceUnits}}
-                        <input
-                            type="text"
-                            name="system.range.extreme"
-                            value="{{ rangeGrid.extreme }}"
-                            data-dtype="Number"
-                            disabled
-                        />
+                        <input type="text" name="system.range.extreme" value="{{ rangeGrid.extreme }}" data-dtype="Number" disabled />
                         {{else}}
-                        <input type="text" name="system.range.extreme" value="{{ idata.range.extreme }}"
-                        data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        <input type="text" name="system.range.extreme" value="{{ idata.range.extreme }}" data-dtype="Number"
+                        {{#unless hasRwPermission}}disabled{{/unless}} />
                         {{/if}}
                     </div>
                 </li>
                 <li class="flexrow" id="missilegear-impact-values">
                     <div class="range-label">Impact</div>
                     <div class="range-value" id="missilegear-impact-short">
-                        <input type="text" name="system.impact.short" value="{{ idata.impact.short }}"
-                        data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        <input type="text" name="system.impact.short" value="{{ idata.impact.short }}" data-dtype="Number"
+                        {{#unless hasRwPermission}}disabled{{/unless}} />
                     </div>
                     <div class="range-value" id="missilegear-impact-medium">
-                        <input type="text" name="system.impact.medium" value="{{ idata.impact.medium }}"
-                        data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        <input type="text" name="system.impact.medium" value="{{ idata.impact.medium }}" data-dtype="Number"
+                        {{#unless hasRwPermission}}disabled{{/unless}} />
                     </div>
                     <div class="range-value" id="missilegear-impact-long">
                         <input type="text" name="system.impact.long" value="{{ idata.impact.long }}" data-dtype="Number"
                         {{#unless hasRwPermission}}disabled{{/unless}} />
                     </div>
                     <div class="range-value" id="missilegear-impact-extreme">
-                        <input type="text" name="system.impact.extreme" value="{{ idata.impact.extreme }}"
-                        data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                        <input type="text" name="system.impact.extreme" value="{{ idata.impact.extreme }}" data-dtype="Number"
+                        {{#unless hasRwPermission}}disabled{{/unless}} />
                     </div>
                 </li>
             </ol>
@@ -187,8 +163,7 @@
                     {{checked
                     idata.unknownValue}}
                 />
-                <label class="resource-label">Unknown Value</label>If checked, the value is not displayed to the
-                players.
+                <label class="resource-label">Unknown Value</label>If checked, the value is not displayed to the players.
                 {{else}}
                 <input
                     type="checkbox"
@@ -233,21 +208,11 @@
                     </div>
                     <div class="resource" id="missilegear-artifact-charges">
                         <label class="resource-label">Charges</label>
-                        <input
-                            type="number"
-                            name="system.arcane.charges"
-                            value="{{ idata.arcane.charges }}"
-                            data-dtype="Number"
-                        />
+                        <input type="number" name="system.arcane.charges" value="{{ idata.arcane.charges }}" data-dtype="Number" />
                     </div>
                     <div class="resource" id="missilegear-artifact-ego">
                         <label class="resource-label">Ego/Will</label>
-                        <input
-                            type="number"
-                            name="system.arcane.ego"
-                            value="{{ idata.arcane.ego }}"
-                            data-dtype="Number"
-                        />
+                        <input type="number" name="system.arcane.ego" value="{{ idata.arcane.ego }}" data-dtype="Number" />
                     </div>
                 </div>
             </fieldset>
@@ -282,9 +247,7 @@
                         <div class="effect-ele effect-changes">{{ effect.changes }}</div>
                         <div class="effect-controls">
                             <a class="effect-control" data-action="toggle"
-                                ><i
-                                    class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"
-                                ></i
+                                ><i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i
                             ></a>
                             <a class="effect-control" data-action="edit"
                                 ><i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i

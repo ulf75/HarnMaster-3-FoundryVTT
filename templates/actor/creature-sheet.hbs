@@ -2,24 +2,11 @@
     {{!-- Sheet Header --}}
     <header class="sheet-header sheet-header-character">
         <div class="flexrow">
-            <img
-                class="profile-img"
-                src="{{ actor.img }}"
-                data-edit="img"
-                title="{{ actor.name }}"
-                height="100"
-                width="100"
-            />
+            <img class="profile-img" src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" height="100" width="100" />
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
                     <h1 class="charname">
-                        <input
-                            name="name"
-                            type="text"
-                            value="{{ actor.name }}"
-                            placeholder="Name"
-                            autocomplete="false"
-                        />
+                        <input name="name" type="text" value="{{ actor.name }}" placeholder="Name" autocomplete="false" />
                     </h1>
                     <div class="header-stat-block">
                         <div class="penalties flexrow">
@@ -141,9 +128,7 @@
                         <h3 class="ability-value">{{ adata.abilities.stamina.effective }}</h3>
                         <div class="ability-modifiers flexrow">
                             <div class="item-dice">
-                                <a class="ability-d6-roll" data-ability="stamina" title="d6 Stamina Roll"
-                                    ><i class="fas fa-dice-d6"></i
-                                ></a>
+                                <a class="ability-d6-roll" data-ability="stamina" title="d6 Stamina Roll"><i class="fas fa-dice-d6"></i></a>
                             </div>
                             <div class="ability-box">
                                 <input
@@ -191,9 +176,7 @@
                         <h3 class="ability-value">{{ adata.abilities.agility.effective }}</h3>
                         <div class="ability-modifiers flexrow">
                             <div class="item-dice">
-                                <a class="ability-d6-roll" data-ability="agility" title="d6 Agility Roll"
-                                    ><i class="fas fa-dice-d6"></i
-                                ></a>
+                                <a class="ability-d6-roll" data-ability="agility" title="d6 Agility Roll"><i class="fas fa-dice-d6"></i></a>
                             </div>
                             <div class="ability-box">
                                 <input
@@ -241,9 +224,7 @@
                         <h3 class="ability-value">{{ adata.abilities.aura.effective }}</h3>
                         <div class="ability-modifiers flexrow">
                             <div class="item-dice">
-                                <a class="ability-d6-roll" data-ability="aura" title="d6 Aura Roll"
-                                    ><i class="fas fa-dice-d6"></i
-                                ></a>
+                                <a class="ability-d6-roll" data-ability="aura" title="d6 Aura Roll"><i class="fas fa-dice-d6"></i></a>
                             </div>
                             <div class="ability-box">
                                 <input
@@ -255,9 +236,7 @@
                                 />
                             </div>
                             <div class="item-dice">
-                                <a class="ability-d100-roll" data-ability="aura" title="d100 Aura Roll"
-                                    ><i class="fas fa-dice-d20"></i
-                                ></a>
+                                <a class="ability-d100-roll" data-ability="aura" title="d100 Aura Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                         </div>
                     </li>
@@ -266,9 +245,7 @@
                         <h3 class="ability-value">{{ adata.abilities.will.effective }}</h3>
                         <div class="ability-modifiers flexrow">
                             <div class="item-dice">
-                                <a class="ability-d6-roll" data-ability="will" title="d6 Will Roll"
-                                    ><i class="fas fa-dice-d6"></i
-                                ></a>
+                                <a class="ability-d6-roll" data-ability="will" title="d6 Will Roll"><i class="fas fa-dice-d6"></i></a>
                             </div>
                             <div class="ability-box">
                                 <input
@@ -280,9 +257,7 @@
                                 />
                             </div>
                             <div class="item-dice">
-                                <a class="ability-d100-roll" data-ability="will" title="d100 Will Roll"
-                                    ><i class="fas fa-dice-d20"></i
-                                ></a>
+                                <a class="ability-d100-roll" data-ability="will" title="d100 Will Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                         </div>
                     </li>
@@ -318,9 +293,7 @@
                         <h3 class="ability-value">{{ adata.abilities.hearing.effective }}</h3>
                         <div class="ability-modifiers flexrow">
                             <div class="item-dice">
-                                <a class="ability-d6-roll" data-ability="hearing" title="d6 Hearing Roll"
-                                    ><i class="fas fa-dice-d6"></i
-                                ></a>
+                                <a class="ability-d6-roll" data-ability="hearing" title="d6 Hearing Roll"><i class="fas fa-dice-d6"></i></a>
                             </div>
                             <div class="ability-box">
                                 <input
@@ -343,9 +316,7 @@
                         <h3 class="ability-value">{{ adata.abilities.smell.effective }}</h3>
                         <div class="ability-modifiers flexrow">
                             <div class="item-dice">
-                                <a class="ability-d6-roll" data-ability="smell" title="d6 Smell Roll"
-                                    ><i class="fas fa-dice-d6"></i
-                                ></a>
+                                <a class="ability-d6-roll" data-ability="smell" title="d6 Smell Roll"><i class="fas fa-dice-d6"></i></a>
                             </div>
                             <div class="ability-box">
                                 <input
@@ -368,9 +339,7 @@
                         <h3 class="ability-value">{{ adata.abilities.voice.effective }}</h3>
                         <div class="ability-modifiers flexrow">
                             <div class="item-dice">
-                                <a class="ability-d6-roll" data-ability="voice" title="d6 Voice Roll"
-                                    ><i class="fas fa-dice-d6"></i
-                                ></a>
+                                <a class="ability-d6-roll" data-ability="voice" title="d6 Voice Roll"><i class="fas fa-dice-d6"></i></a>
                             </div>
                             <div class="ability-box">
                                 <input
@@ -393,13 +362,7 @@
                     <div class="flexrow profile-item">
                         <div class="attribute species flexrow">
                             <label class="label">Load Rating</label>
-                            <input
-                                class="value"
-                                type="text"
-                                name="system.loadRating"
-                                value="{{ adata.loadRating }}"
-                                data-dtype="Number"
-                            />
+                            <input class="value" type="text" name="system.loadRating" value="{{ adata.loadRating }}" data-dtype="Number" />
                         </div>
                     </div>
                 </div>
@@ -425,20 +388,14 @@
                         <ol class="item-list trait-list">
                             {{#each items as |item id|}}
                             {{#if (and (eq item.type "trait") (eq item.system.type "Physical"))}}
-                            <li
-                                class="item trait trait-item flexrow"
-                                data-item-id="{{ item._id }}"
-                                data-item-name="{{ item.name }}"
-                            >
+                            <li class="item trait trait-item flexrow" data-item-id="{{ item._id }}" data-item-name="{{ item.name }}">
                                 <div class="item-name trait-name flexrow">
                                     <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
                                     <h4>{{ item.name }}</h4>
                                 </div>
                                 <div class="trait-notes">{{ adata.notes }}</div>
                                 <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Trait"
-                                        ><i class="active fas fa-edit"></i
-                                    ></a>
+                                    <a class="item-control item-edit" title="Edit Trait"><i class="active fas fa-edit"></i></a>
                                     <a class="item-control item-delete" title="Delete Trait" data-label="Physical Trait"
                                         ><i class="active fas fa-trash"></i
                                     ></a>
@@ -469,20 +426,14 @@
                         <ol class="item-list trait-list">
                             {{#each items as |item id|}}
                             {{#if (and (eq item.type "trait") (eq item.system.type "Psyche"))}}
-                            <li
-                                class="item trait trait-item flexrow"
-                                data-item-id="{{ item._id }}"
-                                data-item-name="{{ item.name }}"
-                            >
+                            <li class="item trait trait-item flexrow" data-item-id="{{ item._id }}" data-item-name="{{ item.name }}">
                                 <div class="item-name trait-name flexrow">
                                     <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
                                     <h4>{{ item.name }}</h4>
                                 </div>
                                 <div class="trait-notes">{{ adata.notes }}</div>
                                 <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Trait"
-                                        ><i class="active fas fa-edit"></i
-                                    ></a>
+                                    <a class="item-control item-edit" title="Edit Trait"><i class="active fas fa-edit"></i></a>
                                     <a class="item-control item-delete" title="Delete Trait" data-label="Psyche Trait"
                                         ><i class="active fas fa-trash"></i
                                     ></a>
@@ -531,11 +482,7 @@
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
                     <div class="item-controls">
-                        <a
-                            class="item-control item-create"
-                            title="Create Physical Skill"
-                            data-type="skill"
-                            data-skilltype="Physical"
+                        <a class="item-control item-create" title="Create Physical Skill" data-type="skill" data-skilltype="Physical"
                             ><i class="fas fa-plus"></i> Add</a
                         >
                     </div>
@@ -543,11 +490,7 @@
                 <ol class="item-list skill-list">
                     {{#each items as |item id|}}
                     {{#if (and (eq item.type "skill") (eq item.system.type "Physical"))}}
-                    <li
-                        class="item skill skill-item flexrow"
-                        data-item-id="{{ item._id }}"
-                        data-item-name="{{ item.name }}"
-                    >
+                    <li class="item skill skill-item flexrow" data-item-id="{{ item._id }}" data-item-name="{{ item.name }}">
                         <div class="item-name skill-roll skill-name flexrow">
                             <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
                             <h4>{{ item.name }}</h4>
@@ -593,11 +536,7 @@
                 <ol class="item-list skill-list">
                     {{#each items as |item id|}}
                     {{#if (and (eq item.type "skill") (eq item.system.type "Communication"))}}
-                    <li
-                        class="item skill skill-item flexrow"
-                        data-item-id="{{ item._id }}"
-                        data-item-name="{{ item.name }}"
-                    >
+                    <li class="item skill skill-item flexrow" data-item-id="{{ item._id }}" data-item-name="{{ item.name }}">
                         <div class="item-name skill-roll skill-name flexrow">
                             <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
                             <h4>{{ item.name }}</h4>
@@ -622,20 +561,14 @@
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
                     <h3 class="item-name skill-name">
-                        Combat Skills<a class="more-info" data-journal-entry="Sheet - Skills Tab"
-                            ><i class="far fa-question-circle"></i
-                        ></a>
+                        Combat Skills<a class="more-info" data-journal-entry="Sheet - Skills Tab"><i class="far fa-question-circle"></i></a>
                     </h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
                     <div class="item-controls">
-                        <a
-                            class="item-control item-create"
-                            title="Create Combat Skill"
-                            data-type="skill"
-                            data-skilltype="Combat"
+                        <a class="item-control item-create" title="Create Combat Skill" data-type="skill" data-skilltype="Combat"
                             ><i class="fas fa-plus"></i> Add</a
                         >
                     </div>
@@ -643,11 +576,7 @@
                 <ol class="item-list skill-list">
                     {{#each items as |item id|}}
                     {{#if (and (eq item.type "skill") (eq item.system.type "Combat"))}}
-                    <li
-                        class="item skill skill-item flexrow"
-                        data-item-id="{{ item._id }}"
-                        data-item-name="{{ item.name }}"
-                    >
+                    <li class="item skill skill-item flexrow" data-item-id="{{ item._id }}" data-item-name="{{ item.name }}">
                         <div class="item-name skill-roll skill-name flexrow">
                             <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
                             <h4>{{ item.name }}</h4>
@@ -672,20 +601,14 @@
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
                     <h3 class="item-name skill-name">
-                        Craft Skills<a class="more-info" data-journal-entry="Sheet - Skills Tab"
-                            ><i class="far fa-question-circle"></i
-                        ></a>
+                        Craft Skills<a class="more-info" data-journal-entry="Sheet - Skills Tab"><i class="far fa-question-circle"></i></a>
                     </h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
                     <div class="item-controls">
-                        <a
-                            class="item-control item-create"
-                            title="Create Craft Skill"
-                            data-type="skill"
-                            data-skilltype="Craft"
+                        <a class="item-control item-create" title="Create Craft Skill" data-type="skill" data-skilltype="Craft"
                             ><i class="fas fa-plus"></i> Add</a
                         >
                     </div>
@@ -693,11 +616,7 @@
                 <ol class="item-list skill-list">
                     {{#each items as |item id|}}
                     {{#if (and (eq item.type "skill") (eq item.system.type "Craft"))}}
-                    <li
-                        class="item skill skill-item flexrow"
-                        data-item-id="{{ item._id }}"
-                        data-item-name="{{ item.name }}"
-                    >
+                    <li class="item skill skill-item flexrow" data-item-id="{{ item._id }}" data-item-name="{{ item.name }}">
                         <div class="item-name skill-roll skill-name flexrow">
                             <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
                             <h4>{{ item.name }}</h4>
@@ -809,18 +728,14 @@
                     <div class="item-dice">
                         <i class="active fas fa-dice-d20"></i>
                     </div>
-                    <label class="combat-stat-label tooltip"
-                        ><a class="falling-roll" title="Falling Roll">Falling</a></label
-                    >
+                    <label class="combat-stat-label tooltip"><a class="falling-roll" title="Falling Roll">Falling</a></label>
                 </div>
                 {{#if isGM}}
                 <div class="combat-stat flexrow" id="combat-moraleroll">
                     <div class="item-dice">
                         <i class="active fas fa-dice-d20"></i>
                     </div>
-                    <label class="combat-stat-label tooltip"
-                        ><a class="morale-roll" title="Morale Roll">Morale</a></label
-                    >
+                    <label class="combat-stat-label tooltip"><a class="morale-roll" title="Morale Roll">Morale</a></label>
                 </div>
                 {{/if}}
             </div>
@@ -829,9 +744,7 @@
             <ol class="items-list weapons-list">
                 <li class="items-header weapon flexrow">
                     <h3 class="item-name weapon-name">
-                        Melee Weapons<a class="more-info" data-journal-entry="Sheet - Combat Tab"
-                            ><i class="far fa-question-circle"></i
-                        ></a>
+                        Melee Weapons<a class="more-info" data-journal-entry="Sheet - Combat Tab"><i class="far fa-question-circle"></i></a>
                     </h3>
                     <div class="item-detail weapon-qty">Qty</div>
                     <div class="item-detail weapon-quality">WQ</div>
@@ -865,10 +778,10 @@
                         {{#if (lt system.blunt 0)}}
                         <div class="item-detail weapon-blunt"><i class="fas fa-times"></i></div>
                         {{else}}
-                        <div
-                            class="item-detail weapon-blunt {{#if (and system.isEquipped system.isCarried)}}active{{/if}}"
-                        >
+                        <div class="item-detail weapon-blunt {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
                             {{#if (and system.isEquipped system.isCarried)
+
+
 
 
                             }}<a
@@ -883,10 +796,10 @@
                         {{#if (lt system.edged 0)}}
                         <div class="item-detail weapon-edged"><i class="fas fa-times"></i></div>
                         {{else}}
-                        <div
-                            class="item-detail weapon-edged {{#if (and system.isEquipped system.isCarried)}}active{{/if}}"
-                        >
+                        <div class="item-detail weapon-edged {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
                             {{#if (and system.isEquipped system.isCarried)
+
+
 
 
                             }}<a
@@ -901,10 +814,10 @@
                         {{#if (lt system.piercing 0)}}
                         <div class="item-detail weapon-piercing"><i class="fas fa-times"></i></div>
                         {{else}}
-                        <div
-                            class="item-detail weapon-piercing {{#if (and system.isEquipped system.isCarried)}}active{{/if}}"
-                        >
+                        <div class="item-detail weapon-piercing {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
                             {{#if (and system.isEquipped system.isCarried)
+
+
 
 
                             }}<a
@@ -916,26 +829,22 @@
                             >{{else}}{{ system.piercing }}{{/if}}
                         </div>
                         {{/if}}
-                        <div
-                            class="item-detail weapon-attack {{#if (and system.isEquipped system.isCarried)}}active{{/if}}"
-                        >
+                        <div class="item-detail weapon-attack {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
                             {{#if (and system.isEquipped system.isCarried)
 
 
-                            }}<a class="weapon-attack-roll" title="{{ item.name }} Attack Roll">{{
-                                system.attackMasteryLevel
-                            }}</a
+
+
+                            }}<a class="weapon-attack-roll" title="{{ item.name }} Attack Roll">{{ system.attackMasteryLevel }}</a
                             >{{else}}{{ system.attackMasteryLevel }}{{/if}}
                         </div>
-                        <div
-                            class="item-detail weapon-defense {{#if (and system.isEquipped system.isCarried)}}active{{/if}}"
-                        >
+                        <div class="item-detail weapon-defense {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
                             {{#if (and system.isEquipped system.isCarried)
 
 
-                            }}<a class="weapon-defend-roll" title="{{ item.name }} Defense Roll">{{
-                                system.defenseMasteryLevel
-                            }}</a
+
+
+                            }}<a class="weapon-defend-roll" title="{{ item.name }} Defense Roll">{{ system.defenseMasteryLevel }}</a
                             >{{else}}{{ system.defenseMasteryLevel }}{{/if}}
                         </div>
                         <div class="item-detail weapon-notes">{{ system.notes }}</div>
@@ -981,10 +890,10 @@
                         {{#if (lt system.range.short 0)}}
                         <div class="item-detail missile-short"><i class="fas fa-times"></i></div>
                         {{else}}
-                        <div
-                            class="item-detail missile-short {{#if (and system.isEquipped system.isCarried)}}active{{/if}}"
-                        >
+                        <div class="item-detail missile-short {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
                             {{#if (and system.isEquipped system.isCarried)
+
+
 
 
                             }}<a
@@ -999,10 +908,10 @@
                         {{#if (lt system.range.medium 0)}}
                         <div class="item-detail missile-medium"><i class="fas fa-times"></i></div>
                         {{else}}
-                        <div
-                            class="item-detail missile-medium {{#if (and system.isEquipped system.isCarried)}}active{{/if}}"
-                        >
+                        <div class="item-detail missile-medium {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
                             {{#if (and system.isEquipped system.isCarried)
+
+
 
 
                             }}<a
@@ -1017,10 +926,10 @@
                         {{#if (lt system.range.long 0)}}
                         <div class="item-detail missile-long"><i class="fas fa-times"></i></div>
                         {{else}}
-                        <div
-                            class="item-detail missile-long {{#if (and system.isEquipped system.isCarried)}}active{{/if}}"
-                        >
+                        <div class="item-detail missile-long {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
                             {{#if (and system.isEquipped system.isCarried)
+
+
 
 
                             }}<a
@@ -1035,10 +944,10 @@
                         {{#if (lt system.range.extreme 0)}}
                         <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
                         {{else}}
-                        <div
-                            class="item-detail missile-extreme {{#if (and system.isEquipped system.isCarried)}}active{{/if}}"
-                        >
+                        <div class="item-detail missile-extreme {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
                             {{#if (and system.isEquipped system.isCarried)
+
+
 
 
                             }}<a
@@ -1050,15 +959,13 @@
                             >{{else}}{{ system.range.extreme }}/{{ system.impact.extreme }}{{/if}}
                         </div>
                         {{/if}}
-                        <div
-                            class="item-detail missile-attack {{#if (and system.isEquipped system.isCarried)}}active{{/if}}"
-                        >
+                        <div class="item-detail missile-attack {{#if (and system.isEquipped system.isCarried)}}active{{/if}}">
                             {{#if (and system.isEquipped system.isCarried)
 
 
-                            }}<a class="missile-attack-roll" title="Missile Attack Roll">{{
-                                system.attackMasteryLevel
-                            }}</a
+
+
+                            }}<a class="missile-attack-roll" title="Missile Attack Roll">{{ system.attackMasteryLevel }}</a
                             >{{else}}{{ system.attackMasteryLevel }}{{/if}}
                         </div>
                         <div class="item-detail missile-notes">{{ system.notes }}</div>
@@ -1101,9 +1008,7 @@
             <ol class="items-list injuries-list">
                 <li class="items-header injury flexrow">
                     <h3 class="item-name injury-name">
-                        Injuries<a class="more-info" data-journal-entry="Sheet - Combat Tab"
-                            ><i class="far fa-question-circle"></i
-                        ></a>
+                        Injuries<a class="more-info" data-journal-entry="Sheet - Combat Tab"><i class="far fa-question-circle"></i></a>
                     </h3>
                     <div class="item-detail injury-healrate">HR</div>
                     <div class="item-detail injury-severity">IL</div>
@@ -1165,11 +1070,7 @@
                 <ol class="item-list armorlocation-list">
                     {{#each items as |item id|}}
                     {{#if (eq item.type "armorlocation")}}
-                    <li
-                        class="item armorlocation flexrow"
-                        data-item-id="{{ item._id }}"
-                        data-item-name="{{ system.name }}"
-                    >
+                    <li class="item armorlocation flexrow" data-item-id="{{ item._id }}" data-item-name="{{ system.name }}">
                         <div class="item-name armorlocation-name flexrow">
                             <h4>{{ item.name }}</h4>
                         </div>
@@ -1184,9 +1085,7 @@
                         <div class="item-detail armorlocation-prob">{{ probLow }}%</div>
                         <div class="item-detail armorlocation-notes">{{ system.notes }}</div>
                         <div class="item-controls">
-                            <a class="item-control item-edit" title="Edit Location"
-                                ><i class="active fas fa-edit"></i
-                            ></a>
+                            <a class="item-control item-edit" title="Edit Location"><i class="active fas fa-edit"></i></a>
                             <a class="item-control item-delete" title="Delete Location" data-label="Location"
                                 ><i class="active fas fa-trash"></i
                             ></a>
@@ -1236,13 +1135,8 @@
                             <a class="item-control item-dumpdesc" title="Post Psionic Desc to Chat"
                                 ><i class="active far fa-comment"></i
                             ></a>
-                            <a class="item-control item-edit" title="Edit Psionic Talent"
-                                ><i class="active fas fa-edit"></i
-                            ></a>
-                            <a
-                                class="item-control item-delete"
-                                title="Delete Psionic Talent"
-                                data-label="Psionic Talent"
+                            <a class="item-control item-edit" title="Edit Psionic Talent"><i class="active fas fa-edit"></i></a>
+                            <a class="item-control item-delete" title="Delete Psionic Talent" data-label="Psionic Talent"
                                 ><i class="active fas fa-trash"></i
                             ></a>
                         </div>
@@ -1289,16 +1183,10 @@
             </div>
             {{#each containers as |citem cid|}}
             <ol class="items-list gear-list">
-                <li
-                    class="items-header gear flexrow"
-                    data-container-id="{{ cid }}"
-                    data-container-name="{{ citem.name }}"
-                >
+                <li class="items-header gear flexrow" data-container-id="{{ cid }}" data-container-name="{{ citem.name }}">
                     <h3 class="item-name gear-name">
                         {{ citem.name
-                        }}<a class="more-info" data-journal-entry="Sheet - Gear Tab"
-                            ><i class="far fa-question-circle"></i
-                        ></a>
+                        }}<a class="more-info" data-journal-entry="Sheet - Gear Tab"><i class="far fa-question-circle"></i></a>
                     </h3>
                     <div class="item-detail gear-type">Type</div>
                     <div class="item-detail gear-qty">Qty</div>
@@ -1376,9 +1264,7 @@
             <ol class="macros-list">
                 <li class="macros-header flexrow">
                     <h3 class="macro-name flexrow">
-                        Macro<a class="more-info" data-journal-entry="Sheet - Macro Tab"
-                            ><i class="far fa-question-circle"></i
-                        ></a>
+                        Macro<a class="more-info" data-journal-entry="Sheet - Macro Tab"><i class="far fa-question-circle"></i></a>
                     </h3>
                     <div class="macro-source">Type</div>
                     <!-- <div class="macro-duration">Trigger</div> -->
@@ -1426,9 +1312,7 @@
             <ol class="effects-list">
                 <li class="effects-header flexrow">
                     <h3 class="effect-name flexrow">
-                        Effect<a class="more-info" data-journal-entry="Sheet - Effect Tab"
-                            ><i class="far fa-question-circle"></i
-                        ></a>
+                        Effect<a class="more-info" data-journal-entry="Sheet - Effect Tab"><i class="far fa-question-circle"></i></a>
                     </h3>
                     <div class="effect-source">Source</div>
                     <div class="effect-duration">Remaining</div>

@@ -32,14 +32,7 @@
             </div>
             {{#if isGM}}
             <div class="resource artifact flexrow">
-                <input
-                    type="checkbox"
-                    name="system.hidden"
-                    value="{{ idata.hidden }}"
-                    data-dtype="Boolean"
-                    {{checked
-                    idata.hidden}}
-                />
+                <input type="checkbox" name="system.hidden" value="{{ idata.hidden }}" data-dtype="Boolean" {{checked idata.hidden}} />
                 <label class="resource-label">Hidden</label>If checked, the effect is not displayed to the players.
             </div>
             <div class="resource artifact flexrow">
@@ -51,8 +44,7 @@
                     {{checked
                     idata.selfDestroy}}
                 />
-                <label class="resource-label">Self Destroy</label>If checked, the item & effect will be deleted after
-                completion.
+                <label class="resource-label">Self Destroy</label>If checked, the item & effect will be deleted after completion.
             </div>
             {{/if}}
         </div>
@@ -85,9 +77,7 @@
                         <div class="effect-ele effect-changes">{{ effect.changes }}</div>
                         <div class="effect-controls">
                             <a class="effect-control" data-action="toggle"
-                                ><i
-                                    class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"
-                                ></i
+                                ><i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i
                             ></a>
                             <a class="effect-control" data-action="edit"
                                 ><i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i

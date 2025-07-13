@@ -52,8 +52,8 @@
                 <div></div>
                 <div class="resource" id="weapongear-quality">
                     <label class="resource-label">Weapon Quality</label>
-                    <input type="number" name="system.weaponQuality" value="{{ idata.weaponQuality }}"
-                    data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                    <input type="number" name="system.weaponQuality" value="{{ idata.weaponQuality }}" data-dtype="Number"
+                    {{#unless hasRwPermission}}disabled{{/unless}} />
                 </div>
                 <div class="resource" id="weapongear-attack">
                     <label class="resource-label">Attack</label>
@@ -75,8 +75,8 @@
                 </div>
                 <div class="resource" id="weapongear-attack-mod">
                     <label class="resource-label">Attack Modifier</label>
-                    <input type="number" name="system.attackModifier" value="{{ idata.attackModifier }}"
-                    data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
+                    <input type="number" name="system.attackModifier" value="{{ idata.attackModifier }}" data-dtype="Number"
+                    {{#unless hasRwPermission}}disabled{{/unless}} />
                 </div>
                 <!-- <div class="resource"></div> -->
                 <div class="resource"></div>
@@ -129,8 +129,7 @@
                     {{checked
                     idata.unknownValue}}
                 />
-                <label class="resource-label">Unknown Value</label>If checked, the value is not displayed to the
-                players.
+                <label class="resource-label">Unknown Value</label>If checked, the value is not displayed to the players.
                 {{else}}
                 <input
                     type="checkbox"
@@ -175,21 +174,11 @@
                     </div>
                     <div class="resource" id="weapongear-artifact-charges">
                         <label class="resource-label">Charges</label>
-                        <input
-                            type="number"
-                            name="system.arcane.charges"
-                            value="{{ idata.arcane.charges }}"
-                            data-dtype="Number"
-                        />
+                        <input type="number" name="system.arcane.charges" value="{{ idata.arcane.charges }}" data-dtype="Number" />
                     </div>
                     <div class="resource" id="weapongear-artifact-ego">
                         <label class="resource-label">Ego/Will</label>
-                        <input
-                            type="number"
-                            name="system.arcane.ego"
-                            value="{{ idata.arcane.ego }}"
-                            data-dtype="Number"
-                        />
+                        <input type="number" name="system.arcane.ego" value="{{ idata.arcane.ego }}" data-dtype="Number" />
                     </div>
                 </div>
             </fieldset>
@@ -224,9 +213,7 @@
                         <div class="effect-ele effect-changes">{{ effect.changes }}</div>
                         <div class="effect-controls">
                             <a class="effect-control" data-action="toggle"
-                                ><i
-                                    class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"
-                                ></i
+                                ><i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i
                             ></a>
                             <a class="effect-control" data-action="edit"
                                 ><i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i

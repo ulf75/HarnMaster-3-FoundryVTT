@@ -2,14 +2,7 @@
     {{!-- Sheet Header --}}
     <header class="sheet-header sheet-header-character">
         <div class="flexrow">
-            <img
-                class="profile-img"
-                src="{{ actor.img }}"
-                data-edit="img"
-                title="{{ actor.name }}"
-                height="100"
-                width="100"
-            />
+            <img class="profile-img" src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" height="100" width="100" />
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
                     <h1 class="charname">
@@ -100,24 +93,16 @@
             </div>
             {{#each containers as |citem cid|}}
             <ol class="items-list gear-list">
-                <li
-                    class="items-header gear flexrow"
-                    data-container-id="{{ cid }}"
-                    data-container-name="{{ citem.name }}"
-                >
+                <li class="items-header gear flexrow" data-container-id="{{ cid }}" data-container-name="{{ citem.name }}">
                     <h3 class="item-name gear-name">
                         {{ citem.name
-                        }}<a class="more-info" data-journal-entry="Sheet - Gear Tab"
-                            ><i class="far fa-question-circle"></i
-                        ></a>
+                        }}<a class="more-info" data-journal-entry="Sheet - Gear Tab"><i class="far fa-question-circle"></i></a>
                     </h3>
                     <div class="item-detail gear-type">Type</div>
                     <div class="item-detail gear-qty">Qty</div>
                     <div class="item-detail gear-weight">Weight</div>
                     <div class="item-detail gear-notes">Notes</div>
-                    <div
-                        class="item detail gear-capacity {{#if (gt system.capacity.value system.capacity.max)}}overcapacity{{/if}}"
-                    >
+                    <div class="item detail gear-capacity {{#if (gt system.capacity.value system.capacity.max)}}overcapacity{{/if}}">
                         Capacity: {{ system.capacity.value }}/{{ system.capacity.max }}
                     </div>
                     <div class="item-controls">
