@@ -34,10 +34,16 @@
                                 data-dtype="String" />
                         </li>
                         <li class="attribute creature-size flexcol">
-                            <label class="label">Size</label>
-                            <select class="value" name="system.size">
+                            <label for="system.size" class="label">Size</label>
+                            {{#if hasRwPermission}}
+                            <select class="value" id="system.size" name="system.size">
                                 {{selectOptions config.creatureSizes selected=adata.size valueAttr="key" labelAttr="label"}}
                             </select>
+                            {{else}}
+                            <select class="value" id="system.size" name="system.size" disabled>
+                                {{selectOptions config.creatureSizes selected=adata.size valueAttr="key" labelAttr="label"}}
+                            </select>
+                            {{/if}}
                         </li>
                         <li class="attribute flexcol"></li>
                         <li class="attribute move flexcol">
