@@ -167,6 +167,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 'type': ItemType.CONTAINERGEAR,
                 'system': {
                     'container': 'on-person',
+                    'collapsed': this.actor.getFlag('hm3', 'onPersonContainerCollapsed') || false,
                     'capacity': {
                         'max': capacityMax,
                         'value': capacityVal
@@ -1047,6 +1048,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 container.update({'system.collapsed': false});
             }
         } else if (el.containerId === 'on-person') {
+            if (el.action === 'minimize') {
+                this.actor.setFlag('hm3', 'onPersonContainerCollapsed', true);
+            } else if (el.action === 'maximize') {
+                this.actor.setFlag('hm3', 'onPersonContainerCollapsed', false);
+            }
         }
     }
 

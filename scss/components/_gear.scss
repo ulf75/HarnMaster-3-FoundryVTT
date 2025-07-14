@@ -134,6 +134,13 @@ input[type='text'].gear-name-filter {
         overflow: hidden;
     }
 
+    .gear-name-h {
+        flex: 0 0 185px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
     .gear-name-inv {
         flex: 0 0 200px;
         text-overflow: ellipsis;
@@ -213,6 +220,11 @@ input[type='text'].gear-name-filter {
         .active {
             color: #4b4a44;
         }
+    }
+
+    .citem-controls-0 {
+        flex: 0;
+        text-align: center;
     }
 }
 

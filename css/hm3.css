@@ -2976,6 +2976,15 @@ section.highlight {
     overflow: hidden;
 }
 
+.hm3 .gear-list .gear-name-h {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 185px;
+    flex: 0 0 185px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 .hm3 .gear-list .gear-name-inv {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 200px;
@@ -3075,6 +3084,13 @@ section.highlight {
 
 .hm3 .gear-list .citem-controls .active {
     color: #4b4a44;
+}
+
+.hm3 .gear-list .citem-controls-0 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0;
+    flex: 0;
+    text-align: center;
 }
 
 .hm3 .armorgear-location {

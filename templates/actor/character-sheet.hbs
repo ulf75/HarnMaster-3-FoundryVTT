@@ -2028,7 +2028,32 @@
             {{#each containers as |citem cid|}}
             <ol class="items-list gear-list">
                 <li class="items-header gear flexrow" data-container-id="{{ cid }}" data-container-name="{{ citem.name }}">
-                    <h3 class="item-name gear-name">
+                    <div class="citem-controls">
+                        {{#if citem.system.collapsed}}
+                        <a
+                            class="item-control item-maximize active"
+                            title="Maximize"
+                            data-action="maximize"
+                            data-cuuid="{{ citem.uuid }}"
+                            data-container-id="{{ cid }}"
+                            data-container-name="{{ citem.name }}"
+                            data-type="gear">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                        {{else}}
+                        <a
+                            class="item-control item-minimize active"
+                            title="Minimize"
+                            data-action="minimize"
+                            data-cuuid="{{ citem.uuid }}"
+                            data-container-id="{{ cid }}"
+                            data-container-name="{{ citem.name }}"
+                            data-type="gear">
+                            <i class="fas fa-minus"></i>
+                        </a>
+                        {{/if}}
+                    </div>
+                    <h3 class="item-name gear-name-h">
                         {{ citem.name }}
                         <a class="more-info" data-journal-entry="Sheet - Gear Tab">
                             <i class="far fa-question-circle"></i>
@@ -2038,9 +2063,11 @@
                     <div class="item-detail gear-qty">Qty</div>
                     <div class="item-detail gear-weight">Weight</div>
                     <div class="item-detail gear-notes">Notes</div>
+                    {{#unless (eq citem.system.type "Group")}}
                     <div class="item detail gear-capacity {{#if (gt system.capacity.value system.capacity.max)}}overcapacity{{/if}}">
                         Capacity: {{ system.capacity.value }}/{{ system.capacity.max }}
                     </div>
+                    {{/unless}}
                     <div class="item-controls">
                         <a
                             class="item-control item-create active"
@@ -2056,12 +2083,14 @@
                 <ol class="item-list gear-list">
                     {{#each ../items as | item |}}
                     {{#if (and (endswith item.type "gear") (eq item.system.container cid))}}
+                    {{#unless citem.system.collapsed}}
                     <li
                         class="item gear-item {{#unless system.isCarried}}nocarry{{/unless}} flexrow"
                         data-item-id="{{ item.id }}"
                         data-item-name="{{ item.name }}"
                         data-container-id="{{ cid }}"
                         data-container-name="{{ citem.name }}">
+                        <div class="citem-controls-0 flexrow"></div>
                         <div class="item-name gear-name flexrow">
                             <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
                             <h4>{{ item.name }}</h4>
@@ -2075,7 +2104,7 @@
                         <div class="item-detail gear-weight">{{ system.weightT }}</div>
                         <div class="item-detail gear-notes">{{ system.notes }}</div>
                         <div class="item-controls-wide">
-                            {{#if (eq cid "on-person")}}
+                            {{#if (or (eq cid "on-person") (eq citem.system.type "Group"))}}
                             {{#unless (or (eq item.type "containergear") (eq item.type "miscgear"))}}
                             <a class="item-control item-equip" title="Equip">
                                 <i class="{{#if system.isEquipped}}active{{/if}} fas fa-shield-alt"></i>
@@ -2088,11 +2117,12 @@
                             <a class="item-control item-edit" title="Edit">
                                 <i class="active fas fa-edit"></i>
                             </a>
-                            <a class="item-control item-delete" title="Delete" data-label="Miscellaneous Gear">
+                            <a class="item-control item-delete" title="{{ system.type }}" data-label="Miscellaneous Gear">
                                 <i class="active fas fa-trash"></i>
                             </a>
                         </div>
                     </li>
+                    {{/unless}}
                     {{/if}}
                     {{/each}}
                 </ol>
