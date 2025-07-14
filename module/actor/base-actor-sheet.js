@@ -580,6 +580,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Dump Esoteric Description to Chat
         html.find('.item-dumpdesc').click(this._onDumpEsotericDescription.bind(this));
 
+        html.find('.item-minimize, .item-maximize').click(this._onContainerCollapse.bind(this));
+
         html.on('click', '.fff-name', (ev) => {
             const el = ev.currentTarget.querySelector('#companion'); //.dataset; // .innerText;
             if (!el) return;
@@ -1031,6 +1033,20 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     li.slideUp(200, () => this.render(false));
                 }
             }
+        }
+    }
+
+    async _onContainerCollapse(ev) {
+        const el = ev.currentTarget.dataset;
+        if (!el) return;
+        const container = fromUuidSync(el.cuuid);
+        if (container) {
+            if (el.action === 'minimize') {
+                container.update({'system.collapsed': true});
+            } else if (el.action === 'maximize') {
+                container.update({'system.collapsed': false});
+            }
+        } else if (el.containerId === 'on-person') {
         }
     }
 

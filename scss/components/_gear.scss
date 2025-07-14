@@ -198,6 +198,22 @@ input[type='text'].gear-name-filter {
             color: #4b4a44;
         }
     }
+
+    .citem-controls {
+        flex: 0 0 15px;
+        text-align: center;
+        .item-equip {
+            color: #b5b3a4;
+        }
+
+        .item-carry {
+            color: #b5b3a4;
+        }
+
+        .active {
+            color: #4b4a44;
+        }
+    }
 }
 
 .armorgear-location {

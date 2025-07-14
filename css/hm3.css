@@ -1255,6 +1255,7 @@ section.highlight {
 .hm3 .items .items-list .items-header .item-name {
     color: #191813;
     border-right: 1px solid #c9c7b8;
+    border-bottom: unset;
 }
 
 .hm3 .items .items-list .items-header .item-name i {
@@ -3054,6 +3055,25 @@ section.highlight {
 }
 
 .hm3 .gear-list .item-controls .active {
+    color: #4b4a44;
+}
+
+.hm3 .gear-list .citem-controls {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 15px;
+    flex: 0 0 15px;
+    text-align: center;
+}
+
+.hm3 .gear-list .citem-controls .item-equip {
+    color: #b5b3a4;
+}
+
+.hm3 .gear-list .citem-controls .item-carry {
+    color: #b5b3a4;
+}
+
+.hm3 .gear-list .citem-controls .active {
     color: #4b4a44;
 }
 
