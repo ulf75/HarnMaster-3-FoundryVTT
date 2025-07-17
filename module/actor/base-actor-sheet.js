@@ -987,6 +987,19 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
     /* -------------------------------------------- */
 
+    /** @inheritDoc */
+    // async activateEditor(name, options = {}, initialContent = '') {
+    //     options.relativeLinks = true;
+    //     options.plugins = {
+    //         menu: ProseMirror.ProseMirrorMenu.build(ProseMirror.defaultSchema, {
+    //             compact: true,
+    //             destroyOnSave: false,
+    //             onSave: () => this.saveEditor(name, {remove: false})
+    //         })
+    //     };
+    //     return super.activateEditor(name, options, initialContent);
+    // }
+
     async _onItemDelete(event) {
         event.preventDefault();
         const header = event.currentTarget;
@@ -1608,5 +1621,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Update the quantity on the server
         await item.update({'system.skillBase.OP': item.system.skillBase.OP});
         await item.update({'system.masteryLevel': 0});
+    }
+
+    async conditionalRender({aeDisabled = false, aeStarted = false, force = false} = {}) {
+        if (force || this._tabs[0].active === 'effects' || aeDisabled || aeStarted) {
+            return super.render(force);
+        }
     }
 }

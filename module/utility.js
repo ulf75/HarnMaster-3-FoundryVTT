@@ -377,12 +377,15 @@ export function aeDuration(effect) {
     // Time-based duration
     if (Number.isNumeric(d.seconds)) {
         const isIndefinite = d.label === 'Indefinite';
+        const isPermanent = d.label === 'Permanent';
         const start = d.startTime || game.time.worldTime;
         const elapsed = game.time.worldTime - start;
         const remaining = elapsed < 0 ? d.seconds : Math.max(d.seconds - elapsed, 0);
         //const normDuration = toNormTime(d.seconds);
         const normRemaining = isIndefinite ? 'Indefinite' : toNormTime(remaining);
-        const startLabel = elapsed < 0 ? toNormTime(-elapsed) : 'Started';
+        let startLabel = toNormTime(-elapsed);
+        if (effect.system.status !== 'Pending') startLabel = effect.system.status;
+
         return {
             duration: d.seconds,
             label: normRemaining,
@@ -501,7 +504,10 @@ export function aeChanges(effect) {
                     return `${prefix} custom`;
             }
         })
-        .join(', ');
+        .join(', ')
+        .replace('Endurance', 'END')
+        .replace('Strength', 'STR')
+        .replace('Stamina', 'STA');
 }
 
 function toNormTime(seconds) {

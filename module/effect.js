@@ -111,6 +111,42 @@ export async function onManageActiveEffect(event, owner) {
     }
 }
 
+export async function checkStartedActiveEffects() {
+    // Handle game actors first
+    for (let actor of game.actors.values()) {
+        if (actor.isOwner && actor.allApplicableEffects(true)?.length) {
+            const aeStarted = await setAEStatus(actor);
+            actor.sheet.conditionalRender({aeStarted});
+        }
+    }
+
+    // Next, handle tokens (only unlinked tokens)
+    for (let token of canvas.tokens.ownedTokens.values()) {
+        if (!token.document.actorLink && token.actor?.allApplicableEffects(true)?.length) {
+            const aeStarted = await setAEStatus(token.actor);
+            token.actor.sheet.conditionalRender({aeStarted});
+        }
+    }
+}
+
+async function setAEStatus(actor) {
+    let aeStarted = false;
+    for (const effect of actor.allApplicableEffects(true)) {
+        if (effect.system.status === undefined) {
+            if (effect.started) {
+                await effect.update({'system.status': 'Started'});
+                aeStarted = true;
+            } else await effect.update({'system.status': 'Pending'});
+        } else if (effect.system.status === 'Pending') {
+            if (effect.started) {
+                await effect.update({'system.status': 'Started'});
+                aeStarted = true;
+            }
+        }
+    }
+    return aeStarted;
+}
+
 /**
  * This function searches all actors and tokens that are owned
  * by the user and disables them if their duration has expired.
@@ -119,15 +155,16 @@ export async function checkExpiredActiveEffects() {
     // Handle game actors first
     for (let actor of game.actors.values()) {
         if (actor.isOwner && actor.allApplicableEffects(true)?.length) {
-            const changed = await disableExpiredAE(actor);
-            if (changed) actor.sheet.render();
+            const aeDisabled = await disableExpiredAE(actor);
+            actor.sheet.conditionalRender({aeDisabled});
         }
     }
 
     // Next, handle tokens (only unlinked tokens)
     for (let token of canvas.tokens.ownedTokens.values()) {
         if (!token.document.actorLink && token.actor?.allApplicableEffects(true)?.length) {
-            await disableExpiredAE(token.actor);
+            const aeDisabled = await disableExpiredAE(token.actor);
+            token.actor.sheet.conditionalRender({aeDisabled});
         }
     }
 }
@@ -145,7 +182,7 @@ async function disableExpiredAE(actor) {
             const duration = effect.duration;
             if (duration.type !== 'none') {
                 if (duration.remaining <= 0) {
-                    await effect.update({'disabled': true});
+                    await effect.update({'disabled': true, 'system.status': 'Ended'});
                     changed = true;
                 }
             }

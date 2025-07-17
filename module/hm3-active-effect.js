@@ -1,12 +1,21 @@
 export class ActiveEffectHM3 extends ActiveEffect {
+    /** @override */
     _prepareDuration() {
         const ret = super._prepareDuration();
 
-        if (ret.duration === game.hm3.CONST.TIME.INDEFINITE) {
-            ret.label = 'Indefinite';
-        }
+        if (ret.duration === game.hm3.CONST.TIME.INDEFINITE) ret.label = 'Indefinite';
+        else if (ret.duration === game.hm3.CONST.TIME.PERMANENT) ret.label = 'Permanent';
 
         return ret;
+    }
+
+    get started() {
+        return this.duration?.startTime <= game.time.worldTime;
+    }
+
+    /** @override */
+    get isSuppressed() {
+        return !this.started;
     }
 
     get hidden() {

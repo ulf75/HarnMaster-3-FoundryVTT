@@ -347,11 +347,13 @@ Hooks.on('renderChatPopout', (app, html, data) => ActorHM3.chatListeners(html));
  * Active Effects need to expire at certain times, so keep track of that here
  */
 Hooks.on('updateWorldTime', async (currentTime, change) => {
+    await effect.checkStartedActiveEffects();
     // Disable any expired active effects (WorldTime-based durations).
     await effect.checkExpiredActiveEffects();
 });
 
 Hooks.on('updateCombat', async (combat, updateData) => {
+    await effect.checkStartedActiveEffects();
     // Called when the combat object is updated.  Possibly because of a change in round
     // or turn. updateData will have specifics of what changed.
     await effect.checkExpiredActiveEffects();
@@ -407,7 +409,17 @@ Hooks.on('createItem', async (item, info, userId) => {
         if (item.system.selfDestroy && item.parent instanceof Actor) {
             item.effects.forEach((effect) => {
                 if (!effect.getFlag('effectmacro', 'onDisable.script'))
-                    effect.setFlag('effectmacro', 'onDisable.script', `fromUuidSync('${item.uuid}')?.delete();`);
+                    effect.setFlag(
+                        'effectmacro',
+                        'onDisable.script',
+                        utility.beautify(`
+                  const item = fromUuidSync('${item.uuid}');
+                  if (item) {
+                    if (item.effects.contents.filter((e)=>e.disabled).length === item.effects.size) {
+                      item.delete();
+                    }
+                  }`)
+                    );
             });
         }
     }
