@@ -18,18 +18,18 @@
 /*  Sheet Styles                             */
 /* ----------------------------------------- */
 :root {
-    --color-text-dark-primary: #191813;
-    --color-text-dark-inactive: #7a7971;
+    --color-border-dark-5: #666;
+    --color-border-light-1: #ddd;
+    --color-border-light-2: #999;
+    --color-border-light-tertiary: #7a7971;
+    --color-shadow-primary: #ff0000;
     --color-text-dark-5: #666;
+    --color-text-dark-inactive: #7a7971;
+    --color-text-dark-primary: #191813;
+    --color-text-hyperlink: #ff6400;
     --color-text-light-1: #eee;
     --color-text-light-6: #999;
-    --color-text-hyperlink: #ff6400;
-    --color-border-light-1: #ddd;
-    --color-border-dark-5: #666;
-    --color-border-light-tertiary: #7a7971;
     --form-field-height: 26px;
-    --color-shadow-primary: #ff0000;
-    --color-border-light-2: #999;
     --dnd5e-color-black: #000;
     --dnd5e-color-dark: #191813;
     --dnd5e-color-faint: #c9c7b8;
@@ -12035,14 +12035,15 @@ dialog.dnd5e2.application {
     line-height: normal;
 }
 :is(.chat-popout, #chat-log, .chat-log) .message .message-header .title {
-    /* /* font-family: var(--dnd5e-font-roboto-slab); */ */
     font-size: var(--font-size-16);
     font-weight: bold;
     color: var(--color-text-dark-primary);
 }
 :is(.chat-popout, #chat-log, .chat-log) .message .message-header .subtitle {
-    font-size: var(--font-size-11);
     color: var(--color-text-dark-5);
+    font-size: var(--font-size-12);
+    font-variant-caps: petite-caps;
+    font-weight: bold;
 }
 :is(.chat-popout, #chat-log, .chat-log) .message .message-header .message-metadata {
     font-size: var(--font-size-10);

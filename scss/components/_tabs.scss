@@ -19,10 +19,11 @@
 
 .tabs {
     flex: 0 0 15px;
-    margin-bottom: 5px;
     font-family: $font-primary;
     font-size: 19px;
+    font-variant-caps: petite-caps;
     font-weight: 500;
+    margin-bottom: 5px;
 
     .item {
         height: 30px;
@@ -33,11 +34,11 @@
     }
 
     .item.active {
-        text-shadow: none;
         border-bottom: 3px solid $hm3-text;
+        color: $hm3-text;
         font-size: 23px;
         font-weight: 550;
-        color: $hm3-text;
+        text-shadow: none;
     }
 }
 
