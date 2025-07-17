@@ -1207,10 +1207,11 @@ section.highlight {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 15px;
     flex: 0 0 15px;
-    margin-bottom: 5px;
     font-family: 'Amasis MT Medium';
     font-size: 19px;
+    font-variant-caps: petite-caps;
     font-weight: 500;
+    margin-bottom: 5px;
 }
 
 .hm3 .tabs .item {
@@ -1222,11 +1223,11 @@ section.highlight {
 }
 
 .hm3 .tabs .item.active {
-    text-shadow: none;
     border-bottom: 3px solid #454545;
+    color: #454545;
     font-size: 23px;
     font-weight: 550;
-    color: #454545;
+    text-shadow: none;
 }
 
 .hm3 .sheet-body .tab {
