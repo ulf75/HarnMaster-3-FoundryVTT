@@ -2834,7 +2834,7 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         condMacro.script = utility.beautify(condMacro.script);
     });
 
-    condData.effectData.system = {status: 'Started'};
+    condData.effectData.system = {status: 'Running'};
 
     const onCreateScript = condData.effectData.flags?.effectmacro?.onCreate?.script;
     if (!onCreateScript || onCreateScript?.length === 0) {

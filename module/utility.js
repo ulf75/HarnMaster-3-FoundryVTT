@@ -436,7 +436,7 @@ export function aeDuration(effect) {
             remainingRounds + remainingTurns === 0 ? 'None' : null
         ].filterJoin(', ');
 
-        const startLabel = 'Started';
+        const startLabel = 'Running';
 
         return {
             duration,

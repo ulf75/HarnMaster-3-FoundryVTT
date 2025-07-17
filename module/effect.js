@@ -134,14 +134,17 @@ async function setAEStatus(actor) {
     for (const effect of actor.allApplicableEffects(true)) {
         if (effect.system.status === undefined) {
             if (effect.started) {
-                await effect.update({'system.status': 'Started'});
+                await effect.update({'system.status': 'Running'});
                 aeStarted = true;
             } else await effect.update({'system.status': 'Pending'});
         } else if (effect.system.status === 'Pending') {
             if (effect.started) {
-                await effect.update({'system.status': 'Started'});
+                await effect.update({'system.status': 'Running'});
                 aeStarted = true;
             }
+        } else if (effect.system.status === 'Started') {
+            // rename
+            await effect.update({'system.status': 'Running'});
         }
     }
     return aeStarted;
