@@ -308,25 +308,27 @@ export class ActorHM3 extends Actor {
         this.updateSource(updateData);
 
         // Sanity Check
-        let totalWeightHigh = 0;
-        let totalWeightMid = 0;
-        let totalWeightLow = 0;
-        let numArmorLocations = 0;
-        updateData.items.forEach((it) => {
-            if (it.type === ItemType.ARMORLOCATION) {
-                totalWeightHigh += it.system.probWeight['high'];
-                totalWeightMid += it.system.probWeight['mid'];
-                totalWeightLow += it.system.probWeight['low'];
-                numArmorLocations++;
-            }
-        });
+        if (createData.type === 'character' || createData.type === 'creature') {
+            let totalWeightHigh = 0;
+            let totalWeightMid = 0;
+            let totalWeightLow = 0;
+            let numArmorLocations = 0;
+            updateData.items.forEach((it) => {
+                if (it.type === ItemType.ARMORLOCATION) {
+                    totalWeightHigh += it.system.probWeight['high'];
+                    totalWeightMid += it.system.probWeight['mid'];
+                    totalWeightLow += it.system.probWeight['low'];
+                    numArmorLocations++;
+                }
+            });
 
-        if (totalWeightHigh % 100 || totalWeightMid % 100 || totalWeightLow % 100) {
-            if (game.user.isGM)
-                ui.notifications.warn(
-                    `Armor prob weight is NOT equal to 100, 1000 or 10000. ${this.name}: ${totalWeightHigh} | ${totalWeightMid} | ${totalWeightLow}`,
-                    {permanent: true}
-                );
+            if (totalWeightHigh % 100 || totalWeightMid % 100 || totalWeightLow % 100) {
+                if (game.user.isGM)
+                    ui.notifications.warn(
+                        `Armor prob weight is NOT equal to 100, 1000 or 10000. ${this.name}: ${totalWeightHigh} | ${totalWeightMid} | ${totalWeightLow}`,
+                        {permanent: true}
+                    );
+            }
         }
     }
 
