@@ -18,5 +18,8 @@
   "i18n-ally.translate.engines": ["deepl"],
   "i18n-ally.translate.deepl.apiKey": "xxx-xxx-xxx-xxx-xxx:xx",
   "i18n-ally.translate.deepl.useFreeApiEntry": true,
-  "i18n-ally.keystyle": "nested"
+  "i18n-ally.keystyle": "nested",
+  "[xml]": {
+    "editor.defaultFormatter": "PrateekMahendrakar.prettyxml"
+  }
 }

@@ -14,9 +14,10 @@
               text-anchor="middle"
               dominant-baseline="central"
               font-family="Amasis MT Medium"
+              letter-spacing="-0.05em"
               font-size="180"
               font-style="normal"
               font-weight="550"
-              style="stroke: none; fill: rgb(183,0,0);">III</text>
+              style="stroke: none; fill: rgb(183,0,0);">H4</text>
     </g>
 </svg>
