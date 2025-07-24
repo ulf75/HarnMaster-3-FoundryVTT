@@ -12,7 +12,12 @@ export class ActiveEffectHM3 extends ActiveEffect {
     async _preUpdate(changed, options, user) {
         if (changed.changes && changed.changes.length > 0) {
             for (const change of changed.changes) {
-                if (change.priority === undefined || change.priority === '') {
+                if (
+                    change.priority === null ||
+                    change.priority === undefined ||
+                    change.priority === '' ||
+                    change.priority === '0'
+                ) {
                     change.priority = (change.mode * 10).toString();
                 }
             }
