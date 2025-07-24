@@ -9,6 +9,17 @@ export class ActiveEffectHM3 extends ActiveEffect {
         return ret;
     }
 
+    async _preUpdate(changed, options, user) {
+        if (changed.changes && changed.changes.length > 0) {
+            for (const change of changed.changes) {
+                if (change.priority === undefined || change.priority === '') {
+                    change.priority = (change.mode * 10).toString();
+                }
+            }
+        }
+        return super._preUpdate(changed, options, user);
+    }
+
     get started() {
         return this.duration?.startTime <= game.time.worldTime;
     }
