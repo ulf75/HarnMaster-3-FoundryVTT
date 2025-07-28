@@ -10,12 +10,12 @@
                 r="45%" />
         <polygon points="30,55 70,55 50,90"
                  style="fill:black;" />
-        <text x="50%"
+        <text x="47"
               y="32%"
               text-anchor="middle"
               dominant-baseline="central"
               font-family="Amasis MT Medium"
-              letter-spacing="0em"
+              letter-spacing="-6px"
               font-size="58"
               font-style="normal"
               font-weight="550"

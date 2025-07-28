@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     xml:space="preserve"
+     style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+     viewBox="0 0 100 100">
+    <g id="HM3">
+        <circle style="fill: rgb(255, 255, 255); fill-rule: nonzero; opacity: 0.2; "
+                cx="50%"
+                cy="50%"
+                r="45%" />
+        <g stroke="black"
+           fill="none"
+           stroke-width="8%">
+            <path d="M 30 30 A 30 30 0 0 1 70 30" />
+        </g>
+        <text x="47"
+              y="55%"
+              text-anchor="middle"
+              dominant-baseline="central"
+              font-family="Amasis MT Medium"
+              letter-spacing="-6px"
+              font-size="58"
+              font-style="normal"
+              font-weight="550"
+              style="stroke: none; fill: rgb(0,0,0);">5</text>
+    </g>
+</svg>
