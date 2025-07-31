@@ -1473,6 +1473,37 @@ export class ActorHM3 extends Actor {
         button.disabled = false;
     }
 
+    applyActiveEffects() {
+        const overrides = {};
+        this.statuses.clear();
+
+        // Organize non-disabled effects by their application priority
+        const changes = [];
+        for (const effect of this.allApplicableEffects(true)) {
+            if (!effect.active) continue;
+            changes.push(
+                ...effect.changes.map((change) => {
+                    const c = foundry.utils.deepClone(change);
+                    c.effect = effect;
+                    c.priority = c.priority ?? c.mode * 10;
+                    return c;
+                })
+            );
+            for (const statusId of effect.statuses) this.statuses.add(statusId);
+        }
+        changes.sort((a, b) => a.priority - b.priority);
+
+        // Apply all changes
+        for (let change of changes) {
+            if (!change.key) continue;
+            const changes = change.effect.apply(this, change);
+            Object.assign(overrides, changes);
+        }
+
+        // Expand the set of final overrides
+        this.overrides = foundry.utils.expandObject(overrides);
+    }
+
     /**
      * This method implements Item-based effects.  It applies three types of AE:
      *   Skill EML - Modifies the EML of a specific Skill (or Psionic talent)

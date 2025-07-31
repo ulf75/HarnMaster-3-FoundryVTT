@@ -86,6 +86,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                         i.system.visible = String(
                             !game.settings.get('hm3', 'dormantPsionicTalents') ||
                                 i.system.masteryLevel > 20 ||
+                                i.system.effectiveMasteryLevel > 20 ||
                                 game.user.isGM
                         );
                     }
