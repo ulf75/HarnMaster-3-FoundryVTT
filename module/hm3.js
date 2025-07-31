@@ -286,6 +286,16 @@ Hooks.once('init', async function () {
         return str.toLowerCase();
     });
 
+    Handlebars.registerPartial(
+        'artifact-partial',
+        await (await fetch('systems/hm3/templates/item/artifact-partial.hbs')).text()
+    );
+
+    Handlebars.registerPartial(
+        'unknown-value-partial',
+        await (await fetch('systems/hm3/templates/item/unknown-value-partial.hbs')).text()
+    );
+
     // Add a font selector dropdown to the TineMCE editor
     //CONFIG.TinyMCE.toolbar = "styleselect forecolor backcolor bullist numlist image table hr link removeformat code fontselect fontsizeselect save";
     //CONFIG.TinyMCE.toolbar = "styles bullist numlist image table hr link removeformat code fontselect save";

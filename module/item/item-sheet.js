@@ -12,7 +12,7 @@ export class ItemSheetHM3 extends ItemSheet {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ['hm3', 'sheet', 'item'],
             width: 605,
-            height: 560,
+            height: game.user.isGM ? 790 : 650,
             tabs: [{navSelector: '.sheet-tabs', contentSelector: '.sheet-body', initial: 'properties'}]
         });
     }
