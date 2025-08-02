@@ -1,0 +1,19 @@
+<form class="{{ cssClass }}" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
+        <div class="header-fields">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{ item.name }}" placeholder="Name" autocomplete="off" />
+            </h1>
+            {{#if container}}
+            <div class="flexrow">
+                <label>In Container:</label>
+                <select name="system.container">
+                    {{selectOptions containers selected=idata.container valueAttr="key" labelAttr="label"}}
+                </select>
+            </div>
+            {{/if}}
+        </div>
+    </header>
+    {{> @partial-block}}
+</form>

@@ -200,7 +200,7 @@ export class ItemSheetHM3 extends ItemSheet {
                     {key: 'major', label: 'Major'}
                 ],
                 description:
-                    game.hm3.config.arcanePowers.find((p) => p.key === data.idata.arcane.minor.power)?.description ||
+                    game.hm3.config.arcanePowers.find((p) => p.key === data.idata.arcane.minor?.power)?.description ||
                     '',
                 powers: (data.idata.arcane.type === 'minor'
                     ? JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter((p) => p.minor)
