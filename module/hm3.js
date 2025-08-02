@@ -286,15 +286,12 @@ Hooks.once('init', async function () {
         return str.toLowerCase();
     });
 
-    Handlebars.registerPartial(
-        'artifact-partial',
-        await (await fetch('systems/hm3/templates/item/artifact-partial.hbs')).text()
-    );
-
-    Handlebars.registerPartial(
-        'unknown-value-partial',
-        await (await fetch('systems/hm3/templates/item/unknown-value-partial.hbs')).text()
-    );
+    Handlebars.registerPartial({
+        artifact_partial: await (await fetch('systems/hm3/templates/item/partials/artifact_partial.hbs')).text(),
+        unknown_value_partial: await (
+            await fetch('systems/hm3/templates/item/partials/unknown_value_partial.hbs')
+        ).text()
+    });
 
     // Add a font selector dropdown to the TineMCE editor
     //CONFIG.TinyMCE.toolbar = "styleselect forecolor backcolor bullist numlist image table hr link removeformat code fontselect fontsizeselect save";

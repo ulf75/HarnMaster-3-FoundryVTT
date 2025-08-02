@@ -75,8 +75,8 @@
                 <input type="text" name="system.notes" value="{{ idata.notes }}" data-dtype="String" />
             </div>
             {{#unless (eq idata.type "Group")}}
-            {{> unknown-value-partial}}
-            {{> artifact-partial}}
+            {{> unknown_value_partial}}
+            {{> artifact_partial}}
             {{/unless}}
         </div>
 
