@@ -3008,3 +3008,238 @@ HM3.esotericCombatItems = {
     attack: ['Mental Bolt'],
     defense: ['Mental Conflict', 'Negation']
 };
+
+HM3.arcanePowers = [
+    {key: 'none', label: 'None', minor: true, major: 0},
+    {key: 'anvil-pytama-1', label: `Anvil of Pytama`, minor: true, major: -1, lvl: 1},
+    {key: 'anvil-pytama-2', label: `Anvil of Pytama`, minor: true, major: -1, lvl: 2},
+    {key: 'focus-5', label: `Focus`, minor: true, major: 3, lvl: 5},
+    {key: 'focus-6', label: `Focus`, minor: true, major: 3, lvl: 6},
+    {key: 'focus-7', label: `Focus`, minor: true, major: 3, lvl: 7},
+    {key: 'focus-8', label: `Focus`, minor: true, major: 3, lvl: 8},
+    {key: 'fount-power-1', label: `Fount of Power`, minor: true, major: 3, lvl: 1, legacy: true},
+    {key: 'fount-power-2', label: `Fount of Power`, minor: true, major: 3, lvl: 2, legacy: true},
+    {key: 'jorum', label: `Jorum`, minor: true, major: 3, lvl: -1},
+    {key: 'power-daras', label: `Power of Daras`, minor: false, major: 3, lvl: -1, legacy: true},
+    {key: 'resurge', label: `Resurge`, minor: false, major: 2, lvl: -1, legacy: true},
+    {key: 'store-1', label: `Store I`, minor: false, major: 1, lvl: 1},
+    {key: 'store-2', label: `Store II`, minor: false, major: 2, lvl: 2},
+    {key: 'store-3', label: `Store III`, minor: false, major: 3, lvl: 3},
+    {key: 'store-4', label: `Store IV`, minor: false, major: 4, lvl: 4},
+    {
+        key: 'swordbreaker-3',
+        label: `Swordbreaker`,
+        minor: true,
+        major: 3,
+        lvl: 3,
+        legacy: true,
+        description: `An enchantment which increases the damage to opposing weapons it blocks or is blocked by. When an opposing weapon makes a damage check as a result of blocking or being blocked by the Swordbreaker, 1d3 is added to the roll. `
+    },
+    {
+        key: 'swordbreaker-4',
+        label: `Swordbreaker`,
+        minor: true,
+        major: 3,
+        lvl: 4,
+        legacy: true,
+        description: `An enchantment which increases the damage to opposing weapons it blocks or is blocked by. When an opposing weapon makes a damage check as a result of blocking or being blocked by the Swordbreaker, 1d4 is added to the roll. `
+    },
+    {
+        key: 'swordbreaker-5',
+        label: `Swordbreaker`,
+        minor: true,
+        major: 3,
+        lvl: 5,
+        legacy: true,
+        description: `An enchantment which increases the damage to opposing weapons it blocks or is blocked by. When an opposing weapon makes a damage check as a result of blocking or being blocked by the Swordbreaker, 1d5 is added to the roll. `
+    },
+    {
+        key: 'swordbreaker-6',
+        label: `Swordbreaker`,
+        minor: true,
+        major: 3,
+        lvl: 6,
+        legacy: true,
+        description: `An enchantment which increases the damage to opposing weapons it blocks or is blocked by. When an opposing weapon makes a damage check as a result of blocking or being blocked by the Swordbreaker, 1d6 is added to the roll. `
+    },
+    {
+        key: 'swordbreaker-7',
+        label: `Swordbreaker`,
+        minor: true,
+        major: 3,
+        lvl: 7,
+        legacy: true,
+        description: `An enchantment which increases the damage to opposing weapons it blocks or is blocked by. When an opposing weapon makes a damage check as a result of blocking or being blocked by the Swordbreaker, 1d7 is added to the roll. `
+    },
+    {
+        key: 'swordbreaker-8',
+        label: `Swordbreaker`,
+        minor: true,
+        major: 3,
+        lvl: 8,
+        legacy: true,
+        description: `An enchantment which increases the damage to opposing weapons it blocks or is blocked by. When an opposing weapon makes a damage check as a result of blocking or being blocked by the Swordbreaker, 1d8 is added to the roll. `
+    },
+    {
+        key: 'swordbreaker-9',
+        label: `Swordbreaker`,
+        minor: true,
+        major: 3,
+        lvl: 9,
+        legacy: true,
+        description: `An enchantment which increases the damage to opposing weapons it blocks or is blocked by. When an opposing weapon makes a damage check as a result of blocking or being blocked by the Swordbreaker, 1d9 is added to the roll. `
+    },
+    {
+        key: 'swordbreaker-10',
+        label: `Swordbreaker`,
+        minor: true,
+        major: 3,
+        lvl: 10,
+        legacy: true,
+        description: `An enchantment which increases the damage to opposing weapons it blocks or is blocked by. When an opposing weapon makes a damage check as a result of blocking or being blocked by the Swordbreaker, 1d10 is added to the roll. `
+    },
+    {key: 'talin-bane', label: `Talin's Bane`, minor: false, major: 1, lvl: -1, legacy: true},
+    {key: 'talin-eye', label: `Talin's Eye`, minor: true, major: 1, lvl: -1},
+    {
+        key: 'tempering-pytama-1',
+        label: `Tempering of Pytama`,
+        minor: true,
+        major: -1,
+        lvl: 1,
+        description: `<p>An enchantment to increase the Weapon Quality of a wholly metallic weapon. With success, WQ is increased by one (1). Tempering of Pytama cannot be combined with any other WQ-increasing spell, and cannot be laid more than once on the same weapon.</p>`
+    },
+    {
+        key: 'tempering-pytama-2',
+        label: `Tempering of Pytama`,
+        minor: true,
+        major: -1,
+        lvl: 2,
+        description: `<p>An enchantment to increase the Weapon Quality of a wholly metallic weapon. With success, WQ is increased by two (2). Tempering of Pytama cannot be combined with any other WQ-increasing spell, and cannot be laid more than once on the same weapon.</p>`
+    },
+    {key: 'tharasin-ward-1', label: `Tharasin's Ward`, minor: true, major: -1, lvl: 1, legacy: true},
+    {key: 'tharasin-ward-2', label: `Tharasin's Ward`, minor: true, major: -1, lvl: 2, legacy: true},
+    {key: 'tharasin-ward-3', label: `Tharasin's Ward`, minor: true, major: -1, lvl: 3, legacy: true},
+    {key: 'tharasin-ward-4', label: `Tharasin's Ward`, minor: true, major: -1, lvl: 4, legacy: true},
+    {key: 'tharasin-ward-5', label: `Tharasin's Ward`, minor: true, major: -1, lvl: 5, legacy: true},
+    {key: 'tharasin-ward-6', label: `Tharasin's Ward`, minor: true, major: -1, lvl: 6, legacy: true},
+    {
+        key: 'theris-charm-5',
+        label: `Theris' Charm`,
+        minor: false,
+        major: 3,
+        lvl: 5,
+        legacy: true,
+        description: `The Charmed weapon gives its wielder a bonus in attack/defence equal to 5.`
+    },
+    {
+        key: 'theris-charm-6',
+        label: `Theris' Charm`,
+        minor: false,
+        major: 3,
+        lvl: 6,
+        legacy: true,
+        description: `The Charmed weapon gives its wielder a bonus in attack/defence equal to 6.`
+    },
+    {
+        key: 'theris-charm-7',
+        label: `Theris' Charm`,
+        minor: false,
+        major: 3,
+        lvl: 7,
+        legacy: true,
+        description: `The Charmed weapon gives its wielder a bonus in attack/defence equal to 7.`
+    },
+    {
+        key: 'theris-charm-8',
+        label: `Theris' Charm`,
+        minor: false,
+        major: 3,
+        lvl: 8,
+        legacy: true,
+        description: `The Charmed weapon gives its wielder a bonus in attack/defence equal to 8.`
+    },
+    {
+        key: 'theris-charm-9',
+        label: `Theris' Charm`,
+        minor: false,
+        major: 3,
+        lvl: 9,
+        legacy: true,
+        description: `The Charmed weapon gives its wielder a bonus in attack/defence equal to 9.`
+    },
+    {
+        key: 'theris-charm-10',
+        label: `Theris' Charm`,
+        minor: false,
+        major: 3,
+        lvl: 10,
+        legacy: true,
+        description: `The Charmed weapon gives its wielder a bonus in attack/defence equal to 10.`
+    },
+    {
+        key: 'theris-charm-greater-5',
+        label: `Theris' Charm, Greater`,
+        minor: false,
+        major: 4,
+        lvl: 10,
+        legacy: true,
+        description: `The Charmed weapon gives its wielder a bonus in attack/defence equal to 10.`
+    },
+    {
+        key: 'theris-charm-greater-6',
+        label: `Theris' Charm, Greater`,
+        minor: false,
+        major: 4,
+        lvl: 12,
+        legacy: true,
+        description: `The Charmed weapon gives its wielder a bonus in attack/defence equal to 12.`
+    },
+    {
+        key: 'theris-charm-greater-7',
+        label: `Theris' Charm, Greater`,
+        minor: false,
+        major: 4,
+        lvl: 14,
+        legacy: true,
+        description: `The Charmed weapon gives its wielder a bonus in attack/defence equal to 14.`
+    },
+    {
+        key: 'theris-charm-greater-8',
+        label: `Theris' Charm, Greater`,
+        minor: false,
+        major: 4,
+        lvl: 16,
+        legacy: true,
+        description: `The Charmed weapon gives its wielder a bonus in attack/defence equal to 16.`
+    },
+    {
+        key: 'theris-charm-greater-9',
+        label: `Theris' Charm, Greater`,
+        minor: false,
+        major: 4,
+        lvl: 18,
+        legacy: true,
+        description: `The Charmed weapon gives its wielder a bonus in attack/defence equal to 18.`
+    },
+    {
+        key: 'theris-charm-greater-10',
+        label: `Theris' Charm, Greater`,
+        minor: false,
+        major: 4,
+        lvl: 20,
+        legacy: true,
+        description: `The Charmed weapon gives its wielder a bonus in attack/defence equal to 20.`
+    },
+    {key: 'vessel-iladan-5', label: `Vessel of Iladan`, minor: false, major: 4, lvl: 15, legacy: true},
+    {key: 'vessel-iladan-6', label: `Vessel of Iladan`, minor: false, major: 4, lvl: 18, legacy: true},
+    {key: 'vessel-iladan-7', label: `Vessel of Iladan`, minor: false, major: 4, lvl: 21, legacy: true},
+    {
+        key: 'ward-akana',
+        label: `Ward of Akana`,
+        minor: true,
+        major: 2,
+        lvl: -1,
+        legacy: true,
+        description: `A Warded weapon never has to make a weapon damage check except as a result of conflict with an enchanted weapon. (Whenever a weapon with Ward of Akana is forced make a Weapon Damage check, it rolls one less die than would an unwarded weapon.)`
+    }
+];

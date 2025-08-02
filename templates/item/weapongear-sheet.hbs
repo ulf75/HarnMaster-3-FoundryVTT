@@ -3,7 +3,7 @@
         <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
         <div class="header-fields">
             <h1 class="charname">
-                <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
+                <input name="name" type="text" value="{{ item.name }}" placeholder="Name" autocomplete="off" />
             </h1>
             <div class="flexrow">
                 <label>In Container:</label>
@@ -33,8 +33,8 @@
                     <input type="number" name="system.quantity" value="{{ idata.quantity }}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="weapongear-weight">
-                    <label class="resource-label">Weight</label>
-                    <input type="number" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
+                    <label for="system.weight" class="resource-label">Weight</label>
+                    <input type="number" id="system.weight" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
                     {{#unless hasRwPermission}}disabled{{/unless}} />
                 </div>
                 <div class="resource" id="weapongear-value">
@@ -103,11 +103,11 @@
                 <div class="resource" id="weapongear-assocskill">
                     <label class="resource-label" for="system.assocSkill">Associated Skill</label>
                     {{#if hasCombatSkills}}
-                    <select class="resource-value" name="system.assocSkill" data-dtype="String">
+                    <select class="resource-value" id="system.assocSkill" name="system.assocSkill" data-dtype="String">
                         {{selectOptions combatSkills selected=idata.assocSkill valueAttr="key" labelAttr="key"}}
                     </select>
                     {{else}}
-                    <input type="text" name="system.assocSkill" value="{{ idata.assocSkill }}" data-dtype="String" />
+                    <input type="text" id="system.assocSkill" name="system.assocSkill" value="{{ idata.assocSkill }}" data-dtype="String" />
                     {{/if}}
                 </div>
             </div>

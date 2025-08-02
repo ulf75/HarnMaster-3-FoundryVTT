@@ -12,7 +12,7 @@ export class ItemSheetHM3 extends ItemSheet {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ['hm3', 'sheet', 'item'],
             width: 605,
-            height: game.user.isGM ? 790 : 650,
+            height: game.user.isGM ? 850 : 650,
             tabs: [{navSelector: '.sheet-tabs', contentSelector: '.sheet-body', initial: 'properties'}]
         });
     }
@@ -186,6 +186,32 @@ export class ItemSheetHM3 extends ItemSheet {
             game.hm3.config.esotericCombatItems.defense.includes(this.item.name)
         ) {
             data.isEsotericCombat = true;
+        }
+
+        if (data.idata.arcane && data.idata.arcane.isArtifact) {
+            if (!data.idata.arcane.type) {
+                data.idata.arcane.type = 'minor';
+                await this.object.update({'system.arcane.type': 'minor'});
+            }
+
+            data.arcane = {
+                choices: [
+                    {key: 'minor', label: 'Minor'},
+                    {key: 'major', label: 'Major'}
+                ],
+                description:
+                    game.hm3.config.arcanePowers.find((p) => p.key === data.idata.arcane.minor.power)?.description ||
+                    '',
+                powers: (data.idata.arcane.type === 'minor'
+                    ? JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter((p) => p.minor)
+                    : JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter((p) => p.major >= 0)
+                ).map((p) => {
+                    p.label = `${p.label}${p.legacy ? '*' : ''}${p.lvl > 0 ? ` (${p.lvl})` : ''} ${
+                        p.major > 0 && data.idata.arcane.type === 'major' ? `Costs: ${p.major}` : ''
+                    }`;
+                    return p;
+                })
+            };
         }
 
         return data;
