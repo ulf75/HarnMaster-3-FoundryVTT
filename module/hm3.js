@@ -287,8 +287,8 @@ Hooks.once('init', async function () {
     });
 
     Handlebars.registerPartial({
-        artifact_partial: await (await fetch('systems/hm3/templates/item/partials/artifact_partial.hbs')).text(),
-        unknown_value_partial: await (
+        item_artifact_partial: await (await fetch('systems/hm3/templates/item/partials/artifact_partial.hbs')).text(),
+        item_unknown_value_partial: await (
             await fetch('systems/hm3/templates/item/partials/unknown_value_partial.hbs')
         ).text()
     });
