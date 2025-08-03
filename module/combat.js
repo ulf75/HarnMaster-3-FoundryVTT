@@ -2015,6 +2015,12 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
         defBreakTotal = Math.min(defBreakTotal, defWeaponQuality);
     }
 
+    // SPECIAL: WQ of 0 never breaks and cannot break other weapons
+    if (atkWeaponQuality === 0 || defWeaponQuality === 0) {
+        atkBreakCheckNotNeeded = true;
+        defBreakCheckNotNeeded = true;
+    }
+
     if (atkWeaponQuality <= defWeaponQuality) {
         // Check attacker first, then defender
         if (!atkBreakCheckNotNeeded) {
@@ -2069,12 +2075,6 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
                 atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
             }
         }
-    }
-
-    // SPECIAL: WQ of 0 never breaks and cannot break other weapons
-    if (atkWeaponQuality === 0 || defWeaponQuality === 0) {
-        atkWeaponBroke = false;
-        defWeaponBroke = false;
     }
 
     const chatData = {};
