@@ -1974,8 +1974,10 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     // Get the Arcane Powers of the weapons for break check
     const atkSwordbreaker = atkWeapon.getArcanePower(ArcanePower.SWORDBREAKER);
     const atkWardAkana = atkWeapon.getArcanePower(ArcanePower.WARD_AKANA);
+    const atkWarded = !!atkWardAkana && !defWeapon.isArtifact;
     const defSwordbreaker = defWeapon.getArcanePower(ArcanePower.SWORDBREAKER);
     const defWardAkana = defWeapon.getArcanePower(ArcanePower.WARD_AKANA);
+    const defWarded = !!defWardAkana && !atkWeapon.isArtifact;
 
     // Regular weapon quality
     const atkWeaponQuality = atkWeapon.system.weaponQuality + (atkWeapon.system.wqModifier || 0);
@@ -1998,53 +2000,74 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
         atkSwordbreakerRoll = await new game.hm3.Roll(`1d${defSwordbreaker.lvl}`).evaluate();
     }
 
-    // If either weapon has Ward Akana, then it cannot break
-
     atkBreakTotal = atkBreakRoll.total;
     defBreakTotal = defBreakRoll.total;
+
+    // If either weapon has Ward Akana, then it cannot break
+    if (atkWarded && atkWardAkana?.isOwnerAware) {
+        atkBreakCheckNotNeeded = true;
+    } else if (atkWarded) {
+        atkBreakTotal = Math.min(atkBreakTotal, atkWeaponQuality);
+    }
+    if (defWarded && defWardAkana?.isOwnerAware) {
+        defBreakCheckNotNeeded = true;
+    } else if (defWarded) {
+        defBreakTotal = Math.min(defBreakTotal, defWeaponQuality);
+    }
+
     if (atkWeaponQuality <= defWeaponQuality) {
         // Check attacker first, then defender
-        if (atkBreakTotal > atkWeaponQuality) {
-            defBreakCheckNotNeeded = true;
-            atkWeaponBroke = true;
-            atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
-        } else if (atkBreakTotal + atkSwordbreakerRoll.total > atkWeaponQuality) {
-            // Owner is not aware of the Swordbreaker
-            defBreakCheckNotNeeded = true;
-            atkWeaponBroke = true;
-            atkBreakTotal = Math.min(atkBreakTotal + atkSwordbreakerRoll.total, 18);
-            atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
+        if (!atkBreakCheckNotNeeded) {
+            if (atkBreakTotal > atkWeaponQuality) {
+                defBreakCheckNotNeeded = true;
+                atkWeaponBroke = true;
+                atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
+            } else if (atkBreakTotal + atkSwordbreakerRoll.total > atkWeaponQuality) {
+                // Owner is not aware of the Swordbreaker
+                defBreakCheckNotNeeded = true;
+                atkWeaponBroke = true;
+                atkBreakTotal = Math.min(atkBreakTotal + atkSwordbreakerRoll.total, 18);
+                atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
+            }
         }
-        if (!atkWeaponBroke && defBreakTotal > defWeaponQuality) {
-            defWeaponBroke = true;
-            defWeaponDiff = defBreakTotal - defWeaponQuality;
-        } else if (!atkWeaponBroke && defBreakTotal + defSwordbreakerRoll.total > defWeaponQuality) {
-            // Owner is not aware of the Swordbreaker
-            defWeaponBroke = true;
-            defBreakTotal = Math.min(defBreakTotal + defSwordbreakerRoll.total, 18);
-            defWeaponDiff = defBreakTotal - defWeaponQuality;
+
+        if (!defBreakCheckNotNeeded) {
+            if (!atkWeaponBroke && defBreakTotal > defWeaponQuality) {
+                defWeaponBroke = true;
+                defWeaponDiff = defBreakTotal - defWeaponQuality;
+            } else if (!atkWeaponBroke && defBreakTotal + defSwordbreakerRoll.total > defWeaponQuality) {
+                // Owner is not aware of the Swordbreaker
+                defWeaponBroke = true;
+                defBreakTotal = Math.min(defBreakTotal + defSwordbreakerRoll.total, 18);
+                defWeaponDiff = defBreakTotal - defWeaponQuality;
+            }
         }
     } else {
         // Check defender first, then attacker
-        if (defBreakTotal > defWeaponQuality) {
-            atkBreakCheckNotNeeded = true;
-            defWeaponBroke = true;
-            defWeaponDiff = defBreakTotal - defWeaponQuality;
-        } else if (defBreakTotal + defSwordbreakerRoll.total > defWeaponQuality) {
-            // Owner is not aware of the Swordbreaker
-            atkBreakCheckNotNeeded = true;
-            defWeaponBroke = true;
-            defBreakTotal = Math.min(defBreakTotal + defSwordbreakerRoll.total, 18);
-            defWeaponDiff = defBreakTotal - defWeaponQuality;
+        if (!defBreakCheckNotNeeded) {
+            if (defBreakTotal > defWeaponQuality) {
+                atkBreakCheckNotNeeded = true;
+                defWeaponBroke = true;
+                defWeaponDiff = defBreakTotal - defWeaponQuality;
+            } else if (defBreakTotal + defSwordbreakerRoll.total > defWeaponQuality) {
+                // Owner is not aware of the Swordbreaker
+                atkBreakCheckNotNeeded = true;
+                defWeaponBroke = true;
+                defBreakTotal = Math.min(defBreakTotal + defSwordbreakerRoll.total, 18);
+                defWeaponDiff = defBreakTotal - defWeaponQuality;
+            }
         }
-        if (!defWeaponBroke && atkBreakTotal > atkWeaponQuality) {
-            atkWeaponBroke = true;
-            atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
-        } else if (!defWeaponBroke && atkBreakTotal + atkSwordbreakerRoll.total > atkWeaponQuality) {
-            // Owner is not aware of the Swordbreaker
-            atkWeaponBroke = true;
-            atkBreakTotal = Math.min(atkBreakTotal + atkSwordbreakerRoll.total, 18);
-            atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
+
+        if (!atkBreakCheckNotNeeded) {
+            if (!defWeaponBroke && atkBreakTotal > atkWeaponQuality) {
+                atkWeaponBroke = true;
+                atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
+            } else if (!defWeaponBroke && atkBreakTotal + atkSwordbreakerRoll.total > atkWeaponQuality) {
+                // Owner is not aware of the Swordbreaker
+                atkWeaponBroke = true;
+                atkBreakTotal = Math.min(atkBreakTotal + atkSwordbreakerRoll.total, 18);
+                atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
+            }
         }
     }
 
