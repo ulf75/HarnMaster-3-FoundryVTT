@@ -24,6 +24,30 @@ export class ItemHM3 extends Item {
         return super._preUpdate(changed, options, user);
     }
 
+    get isArtifact() {
+        return this.system.arcane?.isArtifact || false;
+    }
+
+    get isMinorArtifact() {
+        return this.isArtifact && this.system.arcane?.type === 'Minor';
+    }
+
+    get isMajorArtifact() {
+        return this.isArtifact && this.system.arcane?.type === 'Major';
+    }
+
+    getArcanePower(power) {
+        if (this.isMinorArtifact) {
+            if (this.system.arcane.minor.power?.startsWith(power))
+                return foundry.utils.mergeObject(
+                    this.system.arcane.minor,
+                    game.hm3.config.arcanePowers.find((p) => p.key === this.system.arcane.minor.power)
+                );
+        } else if (this.isMajorArtifact) {
+        }
+        return null;
+    }
+
     /**
      * Augment the basic Item data model with additional dynamic data.
      */

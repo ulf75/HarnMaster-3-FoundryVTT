@@ -11,8 +11,8 @@
     <label for="system.arcane.isArtifact" class="resource-label">Artifact</label>
 </div>
 {{/if}}
-{{#if idata.arcane.isArtifact}}
 
+{{#if idata.arcane.isArtifact}}
 <fieldset id="armorgear-artifact">
     <legend>Artifact Properties</legend>
     <div class="resource artifact flexrow">
@@ -30,17 +30,25 @@
     <div class="grid grid-fixed-row grid-2col">
         <label for="system.arcane.type">Artifact Type</label>
         <select class="value" id="system.arcane.type" name="system.arcane.type" data-dtype="String">
-            {{selectOptions arcane.choices selected=idata.arcane.type valueAttr="key" labelAttr="label"}}
+            {{selectOptions arcane.choices selected=idata.arcane.type valueAttr="key" labelAttr="key"}}
         </select>
     </div>
-    {{#if (eq idata.arcane.type 'minor')}}
+    {{#if (eq idata.arcane.type 'Minor')}}
     <fieldset id="armorgear-minor-artifact">
         <legend>Minor Artifact Power</legend>
         <div class="grid grid-fixed-row grid-2col">
-            <label for="system.arcane.minor.power">Minor Artifact Power</label>
-            <select class="value" id="system.arcane.minor.power" name="system.arcane.minor.power" data-dtype="String">
-                {{selectOptions arcane.powers selected=idata.arcane.minor.power valueAttr="key" labelAttr="label"}}
-            </select>
+            <div class="resource">
+                <label for="system.arcane.minor.power" class="resource-label">Minor Artifact Power</label>
+                <select class="value" id="system.arcane.minor.power" name="system.arcane.minor.power" data-dtype="String">
+                    {{selectOptions arcane.powers selected=idata.arcane.minor.power valueAttr="key" labelAttr="label"}}
+                </select>
+            </div>
+            <div class="resource">
+                <label for="system.arcane.minor.duration" class="resource-label">Minor Artifact Duration</label>
+                <select class="value" id="system.arcane.minor.duration" name="system.arcane.minor.duration" data-dtype="String">
+                    {{selectOptions arcane.durations selected=idata.arcane.minor.duration valueAttr="key" labelAttr="key"}}
+                </select>
+            </div>
             <label for="system.arcane.minor.isOwnerAware">Is owner aware of Minor Power?</label>
             <input
                 class="value"

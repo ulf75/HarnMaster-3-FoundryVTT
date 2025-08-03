@@ -26,6 +26,25 @@ export const ActorType = Object.freeze({
     CONTAINER: 'container'
 });
 
+export const ArcanePower = Object.freeze({
+    ANVIL_PYTAMA: 'anvil-pytama',
+    FOCUS: 'focus',
+    FOUNT_POWER: 'fount-power',
+    JORUM: 'jorum',
+    POWER_DARAS: 'power-daras',
+    RESURGE: 'resurge',
+    STORE: 'store',
+    SWORDBREAKER: 'swordbreaker',
+    TALIN_BANE: 'talin-bane',
+    TALIN_EYE: 'talin-eye',
+    TEMPERING_PYTAMA: 'tempering-pytama',
+    THARASIN_WARD: 'tharasin-ward',
+    THERIS_CHARM: 'theris-charm',
+    THERIS_CHARM_GREATER: 'theris-charm-greater',
+    VESSEL_ILADAN: 'vessel-iladan',
+    WARD_AKANA: 'ward-akana'
+});
+
 /**
  * Aspect types enum.
  */

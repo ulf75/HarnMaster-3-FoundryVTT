@@ -18,6 +18,7 @@ import {MacroHM3} from './hm3-macro.js';
 import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
 import {
     ActorType,
+    ArcanePower,
     Aspect,
     Condition,
     Hook,
@@ -63,6 +64,7 @@ Hooks.once('init', async function () {
         migrations,
 
         ActorType,
+        ArcanePower,
         Aspect,
         Condition,
         Hook,

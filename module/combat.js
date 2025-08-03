@@ -1,7 +1,7 @@
 import {HM3} from './config.js';
 import {DiceHM3} from './hm3-dice.js';
 import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
-import {ActorType, Aspect, Condition, ItemType} from './hm3-types.js';
+import {ActorType, ArcanePower, Aspect, Condition, ItemType} from './hm3-types.js';
 import {truncate} from './utility.js';
 
 /**
@@ -1964,32 +1964,95 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     // Weapon Break Check
     let atkWeaponBroke = false;
     let defWeaponBroke = false;
+    let atkBreakCheckNotNeeded = false;
+    let defBreakCheckNotNeeded = false;
     let atkWeaponDiff = 0;
     let defWeaponDiff = 0;
+    let atkBreakTotal = 0;
+    let defBreakTotal = 0;
 
-    const atkWeaponQuality = atkWeapon.system.weaponQuality + (atkWeapon.system.wqModifier | 0);
-    const defWeaponQuality = defWeapon.system.weaponQuality + (defWeapon.system.wqModifier | 0);
+    // Get the Arcane Powers of the weapons for break check
+    const atkSwordbreaker = atkWeapon.getArcanePower(ArcanePower.SWORDBREAKER);
+    const atkWardAkana = atkWeapon.getArcanePower(ArcanePower.WARD_AKANA);
+    const defSwordbreaker = defWeapon.getArcanePower(ArcanePower.SWORDBREAKER);
+    const defWardAkana = defWeapon.getArcanePower(ArcanePower.WARD_AKANA);
 
-    const atkBreakRoll = await new game.hm3.Roll('3d6').evaluate();
-    const defBreakRoll = await new game.hm3.Roll('3d6').evaluate();
+    // Regular weapon quality
+    const atkWeaponQuality = atkWeapon.system.weaponQuality + (atkWeapon.system.wqModifier || 0);
+    const defWeaponQuality = defWeapon.system.weaponQuality + (defWeapon.system.wqModifier || 0);
 
+    // Separate break rolls for each weapon and Swordbreaker rolls if applicable
+    let atkBreakRoll = await new game.hm3.Roll(`3d6`).evaluate();
+    let defBreakRoll = await new game.hm3.Roll(`3d6`).evaluate();
+    let atkSwordbreakerRoll = await new game.hm3.Roll(`0`).evaluate();
+    let defSwordbreakerRoll = await new game.hm3.Roll(`0`).evaluate();
+
+    if (atkSwordbreaker?.isOwnerAware) {
+        defBreakRoll = await new game.hm3.Roll(`3d6+1d${atkSwordbreaker.lvl}`).evaluate();
+    } else if (atkSwordbreaker) {
+        defSwordbreakerRoll = await new game.hm3.Roll(`1d${atkSwordbreaker.lvl}`).evaluate();
+    }
+    if (defSwordbreaker?.isOwnerAware) {
+        atkBreakRoll = await new game.hm3.Roll(`3d6+1d${defSwordbreaker.lvl}`).evaluate();
+    } else if (defSwordbreaker) {
+        atkSwordbreakerRoll = await new game.hm3.Roll(`1d${defSwordbreaker.lvl}`).evaluate();
+    }
+
+    // If either weapon has Ward Akana, then it cannot break
+
+    atkBreakTotal = atkBreakRoll.total;
+    defBreakTotal = defBreakRoll.total;
     if (atkWeaponQuality <= defWeaponQuality) {
         // Check attacker first, then defender
-        atkWeaponBroke = atkBreakRoll.total > atkWeaponQuality;
-        atkWeaponDiff = atkBreakRoll.total - atkWeaponQuality;
-        defWeaponBroke = !atkWeaponBroke && defBreakRoll.total > defWeaponQuality;
-        defWeaponDiff = defBreakRoll.total - defWeaponQuality;
+        if (atkBreakTotal > atkWeaponQuality) {
+            defBreakCheckNotNeeded = true;
+            atkWeaponBroke = true;
+            atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
+        } else if (atkBreakTotal + atkSwordbreakerRoll.total > atkWeaponQuality) {
+            // Owner is not aware of the Swordbreaker
+            defBreakCheckNotNeeded = true;
+            atkWeaponBroke = true;
+            atkBreakTotal = Math.min(atkBreakTotal + atkSwordbreakerRoll.total, 18);
+            atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
+        }
+        if (!atkWeaponBroke && defBreakTotal > defWeaponQuality) {
+            defWeaponBroke = true;
+            defWeaponDiff = defBreakTotal - defWeaponQuality;
+        } else if (!atkWeaponBroke && defBreakTotal + defSwordbreakerRoll.total > defWeaponQuality) {
+            // Owner is not aware of the Swordbreaker
+            defWeaponBroke = true;
+            defBreakTotal = Math.min(defBreakTotal + defSwordbreakerRoll.total, 18);
+            defWeaponDiff = defBreakTotal - defWeaponQuality;
+        }
     } else {
         // Check defender first, then attacker
-        defWeaponBroke = defBreakRoll.total > defWeaponQuality;
-        defWeaponDiff = defBreakRoll.total - defWeaponQuality;
-        atkWeaponBroke = !defWeaponBroke && atkBreakRoll.total > atkWeaponQuality;
-        atkWeaponDiff = atkBreakRoll.total - atkWeaponQuality;
+        if (defBreakTotal > defWeaponQuality) {
+            atkBreakCheckNotNeeded = true;
+            defWeaponBroke = true;
+            defWeaponDiff = defBreakTotal - defWeaponQuality;
+        } else if (defBreakTotal + defSwordbreakerRoll.total > defWeaponQuality) {
+            // Owner is not aware of the Swordbreaker
+            atkBreakCheckNotNeeded = true;
+            defWeaponBroke = true;
+            defBreakTotal = Math.min(defBreakTotal + defSwordbreakerRoll.total, 18);
+            defWeaponDiff = defBreakTotal - defWeaponQuality;
+        }
+        if (!defWeaponBroke && atkBreakTotal > atkWeaponQuality) {
+            atkWeaponBroke = true;
+            atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
+        } else if (!defWeaponBroke && atkBreakTotal + atkSwordbreakerRoll.total > atkWeaponQuality) {
+            // Owner is not aware of the Swordbreaker
+            atkWeaponBroke = true;
+            atkBreakTotal = Math.min(atkBreakTotal + atkSwordbreakerRoll.total, 18);
+            atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
+        }
     }
 
     // SPECIAL: WQ of 0 never breaks and cannot break other weapons
-    if (atkWeaponQuality === 0) atkWeaponBroke = false;
-    if (defWeaponQuality === 0) defWeaponBroke = false;
+    if (atkWeaponQuality === 0 || defWeaponQuality === 0) {
+        atkWeaponBroke = false;
+        defWeaponBroke = false;
+    }
 
     const chatData = {};
 
@@ -2005,9 +2068,9 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
 
     chatData.tokenName = atkToken.name;
     chatData.weaponName = atkWeapon.name;
-    chatData.weaponQuality = atkWeapon.system.weaponQuality + (atkWeapon.system.wqModifier | 0);
+    chatData.weaponQuality = atkWeapon.system.weaponQuality + (atkWeapon.system.wqModifier || 0);
     chatData.weaponBroke = atkWeaponBroke;
-    chatData.rollValue = atkBreakRoll.total;
+    chatData.rollValue = atkBreakTotal;
     chatData.actorId = atkWeapon.parent;
     chatData.title = 'Attack Weapon Break Check';
 
@@ -2020,15 +2083,15 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     const messageOptions = {};
 
     ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
-    await ChatMessage.create(messageData, messageOptions);
+    if (!atkBreakCheckNotNeeded) await ChatMessage.create(messageData, messageOptions);
 
     // Prepare and generate Defend Weapon Break chat message
 
     chatData.tokenName = defToken.name;
     chatData.weaponName = defWeapon.name;
-    chatData.weaponQuality = defWeapon.system.weaponQuality + (defWeapon.system.wqModifier | 0);
+    chatData.weaponQuality = defWeapon.system.weaponQuality + (defWeapon.system.wqModifier || 0);
     chatData.weaponBroke = defWeaponBroke;
-    chatData.rollValue = defBreakRoll.total;
+    chatData.rollValue = defBreakTotal;
     chatData.actorId = defWeapon.parent;
     chatData.title = 'Defend Weapon Break Check';
 
@@ -2039,7 +2102,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     messageData.roll = defBreakRoll;
 
     ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
-    await ChatMessage.create(messageData, messageOptions);
+    if (!defBreakCheckNotNeeded) await ChatMessage.create(messageData, messageOptions);
 
     return {attackWeaponBroke: atkWeaponBroke, atkWeaponDiff, defendWeaponBroke: defWeaponBroke, defWeaponDiff};
 }
