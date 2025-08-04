@@ -139,6 +139,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         aspect: dialogResult.aspect,
         atkTokenId: atkToken.id,
         attacker: atkToken.name,
+        debug: CONFIG.debug.hm3 && game.user.isGM,
         defender: defToken.name,
         defTokenId: defToken.id,
         effAML,
@@ -280,6 +281,7 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
         addlModifierSign: dialogResult.addlModifier < 0 ? '-' : '+',
         atkTokenId: atkToken.id,
         attacker: atkToken.name,
+        debug: CONFIG.debug.hm3 && game.user.isGM,
         defender: defToken.name,
         defTokenId: defToken.id,
         effAML,
@@ -481,6 +483,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         atkProne: atkToken.hasCondition(Condition.PRONE),
         atkTokenId: atkToken.id,
         attacker: atkToken.name,
+        debug: CONFIG.debug.hm3 && game.user.isGM,
         defBerserk,
         defender: defToken.name,
         defProne,
@@ -2077,8 +2080,6 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
         }
     }
 
-    const chatData = {};
-
     const messageData = {
         sound: CONFIG.sounds.dice,
         style: CONST.CHAT_MESSAGE_STYLES.OTHER,
@@ -2088,14 +2089,18 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     const chatTemplate = 'systems/hm3/templates/chat/weapon-break-card.hbs';
 
     // Prepare and generate Attack Weapon Break chat message
-
-    chatData.tokenName = atkToken.name;
-    chatData.weaponName = atkWeapon.name;
-    chatData.weaponQuality = atkWeapon.system.weaponQuality + (atkWeapon.system.wqModifier || 0);
-    chatData.weaponBroke = atkWeaponBroke;
-    chatData.rollValue = atkBreakTotal;
-    chatData.actorId = atkWeapon.parent;
-    chatData.title = 'Attack Weapon Break Check';
+    const chatData = {
+        actorId: atkWeapon.parent,
+        debug: CONFIG.debug.hm3 && game.user.isGM,
+        rollFormula: atkBreakRoll.formula,
+        rollResult: atkBreakRoll.result,
+        rollValue: atkBreakTotal,
+        title: 'Attack Weapon Break Check',
+        tokenName: atkToken.name,
+        weaponBroke: atkWeaponBroke,
+        weaponName: atkWeapon.name,
+        weaponQuality: atkWeapon.system.weaponQuality + (atkWeapon.system.wqModifier || 0)
+    };
 
     let html = await renderTemplate(chatTemplate, chatData);
 
@@ -2109,14 +2114,15 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     if (!atkBreakCheckNotNeeded) await ChatMessage.create(messageData, messageOptions);
 
     // Prepare and generate Defend Weapon Break chat message
-
+    chatData.actorId = defWeapon.parent;
+    chatData.rollFormula = defBreakRoll.formula;
+    chatData.rollResult = defBreakRoll.result;
+    chatData.rollValue = defBreakTotal;
+    chatData.title = 'Defend Weapon Break Check';
     chatData.tokenName = defToken.name;
+    chatData.weaponBroke = defWeaponBroke;
     chatData.weaponName = defWeapon.name;
     chatData.weaponQuality = defWeapon.system.weaponQuality + (defWeapon.system.wqModifier || 0);
-    chatData.weaponBroke = defWeaponBroke;
-    chatData.rollValue = defBreakTotal;
-    chatData.actorId = defWeapon.parent;
-    chatData.title = 'Defend Weapon Break Check';
 
     html = await renderTemplate(chatTemplate, chatData);
 

@@ -18,4 +18,18 @@
         <span class="value success-text">{{ tokenName }}'s {{ weaponName }} OK</span>
     </div>
     {{/if}}
+
+    {{#if debug}}
+    <hr />
+    <h3 class="subtitle">Debug Info</h3>
+
+    <div class="card-content center">
+        <span class="label">Weapon Formula:</span>
+        <span class="value">{{ rollFormula }}</span>
+    </div>
+    <div class="card-content center">
+        <span class="label">Weapon Result:</span>
+        <span class="value">{{ rollResult }}</span>
+    </div>
+    {{/if}}
 </div>

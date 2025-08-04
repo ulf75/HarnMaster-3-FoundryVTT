@@ -1300,20 +1300,23 @@ export class DiceHM3 {
 
         const chatTemplateData = {
             title: `${rollData.name} Attack`,
-            aspect: rollData.aspect,
-            range: roll.range,
-            origTarget: rollData.target,
-            rangeModifier: Math.abs(roll.rangeModifier),
             addlModifier: Math.abs(roll.addlModifier),
             amPlusMinus: roll.addlModifier < 0 ? '-' : '+',
-            rmPlusMinus: roll.rangeModifier < 0 ? '-' : '+',
-            modifiedTarget: roll.modifiedTarget,
-            isSuccess: roll.isSuccess,
-            isCritical: roll.isCritical,
-            rollValue: roll.rollObj.total,
+            aspect: rollData.aspect,
+            debug: CONFIG.debug.hm3 && game.user.isGM,
             description: roll.description,
+            isCritical: roll.isCritical,
+            isSuccess: roll.isSuccess,
+            modifiedTarget: roll.modifiedTarget,
             notes: renderedNotes,
-            roll: roll
+            origTarget: rollData.target,
+            range: roll.range,
+            rangeModifier: Math.abs(roll.rangeModifier),
+            rmPlusMinus: roll.rangeModifier < 0 ? '-' : '+',
+            roll: roll,
+            rollFormula: roll.rollObj.formula,
+            rollResult: roll.rollObj.result,
+            rollValue: roll.rollObj.total
         };
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
