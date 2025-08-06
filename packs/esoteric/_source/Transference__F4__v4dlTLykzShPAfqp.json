@@ -9,9 +9,9 @@
     "core": {}
   },
   "system": {
-    "notes": "25-SI secs",
+    "notes": "25&ndash;SI secs",
     "description": "<p>The ability to detect and employ Barasi Points* to transfer the invoker from one world to another. Objects or living entities within Aura inches of the invoker&rsquo;s skin may also be transferred. Less skilled users often lose things on the way.</p><p>The talent is fairly common among the older bloodlines of the Sindarin, but otherwise rare. The invoker does not necessarily know where the destination will be, although it is always a similar environment.</p><p><strong>Psionic Episodes</strong>: Headaches and dizziness, and rare bouts of semi-translucence, especially near Barasi Points.*</p><p><strong>Misfire (CF)</strong>: Invoker may arrive at an unexpected destination, most often on Yashain.</p>",
-    "source": "",
+    "source": "Psionics 8",
     "macros": {
       "type": "script",
       "command": ""
