@@ -24,6 +24,14 @@ export class ItemHM3 extends Item {
         return super._preUpdate(changed, options, user);
     }
 
+    /**
+     * If the item is a weapon, return a WeaponItem object.
+     * @returns {WeaponItem|null} WeaponItem object or null if not a weapon.
+     * */
+    asWeapon() {
+        return this.type === ItemType.WEAPONGEAR ? new WeaponItem(this) : null;
+    }
+
     get isArtifact() {
         return this.system.arcane?.isArtifact || false;
     }
@@ -36,14 +44,40 @@ export class ItemHM3 extends Item {
         return this.isArtifact && this.system.arcane?.type === 'Major';
     }
 
+    get powers() {
+        if (this.isMinorArtifact) return [this.system.arcane.minor];
+        else if (this.isMajorArtifact)
+            return [
+                this.system.arcane.major.power1,
+                this.system.arcane.major.power2,
+                this.system.arcane.major.power3,
+                this.system.arcane.major.power4,
+                this.system.arcane.major.power5
+            ];
+    }
+
+    /**
+     * Check if the item has an arcane power.
+     * @param {ArcanePower} power - The power to check for.
+     * @returns {boolean} True if the item has the specified arcane power, false otherwise.
+     * */
+    hasArcanePower(power) {
+        return !!this.getArcanePower(power);
+    }
+
+    /**
+     * Get the arcane power object for the specified power.
+     * @param {ArcanePower} power - The power to get.
+     * @returns {object|null} The arcane power object or null if not found.
+     * */
     getArcanePower(power) {
-        if (this.isMinorArtifact) {
-            if (this.system.arcane.minor.power?.startsWith(power))
+        if (this.isArtifact) {
+            const arcane = this.powers.find((p) => p.power.startsWith(power));
+            if (arcane)
                 return foundry.utils.mergeObject(
-                    this.system.arcane.minor,
-                    game.hm3.config.arcanePowers.find((p) => p.key === this.system.arcane.minor.power)
+                    arcane,
+                    game.hm3.config.arcanePowers.find((p) => p.key === arcane.power)
                 );
-        } else if (this.isMajorArtifact) {
         }
         return null;
     }

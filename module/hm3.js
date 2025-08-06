@@ -40,6 +40,7 @@ import {TileHM3} from './hm3/hm3-tile.js';
 import {WallHM3} from './hm3/hm3-wall.js';
 import {ItemSheetHM3} from './item/item-sheet.js';
 import {ItemHM3} from './item/item.js';
+import {WeaponItem} from './item/weapon-item.js';
 import {registerHooks} from './macro.js';
 import * as macros from './macros.js';
 import * as migrations from './migrations.js';
@@ -52,6 +53,8 @@ Hooks.once('init', async function () {
     console.info(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
 
     CONFIG.ActiveEffect.legacyTransferral = false;
+
+    globalThis.WeaponItem = WeaponItem;
 
     game.hm3 = {
         DiceHM3,

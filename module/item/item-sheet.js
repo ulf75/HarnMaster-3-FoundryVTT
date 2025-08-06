@@ -189,18 +189,48 @@ export class ItemSheetHM3 extends ItemSheet {
         }
 
         if (data.idata.arcane && data.idata.arcane.isArtifact) {
+            const updateData = {};
+
             if (!data.idata.arcane.type) {
                 data.idata.arcane.type = 'Minor';
-                data.idata.arcane.minor = {power: 'None', duration: 'Permanent', isOwnerAware: false};
-
-                await this.object.update({
-                    'system.arcane.type': data.idata.arcane.type,
-                    'system.arcane.minor': data.idata.arcane.minor
-                });
+                updateData['system.arcane.type'] = data.idata.arcane.type;
             }
 
-            if (!data.idata.arcane.minor)
+            if (data.idata.arcane.type === 'Minor' && !data.idata.arcane.minor) {
                 data.idata.arcane.minor = {power: 'None', duration: 'Permanent', isOwnerAware: false};
+                updateData['system.arcane.minor'] = data.idata.arcane.minor;
+            }
+            if (data.idata.arcane.type === 'Major' && !data.idata.arcane.major) {
+                data.idata.arcane.major = {
+                    power1: {power: 'None', duration: 'Permanent', isOwnerAware: false},
+                    power2: {power: 'None', duration: 'Permanent', isOwnerAware: false},
+                    power3: {power: 'None', duration: 'Permanent', isOwnerAware: false},
+                    power4: {power: 'None', duration: 'Permanent', isOwnerAware: false},
+                    power5: {power: 'None', duration: 'Permanent', isOwnerAware: false}
+                };
+                // data.idata.arcane.major.powers.fill({power: 'None', duration: 'Permanent', isOwnerAware: false});
+                updateData['system.arcane.major'] = data.idata.arcane.major;
+            }
+
+            if (data.idata.arcane.type === 'Minor' && data.idata.arcane.major) {
+                delete data.idata.arcane.major;
+                updateData['system.arcane.-=major'] = null;
+            }
+            if (data.idata.arcane.type === 'Major' && data.idata.arcane.minor) {
+                delete data.idata.arcane.minor;
+                updateData['system.arcane.-=minor'] = null;
+            }
+            if (data.idata.arcane.minorPower) {
+                delete data.idata.arcane.minorPower;
+                updateData['system.arcane.-=minorPower'] = null;
+            }
+            if (data.idata.arcane.majorPower) {
+                delete data.idata.arcane.majorPower;
+                updateData['system.arcane.-=majorPower'] = null;
+            }
+            if (!foundry.utils.isEmpty(updateData)) {
+                await this.object.update(updateData, {enforceTypes: false});
+            }
 
             data.arcane = {
                 choices: [{key: 'Minor'}, {key: 'Major'}],
@@ -209,8 +239,12 @@ export class ItemSheetHM3 extends ItemSheet {
                     game.hm3.config.arcanePowers.find((p) => p.key === data.idata.arcane.minor?.power)?.description ||
                     '',
                 powers: (data.idata.arcane.type === 'Minor'
-                    ? JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter((p) => p.minor)
-                    : JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter((p) => p.major >= 0)
+                    ? JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter(
+                          (p) => p.minor && p.validFor.includes(data.data.type)
+                      )
+                    : JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter(
+                          (p) => p.major >= 0 && p.validFor.includes(data.data.type)
+                      )
                 ).map((p) => {
                     p.label = `${p.label}${p.legacy ? '*' : ''}${p.lvl > 0 ? ` (${p.lvl})` : ''} ${
                         p.major > 0 && data.idata.arcane.type === 'Major' ? `Costs: ${p.major}` : ''

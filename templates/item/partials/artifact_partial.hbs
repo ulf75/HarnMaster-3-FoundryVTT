@@ -48,6 +48,8 @@
                     {{selectOptions arcane.durations selected=idata.arcane.minor.duration valueAttr="key" labelAttr="key"}}
                 </select>
             </div>
+        </div>
+        <div class="grid grid-fixed-row grid-2col">
             <label for="system.arcane.minor.isOwnerAware">Is owner aware of Minor Power?</label>
             <input
                 class="value"
@@ -67,8 +69,101 @@
         </div>
     </fieldset>
     {{else}}
-    <fieldset id="armorgear-minor-artifact">
+    <fieldset id="armorgear-major-artifact">
         <legend>Major Artifact Powers</legend>
+        <div class="grid grid-fixed-row grid-2col">
+            <div class="resource">
+                <label for="system.arcane.major.power1.power" class="resource-label">Major Artifact Power</label>
+                <select class="value" id="system.arcane.major.power1.power" name="system.arcane.major.power1.power" data-dtype="String">
+                    {{selectOptions arcane.powers selected=idata.arcane.major.power1.power valueAttr="key" labelAttr="label"}}
+                </select>
+            </div>
+            <div class="resource">
+                <label for="system.arcane.major.power1.duration" class="resource-label">Major Artifact Duration</label>
+                <select
+                    class="value"
+                    id="system.arcane.major.power1.duration"
+                    name="system.arcane.major.power1.duration"
+                    data-dtype="String">
+                    {{selectOptions arcane.durations selected=idata.arcane.major.power1.duration valueAttr="key" labelAttr="key"}}
+                </select>
+            </div>
+        </div>
+        <div class="grid grid-fixed-row grid-2col">
+            <label for="system.arcane.major.power1.isOwnerAware">Is owner aware of Major Power?</label>
+            <input
+                class="value"
+                type="checkbox"
+                id="system.arcane.major.power1.isOwnerAware"
+                name="system.arcane.major.power1.isOwnerAware"
+                value="{{ idata.arcane.major.power1.isOwnerAware }}"
+                data-dtype="Boolean"
+                {{checked
+                idata.arcane.major.power1.isOwnerAware}} />
+        </div>
+
+        <div class="grid grid-fixed-row grid-2col">
+            <div class="resource">
+                <label for="system.arcane.major.power2.power" class="resource-label">Major Artifact Power</label>
+                <select class="value" id="system.arcane.major.power2.power" name="system.arcane.major.power2.power" data-dtype="String">
+                    {{selectOptions arcane.powers selected=idata.arcane.major.power2.power valueAttr="key" labelAttr="label"}}
+                </select>
+            </div>
+            <div class="resource">
+                <label for="system.arcane.major.power2.duration" class="resource-label">Major Artifact Duration</label>
+                <select
+                    class="value"
+                    id="system.arcane.major.power2.duration"
+                    name="system.arcane.major.power2.duration"
+                    data-dtype="String">
+                    {{selectOptions arcane.durations selected=idata.arcane.major.power2.duration valueAttr="key" labelAttr="key"}}
+                </select>
+            </div>
+        </div>
+        <div class="grid grid-fixed-row grid-2col">
+            <label for="system.arcane.major.power2.isOwnerAware">Is owner aware of Major Power?</label>
+            <input
+                class="value"
+                type="checkbox"
+                id="system.arcane.major.power2.isOwnerAware"
+                name="system.arcane.major.power2.isOwnerAware"
+                value="{{ idata.arcane.major.power2.isOwnerAware }}"
+                data-dtype="Boolean"
+                {{checked
+                idata.arcane.major.power2.isOwnerAware}} />
+        </div>
+
+        <div class="grid grid-fixed-row grid-2col">
+            <div class="resource">
+                <label for="system.arcane.major.power3.power" class="resource-label">Major Artifact Power</label>
+                <select class="value" id="system.arcane.major.power3.power" name="system.arcane.major.power3.power" data-dtype="String">
+                    {{selectOptions arcane.powers selected=idata.arcane.major.power3.power valueAttr="key" labelAttr="label"}}
+                </select>
+            </div>
+            <div class="resource">
+                <label for="system.arcane.major.power3.duration" class="resource-label">Major Artifact Duration</label>
+                <select
+                    class="value"
+                    id="system.arcane.major.power3.duration"
+                    name="system.arcane.major.power3.duration"
+                    data-dtype="String">
+                    {{selectOptions arcane.durations selected=idata.arcane.major.power3.duration valueAttr="key" labelAttr="key"}}
+                </select>
+            </div>
+        </div>
+        <div class="grid grid-fixed-row grid-2col">
+            <label for="system.arcane.major.power3.isOwnerAware">Is owner aware of Major Power?</label>
+            <input
+                class="value"
+                type="checkbox"
+                id="system.arcane.major.power3.isOwnerAware"
+                name="system.arcane.major.power3.isOwnerAware"
+                value="{{ idata.arcane.major.power3.isOwnerAware }}"
+                data-dtype="Boolean"
+                {{checked
+                idata.arcane.major.power3.isOwnerAware}} />
+        </div>
+
         <div class="grid grid-fixed-row grid-3col">
             <div class="resource" id="armorgear-artifact-isattuned">
                 <input
@@ -88,12 +183,6 @@
                 <label class="resource-label">Ego/Will</label>
                 <input type="number" name="system.arcane.ego" value="{{ idata.arcane.ego }}" data-dtype="Number" />
             </div>
-        </div>
-        <div class="grid grid-fixed-row grid-2col">
-            <label for="system.arcane.majorPower">Major Artifact Power</label>
-            <select class="value" id="system.arcane.majorPower" name="system.arcane.majorPower" data-dtype="String">
-                {{selectOptions arcane.powers selected=idata.arcane.majorPower valueAttr="key" labelAttr="label"}}
-            </select>
         </div>
     </fieldset>
     {{/if}}
