@@ -13,9 +13,11 @@
         const loggedInPlayers = game.users.filter((user) => user.active && !user.isGM);
         for (let player of loggedInPlayers) {
             if (page) {
-                const o = page.ownership[player.id] || 0;
+                const o = page.getUserLevel(player);
+                const perm = page.testUserPermission(player, 'OBSERVER');
+
                 console.info(`HM3 | Player ${player.name} has ownership ${o} of the page ${page.name}.`);
-                if (o < 2) {
+                if (!perm) {
                     ui.notifications.info(
                         `Player ${player.name} does not have observer ownership or higher of the page ${page.name}. Will be changed to 2 (observer).`
                     );
@@ -25,9 +27,11 @@
                     console.info(page);
                 }
             } else if (journal) {
-                const o = journal.ownership[player.id] || 0;
+                const o = journal.getUserLevel(player);
+                const perm = journal.testUserPermission(player, 'OBSERVER');
+
                 console.info(`HM3 | Player ${player.name} has ownership ${o} of the journal ${journal.name}.`);
-                if (o < 2) {
+                if (!perm) {
                     ui.notifications.info(
                         `Player ${player.name} does not have observer ownership or higher of the journal ${journal.name}. Will be changed to 2 (observer).`
                     );
@@ -36,7 +40,6 @@
                         {'ownership': journal.ownership},
                         {diff: false, recursive: false, noHook: true}
                     );
-                    // await journal.update();
                     console.info(journal);
                 }
             }
