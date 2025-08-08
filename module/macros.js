@@ -428,6 +428,10 @@ export async function usePsionicRoll(itemName, noDialog = false, myActor = null)
         if (result) {
             item.runCustomMacro(result);
             callOnHooks('hm3.onPsionicsRoll', actor, result, stdRollData, item);
+
+            if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+                item.update({'system.improveFlag': item.system.improveFlag + 1});
+            }
         }
         return result;
     }
