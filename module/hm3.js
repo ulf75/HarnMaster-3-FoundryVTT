@@ -474,6 +474,7 @@ Hooks.once('ready', async function () {
         game.hm3.runner = runner;
         game.hm3.socket.register('defButtonsFromChatMsg', game.hm3.BaseTest.DefButtonsFromChatMsgProxy);
         game.hm3.socket.register('defAction', game.hm3.BaseTest.DefActionProxy);
+        console.clear();
     } else {
         CONFIG.debug.hm3 = false;
         CONFIG.debug.hooks = false;
@@ -481,6 +482,7 @@ Hooks.once('ready', async function () {
         console.debug = () => {};
         console.trace = () => {};
         game.hm3.runner = () => ui.notifications.info('Please turn on Debug Mode.');
+        console.clear();
     }
 
     // Determine whether a system migration is required
@@ -697,6 +699,7 @@ Hooks.once('ready', () => {
     socket.register('setTAFlag', setTAFlag);
     socket.register('unsetTAFlag', unsetTAFlag);
     socket.register('weaponBroke', weaponBroke);
+    socket.register('improveFlag', improveFlag);
     socket.register('fatigueReceived', fatigueReceived);
     socket.register('GmSays', gmSays);
     socket.register('gmConsole', gmConsole);
@@ -738,6 +741,19 @@ async function weaponBroke(tokenId, weaponId, atkWeaponDiff) {
         'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
         'system.wqModifier': (item.system.wqModifier | 0) - atkWeaponDiff
     });
+}
+
+async function improveFlag(skillUuid, success) {
+    const skill = fromUuidSync(skillUuid);
+    if (skill) {
+        const old = skill.system.improveFlag;
+        await skill.update({'system.improveFlag': skill.system.improveFlag + (success ? 1 : 2)});
+        console.info(
+            `HM3 | Skill '${skill.name}' improvement flag increased by ${success ? 1 : 2} from ${old} to ${
+                skill.system.improveFlag
+            }.`
+        );
+    }
 }
 
 async function fatigueReceived(tokenId, fatigue) {

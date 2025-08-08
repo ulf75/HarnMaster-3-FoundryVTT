@@ -2,7 +2,7 @@ import {HM3} from './config.js';
 import {DiceHM3} from './hm3-dice.js';
 import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
 import {ActorType, ArcanePower, Aspect, Condition, ItemType} from './hm3-types.js';
-import {truncate} from './utility.js';
+import {improveFlag, truncate} from './utility.js';
 
 /**
  * Initiates a missile attack.
@@ -183,15 +183,6 @@ export async function missileAttack(atkToken, defToken, missileItem) {
 
     if (game.settings.get('hm3', 'combatAudio')) {
         foundry.audio.AudioHelper.play({src: 'sounds/drums.wav', autoplay: true, loop: false}, true);
-    }
-
-    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
-        const skill = options.weapon.system.assocSkill;
-        atkToken.actor.items.forEach((item) => {
-            if (item.name === skill && item.type === 'skill') {
-                item.update({'system.improveFlag': item.system.improveFlag + 1});
-            }
-        });
     }
 
     return chatTemplateData;
@@ -546,15 +537,6 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
 
     if (game.settings.get('hm3', 'combatAudio')) {
         foundry.audio.AudioHelper.play({src: 'sounds/drums.wav', autoplay: true, loop: false}, true);
-    }
-
-    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
-        const skill = options.weapon.system.assocSkill;
-        atkToken.actor.items.forEach((item) => {
-            if (item.name === skill && item.type === 'skill') {
-                item.update({'system.improveFlag': item.system.improveFlag + 1});
-            }
-        });
     }
 
     return chatTemplateData;
@@ -1275,14 +1257,11 @@ export async function meleeCounterstrikeResume(
         await atkToken.addCondition(Condition.GRAPPLED);
     }
 
-    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
-        const skill = defWeapon.system.assocSkill;
-        defToken.actor.items.forEach((item) => {
-            if (item.name === skill && item.type === 'skill') {
-                item.update({'system.improveFlag': item.system.improveFlag + 1});
-            }
-        });
-    }
+    improveFlag(
+        atkToken.actor.items.find((w) => w.name === atkWeaponName),
+        {actor: atkToken.actor, success: atkRoll.isSuccess}
+    );
+    improveFlag(defWeapon.system.assocSkill, {actor: defToken.actor, success: csRoll.isSuccess});
 
     if (turnEnds) await setTA(true);
 
@@ -1473,13 +1452,11 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         await atkToken.addCondition(Condition.GRAPPLED);
     }
 
-    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
-        defToken.actor.items.forEach((item) => {
-            if (item.name === 'Dodge' && item.type === 'skill') {
-                item.update({'system.improveFlag': item.system.improveFlag + 1});
-            }
-        });
-    }
+    improveFlag(
+        atkToken.actor.items.find((w) => w.name === weaponName),
+        {actor: atkToken.actor, success: atkRoll.isSuccess}
+    );
+    improveFlag('Dodge', {actor: defToken.actor, success: defRoll.isSuccess});
 
     if (turnEnds) await setTA(true);
 
@@ -1606,7 +1583,7 @@ export async function esotericResume(atkToken, defToken, atkWeaponName, atkEffAM
 
     if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
         esotericWpns.defaultWeapon.update({
-            'system.improveFlag': (esotericWpns.defaultWeapon.system.improveFlag || 0) + 1
+            'system.improveFlag': (esotericWpns.defaultWeapon.system.improveFlag || 0) + (defRoll.isSuccess ? 1 : 2)
         });
     }
 
@@ -1931,14 +1908,11 @@ export async function blockResume(
         await atkToken.addCondition(Condition.GRAPPLED);
     }
 
-    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
-        const skill = defWeapon.system.assocSkill;
-        defToken.actor.items.forEach((item) => {
-            if (item.name === skill && item.type === 'skill') {
-                item.update({'system.improveFlag': item.system.improveFlag + 1});
-            }
-        });
-    }
+    improveFlag(
+        atkToken.actor.items.find((w) => w.name === weaponName),
+        {actor: atkToken.actor, success: atkRoll.isSuccess}
+    );
+    improveFlag(defWeapon.system.assocSkill, {actor: defToken.actor, success: defRoll.isSuccess});
 
     if (turnEnds) await setTA(true);
 
@@ -2270,6 +2244,11 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
     if (combatResult.outcome.defHold) {
         await atkToken.addCondition(Condition.GRAPPLED);
     }
+
+    improveFlag(
+        atkToken.actor.items.find((w) => w.name === weaponName),
+        {actor: atkToken.actor, success: atkRoll.isSuccess}
+    );
 
     return chatData;
 }

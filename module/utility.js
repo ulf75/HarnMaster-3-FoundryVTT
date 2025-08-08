@@ -1,4 +1,5 @@
 import {HM3} from './config.js';
+import {ItemType} from './hm3-types.js';
 
 /**
  * Determines whether the Skill Base Formula is valid. We perform that
@@ -663,5 +664,28 @@ export function beautify(text) {
         });
     } else {
         return text.trim();
+    }
+}
+
+/**
+ * Increases the improveFlag of a skill by 1 if success is true, or by 2 if success is false.
+ * This function is only executed if the 'autoMarkUsedSkills' setting is enabled.
+ *
+ * @param {string|Item} skill - The skill item to update.
+ * @param {Object} [options={}] - Options for the skill improvement.
+ * @param {Actor} [options.actor=null] - The actor associated with the skill.
+ * @param {boolean} [options.success=true] - Whether the skill use was successful.
+ */
+export async function improveFlag(skill, {actor = null, success = true} = {}) {
+    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+        const types = [ItemType.SKILL, ItemType.PSIONIC, ItemType.WEAPONGEAR, ItemType.MISSILEGEAR];
+
+        if ((typeof skill === 'string' || skill instanceof String) && actor) {
+            skill = actor.items.find((item) => item.name === skill && types.includes(item.type));
+        }
+
+        if (skill instanceof Item && types.includes(skill.type)) {
+            await game.hm3.socket.executeAsGM('improveFlag', skill.uuid, success);
+        }
     }
 }
