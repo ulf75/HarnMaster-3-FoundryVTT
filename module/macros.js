@@ -427,6 +427,7 @@ export async function usePsionicRoll(itemName, noDialog = false, myActor = null)
             item.runCustomMacro(result);
             callOnHooks('hm3.onPsionicsRoll', actor, result, stdRollData, item);
 
+            utility.fatigueReceived(actor, item.system.fatigue);
             utility.improveFlag(item, {success: result.roll.isSuccess});
         }
         return result;

@@ -749,18 +749,21 @@ async function improveFlag(skillUuid, success) {
         const old = skill.system.improveFlag;
         await skill.update({'system.improveFlag': skill.system.improveFlag + (success ? 1 : 2)});
         console.info(
-            `HM3 | Skill '${skill.name}' improvement flag increased by ${success ? 1 : 2} from ${old} to ${
-                skill.system.improveFlag
-            }.`
+            `HM3 | Skill '${skill.name}' from actor '${skill.parent.name}' improvement flag increased by ${
+                success ? 1 : 2
+            } from ${old} to ${skill.system.improveFlag}.`
         );
     }
 }
 
-async function fatigueReceived(tokenId, fatigue) {
-    const t = canvas.tokens.get(tokenId);
-    return t.actor.update({
-        'system.fatigue': (t.actor.system.fatigue || 0) + fatigue
-    });
+async function fatigueReceived(actorUuid, fatigue) {
+    const actor = fromUuidSync(actorUuid);
+    if (actor) {
+        await actor.update({
+            'system.fatigue': (actor.system.fatigue || 0) + fatigue
+        });
+        console.info(`HM3 | Actor '${actor.name}' received ${fatigue} Fatigue Level(s).`);
+    }
 }
 
 /**

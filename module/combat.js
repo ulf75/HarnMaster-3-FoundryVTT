@@ -2,7 +2,7 @@ import {HM3} from './config.js';
 import {DiceHM3} from './hm3-dice.js';
 import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
 import {ActorType, ArcanePower, Aspect, Condition, ItemType} from './hm3-types.js';
-import {improveFlag, truncate} from './utility.js';
+import {fatigueReceived, improveFlag, truncate} from './utility.js';
 
 /**
  * Initiates a missile attack.
@@ -1525,10 +1525,10 @@ export async function esotericResume(atkToken, defToken, atkWeaponName, atkEffAM
     });
 
     if (combatResult.outcome.atkFatigue) {
-        game.hm3.socket.executeAsGM('fatigueReceived', atkToken.id, combatResult.outcome.atkFatigue);
+        fatigueReceived(atkToken.actor, combatResult.outcome.atkFatigue);
     }
     if (combatResult.outcome.defFatigue) {
-        game.hm3.socket.executeAsGM('fatigueReceived', defToken.id, combatResult.outcome.defFatigue);
+        fatigueReceived(defToken.actor, combatResult.outcome.defFatigue);
     }
 
     const title = 'Esoteric Attack Result';
