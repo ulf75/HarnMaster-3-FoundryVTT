@@ -9,7 +9,7 @@
     "core": {}
   },
   "system": {
-    "notes": "25&ndash;SI secs",
+    "notes": "25–SI secs",
     "description": "<p>The ability to project a blast of mental energy at a single mind within SI×15 feet (SI×3 hex) and line of sight.</p><table> <tbody><tr> <td style='width:45px;padding:0 0 0 10px;'> <p><strong>MS</strong></p> </td> <td> <p>causes the victim to accrue two Fatigue Levels (F2);</p> </td></tr><tr> <td style='width:45px;padding-left:10px'> <p><strong>CS</strong></p> </td> <td> <p>inflicts four Fatigue Levels (F4).</p> </td></tr></tbody></table><p>After accruing the fatigue, the victim immediately makes a Shock Roll (Skills 22).</p><p><strong>Psionic Episodes:</strong> Devastating headaches, dizziness, etc. for the character or innocent bystanders.</p><p><strong>Misfire (CF):</strong> The invoker, or some randomly chosen person/animal nearby, suffers the talent’s full effect.</p>",
     "source": "Psionics 7",
     "macros": {

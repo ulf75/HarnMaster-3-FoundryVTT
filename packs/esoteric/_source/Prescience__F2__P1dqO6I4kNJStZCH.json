@@ -9,7 +9,7 @@
     "core": {}
   },
   "system": {
-    "notes": "15&ndash;SI Hours",
+    "notes": "15–SI Hours",
     "description": "<p>The ability to determine the “fate” of a group, person, or item. Subject to passive triggering (Psionics 4). There are two active forms:</p> <ol> <li> <p><strong>Prescient Vision:</strong> The invoker specifies the subject of inquiry and makes a success roll. With any success, the invoker enters a trance for (15 – SI) hours, during which a prescient vision occurs concerning the subject. EML is reduced if the subject is hidden by magic, etc. Normally, the invoker lacks control over the vision, but with <strong>CS</strong> it is possible to direct the inquiry somewhat. Prescience can only reveal likely future events; the future may be altered.</p> </li> <li> <p><strong>Sense of Danger:</strong> An attempt to assess danger in a specific location. The invoker enters a trance for about a minute. <strong>MS</strong> gives a vague feeling of danger if there are traps or lurking dangers within ML feet. <strong>CS</strong> improves detail and/or range.</p> </li> </ol> <section class='secret' id='secret-Cr20e0mLUTQA1SRZ'> <p><strong>GM Note:</strong> Prescient visions can be symbolic in nature. Folklore (Skills 16) may be used to interpret the vision. Some clerics and divinators specialize in interpretation of prescient visions.</p> </section> <p><strong>Psionic Episodes:</strong> A kind of passive triggering of the sense of danger. Violent dreams and/or nightmares about loved ones dying or having severe difficulties are also common.</p> <p><strong>Misfire (CF):</strong> False or random information is given to the invoker.</p>",
     "source": "Psionics 7",
     "macros": {

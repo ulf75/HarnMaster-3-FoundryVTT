@@ -9,8 +9,8 @@
     "core": {}
   },
   "system": {
-    "notes": "15&ndash;SI secs",
-    "description": "<p>The invoker enters a trance for (15&ndash;SI) seconds and makes a success roll. Success creates a spherical psionic field, centered on the invoker&rsquo;s head, whose radius is one foot times the invoker&rsquo;s will.</p><p>The field lasts for SI minutes, but may be dissolved instantly by its creator. The field requires great concentration to maintain; the invoker is limited to simple activities, like walking.</p><p>Any magic or psionics entering or within the field are affected, specifically spell/talent rolls are reduced by one level (CS=MS, MS=MF, and MF=CF).</p><p><b>Psionic Episodes:</b> Spells/talents tend to go wrong in the character&rsquo;s presence.</p><p><b>Misfire (CF):</b> Fairly harmless with this talent.</p>",
+    "notes": "15–SI secs",
+    "description": "<p>The invoker enters a trance for (15–SI) seconds and makes a success roll. Success creates a spherical psionic field, centered on the invoker&rsquo;s head, whose radius is one foot times the invoker&rsquo;s will.</p><p>The field lasts for SI minutes, but may be dissolved instantly by its creator. The field requires great concentration to maintain; the invoker is limited to simple activities, like walking.</p><p>Any magic or psionics entering or within the field are affected, specifically spell/talent rolls are reduced by one level (CS=MS, MS=MF, and MF=CF).</p><p><b>Psionic Episodes:</b> Spells/talents tend to go wrong in the character&rsquo;s presence.</p><p><b>Misfire (CF):</b> Fairly harmless with this talent.</p>",
     "source": "Psionics 7",
     "macros": {
       "type": "script",

@@ -9,7 +9,7 @@
     "core": {}
   },
   "system": {
-    "notes": "25&ndash;SI secs",
+    "notes": "25–SI secs",
     "description": "<p>The invoker can move objects up to SI pounds in weight without physically touching them. The talent takes (25–SI) seconds to invoke, and the effect lasts for ten (10) seconds. It is not possible to move part of an object, unless the parts can move independently, such as the tumblers of a lock. Two or more objects cannot be made to occupy the same volume of space.</p> <table> <tbody><tr> <td style='width:45px;padding-left:10px'> <p><strong>MS</strong></p> </td> <td> <p>allows objects to be moved up to SI yards (SI×3 ft) per second;</p> </td> </tr><tr> <td style='width:45px;padding-left:10px'> <p><strong>CS</strong></p> </td> <td> <p>allows instant transfer (teleportation) if desired.</p> </td> </tr></tbody> </table> <p>The object to be moved must begin and remain within ML×10 yards (ML×30 ft) in line of sight.</p> <p><strong>Psionic Episodes:</strong> Objects move by themselves, get lost, etc.</p> <p><strong>Misfire (CF):</strong> Objects move/teleport in odd directions and at unpredictable speeds. Sometimes an object is teleported into another world.</p>",
     "source": "Psionics 8",
     "macros": {
