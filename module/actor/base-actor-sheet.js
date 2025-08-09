@@ -125,7 +125,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     }
 
                     if (i.type === ItemType.WEAPONGEAR) {
-                        i.wq = i.system.weaponQuality + (i.system.wqModifier | 0);
+                        i.wq = i.system.weaponQuality + (i.system.wqModifier || 0);
                     }
 
                     return i;

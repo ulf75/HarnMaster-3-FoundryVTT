@@ -728,30 +728,31 @@ async function unsetTAFlag() {
 
 /**
  * Mark a weapon as broken proxy for socketlib
- * @param {string} tokenId - The ID of the token
- * @param {string} weaponId - The ID of the weapon
- * @param {number} atkWeaponDiff - The difference in weapon quality
+ * @param {string} itemUuid - The ID of the weapon
+ * @param {number} diff - The difference in weapon quality
  * @returns {Promise<void>}
  */
-async function weaponBroke(tokenId, weaponId, atkWeaponDiff) {
-    const t = canvas.tokens.get(tokenId);
-    const item = t.actor.items.get(weaponId);
-    return item.update({
-        'system.isEquipped': false,
-        'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
-        'system.wqModifier': (item.system.wqModifier | 0) - atkWeaponDiff
-    });
+async function weaponBroke(itemUuid, diff) {
+    const item = fromUuidSync(itemUuid);
+    if (item) {
+        await item.update({
+            'system.isEquipped': false,
+            'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
+            'system.wqModifier': (item.system.wqModifier || 0) - diff
+        });
+        console.info(`HM3 | Weapon '${item.name}' from actor '${item.parent.name}' broke by -${diff}.`);
+    }
 }
 
-async function improveFlag(skillUuid, success) {
-    const skill = fromUuidSync(skillUuid);
-    if (skill) {
-        const old = skill.system.improveFlag;
-        await skill.update({'system.improveFlag': skill.system.improveFlag + (success ? 1 : 2)});
+async function improveFlag(itemUuid, success) {
+    const item = fromUuidSync(itemUuid);
+    if (item) {
+        const old = item.system.improveFlag;
+        await item.update({'system.improveFlag': item.system.improveFlag + (success ? 1 : 2)});
         console.info(
-            `HM3 | Skill '${skill.name}' from actor '${skill.parent.name}' improvement flag increased by ${
+            `HM3 | Skill '${item.name}' from actor '${item.parent.name}' improvement flag increased by ${
                 success ? 1 : 2
-            } from ${old} to ${skill.system.improveFlag}.`
+            } from ${old} to ${item.system.improveFlag}.`
         );
     }
 }

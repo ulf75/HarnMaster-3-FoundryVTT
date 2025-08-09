@@ -49,7 +49,7 @@ export class ItemSheetHM3 extends ItemSheet {
         data.strictMode = game.settings.get('hm3', 'strictGmMode');
         data.hasRwPermission = data.isGM || !data.strictMode;
         data.isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
-        data.idata.wqModifier = data.idata.wqModifier | 0;
+        data.idata.wqModifier = data.idata.wqModifier || 0;
 
         // if (data.itemType === ItemType.ARMORGEAR) {
         //     if (!data.idata.baseValue) data.idata.baseValue = data.idata.value;

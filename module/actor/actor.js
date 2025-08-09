@@ -1178,7 +1178,7 @@ export class ActorHM3 extends Actor {
                 itemData.locations.forEach((l) => {
                     // If the location is unknown, skip the rest
                     if (typeof armorMap[l] != 'undefined') {
-                        const AQ = itemData.armorQuality | 0;
+                        const AQ = itemData.armorQuality || 0;
                         // Add this armor's protection to the location
                         if (itemData.hasOwnProperty('protection')) {
                             armorMap[l].blunt += Math.min(

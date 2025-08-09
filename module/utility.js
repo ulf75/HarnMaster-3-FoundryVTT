@@ -690,6 +690,10 @@ export async function improveFlag(skill, {actor = null, success = true} = {}) {
     }
 }
 
+export async function weaponBroke(weapon, diff) {
+    await game.hm3.socket.executeAsGM('weaponBroke', weapon.uuid, diff);
+}
+
 export async function fatigueReceived(actor, fatigue) {
     await game.hm3.socket.executeAsGM('fatigueReceived', actor.uuid, fatigue);
 }

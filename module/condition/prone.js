@@ -82,7 +82,7 @@ await Requestor.request({
     const ON_DELETE_MACRO = `
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
-await token.document.setFlag('wall-height', 'tokenHeight', token.actor.system.height | 6);
+await token.document.setFlag('wall-height', 'tokenHeight', token.actor.system.height || 6);
 if (game.combat?.started && game.combat.combatant) {
     if (game.combat.combatant.id === token.combatant?.id) {
         await game.hm3.GmSays({

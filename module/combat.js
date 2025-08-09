@@ -1070,14 +1070,8 @@ export async function meleeCounterstrikeResume(
 
         if (weaponBroke.attackWeaponBroke) {
             try {
-                await game.hm3.socket.executeAsGM('weaponBroke', atkToken.id, atkWeapon.id, weaponBroke.atkWeaponDiff);
+                await weaponBroke(atkWeapon.uuid, weaponBroke.atkWeaponDiff);
             } catch (ex) {
-                ui.notifications.warn(
-                    `You do not have permissions to perform this operation on ${item?.name} from ${atkToken?.actor?.name}`,
-                    {
-                        permanent: true
-                    }
-                );
             } finally {
                 combatResult.outcome.dta = true;
             }
@@ -1085,14 +1079,8 @@ export async function meleeCounterstrikeResume(
 
         if (weaponBroke.defendWeaponBroke) {
             try {
-                await game.hm3.socket.executeAsGM('weaponBroke', defToken.id, defWeapon.id, weaponBroke.defWeaponDiff);
+                await weaponBroke(defWeapon.uuid, weaponBroke.defWeaponDiff);
             } catch (ex) {
-                ui.notifications.warn(
-                    `You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`,
-                    {
-                        permanent: true
-                    }
-                );
             } finally {
                 combatResult.outcome.ata = true;
             }
@@ -1765,14 +1753,8 @@ export async function blockResume(
 
         if (weaponBroke.attackWeaponBroke) {
             try {
-                await game.hm3.socket.executeAsGM('weaponBroke', atkToken.id, atkWeapon.id, weaponBroke.atkWeaponDiff);
+                await weaponBroke(atkWeapon.uuid, weaponBroke.atkWeaponDiff);
             } catch (ex) {
-                ui.notifications.warn(
-                    `You do not have permissions to perform this operation on ${item?.name} from ${atkToken?.actor?.name}`,
-                    {
-                        permanent: true
-                    }
-                );
             } finally {
                 combatResult.outcome.dta = true;
             }
@@ -1780,14 +1762,8 @@ export async function blockResume(
 
         if (weaponBroke.defendWeaponBroke) {
             try {
-                await game.hm3.socket.executeAsGM('weaponBroke', defToken.id, defWeapon.id, weaponBroke.defWeaponDiff);
+                await weaponBroke(defWeapon.uuid, weaponBroke.defWeaponDiff);
             } catch (ex) {
-                ui.notifications.warn(
-                    `You do not have permissions to perform this operation on ${item?.name} from ${defToken?.actor?.name}`,
-                    {
-                        permanent: true
-                    }
-                );
             } finally {
                 combatResult.outcome.ata = true;
             }
