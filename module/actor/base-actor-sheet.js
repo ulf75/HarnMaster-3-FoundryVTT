@@ -60,79 +60,92 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         totalWeightMid /= 100;
         totalWeightLow /= 100;
 
-        data.items = (
-            await Promise.all(
-                this.actor.items.map(async (i) => {
-                    // A new, truncated number is created so that weights with many decimal places (e.g. dram) are also displayed nicely.
+        data.items = this.actor.items
+            .map((i) => {
+                // A new, truncated number is created so that weights with many decimal places (e.g. dram) are also displayed nicely.
+                if (
+                    [
+                        ItemType.ARMORGEAR,
+                        ItemType.CONTAINERGEAR,
+                        ItemType.EFFECT,
+                        ItemType.MISCGEAR,
+                        ItemType.MISSILEGEAR,
+                        ItemType.WEAPONGEAR
+                    ].includes(i.type)
+                ) {
+                    i.system.weightT = utility.truncate(i.system.weight, 3);
+                }
+                //
+                if (i.type === ItemType.ARMORLOCATION) {
+                    i.probHigh = utility.truncate(i.system.probWeight.high / totalWeightHigh, 1);
+                    i.probMid = utility.truncate(i.system.probWeight.mid / totalWeightMid, 1);
+                    i.probLow = utility.truncate(i.system.probWeight.low / totalWeightLow, 1);
+                }
+                // Dormant psionic talents may be invisible for players (ML20 or less (Psionics 3))
+                if (i.type === ItemType.PSIONIC) {
+                    i.system.visible = String(
+                        !game.settings.get('hm3', 'dormantPsionicTalents') ||
+                            i.system.masteryLevel > 20 ||
+                            i.system.effectiveMasteryLevel > 20 ||
+                            game.user.isGM
+                    );
+                }
+                //
+                if (i.type === ItemType.TRAIT) {
+                    if (i.system.type === 'Psyche') {
+                        const sev =
+                            data.config.psycheSeverity.find((v) => v.key === parseInt(i.system.severity))?.label ||
+                            'Mild';
+                        i.psycheName = sev + ' ' + i.name;
+                    }
+                }
+                //
+                if (i.type === ItemType.COMPANION) {
+                    const companion = fromUuidSync(i.system.actorUuid);
+                    if (companion) {
+                        i.gender = companion.system.gender || 'Male';
+                        i.img = companion.img;
+                        i.linkToActor = companion.link;
+                        i.name = companion.name;
+                        i.occupation = companion.system.occupation || 'Unknown';
+                        i.species = companion.system.species || 'Unknown';
+                    }
+                }
+
+                // The range can also be displayed in grids (hex). Can be changed in the settings.
+                if (i.type === ItemType.MISSILEGEAR) {
+                    if (data.isGridDistanceUnits) {
+                        i.system.rangeGrid = {
+                            short: i.system.range.short / canvas.dimensions.distance,
+                            medium: i.system.range.medium / canvas.dimensions.distance,
+                            long: i.system.range.long / canvas.dimensions.distance,
+                            extreme: i.system.range.extreme / canvas.dimensions.distance
+                        };
+                    }
+                }
+
+                if (i.type === ItemType.WEAPONGEAR) {
+                    i.wq = i.system.weaponQuality + (i.system.wqModifier || 0);
+                }
+
+                if ([ItemType.SKILL, ItemType.PSIONIC].includes(i.type)) {
+                    i.isSkillImprovement = data.isSkillImprovement;
+
+                    // some special rules
                     if (
-                        [
-                            ItemType.ARMORGEAR,
-                            ItemType.CONTAINERGEAR,
-                            ItemType.EFFECT,
-                            ItemType.MISCGEAR,
-                            ItemType.MISSILEGEAR,
-                            ItemType.WEAPONGEAR
-                        ].includes(i.type)
+                        this.actor.type === ActorType.CREATURE &&
+                        this.actor.system.species.toLowerCase().includes('dog')
                     ) {
-                        i.system.weightT = utility.truncate(i.system.weight, 3);
-                    }
-                    //
-                    if (i.type === ItemType.ARMORLOCATION) {
-                        i.probHigh = utility.truncate(i.system.probWeight.high / totalWeightHigh, 1);
-                        i.probMid = utility.truncate(i.system.probWeight.mid / totalWeightMid, 1);
-                        i.probLow = utility.truncate(i.system.probWeight.low / totalWeightLow, 1);
-                    }
-                    // Dormant psionic talents may be invisible for players (ML20 or less (Psionics 3))
-                    if (i.type === ItemType.PSIONIC) {
-                        i.system.visible = String(
-                            !game.settings.get('hm3', 'dormantPsionicTalents') ||
-                                i.system.masteryLevel > 20 ||
-                                i.system.effectiveMasteryLevel > 20 ||
-                                game.user.isGM
-                        );
-                    }
-                    //
-                    if (i.type === ItemType.TRAIT) {
-                        if (i.system.type === 'Psyche') {
-                            const sev =
-                                data.config.psycheSeverity.find((v) => v.key === parseInt(i.system.severity))?.label ||
-                                'Mild';
-                            i.psycheName = sev + ' ' + i.name;
+                        // With the exception of Awareness, dog skills may be improved by training and practice. (DOGS 2)
+                        if (i.name === 'Awareness') {
+                            i.isSkillImprovement = false;
                         }
                     }
-                    //
-                    if (i.type === ItemType.COMPANION) {
-                        const companion = fromUuidSync(i.system.actorUuid);
-                        if (companion) {
-                            i.gender = companion.system.gender || 'Male';
-                            i.img = companion.img;
-                            i.linkToActor = companion.link;
-                            i.name = companion.name;
-                            i.occupation = companion.system.occupation || 'Unknown';
-                            i.species = companion.system.species || 'Unknown';
-                        }
-                    }
+                }
 
-                    // The range can also be displayed in grids (hex). Can be changed in the settings.
-                    if (i.type === ItemType.MISSILEGEAR) {
-                        if (data.isGridDistanceUnits) {
-                            i.system.rangeGrid = {
-                                short: i.system.range.short / canvas.dimensions.distance,
-                                medium: i.system.range.medium / canvas.dimensions.distance,
-                                long: i.system.range.long / canvas.dimensions.distance,
-                                extreme: i.system.range.extreme / canvas.dimensions.distance
-                            };
-                        }
-                    }
-
-                    if (i.type === ItemType.WEAPONGEAR) {
-                        i.wq = i.system.weaponQuality + (i.system.wqModifier || 0);
-                    }
-
-                    return i;
-                })
-            )
-        ).filter((item) => item.type !== ItemType.EFFECT || game.user.isGM);
+                return i;
+            })
+            .filter((item) => item.type !== ItemType.EFFECT || game.user.isGM);
         data.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
 
         data.adata = data.actor.system;
