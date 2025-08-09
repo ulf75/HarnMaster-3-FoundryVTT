@@ -25,9 +25,13 @@ export class ActorHM3 extends Actor {
      * Mainly for the Party Sheet module.
      */
     get subtype() {
-        if (!!this.player && this.type === 'character') return 'pc';
-        else if (this.type === 'character') return 'npc';
+        if (!!this.player && this.type === game.hm3.ActorType.CHARACTER) return 'pc';
+        else if (this.type === game.hm3.ActorType.CHARACTER) return 'npc';
         else return this.type;
+    }
+
+    get skillImprovement() {
+        return !!this.player || !!this.getFlag('hm3', 'SkillImprovement');
     }
 
     pronoun(capital = false) {
@@ -237,7 +241,10 @@ export class ActorHM3 extends Actor {
     /** @override */
     async _onCreate(data, options, userId) {
         await super._onCreate(data, options, userId);
-        if (this.testUserPermission(game.user, 'OWNER')) await this.setFlag('hm3', 'CharacterMancer', true);
+        if (this.testUserPermission(game.user, 'OWNER') && this.type === game.hm3.ActorType.CHARACTER)
+            await this.setFlag('hm3', 'CharacterMancer', true);
+        if (this.testUserPermission(game.user, 'OWNER') && this.type === game.hm3.ActorType.CHARACTER)
+            await this.setFlag('hm3', 'SkillImprovement', true);
     }
 
     /** @override */
@@ -251,7 +258,7 @@ export class ActorHM3 extends Actor {
 
         const updateData = {};
 
-        if (createData.type === 'character') {
+        if (createData.type === game.hm3.ActorType.CHARACTER) {
             updateData['system.description'] = await (
                 await fetch('systems/hm3/module/actor/character-description.html')
             ).text();
@@ -308,7 +315,7 @@ export class ActorHM3 extends Actor {
         this.updateSource(updateData);
 
         // Sanity Check
-        if (createData.type === 'character' || createData.type === 'creature') {
+        if (createData.type === game.hm3.ActorType.CHARACTER || createData.type === 'creature') {
             let totalWeightHigh = 0;
             let totalWeightMid = 0;
             let totalWeightLow = 0;

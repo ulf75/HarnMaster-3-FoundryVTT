@@ -684,7 +684,12 @@ export async function improveFlag(skill, {actor = null, success = true} = {}) {
             skill = actor.items.find((item) => item.name === skill && types.includes(item.type));
         }
 
-        if (skill instanceof Item && types.includes(skill.type)) {
+        if (
+            skill instanceof Item &&
+            types.includes(skill.type) &&
+            skill.parent instanceof Actor &&
+            skill.parent.skillImprovement
+        ) {
             await game.hm3.socket.executeAsGM('improveFlag', skill.uuid, success);
         }
     }

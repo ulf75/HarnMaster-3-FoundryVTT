@@ -25,6 +25,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             isCharacterMancer: this.actor.getFlag('hm3', 'CharacterMancer') || false,
             isContainer: this.document.type === 'container',
             isCreature: this.document.type === 'creature',
+            isSkillImprovement: this.actor.skillImprovement,
             limited: this.document.limited,
             options: this.options,
             owner: isOwner

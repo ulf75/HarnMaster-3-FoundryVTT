@@ -577,7 +577,7 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
-                    <div class="item-controls-wide">
+                    <div class={{#if ../isSkillImprovement}}"item-controls-wide"{{else}}"item-controls"{{/if}}>
                         <a
                             class="item-control item-create active"
                             title="Create Physical Skill"
@@ -618,7 +618,8 @@
                         <div class="skill-ele item-detail">{{ system.masteryLevel }}</div>
                         <div class="skill-ele item-detail">{{ system.effectiveMasteryLevel }}</div>
                         <div class="skill-notes">{{ system.notes }}</div>
-                        <div class="item-controls-wide">
+                        <div class={{#if ../isSkillImprovement}}"item-controls-wide"{{else}}"item-controls"{{/if}}>
+                            {{#if ../isSkillImprovement}}
                             <a class="item-control item-improve" title="Improve Skill">
                                 {{#if system.improveFlag}}
                                 <i class="active fas fa-star"></i>
@@ -626,6 +627,7 @@
                                 <i class="far fa-star"></i>
                                 {{/if}}
                             </a>
+                            {{/if}}
                             <a class="item-control item-edit" title="Edit Skill">
                                 <i class="active fas fa-edit"></i>
                             </a>
@@ -656,7 +658,7 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
-                    <div class="item-controls-wide">
+                    <div class={{#if ../isSkillImprovement}}"item-controls-wide"{{else}}"item-controls"{{/if}}>
                         <a
                             class="item-control item-create active"
                             title="Create Communication Skill"
@@ -697,7 +699,8 @@
                         <div class="skill-ele item-detail">{{ system.masteryLevel }}</div>
                         <div class="skill-ele item-detail">{{ system.effectiveMasteryLevel }}</div>
                         <div class="skill-notes">{{ system.notes }}</div>
-                        <div class="item-controls-wide">
+                        <div class={{#if ../isSkillImprovement}}"item-controls-wide"{{else}}"item-controls"{{/if}}>
+                            {{#if ../isSkillImprovement}}
                             <a class="item-control item-improve" title="Improve Skill">
                                 {{#if system.improveFlag}}
                                 <i class="active fas fa-star"></i>
@@ -705,6 +708,7 @@
                                 <i class="far fa-star"></i>
                                 {{/if}}
                             </a>
+                            {{/if}}
                             <a class="item-control item-edit" title="Edit Skill">
                                 <i class="active fas fa-edit"></i>
                             </a>
@@ -735,7 +739,7 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
-                    <div class="item-controls-wide">
+                    <div class={{#if ../isSkillImprovement}}"item-controls-wide"{{else}}"item-controls"{{/if}}>
                         <a class="item-control item-create active" title="Create Combat Skill" data-type="skill" data-skilltype="Combat">
                             <i class="fas fa-plus"></i>
                             Add
@@ -772,7 +776,8 @@
                         <div class="skill-ele item-detail">{{ system.masteryLevel }}</div>
                         <div class="skill-ele item-detail">{{ system.effectiveMasteryLevel }}</div>
                         <div class="skill-notes">{{ system.notes }}</div>
-                        <div class="item-controls-wide">
+                        <div class={{#if ../isSkillImprovement}}"item-controls-wide"{{else}}"item-controls"{{/if}}>
+                            {{#if ../isSkillImprovement}}
                             <a class="item-control item-improve" title="Improve Skill">
                                 {{#if system.improveFlag}}
                                 <i class="active fas fa-star"></i>
@@ -780,6 +785,7 @@
                                 <i class="far fa-star"></i>
                                 {{/if}}
                             </a>
+                            {{/if}}
                             <a class="item-control item-edit" title="Edit Skill">
                                 <i class="active fas fa-edit"></i>
                             </a>
@@ -810,7 +816,7 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
-                    <div class="item-controls-wide">
+                    <div class={{#if ../isSkillImprovement}}"item-controls-wide"{{else}}"item-controls"{{/if}}>
                         <a class="item-control item-create active" title="Create Craft Skill" data-type="skill" data-skilltype="Craft">
                             <i class="fas fa-plus"></i>
                             Add
@@ -847,7 +853,8 @@
                         <div class="skill-ele item-detail">{{ system.masteryLevel }}</div>
                         <div class="skill-ele item-detail">{{ system.effectiveMasteryLevel }}</div>
                         <div class="skill-notes">{{ system.notes }}</div>
-                        <div class="item-controls-wide">
+                        <div class={{#if ../isSkillImprovement}}"item-controls-wide"{{else}}"item-controls"{{/if}}>
+                            {{#if ../isSkillImprovement}}
                             <a class="item-control item-improve" title="Improve Skill">
                                 {{#if system.improveFlag}}
                                 <i class="active fas fa-star"></i>
@@ -855,6 +862,7 @@
                                 <i class="far fa-star"></i>
                                 {{/if}}
                             </a>
+                            {{/if}}
                             <a class="item-control item-edit" title="Edit Skill">
                                 <i class="active fas fa-edit"></i>
                             </a>
@@ -885,7 +893,7 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
-                    <div class="item-controls-wide">
+                    <div class={{#if ../isSkillImprovement}}"item-controls-wide"{{else}}"item-controls"{{/if}}>
                         <a class="item-control item-create active" title="Create Magic Skill" data-type="skill" data-skilltype="Magic">
                             <i class="fas fa-plus"></i>
                             Add
@@ -922,7 +930,8 @@
                         <div class="skill-ele item-detail">{{ system.masteryLevel }}</div>
                         <div class="skill-ele item-detail">{{ system.effectiveMasteryLevel }}</div>
                         <div class="skill-notes">{{ system.notes }}</div>
-                        <div class="item-controls-wide">
+                        <div class={{#if ../isSkillImprovement}}"item-controls-wide"{{else}}"item-controls"{{/if}}>
+                            {{#if ../isSkillImprovement}}
                             <a class="item-control item-improve" title="Improve Skill">
                                 {{#if system.improveFlag}}
                                 <i class="active fas fa-star"></i>
@@ -930,6 +939,7 @@
                                 <i class="far fa-star"></i>
                                 {{/if}}
                             </a>
+                            {{/if}}
                             <a class="item-control item-edit" title="Edit Skill">
                                 <i class="active fas fa-edit"></i>
                             </a>
@@ -961,7 +971,7 @@
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-ele item-detail">Piety</div>
                     <div class="skill-notes item-detail">Notes</div>
-                    <div class="item-controls-wide">
+                    <div class={{#if ../isSkillImprovement}}"item-controls-wide"{{else}}"item-controls"{{/if}}>
                         <a class="item-control item-create active" title="Create Ritual Skill" data-type="skill" data-skilltype="Ritual">
                             <i class="fas fa-plus"></i>
                             Add
@@ -999,7 +1009,8 @@
                         <div class="skill-ele item-detail">{{ system.effectiveMasteryLevel }}</div>
                         <div class="skill-ele item-detail">{{ system.ritual.piety }}</div>
                         <div class="skill-notes">{{ system.notes }}</div>
-                        <div class="item-controls-wide">
+                        <div class={{#if ../isSkillImprovement}}"item-controls-wide"{{else}}"item-controls"{{/if}}>
+                            {{#if ../isSkillImprovement}}
                             <a class="item-control item-improve" title="Improve Skill">
                                 {{#if system.improveFlag}}
                                 <i class="active fas fa-star"></i>
@@ -1007,6 +1018,7 @@
                                 <i class="far fa-star"></i>
                                 {{/if}}
                             </a>
+                            {{/if}}
                             <a class="item-control item-edit" title="Edit Skill">
                                 <i class="active fas fa-edit"></i>
                             </a>
@@ -1664,6 +1676,7 @@
                         <div class="item-detail psionic-eml">{{ system.effectiveMasteryLevel }}</div>
                         <div class="item-detail psionic-notes">{{ system.notes }}</div>
                         <div class="item-controls-wide">
+                            {{#if ../isSkillImprovement}}
                             <a class="item-control item-improve" title="Improve Skill">
                                 {{#if system.improveFlag}}
                                 <i class="active fas fa-star"></i>
@@ -1671,6 +1684,7 @@
                                 <i class="far fa-star"></i>
                                 {{/if}}
                             </a>
+                            {{/if}}
                             <a class="item-control item-dumpdesc" title="Post Psionic Desc to Chat">
                                 <i class="active far fa-comment"></i>
                             </a>
