@@ -188,6 +188,7 @@ export class ActorHM3 extends Actor {
               <option value="default-humanoid">Default Humanoid</option>
               <option value="simplified-humanoid">Simplified Humanoid</option>
               <option value="default-horse">Default Horse</option>
+              <option value="default-dog">Default Dog</option>
             </select>
             </div>`
         });
@@ -277,6 +278,9 @@ export class ActorHM3 extends Actor {
                 case 'default-horse':
                     ActorHM3._createHorseLocations(updateData.items);
                     break;
+                case 'default-dog':
+                    ActorHM3._createDogLocations(updateData.items);
+                    break;
                 case 'default-humanoid':
                 default:
                     // Add standard armor locations
@@ -299,6 +303,9 @@ export class ActorHM3 extends Actor {
                     break;
                 case 'default-horse':
                     ActorHM3._createHorseLocations(updateData.items);
+                    break;
+                case 'default-dog':
+                    ActorHM3._createDogLocations(updateData.items);
                     break;
                 case 'default-humanoid':
                 default:
@@ -473,6 +480,24 @@ export class ActorHM3 extends Actor {
         items.push(ActorHM3._setupLocation('Left Hind Leg', 'Hind Leg, horse'));
         items.push(ActorHM3._setupLocation('Right Hind Leg', 'Hind Leg, horse'));
         items.push(ActorHM3._setupLocation('Tail', 'Tail, horse'));
+    }
+
+    /**
+     * Add armorlocation items to the items array for all of the locations for
+     * a dog
+     *
+     * @param {*} items Array of ItemData elements
+     */
+    static _createDogLocations(items) {
+        items.push(ActorHM3._setupLocation('Head', 'Head, dog'));
+        items.push(ActorHM3._setupLocation('Neck', 'Neck, dog'));
+        items.push(ActorHM3._setupLocation('Left Fore Leg', 'Fore Leg, dog'));
+        items.push(ActorHM3._setupLocation('Right Fore Leg', 'Fore Leg, dog'));
+        items.push(ActorHM3._setupLocation('Thorax', 'Thorax, dog'));
+        items.push(ActorHM3._setupLocation('Abdomen', 'Abdomen, dog'));
+        items.push(ActorHM3._setupLocation('Left Hind Leg', 'Hind Leg, dog'));
+        items.push(ActorHM3._setupLocation('Right Hind Leg', 'Hind Leg, dog'));
+        items.push(ActorHM3._setupLocation('Tail', 'Tail, dog'));
     }
 
     /**

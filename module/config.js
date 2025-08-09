@@ -487,6 +487,62 @@ HM3.injuryLocations = {
         isFumble: false,
         isAmputate: true,
         effectiveImpact: {ei1: 'M1', ei5: 'M1', ei9: 'S2', ei13: 'S3', ei17: 'G4'}
+    },
+    'Head, dog': {
+        impactType: 'head, dog',
+        probWeight: {'high': 150, 'mid': 150, 'low': 150},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'K4', ei17: 'K5'}
+    },
+    'Neck, dog': {
+        impactType: 'neck, dog',
+        probWeight: {'high': 100, 'mid': 100, 'low': 100},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: true,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'K4', ei17: 'K5'}
+    },
+    'Fore Leg, dog': {
+        impactType: 'fore leg, dog',
+        probWeight: {'high': 25, 'mid': 25, 'low': 25},
+        isStumble: true,
+        isFumble: false,
+        isAmputate: true,
+        effectiveImpact: {ei1: 'M1', ei5: 'M1', ei9: 'S2', ei13: 'S3', ei17: 'G4'}
+    },
+    'Thorax, dog': {
+        impactType: 'thorax, dog',
+        probWeight: {'high': 200, 'mid': 200, 'low': 200},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'G5'}
+    },
+    'Abdomen, dog': {
+        impactType: 'abdomen, dog',
+        probWeight: {'high': 350, 'mid': 350, 'low': 350},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: false,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'K4', ei17: 'K5'}
+    },
+    'Hind Leg, dog': {
+        impactType: 'hind leg, dog',
+        probWeight: {'high': 50, 'mid': 50, 'low': 50},
+        isStumble: true,
+        isFumble: false,
+        isAmputate: true,
+        effectiveImpact: {ei1: 'M1', ei5: 'S2', ei9: 'S3', ei13: 'G4', ei17: 'K4'}
+    },
+    'Tail, dog': {
+        impactType: 'tail, dog',
+        probWeight: {'high': 50, 'mid': 50, 'low': 50},
+        isStumble: false,
+        isFumble: false,
+        isAmputate: true,
+        effectiveImpact: {ei1: 'M1', ei5: 'M1', ei9: 'S2', ei13: 'S3', ei17: 'G4'}
     }
 };
 
