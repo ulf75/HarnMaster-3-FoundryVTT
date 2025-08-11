@@ -12,7 +12,8 @@
       "SDRs": "Skill Development Roll(s)",
       "SkillSpecialty": "Characters may begin selecting specialties when a skill reaches ML40.",
       "Toggle": "Skill Development Toggle",
-      "TrainingDlgHtml": "<div style=\"padding: 2px 0\"><label>Perform Skill Development Roll(s) (SDR):</label></div><div style=\"padding: 6px 0\"><input type=\"number\" id=\"sdr\" name=\"sdr\" value=\"10\" min=\"1\" max=\"100\" /></div>"
+      "TrainingDlgHtml": "<div style=\"padding: 2px 0\"><label>Perform Skill Development Roll(s) (SDR):</label></div><div style=\"padding: 6px 0\"><input type=\"number\" id=\"sdr\" name=\"sdr\" value=\"10\" min=\"1\" max=\"100\" /></div>",
+      "SteedSkills": "Steed  Initiative and Trample cannot be increased if they already equal or exceed Riding ML."
     },
     "speed-provider": {
       "jog": "Jog",

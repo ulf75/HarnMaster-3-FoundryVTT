@@ -1254,12 +1254,19 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
     async _onToggleMount(event) {
         event.preventDefault();
-        await this.actor.update({'system.mounted': !this.actor.system.mounted});
-        this.actor.prepareData();
-        const riding = this.actor.items.filter(
+
+        const riding = this.actor.items.find(
             (item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding')
         );
-        riding[0].sheet.render();
+
+        const steed = fromUuidSync(riding.system.actorUuid);
+        if (steed) {
+            if (!this.actor.system.mounted) {
+                Hooks.call('hm3.onMount', this.actor, steed);
+            } else {
+                Hooks.call('hm3.onUnmount', this.actor, steed);
+            }
+        }
     }
 
     /**

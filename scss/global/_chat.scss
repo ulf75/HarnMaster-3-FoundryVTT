@@ -199,12 +199,11 @@
 
         blockquote p {
             font-size: var(--font-size-15);
-            margin: 0;
         }
 
         blockquote p:empty {
             margin: 0;
-            min-height: 0;
+            min-height: unset;
         }
 
         blockquote h4 {

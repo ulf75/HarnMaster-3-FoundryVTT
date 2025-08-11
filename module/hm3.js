@@ -442,6 +442,35 @@ Hooks.on('preUpdateMacro', async (macro, updateData, options, userId) => {
     if (updateData.command) updateData.command = utility.beautify(updateData.command);
 });
 
+Hooks.on('hm3.onMount', async (actor, steed) => {
+    await actor.update({'system.mounted': true});
+    actor.prepareData();
+    const riding = actor.items.find((item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding'));
+    riding.sheet.render();
+
+    const rider = steed.items.find((item) => item.type === game.hm3.ItemType.MISCGEAR && item.name.includes('Rider'));
+    await rider?.delete();
+    await Item.create(
+        {
+            img: actor.img,
+            name: 'Rider/' + actor.name,
+            system: {actorUuid: actor.uuid, type: 'Rider'},
+            type: ItemType.MISCGEAR
+        },
+        {parent: steed}
+    );
+});
+
+Hooks.on('hm3.onUnmount', async (actor, steed) => {
+    await actor.update({'system.mounted': false});
+    actor.prepareData();
+    const riding = actor.items.find((item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding'));
+    riding.sheet.render();
+
+    const rider = steed.items.find((item) => item.type === game.hm3.ItemType.MISCGEAR && item.name.includes('Rider'));
+    await rider?.delete();
+});
+
 Hooks.on('dropCanvasData', async (canvas, data) => {
     if (data.type === 'Item') {
         const targetToken = canvas.tokens.placeables.find((t) => t.bounds.contains(data.x, data.y));
@@ -740,7 +769,7 @@ async function weaponBroke(itemUuid, diff) {
             'system.notes': ('Weapon is damaged! ' + item.system.notes).trim(),
             'system.wqModifier': (item.system.wqModifier || 0) - diff
         });
-        console.info(`HM3 | Weapon '${item.name}' from actor '${item.parent.name}' broke by -${diff}.`);
+        console.info(`HM3 | Weapon '${item.name}' from actor '${item.actor.name}' broke by -${diff}.`);
     }
 }
 
@@ -750,7 +779,7 @@ async function improveFlag(itemUuid, success) {
         const old = item.system.improveFlag;
         await item.update({'system.improveFlag': item.system.improveFlag + (success ? 1 : 2)});
         console.info(
-            `HM3 | Skill '${item.name}' from actor '${item.parent.name}' improvement flag increased by ${
+            `HM3 | Skill '${item.name}' from actor '${item.actor.name}' improvement flag increased by ${
                 success ? 1 : 2
             } from ${old} to ${item.system.improveFlag}.`
         );

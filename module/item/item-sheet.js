@@ -138,7 +138,7 @@ export class ItemSheetHM3 extends ItemSheet {
                 data.steeds = [
                     {key: '', label: `No Steed`},
                     ...steeds.map((steed) => {
-                        return {key: steed.uuid, label: steed.name};
+                        if (steed) return {key: steed.uuid, label: steed.name};
                     })
                 ];
                 data.isRiding = true;
@@ -150,10 +150,13 @@ export class ItemSheetHM3 extends ItemSheet {
                     if (steed) {
                         this.item.img = steed.img;
                         this.item.name += '/' + steed.name;
+                        this.item.update({'img': this.item.img, 'name': this.item.name});
+                        await steed.update({'system.ownerUuid': this.item.actor.uuid});
                     }
                 } else if (!this.item.system.actorUuid && this.item.img !== ridingImg) {
                     this.item.img = ridingImg;
                     this.item.name = 'Riding';
+                    this.item.update({'img': this.item.img, 'name': this.item.name});
                     this.item.actor.update({'system.mounted': false});
                 }
             }

@@ -1,6 +1,6 @@
 import {HM3} from '../config.js';
 import {DiceHM3} from '../hm3-dice.js';
-import {Condition, ItemType, SkillType} from '../hm3-types.js';
+import {ActorType, Condition, ItemType, SkillType} from '../hm3-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 
@@ -43,9 +43,8 @@ export class ActorHM3 extends Actor {
     }
 
     hasLinkedSteed() {
-        const riding = this.items.filter((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
-        if (riding.length === 1 && riding[0].system.actorUuid) return true;
-        return false;
+        const riding = this.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
+        return !!riding && !!riding.system.actorUuid;
     }
 
     getSteeds() {
@@ -1274,6 +1273,31 @@ export class ActorHM3 extends Actor {
     }
 
     async skillDevRoll(item, showChatMsg = true) {
+        if (this.type === ActorType.CREATURE && this.system.species.toLowerCase().includes('horse')) {
+            // Steed Initiative and Trample cannot be increased if they already equal or exceed Riding ML. (COMBAT 20)
+            if (['Initiative', 'Trample'].includes(item.name)) {
+                const rider = fromUuidSync(this.system.ownerUuid);
+                if (rider) {
+                    const riding = rider.items.find(
+                        (item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding')
+                    );
+                    if (item.system.masteryLevel >= riding.system.masteryLevel) {
+                        await game.hm3.GmSays({
+                            text:
+                                `<h4>${this.name}: ${item.name}</h4>` +
+                                game.i18n.localize('hm3.SDR.SteedSkills') +
+                                `<p style="font-size: smaller; font-variant: small-caps;">(${item.name} ML${item.system.masteryLevel} &ge; Riding ML${riding.system.masteryLevel})</p>`,
+                            source: 'Combat 20'
+                        });
+                        await item.update({
+                            'system.improveFlag': 0
+                        });
+                        return false;
+                    }
+                }
+            }
+        }
+
         const result = await DiceHM3.sdrRoll(item, showChatMsg);
 
         if (result?.sdrIncr) {
