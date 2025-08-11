@@ -1721,6 +1721,8 @@ export async function steedCommandRoll(noDialog = false, myActor = null) {
                 unhorsingRoll(noDialog, myActor, true);
             }
             callOnHooks('hm3.onSteedCommandRoll', actorInfo.actor, result, stdRollData);
+
+            utility.improveFlag(riding, {success: result.isSuccess});
         }
         return result;
     }
@@ -1785,6 +1787,8 @@ export async function unhorsingRoll(noDialog = false, myActor = null, autofail =
                 await game.hm3.GmSays({text: `<b>${token.name}</b> is thrown.`, source: 'Combat 24'});
             }
             callOnHooks('hm3.onUnhorsingRoll', actorInfo.actor, result, stdRollData);
+
+            utility.improveFlag(riding, {success: result.isSuccess});
         }
         return result;
     }
