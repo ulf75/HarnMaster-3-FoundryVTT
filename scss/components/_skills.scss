@@ -84,15 +84,32 @@
                 align-items: center;
 
                 .label {
-                    flex: 0 0 45px;
+                    flex: 0 0 50px;
+                    font-family: $font-primary;
+                    font-size: var(--font-size-15);
+                    font-variant: small-caps;
                     padding-left: 8px;
-                    font-family: $font-headers;
-                    font-weight: bold;
-                    font-size: 19px;
                 }
 
                 .value {
                     flex: 0 0 110px;
+                    font-size: 14px;
+                }
+            }
+
+            .skill-container {
+                align-items: center;
+
+                .label {
+                    flex: 0 0 110px;
+                    font-family: $font-primary;
+                    font-size: var(--font-size-15);
+                    font-variant: small-caps;
+                    padding-left: 8px;
+                }
+
+                .value {
+                    flex: 0 0 200px;
                     font-size: 14px;
                 }
             }

@@ -7,9 +7,9 @@
                 {{#if nameReadOnly}}disabled{{/if}} />
             </h1>
             {{#if container}}
-            <div class="flexrow">
-                <label>In Container:</label>
-                <select name="system.container">
+            <div class="skill-container flexrow">
+                <label for="system.container" class="label">In Container</label>
+                <select class="value" id="system.container" name="system.container">
                     {{selectOptions containers selected=idata.container valueAttr="key" labelAttr="label"}}
                 </select>
             </div>

@@ -2519,18 +2519,41 @@ section.highlight {
 
 .hm3.item .skill-header .header-fields .skill-type .label {
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 45px;
-    flex: 0 0 45px;
+    -ms-flex: 0 0 50px;
+    flex: 0 0 50px;
+    font-family: 'Amasis MT Medium';
+    font-size: var(--font-size-15);
+    font-variant: small-caps;
     padding-left: 8px;
-    font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
-    font-weight: bold;
-    font-size: 19px;
 }
 
 .hm3.item .skill-header .header-fields .skill-type .value {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 110px;
     flex: 0 0 110px;
+    font-size: 14px;
+}
+
+.hm3.item .skill-header .header-fields .skill-container {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.hm3.item .skill-header .header-fields .skill-container .label {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 110px;
+    flex: 0 0 110px;
+    font-family: 'Amasis MT Medium';
+    font-size: var(--font-size-15);
+    font-variant: small-caps;
+    padding-left: 8px;
+}
+
+.hm3.item .skill-header .header-fields .skill-container .value {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 200px;
+    flex: 0 0 200px;
     font-size: 14px;
 }
 
