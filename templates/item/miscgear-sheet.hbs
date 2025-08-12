@@ -1,98 +1,41 @@
 {{#> item_layout_partial container=true }}
 
-{{!-- Sheet Tab Navigation --}}
-<nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="properties">Properties</a>
-    <a class="item" data-tab="description">Description</a>
-    {{#if hasRwPermission}}
-    <a class="item" data-tab="effects">Effects</a>
-    {{/if}}
-</nav>
-
-{{!-- Sheet Body --}}
-<section class="sheet-body">
-    {{!-- Properties Tab --}}
-    <div class="tab properties" data-group="primary" data-tab="properties">
-        <div class="grid grid-fixed-row grid-3col">
-            <div class="resource">
-                <label class="resource-label">Quantity</label>
-                <input type="number" name="system.quantity" value="{{ idata.quantity }}" data-dtype="Number" />
-            </div>
-            <div class="resource">
-                <label class="resource-label">Weight</label>
-                <input type="number" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
-                {{#unless hasRwPermission}}disabled{{/unless}} />
-            </div>
-            <div class="resource">
-                <label class="resource-label">Value</label>
-                {{#if hasRwPermission}}
-                <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" />
-                {{else}}
-                {{#if idata.unknownValue}}
-                <input type="text" value="Unknown" data-dtype="String" disabled />
-                {{else}}
-                <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" disabled />
-                {{/if}}
-                {{/if}}
-            </div>
+{{!-- Properties Tab --}}
+<div class="tab properties" data-group="primary" data-tab="properties">
+    <div class="grid grid-fixed-row grid-3col">
+        <div class="resource">
+            <label class="resource-label">Quantity</label>
+            <input type="number" name="system.quantity" value="{{ idata.quantity }}" data-dtype="Number" />
         </div>
         <div class="resource">
-            <label class="resource-label">Source</label>
-            <input type="text" name="system.source" value="{{ idata.source }}" data-dtype="String"
+            <label class="resource-label">Weight</label>
+            <input type="number" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
             {{#unless hasRwPermission}}disabled{{/unless}} />
         </div>
         <div class="resource">
-            <label class="resource-label">Note</label>
-            <input type="text" name="system.notes" value="{{ idata.notes }}" data-dtype="String" />
+            <label class="resource-label">Value</label>
+            {{#if hasRwPermission}}
+            <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" />
+            {{else}}
+            {{#if idata.unknownValue}}
+            <input type="text" value="Unknown" data-dtype="String" disabled />
+            {{else}}
+            <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" disabled />
+            {{/if}}
+            {{/if}}
         </div>
-        {{> item_unknown_value_partial}}
-        {{> item_artifact_partial}}
     </div>
-
-    {{!-- Description Tab --}}
-    <div class="tab description" data-group="primary" data-tab="description">
-        {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
+    <div class="resource">
+        <label class="resource-label">Source</label>
+        <input type="text" name="system.source" value="{{ idata.source }}" data-dtype="String"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
     </div>
-
-    {{!-- Effects Tab --}}
-    <div class="tab effects" data-group="primary" data-tab="effects">
-        <ol class="effects-list">
-            <li class="effects-header flexrow">
-                <h3 class="effect-name flexrow">Effect</h3>
-                <div class="effect-duration">Duration</div>
-                <div class="effect-changes">Changes</div>
-                <a class="effect-controls effect-control" title="Add Effect" data-action="create">
-                    <span class="active">
-                        <i class="fas fa-plus"></i>
-                        Add
-                    </span>
-                </a>
-            </li>
-
-            <ol class="effect-list item-list">
-                {{#each effects as |effect id|}}
-                <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-id="{{ effect.id }}">
-                    <div class="effect-name flexrow">
-                        <div class="effect-image" style="background-image: url('{{ effect.img }}')"></div>
-                        <h4>{{ effect.name }}</h4>
-                    </div>
-                    <div class="effect-ele effect-duration">{{ effect.duration.label }}</div>
-                    <div class="effect-ele effect-changes">{{ effect.changes }}</div>
-                    <div class="effect-controls">
-                        <a class="effect-control" data-action="toggle">
-                            <i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i>
-                        </a>
-                        <a class="effect-control" data-action="edit">
-                            <i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i>
-                        </a>
-                        <a class="effect-control" data-action="delete">
-                            <i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i>
-                        </a>
-                    </div>
-                </li>
-                {{/each}}
-            </ol>
-        </ol>
+    <div class="resource">
+        <label class="resource-label">Note</label>
+        <input type="text" name="system.notes" value="{{ idata.notes }}" data-dtype="String" />
     </div>
-</section>
+    {{> item_unknown_value_partial}}
+    {{> item_artifact_partial}}
+</div>
+
 {{/item_layout_partial}}

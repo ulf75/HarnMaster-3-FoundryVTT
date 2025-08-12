@@ -1,97 +1,24 @@
-<form class="{{ cssClass }}" autocomplete="off">
-    <header class="sheet-header skill-header">
-        <div class="flexrow">
-            <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
-            <div class="header-fields flexcol">
-                <h1 class="charname">
-                    <input name="name" type="text" value="{{ item.name }}" placeholder="Name" />
-                </h1>
-                <div class="skill-type flexrow">
-                    <label for="system.type" class="label">Type</label>
-                    <select class="value" id="system.type" name="system.type">
-                        {{selectOptions config.traitTypes selected=idata.type valueAttr="key" labelAttr="key"}}
-                    </select>
-                </div>
-            </div>
-        </div>
-    </header>
+{{#> item_layout_partial nameReadOnly=(not hasRwPermission) list=config.traitTypes }}
 
-    {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="properties">Properties</a>
-        <a class="item" data-tab="description">Description</a>
-        {{#if hasRwPermission}}
-        <a class="item" data-tab="effects">Effects</a>
-        {{/if}}
-    </nav>
+{{!-- Properties Tab --}}
+<div class="tab properties" data-group="primary" data-tab="properties">
+    <div class="resource">
+        <label class="resource-label">Source</label>
+        <input type="text" name="system.source" value="{{ idata.source }}" data-dtype="String"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div class="resource">
+        <label class="resource-label">Note</label>
+        <input type="text" name="system.notes" value="{{ idata.notes }}" data-dtype="String" />
+    </div>
+    {{#if isPsycheTrait}}
+    <div class="resource">
+        <label class="resource-label">Severity</label>
+        <select name="system.severity">
+            {{selectOptions config.psycheSeverity selected=idata.severity valueAttr="key" labelAttr="label"}}
+        </select>
+    </div>
+    {{/if}}
+</div>
 
-    {{!-- Sheet Body --}}
-    <section class="sheet-body skill-body">
-        {{!-- Properties Tab --}}
-        <div class="tab properties" data-group="primary" data-tab="properties">
-            <div class="resource">
-                <label class="resource-label">Source</label>
-                <input type="text" name="system.source" value="{{ idata.source }}" data-dtype="String"
-                {{#unless hasRwPermission}}disabled{{/unless}} />
-            </div>
-            <div class="resource">
-                <label class="resource-label">Note</label>
-                <input type="text" name="system.notes" value="{{ idata.notes }}" data-dtype="String" />
-            </div>
-            {{#if isPsycheTrait}}
-            <div class="resource">
-                <label class="resource-label">Severity</label>
-                <select name="system.severity">
-                    {{selectOptions config.psycheSeverity selected=idata.severity valueAttr="key" labelAttr="label"}}
-                </select>
-            </div>
-            {{/if}}
-        </div>
-
-        {{!-- Description Tab --}}
-        <div class="tab description" data-group="primary" data-tab="description">
-            {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
-        </div>
-
-        {{!-- Effects Tab --}}
-        <div class="tab effects" data-group="primary" data-tab="effects">
-            <ol class="effects-list">
-                <li class="effects-header flexrow">
-                    <h3 class="effect-name flexrow">Effect</h3>
-                    <div class="effect-duration">Duration</div>
-                    <div class="effect-changes">Changes</div>
-                    <a class="effect-controls effect-control" title="Add Effect" data-action="create">
-                        <span class="active">
-                            <i class="fas fa-plus"></i>
-                            Add
-                        </span>
-                    </a>
-                </li>
-
-                <ol class="effect-list item-list">
-                    {{#each effects as |effect id|}}
-                    <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-id="{{ effect.id }}">
-                        <div class="effect-name flexrow">
-                            <div class="effect-image" style="background-image: url('{{ effect.img }}')"></div>
-                            <h4>{{ effect.name }}</h4>
-                        </div>
-                        <div class="effect-ele effect-duration">{{ effect.duration.label }}</div>
-                        <div class="effect-ele effect-changes">{{ effect.changes }}</div>
-                        <div class="effect-controls">
-                            <a class="effect-control" data-action="toggle">
-                                <i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i>
-                            </a>
-                            <a class="effect-control" data-action="edit">
-                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i>
-                            </a>
-                            <a class="effect-control" data-action="delete">
-                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i>
-                            </a>
-                        </div>
-                    </li>
-                    {{/each}}
-                </ol>
-            </ol>
-        </div>
-    </section>
-</form>
+{{/item_layout_partial}}

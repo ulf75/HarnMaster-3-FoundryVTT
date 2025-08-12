@@ -291,6 +291,10 @@ Hooks.once('init', async function () {
         return str.toLowerCase();
     });
 
+    Handlebars.registerHelper('not', function (obj) {
+        return !obj;
+    });
+
     Handlebars.registerPartial({
         item_artifact_partial: await (await fetch('systems/hm3/templates/item/partials/artifact_partial.hbs')).text(),
         item_layout_partial: await (await fetch('systems/hm3/templates/item/partials/structure_partial.hbs')).text(),
