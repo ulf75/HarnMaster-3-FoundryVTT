@@ -53,15 +53,6 @@
             {{/if}}
         </div>
     </div>
-    <div class="resource" id="missilegear-source">
-        <label class="resource-label">Source</label>
-        <input type="text" name="system.source" value="{{ idata.source }}" data-dtype="String"
-        {{#unless hasRwPermission}}disabled{{/unless}} />
-    </div>
-    <div class="resource" id="missilegear-notes">
-        <label class="resource-label">Note</label>
-        <input type="text" name="system.notes" value="{{ idata.notes }}" data-dtype="String" />
-    </div>
     <ol class="range-table">
         <li class="flexrow range-header" id="missilegear-range-header">
             <div class="range-label"></div>
@@ -129,6 +120,7 @@
             </div>
         </li>
     </ol>
+    {{> item_standard_partial}}
     {{> item_unknown_value_partial}}
     {{> item_artifact_partial}}
 </div>

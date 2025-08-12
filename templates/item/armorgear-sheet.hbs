@@ -43,15 +43,6 @@
             {{#unless hasRwPermission}}disabled{{/unless}} />
         </div>
     </div>
-    <div class="resource" id="armorgear-source">
-        <label class="resource-label">Source</label>
-        <input type="text" name="system.source" value="{{ idata.source }}" data-dtype="String"
-        {{#unless hasRwPermission}}disabled{{/unless}} />
-    </div>
-    <div class="resource" id="armorgear-note">
-        <label class="resource-label">Note</label>
-        <input type="text" name="system.notes" value="{{ idata.notes }}" data-dtype="String" />
-    </div>
     <fieldset class="armorgear-protection">
         <legend>Protection</legend>
         <div class="grid grid-row grid-4col">
@@ -110,6 +101,7 @@
             {{/each}}
         </ol>
     </fieldset>
+    {{> item_standard_partial}}
     {{> item_unknown_value_partial}}
     {{> item_artifact_partial}}
 </div>

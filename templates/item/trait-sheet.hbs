@@ -2,15 +2,6 @@
 
 {{!-- Properties Tab --}}
 <div class="tab properties" data-group="primary" data-tab="properties">
-    <div class="resource">
-        <label class="resource-label">Source</label>
-        <input type="text" name="system.source" value="{{ idata.source }}" data-dtype="String"
-        {{#unless hasRwPermission}}disabled{{/unless}} />
-    </div>
-    <div class="resource">
-        <label class="resource-label">Note</label>
-        <input type="text" name="system.notes" value="{{ idata.notes }}" data-dtype="String" />
-    </div>
     {{#if isPsycheTrait}}
     <div class="resource">
         <label class="resource-label">Severity</label>
@@ -19,6 +10,7 @@
         </select>
     </div>
     {{/if}}
+    {{> item_standard_partial}}
 </div>
 
 {{/item_layout_partial}}

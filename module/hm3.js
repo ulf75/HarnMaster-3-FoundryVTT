@@ -297,7 +297,11 @@ Hooks.once('init', async function () {
 
     Handlebars.registerPartial({
         item_artifact_partial: await (await fetch('systems/hm3/templates/item/partials/artifact_partial.hbs')).text(),
+        item_esoteric_combat_partial: await (
+            await fetch('systems/hm3/templates/item/partials/esoteric_combat_partial.hbs')
+        ).text(),
         item_layout_partial: await (await fetch('systems/hm3/templates/item/partials/structure_partial.hbs')).text(),
+        item_standard_partial: await (await fetch('systems/hm3/templates/item/partials/standard_partial.hbs')).text(),
         item_unknown_value_partial: await (
             await fetch('systems/hm3/templates/item/partials/unknown_value_partial.hbs')
         ).text()

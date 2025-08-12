@@ -1,6 +1,21 @@
+.resource-block {
+    margin: 15px 0px;
+}
+
+.resource {
+    margin: 3px 0px;
+}
+
 .resource-label {
     font-weight: bold;
+    margin: 2px 0px;
     text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.resource-span {
+    overflow: hidden;
+    vertical-align: middle;
 }
 
 .artifact {

@@ -1195,9 +1195,24 @@ section.highlight {
     padding: 0 8px;
 }
 
+.hm3 .resource-block {
+    margin: 15px 0px;
+}
+
+.hm3 .resource {
+    margin: 3px 0px;
+}
+
 .hm3 .resource-label {
     font-weight: bold;
+    margin: 2px 0px;
     text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.hm3 .resource-span {
+    overflow: hidden;
+    vertical-align: middle;
 }
 
 .hm3 .artifact {
