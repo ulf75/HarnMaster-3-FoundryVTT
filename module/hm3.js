@@ -297,6 +297,9 @@ Hooks.once('init', async function () {
 
     Handlebars.registerPartial({
         item_artifact_partial: await (await fetch('systems/hm3/templates/item/partials/artifact_partial.hbs')).text(),
+        item_artifact_power_partial: await (
+            await fetch('systems/hm3/templates/item/partials/artifact_power_partial.hbs')
+        ).text(),
         item_esoteric_combat_partial: await (
             await fetch('systems/hm3/templates/item/partials/esoteric_combat_partial.hbs')
         ).text(),

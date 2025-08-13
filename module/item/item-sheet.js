@@ -202,8 +202,7 @@ export class ItemSheetHM3 extends ItemSheet {
             if (data.idata.arcane.type === 'Minor' && !data.idata.arcane.minor) {
                 data.idata.arcane.minor = {power: 'None', duration: 'Permanent', isOwnerAware: false};
                 updateData['system.arcane.minor'] = data.idata.arcane.minor;
-            }
-            if (data.idata.arcane.type === 'Major' && !data.idata.arcane.major) {
+            } else if (data.idata.arcane.type === 'Major' && !data.idata.arcane.major) {
                 data.idata.arcane.major = {
                     power1: {power: 'None', duration: 'Permanent', isOwnerAware: false},
                     power2: {power: 'None', duration: 'Permanent', isOwnerAware: false},
@@ -211,26 +210,24 @@ export class ItemSheetHM3 extends ItemSheet {
                     power4: {power: 'None', duration: 'Permanent', isOwnerAware: false},
                     power5: {power: 'None', duration: 'Permanent', isOwnerAware: false}
                 };
-                // data.idata.arcane.major.powers.fill({power: 'None', duration: 'Permanent', isOwnerAware: false});
                 updateData['system.arcane.major'] = data.idata.arcane.major;
             }
 
             if (data.idata.arcane.type === 'Minor' && data.idata.arcane.major) {
-                delete data.idata.arcane.major;
+                // Reset data
                 updateData['system.arcane.-=major'] = null;
-            }
-            if (data.idata.arcane.type === 'Major' && data.idata.arcane.minor) {
-                delete data.idata.arcane.minor;
+                updateData['system.arcane.-=needsAttunement'] = null;
+                updateData['system.arcane.-=isAttuned'] = null;
+                updateData['system.arcane.charges'] = -1;
+                updateData['system.arcane.ego'] = 0;
+            } else if (data.idata.arcane.type === 'Major' && data.idata.arcane.minor) {
+                // Reset data
                 updateData['system.arcane.-=minor'] = null;
             }
-            if (data.idata.arcane.minorPower) {
-                delete data.idata.arcane.minorPower;
-                updateData['system.arcane.-=minorPower'] = null;
-            }
-            if (data.idata.arcane.majorPower) {
-                delete data.idata.arcane.majorPower;
-                updateData['system.arcane.-=majorPower'] = null;
-            }
+
+            if (data.idata.arcane.minorPower) updateData['system.arcane.-=minorPower'] = null;
+            if (data.idata.arcane.majorPower) updateData['system.arcane.-=majorPower'] = null;
+
             if (!foundry.utils.isEmpty(updateData)) {
                 await this.object.update(updateData, {enforceTypes: false});
             }

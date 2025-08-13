@@ -2,9 +2,9 @@
 {{#if isGM}}
 <div class="resource-block">
     <div class="resource">
-        <label class="resource-label">Attack Option</label>
+        <label for="system.isEquipped" class="resource-label">Attack Option</label>
         <span class="resource-span">
-            <input type="checkbox" name="system.isEquipped" {{ checked idata.isEquipped }} />
+            <input type="checkbox" id="system.isEquipped" name="system.isEquipped" {{ checked idata.isEquipped }} />
         </span>
     </div>
 </div>
