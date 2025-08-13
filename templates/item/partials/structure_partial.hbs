@@ -31,6 +31,12 @@
         </div>
     </header>
 
+    {{#if idata.arcane.isArtifact}}
+    {{#if (or idata.arcane.isOwnerAware isGM)}}
+    <div class="flexrow item-artifact">&raquo; {{ idata.arcane.type }} Artifact &laquo;</div>
+    {{/if}}
+    {{/if}}
+
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="item" data-tab="properties">Properties</a>

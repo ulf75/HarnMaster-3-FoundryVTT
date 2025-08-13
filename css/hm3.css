@@ -1223,6 +1223,14 @@ section.highlight {
     padding-top: 5px;
 }
 
+.hm3 .item-artifact {
+    color: #943840;
+    font-size: var(--font-size-16);
+    font-variant: small-caps;
+    margin: 6px 20px;
+    vertical-align: middle;
+}
+
 .hm3 .tabs {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 15px;

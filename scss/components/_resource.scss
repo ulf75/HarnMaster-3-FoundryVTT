@@ -23,3 +23,11 @@
     align-items: center;
     padding-top: 5px;
 }
+
+.item-artifact {
+    color: $highlight-2;
+    font-size: var(--font-size-16);
+    font-variant: small-caps;
+    margin: 6px 20px;
+    vertical-align: middle;
+}
