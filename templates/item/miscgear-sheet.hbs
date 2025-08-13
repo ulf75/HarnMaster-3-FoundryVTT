@@ -4,23 +4,23 @@
 <div class="tab properties" data-group="primary" data-tab="properties">
     <div class="grid grid-fixed-row grid-3col">
         <div class="resource">
-            <label class="resource-label">Quantity</label>
-            <input type="number" name="system.quantity" value="{{ idata.quantity }}" data-dtype="Number" />
+            <label for="system.quantity" class="resource-label">Quantity</label>
+            <input type="number" id="system.quantity" name="system.quantity" value="{{ idata.quantity }}" data-dtype="Number" />
         </div>
         <div class="resource">
-            <label class="resource-label">Weight</label>
-            <input type="number" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
+            <label for="system.weight" class="resource-label">Weight</label>
+            <input type="number" id="system.weight" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
             {{#unless hasRwPermission}}disabled{{/unless}} />
         </div>
         <div class="resource">
-            <label class="resource-label">Value</label>
+            <label for="system.value" class="resource-label">Value</label>
             {{#if hasRwPermission}}
-            <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" />
+            <input type="number" id="system.value" name="system.value" value="{{ idata.value }}" data-dtype="Number" />
             {{else}}
             {{#if idata.unknownValue}}
-            <input type="text" value="Unknown" data-dtype="String" disabled />
+            <input type="text" id="system.value" value="Unknown" data-dtype="String" disabled />
             {{else}}
-            <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" disabled />
+            <input type="number" id="system.value" name="system.value" value="{{ idata.value }}" data-dtype="Number" disabled />
             {{/if}}
             {{/if}}
         </div>

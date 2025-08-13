@@ -1,25 +1,25 @@
 <form>
     <div class="form-group">
-        <label>Target:</label>
-        <input readonly type="text" name="target" value="{{ target }}" />
+        <label for="target">Target:</label>
+        <input type="text" id="target" name="target" value="{{ target }}" readonly />
     </div>
 
     <div class="form-group">
-        <label>Jump:</label>
-        <select name="jumps">
+        <label for="jumps">Jump:</label>
+        <select id="jumps" name="jumps">
             {{selectOptions jumps selected=jump valueAttr='key' labelAttr='key'}}
         </select>
     </div>
 
     <div class="form-group">
-        <label>Start:</label>
-        <select name="starts">
+        <label for="starts">Start:</label>
+        <select id="starts" name="starts">
             {{selectOptions starts selected=start valueAttr='key' labelAttr='label'}}
         </select>
     </div>
 
     <div class="form-group">
-        <label>Modifier:</label>
-        <input type="text" name="modifier" value="{{ modifier }}" />
+        <label for="modifier">Modifier:</label>
+        <input type="text" id="modifier" name="modifier" value="{{ modifier }}" />
     </div>
 </form>

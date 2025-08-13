@@ -3,23 +3,25 @@
     {{#if strictMode}}
     <input
         type="checkbox"
+        id="system.unknownValue"
         name="system.unknownValue"
         value="{{ idata.unknownValue }}"
         data-dtype="Boolean"
         {{checked
         idata.unknownValue}} />
-    <label class="resource-label">Unknown Value</label>
+    <label for="system.unknownValue" class="resource-label">Unknown Value</label>
     If checked, the value is not displayed to the players.
     {{else}}
     <input
         type="checkbox"
+        id="system.unknownValue"
         name="system.unknownValue"
         value="{{ idata.unknownValue }}"
         data-dtype="Boolean"
         {{checked
         idata.unknownValue}}
         disabled />
-    <label class="resource-label">Unknown Value</label>
+    <label for="system.unknownValue" class="resource-label">Unknown Value</label>
     Only available, if strict mode is turned on.
     {{/if}}
 </div>

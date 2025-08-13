@@ -1,7 +1,7 @@
 <form>
     <div class="form-group">
-        <label>Aim:</label>
-        <select name="aim">
+        <label for="aim">Aim:</label>
+        <select id="aim" name="aim">
             <option value="Mid">Mid</option>
             <option value="High">High</option>
             <option value="Low">Low</option>
@@ -9,8 +9,8 @@
     </div>
 
     <div class="form-group">
-        <label>Location:</label>
-        <select name="location">
+        <label for="location">Location:</label>
+        <select id="location" name="location">
             {{#select location}}
             {{#each hitLocations}}
             <option value="{{ this }}">{{ this }}</option>

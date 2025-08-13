@@ -1204,9 +1204,10 @@ section.highlight {
 }
 
 .hm3 .resource-label {
+    font-size: var(--font-size-15);
+    font-variant: small-caps;
     font-weight: bold;
     margin: 2px 0px;
-    text-transform: uppercase;
     vertical-align: middle;
 }
 
@@ -1216,10 +1217,10 @@ section.highlight {
 }
 
 .hm3 .artifact {
-    padding-top: 5px;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
+    padding-top: 5px;
 }
 
 .hm3 .tabs {
@@ -1245,7 +1246,7 @@ section.highlight {
     border-bottom: 3px solid #454545;
     color: #454545;
     font-size: 23px;
-    font-weight: 550;
+    font-weight: bold;
     text-shadow: none;
 }
 
@@ -2539,6 +2540,7 @@ section.highlight {
     font-family: 'Amasis MT Medium';
     font-size: var(--font-size-15);
     font-variant: small-caps;
+    font-weight: bold;
     padding-left: 8px;
 }
 
@@ -2562,6 +2564,7 @@ section.highlight {
     font-family: 'Amasis MT Medium';
     font-size: var(--font-size-15);
     font-variant: small-caps;
+    font-weight: bold;
     padding-left: 8px;
 }
 

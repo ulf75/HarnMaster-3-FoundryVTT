@@ -35,23 +35,23 @@
     {{/if}}
 
     <div class="form-group">
-        <label>Range (Max Distance):</label>
-        <select name="range">
+        <label for="range">Range (Max Distance):</label>
+        <select id="range" name="range">
             {{selectOptions ranges selected=defaultRange valueAttr='key' labelAttr='label'}}
         </select>
     </div>
     {{/if}}
 
     <div class="form-group">
-        <label>Aim:</label>
-        <select name="aim">
+        <label for="aim">Aim:</label>
+        <select id="aim" name="aim">
             {{selectOptions aimLocations selected=defaultAim valueAttr='key' labelAttr='label'}}
         </select>
     </div>
 
     <div class="form-group">
-        <label>Additional {{ type }} Modifier:</label>
-        <input type="number" name="addlModifier" value="{{ defaultModifier }}" />
+        <label for="addlModifier">Additional {{ type }} Modifier:</label>
+        <input type="number" id="addlModifier" name="addlModifier" value="{{ defaultModifier }}" />
     </div>
 
     {{#if unarmed}}

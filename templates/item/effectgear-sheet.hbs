@@ -5,19 +5,27 @@
     {{> item_standard_partial}}
     {{#if isGM}}
     <div class="resource artifact flexrow">
-        <input type="checkbox" name="system.hidden" value="{{ idata.hidden }}" data-dtype="Boolean" {{checked idata.hidden}} />
-        <label class="resource-label">Hidden</label>
+        <input
+            type="checkbox"
+            id="system.hidden"
+            name="system.hidden"
+            value="{{ idata.hidden }}"
+            data-dtype="Boolean"
+            {{checked
+            idata.hidden}} />
+        <label for="system.hidden" class="resource-label">Hidden</label>
         If checked, the effect is not displayed to the players.
     </div>
     <div class="resource artifact flexrow">
         <input
             type="checkbox"
+            id="system.selfDestroy"
             name="system.selfDestroy"
             value="{{ idata.selfDestroy }}"
             data-dtype="Boolean"
             {{checked
             idata.selfDestroy}} />
-        <label class="resource-label">Self Destroy</label>
+        <label for="system.selfDestroy" class="resource-label">Self Destroy</label>
         If checked, the item & effect will be deleted after completion.
     </div>
     {{/if}}

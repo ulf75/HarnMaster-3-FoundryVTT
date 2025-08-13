@@ -1,16 +1,16 @@
 <form id="document-create actor-create" autocomplete="off">
     <div class="form-group">
-        <label>{{localize 'Name'}}</label>
+        <label for="name">{{localize 'Name'}}</label>
         <div class="form-fields">
-            <input type="text" name="name" placeholder="{{ name }}" required />
+            <input type="text" id="name" name="name" placeholder="{{ name }}" required />
         </div>
     </div>
 
     {{#if hasTypes}}
     <div class="form-group">
-        <label>{{localize 'Type'}}</label>
+        <label for="type">{{localize 'Type'}}</label>
         <div class="form-fields">
-            <select name="type">
+            <select id="type" name="type">
                 {{selectOptions types selected=type}}
             </select>
         </div>
@@ -19,9 +19,9 @@
 
     {{#if hasFolders}}
     <div class="form-group">
-        <label>{{localize 'DOCUMENT.Folder'}}</label>
+        <label for="folder">{{localize 'DOCUMENT.Folder'}}</label>
         <div class="form-fields">
-            <select name="folder">
+            <select id="folder" name="folder">
                 {{selectOptions folders selected=folder blank='' valueAttr='id' labelAttr='name'}}
             </select>
         </div>

@@ -8,7 +8,7 @@
     </div>
     <div class="form-group">
         <label for="range">Range (&plus; Impact):</label>
-        <select name="range">
+        <select id="range" name="range">
             {{#select defaultRange}}
             {{#each ranges as |value key|}}
             {{#if (eq key weaponAspect)}}
@@ -21,7 +21,7 @@
         </select>
     </div>
     <div class="form-group">
-        <label>Additional Weapon Impact:</label>
-        <input type="text" name="addlImpact" value="0" />
+        <label for="addlImpact">Additional Weapon Impact:</label>
+        <input type="text" id="addlImpact" name="addlImpact" value="0" />
     </div>
 </form>

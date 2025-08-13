@@ -1,17 +1,12 @@
 <form>
-    <!-- <div class="form-group">
-        <label>Target:</label>
-        <input readonly type="text" name="target" value="{{target}}" />
-    </div> -->
-
     <div class="form-group">
-        <label>Height [ft]:</label>
-        <input type="text" name="height" value="{{ height }}" />
+        <label for="height">Height [ft]:</label>
+        <input type="text" id="height" name="height" value="{{ height }}" />
     </div>
 
     <div class="form-group">
-        <label>Landing surface:</label>
-        <select name="surfaces">
+        <label for="surfaces">Landing surface:</label>
+        <select id="surfaces" name="surfaces">
             {{selectOptions surfaces selected=surface valueAttr='key' labelAttr='label'}}
         </select>
     </div>
@@ -21,19 +16,19 @@
         one’s head.
     </p>
     <div class="form-group">
-        <label>Clear fall:</label>
-        <input type="checkbox" name="clear" value="{{ clear }}" data-dtype="Boolean" checked />
+        <label for="clear">Clear fall:</label>
+        <input type="checkbox" id="clear" name="clear" value="{{ clear }}" data-dtype="Boolean" checked />
     </div>
     <div class="form-group">
-        <label>Skill:</label>
-        <select name="skills">
+        <label for="skills">Skill:</label>
+        <select id="skills" name="skills">
             {{selectOptions skills selected=skill valueAttr='key' labelAttr='key'}}
         </select>
     </div>
 
     <div class="form-group">
-        <label>Modifier:</label>
-        <input type="text" name="modifier" value="{{ modifier }}" />
+        <label for="modifier">Modifier:</label>
+        <input type="text" id="modifier" name="modifier" value="{{ modifier }}" />
     </div>
 
     <p>
@@ -41,7 +36,7 @@
         landing impact.
     </p>
     <div class="form-group">
-        <label>Grabbing:</label>
-        <input type="checkbox" name="grabbing" value="{{ grabbing }}" data-dtype="Boolean" />
+        <label for="grabbing">Grabbing:</label>
+        <input type="checkbox" id="grabbing" name="grabbing" value="{{ grabbing }}" data-dtype="Boolean" />
     </div>
 </form>

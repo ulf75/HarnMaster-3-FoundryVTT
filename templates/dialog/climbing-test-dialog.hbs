@@ -5,22 +5,22 @@
     </div>
 
     <div class="form-group">
-        <label>Difficulty:</label>
-        <select name="difficulties">
+        <label for="difficulties">Difficulty:</label>
+        <select id="difficulties" name="difficulties">
             {{selectOptions difficulties selected=difficulty valueAttr='key' labelAttr='key'}}
         </select>
     </div>
 
     <p>If the character has good climbing gear (rope and grappling hook) increase EML by 10–20 points.</p>
     <div class="form-group">
-        <label>Climbing Gear:</label>
-        <select name="gears">
+        <label for="gears">Climbing Gear:</label>
+        <select id="gears" name="gears">
             {{selectOptions gears selected=gear valueAttr='key' labelAttr='label'}}
         </select>
     </div>
 
     <div class="form-group">
-        <label>Modifier:</label>
-        <input type="text" name="modifier" value="{{ modifier }}" />
+        <label for="modifier">Modifier:</label>
+        <input type="text" id="modifier" name="modifier" value="{{ modifier }}" />
     </div>
 </form>

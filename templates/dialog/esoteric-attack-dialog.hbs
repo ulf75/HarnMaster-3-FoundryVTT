@@ -1,8 +1,8 @@
 <form>
     {{#if isEsotericCombat}}
     <div class="form-group">
-        <label>Type:</label>
-        <select name="mentalConflictType">
+        <label for="mentalConflictType">Type:</label>
+        <select id="mentalConflictType" name="mentalConflictType">
             {{selectOptions mentalConflictTypes selected=mentalConflictType valueAttr='key' labelAttr='label'}}
         </select>
     </div>
@@ -20,7 +20,7 @@
     {{/if}}
 
     <div class="form-group">
-        <label>Additional {{ type }} Modifier:</label>
-        <input type="number" name="addlModifier" value="{{ defaultModifier }}" />
+        <label for="addlModifier">Additional {{ type }} Modifier:</label>
+        <input type="number" id="addlModifier" name="addlModifier" value="{{ defaultModifier }}" />
     </div>
 </form>

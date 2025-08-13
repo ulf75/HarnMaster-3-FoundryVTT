@@ -2,24 +2,26 @@
 
 {{!-- Properties Tab --}}
 <div class="tab properties" data-group="primary" data-tab="properties">
-    <div class="grid grid-fixed-row grid-2col">
+    <div class="resource-block">
         <div class="resource">
-            <label class="resource-label" for="system.diety">Diety</label>
+            <label for="system.diety" class="resource-label">Diety</label>
             {{#if hasRitualSkills}}
-            <select class="resource-value" name="system.diety" data-dtype="String">
-                {{#select idata.diety}}
-                {{#each dieties}}
-                <option value="{{ this }}">{{ this }}</option>
-                {{/each}}
-                {{/select}}
-            </select>
+            <span class="resource-span">
+                <select class="resource-value" id="system.diety" name="system.diety" data-dtype="String">
+                    {{#select idata.diety}}
+                    {{#each dieties}}
+                    <option value="{{ this }}">{{ this }}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </span>
             {{else}}
-            <input type="text" name="system.diety" value="{{ idata.diety }}" data-dtype="String" />
+            <input type="text" id="system.diety" name="system.diety" value="{{ idata.diety }}" data-dtype="String" />
             {{/if}}
         </div>
         <div class="resource">
-            <label class="resource-label">Circle</label>
-            <input type="number" name="system.circle" value="{{ idata.circle }}" data-dtype="Number" />
+            <label for="system.circle" class="resource-label">Circle</label>
+            <input type="number" id="system.circle" name="system.circle" value="{{ idata.circle }}" data-dtype="Number" />
         </div>
     </div>
     {{> item_standard_partial}}
