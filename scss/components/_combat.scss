@@ -31,15 +31,20 @@
 
             .combat-stat-label {
                 flex: 0 0 55px;
+                font-size: var(--font-size-15);
+                font-variant: small-caps;
                 font-weight: bold;
-                text-transform: uppercase;
             }
 
             .combat-stat-value {
-                flex: 0 0 40px;
                 background: #bbb;
+                flex: 0 0 40px;
                 padding: 2px;
                 text-align: center;
+            }
+
+            a {
+                text-wrap-mode: nowrap;
             }
 
             a.disabled {

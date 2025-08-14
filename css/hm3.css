@@ -1533,17 +1533,22 @@ section.highlight {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 55px;
     flex: 0 0 55px;
+    font-size: var(--font-size-15);
+    font-variant: small-caps;
     font-weight: bold;
-    text-transform: uppercase;
 }
 
 .hm3 .combat .combat-stats .combat-stat .combat-stat-value {
+    background: #bbb;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 40px;
     flex: 0 0 40px;
-    background: #bbb;
     padding: 2px;
     text-align: center;
+}
+
+.hm3 .combat .combat-stats .combat-stat a {
+    text-wrap-mode: nowrap;
 }
 
 .hm3 .combat .combat-stats .combat-stat a.disabled {
@@ -3187,8 +3192,6 @@ section.highlight {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 60px;
     flex: 0 0 60px;
-    font-weight: bold;
-    text-transform: uppercase;
     padding-right: 5px;
 }
 

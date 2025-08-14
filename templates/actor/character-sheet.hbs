@@ -1146,18 +1146,21 @@
             </div>
             {{#if hasSteed}}
             <div class="items-list combat-stats grid grid-fixed-row grid-5col">
+         {{#if (not adata.mounted)}}
                 <div class="combat-stat flexrow" id="combat-mount">
                     <div class="item-dice"></div>
                     <label class="combat-stat-label tooltip">
-                        <a class="mount-action{{#if adata.mounted}} disabled{{/if}}" title="Mount">Mount</a>
+                        <a class="mount-action" title="Mount">Mount</a>
                     </label>
                 </div>
+                {{else}}
                 <div class="combat-stat flexrow" id="combat-dismount">
                     <div class="item-dice"></div>
                     <label class="combat-stat-label tooltip">
-                        <a class="mount-action{{#unless adata.mounted}} disabled{{/unless}}" title="Dismount">Dismount</a>
+                        <a class="mount-action" title="Dismount">Dismount</a>
                     </label>
                 </div>
+                {{/if}}
                 <div class="combat-stat flexrow" id="combat-steedcommandroll">
                     <div class="item-dice">
                         <i class="active fas fa-dice-d20"></i>

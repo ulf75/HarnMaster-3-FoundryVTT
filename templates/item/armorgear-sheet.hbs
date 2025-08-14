@@ -24,45 +24,44 @@
             {{/if}}
             {{/if}}
         </div>
-        <div></div>
-        <div></div>
-        <div></div>
+    </div>
+    <div class="grid grid-fixed-row grid-3col">
         <div class="resource" id="armorgear-quality">
             <label class="resource-label">Armor Quality</label>
-            <input type="number" name="system.armorQuality" value="{{ idata.armorQuality }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
+            <input class="value" type="number" id="system.armorQuality" name="system.armorQuality" value="{{ idata.armorQuality }}"
+            data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
         </div>
         <div class="resource" id="armorgear-material">
-            <label class="resource-label">Material</label>
-            <input type="text" name="system.material" value="{{ idata.material }}" data-dtype="String"
+            <label for="system.material" class="resource-label">Material</label>
+            <input class="value" type="text" id="system.material" name="system.material" value="{{ idata.material }}" data-dtype="String"
             {{#unless hasRwPermission}}disabled{{/unless}} />
         </div>
         <div class="resource" id="armorgear-size">
             <label class="resource-label">Size</label>
-            <input type="number" name="system.size" value="{{ idata.size }}" data-dtype="Number"
+            <input class="value" type="number" name="system.size" value="{{ idata.size }}" data-dtype="Number"
             {{#unless hasRwPermission}}disabled{{/unless}} />
         </div>
     </div>
     <fieldset class="armorgear-protection">
         <legend>Protection</legend>
-        <div class="grid grid-row grid-4col">
-            <div class="armorgear-protection-item" id="armorgear-blunt">
-                <label class="label">Blunt</label>
+        <div class="grid grid-fixed-row grid-4col">
+            <div class="resource" id="armorgear-blunt">
+                <label class="resource-label">Blunt</label>
                 <input class="value" type="number" name="system.protection.blunt" value="{{ idata.protection.blunt }}" data-dtype="Number"
                 {{#unless hasRwPermission}}disabled{{/unless}} />
             </div>
-            <div class="armorgear-protection-item" id="armorgear-edged">
-                <label class="label">Edged</label>
+            <div class="resource" id="armorgear-edged">
+                <label class="resource-label">Edged</label>
                 <input class="value" type="number" name="system.protection.edged" value="{{ idata.protection.edged }}" data-dtype="Number"
                 {{#unless hasRwPermission}}disabled{{/unless}} />
             </div>
-            <div class="armorgear-protection-item" id="armorgear-piercing">
-                <label class="label">Piercing</label>
+            <div class="resource" id="armorgear-piercing">
+                <label class="resource-label">Piercing</label>
                 <input class="value" type="number" name="system.protection.piercing" value="{{ idata.protection.piercing }}"
                 data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
             </div>
-            <div class="armorgear-protection-item" id="armorgear-fire">
-                <label class="label">Fire</label>
+            <div class="resource" id="armorgear-fire">
+                <label class="resource-label">Fire</label>
                 <input class="value" type="number" name="system.protection.fire" value="{{ idata.protection.fire }}" data-dtype="Number"
                 {{#unless hasRwPermission}}disabled{{/unless}} />
             </div>
@@ -71,9 +70,9 @@
     <fieldset class="armor-locations-list" id="armorgear-locations-list">
         <legend>Locations</legend>
         {{#if hasRwPermission}}
-        <div class="armorgear-location flexrow" id="armorgear-location-select">
-            <label class="label">Location:</label>
-            <select class="value" name="system.targetLocation">
+        <div class="armorgear-location resource flexrow" id="armorgear-location-select">
+            <label for="system.targetLocation" class="resource-label">Location</label>
+            <select class="value" id="system.targetLocation" name="system.targetLocation">
                 {{#select idata.targetLocation}}
                 {{#each config.injuryLocations as |value key|}}
                 {{#if (ne key "Custom")}}

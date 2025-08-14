@@ -2,54 +2,47 @@
 
 {{!-- Properties Tab --}}
 <div class="tab properties" data-group="primary" data-tab="properties">
-    <fieldset>
-        <legend>Basic Armor Settings</legend>
-        <div class="grid grid-fixed-row grid-2col">
-            <div class="basic-setting" id="armorlocation-layers">
-                <label class="label">Layers</label>
-                <input class="value" type="text" name="system.layers" value="{{ idata.layers }}" data-dtype="String" />
-            </div>
-            <div class="basic-setting" id="armorlocation-quality">
-                <label class="label">Armor Quality (AQ)</label>
-                <input class="value" type="number" name="system.armorQuality" value="{{ idata.armorQuality }}" data-dtype="Number" />
-            </div>
+    <div class="grid grid-fixed-row grid-2col">
+        <div class="resource" id="armorlocation-layers">
+            <label class="resource-label">Layers</label>
+            <input class="value" type="text" name="system.layers" value="{{ idata.layers }}" data-dtype="String" />
         </div>
-        <div class="resource" id="armorlocation-note">
-            <label class="resource-label">Note</label>
-            <input type="text" name="system.notes" value="{{ idata.notes }}" data-dtype="String" />
+        <div class="resource" id="armorlocation-quality">
+            <label class="resource-label">Armor Quality (AQ)</label>
+            <input class="value" type="number" name="system.armorQuality" value="{{ idata.armorQuality }}" data-dtype="Number" />
         </div>
-        <div class="grid grid-row grid-4col">
-            <div class="protection" id="armorlocation-blunt">
-                <label class="label">Blunt</label>
-                <input class="value" type="number" name="system.blunt" value="{{ idata.blunt }}" data-dtype="Number" />
-            </div>
-            <div class="protection" id="armorlocation-edged">
-                <label class="label">Edged</label>
-                <input class="value" type="number" name="system.edged" value="{{ idata.edged }}" data-dtype="Number" />
-            </div>
-            <div class="protection" id="armorlocation-piercing">
-                <label class="label">Piercing</label>
-                <input class="value" type="number" name="system.piercing" value="{{ idata.piercing }}" data-dtype="Number" />
-            </div>
-            <div class="protection" id="armorlocation-fire">
-                <label class="label">Fire</label>
-                <input class="value" type="number" name="system.fire" value="{{ idata.fire }}" data-dtype="Number" />
-            </div>
+    </div>
+    <div class="grid grid-fixed-row grid-4col">
+        <div class="resource" id="armorlocation-blunt">
+            <label for="system.blunt" class="resource-label">Blunt</label>
+            <input class="value" type="number" id="system.blunt" name="system.blunt" value="{{ idata.blunt }}" data-dtype="Number" />
         </div>
-    </fieldset>
+        <div class="resource" id="armorlocation-edged">
+            <label class="resource-label">Edged</label>
+            <input class="value" type="number" name="system.edged" value="{{ idata.edged }}" data-dtype="Number" />
+        </div>
+        <div class="resource" id="armorlocation-piercing">
+            <label class="resource-label">Piercing</label>
+            <input class="value" type="number" name="system.piercing" value="{{ idata.piercing }}" data-dtype="Number" />
+        </div>
+        <div class="resource" id="armorlocation-fire">
+            <label class="resource-label">Fire</label>
+            <input class="value" type="number" name="system.fire" value="{{ idata.fire }}" data-dtype="Number" />
+        </div>
+    </div>
     <fieldset id="armorlocation-probweight">
         <legend>Hit Probability Weights</legend>
-        <div class="weight grid grid-fixed-row grid-3col">
-            <div class="prob-weight" id="armorlocation-probweight-high">
-                <label class="label">High Aim</label>
+        <div class="grid grid-fixed-row grid-3col">
+            <div class="resource" id="armorlocation-probweight-high">
+                <label class="resource-label">High Aim</label>
                 <input class="value" type="number" name="system.probWeight.high" value="{{ idata.probWeight.high }}" data-dtype="Number" />
             </div>
-            <div class="prob-weight" id="armorlocation-probweight-mid">
-                <label class="label">Medium Aim</label>
+            <div class="resource" id="armorlocation-probweight-mid">
+                <label class="resource-label">Medium Aim</label>
                 <input class="value" type="number" name="system.probWeight.mid" value="{{ idata.probWeight.mid }}" data-dtype="Number" />
             </div>
-            <div class="prob-weight" id="armorlocation-probweight-low">
-                <label class="label">Low Aim</label>
+            <div class="resource" id="armorlocation-probweight-low">
+                <label class="resource-label">Low Aim</label>
                 <input class="value" type="number" name="system.probWeight.low" value="{{ idata.probWeight.low }}" data-dtype="Number" />
             </div>
         </div>
@@ -58,43 +51,46 @@
         <legend>Hit Location Settings</legend>
         <div class="flexrow">
             <div class="flexcol">
-                <div class="adv-setting" id="armorlocation-isfumble">
+                <div class="resource" id="armorlocation-isfumble">
                     <input
                         class="value"
                         type="checkbox"
+                        id="system.isFumble"
                         name="system.isFumble"
                         value="{{ idata.isFumble }}"
                         data-dtype="Boolean"
                         {{checked
                         idata.isFumble}} />
-                    <label for="system.isFumble" class="label">Fumble Risk</label>
+                    <label for="system.isFumble" class="resource-label">Fumble Risk</label>
                 </div>
-                <div class="adv-setting" id="armorlocation-isstumble">
+                <div class="resource" id="armorlocation-isstumble">
                     <input
                         class="value"
                         type="checkbox"
+                        id="system.isStumble"
                         name="system.isStumble"
                         value="{{ idata.isStumble }}"
                         data-dtype="Boolean"
                         {{checked
                         idata.isStumble}} />
-                    <label for="system.isStumble" class="label">Stumble Risk</label>
+                    <label for="system.isStumble" class="resource-label">Stumble Risk</label>
                 </div>
-                <div class="adv-setting" id="armorlocation-isamputate">
+                <div class="resource" id="armorlocation-isamputate">
                     <input
                         class="value"
                         type="checkbox"
+                        id="system.isAmputate"
                         name="system.isAmputate"
                         value="{{ idata.isAmputate }}"
                         data-dtype="Boolean"
                         {{checked
                         idata.isAmputate}} />
-                    <label for="system.isAmputate" class="label">Amputate Risk</label>
+                    <label for="system.isAmputate" class="resource-label">Amputate Risk</label>
                 </div>
             </div>
-            <div class="adv-setting" id="armorlocation-impacttype">
-                <label class="label" for="system.impactType">Location Type</label>
-                <select class="value" name="system.impactType">
+            <div class="resource" id="armorlocation-impacttype">
+                <label for="system.impactType" class="resource-label">Location Type</label>
+                <select class="value" id="system.impactType" name="system.impactType">
                     {{#select idata.impactType}}
                     {{#each config.injuryLocations as |value key|}}
                     <option value="{{ value.impactType }}">{{ key }}</option>
@@ -148,6 +144,7 @@
             </select>
         </div>
     </fieldset>
+    {{> item_standard_partial}}
 </div>
 
 {{/item_layout_partial}}
