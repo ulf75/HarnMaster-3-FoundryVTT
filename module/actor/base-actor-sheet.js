@@ -166,9 +166,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.ritualSkills = data.items.filter(
             (item) => item.type === ItemType.SKILL && item.system.type === SkillType.RITUAL
         );
-        data.psionicSkills = data.items.filter((item) => item.type === ItemType.PSIONIC);
-        data.invocationSkills = data.items.filter((item) => item.type === ItemType.INVOCATION);
-        data.spellSkills = data.items.filter((item) => item.type === ItemType.SPELL);
+        data.psionics = data.items.filter((item) => item.type === ItemType.PSIONIC);
+        data.invocations = data.items.filter((item) => item.type === ItemType.INVOCATION);
+        data.spells = data.items.filter((item) => item.type === ItemType.SPELL);
+        data.missiles = data.items.filter((item) => item.type === ItemType.MISSILEGEAR);
+        data.injuries = data.items.filter((item) => item.type === ItemType.INJURY);
 
         data.adata = data.actor.system;
         data.labels = this.actor.labels || {};
