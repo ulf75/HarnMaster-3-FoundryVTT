@@ -1,0 +1,127 @@
+<form class="{{ cssClass }} sheet flexcol" autocomplete="off">
+    {{!-- Sheet Header --}}
+    <header class="sheet-header sheet-header-character">
+        <div class="flexrow">
+            <img class="profile-img" src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" />
+            <div class="flexcol header-fields">
+                <div class="flexrow name-attribute">
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{ actor.name }}" placeholder="Name" autocomplete="off" />
+                    </h1>
+                    <div class="header-stat-block">
+                        <div class="penalties flexrow">
+                            <div class="stat">UP: {{ adata.universalPenalty }}</div>
+                            <div class="statend">PP: {{ adata.physicalPenalty }}</div>
+                        </div>
+                        <div class="endurance flexrow">
+                            <span class="label">Shock Index: {{ adata.shockIndex.value }}</span>
+                        </div>
+                        <div class="endbar">
+                            <span class="bar" style="width: {{ adata.shockIndex.value }}%"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-attributes">
+                    <ol class="flexrow">
+                        {{#if (eq chartype "Character")}}
+                        <li class="attribute occupation flexcol">
+                            <label for="system.occupation" class="label">Occupation</label>
+                            <input
+                                class="value"
+                                type="text"
+                                id="system.occupation"
+                                name="system.occupation"
+                                value="{{ adata.occupation }}"
+                                data-dtype="String" />
+                        </li>
+                        {{/if}}
+                        {{#if (eq chartype "Creature")}}
+                        <li class="attribute creature-species flexcol">
+                            <label for="system.species" class="label">Species</label>
+                            <input
+                                class="value"
+                                type="text"
+                                id="system.species"
+                                name="system.species"
+                                value="{{ adata.species }}"
+                                data-dtype="String" />
+                        </li>
+                        <li class="attribute creature-size flexcol">
+                            <label for="system.size" class="label">Size</label>
+                            {{#if hasRwPermission}}
+                            <select class="value" id="system.size" name="system.size">
+                                {{selectOptions config.creatureSizes selected=adata.size valueAttr="key" labelAttr="label"}}
+                            </select>
+                            {{else}}
+                            <select class="value" id="system.size" name="system.size" disabled>
+                                {{selectOptions config.creatureSizes selected=adata.size valueAttr="key" labelAttr="label"}}
+                            </select>
+                            {{/if}}
+                        </li>
+                        <li class="attribute flexcol"></li>
+                        {{/if}}
+                        <li class="attribute move flexcol">
+                            <label for="system.move.base" class="label">Move</label>
+                            <div class="flexrow move-values">
+                                <span class="move-eff">{{ adata.move.effective }}</span>
+                                <span class="sep">/</span>
+                                <input
+                                    class="move-base"
+                                    type="number"
+                                    id="system.move.base"
+                                    name="system.move.base"
+                                    value="{{ adata.move.base }}"
+                                    data-dtype="Number" />
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {{#if isCharacterMancer}}
+    <div style="color: red; text-align: center; font-size: larger; font-weight: bold; height: 30px; align-content: center; flex: unset">
+        ................CHARACTER MANCER ACTIVE................
+        <a class="character-mancer" title="Close Character Mancer" data-type="skill">Close</a>
+    </div>
+    {{/if}}
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="facade">Fa&#231;ade</a>
+        <a class="item" data-tab="profile">Profile</a>
+        <a class="item" data-tab="skills">Skills</a>
+        <a class="item" data-tab="combat">Combat</a>
+        <a class="item" data-tab="inventory">Gear</a>
+        {{#if (eq chartype "Character")}}
+        <a class="item" data-tab="fff">FFF</a>
+        {{/if}}
+        <a class="item" data-tab="esoteric">Esoterics</a>
+        <a class="item" data-tab="effects">Effects</a>
+        {{#if hasRwPermission}}
+        <a class="item" data-tab="macros">Macros</a>
+        {{/if}}
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        {{!-- Facade Tab --}}
+        <div class="tab facade" data-group="primary" data-tab="facade">
+            <div class="flexrow">
+                <img
+                    class="facade-image"
+                    src="{{ adata.bioImage }}"
+                    data-edit="system.bioImage"
+                    title="{{ actor.name }}"
+                    height="300"
+                    width="200" />
+                <div class="facade-description">
+                    {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
+                </div>
+            </div>
+        </div>
+
+        {{> @partial-block}}
+    </section>
+</form>
