@@ -1,5 +1,5 @@
 import {onManageActiveEffect} from '../effect.js';
-import {ActorType, ItemType} from '../hm3-types.js';
+import {ActorType, ItemType, SkillType} from '../hm3-types.js';
 import {onManageMacro} from '../macro.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
@@ -147,6 +147,25 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             })
             .filter((item) => item.type !== ItemType.EFFECT || game.user.isGM);
         data.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
+
+        data.physicalSkills = data.items.filter(
+            (item) => item.type === ItemType.SKILL && item.system.type === SkillType.PHYSICAL
+        );
+        data.communicationSkills = data.items.filter(
+            (item) => item.type === ItemType.SKILL && item.system.type === SkillType.COMMUNICATION
+        );
+        data.combatSkills = data.items.filter(
+            (item) => item.type === ItemType.SKILL && item.system.type === SkillType.COMBAT
+        );
+        data.craftSkills = data.items.filter(
+            (item) => item.type === ItemType.SKILL && item.system.type === SkillType.CRAFT
+        );
+        data.magicSkills = data.items.filter(
+            (item) => item.type === ItemType.SKILL && item.system.type === SkillType.MAGIC
+        );
+        data.ritualSkills = data.items.filter(
+            (item) => item.type === ItemType.SKILL && item.system.type === SkillType.RITUAL
+        );
 
         data.adata = data.actor.system;
         data.labels = this.actor.labels || {};
