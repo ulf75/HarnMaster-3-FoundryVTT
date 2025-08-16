@@ -570,10 +570,10 @@ section.highlight {
 
 /* Styles limited to hm3 sheets */
 .hm3 .window-content {
-    background: url(/systems/hm3/ui/parchment.jpg) repeat;
     background-size: cover;
-    font-size: 13px;
+    background: url(/systems/hm3/ui/parchment.jpg) repeat;
     color: #191813;
+    font-size: 13px;
 }
 
 .hm3 input[type='text'],
