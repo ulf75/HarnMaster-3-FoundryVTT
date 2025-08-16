@@ -281,14 +281,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.hasSteed = this.actor.hasLinkedSteed();
 
         // Check for esoteric attack options
-        data.esotericAtkOptions = [];
-        const mc = this.actor.items.find(
-            (item) => item.type === ItemType.SKILL && item.name.includes('Mental Conflict') && item.system.isEquipped
+        data.esotericAtkOptions = this.actor.items.filter(
+            (item) => game.hm3.config.esotericCombatItems.attack.includes(item.name) && item.system.isEquipped
         );
-        data.hasEsotericAtk = !!mc; // TODO more to come
-        if (data.hasEsotericAtk) {
-            if (mc) data.esotericAtkOptions.push(mc);
-        }
+        // Check for esoteric defense options
+        data.esotericDefOptions = this.actor.items.filter((item) =>
+            game.hm3.config.esotericCombatItems.defense.includes(item.name)
+        );
 
         return data;
     }

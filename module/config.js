@@ -3061,7 +3061,7 @@ HM3.blindRolls = [
 ];
 
 HM3.esotericCombatItems = {
-    attack: ['Mental Bolt'],
+    attack: ['Charm', 'Mental Bolt', 'Mental Conflict', 'Hex'],
     defense: ['Mental Conflict', 'Negation']
 };
 

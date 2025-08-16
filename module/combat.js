@@ -1,6 +1,6 @@
 import {HM3} from './config.js';
 import {DiceHM3} from './hm3-dice.js';
-import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
+import {TokenHM3} from './hm3-token.js';
 import {ActorType, ArcanePower, Aspect, Condition, ItemType} from './hm3-types.js';
 import {fatigueReceived, improveFlag, truncate} from './utility.js';
 
@@ -28,6 +28,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         console.error(`HM3 | missileAttack atkToken=${atkToken} is not valid.`);
         return null;
     }
+    console.assert(atkToken instanceof TokenHM3, `atkToken is NOT a TokenHM3 instance: ${atkToken}`);
 
     if (!defToken) {
         ui.notifications.warn(`No defender token identified.`);
@@ -39,6 +40,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         console.error(`HM3 | missileAttack defToken=${defToken} is not valid.`);
         return null;
     }
+    console.assert(defToken instanceof TokenHM3, `defToken is NOT a TokenHM3 instance: ${defToken}`);
 
     if (!atkToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
@@ -199,7 +201,7 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
         console.error(`HM3 | esotericAttack atkToken=${atkToken} is not valid.`);
         return null;
     }
-    console.assert(atkToken instanceof TokenDocumentHM3, `atkToken is not a TokenHM3 instance: ${atkToken}`);
+    console.assert(atkToken instanceof TokenHM3, `atkToken is NOT a TokenHM3 instance: ${atkToken}`);
 
     if (!defToken) {
         ui.notifications.warn(`No defender token identified.`);
@@ -211,7 +213,7 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
         console.error(`HM3 | esotericAttack defToken=${defToken} is not valid.`);
         return null;
     }
-    console.assert(defToken instanceof TokenHM3, `defToken is not a TokenHM3 instance: ${defToken}`);
+    console.assert(defToken instanceof TokenHM3, `defToken is NOT a TokenHM3 instance: ${defToken}`);
 
     if (!atkToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
@@ -345,6 +347,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         console.error(`HM3 | meleeAttack atkToken=${atkToken} is not valid.`);
         return null;
     }
+    console.assert(atkToken instanceof TokenHM3, `atkToken is NOT a TokenHM3 instance: ${atkToken}`);
 
     if (!defToken) {
         ui.notifications.warn(`No defender token identified.`);
@@ -355,6 +358,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         console.error(`HM3 | meleeAttack defToken=${defToken} is not valid.`);
         return null;
     }
+    console.assert(defToken instanceof TokenHM3, `defToken is NOT a TokenHM3 instance: ${defToken}`);
 
     if (!atkToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
@@ -800,7 +804,7 @@ async function esotericAttackDialog(options) {
     };
 
     if (options.weapon.type === ItemType.SKILL && options.weapon.name.includes('Mental Conflict')) {
-        dialogOptions.isEsotericCombat = true;
+        dialogOptions.isMentalConflict = true;
         dialogOptions.addlInfo = 'Mental Conflict Type: ';
         dialogOptions.mentalConflictType = 'possession';
         dialogOptions.mentalConflictTypes = [
@@ -808,6 +812,8 @@ async function esotericAttackDialog(options) {
             {key: 'conflict', label: 'Ethereal Conflict'},
             {key: 'artifact', label: 'Artifact Control'}
         ];
+    } else if (options.weapon.type === ItemType.PSIONIC && options.weapon.name.includes('Mental Bolt')) {
+        dialogOptions.isMentalBolt = true;
     } else {
         // Not an esoteric weapon!!
         return null;
