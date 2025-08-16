@@ -355,6 +355,92 @@
                 </div>
             </div>
         </div>
+        {{#if isCharacterMancer}}
+        <div class="profile-params">
+            <div class="flexrow profile-item">
+                <div class="attribute sunsign flexrow">
+                    <label for="system.height" class="label">Height</label>
+                    <input
+                        class="value"
+                        type="number"
+                        id="system.height"
+                        name="system.height"
+                        value="{{ adata.height }}"
+                        data-dtype="Number" />
+                </div>
+                <div class="attribute sunsign flexrow">
+                    <label for="system.weight" class="label">Weight</label>
+                    <input
+                        class="value"
+                        type="number"
+                        id="system.weight"
+                        name="system.weight"
+                        value="{{ adata.weight }}"
+                        data-dtype="Number" />
+                </div>
+                <div class="attribute sunsign flexrow">
+                    <label for="system.size" class="label">Size</label>
+                    <input class="value" type="number" id="system.size" name="system.size" value="{{ adata.size }}" data-dtype="Number" />
+                </div>
+            </div>
+        </div>
+        <div class="profile-params">
+            <div class="flexrow profile-item">
+                <div class="attribute sunsign flexrow">
+                    <label for="system.birth.day" class="label">Birthday</label>
+                    <input
+                        class="value"
+                        type="number"
+                        id="system.birth.day"
+                        name="system.birth.day"
+                        value="{{ adata.birth.day }}"
+                        data-dtype="Number" />
+                </div>
+                <div class="attribute sunsign flexrow">
+                    <label for="system.birth.month" class="label">Birthmonth</label>
+                    <input
+                        class="value"
+                        type="number"
+                        id="system.birth.month"
+                        name="system.birth.month"
+                        value="{{ adata.birth.month }}"
+                        data-dtype="Number" />
+                </div>
+                <div class="attribute sunsign flexrow">
+                    <label for="system.birth.year" class="label">Birthyear</label>
+                    <input
+                        class="value"
+                        type="number"
+                        id="system.birth.year"
+                        name="system.birth.year"
+                        value="{{ adata.birth.year }}"
+                        data-dtype="Number" />
+                </div>
+            </div>
+        </div>
+        <div class="profile-params">
+            <div class="flexrow profile-item">
+                <div class="attribute sunsign flexrow">
+                    <label for="system.frame" class="label">Frame</label>
+                    <select class="value" id="system.frame" name="system.frame" data-dtype="String">
+                        {{selectOptions config.frames selected=adata.frame valueAttr="key" labelAttr="key"}}
+                    </select>
+                </div>
+                <div class="attribute sunsign flexrow">
+                    <label for="system.culture" class="label">Culture</label>
+                    <select class="value" id="system.culture" name="system.culture" data-dtype="String">
+                        {{selectOptions config.cultures selected=adata.culture valueAttr="key" labelAttr="key"}}
+                    </select>
+                </div>
+                <div class="attribute sunsign flexrow">
+                    <label for="system.socialClass" class="label">Social Class</label>
+                    <select class="value" id="system.socialClass" name="system.socialClass" data-dtype="String">
+                        {{selectOptions config.socialClasses selected=adata.socialClass valueAttr="key" labelAttr="key"}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        {{/if}}
         <div class="flexrow items traits">
             <ol class="items-list traits-list">
                 <li class="items-header trait flexrow">

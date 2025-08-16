@@ -1322,7 +1322,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         await game.dice3d.showForRoll(dRoll, game.user, true);
     }
 
-    const atkDie = atkToken.actor.type === ActorType.CREATURE ? atkToken.actor.system.size : 6;
+    const atkDie = atkToken.actor.type === ActorType.CREATURE ? Number(atkToken.actor.system.size) : 6;
 
     const atkResult = `${atkRoll.isCritical ? 'c' : 'm'}${atkRoll.isSuccess ? 's' : 'f'}`;
     const defResult = `${defRoll.isCritical ? 'c' : 'm'}${defRoll.isSuccess ? 's' : 'f'}`;

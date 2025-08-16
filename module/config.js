@@ -58,6 +58,8 @@ HM3.companionTypes = [
     {key: 'Steed'}
 ];
 
+HM3.frames = [{key: 'Scant'}, {key: 'Light'}, {key: 'Medium'}, {key: 'Heavy'}, {key: 'Massive'}];
+
 HM3.cultures = [
     {key: 'Feudal'},
     {key: 'Imperial'},
