@@ -453,6 +453,8 @@ Hooks.on('preUpdateMacro', async (macro, updateData, options, userId) => {
 });
 
 Hooks.on('hm3.onMount', async (actor, steed) => {
+    if (!actor.testUserPermission(game.user, 'OWNER') || !steed.testUserPermission(game.user, 'OWNER')) return;
+
     await actor.update({'system.mounted': true});
     actor.prepareData();
     const riding = actor.items.find((item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding'));
@@ -464,7 +466,7 @@ Hooks.on('hm3.onMount', async (actor, steed) => {
         {
             img: actor.img,
             name: 'Rider/' + actor.name,
-            system: {actorUuid: actor.uuid, type: 'Rider'},
+            system: {actorUuid: actor.uuid, type: 'Rider', weight: actor.system.weight + actor.system.totalWeight},
             type: ItemType.MISCGEAR
         },
         {parent: steed}
@@ -472,6 +474,8 @@ Hooks.on('hm3.onMount', async (actor, steed) => {
 });
 
 Hooks.on('hm3.onUnmount', async (actor, steed) => {
+    if (!actor.testUserPermission(game.user, 'OWNER') || !steed.testUserPermission(game.user, 'OWNER')) return;
+
     await actor.update({'system.mounted': false});
     actor.prepareData();
     const riding = actor.items.find((item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding'));
