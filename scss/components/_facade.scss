@@ -3,10 +3,12 @@
         background: transparent;
         border: none;
         flex: 0 0 200px;
+        margin-top: 15px;
         object-fit: contain;
     }
 
     .facade-description {
-        margin-left: 5px;
+        margin: 5px 15px;
+        text-align: justify;
     }
 }

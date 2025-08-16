@@ -1,6 +1,6 @@
 import {HM3} from '../config.js';
 import {DiceHM3} from '../hm3-dice.js';
-import {ActorType, Condition, ItemType, SkillType} from '../hm3-types.js';
+import {ActorType, CompanionType, Condition, ItemType, SkillType} from '../hm3-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 
@@ -49,7 +49,7 @@ export class ActorHM3 extends Actor {
 
     getSteeds() {
         const steeds = this.items.contents.filter(
-            (item) => item.type === ItemType.COMPANION && item.system.type === 'Steed'
+            (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.STEED
         );
         return steeds.map((steed) => {
             return fromUuidSync(steed.system.actorUuid);
@@ -58,7 +58,7 @@ export class ActorHM3 extends Actor {
 
     getParty() {
         const party = this.items.contents.filter(
-            (item) => item.type === ItemType.COMPANION && item.system.type === 'Party'
+            (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.PARTY
         );
         return [
             this,

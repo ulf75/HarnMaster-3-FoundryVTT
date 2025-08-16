@@ -1,5 +1,5 @@
 import {onManageActiveEffect} from '../effect.js';
-import {ActorType, ItemType, SkillType} from '../hm3-types.js';
+import {ActorType, CompanionType, ItemType, SkillType} from '../hm3-types.js';
 import {onManageMacro} from '../macro.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
@@ -172,25 +172,30 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.missiles = data.items.filter((item) => item.type === ItemType.MISSILEGEAR);
         data.psionics = data.items.filter((item) => item.type === ItemType.PSIONIC);
         data.spells = data.items.filter((item) => item.type === ItemType.SPELL);
+        data.esoterics = data.items.filter((item) =>
+            [ItemType.INVOCATION, ItemType.PSIONIC, ItemType.SPELL].includes(item.type)
+        );
         data.companionParty = data.items.filter(
-            (item) => item.type === ItemType.COMPANION && item.system.type === 'Party'
+            (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.PARTY
         );
         data.companionAnimal = data.items.filter(
-            (item) => item.type === ItemType.COMPANION && item.system.type === 'Animal'
+            (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.ANIMAL
         );
         data.companionSteed = data.items.filter(
-            (item) => item.type === ItemType.COMPANION && item.system.type === 'Steed'
+            (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.STEED
         );
         data.companionFollower = data.items.filter(
-            (item) => item.type === ItemType.COMPANION && item.system.type === 'Follower'
+            (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.FOLLOWER
         );
         data.companionConnection = data.items.filter(
-            (item) => item.type === ItemType.COMPANION && item.system.type === 'Connection'
+            (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.CONNECTION
         );
         data.companionFriend = data.items.filter(
-            (item) => item.type === ItemType.COMPANION && item.system.type === 'Friend'
+            (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.FRIEND
         );
-        data.companionFoe = data.items.filter((item) => item.type === ItemType.COMPANION && item.system.type === 'Foe');
+        data.companionFoe = data.items.filter(
+            (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.FOE
+        );
 
         data.adata = data.actor.system;
         data.labels = this.actor.labels || {};

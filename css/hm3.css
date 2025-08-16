@@ -654,6 +654,10 @@ section.highlight {
     height: 100%;
 }
 
+.hm3 .editor-content {
+    font-size: var(--font-size-14);
+}
+
 .hm3 .editor .tox-toolbar-overlord,
 .hm3 .editor .tox-toolbar__primary {
     background: none;
@@ -814,12 +818,14 @@ section.highlight {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 200px;
     flex: 0 0 200px;
+    margin-top: 15px;
     -o-object-fit: contain;
     object-fit: contain;
 }
 
 .hm3 .facade .facade-description {
-    margin-left: 5px;
+    margin: 5px 15px;
+    text-align: justify;
 }
 
 .hm3 .item-form {

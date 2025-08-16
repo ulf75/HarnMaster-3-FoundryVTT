@@ -56,6 +56,16 @@ export const Aspect = Object.freeze({
     PIERCING: 'Piercing'
 });
 
+export const CompanionType = Object.freeze({
+    ANIMAL: 'Animal',
+    CONNECTION: 'Connection',
+    FOE: 'Foe',
+    FOLLOWER: 'Follower',
+    FRIEND: 'Friend',
+    PARTY: 'Party',
+    STEED: 'Steed'
+});
+
 /**
  * Condition types enum. A Condition is just a special type of Active Effect.
  */
