@@ -298,6 +298,7 @@ Hooks.once('init', async function () {
     const root = 'systems/hm3/templates/';
     Handlebars.registerPartial({
         char_esoteric_list_partial: await (await fetch(`${root}actor/partials/esoteric_list_partial.hbs`)).text(),
+        char_fff_list_partial: await (await fetch(`${root}actor/partials/fff_list_partial.hbs`)).text(),
         char_layout_partial: await (await fetch(`${root}actor/partials/structure_partial.hbs`)).text(),
         char_skill_list_partial: await (await fetch(`${root}actor/partials/skill_list_partial.hbs`)).text(),
         item_artifact_partial: await (await fetch(`${root}item/partials/artifact_partial.hbs`)).text(),

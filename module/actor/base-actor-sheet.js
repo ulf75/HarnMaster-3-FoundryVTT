@@ -172,6 +172,25 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.missiles = data.items.filter((item) => item.type === ItemType.MISSILEGEAR);
         data.psionics = data.items.filter((item) => item.type === ItemType.PSIONIC);
         data.spells = data.items.filter((item) => item.type === ItemType.SPELL);
+        data.companionParty = data.items.filter(
+            (item) => item.type === ItemType.COMPANION && item.system.type === 'Party'
+        );
+        data.companionAnimal = data.items.filter(
+            (item) => item.type === ItemType.COMPANION && item.system.type === 'Animal'
+        );
+        data.companionSteed = data.items.filter(
+            (item) => item.type === ItemType.COMPANION && item.system.type === 'Steed'
+        );
+        data.companionFollower = data.items.filter(
+            (item) => item.type === ItemType.COMPANION && item.system.type === 'Follower'
+        );
+        data.companionConnection = data.items.filter(
+            (item) => item.type === ItemType.COMPANION && item.system.type === 'Connection'
+        );
+        data.companionFriend = data.items.filter(
+            (item) => item.type === ItemType.COMPANION && item.system.type === 'Friend'
+        );
+        data.companionFoe = data.items.filter((item) => item.type === ItemType.COMPANION && item.system.type === 'Foe');
 
         data.adata = data.actor.system;
         data.labels = this.actor.labels || {};
