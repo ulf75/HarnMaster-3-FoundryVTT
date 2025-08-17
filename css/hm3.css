@@ -995,8 +995,8 @@ section.highlight {
 
 .hm3 .sheet .sheet-header-character .header-fields .header-attributes .creature-species {
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 150px;
-    flex: 0 0 150px;
+    -ms-flex: 0 0 200px;
+    flex: 0 0 200px;
     border-right: 2px groove #eeede0;
 }
 
@@ -1028,8 +1028,8 @@ section.highlight {
 
 .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move {
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 80px;
-    flex: 0 0 80px;
+    -ms-flex: 0 0 85px;
+    flex: 0 0 85px;
 }
 
 .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move .label {
