@@ -48,7 +48,7 @@
             }
 
             a.disabled {
-                color: #9a998f;
+                color: $hm3-label-disabled;
                 cursor: default;
                 pointer-events: none;
             }

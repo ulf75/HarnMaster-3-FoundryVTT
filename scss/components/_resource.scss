@@ -4,6 +4,10 @@
 
 .resource {
     margin: 3px 0px;
+
+    .disabled {
+        color: $hm3-label-disabled;
+    }
 }
 
 .resource-label {

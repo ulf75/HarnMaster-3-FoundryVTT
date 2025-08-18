@@ -1209,6 +1209,10 @@ section.highlight {
     margin: 3px 0px;
 }
 
+.hm3 .resource .disabled {
+    color: #9a998f;
+}
+
 .hm3 .resource-label {
     font-size: var(--font-size-15);
     font-variant: small-caps;

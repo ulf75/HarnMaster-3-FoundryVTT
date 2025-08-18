@@ -1,5 +1,6 @@
 $white: hsl(0, 0%, 100%);
 $black: hsl(0, 0%, 0%);
+$disabled: #9a998f;
 
 $neutral-1: hsl(53, 14%, 15%);
 $neutral-2: hsl(53, 14%, 75%);
@@ -61,3 +62,4 @@ $hm3-header: $neutral-4;
 $hm3-header-bg: $header-bg-1;
 $hm3-table-header-bg: $header-bg-2;
 $hm3-hover-color: $highlight-3;
+$hm3-label-disabled: $disabled;
