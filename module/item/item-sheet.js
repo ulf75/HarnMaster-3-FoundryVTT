@@ -220,13 +220,24 @@ export class ItemSheetHM3 extends ItemSheet {
                 updateData['system.arcane.-=isAttuned'] = null;
                 updateData['system.arcane.charges'] = -1;
                 updateData['system.arcane.ego'] = 0;
+                updateData['system.arcane.morality'] = -1;
             } else if (data.idata.arcane.type === 'Major' && data.idata.arcane.minor) {
                 // Reset data
                 updateData['system.arcane.-=minor'] = null;
             }
+            if (data.idata.arcane.isAttuned && !data.idata.arcane.needsAttunement) {
+                // Reset data
+                data.idata.arcane.isAttuned = false;
+                updateData['system.arcane.isAttuned'] = false;
+            }
 
             if (data.idata.arcane.minorPower) updateData['system.arcane.-=minorPower'] = null;
             if (data.idata.arcane.majorPower) updateData['system.arcane.-=majorPower'] = null;
+            if (isNaN(parseInt(data.idata.arcane.morality))) {
+                // Initialize data
+                data.idata.arcane.morality = -1;
+                updateData['system.arcane.morality'] = -1;
+            }
 
             if (!foundry.utils.isEmpty(updateData)) {
                 await this.object.update(updateData, {enforceTypes: false});
