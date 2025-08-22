@@ -38,6 +38,7 @@ import {NoteHM3} from './hm3/hm3-note.js';
 import {RegionHM3} from './hm3/hm3-region.js';
 import {TileHM3} from './hm3/hm3-tile.js';
 import {WallHM3} from './hm3/hm3-wall.js';
+import {ItemSheetHM3v2} from './item/item-sheet-v2.js';
 import {ItemSheetHM3} from './item/item-sheet.js';
 import {ItemHM3} from './item/item.js';
 import {WeaponItem} from './item/weapon-item.js';
@@ -274,7 +275,8 @@ Hooks.once('init', async function () {
     });
 
     Items.unregisterSheet('core', ItemSheet);
-    Items.registerSheet('hm3', ItemSheetHM3, {makeDefault: true});
+    Items.registerSheet('hm3', ItemSheetHM3, {label: 'HM3 Item Sheet'});
+    Items.registerSheet('hm3', ItemSheetHM3v2, {label: 'HM3 Item Sheet v2', makeDefault: true});
 
     // If you need to add Handlebars helpers, here are a few useful examples:
     Handlebars.registerHelper('concat', function () {
