@@ -10,12 +10,11 @@ export class ItemSheetHM3 extends ItemSheet {
     /** @override */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ['hm3', 'sheet', 'item', 'itemv2'],
-            width: 650,
+            classes: ['hm3', 'sheet', 'item'],
+            width: 605,
             height: game.user.isGM ? 850 : 650,
             tabs: [{navSelector: '.sheet-tabs', contentSelector: '.sheet-body', initial: 'properties'}],
-            scrollY: ['.main-content'],
-            resizable: false
+            resizable: true
         });
     }
 
@@ -29,10 +28,6 @@ export class ItemSheetHM3 extends ItemSheet {
 
     /** @override */
     async getData(options = {}) {
-        options.classes.push(this.item.type);
-        if (this.item.system.arcane?.isArtifact) options.classes.push('silver');
-        else options.classes.push('maroon');
-
         const data = super.getData(options);
 
         data.hasDescription = 'description' in this.object.system;
