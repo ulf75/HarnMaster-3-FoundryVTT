@@ -143,14 +143,38 @@ $macros-color-pale: $hm3-pink-pale;
 $effects-color: $hm3-orange-darkest;
 $effects-color-pale: $hm3-orange-pale;
 
-&.item.maroon {
-    background: $sheet-background;
+&.item.itemv2.maroon {
+    background: $background-maroon;
+
+    header {
+        color: $gold-lightest;
+        text-shadow: -1px 0 $gold-darkest, 0 1px $gold-darkest, 1px 0 $gold-darkest, 0 -1px $gold-darkest;
+    }
+}
+
+&.item.itemv2.silver {
+    background: $background-silver;
+
+    header {
+        color: $gold-darkest;
+        text-shadow: -1px 0 $gold-lightest, 0 1px $gold-lightest, 1px 0 $gold-lightest, 0 -1px $gold-lightest;
+    }
+}
+
+&.item.itemv2.gold {
+    background: $background-gold;
+
+    header {
+        color: $gold-lightest;
+        text-shadow: -1px 0 $gold-darkest, 0 1px $gold-darkest, 1px 0 $gold-darkest, 0 -1px $gold-darkest;
+    }
+}
+
+&.item.itemv2 {
     border-radius: $sheet-radius;
 
     header {
         border: none;
-        color: $gold-lightest;
-        text-shadow: -1px 0 $gold-darkest, 0 1px $gold-darkest, 1px 0 $gold-darkest, 0 -1px $gold-darkest;
     }
 
     section {
