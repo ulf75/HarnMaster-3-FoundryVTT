@@ -143,6 +143,7 @@ $macros-color-pale: $hm3-pink-pale;
 $effects-color: $hm3-orange-darkest;
 $effects-color-pale: $hm3-orange-pale;
 
+// Custom styles for item types
 &.item.itemv2.maroon {
     background: $background-maroon;
 
@@ -170,6 +171,7 @@ $effects-color-pale: $hm3-orange-pale;
     }
 }
 
+// General styles for item sheets
 &.item.itemv2 {
     border-radius: $sheet-radius;
 
