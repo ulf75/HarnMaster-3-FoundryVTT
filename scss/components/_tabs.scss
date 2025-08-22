@@ -144,7 +144,7 @@ $effects-color: $hm3-orange-darkest;
 $effects-color-pale: $hm3-orange-pale;
 
 // Custom styles for item types
-&.item.itemv2.maroon {
+&.item-v2.maroon {
     background: $background-maroon;
 
     header {
@@ -153,7 +153,7 @@ $effects-color-pale: $hm3-orange-pale;
     }
 }
 
-&.item.itemv2.silver {
+&.item-v2.silver {
     background: $background-silver;
 
     header {
@@ -162,7 +162,7 @@ $effects-color-pale: $hm3-orange-pale;
     }
 }
 
-&.item.itemv2.gold {
+&.item-v2.gold {
     background: $background-gold;
 
     header {
@@ -172,7 +172,7 @@ $effects-color-pale: $hm3-orange-pale;
 }
 
 // General styles for item sheets
-&.item.itemv2 {
+&.item-v2 {
     border-radius: $sheet-radius;
 
     header {
@@ -216,133 +216,104 @@ $effects-color-pale: $hm3-orange-pale;
                     text-align: left;
                 }
 
-                input[type='radio'] {
-                    margin: auto !important;
-                    opacity: 0;
-                    padding: 0;
-                    position: relative;
-                }
+                nav.v2 {
+                    a {
+                        margin: auto !important;
+                        // opacity: 0;
+                        padding: 0;
+                        position: relative;
+                    }
 
-                input[type='radio'] + label {
-                    background: $tab-background-inactive;
-                    border-bottom: 0.5pt solid #1d1e22;
-                    border-radius: 7px 7px 0 0 !important;
-                    border-top: 1px solid #3b3d3f;
-                    box-shadow: 1px 1px 2px 1px #231f20;
-                    color: #777;
-                    cursor: pointer;
-                    display: inline-flex;
-                    font-size: var(--font-size-14);
-                    font-variant-caps: petite-caps;
-                    // font-variant: small-caps;
-                    font-weight: 700;
-                    justify-content: flex-start;
-                    letter-spacing: 0.1em !important;
-                    margin: 12px -8px;
-                    margin-bottom: 0.5px;
-                    padding: 5pt 10pt;
-                    text-align: center;
-                    transition: all $transition-speed;
-                    vertical-align: top;
-                    width: $tab-width;
-                }
+                    a {
+                        background: $tab-background-inactive;
+                        border-bottom: 0.5pt solid #1d1e22;
+                        border-radius: 7px 7px 0 0 !important;
+                        border-top: 1px solid #3b3d3f;
+                        box-shadow: 1px 1px 2px 1px #231f20;
+                        color: #777;
+                        cursor: pointer;
+                        display: inline-flex;
+                        font-size: var(--font-size-14);
+                        font-variant-caps: petite-caps;
+                        // font-variant: small-caps;
+                        font-weight: 700;
+                        justify-content: flex-start;
+                        letter-spacing: 0.1em !important;
+                        margin: 12px -8px;
+                        margin-bottom: 0.5px;
+                        padding: 5pt 10pt;
+                        text-align: center;
+                        transition: all $transition-speed;
+                        vertical-align: top;
+                        width: $tab-width;
+                    }
 
-                input[type='radio'] + label:hover {
-                    color: #1d1e22;
-                }
+                    a:hover {
+                        color: #1d1e22;
+                        text-shadow: none;
+                    }
 
-                #properties-tab:checked + label {
-                    background: $tab-background-active;
-                    color: $properties-color;
-                }
+                    .item-tab.active {
+                        background: $tab-background-active;
+                        color: $properties-color;
+                    }
 
-                #description-tab:checked + label {
-                    background: $tab-background-active;
-                    color: $description-color;
-                }
+                    .description-tab.active {
+                        background: $tab-background-active;
+                        color: $description-color;
+                    }
 
-                #effects-tab:checked + label {
-                    background: $tab-background-active;
-                    color: $effects-color;
-                }
+                    .effects-tab.active {
+                        background: $tab-background-active;
+                        color: $effects-color;
+                    }
 
-                #macros-tab:checked + label {
-                    background: $tab-background-active;
-                    color: $macros-color;
-                }
+                    .macros-tab.active {
+                        background: $tab-background-active;
+                        color: $macros-color;
+                    }
 
-                #properties-tab:checked ~ .glider {
-                    left: $tab-offset;
-                }
+                    .properties-tab.active ~ .glider {
+                        left: $tab-offset;
+                    }
 
-                #description-tab:checked ~ .glider {
-                    background: $glider-green;
-                    box-shadow: $glider-green-shadow;
-                    left: $tab-width + $tab-offset + 4px;
-                }
+                    #description-tab.active ~ .glider {
+                        background: $glider-green;
+                        box-shadow: $glider-green-shadow;
+                        left: $tab-width + $tab-offset + 4px;
+                    }
 
-                #effects-tab:checked ~ .glider {
-                    background: $glider-orange;
-                    box-shadow: $glider-orange-shadow;
-                    left: 2 * ($tab-width + 4px) + $tab-offset;
-                }
+                    .effects-tab:checked ~ .glider {
+                        background: $glider-orange;
+                        box-shadow: $glider-orange-shadow;
+                        left: 2 * ($tab-width + 4px) + $tab-offset;
+                    }
 
-                #macros-tab:checked ~ .glider {
-                    background: $glider-pink;
-                    box-shadow: $glider-pink-shadow;
-                    left: 3 * ($tab-width + 4px) + $tab-offset !important;
-                }
+                    .macros-tab:checked ~ .glider {
+                        background: $glider-pink;
+                        box-shadow: $glider-pink-shadow;
+                        left: 3 * ($tab-width + 4px) + $tab-offset !important;
+                    }
 
-                #properties-tab:checked ~ section #properties-content,
-                #description-tab:checked ~ section #description-content,
-                #effects-tab:checked ~ section #effects-content,
-                #macros-tab:checked ~ section #macros-content {
-                    opacity: 1;
-                    visibility: visible;
-                }
+                    // #properties-tab:checked ~ section #properties-content,
+                    // #description-tab:checked ~ section #description-content,
+                    // #effects-tab:checked ~ section #effects-content,
+                    // #macros-tab:checked ~ section #macros-content {
+                    //     opacity: 1;
+                    //     visibility: visible;
+                    // }
 
-                // #properties-tab:checked ~ section.tab-content {
-                //     background: linear-gradient(
-                //         $background-rotation,
-                //         $content-color calc(100% - 150px),
-                //         $properties-color-pale
-                //     );
-                // }
-
-                // #description-tab:checked ~ section.tab-content {
-                //     background: linear-gradient(
-                //         $background-rotation,
-                //         $content-color calc(100% - 150px),
-                //         $description-color-pale
-                //     );
-                // }
-
-                // #effects-tab:checked ~ section.tab-content {
-                //     background: linear-gradient(
-                //         $background-rotation,
-                //         $content-color calc(100% - 150px),
-                //         $effects-color-pale
-                //     );
-                // }
-
-                // #macros-tab:checked ~ section.tab-content {
-                //     background: linear-gradient(
-                //         $background-rotation,
-                //         $content-color calc(100% - 150px),
-                //         $macros-color-pale
-                //     );
-                // }
-
-                .tabsShadow {
-                    box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.04);
-                    box-sizing: border-box;
-                    height: 35px;
-                    padding: 10px;
-                    pointer-events: none;
-                    position: absolute;
-                    top: 0;
-                    width: 100%;
-                    z-index: 0;
+                    .tabsShadow {
+                        box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.04);
+                        box-sizing: border-box;
+                        height: 35px;
+                        padding: 10px;
+                        pointer-events: none;
+                        position: absolute;
+                        top: 0;
+                        width: 100%;
+                        z-index: 0;
+                    }
                 }
 
                 .tab-card {
@@ -354,13 +325,6 @@ $effects-color-pale: $hm3-orange-pale;
                 }
 
                 .tab-content {
-                    // background: hsl(232deg, 16%, 15%);
-                    // background: var(--dnd5e-color-parchment);
-                    // background: url('ui/texture1.webp') no-repeat top center / auto 770px,
-                    //     url('ui/texture2.webp') no-repeat bottom center / auto 704px;
-
-                    // background: linear-gradient($content-color, $properties-color-pale);
-
                     background: linear-gradient(
                         $background-rotation,
                         $parchment-base,
