@@ -84,12 +84,14 @@
                 align-items: center;
 
                 .label {
+                    color: black;
                     flex: 0 0 50px;
                     font-family: $font-primary;
                     font-size: var(--font-size-15);
                     font-variant: small-caps;
                     font-weight: bold;
                     padding-left: 8px;
+                    text-shadow: none;
                 }
 
                 .value {
@@ -102,12 +104,14 @@
                 align-items: center;
 
                 .label {
+                    color: black;
                     flex: 0 0 110px;
                     font-family: $font-primary;
                     font-size: var(--font-size-15);
                     font-variant: small-caps;
                     font-weight: bold;
                     padding-left: 8px;
+                    text-shadow: none;
                 }
 
                 .value {

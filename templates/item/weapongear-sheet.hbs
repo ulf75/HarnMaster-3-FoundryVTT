@@ -1,94 +1,91 @@
 {{#> item_layout_partial container=true }}
 
-{{!-- Properties Tab --}}
-<div class="tab properties" data-group="primary" data-tab="properties">
-    <div class="grid grid-fixed-row grid-3col">
-        <div class="resource" id="weapongear-qty">
-            <label class="resource-label">Quantity</label>
-            <input type="number" name="system.quantity" value="{{ idata.quantity }}" data-dtype="Number" />
-        </div>
-        <div class="resource" id="weapongear-weight">
-            <label for="system.weight" class="resource-label">Weight</label>
-            <input type="number" id="system.weight" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div class="resource" id="weapongear-value">
-            <label class="resource-label">Value</label>
-            {{#if hasRwPermission}}
-            <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" />
-            {{else}}
-            {{#if idata.unknownValue}}
-            <input type="text" value="Unknown" data-dtype="String" disabled />
-            {{else}}
-            <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" disabled />
-            {{/if}}
-            {{/if}}
-        </div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div class="resource" id="weapongear-quality">
-            <label class="resource-label">Weapon Quality</label>
-            <input type="number" name="system.weaponQuality" value="{{ idata.weaponQuality }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div class="resource" id="weapongear-attack">
-            <label class="resource-label">Attack</label>
-            <input type="number" name="system.attack" value="{{ idata.attack }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div class="resource" id="weapongear-defense">
-            <label class="resource-label">Defense</label>
-            <input type="number" name="system.defense" value="{{ idata.defense }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div class="resource" id="weapongear-wq-mod">
-            <label class="resource-label">WQ Modifier</label>
-            <input type="number" name="system.wqModifier" value="{{ idata.wqModifier }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div class="resource" id="weapongear-attack-mod">
-            <label class="resource-label">Attack Modifier</label>
-            <input type="number" name="system.attackModifier" value="{{ idata.attackModifier }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <!-- <div class="resource"></div> -->
-        <div class="resource"></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div class="resource" id="weapongear-blunt">
-            <label class="resource-label">Blunt</label>
-            <input type="number" name="system.blunt" value="{{ idata.blunt }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div class="resource" id="weapongear-edged">
-            <label class="resource-label">Edged</label>
-            <input type="number" name="system.edged" value="{{ idata.edged }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div class="resource" id="weapongear-piercing">
-            <label class="resource-label">Piercing</label>
-            <input type="number" name="system.piercing" value="{{ idata.piercing }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div class="resource" id="weapongear-assocskill">
-            <label class="resource-label" for="system.assocSkill">Associated Skill</label>
-            {{#if hasCombatSkills}}
-            <select class="resource-value" id="system.assocSkill" name="system.assocSkill" data-dtype="String">
-                {{selectOptions combatSkills selected=idata.assocSkill valueAttr="key" labelAttr="key"}}
-            </select>
-            {{else}}
-            <input type="text" id="system.assocSkill" name="system.assocSkill" value="{{ idata.assocSkill }}" data-dtype="String" />
-            {{/if}}
-        </div>
+<div class="grid grid-fixed-row grid-3col">
+    <div class="resource" id="weapongear-qty">
+        <label class="resource-label">Quantity</label>
+        <input type="number" name="system.quantity" value="{{ idata.quantity }}" data-dtype="Number" />
     </div>
-    {{> item_standard_partial}}
-    {{> item_unknown_value_partial}}
-    {{> item_artifact_partial}}
+    <div class="resource" id="weapongear-weight">
+        <label for="system.weight" class="resource-label">Weight</label>
+        <input type="number" id="system.weight" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div class="resource" id="weapongear-value">
+        <label class="resource-label">Value</label>
+        {{#if hasRwPermission}}
+        <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" />
+        {{else}}
+        {{#if idata.unknownValue}}
+        <input type="text" value="Unknown" data-dtype="String" disabled />
+        {{else}}
+        <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" disabled />
+        {{/if}}
+        {{/if}}
+    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div class="resource" id="weapongear-quality">
+        <label class="resource-label">Weapon Quality</label>
+        <input type="number" name="system.weaponQuality" value="{{ idata.weaponQuality }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div class="resource" id="weapongear-attack">
+        <label class="resource-label">Attack</label>
+        <input type="number" name="system.attack" value="{{ idata.attack }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div class="resource" id="weapongear-defense">
+        <label class="resource-label">Defense</label>
+        <input type="number" name="system.defense" value="{{ idata.defense }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div class="resource" id="weapongear-wq-mod">
+        <label class="resource-label">WQ Modifier</label>
+        <input type="number" name="system.wqModifier" value="{{ idata.wqModifier }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div class="resource" id="weapongear-attack-mod">
+        <label class="resource-label">Attack Modifier</label>
+        <input type="number" name="system.attackModifier" value="{{ idata.attackModifier }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <!-- <div class="resource"></div> -->
+    <div class="resource"></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div class="resource" id="weapongear-blunt">
+        <label class="resource-label">Blunt</label>
+        <input type="number" name="system.blunt" value="{{ idata.blunt }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div class="resource" id="weapongear-edged">
+        <label class="resource-label">Edged</label>
+        <input type="number" name="system.edged" value="{{ idata.edged }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div class="resource" id="weapongear-piercing">
+        <label class="resource-label">Piercing</label>
+        <input type="number" name="system.piercing" value="{{ idata.piercing }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div class="resource" id="weapongear-assocskill">
+        <label class="resource-label" for="system.assocSkill">Associated Skill</label>
+        {{#if hasCombatSkills}}
+        <select class="resource-value" id="system.assocSkill" name="system.assocSkill" data-dtype="String">
+            {{selectOptions combatSkills selected=idata.assocSkill valueAttr="key" labelAttr="key"}}
+        </select>
+        {{else}}
+        <input type="text" id="system.assocSkill" name="system.assocSkill" value="{{ idata.assocSkill }}" data-dtype="String" />
+        {{/if}}
+    </div>
 </div>
+{{> item_standard_partial}}
+{{> item_unknown_value_partial}}
+{{> item_artifact_partial}}
 
 {{/item_layout_partial}}

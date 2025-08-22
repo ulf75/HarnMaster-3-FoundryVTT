@@ -1,31 +1,28 @@
 {{#> item_layout_partial  }}
 
-{{!-- Properties Tab --}}
-<div class="tab properties" data-group="primary" data-tab="properties">
-    <div class="resource-block">
-        <div class="resource">
-            <label for="system.diety" class="resource-label">Diety</label>
-            {{#if hasRitualSkills}}
-            <span class="resource-span">
-                <select class="resource-value" id="system.diety" name="system.diety" data-dtype="String">
-                    {{#select idata.diety}}
-                    {{#each dieties}}
-                    <option value="{{ this }}">{{ this }}</option>
-                    {{/each}}
-                    {{/select}}
-                </select>
-            </span>
-            {{else}}
-            <input type="text" id="system.diety" name="system.diety" value="{{ idata.diety }}" data-dtype="String" />
-            {{/if}}
-        </div>
-        <div class="resource">
-            <label for="system.circle" class="resource-label">Circle</label>
-            <input type="number" id="system.circle" name="system.circle" value="{{ idata.circle }}" data-dtype="Number" />
-        </div>
+<div class="resource-block">
+    <div class="resource">
+        <label for="system.diety" class="resource-label">Diety</label>
+        {{#if hasRitualSkills}}
+        <span class="resource-span">
+            <select class="resource-value" id="system.diety" name="system.diety" data-dtype="String">
+                {{#select idata.diety}}
+                {{#each dieties}}
+                <option value="{{ this }}">{{ this }}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+        </span>
+        {{else}}
+        <input type="text" id="system.diety" name="system.diety" value="{{ idata.diety }}" data-dtype="String" />
+        {{/if}}
     </div>
-    {{> item_standard_partial}}
-    {{> item_esoteric_combat_partial}}
+    <div class="resource">
+        <label for="system.circle" class="resource-label">Circle</label>
+        <input type="number" id="system.circle" name="system.circle" value="{{ idata.circle }}" data-dtype="Number" />
+    </div>
 </div>
+{{> item_standard_partial}}
+{{> item_esoteric_combat_partial}}
 
 {{/item_layout_partial}}

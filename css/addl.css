@@ -686,7 +686,7 @@ h5 {
 }
 .dnd5e.sheet .warnings .notification,
 .dnd5e.sheet .info .notification {
-    /* /* font-family: 'Signika', sans-serif; */ */
+    /* font-family: 'Signika', sans-serif; */
     font-weight: normal;
     font-size: var(--font-size-13);
     box-shadow: none;
@@ -3729,7 +3729,7 @@ h5 {
 }
 :is(.dnd5e, .dnd5e2, .dnd5e2-journal) table caption {
     margin-block-end: 2px;
-    /* /* font-family: var(--dnd5e-font-roboto-slab); */ */
+    /* font-family: var(--dnd5e-font-roboto-slab); */
     font-variant: small-caps;
     font-weight: bold;
 }
@@ -11964,7 +11964,7 @@ dialog.dnd5e2.application {
     border-width: 1px;
     border-block-end-width: 2px;
     border-radius: 6px;
-    /* /* font-family: var(--dnd5e-font-roboto); */ */
+    /* font-family: var(--dnd5e-font-roboto); */
     font-size: var(--font-size-13);
     position: relative;
     background: var(--dnd5e-color-parchment);
@@ -12342,7 +12342,7 @@ dialog.dnd5e2.application {
     transition: all 250ms ease;
 }
 .dnd5e2.chat-card .description .details {
-    /* /* font-family: var(--dnd5e-font-roboto); */ */
+    /* font-family: var(--dnd5e-font-roboto); */
     font-size: var(--font-size-11);
     padding: 0;
     display: grid;

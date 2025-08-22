@@ -1213,6 +1213,14 @@ section.highlight {
     color: #9a998f;
 }
 
+.hm3 .resource label {
+    font-size: var(--font-size-15);
+    font-variant: small-caps;
+    font-weight: bold;
+    margin: 2px 0px;
+    vertical-align: middle;
+}
+
 .hm3 .resource-label {
     font-size: var(--font-size-15);
     font-variant: small-caps;
@@ -2557,6 +2565,7 @@ section.highlight {
 }
 
 .hm3.item .skill-header .header-fields .skill-type .label {
+    color: black;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 50px;
     flex: 0 0 50px;
@@ -2565,6 +2574,7 @@ section.highlight {
     font-variant: small-caps;
     font-weight: bold;
     padding-left: 8px;
+    text-shadow: none;
 }
 
 .hm3.item .skill-header .header-fields .skill-type .value {
@@ -2581,6 +2591,7 @@ section.highlight {
 }
 
 .hm3.item .skill-header .header-fields .skill-container .label {
+    color: black;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 110px;
     flex: 0 0 110px;
@@ -2589,6 +2600,7 @@ section.highlight {
     font-variant: small-caps;
     font-weight: bold;
     padding-left: 8px;
+    text-shadow: none;
 }
 
 .hm3.item .skill-header .header-fields .skill-container .value {

@@ -1,29 +1,26 @@
 {{#> item_layout_partial  }}
 
-{{!-- Properties Tab --}}
-<div class="tab properties" data-group="primary" data-tab="properties">
-    <div class="grid grid-fixed-row grid-2col">
-        <div class="resource">
-            <label for="system.convocation" class="resource-label">Convocation</label>
-            {{#if hasMagicSkills}}
-            <select class="resource-value" id="system.convocation" name="system.convocation" data-dtype="String">
-                {{#select idata.convocation}}
-                {{#each convocations}}
-                <option value="{{ this }}">{{ this }}</option>
-                {{/each}}
-                {{/select}}
-            </select>
-            {{else}}
-            <input type="text" id="system.convocation" name="system.convocation" value="{{ idata.convocation }}" data-dtype="String" />
-            {{/if}}
-        </div>
-        <div class="resource">
-            <label for="system.level" class="resource-label">Level</label>
-            <input type="number" id="system.level" name="system.level" value="{{ idata.level }}" data-dtype="Number" />
-        </div>
+<div class="grid grid-fixed-row grid-2col">
+    <div class="resource">
+        <label for="system.convocation" class="resource-label">Convocation</label>
+        {{#if hasMagicSkills}}
+        <select class="resource-value" id="system.convocation" name="system.convocation" data-dtype="String">
+            {{#select idata.convocation}}
+            {{#each convocations}}
+            <option value="{{ this }}">{{ this }}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+        {{else}}
+        <input type="text" id="system.convocation" name="system.convocation" value="{{ idata.convocation }}" data-dtype="String" />
+        {{/if}}
     </div>
-    {{> item_standard_partial}}
-    {{> item_esoteric_combat_partial}}
+    <div class="resource">
+        <label for="system.level" class="resource-label">Level</label>
+        <input type="number" id="system.level" name="system.level" value="{{ idata.level }}" data-dtype="Number" />
+    </div>
 </div>
+{{> item_standard_partial}}
+{{> item_esoteric_combat_partial}}
 
 {{/item_layout_partial}}

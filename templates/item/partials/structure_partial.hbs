@@ -54,8 +54,10 @@
 
     {{!-- Sheet Body --}}
     <section class="sheet-body skill-body">
-        {{!-- Main Tab --}}
-        {{> @partial-block}}
+        {{!-- Properties Tab --}}
+        <div class="tab properties" data-group="primary" data-tab="properties">
+            {{> @partial-block}}
+        </div>
 
         {{!-- Description Tab --}}
         <div class="tab description" data-group="primary" data-tab="description">
@@ -63,7 +65,9 @@
         </div>
 
         {{!-- Artifact Tab --}}
+        {{!--
         <div class="tab artifact" data-group="primary" data-tab="artifact"></div>
+        --}}
 
         {{!-- Macro Tab --}}
         <div class="tab macro" data-group="primary" data-tab="macro">

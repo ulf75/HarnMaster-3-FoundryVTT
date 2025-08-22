@@ -1,54 +1,52 @@
 {{#> item_layout_partial nameReadOnly=(not hasRwPermission) list=config.skillTypes }}
 
-{{!-- Properties Tab --}}
-<div class="tab properties" data-group="primary" data-tab="properties">
-    <div class="grid grid-fixed-row grid-3col">
-        <div class="resource">
-            <label class="resource-label">Skill Base (SB)</label>
-            <input type="text" name="system.skillBase.value" value="{{ idata.skillBase.value }}" data-dtype="Number"
-            {{#if idata.skillBase.formula}}readonly{{/if}} {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div class="resource">
-            <label class="resource-label">Mastery Level (ML)</label>
-            <input type="number" name="system.masteryLevel" value="{{ idata.masteryLevel }}" data-dtype="Number" />
-        </div>
-        {{#if (eq idata.type "Ritual")}}
-        <div class="resource">
-            <label class="resource-label">Piety</label>
-            <input type="number" name="system.ritual.piety" value="{{ idata.ritual.piety }}" data-dtype="Number" />
-        </div>
-        {{/if}}
+<div class="grid grid-fixed-row grid-3col">
+    <div class="resource">
+        <label class="resource-label">Skill Base (SB)</label>
+        <input type="text" name="system.skillBase.value" value="{{ idata.skillBase.value }}" data-dtype="Number"
+        {{#if idata.skillBase.formula}}readonly{{/if}} {{#unless hasRwPermission}}disabled{{/unless}} />
     </div>
     <div class="resource">
-        <label class="resource-label tooltip">
-            Skill Base Formula
-            <span class="tooltiptext">
-                Enter a formula to automatically calculate skill base. For example: "@str, @sta, @wil, Ulandus, Aralius:2". This will
-                average strength, stamina, and will; if Ulandus sunsign, add 1; if Aralius sunsign, add 2. There must always be exactly
-                three attributes. Valid attributes are: @str, @sta, @dex, @agl, @int, @aur, @wil, @eye, @hrg, @sml, @voi, @cml, @mor
-            </span>
-        </label>
-        <input type="text" name="system.skillBase.formula" value="{{ idata.skillBase.formula }}" data-dtype="String"
-        {{#unless hasRwPermission}}disabled{{/unless}} />
-        {{#unless idata.skillBase.isFormulaValid}}
-        <div class="error">Error: Invalid SkillBase Formula!</div>
-        {{/unless}}
+        <label class="resource-label">Mastery Level (ML)</label>
+        <input type="number" name="system.masteryLevel" value="{{ idata.masteryLevel }}" data-dtype="Number" />
     </div>
-    {{> item_standard_partial}}
-    {{#if isRiding}}
-    <div class="resource-block">
-        <div class="resource">
-            <label for="system.actorUuid" class="resource-label">Steed</label>
-            <select class="value" id="system.actorUuid" name="system.actorUuid">
-                {{selectOptions steeds selected=idata.actorUuid valueAttr="key" labelAttr="label"}}
-            </select>
-        </div>
-        <div class="resource">
-            <label for="mounted" class="resource-label">Mounted</label>
-            <span class="resource-span"><input type="checkbox" id="mounted" name="mounted" {{ checked mounted }} disabled /></span>
-        </div>
+    {{#if (eq idata.type "Ritual")}}
+    <div class="resource">
+        <label class="resource-label">Piety</label>
+        <input type="number" name="system.ritual.piety" value="{{ idata.ritual.piety }}" data-dtype="Number" />
     </div>
     {{/if}}
-    {{> item_esoteric_combat_partial}}
 </div>
+<div class="resource">
+    <label class="resource-label tooltip">
+        Skill Base Formula
+        <span class="tooltiptext">
+            Enter a formula to automatically calculate skill base. For example: "@str, @sta, @wil, Ulandus, Aralius:2". This will average
+            strength, stamina, and will; if Ulandus sunsign, add 1; if Aralius sunsign, add 2. There must always be exactly three
+            attributes. Valid attributes are: @str, @sta, @dex, @agl, @int, @aur, @wil, @eye, @hrg, @sml, @voi, @cml, @mor
+        </span>
+    </label>
+    <input type="text" name="system.skillBase.formula" value="{{ idata.skillBase.formula }}" data-dtype="String"
+    {{#unless hasRwPermission}}disabled{{/unless}} />
+    {{#unless idata.skillBase.isFormulaValid}}
+    <div class="error">Error: Invalid SkillBase Formula!</div>
+    {{/unless}}
+</div>
+{{> item_standard_partial}}
+{{#if isRiding}}
+<div class="resource-block">
+    <div class="resource">
+        <label for="system.actorUuid" class="resource-label">Steed</label>
+        <select class="value" id="system.actorUuid" name="system.actorUuid">
+            {{selectOptions steeds selected=idata.actorUuid valueAttr="key" labelAttr="label"}}
+        </select>
+    </div>
+    <div class="resource">
+        <label for="mounted" class="resource-label">Mounted</label>
+        <span class="resource-span"><input type="checkbox" id="mounted" name="mounted" {{ checked mounted }} disabled /></span>
+    </div>
+</div>
+{{/if}}
+{{> item_esoteric_combat_partial}}
+
 {{/item_layout_partial}}

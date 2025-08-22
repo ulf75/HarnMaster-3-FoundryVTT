@@ -1,18 +1,15 @@
 {{#> item_layout_partial  }}
 
-{{!-- Properties Tab --}}
-<div class="tab properties" data-group="primary" data-tab="properties">
-    <div class="grid grid-fixed-row grid-2col">
-        <div class="resource" id="injury-healrate">
-            <label class="resource-label">Heal Rate (HR)</label>
-            <input type="number" name="system.healRate" value="{{ idata.healRate }}" data-dtype="Number" />
-        </div>
-        <div class="resource" id="injury-level">
-            <label class="resource-label">Injury Level (IL)</label>
-            <input type="number" name="system.injuryLevel" value="{{ idata.injuryLevel }}" data-dtype="Number" />
-        </div>
+<div class="grid grid-fixed-row grid-2col">
+    <div class="resource" id="injury-healrate">
+        <label class="resource-label">Heal Rate (HR)</label>
+        <input type="number" name="system.healRate" value="{{ idata.healRate }}" data-dtype="Number" />
     </div>
-    {{> item_standard_partial}}
+    <div class="resource" id="injury-level">
+        <label class="resource-label">Injury Level (IL)</label>
+        <input type="number" name="system.injuryLevel" value="{{ idata.injuryLevel }}" data-dtype="Number" />
+    </div>
 </div>
+{{> item_standard_partial}}
 
 {{/item_layout_partial}}

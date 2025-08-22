@@ -1,16 +1,13 @@
 {{#> item_layout_partial nameReadOnly=(not hasRwPermission) list=config.traitTypes }}
 
-{{!-- Properties Tab --}}
-<div class="tab properties" data-group="primary" data-tab="properties">
-    {{#if isPsycheTrait}}
-    <div class="resource">
-        <label for="system.severity" class="resource-label">Severity</label>
-        <select id="system.severity" name="system.severity">
-            {{selectOptions config.psycheSeverity selected=idata.severity valueAttr="key" labelAttr="label"}}
-        </select>
-    </div>
-    {{/if}}
-    {{> item_standard_partial}}
+{{#if isPsycheTrait}}
+<div class="resource">
+    <label for="system.severity" class="resource-label">Severity</label>
+    <select id="system.severity" name="system.severity">
+        {{selectOptions config.psycheSeverity selected=idata.severity valueAttr="key" labelAttr="label"}}
+    </select>
 </div>
+{{/if}}
+{{> item_standard_partial}}
 
 {{/item_layout_partial}}

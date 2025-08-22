@@ -1,42 +1,39 @@
 {{#> item_layout_partial list=config.containerTypes }}
 
-{{!-- Properties Tab --}}
-<div class="tab properties" data-group="primary" data-tab="properties">
-    {{#unless (eq idata.type "Group")}}
-    <div class="grid grid-fixed-row grid-4col">
-        <div class="resource">
-            <label class="resource-label">Quantity</label>
-            <input type="number" name="system.quantity" value="{{ idata.quantity }}" readonly data-dtype="Number" />
-        </div>
-        <div class="resource">
-            <label class="resource-label">Weight</label>
-            <input type="number" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div class="resource">
-            <label class="resource-label">Value</label>
-            {{#if hasRwPermission}}
-            <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" />
-            {{else}}
-            {{#if idata.unknownValue}}
-            <input type="text" value="Unknown" data-dtype="String" disabled />
-            {{else}}
-            <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" disabled />
-            {{/if}}
-            {{/if}}
-        </div>
-        <div class="resource">
-            <label class="resource-label">Max Capacity</label>
-            <input type="number" name="system.capacity.max" value="{{ idata.capacity.max }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
+{{#unless (eq idata.type "Group")}}
+<div class="grid grid-fixed-row grid-4col">
+    <div class="resource">
+        <label class="resource-label">Quantity</label>
+        <input type="number" name="system.quantity" value="{{ idata.quantity }}" readonly data-dtype="Number" />
     </div>
-    {{/unless}}
-    {{> item_standard_partial}}
-    {{#unless (eq idata.type "Group")}}
-    {{> item_unknown_value_partial}}
-    {{> item_artifact_partial}}
-    {{/unless}}
+    <div class="resource">
+        <label class="resource-label">Weight</label>
+        <input type="number" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div class="resource">
+        <label class="resource-label">Value</label>
+        {{#if hasRwPermission}}
+        <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" />
+        {{else}}
+        {{#if idata.unknownValue}}
+        <input type="text" value="Unknown" data-dtype="String" disabled />
+        {{else}}
+        <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" disabled />
+        {{/if}}
+        {{/if}}
+    </div>
+    <div class="resource">
+        <label class="resource-label">Max Capacity</label>
+        <input type="number" name="system.capacity.max" value="{{ idata.capacity.max }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
 </div>
+{{/unless}}
+{{> item_standard_partial}}
+{{#unless (eq idata.type "Group")}}
+{{> item_unknown_value_partial}}
+{{> item_artifact_partial}}
+{{/unless}}
 
 {{/item_layout_partial}}
