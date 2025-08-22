@@ -1,5 +1,5 @@
 <form class="{{ cssClass }}" autocomplete="off">
-    <header class="sheet-header skill-header">
+    <header class="sheet-header skill-header tab-header">
         <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
         <div class="header-fields">
             <h1 class="charname">
@@ -31,98 +31,89 @@
         </div>
     </header>
 
-    {{#if idata.arcane.isArtifact}}
-    {{#if (or idata.arcane.isOwnerAware isGM)}}
-    <div class="flexrow item-artifact">&raquo; {{ idata.arcane.type }} Artifact &laquo;</div>
-    {{/if}}
-    {{/if}}
-
     {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="properties">Properties</a>
-        <a class="item" data-tab="description">Description</a>
-        {{#if idata.arcane.isArtifact}}
-        {{#if (or idata.arcane.isOwnerAware isGM)}}
-        <a class="item" data-tab="artifact">Artifact</a>
-        {{/if}}
-        {{/if}}
-        {{#if hasRwPermission}}
-        <a class="item" data-tab="effects">Effects</a>
-        <a class="item" data-tab="macro">Macro</a>
-        {{/if}}
-    </nav>
+    <div class="tab-container">
+        <div class="tab-card tab-tabs">
+            <input id="properties-tab" type="radio" class="special-tab tab-selector" checked="checked" name="tab" />
+            <label for="properties-tab" class="special-tab tab-primary">Properties</label>
+            <input id="description-tab" type="radio" class="special-tab tab-selector" name="tab" />
+            <label for="description-tab" class="special-tab tab-success">Description</label>
+            <input id="effects-tab" type="radio" class="special-tab tab-selector" name="tab" />
+            <label for="effects-tab" class="special-tab tab-default">Effects</label>
+            <input id="macros-tab" type="radio" class="special-tab tab-selector" name="tab" />
+            <label for="macros-tab" class="special-tab">Macros</label>
+            <div class="tabsShadow"></div>
+            <div class="glider"></div>
 
-    {{!-- Sheet Body --}}
-    <section class="sheet-body skill-body">
-        {{!-- Properties Tab --}}
-        <div class="tab properties" data-group="primary" data-tab="properties">
-            {{> @partial-block}}
-        </div>
+            {{!-- Sheet Body --}}
+            <section class="tab-content">
+                <div class="main-content">
+                    {{!-- Properties Tab --}}
+                    <div class="tab-item" id="properties-content">
+                        {{> @partial-block}}
+                    </div>
 
-        {{!-- Description Tab --}}
-        <div class="tab description" data-group="primary" data-tab="description">
-            {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
-        </div>
+                    <div class="tab-item" id="description-content">
+                        {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
+                    </div>
 
-        {{!-- Artifact Tab --}}
-        {{!--
-        <div class="tab artifact" data-group="primary" data-tab="artifact"></div>
-        --}}
-
-        {{!-- Macro Tab --}}
-        <div class="tab macro" data-group="primary" data-tab="macro">
-            <div class="form-group">
-                <label for="system.macros.type">Type</label>
-                <select id="system.macros.type" name="system.macros.type">
-                    {{selectOptions macroTypes selected=idata.macros.type valueAttr="key" labelAttr="label"}}
-                </select>
-            </div>
-
-            <div class="form-group stacked command">
-                <label for="system.macros.command">Command</label>
-                <textarea id="system.macros.command" name="system.macros.command">{{ idata.macros.command }}</textarea>
-            </div>
-        </div>
-
-        {{!-- Effects Tab --}}
-        <div class="tab effects" data-group="primary" data-tab="effects">
-            <ol class="effects-list">
-                <li class="effects-header flexrow">
-                    <h3 class="effect-name flexrow">Effect</h3>
-                    <div class="effect-duration">Duration</div>
-                    <div class="effect-changes">Changes</div>
-                    <a class="effect-controls effect-control" title="Add Effect" data-action="create">
-                        <span class="active">
-                            <i class="fas fa-plus"></i>
-                            Add
-                        </span>
-                    </a>
-                </li>
-
-                <ol class="effect-list item-list">
-                    {{#each effects as |effect id|}}
-                    <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-id="{{ effect.id }}">
-                        <div class="effect-name flexrow">
-                            <div class="effect-image" style="background-image: url('{{ effect.img }}')"></div>
-                            <h4>{{ effect.name }}</h4>
+                    <div class="tab-item" id="macros-content">
+                        <div class="form-group">
+                            <label for="system.macros.type">Type</label>
+                            <select id="system.macros.type" name="system.macros.type">
+                                {{selectOptions macroTypes selected=idata.macros.type valueAttr="key" labelAttr="label"}}
+                            </select>
                         </div>
-                        <div class="effect-ele effect-duration">{{ effect.duration.label }}</div>
-                        <div class="effect-ele effect-changes">{{ effect.changes }}</div>
-                        <div class="effect-controls">
-                            <a class="effect-control" data-action="toggle">
-                                <i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i>
-                            </a>
-                            <a class="effect-control" data-action="edit">
-                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i>
-                            </a>
-                            <a class="effect-control" data-action="delete">
-                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i>
-                            </a>
+
+                        <div class="form-group stacked command">
+                            <label for="system.macros.command">Command</label>
+                            <textarea id="system.macros.command" name="system.macros.command">{{ idata.macros.command }}</textarea>
                         </div>
-                    </li>
-                    {{/each}}
-                </ol>
-            </ol>
+                    </div>
+                    <div class="tab-item" id="effects-content">
+                        <div class="effects">
+                            <ol class="effects-list">
+                                <li class="effects-header flexrow">
+                                    <h3 class="effect-name flexrow">Effect</h3>
+                                    <div class="effect-duration">Duration</div>
+                                    <div class="effect-changes">Changes</div>
+                                    <a class="effect-controls effect-control" title="Add Effect" data-action="create">
+                                        <span class="active">
+                                            <i class="fas fa-plus"></i>
+                                            Add
+                                        </span>
+                                    </a>
+                                </li>
+
+                                <ol class="effect-list item-list">
+                                    {{#each effects as |effect id|}}
+                                    <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-id="{{ effect.id }}">
+                                        <div class="effect-name flexrow">
+                                            <div class="effect-image" style="background-image: url('{{ effect.img }}')"></div>
+                                            <h4>{{ effect.name }}</h4>
+                                        </div>
+                                        <div class="effect-ele effect-duration">{{ effect.duration.label }}</div>
+                                        <div class="effect-ele effect-changes">{{ effect.changes }}</div>
+                                        <div class="effect-controls">
+                                            <a class="effect-control" data-action="toggle">
+                                                <i
+                                                    class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i>
+                                            </a>
+                                            <a class="effect-control" data-action="edit">
+                                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i>
+                                            </a>
+                                            <a class="effect-control" data-action="delete">
+                                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    {{/each}}
+                                </ol>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
+    </div>
 </form>

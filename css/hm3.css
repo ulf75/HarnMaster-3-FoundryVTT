@@ -1280,6 +1280,216 @@ section.highlight {
     margin-right: 5px;
 }
 
+.hm3.item.maroon {
+    background: linear-gradient(45deg, #999 5%, #fff 10%, #ccc 30%, #ddd 50%, #ccc 70%, #fff 80%, #999 95%);
+    border-radius: 10px 10px 10px 10px;
+}
+
+.hm3.item.maroon header {
+    border: none;
+    color: #ded9cf;
+    text-shadow: -1px 0 #484132, 0 1px #484132, 1px 0 #484132, 0 -1px #484132;
+}
+
+.hm3.item.maroon section {
+    background: transparent;
+    border-radius: 10px 10px 10px 10px;
+    scrollbar-color: #9f9175 transparent;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+}
+
+.hm3.item.maroon section form .tab-header {
+    background: linear-gradient(160deg, #f1ece9, #f1ece9 70%, #ded0c9 90%, #b7998a);
+    border-radius: 5px;
+    border-top: 1px solid #3b3d3f;
+    -webkit-box-shadow: 0 2px 3px #0a0a01, 0 0 0 1px #0a0a01;
+    box-shadow: 0 2px 3px #0a0a01, 0 0 0 1px #0a0a01;
+    line-height: 20px;
+    padding: 10px;
+    text-align: left;
+    z-index: 2;
+}
+
+.hm3.item.maroon section form .tab-container {
+    height: 100%;
+    padding: 10px 0px;
+    text-align: center;
+    width: 100%;
+}
+
+.hm3.item.maroon section form .tab-container .tab-tabs {
+    position: relative;
+    text-align: left;
+}
+
+.hm3.item.maroon section form .tab-container input[type='radio'] {
+    margin: auto !important;
+    opacity: 0;
+    padding: 0;
+    position: relative;
+}
+
+.hm3.item.maroon section form .tab-container input[type='radio'] + label {
+    background: #ded0c9;
+    border-bottom: 0.5pt solid #1d1e22;
+    border-radius: 7px 7px 0 0 !important;
+    border-top: 1px solid #3b3d3f;
+    -webkit-box-shadow: 1px 1px 2px 1px #231f20;
+    box-shadow: 1px 1px 2px 1px #231f20;
+    color: #777;
+    cursor: pointer;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    font-size: var(--font-size-14);
+    font-variant-caps: petite-caps;
+    font-weight: 700;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    letter-spacing: 0.1em !important;
+    margin: 12px -8px;
+    margin-bottom: 0.5px;
+    padding: 5pt 10pt;
+    text-align: center;
+    -webkit-transition: all 0.4s;
+    transition: all 0.4s;
+    vertical-align: top;
+    width: 120px;
+}
+
+.hm3.item.maroon section form .tab-container input[type='radio'] + label:hover {
+    color: #1d1e22;
+}
+
+.hm3.item.maroon section form .tab-container #properties-tab:checked + label {
+    background: #f1ece9;
+    color: #004d66;
+}
+
+.hm3.item.maroon section form .tab-container #description-tab:checked + label {
+    background: #f1ece9;
+    color: #2e5a2a;
+}
+
+.hm3.item.maroon section form .tab-container #effects-tab:checked + label {
+    background: #f1ece9;
+    color: #a84100;
+}
+
+.hm3.item.maroon section form .tab-container #macros-tab:checked + label {
+    background: #f1ece9;
+    color: #ff14ef;
+}
+
+.hm3.item.maroon section form .tab-container #properties-tab:checked ~ .glider {
+    left: 9px;
+}
+
+.hm3.item.maroon section form .tab-container #description-tab:checked ~ .glider {
+    background: linear-gradient(113deg, #d0e8ce, #6cb766 20%, #51a04b);
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(47, 187, 12, 0.62);
+    box-shadow: 0px 0px 8px 0px rgba(47, 187, 12, 0.62);
+    left: 133px;
+}
+
+.hm3.item.maroon section form .tab-container #effects-tab:checked ~ .glider {
+    background: linear-gradient(113deg, #ffe9db, #ff8b42 20%, #ff6b0f);
+    -webkit-box-shadow: 0px 0px 8px 0px #050200;
+    box-shadow: 0px 0px 8px 0px #050200;
+    left: 257px;
+}
+
+.hm3.item.maroon section form .tab-container #macros-tab:checked ~ .glider {
+    background: linear-gradient(113deg, white, #ffadfa 20%, #ff7af6);
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(231, 13, 93, 0.57);
+    box-shadow: 0px 0px 8px 0px rgba(231, 13, 93, 0.57);
+    left: 381px !important;
+}
+
+.hm3.item.maroon section form .tab-container #properties-tab:checked ~ section #properties-content,
+.hm3.item.maroon section form .tab-container #description-tab:checked ~ section #description-content,
+.hm3.item.maroon section form .tab-container #effects-tab:checked ~ section #effects-content,
+.hm3.item.maroon section form .tab-container #macros-tab:checked ~ section #macros-content {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hm3.item.maroon section form .tab-container .tabsShadow {
+    -webkit-box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.04);
+    box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.04);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 35px;
+    padding: 10px;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 0;
+}
+
+.hm3.item.maroon section form .tab-container .tab-card {
+    background-color: transparent;
+    border: none;
+    height: 100%;
+    position: relative;
+    z-index: 4 !important;
+}
+
+.hm3.item.maroon section form .tab-container .tab-content {
+    background: linear-gradient(160deg, #f1ece9, #f1ece9 70%, #ded0c9 90%, #b7998a);
+    border-radius: 5px;
+    border-top: 1px solid #3b3d3f;
+    -webkit-box-shadow: 0 2px 3px #0a0a01, 0 0 0 1px #0a0a01;
+    box-shadow: 0 2px 3px #0a0a01, 0 0 0 1px #0a0a01;
+    display: block;
+    height: calc(100% - 60px);
+    line-height: 20px;
+    position: relative;
+    text-align: left;
+    z-index: 2;
+}
+
+.hm3.item.maroon section form .tab-container .tab-content p {
+    color: black;
+    font-size: var(--font-size-12);
+    font-style: normal;
+    font-weight: 300 !important;
+    letter-spacing: 0.75px;
+    line-height: 30px;
+    margin-top: 10pt;
+    margin: 10px 15px 10px 0;
+}
+
+.hm3.item.maroon section form .tab-container .tab-content .tab-item {
+    color: black;
+    height: 100%;
+    opacity: 0;
+    padding: 10px 20px;
+    position: absolute;
+    -webkit-transition: all 0.4s;
+    transition: all 0.4s;
+    visibility: hidden;
+    width: 100%;
+}
+
+.hm3.item.maroon section form .tab-container .glider {
+    background: linear-gradient(113deg, #99e6ff, deepskyblue 20%, #0099cc);
+    border-radius: 0 0 1px 1px;
+    -webkit-box-shadow: 0px 0px 8px 0px #020005;
+    box-shadow: 0px 0px 8px 0px #020005;
+    height: 4.5px;
+    padding: 0px 13px;
+    position: absolute;
+    top: 42px;
+    -webkit-transition: all 0.4s;
+    transition: all 0.4s;
+    width: 120px;
+    z-index: 2;
+}
+
 .hm3 .items h2 {
     -webkit-box-flex: 1;
     -ms-flex: 1;
