@@ -99,6 +99,8 @@ $glider-pink-shadow: 0px 0px 8px 0px rgba(231, 13, 93, 0.57);
 $glider-pink: linear-gradient($glider-rotation, $pink-lightest, $pink-base 20%, $pink-darker);
 $glider-maroon-shadow: 0px 0px 8px 0px hsla(349, 62%, 28%, 0.57);
 $glider-maroon: linear-gradient($glider-rotation, $maroon-lightest, $maroon-lighter, $maroon-base);
+$glider-gold-old-shadow: 0px 0px 8px 0px hsla(41, 18%, 24%, 0.57);
+$glider-gold-old: linear-gradient($glider-rotation, $gold-old-base, $gold-old-darker, $gold-old-darkest);
 
 $content-color: $parchment-base;
 $tab-background-active: $parchment-base;
@@ -136,54 +138,63 @@ $background-gold-metallic: linear-gradient(
 
 $sheet-radius: 10px 10px 10px 10px;
 
-// Custom styles for item types
-&.item-v2.maroon {
-    background: $background-maroon;
+$header-shadow-dark: -1px 0 $gold-old-darkest, 0 1px $gold-old-darkest, 1px 0 $gold-old-darkest,
+    0 -1px $gold-old-darkest;
+$header-shadow-light: -1px 0 $gold-old-lightest, 0 1px $gold-old-lightest, 1px 0 $gold-old-lightest,
+    0 -1px $gold-old-lightest;
 
-    header {
-        color: $gold-old-lightest;
-        text-shadow: -1px 0 $gold-old-darkest, 0 1px $gold-old-darkest, 1px 0 $gold-old-darkest,
-            0 -1px $gold-old-darkest;
-    }
+// Custom styles for item types
+$itemv2-background: var(--itemv2-background);
+$itemv2-header-color: var(--itemv2-header-color);
+$itemv2-header-shadow: var(--itemv2-header-shadow);
+$itemv2-tab-text-color: var(--itemv2-tab-text-color);
+$itemv2-glider-background: var(--itemv2-glider-background);
+$itemv2-glider-shadow: var(--itemv2-glider-shadow);
+
+&.item-v2.maroon {
+    --itemv2-background: #{$background-maroon};
+    --itemv2-header-color: #{$gold-old-lightest};
+    --itemv2-header-shadow: #{$header-shadow-dark};
+    --itemv2-tab-text-color: #{$gold-old-darker};
+    --itemv2-glider-background: #{$glider-gold-old};
+    --itemv2-glider-shadow: #{$glider-gold-old-shadow};
 }
 
 &.item-v2.silver {
-    background: $background-silver;
-
-    header {
-        color: $gold-old-darkest;
-        text-shadow: -1px 0 $gold-old-lightest, 0 1px $gold-old-lightest, 1px 0 $gold-old-lightest,
-            0 -1px $gold-old-lightest;
-    }
+    --itemv2-background: #{$background-silver};
+    --itemv2-header-color: #{$gold-old-darkest};
+    --itemv2-header-shadow: #{$header-shadow-light};
+    --itemv2-tab-text-color: #{$maroon-base};
+    --itemv2-glider-background: #{$glider-maroon};
+    --itemv2-glider-shadow: #{$glider-maroon-shadow};
 }
 
 &.item-v2.gold {
-    background: $background-gold-old;
-
-    header {
-        color: $gold-old-lightest;
-        text-shadow: -1px 0 $gold-old-darkest, 0 1px $gold-old-darkest, 1px 0 $gold-old-darkest,
-            0 -1px $gold-old-darkest;
-    }
+    --itemv2-background: #{$background-gold-old};
 }
 
 // General styles for item sheets
 &.item-v2 {
+    background: $itemv2-background;
     border-radius: $sheet-radius;
 
     header {
         border: none;
+        color: $itemv2-header-color;
+        text-shadow: $itemv2-header-shadow;
     }
 
-    section {
+    section.window-content {
         background: transparent;
         border-radius: $sheet-radius;
-        padding: 20px;
-        scrollbar-color: $gold-old-base transparent;
-        scrollbar-gutter: stable;
-        scrollbar-width: thin;
+        padding: 10px 20px;
+        // overflow-y: hidden;
+        overflow: visible;
 
         form {
+            // height: 100%;
+            // overflow: hidden;
+
             .tab-header {
                 background: linear-gradient(
                     $background-rotation,
@@ -201,10 +212,7 @@ $sheet-radius: 10px 10px 10px 10px;
             }
 
             .tab-container {
-                height: 100%;
-                padding: 10px 0px;
-                text-align: center;
-                width: 100%;
+                padding-top: 10px;
 
                 .tab-tabs {
                     position: relative;
@@ -242,22 +250,22 @@ $sheet-radius: 10px 10px 10px 10px;
 
                     .properties-tab.active {
                         background: $tab-background-active;
-                        color: $maroon-darker;
+                        color: $itemv2-tab-text-color;
                     }
 
                     .description-tab.active {
                         background: $tab-background-active;
-                        color: $maroon-darker;
+                        color: $itemv2-tab-text-color;
                     }
 
                     .effects-tab.active {
                         background: $tab-background-active;
-                        color: $maroon-darker;
+                        color: $itemv2-tab-text-color;
                     }
 
                     .macros-tab.active {
                         background: $tab-background-active;
-                        color: $maroon-darker;
+                        color: $itemv2-tab-text-color;
                     }
 
                     .properties-tab {
@@ -277,26 +285,26 @@ $sheet-radius: 10px 10px 10px 10px;
                     }
 
                     .properties-tab.active ~ .glider {
-                        background: $glider-maroon;
-                        box-shadow: $glider-maroon-shadow;
+                        background: $itemv2-glider-background;
+                        box-shadow: $itemv2-glider-shadow;
                         left: $tab-offset - 1px;
                     }
 
                     .description-tab.active ~ .glider {
-                        background: $glider-maroon;
-                        box-shadow: $glider-maroon-shadow;
+                        background: $itemv2-glider-background;
+                        box-shadow: $itemv2-glider-shadow;
                         left: $tab-width + 3px + $tab-offset - 0.5px;
                     }
 
                     .effects-tab.active ~ .glider {
-                        background: $glider-maroon;
-                        box-shadow: $glider-maroon-shadow;
+                        background: $itemv2-glider-background;
+                        box-shadow: $itemv2-glider-shadow;
                         left: 2 * ($tab-width + 3px) + $tab-offset;
                     }
 
                     .macros-tab.active ~ .glider {
-                        background: $glider-maroon;
-                        box-shadow: $glider-maroon-shadow;
+                        background: $itemv2-glider-background;
+                        box-shadow: $itemv2-glider-shadow;
                         left: 3 * ($tab-width + 3px) + $tab-offset + 0.5px;
                     }
 
@@ -319,34 +327,6 @@ $sheet-radius: 10px 10px 10px 10px;
                     position: relative;
                 }
 
-                section.sheet-body-v2 {
-                    background: linear-gradient(
-                        $background-rotation,
-                        $parchment-base,
-                        $parchment-base 70%,
-                        $parchment-darker 90%,
-                        $parchment-darkest
-                    );
-
-                    border-radius: 5px;
-                    border-top: 1px solid #3b3d3f;
-                    box-shadow: 0 2px 3px rgb(10, 10, 10 / 10%), 0 0 0 1px rgb(10, 10, 10 / 10%);
-                    display: block;
-                    height: calc(100% - 60px);
-                    line-height: 20px;
-                    position: relative;
-                    text-align: left;
-
-                    .tab-item {
-                        color: black;
-                        height: 100%;
-                        padding: 10px 20px;
-                        position: absolute;
-                        transition: all $transition-speed ease;
-                        width: 100%;
-                    }
-                }
-
                 .glider {
                     border-radius: 0 0 1px 1px;
                     height: 4.5px;
@@ -355,6 +335,32 @@ $sheet-radius: 10px 10px 10px 10px;
                     top: 42px;
                     transition: all $transition-speed ease;
                     width: $tab-width;
+                }
+            }
+
+            section.sheet-body-v2 {
+                background: linear-gradient(
+                    $background-rotation,
+                    $parchment-base,
+                    $parchment-base 70%,
+                    $parchment-darker 90%,
+                    $parchment-darkest
+                );
+                border-radius: 5px;
+                border-top: 1px solid #3b3d3f;
+                box-shadow: 0 2px 3px rgb(10, 10, 10 / 10%), 0 0 0 1px rgb(10, 10, 10 / 10%);
+                height: calc(100% - 170px);
+                line-height: 20px;
+                position: relative;
+
+                .main-content {
+                    inset: 0;
+                    overflow: hidden auto;
+                    padding: 10px 20px;
+                    position: absolute;
+                    scrollbar-color: $gold-old-base transparent;
+                    scrollbar-gutter: stable;
+                    scrollbar-width: thin;
                 }
             }
         }

@@ -10,7 +10,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
     /** @override */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ['hm3', 'sheet', 'item-v2'],
+            classes: ['hm3', 'sheet', 'item', 'item-v2'],
             width: 650,
             height: game.user.isGM ? 850 : 650,
             tabs: [{navSelector: '.sheet-tabs-v2', contentSelector: '.sheet-body-v2', initial: 'properties'}],
