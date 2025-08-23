@@ -1282,6 +1282,7 @@ section.highlight {
 
 .hm3.item-v2.maroon {
     --itemv2-background: linear-gradient(160deg, #eaa4b1, #d6516a 30px, #9d253b 60px, #741b2b, #4a111c);
+    --itemv2-background-border: #9d253b;
     --itemv2-header-color: #ded9cf;
     --itemv2-header-shadow: -1px 0 #484132, 0 1px #484132, 1px 0 #484132, 0 -1px #484132;
     --itemv2-tab-text-color: #84785c;
@@ -1291,6 +1292,7 @@ section.highlight {
 
 .hm3.item-v2.silver {
     --itemv2-background: linear-gradient(45deg, #999 5%, #fff 10%, #ccc 30%, #ddd 50%, #ccc 70%, #fff 80%, #999 95%);
+    --itemv2-background-border: #fff;
     --itemv2-header-color: #484132;
     --itemv2-header-shadow: -1px 0 #ded9cf, 0 1px #ded9cf, 1px 0 #ded9cf, 0 -1px #ded9cf;
     --itemv2-tab-text-color: #741b2b;
@@ -1301,19 +1303,25 @@ section.highlight {
 .hm3.item-v2.gold {
     --itemv2-background: linear-gradient(
         45deg,
-        #484132 5%,
-        #b4a993 10%,
-        #84785c 30%,
-        #9f9175 50%,
-        #84785c 70%,
-        #b4a993 80%,
-        #484132 95%
+        #9e6100 5%,
+        #ffc66b 10%,
+        #ff9f05 30%,
+        #ffb338 50%,
+        #ff9f05 70%,
+        #ffc66b 80%,
+        #9e6100 95%
     );
+    --itemv2-background-border: #ffedd1;
+    --itemv2-header-color: #484132;
+    --itemv2-header-shadow: -1px 0 #ded9cf, 0 1px #ded9cf, 1px 0 #ded9cf, 0 -1px #ded9cf;
 }
 
 .hm3.item-v2 {
     background: var(--itemv2-background);
-    border-radius: 10px 10px 10px 10px;
+    border-color: var(--itemv2-background-border);
+    border-radius: 8px 8px 8px 8px;
+    border-width: thin;
+    border-style: solid;
 }
 
 .hm3.item-v2 header {
@@ -1324,7 +1332,7 @@ section.highlight {
 
 .hm3.item-v2 section.window-content {
     background: transparent;
-    border-radius: 10px 10px 10px 10px;
+    border-radius: 8px 8px 8px 8px;
     padding: 10px 20px;
     overflow: visible;
 }

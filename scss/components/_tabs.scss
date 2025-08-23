@@ -89,6 +89,8 @@ $pink-base: hsl(304, 100%, 84%);
 $pink-lighter: hsl(304, 100%, 94%);
 $pink-lightest: hsl(304, 100%, 100%);
 
+$silver-lightest: #fff;
+
 $glider-blue-shadow: 0px 0px 8px 0px hsl(262deg, 100%, 70% / 70%);
 $glider-blue: linear-gradient($glider-rotation, $blue-lightest, $blue-base 20%, $blue-darker);
 $glider-green-shadow: 0px 0px 8px 0px rgba(47, 187, 12, 0.62);
@@ -114,7 +116,26 @@ $background-maroon: linear-gradient(
     $maroon-base,
     $maroon-darker
 );
-$background-silver: linear-gradient(45deg, #999 5%, #fff 10%, #ccc 30%, #ddd 50%, #ccc 70%, #fff 80%, #999 95%);
+$background-silver: linear-gradient(
+    45deg,
+    #999 5%,
+    $silver-lightest 10%,
+    #ccc 30%,
+    #ddd 50%,
+    #ccc 70%,
+    $silver-lightest 80%,
+    #999 95%
+);
+$background-gold: linear-gradient(
+    45deg,
+    $gold-darkest 5%,
+    $gold-lighter 10%,
+    $gold-darker 30%,
+    $gold-base 50%,
+    $gold-darker 70%,
+    $gold-lighter 80%,
+    $gold-darkest 95%
+);
 $background-gold-old: linear-gradient(
     45deg,
     $gold-old-darkest 5%,
@@ -136,7 +157,7 @@ $background-gold-metallic: linear-gradient(
     $gold-metallic-darkest 95%
 );
 
-$sheet-radius: 10px 10px 10px 10px;
+$sheet-radius: 8px 8px 8px 8px;
 
 $header-shadow-dark: -1px 0 $gold-old-darkest, 0 1px $gold-old-darkest, 1px 0 $gold-old-darkest,
     0 -1px $gold-old-darkest;
@@ -145,6 +166,7 @@ $header-shadow-light: -1px 0 $gold-old-lightest, 0 1px $gold-old-lightest, 1px 0
 
 // Custom styles for item types
 $itemv2-background: var(--itemv2-background);
+$itemv2-background-border: var(--itemv2-background-border);
 $itemv2-header-color: var(--itemv2-header-color);
 $itemv2-header-shadow: var(--itemv2-header-shadow);
 $itemv2-tab-text-color: var(--itemv2-tab-text-color);
@@ -153,6 +175,7 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
 
 &.item-v2.maroon {
     --itemv2-background: #{$background-maroon};
+    --itemv2-background-border: #{$maroon-lighter};
     --itemv2-header-color: #{$gold-old-lightest};
     --itemv2-header-shadow: #{$header-shadow-dark};
     --itemv2-tab-text-color: #{$gold-old-darker};
@@ -162,6 +185,7 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
 
 &.item-v2.silver {
     --itemv2-background: #{$background-silver};
+    --itemv2-background-border: #{$silver-lightest};
     --itemv2-header-color: #{$gold-old-darkest};
     --itemv2-header-shadow: #{$header-shadow-light};
     --itemv2-tab-text-color: #{$maroon-base};
@@ -170,13 +194,19 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
 }
 
 &.item-v2.gold {
-    --itemv2-background: #{$background-gold-old};
+    --itemv2-background: #{$background-gold};
+    --itemv2-background-border: #{$gold-lightest};
+    --itemv2-header-color: #{$gold-old-darkest};
+    --itemv2-header-shadow: #{$header-shadow-light};
 }
 
 // General styles for item sheets
 &.item-v2 {
     background: $itemv2-background;
+    border-color: $itemv2-background-border;
     border-radius: $sheet-radius;
+    border-width: thin;
+    border-style: solid;
 
     header {
         border: none;

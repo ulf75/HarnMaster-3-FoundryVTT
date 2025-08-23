@@ -31,6 +31,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
     async getData(options = {}) {
         options.classes.push(this.item.type);
         if (this.item.system.arcane?.isArtifact) options.classes.push('silver');
+        else if (this.item.type === ItemType.WEAPONGEAR) options.classes.push('gold');
         else options.classes.push('maroon');
 
         const data = super.getData(options);
