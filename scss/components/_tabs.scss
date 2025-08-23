@@ -32,7 +32,6 @@ $tab-width: 120px;
 $tab-offset: 9px;
 $transition-speed: 0.4s;
 
-$pale-factor: 110%;
 $background-rotation: 160deg;
 $glider-rotation: 113deg;
 
@@ -46,7 +45,6 @@ $blue-darker: hsl(195, 100%, 40%);
 $blue-base: hsl(195, 100%, 50%);
 $blue-lighter: hsl(195, 100%, 60%);
 $blue-lightest: hsl(195, 100%, 80%);
-$blue-pale: hsl(195, 100%, (50% + $pale-factor)/2);
 
 $gold-metallic-darkest: hsl(46, 65%, 22%);
 $gold-metallic-darker: hsl(46, 65%, 42%);
@@ -54,18 +52,23 @@ $gold-metallic-base: hsl(46, 65%, 52%);
 $gold-metallic-lighter: hsl(46, 65%, 62%);
 $gold-metallic-lightest: hsl(46, 65%, 82%);
 
-$gold-darkest: hsl(41, 18%, 24%);
-$gold-darker: hsl(41, 18%, 44%);
-$gold-base: hsl(41, 18%, 54%);
-$gold-lighter: hsl(41, 18%, 64%);
-$gold-lightest: hsl(41, 18%, 84%);
+$gold-old-darkest: hsl(41, 18%, 24%);
+$gold-old-darker: hsl(41, 18%, 44%);
+$gold-old-base: hsl(41, 18%, 54%);
+$gold-old-lighter: hsl(41, 18%, 64%);
+$gold-old-lightest: hsl(41, 18%, 84%);
+
+$gold-darkest: hsl(37, 100%, 31%);
+$gold-darker: hsl(37, 100%, 51%);
+$gold-base: hsl(37, 100%, 61%); // #ffb338
+$gold-lighter: hsl(37, 100%, 71%);
+$gold-lightest: hsl(37, 100%, 91%);
 
 $green-darkest: hsl(116, 36%, 26%);
 $green-darker: hsl(116, 36%, 46%);
 $green-base: hsl(116, 36%, 56%);
 $green-lighter: hsl(116, 36%, 66%);
 $green-lightest: hsl(116, 36%, 86%);
-$green-pale: hsl(116, 36%, (56% + $pale-factor)/2);
 
 $maroon-darkest: hsl(349, 62%, 8%);
 $maroon-darker: hsl(349, 62%, 18%);
@@ -74,28 +77,28 @@ $maroon-lighter: hsl(349, 62%, 38%);
 $maroon-lightest: hsl(349, 62%, 58%);
 $maroon-highlight: hsl(349, 62%, 78%);
 
-$hm3-orange-darkest: hsl(23, 100%, 33%);
-$hm3-orange-darker: hsl(23, 100%, 53%);
-$hm3-orange-base: hsl(23, 100%, 63%);
-$hm3-orange-lighter: hsl(23, 100%, 73%);
-$hm3-orange-lightest: hsl(23, 100%, 93%);
-$hm3-orange-pale: hsl(23, 100%, (63% + $pale-factor)/2);
+$orange-darkest: hsl(23, 100%, 33%);
+$orange-darker: hsl(23, 100%, 53%);
+$orange-base: hsl(23, 100%, 63%);
+$orange-lighter: hsl(23, 100%, 73%);
+$orange-lightest: hsl(23, 100%, 93%);
 
-$hm3-pink-darkest: hsl(304, 100%, 54%);
-$hm3-pink-darker: hsl(304, 100%, 74%);
-$hm3-pink-base: hsl(304, 100%, 84%);
-$hm3-pink-lighter: hsl(304, 100%, 94%);
-$hm3-pink-lightest: hsl(304, 100%, 100%);
-$hm3-pink-pale: hsl(304, 100%, (84% + $pale-factor)/2);
+$pink-darkest: hsl(304, 100%, 54%);
+$pink-darker: hsl(304, 100%, 74%);
+$pink-base: hsl(304, 100%, 84%);
+$pink-lighter: hsl(304, 100%, 94%);
+$pink-lightest: hsl(304, 100%, 100%);
 
 $glider-blue-shadow: 0px 0px 8px 0px hsl(262deg, 100%, 70% / 70%);
 $glider-blue: linear-gradient($glider-rotation, $blue-lightest, $blue-base 20%, $blue-darker);
 $glider-green-shadow: 0px 0px 8px 0px rgba(47, 187, 12, 0.62);
 $glider-green: linear-gradient($glider-rotation, $green-lightest, $green-base 20%, $green-darker);
 $glider-orange-shadow: 0px 0px 8px 0px hsl(17.72deg, 100%, 70% / 70%);
-$glider-orange: linear-gradient($glider-rotation, $hm3-orange-lightest, $hm3-orange-base 20%, $hm3-orange-darker);
+$glider-orange: linear-gradient($glider-rotation, $orange-lightest, $orange-base 20%, $orange-darker);
 $glider-pink-shadow: 0px 0px 8px 0px rgba(231, 13, 93, 0.57);
-$glider-pink: linear-gradient($glider-rotation, $hm3-pink-lightest, $hm3-pink-base 20%, $hm3-pink-darker);
+$glider-pink: linear-gradient($glider-rotation, $pink-lightest, $pink-base 20%, $pink-darker);
+$glider-maroon-shadow: 0px 0px 8px 0px hsla(349, 62%, 28%, 0.57);
+$glider-maroon: linear-gradient($glider-rotation, $maroon-lightest, $maroon-lighter, $maroon-base);
 
 $content-color: $parchment-base;
 $tab-background-active: $parchment-base;
@@ -110,15 +113,15 @@ $background-maroon: linear-gradient(
     $maroon-darker
 );
 $background-silver: linear-gradient(45deg, #999 5%, #fff 10%, #ccc 30%, #ddd 50%, #ccc 70%, #fff 80%, #999 95%);
-$background-gold: linear-gradient(
+$background-gold-old: linear-gradient(
     45deg,
-    $gold-darkest 5%,
-    $gold-lighter 10%,
-    $gold-darker 30%,
-    $gold-base 50%,
-    $gold-darker 70%,
-    $gold-lighter 80%,
-    $gold-darkest 95%
+    $gold-old-darkest 5%,
+    $gold-old-lighter 10%,
+    $gold-old-darker 30%,
+    $gold-old-base 50%,
+    $gold-old-darker 70%,
+    $gold-old-lighter 80%,
+    $gold-old-darkest 95%
 );
 $background-gold-metallic: linear-gradient(
     45deg,
@@ -131,25 +134,16 @@ $background-gold-metallic: linear-gradient(
     $gold-metallic-darkest 95%
 );
 
-$sheet-background: $background-silver;
 $sheet-radius: 10px 10px 10px 10px;
-
-$properties-color: $blue-darkest;
-$properties-color-pale: $blue-pale;
-$description-color: $green-darkest;
-$description-color-pale: $green-pale;
-$macros-color: $hm3-pink-darkest;
-$macros-color-pale: $hm3-pink-pale;
-$effects-color: $hm3-orange-darkest;
-$effects-color-pale: $hm3-orange-pale;
 
 // Custom styles for item types
 &.item-v2.maroon {
     background: $background-maroon;
 
     header {
-        color: $gold-lightest;
-        text-shadow: -1px 0 $gold-darkest, 0 1px $gold-darkest, 1px 0 $gold-darkest, 0 -1px $gold-darkest;
+        color: $gold-old-lightest;
+        text-shadow: -1px 0 $gold-old-darkest, 0 1px $gold-old-darkest, 1px 0 $gold-old-darkest,
+            0 -1px $gold-old-darkest;
     }
 }
 
@@ -157,17 +151,19 @@ $effects-color-pale: $hm3-orange-pale;
     background: $background-silver;
 
     header {
-        color: $gold-darkest;
-        text-shadow: -1px 0 $gold-lightest, 0 1px $gold-lightest, 1px 0 $gold-lightest, 0 -1px $gold-lightest;
+        color: $gold-old-darkest;
+        text-shadow: -1px 0 $gold-old-lightest, 0 1px $gold-old-lightest, 1px 0 $gold-old-lightest,
+            0 -1px $gold-old-lightest;
     }
 }
 
 &.item-v2.gold {
-    background: $background-gold;
+    background: $background-gold-old;
 
     header {
-        color: $gold-lightest;
-        text-shadow: -1px 0 $gold-darkest, 0 1px $gold-darkest, 1px 0 $gold-darkest, 0 -1px $gold-darkest;
+        color: $gold-old-lightest;
+        text-shadow: -1px 0 $gold-old-darkest, 0 1px $gold-old-darkest, 1px 0 $gold-old-darkest,
+            0 -1px $gold-old-darkest;
     }
 }
 
@@ -182,13 +178,13 @@ $effects-color-pale: $hm3-orange-pale;
     section {
         background: transparent;
         border-radius: $sheet-radius;
-        scrollbar-color: $gold-base transparent;
+        padding: 20px;
+        scrollbar-color: $gold-old-base transparent;
         scrollbar-gutter: stable;
         scrollbar-width: thin;
 
         form {
             .tab-header {
-                // background: $content-color;
                 background: linear-gradient(
                     $background-rotation,
                     $parchment-base,
@@ -202,7 +198,6 @@ $effects-color-pale: $hm3-orange-pale;
                 line-height: 20px;
                 padding: 10px;
                 text-align: left;
-                z-index: 2;
             }
 
             .tab-container {
@@ -218,13 +213,6 @@ $effects-color-pale: $hm3-orange-pale;
 
                 nav.v2 {
                     a {
-                        margin: auto !important;
-                        // opacity: 0;
-                        padding: 0;
-                        position: relative;
-                    }
-
-                    a {
                         background: $tab-background-inactive;
                         border-bottom: 0.5pt solid #1d1e22;
                         border-radius: 7px 7px 0 0 !important;
@@ -235,15 +223,14 @@ $effects-color-pale: $hm3-orange-pale;
                         display: inline-flex;
                         font-size: var(--font-size-14);
                         font-variant-caps: petite-caps;
-                        // font-variant: small-caps;
                         font-weight: 700;
                         justify-content: flex-start;
                         letter-spacing: 0.1em !important;
-                        margin: 12px -8px;
-                        margin-bottom: 0.5px;
+                        margin: 12px -8px 0.5px;
                         padding: 5pt 10pt;
+                        position: relative;
                         text-align: center;
-                        transition: all $transition-speed;
+                        transition: all $transition-speed ease;
                         vertical-align: top;
                         width: $tab-width;
                     }
@@ -253,55 +240,65 @@ $effects-color-pale: $hm3-orange-pale;
                         text-shadow: none;
                     }
 
-                    .item-tab.active {
+                    .properties-tab.active {
                         background: $tab-background-active;
-                        color: $properties-color;
+                        color: $maroon-darker;
                     }
 
                     .description-tab.active {
                         background: $tab-background-active;
-                        color: $description-color;
+                        color: $maroon-darker;
                     }
 
                     .effects-tab.active {
                         background: $tab-background-active;
-                        color: $effects-color;
+                        color: $maroon-darker;
                     }
 
                     .macros-tab.active {
                         background: $tab-background-active;
-                        color: $macros-color;
+                        color: $maroon-darker;
+                    }
+
+                    .properties-tab {
+                        left: $tab-offset + 7px;
+                    }
+
+                    .description-tab {
+                        left: 2 * ($tab-offset + 7px);
+                    }
+
+                    .effects-tab {
+                        left: 3 * ($tab-offset + 7px);
+                    }
+
+                    .macros-tab {
+                        left: 4 * ($tab-offset + 7px);
                     }
 
                     .properties-tab.active ~ .glider {
-                        left: $tab-offset;
+                        background: $glider-maroon;
+                        box-shadow: $glider-maroon-shadow;
+                        left: $tab-offset - 1px;
                     }
 
-                    #description-tab.active ~ .glider {
-                        background: $glider-green;
-                        box-shadow: $glider-green-shadow;
-                        left: $tab-width + $tab-offset + 4px;
+                    .description-tab.active ~ .glider {
+                        background: $glider-maroon;
+                        box-shadow: $glider-maroon-shadow;
+                        left: $tab-width + 3px + $tab-offset - 0.5px;
                     }
 
-                    .effects-tab:checked ~ .glider {
-                        background: $glider-orange;
-                        box-shadow: $glider-orange-shadow;
-                        left: 2 * ($tab-width + 4px) + $tab-offset;
+                    .effects-tab.active ~ .glider {
+                        background: $glider-maroon;
+                        box-shadow: $glider-maroon-shadow;
+                        left: 2 * ($tab-width + 3px) + $tab-offset;
                     }
 
-                    .macros-tab:checked ~ .glider {
-                        background: $glider-pink;
-                        box-shadow: $glider-pink-shadow;
-                        left: 3 * ($tab-width + 4px) + $tab-offset !important;
+                    .macros-tab.active ~ .glider {
+                        background: $glider-maroon;
+                        box-shadow: $glider-maroon-shadow;
+                        left: 3 * ($tab-width + 3px) + $tab-offset + 0.5px;
                     }
-
-                    // #properties-tab:checked ~ section #properties-content,
-                    // #description-tab:checked ~ section #description-content,
-                    // #effects-tab:checked ~ section #effects-content,
-                    // #macros-tab:checked ~ section #macros-content {
-                    //     opacity: 1;
-                    //     visibility: visible;
-                    // }
 
                     .tabsShadow {
                         box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.04);
@@ -312,7 +309,6 @@ $effects-color-pale: $hm3-orange-pale;
                         position: absolute;
                         top: 0;
                         width: 100%;
-                        z-index: 0;
                     }
                 }
 
@@ -321,10 +317,9 @@ $effects-color-pale: $hm3-orange-pale;
                     border: none;
                     height: 100%;
                     position: relative;
-                    z-index: 4 !important;
                 }
 
-                .tab-content {
+                section.sheet-body-v2 {
                     background: linear-gradient(
                         $background-rotation,
                         $parchment-base,
@@ -338,48 +333,28 @@ $effects-color-pale: $hm3-orange-pale;
                     box-shadow: 0 2px 3px rgb(10, 10, 10 / 10%), 0 0 0 1px rgb(10, 10, 10 / 10%);
                     display: block;
                     height: calc(100% - 60px);
-                    // height: fit-content;
                     line-height: 20px;
                     position: relative;
                     text-align: left;
-                    z-index: 2;
-
-                    p {
-                        // color: #f0f2fc;
-                        color: black;
-                        font-size: var(--font-size-12);
-                        font-style: normal;
-                        font-weight: 300 !important;
-                        letter-spacing: 0.75px;
-                        line-height: 30px;
-                        margin-top: 10pt;
-                        margin: 10px 15px 10px 0;
-                    }
 
                     .tab-item {
                         color: black;
                         height: 100%;
-                        // height: fit-content;
-                        opacity: 0;
                         padding: 10px 20px;
                         position: absolute;
-                        transition: all $transition-speed;
-                        visibility: hidden;
+                        transition: all $transition-speed ease;
                         width: 100%;
                     }
                 }
 
                 .glider {
-                    background: $glider-blue;
                     border-radius: 0 0 1px 1px;
-                    box-shadow: $glider-blue-shadow;
                     height: 4.5px;
                     padding: 0px 13px;
                     position: absolute;
                     top: 42px;
-                    transition: all $transition-speed;
+                    transition: all $transition-speed ease;
                     width: $tab-width;
-                    z-index: 2;
                 }
             }
         }

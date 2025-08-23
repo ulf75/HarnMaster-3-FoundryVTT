@@ -1327,6 +1327,7 @@ section.highlight {
 .hm3.item-v2 section {
     background: transparent;
     border-radius: 10px 10px 10px 10px;
+    padding: 20px;
     scrollbar-color: #9f9175 transparent;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
@@ -1341,7 +1342,6 @@ section.highlight {
     line-height: 20px;
     padding: 10px;
     text-align: left;
-    z-index: 2;
 }
 
 .hm3.item-v2 section form .tab-container {
@@ -1354,12 +1354,6 @@ section.highlight {
 .hm3.item-v2 section form .tab-container .tab-tabs {
     position: relative;
     text-align: left;
-}
-
-.hm3.item-v2 section form .tab-container nav.v2 a {
-    margin: auto !important;
-    padding: 0;
-    position: relative;
 }
 
 .hm3.item-v2 section form .tab-container nav.v2 a {
@@ -1381,12 +1375,12 @@ section.highlight {
     -ms-flex-pack: start;
     justify-content: flex-start;
     letter-spacing: 0.1em !important;
-    margin: 12px -8px;
-    margin-bottom: 0.5px;
+    margin: 12px -8px 0.5px;
     padding: 5pt 10pt;
+    position: relative;
     text-align: center;
-    -webkit-transition: all 0.4s;
-    transition: all 0.4s;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
     vertical-align: top;
     width: 120px;
 }
@@ -1396,49 +1390,68 @@ section.highlight {
     text-shadow: none;
 }
 
-.hm3.item-v2 section form .tab-container nav.v2 .item-tab.active {
+.hm3.item-v2 section form .tab-container nav.v2 .properties-tab.active {
     background: #f1ece9;
-    color: #004d66;
+    color: #4a111c;
 }
 
 .hm3.item-v2 section form .tab-container nav.v2 .description-tab.active {
     background: #f1ece9;
-    color: #2e5a2a;
+    color: #4a111c;
 }
 
 .hm3.item-v2 section form .tab-container nav.v2 .effects-tab.active {
     background: #f1ece9;
-    color: #a84100;
+    color: #4a111c;
 }
 
 .hm3.item-v2 section form .tab-container nav.v2 .macros-tab.active {
     background: #f1ece9;
-    color: #ff14ef;
+    color: #4a111c;
+}
+
+.hm3.item-v2 section form .tab-container nav.v2 .properties-tab {
+    left: 16px;
+}
+
+.hm3.item-v2 section form .tab-container nav.v2 .description-tab {
+    left: 32px;
+}
+
+.hm3.item-v2 section form .tab-container nav.v2 .effects-tab {
+    left: 48px;
+}
+
+.hm3.item-v2 section form .tab-container nav.v2 .macros-tab {
+    left: 64px;
 }
 
 .hm3.item-v2 section form .tab-container nav.v2 .properties-tab.active ~ .glider {
-    left: 9px;
+    background: linear-gradient(113deg, #d6516a, #9d253b, #741b2b);
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(116, 27, 43, 0.57);
+    box-shadow: 0px 0px 8px 0px rgba(116, 27, 43, 0.57);
+    left: 8px;
 }
 
-.hm3.item-v2 section form .tab-container nav.v2 #description-tab.active ~ .glider {
-    background: linear-gradient(113deg, #d0e8ce, #6cb766 20%, #51a04b);
-    -webkit-box-shadow: 0px 0px 8px 0px rgba(47, 187, 12, 0.62);
-    box-shadow: 0px 0px 8px 0px rgba(47, 187, 12, 0.62);
-    left: 133px;
+.hm3.item-v2 section form .tab-container nav.v2 .description-tab.active ~ .glider {
+    background: linear-gradient(113deg, #d6516a, #9d253b, #741b2b);
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(116, 27, 43, 0.57);
+    box-shadow: 0px 0px 8px 0px rgba(116, 27, 43, 0.57);
+    left: 131.5px;
 }
 
-.hm3.item-v2 section form .tab-container nav.v2 .effects-tab:checked ~ .glider {
-    background: linear-gradient(113deg, #ffe9db, #ff8b42 20%, #ff6b0f);
-    -webkit-box-shadow: 0px 0px 8px 0px #050200;
-    box-shadow: 0px 0px 8px 0px #050200;
-    left: 257px;
+.hm3.item-v2 section form .tab-container nav.v2 .effects-tab.active ~ .glider {
+    background: linear-gradient(113deg, #d6516a, #9d253b, #741b2b);
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(116, 27, 43, 0.57);
+    box-shadow: 0px 0px 8px 0px rgba(116, 27, 43, 0.57);
+    left: 255px;
 }
 
-.hm3.item-v2 section form .tab-container nav.v2 .macros-tab:checked ~ .glider {
-    background: linear-gradient(113deg, white, #ffadfa 20%, #ff7af6);
-    -webkit-box-shadow: 0px 0px 8px 0px rgba(231, 13, 93, 0.57);
-    box-shadow: 0px 0px 8px 0px rgba(231, 13, 93, 0.57);
-    left: 381px !important;
+.hm3.item-v2 section form .tab-container nav.v2 .macros-tab.active ~ .glider {
+    background: linear-gradient(113deg, #d6516a, #9d253b, #741b2b);
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(116, 27, 43, 0.57);
+    box-shadow: 0px 0px 8px 0px rgba(116, 27, 43, 0.57);
+    left: 378.5px;
 }
 
 .hm3.item-v2 section form .tab-container nav.v2 .tabsShadow {
@@ -1452,7 +1465,6 @@ section.highlight {
     position: absolute;
     top: 0;
     width: 100%;
-    z-index: 0;
 }
 
 .hm3.item-v2 section form .tab-container .tab-card {
@@ -1460,10 +1472,9 @@ section.highlight {
     border: none;
     height: 100%;
     position: relative;
-    z-index: 4 !important;
 }
 
-.hm3.item-v2 section form .tab-container .tab-content {
+.hm3.item-v2 section form .tab-container section.sheet-body-v2 {
     background: linear-gradient(160deg, #f1ece9, #f1ece9 70%, #ded0c9 90%, #b7998a);
     border-radius: 5px;
     border-top: 1px solid #3b3d3f;
@@ -1474,45 +1485,27 @@ section.highlight {
     line-height: 20px;
     position: relative;
     text-align: left;
-    z-index: 2;
 }
 
-.hm3.item-v2 section form .tab-container .tab-content p {
-    color: black;
-    font-size: var(--font-size-12);
-    font-style: normal;
-    font-weight: 300 !important;
-    letter-spacing: 0.75px;
-    line-height: 30px;
-    margin-top: 10pt;
-    margin: 10px 15px 10px 0;
-}
-
-.hm3.item-v2 section form .tab-container .tab-content .tab-item {
+.hm3.item-v2 section form .tab-container section.sheet-body-v2 .tab-item {
     color: black;
     height: 100%;
-    opacity: 0;
     padding: 10px 20px;
     position: absolute;
-    -webkit-transition: all 0.4s;
-    transition: all 0.4s;
-    visibility: hidden;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
     width: 100%;
 }
 
 .hm3.item-v2 section form .tab-container .glider {
-    background: linear-gradient(113deg, #99e6ff, deepskyblue 20%, #0099cc);
     border-radius: 0 0 1px 1px;
-    -webkit-box-shadow: 0px 0px 8px 0px #020005;
-    box-shadow: 0px 0px 8px 0px #020005;
     height: 4.5px;
     padding: 0px 13px;
     position: absolute;
     top: 42px;
-    -webkit-transition: all 0.4s;
-    transition: all 0.4s;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
     width: 120px;
-    z-index: 2;
 }
 
 .hm3 .items h2 {

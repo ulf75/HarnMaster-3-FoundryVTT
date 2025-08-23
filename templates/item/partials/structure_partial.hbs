@@ -34,32 +34,18 @@
     <div class="tab-container">
         <div class="tab-card tab-tabs">
             {{!-- Sheet Tab Navigation --}}
-            {{!--
-            <input id="properties-tab" type="radio" checked="checked" name="tab" />
-            <label for="properties-tab">Properties</label>
-            <input id="description-tab" type="radio" name="tab" />
-            <label for="description-tab">Description</label>
-            <input id="effects-tab" type="radio" name="tab" />
-            <label for="effects-tab">Effects</label>
-            <input id="macros-tab" type="radio" name="tab" />
-            <label for="macros-tab">Macros</label>
-            <div class="tabsShadow"></div>
-            <div class="glider"></div>
-            --}}
-
-            {{!-- Sheet Tab Navigation --}}
-
-            <nav class="sheet-tabs-v2 tabs-v2 v2" data-group="primary">
-                <a class="item-tab" data-tab="properties">Properties</a>
-                <a class="item-tab" data-tab="description">Description</a>
-                <a class="item-tab" data-tab="effects">Effects</a>
-                <a class="item-tab" data-tab="macro">Macro</a>
+            <nav class="sheet-tabs-v2 v2" data-group="primary">
+                <a class="properties-tab" data-tab="properties">Properties</a>
+                <a class="description-tab" data-tab="description">Description</a>
+                <a class="effects-tab" data-tab="effects">Effects</a>
+                <a class="macros-tab" data-tab="macro">Macro</a>
                 <div class="tabsShadow"></div>
                 <div class="glider"></div>
             </nav>
 
             {{!-- Sheet Body --}}
-            <section class="tab-content">
+            <section class="sheet-body-v2">
+                {{!-- Main Content --}}
                 <div class="main-content">
                     {{!-- Properties Tab --}}
                     <div class="tab properties" data-group="primary" data-tab="properties">
@@ -70,7 +56,7 @@
                         {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
                     </div>
 
-                    <div class="tab-item" id="macros-content">
+                    <div class="tab macros" data-group="primary" data-tab="macro">
                         <div class="form-group">
                             <label for="system.macros.type">Type</label>
                             <select id="system.macros.type" name="system.macros.type">
@@ -83,7 +69,8 @@
                             <textarea id="system.macros.command" name="system.macros.command">{{ idata.macros.command }}</textarea>
                         </div>
                     </div>
-                    <div class="tab-item" id="effects-content">
+
+                    <div class="tab effects" data-group="primary" data-tab="effects">
                         <div class="effects">
                             <ol class="effects-list">
                                 <li class="effects-header flexrow">
