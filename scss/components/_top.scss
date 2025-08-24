@@ -9,10 +9,10 @@
 input[type='text'],
 input[type='number'],
 select {
-    height: calc(100% - 2px);
-    border: 1px solid #7a7971;
     background: rgba(0, 0, 0, 0.05);
+    border: 1px solid #7a7971;
     color: #191813;
+    padding: 1px 3px;
 }
 
 input[type='text']:hover,
