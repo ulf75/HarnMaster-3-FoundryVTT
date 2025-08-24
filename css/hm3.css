@@ -1343,7 +1343,7 @@ section.highlight {
 }
 
 .hm3.item-v2 section.window-content form .tab-header {
-    background: linear-gradient(160deg, #f1ece9, #f1ece9 70%, #ded0c9 90%, #b7998a);
+    background: linear-gradient(160deg, white, #f1ece9 10%, #f1ece9 70%, #ded0c9 90%, #b7998a);
     border-radius: 5px;
     border-top: 1px solid #3b3d3f;
     -webkit-box-shadow: 0 2px 3px #0a0a01, 0 0 0 1px #0a0a01;
@@ -1379,8 +1379,9 @@ section.highlight {
     -webkit-box-pack: start;
     -ms-flex-pack: start;
     justify-content: flex-start;
+    left: 6px;
     letter-spacing: 0.1em !important;
-    margin: 12px -8px 0.5px;
+    margin: 12px 2px 0.5px;
     padding: 5pt 10pt;
     position: relative;
     text-align: center;
@@ -1415,22 +1416,6 @@ section.highlight {
     color: var(--itemv2-tab-text-color);
 }
 
-.hm3.item-v2 section.window-content form .tab-container nav.v2 .properties-tab {
-    left: 16px;
-}
-
-.hm3.item-v2 section.window-content form .tab-container nav.v2 .description-tab {
-    left: 32px;
-}
-
-.hm3.item-v2 section.window-content form .tab-container nav.v2 .effects-tab {
-    left: 48px;
-}
-
-.hm3.item-v2 section.window-content form .tab-container nav.v2 .macros-tab {
-    left: 64px;
-}
-
 .hm3.item-v2 section.window-content form .tab-container nav.v2 .properties-tab.active ~ .glider {
     background: var(--itemv2-glider-background);
     -webkit-box-shadow: var(--itemv2-glider-shadow);
@@ -1442,21 +1427,21 @@ section.highlight {
     background: var(--itemv2-glider-background);
     -webkit-box-shadow: var(--itemv2-glider-shadow);
     box-shadow: var(--itemv2-glider-shadow);
-    left: 131.5px;
+    left: 135.5px;
 }
 
 .hm3.item-v2 section.window-content form .tab-container nav.v2 .effects-tab.active ~ .glider {
     background: var(--itemv2-glider-background);
     -webkit-box-shadow: var(--itemv2-glider-shadow);
     box-shadow: var(--itemv2-glider-shadow);
-    left: 255px;
+    left: 263px;
 }
 
 .hm3.item-v2 section.window-content form .tab-container nav.v2 .macros-tab.active ~ .glider {
     background: var(--itemv2-glider-background);
     -webkit-box-shadow: var(--itemv2-glider-shadow);
     box-shadow: var(--itemv2-glider-shadow);
-    left: 378.5px;
+    left: 390.5px;
 }
 
 .hm3.item-v2 section.window-content form .tab-container nav.v2 .glider {
@@ -1470,21 +1455,8 @@ section.highlight {
     width: 120px;
 }
 
-.hm3.item-v2 section.window-content form .tab-container nav.v2 .tabsShadow {
-    -webkit-box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.04);
-    box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.04);
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    height: 35px;
-    padding: 10px;
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    width: 100%;
-}
-
 .hm3.item-v2 section.window-content form section.sheet-body-v2 {
-    background: linear-gradient(160deg, #f1ece9, #f1ece9 70%, #ded0c9 90%, #b7998a);
+    background: linear-gradient(160deg, white, #f1ece9 50px, #f1ece9, #ded0c9 calc(100% - 100px), #b7998a);
     border-radius: 5px;
     border-top: 1px solid #3b3d3f;
     -webkit-box-shadow: 0 2px 3px #0a0a01, 0 0 0 1px #0a0a01;

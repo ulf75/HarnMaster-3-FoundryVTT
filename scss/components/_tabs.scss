@@ -29,7 +29,6 @@
 }
 
 $tab-width: 120px;
-$tab-offset: 9px;
 $transition-speed: 0.4s;
 
 $background-rotation: 160deg;
@@ -38,7 +37,7 @@ $glider-rotation: 113deg;
 $parchment-darkest: hsl(20, 24%, 63%);
 $parchment-darker: hsl(20, 24%, 83%);
 $parchment-base: hsl(20, 24%, 93%);
-$parchmenty-lighter: hsl(20, 24%, 100%);
+$parchment-lighter: hsl(20, 24%, 100%);
 
 $blue-darkest: hsl(195, 100%, 20%);
 $blue-darker: hsl(195, 100%, 40%);
@@ -104,7 +103,6 @@ $glider-maroon: linear-gradient($glider-rotation, $maroon-lightest, $maroon-ligh
 $glider-gold-old-shadow: 0px 0px 8px 0px hsla(41, 18%, 24%, 0.57);
 $glider-gold-old: linear-gradient($glider-rotation, $gold-old-base, $gold-old-darker, $gold-old-darkest);
 
-$content-color: $parchment-base;
 $tab-background-active: $parchment-base;
 $tab-background-inactive: $parchment-darker;
 
@@ -227,7 +225,8 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
             .tab-header {
                 background: linear-gradient(
                     $background-rotation,
-                    $parchment-base,
+                    $parchment-lighter,
+                    $parchment-base 10%,
                     $parchment-base 70%,
                     $parchment-darker 90%,
                     $parchment-darkest
@@ -259,8 +258,9 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
                         font-variant-caps: petite-caps;
                         font-weight: 700;
                         justify-content: flex-start;
+                        left: 6px;
                         letter-spacing: 0.1em !important;
-                        margin: 12px -8px 0.5px;
+                        margin: 12px 2px 0.5px;
                         padding: 5pt 10pt;
                         position: relative;
                         text-align: center;
@@ -294,44 +294,28 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
                         color: $itemv2-tab-text-color;
                     }
 
-                    .properties-tab {
-                        left: $tab-offset + 7px;
-                    }
-
-                    .description-tab {
-                        left: 2 * ($tab-offset + 7px);
-                    }
-
-                    .effects-tab {
-                        left: 3 * ($tab-offset + 7px);
-                    }
-
-                    .macros-tab {
-                        left: 4 * ($tab-offset + 7px);
-                    }
-
                     .properties-tab.active ~ .glider {
                         background: $itemv2-glider-background;
                         box-shadow: $itemv2-glider-shadow;
-                        left: $tab-offset - 1px;
+                        left: 8px;
                     }
 
                     .description-tab.active ~ .glider {
                         background: $itemv2-glider-background;
                         box-shadow: $itemv2-glider-shadow;
-                        left: $tab-width + 3px + $tab-offset - 0.5px;
+                        left: 1 * ($tab-width + 7.5px) + 8px;
                     }
 
                     .effects-tab.active ~ .glider {
                         background: $itemv2-glider-background;
                         box-shadow: $itemv2-glider-shadow;
-                        left: 2 * ($tab-width + 3px) + $tab-offset;
+                        left: 2 * ($tab-width + 7.5px) + 8px;
                     }
 
                     .macros-tab.active ~ .glider {
                         background: $itemv2-glider-background;
                         box-shadow: $itemv2-glider-shadow;
-                        left: 3 * ($tab-width + 3px) + $tab-offset + 0.5px;
+                        left: 3 * ($tab-width + 7.5px) + 8px;
                     }
 
                     .glider {
@@ -343,26 +327,16 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
                         transition: all $transition-speed ease;
                         width: $tab-width;
                     }
-
-                    .tabsShadow {
-                        box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.04);
-                        box-sizing: border-box;
-                        height: 35px;
-                        padding: 10px;
-                        pointer-events: none;
-                        position: absolute;
-                        top: 0;
-                        width: 100%;
-                    }
                 }
             }
 
             section.sheet-body-v2 {
                 background: linear-gradient(
                     $background-rotation,
+                    $parchment-lighter,
+                    $parchment-base 50px,
                     $parchment-base,
-                    $parchment-base 70%,
-                    $parchment-darker 90%,
+                    $parchment-darker calc(100% - 100px),
                     $parchment-darkest
                 );
                 border-radius: 5px;
