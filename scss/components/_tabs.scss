@@ -198,6 +198,9 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
     --itemv2-background-border: #{$gold-lightest};
     --itemv2-header-color: #{$gold-old-darkest};
     --itemv2-header-shadow: #{$header-shadow-light};
+    --itemv2-tab-text-color: #{$maroon-base};
+    --itemv2-glider-background: #{$glider-maroon};
+    --itemv2-glider-shadow: #{$glider-maroon-shadow};
 }
 
 // General styles for item sheets
@@ -218,13 +221,9 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
         background: transparent;
         border-radius: $sheet-radius;
         padding: 10px 20px;
-        // overflow-y: hidden;
         overflow: visible;
 
         form {
-            // height: 100%;
-            // overflow: hidden;
-
             .tab-header {
                 background: linear-gradient(
                     $background-rotation,
@@ -244,12 +243,9 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
             .tab-container {
                 padding-top: 10px;
 
-                .tab-tabs {
-                    position: relative;
-                    text-align: left;
-                }
-
                 nav.v2 {
+                    position: relative;
+
                     a {
                         background: $tab-background-inactive;
                         border-bottom: 0.5pt solid #1d1e22;
@@ -338,6 +334,16 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
                         left: 3 * ($tab-width + 3px) + $tab-offset + 0.5px;
                     }
 
+                    .glider {
+                        border-radius: 0 0 1px 1px;
+                        height: 4.5px;
+                        padding: 0px 13px;
+                        position: absolute;
+                        top: 42px;
+                        transition: all $transition-speed ease;
+                        width: $tab-width;
+                    }
+
                     .tabsShadow {
                         box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.04);
                         box-sizing: border-box;
@@ -348,23 +354,6 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
                         top: 0;
                         width: 100%;
                     }
-                }
-
-                .tab-card {
-                    background-color: transparent;
-                    border: none;
-                    height: 100%;
-                    position: relative;
-                }
-
-                .glider {
-                    border-radius: 0 0 1px 1px;
-                    height: 4.5px;
-                    padding: 0px 13px;
-                    position: absolute;
-                    top: 42px;
-                    transition: all $transition-speed ease;
-                    width: $tab-width;
                 }
             }
 
@@ -382,6 +371,7 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
                 height: calc(100% - 170px);
                 line-height: 20px;
                 position: relative;
+                transition: all $transition-speed ease;
 
                 .main-content {
                     inset: 0;
@@ -391,6 +381,8 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
                     scrollbar-color: $gold-old-base transparent;
                     scrollbar-gutter: stable;
                     scrollbar-width: thin;
+                    scrollbar-arrow-color: $gold-old-darkest;
+                    transition: all $transition-speed ease;
                 }
             }
         }

@@ -1316,6 +1316,9 @@ section.highlight {
     --itemv2-background-border: #ffedd1;
     --itemv2-header-color: #484132;
     --itemv2-header-shadow: -1px 0 #ded9cf, 0 1px #ded9cf, 1px 0 #ded9cf, 0 -1px #ded9cf;
+    --itemv2-tab-text-color: #741b2b;
+    --itemv2-glider-background: linear-gradient(113deg, #d6516a, #9d253b, #741b2b);
+    --itemv2-glider-shadow: 0px 0px 8px 0px rgba(116, 27, 43, 0.57);
 }
 
 .hm3.item-v2 {
@@ -1354,9 +1357,8 @@ section.highlight {
     padding-top: 10px;
 }
 
-.hm3.item-v2 section.window-content form .tab-container .tab-tabs {
+.hm3.item-v2 section.window-content form .tab-container nav.v2 {
     position: relative;
-    text-align: left;
 }
 
 .hm3.item-v2 section.window-content form .tab-container nav.v2 a {
@@ -1457,6 +1459,17 @@ section.highlight {
     left: 378.5px;
 }
 
+.hm3.item-v2 section.window-content form .tab-container nav.v2 .glider {
+    border-radius: 0 0 1px 1px;
+    height: 4.5px;
+    padding: 0px 13px;
+    position: absolute;
+    top: 42px;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    width: 120px;
+}
+
 .hm3.item-v2 section.window-content form .tab-container nav.v2 .tabsShadow {
     -webkit-box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.04);
     box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.04);
@@ -1470,24 +1483,6 @@ section.highlight {
     width: 100%;
 }
 
-.hm3.item-v2 section.window-content form .tab-container .tab-card {
-    background-color: transparent;
-    border: none;
-    height: 100%;
-    position: relative;
-}
-
-.hm3.item-v2 section.window-content form .tab-container .glider {
-    border-radius: 0 0 1px 1px;
-    height: 4.5px;
-    padding: 0px 13px;
-    position: absolute;
-    top: 42px;
-    -webkit-transition: all 0.4s ease;
-    transition: all 0.4s ease;
-    width: 120px;
-}
-
 .hm3.item-v2 section.window-content form section.sheet-body-v2 {
     background: linear-gradient(160deg, #f1ece9, #f1ece9 70%, #ded0c9 90%, #b7998a);
     border-radius: 5px;
@@ -1497,6 +1492,8 @@ section.highlight {
     height: calc(100% - 170px);
     line-height: 20px;
     position: relative;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
 }
 
 .hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content {
@@ -1507,6 +1504,9 @@ section.highlight {
     scrollbar-color: #9f9175 transparent;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
+    scrollbar-arrow-color: #484132;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
 }
 
 .hm3 .items h2 {
