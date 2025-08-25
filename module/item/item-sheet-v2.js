@@ -372,4 +372,76 @@ export class ItemSheetHM3v2 extends ItemSheet {
         // Update the list on the server
         return this.item.update({'system.locations': locations});
     }
+
+    static MODES = {
+        PLAY: 1,
+        EDIT: 2
+    };
+
+    _mode = null;
+
+    /** @inheritDoc */
+    async _render(force, {mode, ...options} = {}) {
+        if (mode === undefined && options.renderContext === 'createItem') mode = this.constructor.MODES.EDIT;
+        this._mode = mode ?? this._mode ?? this.constructor.MODES.PLAY;
+        if (this.rendered) {
+            const toggle = this.element[0].querySelector('.window-header .mode-slider');
+            toggle.checked = this._mode === this.constructor.MODES.EDIT;
+        }
+        return super._render(force, options);
+    }
+
+    /** @inheritDoc */
+    async _renderOuter() {
+        const html = await super._renderOuter();
+        const header = html[0].querySelector('.window-header');
+
+        // Adjust header buttons.
+        header.querySelectorAll('.header-button').forEach((btn) => {
+            const label = btn.querySelector(':scope > i').nextSibling;
+            btn.dataset.tooltip = label.textContent;
+            btn.setAttribute('aria-label', label.textContent);
+            btn.addEventListener('dblclick', (event) => event.stopPropagation());
+            label.remove();
+        });
+
+        if (!game.user.isGM && this.document.limited) {
+            html[0].classList.add('limited');
+            return html;
+        }
+
+        // Add edit <-> play slide toggle.
+        if (this.isEditable) {
+            const toggle = document.createElement('slide-toggle');
+            toggle.checked = this._mode === this.constructor.MODES.EDIT;
+            toggle.classList.add('mode-slider');
+            toggle.dataset.tooltip = 'DND5E.SheetModeEdit';
+            toggle.setAttribute('aria-label', game.i18n.localize('DND5E.SheetModeEdit'));
+            toggle.addEventListener('change', this._onChangeSheetMode.bind(this));
+            toggle.addEventListener('dblclick', (event) => event.stopPropagation());
+            header.insertAdjacentElement('afterbegin', toggle);
+        }
+
+        // Document UUID link.
+        const firstButton = header.querySelector('.header-button');
+        const idLink = header.querySelector('.document-id-link');
+        if (idLink) {
+            firstButton?.insertAdjacentElement('beforebegin', idLink);
+            idLink.classList.add('pseudo-header-button');
+            idLink.dataset.tooltipDirection = 'DOWN';
+        }
+
+        return html;
+    }
+
+    async _onChangeSheetMode(event) {
+        const {MODES} = this.constructor;
+        const toggle = event.currentTarget;
+        const label = game.i18n.localize(`DND5E.SheetMode${toggle.checked ? 'Play' : 'Edit'}`);
+        toggle.dataset.tooltip = label;
+        toggle.setAttribute('aria-label', label);
+        this._mode = toggle.checked ? MODES.EDIT : MODES.PLAY;
+        await this.submit();
+        this.render();
+    }
 }

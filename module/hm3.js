@@ -47,6 +47,7 @@ import * as macros from './macros.js';
 import * as migrations from './migrations.js';
 import {Mutex} from './mutex.js';
 import {registerSystemSettings} from './settings.js';
+import {SlideToggleElement} from './toggle.js';
 import * as utility from './utility.js';
 import {Weather} from './weather.js';
 
@@ -56,6 +57,8 @@ Hooks.once('init', async function () {
     CONFIG.ActiveEffect.legacyTransferral = false;
 
     globalThis.WeaponItem = WeaponItem;
+
+    window.customElements.define('slide-toggle', SlideToggleElement);
 
     game.hm3 = {
         DiceHM3,

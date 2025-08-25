@@ -7,20 +7,24 @@
                 border: none;
                 color: white;
                 font-family: $font-primary;
-                font-size: 15px;
+                font-size: 18px;
                 font-variant: small-caps;
+                font-weight: 550;
 
                 h3.effect-name {
                     border: none;
                     color: white;
                     font-family: $font-primary;
-                    font-size: 15px;
+                    font-size: 18px;
                     font-variant: small-caps;
+                    font-weight: 550;
                 }
 
                 .effect-controls {
                     color: white;
-                    flex: 0 0 55px;
+                    // flex: 0 0 50px;
+                    font-size: 12px;
+                    font-weight: 550;
 
                     .active {
                         color: white;
