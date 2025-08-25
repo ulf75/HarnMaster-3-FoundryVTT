@@ -1,3 +1,36 @@
+.sheet-body-v2 {
+    .effects {
+        .effects-list {
+            .effects-header {
+                background: $header-background; // $hm3-text;
+                border-radius: 2px;
+                border: none;
+                color: white;
+                font-family: $font-primary;
+                font-size: 15px;
+                font-variant: small-caps;
+
+                h3.effect-name {
+                    border: none;
+                    color: white;
+                    font-family: $font-primary;
+                    font-size: 15px;
+                    font-variant: small-caps;
+                }
+
+                .effect-controls {
+                    color: white;
+                    flex: 0 0 55px;
+
+                    .active {
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}
+
 .effects {
     .disabled {
         color: $hm3-label-disabled;

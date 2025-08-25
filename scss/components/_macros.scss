@@ -1,4 +1,10 @@
 .macros {
+    .command {
+        textarea {
+            min-height: 300px;
+        }
+    }
+
     .disabled {
         color: $hm3-label-disabled;
     }

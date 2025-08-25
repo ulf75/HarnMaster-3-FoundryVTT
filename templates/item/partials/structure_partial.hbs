@@ -37,8 +37,7 @@
             <a class="properties-tab" data-tab="properties">Properties</a>
             <a class="description-tab" data-tab="description">Description</a>
             <a class="effects-tab" data-tab="effects">Effects</a>
-            <a class="macros-tab" data-tab="macro">Macro</a>
-            <div class="glider"></div>
+            <a class="macros-tab" data-tab="macro">Legacy</a>
         </nav>
     </div>
 
@@ -56,16 +55,18 @@
             </div>
 
             <div class="tab macros" data-group="primary" data-tab="macro">
-                <div class="form-group">
-                    <label for="system.macros.type">Type</label>
-                    <select id="system.macros.type" name="system.macros.type">
-                        {{selectOptions macroTypes selected=idata.macros.type valueAttr="key" labelAttr="label"}}
-                    </select>
-                </div>
+                <div class="macros">
+                    <div class="form-group">
+                        <label for="system.macros.type" class="resource-label">Type</label>
+                        <select id="system.macros.type" name="system.macros.type">
+                            {{selectOptions macroTypes selected=idata.macros.type valueAttr="key" labelAttr="label"}}
+                        </select>
+                    </div>
 
-                <div class="form-group stacked command">
-                    <label for="system.macros.command">Command</label>
-                    <textarea id="system.macros.command" name="system.macros.command">{{ idata.macros.command }}</textarea>
+                    <div class="form-group stacked command">
+                        <label for="system.macros.command" class="resource-label">Command</label>
+                        <textarea id="system.macros.command" name="system.macros.command">{{ idata.macros.command }}</textarea>
+                    </div>
                 </div>
             </div>
 

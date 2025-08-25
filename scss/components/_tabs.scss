@@ -28,11 +28,9 @@
     margin-right: 5px;
 }
 
-$tab-width: 120px;
-$transition-speed: 0.4s;
+$tab-width: 110px;
 
 $background-rotation: 160deg;
-$glider-rotation: 113deg;
 
 $parchment-darkest: hsl(20, 24%, 63%);
 $parchment-darker: hsl(20, 24%, 83%);
@@ -90,21 +88,9 @@ $pink-lightest: hsl(304, 100%, 100%);
 
 $silver-lightest: #fff;
 
-$glider-blue-shadow: 0px 0px 8px 0px hsl(262deg, 100%, 70% / 70%);
-$glider-blue: linear-gradient($glider-rotation, $blue-lightest, $blue-base 20%, $blue-darker);
-$glider-green-shadow: 0px 0px 8px 0px rgba(47, 187, 12, 0.62);
-$glider-green: linear-gradient($glider-rotation, $green-lightest, $green-base 20%, $green-darker);
-$glider-orange-shadow: 0px 0px 8px 0px hsl(17.72deg, 100%, 70% / 70%);
-$glider-orange: linear-gradient($glider-rotation, $orange-lightest, $orange-base 20%, $orange-darker);
-$glider-pink-shadow: 0px 0px 8px 0px rgba(231, 13, 93, 0.57);
-$glider-pink: linear-gradient($glider-rotation, $pink-lightest, $pink-base 20%, $pink-darker);
-$glider-maroon-shadow: 0px 0px 8px 0px hsla(349, 62%, 28%, 0.57);
-$glider-maroon: linear-gradient($glider-rotation, $maroon-lightest, $maroon-lighter, $maroon-base);
-$glider-gold-old-shadow: 0px 0px 8px 0px hsla(41, 18%, 24%, 0.57);
-$glider-gold-old: linear-gradient($glider-rotation, $gold-old-base, $gold-old-darker, $gold-old-darkest);
-
 $tab-background-active: $parchment-base;
-$tab-background-inactive: $parchment-darker;
+$tab-background-inactive: linear-gradient(180deg, $parchment-darker, $parchment-darkest);
+$header-background: linear-gradient(90deg, $maroon-base, $maroon-darker);
 
 $background-maroon: linear-gradient(
     $background-rotation,
@@ -163,51 +149,36 @@ $header-shadow-light: -1px 0 $gold-old-lightest, 0 1px $gold-old-lightest, 1px 0
     0 -1px $gold-old-lightest;
 
 // Custom styles for item types
-$itemv2-background: var(--itemv2-background);
-$itemv2-background-border: var(--itemv2-background-border);
-$itemv2-header-color: var(--itemv2-header-color);
-$itemv2-header-shadow: var(--itemv2-header-shadow);
-$itemv2-tab-text-color: var(--itemv2-tab-text-color);
-$itemv2-glider-background: var(--itemv2-glider-background);
-$itemv2-glider-shadow: var(--itemv2-glider-shadow);
-
-&.item-v2.maroon {
-    --itemv2-background: #{$background-maroon};
-    --itemv2-background-border: #{$maroon-lighter};
-    --itemv2-header-color: #{$gold-old-lightest};
-    --itemv2-header-shadow: #{$header-shadow-dark};
-    --itemv2-tab-text-color: #{$gold-old-darker};
-    --itemv2-glider-background: #{$glider-gold-old};
-    --itemv2-glider-shadow: #{$glider-gold-old-shadow};
-}
+$itemv2-background: var(--hm3-itemv2-background);
+$itemv2-background-border: var(--hm3-itemv2-background-border);
+$itemv2-header-color: var(--hm3-itemv2-header-color);
+$itemv2-header-shadow: var(--hm3-itemv2-header-shadow);
+$itemv2-tab-text-color: var(--hm3-itemv2-tab-text-color);
 
 &.item-v2.silver {
-    --itemv2-background: #{$background-silver};
-    --itemv2-background-border: #{$silver-lightest};
-    --itemv2-header-color: #{$gold-old-darkest};
-    --itemv2-header-shadow: #{$header-shadow-light};
-    --itemv2-tab-text-color: #{$maroon-base};
-    --itemv2-glider-background: #{$glider-maroon};
-    --itemv2-glider-shadow: #{$glider-maroon-shadow};
+    --hm3-itemv2-background: #{$background-silver};
+    --hm3-itemv2-background-border: #{$silver-lightest};
+    --hm3-itemv2-header-color: #{$gold-old-darkest};
+    --hm3-itemv2-header-shadow: #{$header-shadow-light};
 }
 
 &.item-v2.gold {
-    --itemv2-background: #{$background-gold};
-    --itemv2-background-border: #{$gold-lightest};
-    --itemv2-header-color: #{$gold-old-darkest};
-    --itemv2-header-shadow: #{$header-shadow-light};
-    --itemv2-tab-text-color: #{$maroon-base};
-    --itemv2-glider-background: #{$glider-maroon};
-    --itemv2-glider-shadow: #{$glider-maroon-shadow};
+    --hm3-itemv2-background: #{$background-gold};
+    --hm3-itemv2-background-border: #{$gold-lightest};
+    --hm3-itemv2-header-color: #{$gold-old-darkest};
+    --hm3-itemv2-header-shadow: #{$header-shadow-light};
 }
 
-// General styles for item sheets
 &.item-v2 {
+    --hm3-itemv2-background: #{$background-maroon};
+    --hm3-itemv2-background-border: #{$maroon-lighter};
+    --hm3-itemv2-header-color: #{$gold-old-lightest};
+    --hm3-itemv2-header-shadow: #{$header-shadow-dark};
+    --hm3-itemv2-tab-text-color: #000;
+
     background: $itemv2-background;
-    border-color: $itemv2-background-border;
     border-radius: $sheet-radius;
-    border-width: thin;
-    border-style: solid;
+    border: thin solid $itemv2-background-border;
 
     header {
         border: none;
@@ -218,7 +189,7 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
     section.window-content {
         background: transparent;
         border-radius: $sheet-radius;
-        padding: 10px 20px;
+        padding: 10px 15px;
         overflow: visible;
 
         form {
@@ -226,9 +197,9 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
                 background: linear-gradient(
                     $background-rotation,
                     $parchment-lighter,
-                    $parchment-base 10%,
-                    $parchment-base 70%,
-                    $parchment-darker 90%,
+                    $parchment-base 20%,
+                    $parchment-base 60%,
+                    $parchment-darker,
                     $parchment-darkest
                 );
                 border-radius: 5px;
@@ -243,15 +214,18 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
                 padding-top: 10px;
 
                 nav.v2 {
+                    overflow: hidden;
+                    padding: 0;
                     position: relative;
+                    top: 1px;
 
                     a {
                         background: $tab-background-inactive;
-                        border-bottom: 0.5pt solid #1d1e22;
-                        border-radius: 7px 7px 0 0 !important;
+                        border-bottom: 0.5pt solid $parchment-base;
+                        border-radius: 7px 7px 0 0;
                         border-top: 1px solid #3b3d3f;
                         box-shadow: 1px 1px 2px 1px #231f20;
-                        color: #777;
+                        color: #666;
                         cursor: pointer;
                         display: inline-flex;
                         font-size: var(--font-size-14);
@@ -259,73 +233,41 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
                         font-weight: 700;
                         justify-content: flex-start;
                         left: 6px;
-                        letter-spacing: 0.1em !important;
-                        margin: 12px 2px 0.5px;
-                        padding: 5pt 10pt;
+                        letter-spacing: 0.05em;
+                        margin: 12px 2px 0px;
+                        padding: 6px 10px;
                         position: relative;
-                        text-align: center;
-                        transition: all $transition-speed ease;
-                        vertical-align: top;
+                        text-shadow: none;
                         width: $tab-width;
                     }
 
                     a:hover {
-                        color: #1d1e22;
+                        color: #000;
                         text-shadow: none;
                     }
 
                     .properties-tab.active {
                         background: $tab-background-active;
                         color: $itemv2-tab-text-color;
+                        z-index: 1;
                     }
 
                     .description-tab.active {
                         background: $tab-background-active;
                         color: $itemv2-tab-text-color;
+                        z-index: 1;
                     }
 
                     .effects-tab.active {
                         background: $tab-background-active;
                         color: $itemv2-tab-text-color;
+                        z-index: 1;
                     }
 
                     .macros-tab.active {
                         background: $tab-background-active;
                         color: $itemv2-tab-text-color;
-                    }
-
-                    .properties-tab.active ~ .glider {
-                        background: $itemv2-glider-background;
-                        box-shadow: $itemv2-glider-shadow;
-                        left: 8px;
-                    }
-
-                    .description-tab.active ~ .glider {
-                        background: $itemv2-glider-background;
-                        box-shadow: $itemv2-glider-shadow;
-                        left: 1 * ($tab-width + 7.5px) + 8px;
-                    }
-
-                    .effects-tab.active ~ .glider {
-                        background: $itemv2-glider-background;
-                        box-shadow: $itemv2-glider-shadow;
-                        left: 2 * ($tab-width + 7.5px) + 8px;
-                    }
-
-                    .macros-tab.active ~ .glider {
-                        background: $itemv2-glider-background;
-                        box-shadow: $itemv2-glider-shadow;
-                        left: 3 * ($tab-width + 7.5px) + 8px;
-                    }
-
-                    .glider {
-                        border-radius: 0 0 1px 1px;
-                        height: 4.5px;
-                        padding: 0px 13px;
-                        position: absolute;
-                        top: 42px;
-                        transition: all $transition-speed ease;
-                        width: $tab-width;
+                        z-index: 1;
                     }
                 }
             }
@@ -333,30 +275,26 @@ $itemv2-glider-shadow: var(--itemv2-glider-shadow);
             section.sheet-body-v2 {
                 background: linear-gradient(
                     $background-rotation,
-                    $parchment-lighter,
-                    $parchment-base 50px,
                     $parchment-base,
+                    $parchment-base calc(100% - 200px),
                     $parchment-darker calc(100% - 100px),
                     $parchment-darkest
                 );
                 border-radius: 5px;
                 border-top: 1px solid #3b3d3f;
                 box-shadow: 0 2px 3px rgb(10, 10, 10 / 10%), 0 0 0 1px rgb(10, 10, 10 / 10%);
-                height: calc(100% - 170px);
+                height: calc(100% - 172px);
                 line-height: 20px;
                 position: relative;
-                transition: all $transition-speed ease;
 
                 .main-content {
                     inset: 0;
                     overflow: hidden auto;
-                    padding: 10px 20px;
+                    padding: 10px 10px 10px 20px;
                     position: absolute;
                     scrollbar-color: $gold-old-base transparent;
                     scrollbar-gutter: stable;
                     scrollbar-width: thin;
-                    scrollbar-arrow-color: $gold-old-darkest;
-                    transition: all $transition-speed ease;
                 }
             }
         }
