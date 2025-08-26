@@ -1,6 +1,5 @@
 // Import Modules
 import {BaseTestHM3} from '../tests/hm3-basetest.js';
-import {RollMock} from '../tests/rollmock.js';
 import {runner} from '../tests/runner.js';
 import {ActorHM3} from './actor/actor.js';
 import {CharacterSheetHM3} from './actor/character-sheet.js';
@@ -15,6 +14,7 @@ import {CombatHM3} from './hm3-combat.js';
 import {CombatantHM3} from './hm3-combatant.js';
 import {DiceHM3} from './hm3-dice.js';
 import {MacroHM3} from './hm3-macro.js';
+import {RollHM3} from './hm3-roll.js';
 import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
 import {
     ActorType,
@@ -60,7 +60,6 @@ Hooks.once('init', async function () {
         DiceHM3,
         ActorHM3,
         ItemHM3,
-        Roll,
 
         config: HM3,
         macros,
@@ -234,6 +233,7 @@ Hooks.once('init', async function () {
     CONFIG.AmbientSound.objectClass = AmbientSoundHM3;
     CONFIG.ChatMessage.documentClass = ChatMessageHM3;
     CONFIG.Combatant.documentClass = CombatantHM3;
+    CONFIG.Dice.rolls[0] = RollHM3;
     CONFIG.Drawing.objectClass = DrawingHM3;
     CONFIG.Macro.documentClass = MacroHM3;
     CONFIG.Note.objectClass = NoteHM3;
@@ -512,7 +512,7 @@ Hooks.once('ready', async function () {
     if (game.settings.get('hm3', 'debugMode')) {
         CONFIG.debug.hm3 = true;
         // CONFIG.debug.hooks = true;
-        game.hm3.Roll = RollMock;
+        game.hm3.Roll = RollHM3;
         game.hm3.BaseTest = BaseTestHM3;
         game.hm3.runner = runner;
         game.hm3.socket.register('defButtonsFromChatMsg', game.hm3.BaseTest.DefButtonsFromChatMsgProxy);
@@ -747,6 +747,7 @@ Hooks.once('ready', () => {
     socket.register('GmSays', gmSays);
     socket.register('gmConsole', gmConsole);
     socket.register('callAllUsers', callAllUsers);
+    socket.register('cheating', cheating);
 });
 
 function isFirstTA() {
@@ -870,6 +871,63 @@ function gmConsole(user, level, msg, error) {
 
 function callAllUsers(hook, ...args) {
     Hooks.callAll(hook, ...args);
+}
+
+async function cheating(check, name, type) {
+    let dlgTemplate = 'systems/hm3/templates/dialog/cheat-dialog.hbs';
+    let dialogData = {check, name, type};
+
+    const html = await renderTemplate(dlgTemplate, dialogData);
+
+    // Create the dialog window
+    return new Promise((resolve) =>
+        new Dialog({
+            content: html.trim(),
+            title: `${check} Cheat Roll`,
+            buttons:
+                check === 'd100'
+                    ? {
+                          cs: {
+                              label: 'CS',
+                              callback: async (html) => {
+                                  resolve({targetSuccess: true, targetCritical: true});
+                              }
+                          },
+                          ms: {
+                              label: 'MS',
+                              callback: async (html) => {
+                                  resolve({targetSuccess: true, targetCritical: false});
+                              }
+                          },
+                          mf: {
+                              label: 'MF',
+                              callback: async (html) => {
+                                  resolve({targetSuccess: false, targetCritical: false});
+                              }
+                          },
+                          cf: {
+                              label: 'CF',
+                              callback: async (html) => {
+                                  resolve({targetSuccess: false, targetCritical: true});
+                              }
+                          }
+                      }
+                    : {
+                          success: {
+                              label: 'Success',
+                              callback: async (html) => {
+                                  resolve({targetSuccess: true, targetCritical: false});
+                              }
+                          },
+                          failure: {
+                              label: 'Failure',
+                              callback: async (html) => {
+                                  resolve({targetSuccess: false, targetCritical: false});
+                              }
+                          }
+                      }
+        }).render(true)
+    );
 }
 
 let outMutex = new Mutex();

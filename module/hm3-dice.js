@@ -1,4 +1,5 @@
 import {HM3} from './config.js';
+import {RollHM3} from './hm3-roll.js';
 import {Aspect, Condition, InjuryType, ItemType} from './hm3-types.js';
 import * as utility from './utility.js';
 
@@ -224,6 +225,7 @@ export class DiceHM3 {
                     diceNum: 1,
                     diceSides: 100,
                     modifier: Number(formModifier) + Number(formGear),
+                    name: dialogOptions.name,
                     target,
                     type: dialogOptions.type
                 });
@@ -298,6 +300,7 @@ export class DiceHM3 {
                     diceNum: 1,
                     diceSides: 100,
                     modifier: Number(formModifier),
+                    name: dialogOptions.name,
                     target,
                     type: dialogOptions.type
                 });
@@ -431,6 +434,7 @@ export class DiceHM3 {
                     modifier:
                         Number(formModifier) + Number(formTreatmentModifier) + Number(moraleModification) + phyBonus,
                     multiplier,
+                    name: dialogOptions.name,
                     noTreatment: target === -1,
                     target,
                     type: dialogOptions.type
@@ -1553,7 +1557,12 @@ export class DiceHM3 {
         const diceType = testData.diceSides === 6 ? 'd6' : 'd100';
         const numDice = testData.diceNum > 0 ? testData.diceNum : 1;
         const diceSpec = numDice + diceType;
-        let rollObj = new game.hm3.Roll(diceSpec, testData.data);
+        let rollObj = new RollHM3(diceSpec, testData.data, {
+            check: diceType,
+            name: testData.name,
+            target: testData.target,
+            type: testData.type
+        });
 
         // No Treatment should auto fail with MF
         if (testData.isTreatment && testData.noTreatment) rollObj = new game.hm3.Roll('99', testData.data);
