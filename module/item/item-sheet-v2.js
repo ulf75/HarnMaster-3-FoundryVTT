@@ -25,6 +25,26 @@ export class ItemSheetHM3v2 extends ItemSheet {
         return `${path}/${this.item.type}-sheet.hbs`;
     }
 
+    /**
+     * Is this PseudoDocument sheet editable by the current User?
+     * This is governed by the editPermission threshold configured for the class.
+     * @type {boolean}
+     */
+    // get isEditable() {
+    //     if (game.packs.get(this.item.pack)?.locked) return false;
+    //     return this.item.testUserPermission(game.user, this.options.editPermission);
+    // }
+
+    /** @inheritDoc */
+    async _prepareContext(options) {
+        return {
+            ...(await super._prepareContext(options)),
+            document: this.document,
+            editable: this.isEditable,
+            options: this.options
+        };
+    }
+
     /* -------------------------------------------- */
 
     /** @override */
@@ -34,7 +54,9 @@ export class ItemSheetHM3v2 extends ItemSheet {
         else if (this.item.type === ItemType.WEAPONGEAR) options.classes.push('gold');
         else options.classes.push('maroon');
 
-        const data = super.getData(options);
+        const data = await super.getData(options);
+        data.editable = this.isEditable && this._mode === this.constructor.MODES.EDIT;
+        data.cssClass = data.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked';
 
         data.hasDescription = 'description' in this.object.system;
         if (data.hasDescription) {
