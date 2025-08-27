@@ -60,6 +60,7 @@ Hooks.once('init', async function () {
         DiceHM3,
         ActorHM3,
         ItemHM3,
+        Roll: RollHM3,
 
         config: HM3,
         macros,
@@ -512,7 +513,6 @@ Hooks.once('ready', async function () {
     if (game.settings.get('hm3', 'debugMode')) {
         CONFIG.debug.hm3 = true;
         // CONFIG.debug.hooks = true;
-        game.hm3.Roll = RollHM3;
         game.hm3.BaseTest = BaseTestHM3;
         game.hm3.runner = runner;
         game.hm3.socket.register('defButtonsFromChatMsg', game.hm3.BaseTest.DefButtonsFromChatMsgProxy);

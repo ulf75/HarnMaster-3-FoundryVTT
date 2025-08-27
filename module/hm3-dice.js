@@ -1,5 +1,4 @@
 import {HM3} from './config.js';
-import {RollHM3} from './hm3-roll.js';
 import {Aspect, Condition, InjuryType, ItemType} from './hm3-types.js';
 import * as utility from './utility.js';
 
@@ -841,7 +840,7 @@ export class DiceHM3 {
                 const formAim = form.aim.value;
                 const formAspect = form.aspect.value;
                 const formDice = form.dice.value;
-                const formImpact = (await new Roll(formDice + '+' + form.impact.value).evaluate()).total;
+                const formImpact = (await new game.hm3.Roll(formDice + '+' + form.impact.value).evaluate()).total;
                 const formLocation = form.location.value;
                 const formAddToCharSheet = dialogData.askRecordInjury
                     ? form.addToCharSheet.checked
@@ -1557,7 +1556,7 @@ export class DiceHM3 {
         const diceType = testData.diceSides === 6 ? 'd6' : 'd100';
         const numDice = testData.diceNum > 0 ? testData.diceNum : 1;
         const diceSpec = numDice + diceType;
-        let rollObj = new RollHM3(diceSpec, testData.data, {
+        let rollObj = new game.hm3.Roll(diceSpec, testData.data, {
             check: diceType,
             name: testData.name,
             target: testData.target,
