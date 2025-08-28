@@ -879,15 +879,24 @@ async function treatmentRoll(actor, injury, speaker) {
     let treatment = '';
     if (treatmentTable.treatment.includes('Surgery')) {
         fluff += `<p><b>Surgery</b> takes some minutes. It requires sharp knives, and a needle and thread for sutures. Anesthetic is highly recommended (patients tend to struggle and whimper otherwise) and disinfectants are a good idea too. Such items may be purchased from good apothecaries and improve <b>Treatment EML 10-20</b>.</p>`;
-        treatment += `<p><b>Surgery</b> took ${await rollResultAsync('10d6')} minutes.</p>`;
+        treatment += `<p><b>Surgery</b> took ${await rollResultAsync('10d6', {
+            name: actor.name,
+            type: 'treatmentRoll Surgery'
+        })} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Compress')) {
         fluff += `<p>Apply cold <b>compress</b> for some minutes. Herbal remedies and balms that reduce swelling add improve <b>Treatment EML 10-20</b>.</p>`;
-        treatment += `<p>Cold <b>compress</b> took ${await rollResultAsync('5d6')} minutes.</p>`;
+        treatment += `<p>Cold <b>compress</b> took ${await rollResultAsync('5d6', {
+            name: actor.name,
+            type: 'treatmentRoll Compress'
+        })} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Splint')) {
         fluff += `<p>Setting bone and <b>splinting</b> takes some minutes.</p>`;
-        treatment += `<p><b>Splinting</b> took ${await rollResultAsync('5d6')} minutes.</p>`;
+        treatment += `<p><b>Splinting</b> took ${await rollResultAsync('5d6', {
+            name: actor.name,
+            type: 'treatmentRoll Splint'
+        })} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Clean') || treatmentTable.treatment.includes('Surgery')) {
         fluff += `<p><b>Cleaning and dressing</b> takes some minutes and requires water and bandages.</p>`;
@@ -895,7 +904,10 @@ async function treatmentRoll(actor, injury, speaker) {
     }
     if (treatmentTable.treatment.includes('Warming')) {
         fluff += `<p>Gentle <b>warming</b> (blanket, healthy person's flesh, etc.) of the injury for a few hours.</p>`;
-        treatment += `<p><b>Warming</b> took ${await rollResultAsync('1d3')} hours.</p>`;
+        treatment += `<p><b>Warming</b> took ${await rollResultAsync('1d3', {
+            name: actor.name,
+            type: 'treatmentRoll Warming'
+        })} hours.</p>`;
     }
 
     const stdRollData = {
@@ -1545,7 +1557,10 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
                 actor: actorInfo.actor,
                 aim: success ? 'Low' : 'Mid',
                 aspect: Aspect.BLUNT,
-                impact: (await new game.hm3.Roll(dice + 'd6').evaluate()).total,
+                impact: await game.hm3.macros.rollResultAsync(dice + 'd6', {
+                    name: actorInfo.actor.name,
+                    type: 'fallingRoll'
+                }),
                 items: actorInfo.actor.items,
                 name: `Falling from ${formHeight} feet with ${dice}d6 blunt damage.`,
                 speaker: actorInfo.speaker

@@ -179,7 +179,7 @@
                     const _price = html.find('#price')[0];
                     const price = _price.options[_price.selectedIndex].text;
                     const priceMultiplier =
-                        (prices.get(price).min + (await new game.hm3.Roll(prices.get(price).die).evaluate()).total) /
+                        (prices.get(price).min + (await game.hm3.macros.rollResultAsync(prices.get(price).die, {}))) /
                         100;
 
                     const _quality = html.find('#quality')[0];
@@ -187,7 +187,7 @@
                     const qualityMultiplier = Number(qualities.get(quality).multi);
                     const ML =
                         qualities.get(quality).min +
-                        (await new game.hm3.Roll(qualities.get(quality).die).evaluate()).total;
+                        (await game.hm3.macros.rollResultAsync(qualities.get(quality).die, {}));
 
                     let trainingFactor = 0;
                     if (trainer.includes('Military')) trainingFactor = TRAINING_FACTOR_MILITARY;

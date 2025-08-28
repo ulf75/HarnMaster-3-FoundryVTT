@@ -840,7 +840,10 @@ export class DiceHM3 {
                 const formAim = form.aim.value;
                 const formAspect = form.aspect.value;
                 const formDice = form.dice.value;
-                const formImpact = (await new game.hm3.Roll(formDice + '+' + form.impact.value).evaluate()).total;
+                const formImpact = await game.hm3.macros.rollResultAsync(formDice + '+' + form.impact.value, {
+                    name: dialogOptions.actor.name,
+                    type: 'injuryRoll'
+                });
                 const formLocation = form.location.value;
                 const formAddToCharSheet = dialogData.askRecordInjury
                     ? form.addToCharSheet.checked

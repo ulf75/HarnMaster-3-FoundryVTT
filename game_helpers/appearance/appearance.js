@@ -122,7 +122,10 @@
                     if (!!token.actor.system.abilities.comeliness.base) {
                         comeliness = token.actor.system.abilities.comeliness.base;
                     } else {
-                        comeliness = (await new game.hm3.Roll('3d6').evaluate()).total;
+                        comeliness = await game.hm3.macros.rollResultAsync('3d6', {
+                            name: 'appearance',
+                            type: 'comeliness'
+                        });
                         if (species === 'Sindarin') comeliness += 2;
                     }
                     let comelinessStr = 'Average';
@@ -164,7 +167,7 @@
                     if (!!token.actor.system.abilities.voice.base) {
                         voice = token.actor.system.abilities.voice.base;
                     } else {
-                        voice = (await new game.hm3.Roll('3d6').evaluate()).total;
+                        voice = await game.hm3.macros.rollResultAsync('3d6', {name: 'appearance', type: 'voice'});
                         if (species === 'Sindarin') voice += 2;
                     }
                     let voiceStr = 'Average';
