@@ -103,8 +103,9 @@ export class RollHM3 extends Roll {
                 this._maximum,
                 this._effTarget
             );
-            this._targetSuccess = data.targetSuccess;
             this._targetCritical = data.targetCritical;
+            this._targetSubstantial = data.targetSubstantial;
+            this._targetSuccess = data.targetSuccess;
             return this._cheatRoll({minimize, maximize, allowStrings, allowInteractive, options});
         }
 

@@ -889,25 +889,37 @@ async function cheating(check, name, type, formula, minimum, maximum, target) {
                           cs: {
                               label: 'CS',
                               callback: async (html) => {
-                                  resolve({targetSuccess: true, targetCritical: true});
+                                  resolve({targetSuccess: true, targetCritical: true, targetSubstantial: null});
+                              }
+                          },
+                          ss: {
+                              label: 'SS',
+                              callback: async (html) => {
+                                  resolve({targetSuccess: true, targetCritical: false, targetSubstantial: true});
                               }
                           },
                           ms: {
                               label: 'MS',
                               callback: async (html) => {
-                                  resolve({targetSuccess: true, targetCritical: false});
+                                  resolve({targetSuccess: true, targetCritical: false, targetSubstantial: false});
                               }
                           },
                           mf: {
                               label: 'MF',
                               callback: async (html) => {
-                                  resolve({targetSuccess: false, targetCritical: false});
+                                  resolve({targetSuccess: false, targetCritical: false, targetSubstantial: false});
+                              }
+                          },
+                          sf: {
+                              label: 'SF',
+                              callback: async (html) => {
+                                  resolve({targetSuccess: false, targetCritical: false, targetSubstantial: true});
                               }
                           },
                           cf: {
                               label: 'CF',
                               callback: async (html) => {
-                                  resolve({targetSuccess: false, targetCritical: true});
+                                  resolve({targetSuccess: false, targetCritical: true, targetSubstantial: null});
                               }
                           }
                       }
