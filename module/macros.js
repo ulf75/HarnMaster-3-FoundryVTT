@@ -21,6 +21,7 @@ import * as unconscious from './condition/unconscious.js';
 import * as weakened from './condition/weakened.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './hm3-dice.js';
+import {RollHM3} from './hm3-roll.js';
 import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
 import {Aspect, Condition, InjuryType, ItemType, SkillType} from './hm3-types.js';
 import {Mutex} from './mutex.js';
@@ -878,15 +879,24 @@ async function treatmentRoll(actor, injury, speaker) {
     let treatment = '';
     if (treatmentTable.treatment.includes('Surgery')) {
         fluff += `<p><b>Surgery</b> takes some minutes. It requires sharp knives, and a needle and thread for sutures. Anesthetic is highly recommended (patients tend to struggle and whimper otherwise) and disinfectants are a good idea too. Such items may be purchased from good apothecaries and improve <b>Treatment EML 10-20</b>.</p>`;
-        treatment += `<p><b>Surgery</b> took ${d6(10)} minutes.</p>`;
+        treatment += `<p><b>Surgery</b> took ${await rollResultAsync('10d6', {
+            name: actor.name,
+            type: 'treatmentRoll Surgery'
+        })} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Compress')) {
         fluff += `<p>Apply cold <b>compress</b> for some minutes. Herbal remedies and balms that reduce swelling add improve <b>Treatment EML 10-20</b>.</p>`;
-        treatment += `<p>Cold <b>compress</b> took ${d6(5)} minutes.</p>`;
+        treatment += `<p>Cold <b>compress</b> took ${await rollResultAsync('5d6', {
+            name: actor.name,
+            type: 'treatmentRoll Compress'
+        })} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Splint')) {
         fluff += `<p>Setting bone and <b>splinting</b> takes some minutes.</p>`;
-        treatment += `<p><b>Splinting</b> took ${d6(5)} minutes.</p>`;
+        treatment += `<p><b>Splinting</b> took ${await rollResultAsync('5d6', {
+            name: actor.name,
+            type: 'treatmentRoll Splint'
+        })} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Clean') || treatmentTable.treatment.includes('Surgery')) {
         fluff += `<p><b>Cleaning and dressing</b> takes some minutes and requires water and bandages.</p>`;
@@ -894,7 +904,10 @@ async function treatmentRoll(actor, injury, speaker) {
     }
     if (treatmentTable.treatment.includes('Warming')) {
         fluff += `<p>Gentle <b>warming</b> (blanket, healthy person's flesh, etc.) of the injury for a few hours.</p>`;
-        treatment += `<p><b>Warming</b> took ${dx(3)} hours.</p>`;
+        treatment += `<p><b>Warming</b> took ${await rollResultAsync('1d3', {
+            name: actor.name,
+            type: 'treatmentRoll Warming'
+        })} hours.</p>`;
     }
 
     const stdRollData = {
@@ -1298,8 +1311,8 @@ export async function throwDownRoll(atkTokenId, defTokenId, atkDice, defDice) {
         while (atkResult === defResult) {
             // House rule: To make GRAPPLE more attractive and effective, the player who starts
             // the grapple receives more dice according to the success result (one or two more).
-            atkResult = d6(3 + atkDice) + atkToken.actor.system.abilities.strength.effective;
-            defResult = d6(3 + defDice) + defToken.actor.system.abilities.strength.effective;
+            atkResult = rollResultAsync(`${3 + atkDice}d6 + ${atkToken.actor.system.abilities.strength.effective}`);
+            defResult = rollResultAsync(`${3 + defDice}d6 + ${defToken.actor.system.abilities.strength.effective}`);
         }
 
         let ata = false,
@@ -1473,7 +1486,7 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
                         aspect: Aspect.BLUNT,
                         impact: 1,
                         items: actorInfo.actor.items,
-                        location: `${dx(2) === 1 ? 'Right' : 'Left'} Shoulder`,
+                        location: `${(await rollResultAsync('1d2')) === 1 ? 'Right' : 'Left'} Shoulder`,
                         name: `Character has wrenched one arm.`,
                         noArmor: true,
                         speaker: actorInfo.speaker
@@ -1544,7 +1557,10 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
                 actor: actorInfo.actor,
                 aim: success ? 'Low' : 'Mid',
                 aspect: Aspect.BLUNT,
-                impact: (await new Roll(dice + 'd6').evaluate()).total,
+                impact: await game.hm3.macros.rollResultAsync(dice + 'd6', {
+                    name: actorInfo.actor.name,
+                    type: 'fallingRoll'
+                }),
                 items: actorInfo.actor.items,
                 name: `Falling from ${formHeight} feet with ${dice}d6 blunt damage.`,
                 speaker: actorInfo.speaker
@@ -1645,13 +1661,15 @@ export async function moraleRoll(noDialog = false, myActor = null) {
                 await token?.addCondition(Condition.CAUTIOUS, {oneRound: true});
             } else if (!result.isSuccess && result.isCritical) {
                 // CF
-                const rollObj = new game.hm3.Roll('1d100');
-                const roll = await rollObj.evaluate();
-                if (roll.total <= 25) {
+                const total = await game.hm3.macros.rollResultAsync('1d100', {
+                    name: actorInfo.actor.name,
+                    type: 'CF moraleRoll'
+                });
+                if (total <= 25) {
                     await token?.addCondition(Condition.BERSERK);
-                } else if (roll.total <= 50) {
+                } else if (total <= 50) {
                     await token?.addCondition(Condition.DESPERATE);
-                } else if (roll.total <= 75) {
+                } else if (total <= 75) {
                     await token?.addCondition(Condition.BROKEN);
                 } else {
                     await token?.addCondition(Condition.CAUTIOUS);
@@ -3065,43 +3083,16 @@ export function getObjectKeys(obj, prefix) {
     }, []);
 }
 
-/**
- * Rolls an arbitrary number of d6.
- * @param {number} count - number of dice
- * @returns
- */
-export function d6(count = 1) {
-    return dx(6, count);
+export function rollObject(formula, options = {}) {
+    return new RollHM3(formula, {}, options);
 }
 
-/**
- * Rolls an arbitrary number of d20.
- * @param {number} count - number of dice
- * @returns
- */
-export function d20(count = 1) {
-    return dx(20, count);
+export async function rollObjectEvaluatedAsync(formula, options = {}) {
+    return rollObject(formula, options).evaluate();
 }
 
-/**
- * Rolls an arbitrary number of d100.
- * @param {number} count - number of dice
- * @returns
- */
-export function d100(count = 1) {
-    return dx(100, count);
-}
-
-/**
- * Rolls an arbitrary die.
- * @param {number} x - number of sides of the die
- * @param {number} count - number of dice
- * @returns
- */
-export function dx(x, count = 1) {
-    let val = 0;
-    for (let i = 0; i < count; i++) val += Math.floor(x * foundry.dice.MersenneTwister.random()) + 1;
-    return val;
+export async function rollResultAsync(formula, options = {}) {
+    return (await rollObjectEvaluatedAsync(formula, options)).total;
 }
 
 /**

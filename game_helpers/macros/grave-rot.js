@@ -23,14 +23,14 @@ if (triggerArgs[3].effectiveImpact > 0) {
 
     // make a secret roll against CI x END
     const save = macros.HM100Check(CONTAGION_INDEX * victimActor.system.endurance);
-    const d100 = macros.d100();
+    const d100 = await macros.rollResultAsync('1d100');
     if (d100 > save) {
         await macros.createActiveEffect(
             {
                 owner: victimActor,
                 label: GRAVE_ROT,
                 type: 'GameTime',
-                postpone: macros.d6(2) * game.hm3.CONST.TIME.HOUR,
+                postpone: await macros.rollAsync(`2d6 * ${game.hm3.CONST.TIME.HOUR}`),
                 seconds: 1,
                 icon: GRAVE_ROT_ICON
             },

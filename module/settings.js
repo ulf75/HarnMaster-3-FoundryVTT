@@ -194,4 +194,13 @@ export const registerSystemSettings = function () {
         default: false,
         type: Boolean
     });
+
+    game.settings.register('hm3', 'cheatMode', {
+        name: 'NEW Cheat Mode',
+        hint: 'If selected, Cheat Mode is active.',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean
+    });
 };

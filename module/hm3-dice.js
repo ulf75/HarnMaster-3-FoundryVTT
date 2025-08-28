@@ -224,6 +224,7 @@ export class DiceHM3 {
                     diceNum: 1,
                     diceSides: 100,
                     modifier: Number(formModifier) + Number(formGear),
+                    name: dialogOptions.name,
                     target,
                     type: dialogOptions.type
                 });
@@ -298,6 +299,7 @@ export class DiceHM3 {
                     diceNum: 1,
                     diceSides: 100,
                     modifier: Number(formModifier),
+                    name: dialogOptions.name,
                     target,
                     type: dialogOptions.type
                 });
@@ -431,6 +433,7 @@ export class DiceHM3 {
                     modifier:
                         Number(formModifier) + Number(formTreatmentModifier) + Number(moraleModification) + phyBonus,
                     multiplier,
+                    name: dialogOptions.name,
                     noTreatment: target === -1,
                     target,
                     type: dialogOptions.type
@@ -590,9 +593,10 @@ export class DiceHM3 {
     static async sdrRoll(item, showChatMsg = true) {
         const speaker = ChatMessage.getSpeaker({actor: item.actor});
 
-        let roll = await new game.hm3.Roll(`1d100 + @sb`, {
-            sb: item.system.skillBase.value
-        }).evaluate();
+        let roll = await game.hm3.macros.rollObjectEvaluatedAsync(`1d100 + ${item.system.skillBase.value}`, {
+            name: item.actor.name,
+            type: 'sdrRoll'
+        });
 
         const isSuccess = roll.total > item.system.masteryLevel;
 
@@ -601,17 +605,17 @@ export class DiceHM3 {
         const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.hbs';
 
         const chatTemplateData = {
-            title: `${item.name} Skill Development Roll`,
-            origTarget: item.system.masteryLevel,
-            modifier: 0,
-            modifiedTarget: item.system.masteryLevel,
-            isSuccess: isSuccess,
-            rollValue: roll.total,
-            rollResult: roll.result,
-            showResult: true,
             description: isSuccess ? 'Success' : 'Failure',
+            isSuccess: isSuccess,
+            modifiedTarget: item.system.masteryLevel,
+            modifier: 0,
             notes: '',
-            sdrIncr: isSuccess ? (specMatch ? 2 : 1) : 0
+            origTarget: item.system.masteryLevel,
+            rollResult: roll.result,
+            rollValue: roll.total,
+            sdrIncr: isSuccess ? (specMatch ? 2 : 1) : 0,
+            showResult: true,
+            title: `${item.name} Skill Development Roll`
         };
 
         if (specMatch && isSuccess) {
@@ -624,9 +628,9 @@ export class DiceHM3 {
 
         const messageData = {
             content: html.trim(),
-            roll: roll,
+            roll,
             sound: CONFIG.sounds.dice,
-            speaker: speaker,
+            speaker,
             style: CONST.CHAT_MESSAGE_STYLES.OTHER,
             user: game.user.id
         };
@@ -837,7 +841,10 @@ export class DiceHM3 {
                 const formAim = form.aim.value;
                 const formAspect = form.aspect.value;
                 const formDice = form.dice.value;
-                const formImpact = (await new Roll(formDice + '+' + form.impact.value).evaluate()).total;
+                const formImpact = await game.hm3.macros.rollResultAsync(formDice + '+' + form.impact.value, {
+                    name: dialogOptions.actor.name,
+                    type: 'injuryRoll'
+                });
                 const formLocation = form.location.value;
                 const formAddToCharSheet = dialogData.askRecordInjury
                     ? form.addToCharSheet.checked
@@ -1553,12 +1560,14 @@ export class DiceHM3 {
         const diceType = testData.diceSides === 6 ? 'd6' : 'd100';
         const numDice = testData.diceNum > 0 ? testData.diceNum : 1;
         const diceSpec = numDice + diceType;
-        let rollObj = new game.hm3.Roll(diceSpec, testData.data);
+        const roll = await game.hm3.macros.rollObjectEvaluatedAsync(diceSpec, {
+            name: testData.name,
+            target: testData.target,
+            targetCritical: testData.isTreatment && testData.noTreatment ? false : null, // No Treatment should auto fail with MF
+            targetSuccess: testData.isTreatment && testData.noTreatment ? false : null, // No Treatment should auto fail with MF
+            type: testData.type
+        });
 
-        // No Treatment should auto fail with MF
-        if (testData.isTreatment && testData.noTreatment) rollObj = new game.hm3.Roll('99', testData.data);
-
-        const roll = await rollObj.evaluate();
         if (!roll) {
             console.error(`Roll evaluation failed, diceSpec=${diceSpec}`);
         }
@@ -1622,42 +1631,6 @@ export class DiceHM3 {
     /*--------------------------------------------------------------------------------*/
     /*        UTILITY FUNCTIONS
     /*--------------------------------------------------------------------------------*/
-
-    /**
-     * Calculate and return the name of a random hit location based on weights.
-     *
-     * @param {*} items List of items containing hitlocation items
-     * @param {*} aim One of 'low', 'mid', or 'high'
-     */
-    static hitLocation(items, aim) {
-        const hlAim = aim === 'high' || aim === 'low' ? aim : 'mid';
-        let roll = new game.hm3.Roll('1d100');
-        let rollResult = roll.total;
-        let result = `Unknown (roll=${rollResult})`;
-        let done = false;
-        items.forEach((it) => {
-            // If we finally exhaust rollResult, just return immediately,
-            // so we finish this forEach as quickly as possible
-            if (rollResult > 0) {
-                if (it.type === 'hitlocation') {
-                    let probWeight = it.system.probWeight[hlAim];
-                    // if probWeight is not zero, then there is a possiblity
-                    // of a match
-                    if (probWeight != 0) {
-                        rollResult -= probWeight;
-                        if (rollResult <= 0) {
-                            // At this point, we have a match! We have
-                            // exhausted the rollResult, so we can
-                            // set the result equal to this location name
-                            result = it.name;
-                        }
-                    }
-                }
-            }
-        });
-
-        return result;
-    }
 
     /**
      *

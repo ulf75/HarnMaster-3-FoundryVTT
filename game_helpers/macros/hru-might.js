@@ -3,16 +3,20 @@
     const now = effect.duration.startTime;
     const end = actor.system.endurance;
     const dur = Math.round((end / 4) * 60 * 60);
-    const bonus = (await new Roll('1d4').evaluate()).total;
+    const bonus = await game.hm3.macros.rollResultAsync('1d4', {name: 'Hrus Might', type: 'bonus'});
     const postpone = 30;
     effect.changes[0].value = bonus.toString();
     effect.changes[1].value = bonus.toString();
     effect.changes[2].value = Math.ceil((2 * bonus) / 3).toString();
 
     effect.update({
+        'changes': effect.changes,
         'duration.seconds': dur,
-        'duration.startTime': now + postpone,
-        'changes': effect.changes
+        'duration.startTime': now + postpone
+    });
+
+    effect.parent.update({
+        'name': `${effect.parent.name} (${bonus})`
     });
 }
 
@@ -29,8 +33,8 @@
     effect.changes[2].value = Math.floor((2 * bonus) / 3).toString();
 
     effect.update({
+        'changes': effect.changes,
         'duration.seconds': dur2,
-        'duration.startTime': now + dur1 + postpone,
-        'changes': effect.changes
+        'duration.startTime': now + dur1 + postpone
     });
 }

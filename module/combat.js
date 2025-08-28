@@ -1016,7 +1016,9 @@ export async function meleeCounterstrikeResume(
         diceNum: 1,
         diceSides: 100,
         modifier: 0,
-        target: atkEffAML
+        name: atkToken.name,
+        target: atkEffAML,
+        type: 'atkRoll'
     });
 
     const csEffEML = game.hm3.macros.HM100Check(csDialogResult.weapon.system.attackMasteryLevel);
@@ -1027,7 +1029,9 @@ export async function meleeCounterstrikeResume(
         diceNum: 1,
         diceSides: 100,
         modifier: csDialogResult.addlModifier,
-        target: csEffEML
+        name: defToken.name,
+        target: csEffEML,
+        type: 'defRoll'
     });
 
     // If we have "Dice So Nice" module, roll them dice!
@@ -1114,12 +1118,18 @@ export async function meleeCounterstrikeResume(
     // We now know the results of the attack, roll applicable damage
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
+        atkImpactRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.atkDice}d${atkDie}`, {
+            name: atkToken.name,
+            type: 'atkImpactRoll'
+        });
     }
 
     let csImpactRoll = null;
     if (combatResult.outcome.defDice) {
-        csImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.defDice}d${csDie}`).evaluate();
+        csImpactRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.defDice}d${csDie}`, {
+            name: defToken.name,
+            type: 'defImpactRoll'
+        });
     }
 
     const atkChatData = {
@@ -1285,10 +1295,12 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     const atkRoll = await DiceHM3.rollTest({
         data: {},
-        diceSides: 100,
         diceNum: 1,
+        diceSides: 100,
         modifier: 0,
-        target: effAML
+        name: atkToken.name,
+        target: effAML,
+        type: 'atkRoll'
     });
 
     const effDML = game.hm3.macros.HM100Check(defToken.actor.system.dodge);
@@ -1306,10 +1318,12 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     const defRoll = await DiceHM3.rollTest({
         data: {},
-        diceSides: 100,
         diceNum: 1,
+        diceSides: 100,
         modifier: defaultModifier,
-        target: effDML
+        name: defToken.name,
+        target: effDML,
+        type: 'defRoll'
     });
 
     if (game.dice3d) {
@@ -1355,7 +1369,10 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
+        atkImpactRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.atkDice}d${atkDie}`, {
+            name: atkToken.name,
+            type: 'atkImpact'
+        });
     }
 
     const atkCloseMode =
@@ -1618,10 +1635,12 @@ export async function blockResume(
 
     const atkRoll = await DiceHM3.rollTest({
         data: {},
-        diceSides: 100,
         diceNum: 1,
+        diceSides: 100,
         modifier: 0,
-        target: effAML
+        name: atkToken.name,
+        target: effAML,
+        type: 'atkRoll'
     });
 
     let prompt = null;
@@ -1712,10 +1731,12 @@ export async function blockResume(
 
     const defRoll = await DiceHM3.rollTest({
         data: {},
-        diceSides: 100,
         diceNum: 1,
+        diceSides: 100,
         modifier: dialogResult.addlModifier,
-        target: effDML
+        name: defToken.name,
+        target: effDML,
+        type: 'defRoll'
     });
 
     if (game.dice3d) {
@@ -1796,7 +1817,10 @@ export async function blockResume(
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
+        atkImpactRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.atkDice}d${atkDie}`, {
+            name: atkToken.name,
+            type: 'atkImpact'
+        });
     }
 
     const atkCloseMode =
@@ -1943,20 +1967,63 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     const defWeaponQuality = defWeapon.system.weaponQuality + (defWeapon.system.wqModifier || 0);
 
     // Separate break rolls for each weapon and Swordbreaker rolls if applicable
-    let atkBreakRoll = await new game.hm3.Roll(`3d6`).evaluate();
-    let defBreakRoll = await new game.hm3.Roll(`3d6`).evaluate();
-    let atkSwordbreakerRoll = await new game.hm3.Roll(`0`).evaluate();
-    let defSwordbreakerRoll = await new game.hm3.Roll(`0`).evaluate();
+    let atkBreakRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`3d6`, {
+        check: 'd6',
+        name: atkToken.name,
+        target: atkWeaponQuality,
+        type: 'atkBreakRoll'
+    });
+
+    let defBreakRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`3d6`, {
+        check: 'd6',
+        name: defToken.name,
+        target: defWeaponQuality,
+        type: 'defBreakRoll'
+    });
+
+    let atkSwordbreakerRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`0`, {
+        check: 'd6',
+        name: atkToken.name,
+        target: atkWeaponQuality,
+        type: 'atkSwordbreakerRoll'
+    });
+
+    let defSwordbreakerRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`0`, {
+        check: 'd6',
+        name: defToken.name,
+        target: defWeaponQuality,
+        type: 'defSwordbreakerRoll'
+    });
 
     if (atkSwordbreaker?.isOwnerAware) {
-        defBreakRoll = await new game.hm3.Roll(`3d6+1d${atkSwordbreaker.lvl}`).evaluate();
+        defBreakRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`3d6+1d${atkSwordbreaker.lvl}`, {
+            check: 'd6',
+            name: defToken.name,
+            target: defWeaponQuality,
+            type: 'defBreakRoll'
+        });
     } else if (atkSwordbreaker) {
-        defSwordbreakerRoll = await new game.hm3.Roll(`1d${atkSwordbreaker.lvl}`).evaluate();
+        defSwordbreakerRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`1d${atkSwordbreaker.lvl}`, {
+            check: 'd6',
+            name: defToken.name,
+            target: defWeaponQuality,
+            type: 'defSwordbreakerRoll'
+        });
     }
     if (defSwordbreaker?.isOwnerAware) {
-        atkBreakRoll = await new game.hm3.Roll(`3d6+1d${defSwordbreaker.lvl}`).evaluate();
+        atkBreakRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`3d6+1d${defSwordbreaker.lvl}`, {
+            check: 'd6',
+            name: atkToken.name,
+            target: atkWeaponQuality,
+            type: 'atkBreakRoll'
+        });
     } else if (defSwordbreaker) {
-        atkSwordbreakerRoll = await new game.hm3.Roll(`1d${defSwordbreaker.lvl}`).evaluate();
+        atkSwordbreakerRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`1d${defSwordbreaker.lvl}`, {
+            check: 'd6',
+            name: atkToken.name,
+            target: atkWeaponQuality,
+            type: 'atkSwordbreakerRoll'
+        });
     }
 
     atkBreakTotal = atkBreakRoll.total;
@@ -2118,7 +2185,9 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         diceSides: 100,
         diceNum: 1,
         modifier: 0,
-        target: effAML
+        name: atkToken.name,
+        target: effAML,
+        type: 'atkRoll'
     });
 
     if (game.dice3d) {
@@ -2147,7 +2216,10 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new game.hm3.Roll(`${combatResult.outcome.atkDice}d${atkDie}`).evaluate();
+        atkImpactRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.atkDice}d${atkDie}`, {
+            name: atkToken.name,
+            type: 'atkImpact'
+        });
     }
 
     const atkCloseMode =
@@ -2296,56 +2368,60 @@ export function meleeCombatResult({
 
     if (defense !== 'counterstrike') {
         if (outcome.atkHold) {
-            result.desc = `Attacker obtains hold`;
+            result.desc = `${atkToken.name} obtains hold`;
         } else if (outcome.atkDice) {
-            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact, atkDie)} impact`;
+            result.desc = `${atkToken.name} strikes for ${diceFormula(outcome.atkDice, atkAddlImpact, atkDie)} impact`;
         } else if (outcome.atkFumble && outcome.defFumble) {
             result.desc = 'Both attacker and defender fumble';
         } else if (outcome.atkFumble) {
-            result.desc = `Attacker fumbles`;
+            result.desc = `${atkToken.name} fumbles`;
         } else if (outcome.defFumble) {
-            result.desc = `Defender fumbles`;
+            result.desc = `${defToken.name} fumbles`;
         } else if (outcome.defStumble && outcome.atkStumble) {
             result.desc = `Both attacker and defender stumble`;
         } else if (outcome.atkStumble) {
-            result.desc = `Attacker stumbles`;
+            result.desc = `${atkToken.name} stumbles`;
         } else if (outcome.defStumble) {
-            result.desc = `Defender stumbles`;
+            result.desc = `${defToken.name} stumbles`;
         } else if (outcome.block) {
             result.desc = `Attack blocked`;
         } else if (outcome.dta) {
-            result.desc = `Defender gains a Tactical Advantage`;
+            result.desc = `${defToken.name} gains a Tactical Advantage`;
         }
     } else {
         if (outcome.atkHold && outcome.defHold) {
             result.desc = `Both attacker and defender obtain hold`;
         } else if (outcome.atkHold) {
-            result.desc = `Attacker obtains hold`;
+            result.desc = `${atkToken.name} obtains hold`;
         } else if (outcome.atkDice) {
-            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact, atkDie)} impact`;
+            result.desc = `${atkToken.name} strikes for ${diceFormula(outcome.atkDice, atkAddlImpact, atkDie)} impact`;
         } else if (outcome.atkFumble) {
-            result.desc = `Attacker fumbles`;
+            result.desc = `${atkToken.name} fumbles`;
         } else if (outcome.atkStumble) {
-            result.desc = `Attacker stumbles`;
+            result.desc = `${atkToken.name} stumbles`;
         }
 
         if (outcome.atkHold && outcome.defHold) {
             result.desc = `Both attacker and defender obtain hold`;
         } else if (outcome.defHold) {
-            result.csDesc = `Defender obtains hold`;
+            result.csDesc = `${defToken.name} obtains hold`;
         } else if (outcome.defDice) {
-            result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact, defDie)} impact`;
+            result.csDesc = `${defToken.name} strikes for ${diceFormula(
+                outcome.defDice,
+                defAddlImpact,
+                defDie
+            )} impact`;
         } else if (outcome.defFumble) {
-            result.csDesc = 'Counterstriker fumbles';
+            result.csDesc = `${defToken.name} fumbles`;
         } else if (outcome.defStumble) {
-            result.csDesc = 'Counterstriker stumbles';
+            result.csDesc = `${defToken.name} stumbles`;
         } else if (outcome.block) {
-            result.desc = 'Attacker blocked.';
-            result.csDesc = `Counterstriker blocked`;
+            result.desc = `${atkToken.name} blocked`;
+            result.csDesc = `${defToken.name} blocked`;
         } else if (outcome.dta) {
-            result.csDesc = `Counterstriker gains a Tactical Advantage!`;
+            result.csDesc = `${defToken.name} gains a Tactical Advantage!`;
         } else if (outcome.miss) {
-            result.csDesc = `Counterstrike misses`;
+            result.csDesc = `${defToken.name} misses`;
         }
     }
 
