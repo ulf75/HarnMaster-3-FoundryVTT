@@ -88,15 +88,15 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
             value = 0;
         } else if (result.isSuccess && !result.isCritical) {
             // marginal success
-            seconds = await macros.rollAsync(`4d6 * ${game.hm3.CONST.TIME.MINUTE}`);
+            seconds = await macros.rollResultAsync(`4d6 * ${game.hm3.CONST.TIME.MINUTE}`);
             value = -2;
         } else if (!result.isSuccess && !result.isCritical) {
             // marginal failure
-            seconds = await macros.rollAsync(`8d6 * ${game.hm3.CONST.TIME.MINUTE}`);
+            seconds = await macros.rollResultAsync(`8d6 * ${game.hm3.CONST.TIME.MINUTE}`);
             value = -3;
         } else {
             // critical failure
-            seconds = await macros.rollAsync(`16d6 * ${game.hm3.CONST.TIME.MINUTE}`);
+            seconds = await macros.rollResultAsync(`16d6 * ${game.hm3.CONST.TIME.MINUTE}`);
             value = -3;
             await macros.createActiveEffect(
                 {

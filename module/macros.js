@@ -21,6 +21,7 @@ import * as unconscious from './condition/unconscious.js';
 import * as weakened from './condition/weakened.js';
 import {HM3} from './config.js';
 import {DiceHM3} from './hm3-dice.js';
+import {RollHM3} from './hm3-roll.js';
 import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
 import {Aspect, Condition, InjuryType, ItemType, SkillType} from './hm3-types.js';
 import {Mutex} from './mutex.js';
@@ -878,15 +879,15 @@ async function treatmentRoll(actor, injury, speaker) {
     let treatment = '';
     if (treatmentTable.treatment.includes('Surgery')) {
         fluff += `<p><b>Surgery</b> takes some minutes. It requires sharp knives, and a needle and thread for sutures. Anesthetic is highly recommended (patients tend to struggle and whimper otherwise) and disinfectants are a good idea too. Such items may be purchased from good apothecaries and improve <b>Treatment EML 10-20</b>.</p>`;
-        treatment += `<p><b>Surgery</b> took ${await rollAsync('10d6')} minutes.</p>`;
+        treatment += `<p><b>Surgery</b> took ${await rollResultAsync('10d6')} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Compress')) {
         fluff += `<p>Apply cold <b>compress</b> for some minutes. Herbal remedies and balms that reduce swelling add improve <b>Treatment EML 10-20</b>.</p>`;
-        treatment += `<p>Cold <b>compress</b> took ${await rollAsync('5d6')} minutes.</p>`;
+        treatment += `<p>Cold <b>compress</b> took ${await rollResultAsync('5d6')} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Splint')) {
         fluff += `<p>Setting bone and <b>splinting</b> takes some minutes.</p>`;
-        treatment += `<p><b>Splinting</b> took ${await rollAsync('5d6')} minutes.</p>`;
+        treatment += `<p><b>Splinting</b> took ${await rollResultAsync('5d6')} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Clean') || treatmentTable.treatment.includes('Surgery')) {
         fluff += `<p><b>Cleaning and dressing</b> takes some minutes and requires water and bandages.</p>`;
@@ -894,7 +895,7 @@ async function treatmentRoll(actor, injury, speaker) {
     }
     if (treatmentTable.treatment.includes('Warming')) {
         fluff += `<p>Gentle <b>warming</b> (blanket, healthy person's flesh, etc.) of the injury for a few hours.</p>`;
-        treatment += `<p><b>Warming</b> took ${await rollAsync('1d3')} hours.</p>`;
+        treatment += `<p><b>Warming</b> took ${await rollResultAsync('1d3')} hours.</p>`;
     }
 
     const stdRollData = {
@@ -1298,8 +1299,8 @@ export async function throwDownRoll(atkTokenId, defTokenId, atkDice, defDice) {
         while (atkResult === defResult) {
             // House rule: To make GRAPPLE more attractive and effective, the player who starts
             // the grapple receives more dice according to the success result (one or two more).
-            atkResult = rollAsync(`${3 + atkDice}d6 + ${atkToken.actor.system.abilities.strength.effective}`);
-            defResult = rollAsync(`${3 + defDice}d6 + ${defToken.actor.system.abilities.strength.effective}`);
+            atkResult = rollResultAsync(`${3 + atkDice}d6 + ${atkToken.actor.system.abilities.strength.effective}`);
+            defResult = rollResultAsync(`${3 + defDice}d6 + ${defToken.actor.system.abilities.strength.effective}`);
         }
 
         let ata = false,
@@ -1473,7 +1474,7 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
                         aspect: Aspect.BLUNT,
                         impact: 1,
                         items: actorInfo.actor.items,
-                        location: `${(await rollAsync('1d2')) === 1 ? 'Right' : 'Left'} Shoulder`,
+                        location: `${(await rollResultAsync('1d2')) === 1 ? 'Right' : 'Left'} Shoulder`,
                         name: `Character has wrenched one arm.`,
                         noArmor: true,
                         speaker: actorInfo.speaker
@@ -3065,8 +3066,16 @@ export function getObjectKeys(obj, prefix) {
     }, []);
 }
 
-export async function rollAsync(formula) {
-    return (await new game.hm3.Roll(formula).evaluate()).total;
+export function rollObject(formula, options = {}) {
+    return new RollHM3(formula, {}, options);
+}
+
+export async function rollObjectEvaluatedAsync(formula, options = {}) {
+    return rollObject(formula, options).evaluate();
+}
+
+export async function rollResultAsync(formula, options = {}) {
+    return (await rollObjectEvaluatedAsync(formula, options)).total;
 }
 
 /**

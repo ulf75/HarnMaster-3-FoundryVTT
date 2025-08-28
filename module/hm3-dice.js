@@ -1556,17 +1556,14 @@ export class DiceHM3 {
         const diceType = testData.diceSides === 6 ? 'd6' : 'd100';
         const numDice = testData.diceNum > 0 ? testData.diceNum : 1;
         const diceSpec = numDice + diceType;
-        let rollObj = new game.hm3.Roll(diceSpec, testData.data, {
-            check: diceType,
+        const roll = await game.hm3.macros.rollObjectEvaluatedAsync(diceSpec, {
             name: testData.name,
             target: testData.target,
+            targetCritical: testData.isTreatment && testData.noTreatment ? false : null, // No Treatment should auto fail with MF
+            targetSuccess: testData.isTreatment && testData.noTreatment ? false : null, // No Treatment should auto fail with MF
             type: testData.type
         });
 
-        // No Treatment should auto fail with MF
-        if (testData.isTreatment && testData.noTreatment) rollObj = new game.hm3.Roll('99', testData.data);
-
-        const roll = await rollObj.evaluate();
         if (!roll) {
             console.error(`Roll evaluation failed, diceSpec=${diceSpec}`);
         }

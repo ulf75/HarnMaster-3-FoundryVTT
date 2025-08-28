@@ -113,7 +113,7 @@ console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
             token,
             icon: CONFIG.statusEffects.find((e) => e.id === 'unconscious').img, // UNCONSCIOUS_ICON
             type: 'GameTime',
-            seconds: await game.hm3.macros.rollAsync(`2d6 * ${game.hm3.CONST.TIME.MINUTE}`), // 2d6 minutes
+            seconds: await game.hm3.macros.rollResultAsync(`2d6 * ${game.hm3.CONST.TIME.MINUTE}`), // 2d6 minutes
             flags: {
                 effectmacro: {
                     onCreate: {script: ON_CREATE_MACRO},

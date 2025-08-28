@@ -23,7 +23,7 @@ if (triggerArgs[3].effectiveImpact > 0) {
 
     // make a secret roll against CI x END
     const save = macros.HM100Check(CONTAGION_INDEX * victimActor.system.endurance);
-    const d100 = await macros.rollAsync('1d100');
+    const d100 = await macros.rollResultAsync('1d100');
     if (d100 > save) {
         await macros.createActiveEffect(
             {

@@ -60,7 +60,6 @@ Hooks.once('init', async function () {
         DiceHM3,
         ActorHM3,
         ItemHM3,
-        Roll: RollHM3,
 
         config: HM3,
         macros,
@@ -873,9 +872,9 @@ function callAllUsers(hook, ...args) {
     Hooks.callAll(hook, ...args);
 }
 
-async function cheating(check, name, type) {
+async function cheating(check, name, type, formula, minimum, maximum, target) {
     let dlgTemplate = 'systems/hm3/templates/dialog/cheat-dialog.hbs';
-    let dialogData = {check, name, type};
+    let dialogData = {check, name, type, formula, minimum, maximum, target};
 
     const html = await renderTemplate(dlgTemplate, dialogData);
 
