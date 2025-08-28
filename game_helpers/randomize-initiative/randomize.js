@@ -1,7 +1,7 @@
 const sizeTable = game.tables.getName('Random Size Factor');
 
 for (let t of canvas.tokens.controlled) {
-    const sizeRoll = new game.hm3.Roll('1d100');
+    const sizeRoll = game.hm3.macros.rollObject('1d100');
     const sizeDraw = await sizeTable.draw({roll: sizeRoll, recursive: true, displayChat: false});
     const size = Number(sizeDraw.results[0].text);
     const ini = t.actor.items.find((x) => x.name === 'Initiative');

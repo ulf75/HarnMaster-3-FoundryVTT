@@ -1661,13 +1661,15 @@ export async function moraleRoll(noDialog = false, myActor = null) {
                 await token?.addCondition(Condition.CAUTIOUS, {oneRound: true});
             } else if (!result.isSuccess && result.isCritical) {
                 // CF
-                const rollObj = new game.hm3.Roll('1d100');
-                const roll = await rollObj.evaluate();
-                if (roll.total <= 25) {
+                const total = await game.hm3.macros.rollResultAsync('1d100', {
+                    name: actorInfo.actor.name,
+                    type: 'CF moraleRoll'
+                });
+                if (total <= 25) {
                     await token?.addCondition(Condition.BERSERK);
-                } else if (roll.total <= 50) {
+                } else if (total <= 50) {
                     await token?.addCondition(Condition.DESPERATE);
-                } else if (roll.total <= 75) {
+                } else if (total <= 75) {
                     await token?.addCondition(Condition.BROKEN);
                 } else {
                     await token?.addCondition(Condition.CAUTIOUS);
