@@ -889,7 +889,7 @@ async function cheating(check, name, type, formula, minimum, maximum, target) {
                               cs: {
                                   label: 'CS',
                                   callback: async (html) => {
-                                      resolve({targetSuccess: true, targetCritical: true, targetSubstantial: null});
+                                      resolve({targetSuccess: true, targetCritical: true});
                                   }
                               },
                               ss: {
@@ -919,7 +919,19 @@ async function cheating(check, name, type, formula, minimum, maximum, target) {
                               cf: {
                                   label: 'CF',
                                   callback: async (html) => {
-                                      resolve({targetSuccess: false, targetCritical: true, targetSubstantial: null});
+                                      resolve({targetSuccess: false, targetCritical: true});
+                                  }
+                              },
+                              success: {
+                                  label: 'Success',
+                                  callback: async (html) => {
+                                      resolve({targetSuccess: true});
+                                  }
+                              },
+                              failure: {
+                                  label: 'Failure',
+                                  callback: async (html) => {
+                                      resolve({targetSuccess: false});
                                   }
                               }
                           }
@@ -927,13 +939,13 @@ async function cheating(check, name, type, formula, minimum, maximum, target) {
                               success: {
                                   label: 'Success',
                                   callback: async (html) => {
-                                      resolve({targetSuccess: true, targetCritical: false});
+                                      resolve({targetSuccess: true});
                                   }
                               },
                               failure: {
                                   label: 'Failure',
                                   callback: async (html) => {
-                                      resolve({targetSuccess: false, targetCritical: false});
+                                      resolve({targetSuccess: false});
                                   }
                               }
                           }
@@ -941,36 +953,39 @@ async function cheating(check, name, type, formula, minimum, maximum, target) {
         );
     else
         return new Promise((resolve) =>
-            new Dialog({
-                content: html.trim(),
-                title: `${check} Cheat Roll`,
-                buttons: {
-                    minimum: {
-                        label: `Minimum (${minimum})`,
-                        callback: async (html) => {
-                            resolve({targetValue: minimum});
-                        }
-                    },
-                    average: {
-                        label: `Average (${Math.round((minimum + maximum) / 2)})`,
-                        callback: async (html) => {
-                            resolve({targetValue: Math.round((minimum + maximum) / 2)});
-                        }
-                    },
-                    maximum: {
-                        label: `Maximum (${maximum})`,
-                        callback: async (html) => {
-                            resolve({targetValue: maximum});
-                        }
-                    },
-                    random: {
-                        label: `Random`,
-                        callback: async (html) => {
-                            resolve({targetValue: null});
+            new Dialog(
+                {
+                    content: html.trim(),
+                    title: `${check} Cheat Roll`,
+                    buttons: {
+                        minimum: {
+                            label: `Minimum (${minimum})`,
+                            callback: async (html) => {
+                                resolve({targetValue: minimum});
+                            }
+                        },
+                        average: {
+                            label: `Average (${Math.round((minimum + maximum) / 2)})`,
+                            callback: async (html) => {
+                                resolve({targetValue: Math.round((minimum + maximum) / 2)});
+                            }
+                        },
+                        maximum: {
+                            label: `Maximum (${maximum})`,
+                            callback: async (html) => {
+                                resolve({targetValue: maximum});
+                            }
+                        },
+                        random: {
+                            label: `Random`,
+                            callback: async (html) => {
+                                resolve({targetValue: null});
+                            }
                         }
                     }
-                }
-            }).render(true)
+                },
+                {width: 500}
+            ).render(true)
         );
 }
 

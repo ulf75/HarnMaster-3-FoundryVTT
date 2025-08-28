@@ -92,27 +92,12 @@ export class RollHM3 extends Roll {
     } = {}) {
         if (this.autocheating) {
             return this._cheatRoll({minimize, maximize, allowStrings, allowInteractive, options});
-        } else if (this.cheating && !!this._effTarget && !!this._check) {
-            await this._minMax();
-            const data = await game.hm3.socket.executeAsGM(
-                'cheating',
-                this._check,
-                this._name,
-                this._type,
-                this._formula,
-                this._minimum,
-                this._maximum,
-                this._effTarget
-            );
-            this._targetCritical = data.targetCritical;
-            this._targetSubstantial = data.targetSubstantial;
-            this._targetSuccess = data.targetSuccess;
-            return this._cheatRoll({minimize, maximize, allowStrings, allowInteractive, options});
         } else if (this.cheating) {
             await this._minMax();
+
             const data = await game.hm3.socket.executeAsGM(
                 'cheating',
-                'roll',
+                this._check ?? 'roll',
                 this._name,
                 this._type,
                 this._formula,
@@ -120,7 +105,12 @@ export class RollHM3 extends Roll {
                 this._maximum,
                 this._effTarget
             );
-            this._targetValue = data.targetValue;
+
+            this._targetCritical = data.targetCritical ?? null;
+            this._targetSubstantial = data.targetSubstantial ?? null;
+            this._targetSuccess = data.targetSuccess ?? null;
+            this._targetValue = data.targetValue ?? null;
+
             return this._cheatRoll({minimize, maximize, allowStrings, allowInteractive, options});
         }
 
