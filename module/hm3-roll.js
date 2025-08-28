@@ -16,6 +16,7 @@ export class RollHM3 extends Roll {
         this._targetCritical = options.targetCritical ?? null;
         this._targetSubstantial = options.targetSubstantial ?? null;
         this._targetSuccess = options.targetSuccess ?? null;
+        this._targetValue = null;
         this._type = options.type ?? 'Unknown';
 
         if (this._target !== null && this._check === 'd100') {
@@ -107,6 +108,20 @@ export class RollHM3 extends Roll {
             this._targetSubstantial = data.targetSubstantial;
             this._targetSuccess = data.targetSuccess;
             return this._cheatRoll({minimize, maximize, allowStrings, allowInteractive, options});
+        } else if (this.cheating) {
+            await this._minMax();
+            const data = await game.hm3.socket.executeAsGM(
+                'cheating',
+                'roll',
+                this._name,
+                this._type,
+                this._formula,
+                this._minimum,
+                this._maximum,
+                this._effTarget
+            );
+            this._targetValue = data.targetValue;
+            return this._cheatRoll({minimize, maximize, allowStrings, allowInteractive, options});
         }
 
         return super.evaluate({minimize, maximize, allowStrings, allowInteractive, options});
@@ -126,7 +141,8 @@ export class RollHM3 extends Roll {
         } while (
             (this._targetCritical !== null ? this._targetCritical !== this.isCritical : false) ||
             (this._targetSubstantial !== null ? this._targetSubstantial !== this.isSubstantial : false) ||
-            (this._targetSuccess !== null ? this._targetSuccess !== this.isSuccess : false)
+            (this._targetSuccess !== null ? this._targetSuccess !== this.isSuccess : false) ||
+            (this._targetValue !== null ? this._targetValue !== this.total : false)
         );
 
         return obj;

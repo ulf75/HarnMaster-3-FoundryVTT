@@ -878,67 +878,100 @@ async function cheating(check, name, type, formula, minimum, maximum, target) {
 
     const html = await renderTemplate(dlgTemplate, dialogData);
 
-    // Create the dialog window
-    return new Promise((resolve) =>
-        new Dialog({
-            content: html.trim(),
-            title: `${check} Cheat Roll`,
-            buttons:
-                check === 'd100'
-                    ? {
-                          cs: {
-                              label: 'CS',
-                              callback: async (html) => {
-                                  resolve({targetSuccess: true, targetCritical: true, targetSubstantial: null});
-                              }
-                          },
-                          ss: {
-                              label: 'SS',
-                              callback: async (html) => {
-                                  resolve({targetSuccess: true, targetCritical: false, targetSubstantial: true});
-                              }
-                          },
-                          ms: {
-                              label: 'MS',
-                              callback: async (html) => {
-                                  resolve({targetSuccess: true, targetCritical: false, targetSubstantial: false});
-                              }
-                          },
-                          mf: {
-                              label: 'MF',
-                              callback: async (html) => {
-                                  resolve({targetSuccess: false, targetCritical: false, targetSubstantial: false});
-                              }
-                          },
-                          sf: {
-                              label: 'SF',
-                              callback: async (html) => {
-                                  resolve({targetSuccess: false, targetCritical: false, targetSubstantial: true});
-                              }
-                          },
-                          cf: {
-                              label: 'CF',
-                              callback: async (html) => {
-                                  resolve({targetSuccess: false, targetCritical: true, targetSubstantial: null});
-                              }
-                          }
-                      }
-                    : {
-                          success: {
-                              label: 'Success',
-                              callback: async (html) => {
-                                  resolve({targetSuccess: true, targetCritical: false});
-                              }
-                          },
-                          failure: {
-                              label: 'Failure',
-                              callback: async (html) => {
-                                  resolve({targetSuccess: false, targetCritical: false});
+    if (check !== 'roll')
+        return new Promise((resolve) =>
+            new Dialog({
+                content: html.trim(),
+                title: `${check} Cheat Roll`,
+                buttons:
+                    check === 'd100'
+                        ? {
+                              cs: {
+                                  label: 'CS',
+                                  callback: async (html) => {
+                                      resolve({targetSuccess: true, targetCritical: true, targetSubstantial: null});
+                                  }
+                              },
+                              ss: {
+                                  label: 'SS',
+                                  callback: async (html) => {
+                                      resolve({targetSuccess: true, targetCritical: false, targetSubstantial: true});
+                                  }
+                              },
+                              ms: {
+                                  label: 'MS',
+                                  callback: async (html) => {
+                                      resolve({targetSuccess: true, targetCritical: false, targetSubstantial: false});
+                                  }
+                              },
+                              mf: {
+                                  label: 'MF',
+                                  callback: async (html) => {
+                                      resolve({targetSuccess: false, targetCritical: false, targetSubstantial: false});
+                                  }
+                              },
+                              sf: {
+                                  label: 'SF',
+                                  callback: async (html) => {
+                                      resolve({targetSuccess: false, targetCritical: false, targetSubstantial: true});
+                                  }
+                              },
+                              cf: {
+                                  label: 'CF',
+                                  callback: async (html) => {
+                                      resolve({targetSuccess: false, targetCritical: true, targetSubstantial: null});
+                                  }
                               }
                           }
-                      }
-        }).render(true)
-    );
+                        : {
+                              success: {
+                                  label: 'Success',
+                                  callback: async (html) => {
+                                      resolve({targetSuccess: true, targetCritical: false});
+                                  }
+                              },
+                              failure: {
+                                  label: 'Failure',
+                                  callback: async (html) => {
+                                      resolve({targetSuccess: false, targetCritical: false});
+                                  }
+                              }
+                          }
+            }).render(true)
+        );
+    else
+        return new Promise((resolve) =>
+            new Dialog({
+                content: html.trim(),
+                title: `${check} Cheat Roll`,
+                buttons: {
+                    minimum: {
+                        label: `Minimum (${minimum})`,
+                        callback: async (html) => {
+                            resolve({targetValue: minimum});
+                        }
+                    },
+                    average: {
+                        label: `Average (${Math.round((minimum + maximum) / 2)})`,
+                        callback: async (html) => {
+                            resolve({targetValue: Math.round((minimum + maximum) / 2)});
+                        }
+                    },
+                    maximum: {
+                        label: `Maximum (${maximum})`,
+                        callback: async (html) => {
+                            resolve({targetValue: maximum});
+                        }
+                    },
+                    random: {
+                        label: `Random`,
+                        callback: async (html) => {
+                            resolve({targetValue: null});
+                        }
+                    }
+                }
+            }).render(true)
+        );
 }
 
 let outMutex = new Mutex();
