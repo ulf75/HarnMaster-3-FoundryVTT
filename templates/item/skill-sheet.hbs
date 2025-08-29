@@ -8,7 +8,8 @@
     </div>
     <div class="resource">
         <label for="system.masteryLevel" class="resource-label">Mastery Level (ML)</label>
-        <input type="number" id="system.masteryLevel" name="system.masteryLevel" value="{{ idata.masteryLevel }}" data-dtype="Number" />
+        <input type="number" id="system.masteryLevel" name="system.masteryLevel" value="{{ idata.masteryLevel }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
     </div>
     {{#if (eq idata.type "Ritual")}}
     <div class="resource">
