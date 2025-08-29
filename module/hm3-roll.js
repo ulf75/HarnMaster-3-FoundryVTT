@@ -124,15 +124,17 @@ export class RollHM3 extends Roll {
         allowInteractive = true,
         ...options
     } = {}) {
+        let cnt = 1000;
         let obj = null;
         do {
             this._reset();
             obj = await super.evaluate({minimize, maximize, allowStrings, allowInteractive, options});
         } while (
-            (this._targetCritical !== null ? this._targetCritical !== this.isCritical : false) ||
-            (this._targetSubstantial !== null ? this._targetSubstantial !== this.isSubstantial : false) ||
-            (this._targetSuccess !== null ? this._targetSuccess !== this.isSuccess : false) ||
-            (this._targetValue !== null ? this._targetValue !== this.total : false)
+            --cnt > 0 &&
+            ((this._targetCritical !== null ? this._targetCritical !== this.isCritical : false) ||
+                (this._targetSubstantial !== null ? this._targetSubstantial !== this.isSubstantial : false) ||
+                (this._targetSuccess !== null ? this._targetSuccess !== this.isSuccess : false) ||
+                (this._targetValue !== null ? this._targetValue !== this.total : false))
         );
 
         return obj;
