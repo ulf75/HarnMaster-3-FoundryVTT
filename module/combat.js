@@ -2,7 +2,7 @@ import {HM3} from './config.js';
 import {DiceHM3} from './hm3-dice.js';
 import {TokenHM3} from './hm3-token.js';
 import {ActorType, ArcanePower, Aspect, Condition, ItemType} from './hm3-types.js';
-import {fatigueReceived, improveFlag, truncate} from './utility.js';
+import * as utility from './utility.js';
 
 /**
  * Initiates a missile attack.
@@ -1080,7 +1080,7 @@ export async function meleeCounterstrikeResume(
 
         if (weaponBroke.attackWeaponBroke) {
             try {
-                await weaponBroke(atkWeapon.uuid, weaponBroke.atkWeaponDiff);
+                await utility.weaponBroke(atkWeapon, weaponBroke.atkWeaponDiff);
             } catch (ex) {
             } finally {
                 combatResult.outcome.dta = true;
@@ -1089,7 +1089,7 @@ export async function meleeCounterstrikeResume(
 
         if (weaponBroke.defendWeaponBroke) {
             try {
-                await weaponBroke(defWeapon.uuid, weaponBroke.defWeaponDiff);
+                await utility.weaponBroke(defWeapon, weaponBroke.defWeaponDiff);
             } catch (ex) {
             } finally {
                 combatResult.outcome.ata = true;
@@ -1261,11 +1261,11 @@ export async function meleeCounterstrikeResume(
         await atkToken.addCondition(Condition.GRAPPLED);
     }
 
-    improveFlag(
+    utility.improveFlag(
         atkToken.actor.items.find((w) => w.name === atkWeaponName),
         {actor: atkToken.actor, success: atkRoll.isSuccess}
     );
-    improveFlag(defWeapon.system.assocSkill, {actor: defToken.actor, success: csRoll.isSuccess});
+    utility.improveFlag(defWeapon.system.assocSkill, {actor: defToken.actor, success: csRoll.isSuccess});
 
     if (turnEnds) await setTA(true);
 
@@ -1293,16 +1293,6 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     const speaker = ChatMessage.getSpeaker({token: atkToken});
 
-    const atkRoll = await DiceHM3.rollTest({
-        data: {},
-        diceNum: 1,
-        diceSides: 100,
-        modifier: 0,
-        name: atkToken.name,
-        target: effAML,
-        type: 'atkRoll'
-    });
-
     const effDML = game.hm3.macros.HM100Check(defToken.actor.system.dodge);
 
     let defaultModifier = 0;
@@ -1315,6 +1305,16 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     if (prone) {
         defaultModifier += 20;
     }
+
+    const atkRoll = await DiceHM3.rollTest({
+        data: {},
+        diceNum: 1,
+        diceSides: 100,
+        modifier: 0,
+        name: atkToken.name,
+        target: effAML,
+        type: 'atkRoll'
+    });
 
     const defRoll = await DiceHM3.rollTest({
         data: {},
@@ -1463,11 +1463,11 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         await atkToken.addCondition(Condition.GRAPPLED);
     }
 
-    improveFlag(
+    utility.improveFlag(
         atkToken.actor.items.find((w) => w.name === weaponName),
         {actor: atkToken.actor, success: atkRoll.isSuccess}
     );
-    improveFlag('Dodge', {actor: defToken.actor, success: defRoll.isSuccess});
+    utility.improveFlag('Dodge', {actor: defToken.actor, success: defRoll.isSuccess});
 
     if (turnEnds) await setTA(true);
 
@@ -1536,10 +1536,10 @@ export async function esotericResume(atkToken, defToken, atkWeaponName, atkEffAM
     });
 
     if (combatResult.outcome.atkFatigue) {
-        fatigueReceived(atkToken.actor, combatResult.outcome.atkFatigue);
+        utility.fatigueReceived(atkToken.actor, combatResult.outcome.atkFatigue);
     }
     if (combatResult.outcome.defFatigue) {
-        fatigueReceived(defToken.actor, combatResult.outcome.defFatigue);
+        utility.fatigueReceived(defToken.actor, combatResult.outcome.defFatigue);
     }
 
     const title = 'Esoteric Attack Result';
@@ -1633,16 +1633,6 @@ export async function blockResume(
 
     const speaker = ChatMessage.getSpeaker({token: atkToken.document});
 
-    const atkRoll = await DiceHM3.rollTest({
-        data: {},
-        diceNum: 1,
-        diceSides: 100,
-        modifier: 0,
-        name: atkToken.name,
-        target: effAML,
-        type: 'atkRoll'
-    });
-
     let prompt = null;
 
     // setup defensive available weapons.  This is all equipped melee weapons initially,
@@ -1729,6 +1719,16 @@ export async function blockResume(
         }
     }
 
+    const atkRoll = await DiceHM3.rollTest({
+        data: {},
+        diceNum: 1,
+        diceSides: 100,
+        modifier: 0,
+        name: atkToken.name,
+        target: effAML,
+        type: 'atkRoll'
+    });
+
     const defRoll = await DiceHM3.rollTest({
         data: {},
         diceNum: 1,
@@ -1780,7 +1780,7 @@ export async function blockResume(
 
         if (weaponBroke.attackWeaponBroke) {
             try {
-                await weaponBroke(atkWeapon.uuid, weaponBroke.atkWeaponDiff);
+                await utility.weaponBroke(atkWeapon, weaponBroke.atkWeaponDiff);
             } catch (ex) {
             } finally {
                 combatResult.outcome.dta = true;
@@ -1789,7 +1789,7 @@ export async function blockResume(
 
         if (weaponBroke.defendWeaponBroke) {
             try {
-                await weaponBroke(defWeapon.uuid, weaponBroke.defWeaponDiff);
+                await utility.weaponBroke(defWeapon, weaponBroke.defWeaponDiff);
             } catch (ex) {
             } finally {
                 combatResult.outcome.ata = true;
@@ -1914,11 +1914,11 @@ export async function blockResume(
         await atkToken.addCondition(Condition.GRAPPLED);
     }
 
-    improveFlag(
+    utility.improveFlag(
         atkToken.actor.items.find((w) => w.name === weaponName),
         {actor: atkToken.actor, success: atkRoll.isSuccess}
     );
-    improveFlag(defWeapon.system.assocSkill, {actor: defToken.actor, success: defRoll.isSuccess});
+    utility.improveFlag(defWeapon.system.assocSkill, {actor: defToken.actor, success: defRoll.isSuccess});
 
     if (turnEnds) await setTA(true);
 
@@ -1967,28 +1967,28 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     const defWeaponQuality = defWeapon.system.weaponQuality + (defWeapon.system.wqModifier || 0);
 
     // Separate break rolls for each weapon and Swordbreaker rolls if applicable
-    let atkBreakRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`3d6`, {
+    let atkBreakRoll = game.hm3.macros.rollObject(`3d6`, {
         check: 'd6',
         name: atkToken.name,
         target: atkWeaponQuality,
         type: 'atkBreakRoll'
     });
 
-    let defBreakRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`3d6`, {
+    let defBreakRoll = game.hm3.macros.rollObject(`3d6`, {
         check: 'd6',
         name: defToken.name,
         target: defWeaponQuality,
         type: 'defBreakRoll'
     });
 
-    let atkSwordbreakerRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`0`, {
+    let atkSwordbreakerRoll = game.hm3.macros.rollObject(`0`, {
         check: 'd6',
         name: atkToken.name,
         target: atkWeaponQuality,
         type: 'atkSwordbreakerRoll'
     });
 
-    let defSwordbreakerRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`0`, {
+    let defSwordbreakerRoll = game.hm3.macros.rollObject(`0`, {
         check: 'd6',
         name: defToken.name,
         target: defWeaponQuality,
@@ -1996,14 +1996,14 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     });
 
     if (atkSwordbreaker?.isOwnerAware) {
-        defBreakRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`3d6+1d${atkSwordbreaker.lvl}`, {
+        defBreakRoll = game.hm3.macros.rollObject(`3d6+1d${atkSwordbreaker.lvl}`, {
             check: 'd6',
             name: defToken.name,
             target: defWeaponQuality,
             type: 'defBreakRoll'
         });
     } else if (atkSwordbreaker) {
-        defSwordbreakerRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`1d${atkSwordbreaker.lvl}`, {
+        defSwordbreakerRoll = game.hm3.macros.rollObject(`1d${atkSwordbreaker.lvl}`, {
             check: 'd6',
             name: defToken.name,
             target: defWeaponQuality,
@@ -2011,14 +2011,14 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
         });
     }
     if (defSwordbreaker?.isOwnerAware) {
-        atkBreakRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`3d6+1d${defSwordbreaker.lvl}`, {
+        atkBreakRoll = game.hm3.macros.rollObject(`3d6+1d${defSwordbreaker.lvl}`, {
             check: 'd6',
             name: atkToken.name,
             target: atkWeaponQuality,
             type: 'atkBreakRoll'
         });
     } else if (defSwordbreaker) {
-        atkSwordbreakerRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`1d${defSwordbreaker.lvl}`, {
+        atkSwordbreakerRoll = game.hm3.macros.rollObject(`1d${defSwordbreaker.lvl}`, {
             check: 'd6',
             name: atkToken.name,
             target: atkWeaponQuality,
@@ -2026,8 +2026,8 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
         });
     }
 
-    atkBreakTotal = atkBreakRoll.total;
-    defBreakTotal = defBreakRoll.total;
+    atkBreakTotal = (await atkBreakRoll.evaluate()).total;
+    defBreakTotal = (await defBreakRoll.evaluate()).total;
 
     // If either weapon has Ward Akana, then it cannot break
     if (atkWarded && atkWardAkana?.isOwnerAware) {
@@ -2054,11 +2054,11 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
                 defBreakCheckNotNeeded = true;
                 atkWeaponBroke = true;
                 atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
-            } else if (atkBreakTotal + atkSwordbreakerRoll.total > atkWeaponQuality) {
+            } else if (atkBreakTotal + (await atkSwordbreakerRoll.evaluate()).total > atkWeaponQuality) {
                 // Owner is not aware of the Swordbreaker
                 defBreakCheckNotNeeded = true;
                 atkWeaponBroke = true;
-                atkBreakTotal = Math.min(atkBreakTotal + atkSwordbreakerRoll.total, 18);
+                atkBreakTotal = Math.min(atkBreakTotal + (await atkSwordbreakerRoll.evaluate()).total, 18);
                 atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
             }
         }
@@ -2067,10 +2067,13 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
             if (!atkWeaponBroke && defBreakTotal > defWeaponQuality) {
                 defWeaponBroke = true;
                 defWeaponDiff = defBreakTotal - defWeaponQuality;
-            } else if (!atkWeaponBroke && defBreakTotal + defSwordbreakerRoll.total > defWeaponQuality) {
+            } else if (
+                !atkWeaponBroke &&
+                defBreakTotal + (await defSwordbreakerRoll.evaluate()).total > defWeaponQuality
+            ) {
                 // Owner is not aware of the Swordbreaker
                 defWeaponBroke = true;
-                defBreakTotal = Math.min(defBreakTotal + defSwordbreakerRoll.total, 18);
+                defBreakTotal = Math.min(defBreakTotal + (await defSwordbreakerRoll.evaluate()).total, 18);
                 defWeaponDiff = defBreakTotal - defWeaponQuality;
             }
         }
@@ -2081,11 +2084,11 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
                 atkBreakCheckNotNeeded = true;
                 defWeaponBroke = true;
                 defWeaponDiff = defBreakTotal - defWeaponQuality;
-            } else if (defBreakTotal + defSwordbreakerRoll.total > defWeaponQuality) {
+            } else if (defBreakTotal + (await defSwordbreakerRoll.evaluate()).total > defWeaponQuality) {
                 // Owner is not aware of the Swordbreaker
                 atkBreakCheckNotNeeded = true;
                 defWeaponBroke = true;
-                defBreakTotal = Math.min(defBreakTotal + defSwordbreakerRoll.total, 18);
+                defBreakTotal = Math.min(defBreakTotal + (await defSwordbreakerRoll.evaluate()).total, 18);
                 defWeaponDiff = defBreakTotal - defWeaponQuality;
             }
         }
@@ -2094,10 +2097,13 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
             if (!defWeaponBroke && atkBreakTotal > atkWeaponQuality) {
                 atkWeaponBroke = true;
                 atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
-            } else if (!defWeaponBroke && atkBreakTotal + atkSwordbreakerRoll.total > atkWeaponQuality) {
+            } else if (
+                !defWeaponBroke &&
+                atkBreakTotal + (await atkSwordbreakerRoll.evaluate()).total > atkWeaponQuality
+            ) {
                 // Owner is not aware of the Swordbreaker
                 atkWeaponBroke = true;
-                atkBreakTotal = Math.min(atkBreakTotal + atkSwordbreakerRoll.total, 18);
+                atkBreakTotal = Math.min(atkBreakTotal + (await atkSwordbreakerRoll.evaluate()).total, 18);
                 atkWeaponDiff = atkBreakTotal - atkWeaponQuality;
             }
         }
@@ -2299,7 +2305,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         await atkToken.addCondition(Condition.GRAPPLED);
     }
 
-    improveFlag(
+    utility.improveFlag(
         atkToken.actor.items.find((w) => w.name === weaponName),
         {actor: atkToken.actor, success: atkRoll.isSuccess}
     );
@@ -2612,9 +2618,9 @@ export function rangeToTarget(sourceToken, targetToken, gridUnits = false) {
     if (!sourceToken || !targetToken || !canvas.scene || !canvas.scene.grid) return 9999;
 
     const distance = game.hm3.macros.distanceBtwnTwoTokens(sourceToken.id, targetToken.id); // [ft]
-    // console.info(`Distance = ${truncate(distance, 0)}, gridUnits=${gridUnits}`);
-    if (gridUnits) return truncate(distance / canvas.dimensions.distance, 0);
-    return truncate(distance, 0);
+    // console.info(`Distance = ${utility.truncate(distance, 0)}, gridUnits=${gridUnits}`);
+    if (gridUnits) return utility.truncate(distance / canvas.dimensions.distance, 0);
+    return utility.truncate(distance, 0);
 }
 
 /**
