@@ -302,16 +302,21 @@ Hooks.once('init', async function () {
 
     const root = 'systems/hm3/templates/';
     Handlebars.registerPartial({
+        //character
         char_esoteric_list_partial: await (await fetch(`${root}actor/partials/esoteric_list_partial.hbs`)).text(),
         char_fff_list_partial: await (await fetch(`${root}actor/partials/fff_list_partial.hbs`)).text(),
         char_layout_partial: await (await fetch(`${root}actor/partials/structure_partial.hbs`)).text(),
         char_skill_list_partial: await (await fetch(`${root}actor/partials/skill_list_partial.hbs`)).text(),
+        // item
         item_artifact_partial: await (await fetch(`${root}item/partials/artifact_partial.hbs`)).text(),
         item_artifact_power_partial: await (await fetch(`${root}item/partials/artifact_power_partial.hbs`)).text(),
         item_esoteric_combat_partial: await (await fetch(`${root}item/partials/esoteric_combat_partial.hbs`)).text(),
         item_layout_partial: await (await fetch(`${root}item/partials/structure_partial.hbs`)).text(),
         item_standard_partial: await (await fetch(`${root}item/partials/standard_partial.hbs`)).text(),
-        item_unknown_value_partial: await (await fetch(`${root}item/partials/unknown_value_partial.hbs`)).text()
+        item_unknown_value_partial: await (await fetch(`${root}item/partials/unknown_value_partial.hbs`)).text(),
+        // global
+        effects_partial: await (await fetch(`${root}partials/effects_partial.hbs`)).text(),
+        legacy_macro_partial: await (await fetch(`${root}partials/legacy_macro_partial.hbs`)).text()
     });
 
     // Add a font selector dropdown to the TineMCE editor

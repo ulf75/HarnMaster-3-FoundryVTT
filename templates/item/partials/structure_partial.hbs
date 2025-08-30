@@ -37,7 +37,7 @@
             <a class="properties-tab" data-tab="properties">Properties</a>
             <a class="description-tab" data-tab="description">Description</a>
             <a class="effects-tab" data-tab="effects">Effects</a>
-            <a class="macros-tab" data-tab="macro">Legacy</a>
+            <a class="macros-tab" data-tab="legacymacro">Legacy</a>
         </nav>
     </div>
 
@@ -54,62 +54,12 @@
                 {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
             </div>
 
-            <div class="tab macros" data-group="primary" data-tab="macro">
-                <div class="macros">
-                    <div class="form-group">
-                        <label for="system.macros.type" class="resource-label">Type</label>
-                        <select id="system.macros.type" name="system.macros.type">
-                            {{selectOptions macroTypes selected=idata.macros.type valueAttr="key" labelAttr="label"}}
-                        </select>
-                    </div>
-
-                    <div class="form-group stacked command">
-                        <label for="system.macros.command" class="resource-label">Command</label>
-                        <textarea id="system.macros.command" name="system.macros.command">{{ idata.macros.command }}</textarea>
-                    </div>
-                </div>
+            <div class="tab macros" data-group="primary" data-tab="legacymacro">
+                {{> legacy_macro_partial}}
             </div>
 
             <div class="tab effects" data-group="primary" data-tab="effects">
-                <div class="effects">
-                    <ol class="effects-list">
-                        <li class="effects-header flexrow">
-                            <h3 class="effect-name flexrow">Effect</h3>
-                            <div class="effect-duration">Duration</div>
-                            <div class="effect-changes">Changes</div>
-                            <a class="effect-controls effect-control" title="Add Effect" data-action="create">
-                                <span class="active">
-                                    <i class="fas fa-plus"></i>
-                                    Add
-                                </span>
-                            </a>
-                        </li>
-
-                        <ol class="effect-list item-list">
-                            {{#each effects as |effect id|}}
-                            <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-id="{{ effect.id }}">
-                                <div class="effect-name flexrow">
-                                    <div class="effect-image" style="background-image: url('{{ effect.img }}')"></div>
-                                    <h4>{{ effect.name }}</h4>
-                                </div>
-                                <div class="effect-ele effect-duration">{{ effect.duration.label }}</div>
-                                <div class="effect-ele effect-changes">{{ effect.changes }}</div>
-                                <div class="effect-controls">
-                                    <a class="effect-control" data-action="toggle">
-                                        <i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i>
-                                    </a>
-                                    <a class="effect-control" data-action="edit">
-                                        <i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i>
-                                    </a>
-                                    <a class="effect-control" data-action="delete">
-                                        <i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i>
-                                    </a>
-                                </div>
-                            </li>
-                            {{/each}}
-                        </ol>
-                    </ol>
-                </div>
+                {{> effects_partial}}
             </div>
         </div>
     </section>
