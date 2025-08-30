@@ -1,0 +1,67 @@
+slide-toggle {
+    --slide-toggle-height: 20px;
+    --slide-toggle-width: 36px;
+    --slide-toggle-padding: 3px;
+    --slide-toggle-track-color-checked: var(--dnd5e-color-gold);
+    --slide-toggle-track-color-unchecked: var(--dnd5e-color-light-gray);
+    --slide-toggle-thumb-color: white;
+    --slide-toggle-thumb-width: calc(var(--slide-toggle-height) - var(--slide-toggle-padding) * 2);
+    --slide-toggle-thumb-height: var(--slide-toggle-thumb-width);
+    --slide-toggle-transition-time: 250ms;
+
+    cursor: pointer;
+    display: inline-block;
+    flex: none;
+    height: var(--slide-toggle-height);
+    margin-top: 5px;
+    max-width: var(--slide-toggle-width);
+    width: var(--slide-toggle-width);
+
+    .slide-toggle-track {
+        background: var(--slide-toggle-track-color-unchecked);
+        border-radius: calc((var(--slide-toggle-height) * 2) / 3);
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.45);
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        justify-content: start;
+        padding: var(--slide-toggle-padding);
+        width: 100%;
+    }
+
+    .slide-toggle-thumb {
+        background: var(--slide-toggle-thumb-color);
+        border-radius: 100%;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.45);
+        height: var(--slide-toggle-thumb-height);
+        line-height: 12px;
+        text-align: center;
+        transition: margin-left var(--slide-toggle-transition-time) ease;
+        width: var(--slide-toggle-thumb-width);
+    }
+
+    .slide-toggle-thumb::before {
+        color: var(--dnd5e-color-light-gray);
+        content: '\f0ad';
+        font-family: var(--font-awesome);
+        font-size: var(--font-size-9);
+        font-weight: bold;
+        text-shadow: none;
+    }
+}
+
+slide-toggle[checked] .slide-toggle-track {
+    background: var(--slide-toggle-track-color-checked);
+}
+
+slide-toggle[checked] .slide-toggle-thumb {
+    margin-left: calc(100% - var(--slide-toggle-thumb-width));
+}
+
+slide-toggle[checked] .slide-toggle-thumb::before {
+    color: var(--dnd5e-color-gold);
+}
+
+.minimized slide-toggle {
+    display: none;
+}
