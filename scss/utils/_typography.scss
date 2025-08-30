@@ -41,3 +41,21 @@ $font-headers: 'Modesto Condensed', 'Palatino Linotype', serif;
     font-weight: bold;
     font-style: normal;
 }
+@font-face {
+    font-family: 'Ruritania';
+    src: url(/systems/hm3/fonts/Ruritania.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Olde English';
+    src: url(/systems/hm3/fonts/OldeEnglish.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Cardinal';
+    src: url(/systems/hm3/fonts/Cardinal.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -42,6 +42,27 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Ruritania';
+    src: url(/systems/hm3/fonts/Ruritania.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Olde English';
+    src: url(/systems/hm3/fonts/OldeEnglish.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cardinal';
+    src: url(/systems/hm3/fonts/Cardinal.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Global styles */
 /*.window-app {
   font-family: $font-primary;
@@ -1533,6 +1554,125 @@ section.highlight {
     scrollbar-color: #9f9175 transparent;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
+}
+
+.hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content .tab.active {
+    min-height: 90%;
+    width: 100%;
+}
+
+.hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content .tab.active .editor {
+    min-height: 400px;
+}
+
+.hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content .tab.active .editor .editor-menu {
+    border-radius: 0;
+    gap: 2px;
+}
+
+.hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content .tab.active .editor .editor-content {
+    padding-top: 10px;
+}
+
+.hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content .tab.active .editor .editor-content h1 {
+    text-transform: uppercase;
+}
+
+.hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content .tab.active .editor .editor-content h1,
+.hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content .tab.active .editor .editor-content h2,
+.hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content .tab.active .editor .editor-content h3,
+.hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content .tab.active .editor .editor-content h4 {
+    border: none;
+}
+
+.hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content .tab.active .editor .editor-content > p {
+    text-align: justify;
+    text-indent: 30px;
+}
+
+.hm3.item-v2
+    section.window-content
+    form
+    section.sheet-body-v2
+    .main-content
+    .tab.active
+    .editor
+    .editor-content
+    > p:first-of-type:first-letter {
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: linear-gradient(160deg, #d6516a, #741b2b);
+    color: #741b2b;
+    color: transparent;
+    font-family: 'Cardinal';
+    font-weight: 600;
+    initial-letter: 2.5 2;
+    margin-right: 0.5em;
+    text-shadow: 4px 4px 8px #21080c;
+    text-transform: uppercase;
+}
+
+.hm3.item-v2
+    section.window-content
+    form
+    section.sheet-body-v2
+    .main-content
+    .tab.active
+    .editor
+    .editor-content
+    p:first-of-type,
+.hm3.item-v2
+    section.window-content
+    form
+    section.sheet-body-v2
+    .main-content
+    .tab.active
+    .editor
+    .editor-content
+    h1
+    + p {
+    text-indent: 0;
+}
+
+.hm3.item-v2
+    section.window-content
+    form
+    section.sheet-body-v2
+    .main-content
+    .tab.active
+    .editor
+    .editor-content
+    > h1
+    + p::first-letter {
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: linear-gradient(160deg, #d6516a, #741b2b);
+    color: #741b2b;
+    color: transparent;
+    font-family: 'Cardinal';
+    font-weight: 600;
+    initial-letter: 2;
+    margin-right: 0.5em;
+    text-shadow: 4px 4px 8px #21080c;
+    text-transform: uppercase;
+}
+
+.hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content .tab.active .editor .editor-content table {
+    background-color: rgba(214, 81, 106, 0.05);
+    border: none;
+}
+
+.hm3.item-v2
+    section.window-content
+    form
+    section.sheet-body-v2
+    .main-content
+    .tab.active
+    .editor
+    .editor-content
+    table
+    tr:nth-child(even) {
+    background-color: rgba(157, 37, 59, 0.2);
 }
 
 .hm3 .items h2 {

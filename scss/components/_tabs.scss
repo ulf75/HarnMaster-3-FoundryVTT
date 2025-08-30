@@ -378,6 +378,80 @@ slide-toggle {
                     scrollbar-color: $gold-old-base transparent;
                     scrollbar-gutter: stable;
                     scrollbar-width: thin;
+
+                    .tab.active {
+                        min-height: 90%;
+                        width: 100%;
+
+                        .editor {
+                            min-height: 400px;
+
+                            .editor-menu {
+                                border-radius: 0;
+                                gap: 2px;
+                            }
+
+                            .editor-content {
+                                padding-top: 10px;
+
+                                h1 {
+                                    text-transform: uppercase;
+                                }
+
+                                h1,
+                                h2,
+                                h3,
+                                h4 {
+                                    border: none;
+                                }
+
+                                > p {
+                                    text-align: justify;
+                                    text-indent: 30px;
+                                }
+
+                                > p:first-of-type:first-letter {
+                                    background-clip: text;
+                                    background-image: linear-gradient(160deg, $maroon-lightest, $maroon-base);
+                                    color: $maroon-base;
+                                    color: transparent;
+                                    font-family: 'Cardinal';
+                                    font-weight: 600;
+                                    initial-letter: 2.5 2;
+                                    margin-right: 0.5em;
+                                    text-shadow: 4px 4px 8px $maroon-darkest;
+                                    text-transform: uppercase;
+                                }
+
+                                p:first-of-type,
+                                h1 + p {
+                                    text-indent: 0;
+                                }
+
+                                > h1 + p::first-letter {
+                                    background-clip: text;
+                                    background-image: linear-gradient(160deg, $maroon-lightest, $maroon-base);
+                                    color: $maroon-base;
+                                    color: transparent;
+                                    font-family: 'Cardinal';
+                                    font-weight: 600;
+                                    initial-letter: 2;
+                                    margin-right: 0.5em;
+                                    text-shadow: 4px 4px 8px $maroon-darkest;
+                                    text-transform: uppercase;
+                                }
+
+                                table {
+                                    background-color: hsla(349, 62%, 58%, 0.05);
+                                    border: none;
+
+                                    tr:nth-child(even) {
+                                        background-color: hsla(349, 62%, 38%, 0.2);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
