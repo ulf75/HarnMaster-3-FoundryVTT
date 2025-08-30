@@ -173,16 +173,16 @@ slide-toggle {
     /* Checked state */
 }
 
-&.item-v2.silver {
-    --hm3-itemv2-background: #{$background-silver};
-    --hm3-itemv2-background-border: #{$silver-lightest};
+&.item-v2.weapongear {
+    --hm3-itemv2-background: #{$background-gold};
+    --hm3-itemv2-background-border: #{$gold-lightest};
     --hm3-itemv2-header-color: #{$gold-old-darkest};
     --hm3-itemv2-header-shadow: #{$header-shadow-light};
 }
 
-&.item-v2.gold {
-    --hm3-itemv2-background: #{$background-gold};
-    --hm3-itemv2-background-border: #{$gold-lightest};
+&.item-v2.artifact {
+    --hm3-itemv2-background: #{$background-silver};
+    --hm3-itemv2-background-border: #{$silver-lightest};
     --hm3-itemv2-header-color: #{$gold-old-darkest};
     --hm3-itemv2-header-shadow: #{$header-shadow-light};
 }
