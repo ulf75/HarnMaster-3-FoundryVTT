@@ -90,9 +90,9 @@ export class RollHM3 extends Roll {
         allowInteractive = true,
         ...options
     } = {}) {
-        if (this.autocheating) {
+        if (this.autocheating && !this.isDeterministic) {
             return this._cheatRoll({minimize, maximize, allowStrings, allowInteractive, options});
-        } else if (this.cheating) {
+        } else if (this.cheating && !this.isDeterministic) {
             await this._minMax();
 
             const data = await game.hm3.socket.executeAsGM(
