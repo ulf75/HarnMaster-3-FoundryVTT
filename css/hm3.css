@@ -1358,9 +1358,20 @@ section.highlight {
     --hm3-itemv2-header-color: #ded9cf;
     --hm3-itemv2-header-shadow: -1px 0 #484132, 0 1px #484132, 1px 0 #484132, 0 -1px #484132;
     --hm3-itemv2-tab-text-color: #000;
+    --hm3-itemv2-hover-color: #9d253b;
     background: var(--hm3-itemv2-background);
     border-radius: 8px 8px 8px 8px;
     border: thin solid var(--hm3-itemv2-background-border);
+}
+
+.hm3.item-v2 input[type='text']:hover,
+.hm3.item-v2 input[type='number']:hover,
+.hm3.item-v2 input[type='checkbox']:hover,
+.hm3.item-v2 input[type='text']:focus,
+.hm3.item-v2 input[type='number']:focus {
+    border: 1px solid #111;
+    -webkit-box-shadow: 0 0 8px var(--hm3-itemv2-hover-color);
+    box-shadow: 0 0 8px var(--hm3-itemv2-hover-color);
 }
 
 .hm3.item-v2.minimized {
