@@ -34,10 +34,12 @@
     <div class="tab-container">
         {{!-- Sheet Tab Navigation --}}
         <nav class="sheet-tabs-v2 v2" data-group="primary">
-            <a class="properties-tab" data-tab="properties">Properties</a>
-            <a class="description-tab" data-tab="description">Description</a>
-            <a class="effects-tab" data-tab="effects">Effects</a>
-            <a class="macros-tab" data-tab="legacymacro">Legacy</a>
+            <a class="item" data-tab="properties">Properties</a>
+            <a class="item" data-tab="description">Description</a>
+            <a class="item" data-tab="effects">Effects</a>
+            {{#if idata.macros.command}}
+            <a class="item" data-tab="legacy-macro">Legacy</a>
+            {{/if}}
         </nav>
     </div>
 
@@ -54,12 +56,12 @@
                 {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
             </div>
 
-            <div class="tab macros" data-group="primary" data-tab="legacymacro">
-                {{> legacy_macro_partial}}
-            </div>
-
             <div class="tab effects" data-group="primary" data-tab="effects">
                 {{> effects_partial}}
+            </div>
+
+            <div class="tab legacy-macro" data-group="primary" data-tab="legacy-macro">
+                {{> legacy_macro_partial}}
             </div>
         </div>
     </section>

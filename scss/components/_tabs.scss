@@ -329,25 +329,7 @@ slide-toggle {
                         text-shadow: none;
                     }
 
-                    .properties-tab.active {
-                        background: $tab-background-active;
-                        color: $itemv2-tab-text-color;
-                        z-index: 1;
-                    }
-
-                    .description-tab.active {
-                        background: $tab-background-active;
-                        color: $itemv2-tab-text-color;
-                        z-index: 1;
-                    }
-
-                    .effects-tab.active {
-                        background: $tab-background-active;
-                        color: $itemv2-tab-text-color;
-                        z-index: 1;
-                    }
-
-                    .macros-tab.active {
+                    .item.active {
                         background: $tab-background-active;
                         color: $itemv2-tab-text-color;
                         z-index: 1;

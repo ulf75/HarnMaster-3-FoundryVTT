@@ -1511,25 +1511,7 @@ section.highlight {
     text-shadow: none;
 }
 
-.hm3.item-v2 section.window-content form .tab-container nav.v2 .properties-tab.active {
-    background: #f1ece9;
-    color: var(--hm3-itemv2-tab-text-color);
-    z-index: 1;
-}
-
-.hm3.item-v2 section.window-content form .tab-container nav.v2 .description-tab.active {
-    background: #f1ece9;
-    color: var(--hm3-itemv2-tab-text-color);
-    z-index: 1;
-}
-
-.hm3.item-v2 section.window-content form .tab-container nav.v2 .effects-tab.active {
-    background: #f1ece9;
-    color: var(--hm3-itemv2-tab-text-color);
-    z-index: 1;
-}
-
-.hm3.item-v2 section.window-content form .tab-container nav.v2 .macros-tab.active {
+.hm3.item-v2 section.window-content form .tab-container nav.v2 .item.active {
     background: #f1ece9;
     color: var(--hm3-itemv2-tab-text-color);
     z-index: 1;
