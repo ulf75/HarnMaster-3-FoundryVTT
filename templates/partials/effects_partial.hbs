@@ -13,6 +13,7 @@
         </li>
 
         <ol class="effect-list item-list">
+            {{#if effects}}
             {{#each effects as |effect id|}}
             <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-id="{{ effect.id }}">
                 <div class="effect-name flexrow">
@@ -34,6 +35,14 @@
                 </div>
             </li>
             {{/each}}
+            {{else}}
+            <li class="effect flexrow">
+                <div class="effect-name flexrow">
+                    <div class="effect-image" />
+                    <h4>No effects</h4>
+                </div>
+            </li>
+            {{/if}}
         </ol>
     </ol>
 </div>

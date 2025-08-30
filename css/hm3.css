@@ -3621,37 +3621,6 @@ section.highlight {
     display: block;
 }
 
-.hm3 .sheet-body-v2 .effects .effects-list .effects-header {
-    background: -webkit-gradient(linear, left top, right top, from(#741b2b), to(#4a111c));
-    background: linear-gradient(90deg, #741b2b, #4a111c);
-    border-radius: 2px;
-    border: none;
-    color: white;
-    font-family: 'Amasis MT Medium';
-    font-size: 18px;
-    font-variant: small-caps;
-    font-weight: 550;
-}
-
-.hm3 .sheet-body-v2 .effects .effects-list .effects-header h3.effect-name {
-    border: none;
-    color: white;
-    font-family: 'Amasis MT Medium';
-    font-size: 18px;
-    font-variant: small-caps;
-    font-weight: 550;
-}
-
-.hm3 .sheet-body-v2 .effects .effects-list .effects-header .effect-controls {
-    color: white;
-    font-size: 12px;
-    font-weight: 550;
-}
-
-.hm3 .sheet-body-v2 .effects .effects-list .effects-header .effect-controls .active {
-    color: white;
-}
-
 .hm3 .effects .disabled {
     color: #9a998f;
 }
@@ -3855,6 +3824,43 @@ section.highlight {
     padding: 5px 0px 5px 40px;
     border: 2px groove #eeede0;
     margin-top: 5px;
+}
+
+.hm3 .v2 .effects .effects-list .effects-header {
+    background: -webkit-gradient(linear, left top, right top, from(#741b2b), to(#4a111c));
+    background: linear-gradient(90deg, #741b2b, #4a111c);
+    border-radius: 2px;
+    border: none;
+    color: white;
+    font-family: 'Amasis MT Medium';
+    font-size: 18px;
+    font-variant: small-caps;
+    font-weight: 550;
+}
+
+.hm3 .v2 .effects .effects-list .effects-header h3.effect-name {
+    border: none;
+    color: white;
+    font-family: 'Amasis MT Medium';
+    font-size: 18px;
+    font-variant: small-caps;
+    font-weight: 550;
+}
+
+.hm3 .v2 .effects .effects-list .effects-header .effect-controls {
+    color: white;
+    font-size: 12px;
+    font-weight: 550;
+}
+
+.hm3 .v2 .effects .effects-list .effects-header .effect-controls .active {
+    color: white;
+}
+
+.hm3 .v2 .effects .effects-list .effect-name,
+.hm3 .v2 .effects .effects-list .effect-duration,
+.hm3 .v2 .effects .effects-list .effect-changes {
+    border: none;
 }
 
 .hm3 .macros .command textarea {

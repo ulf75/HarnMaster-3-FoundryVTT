@@ -49,7 +49,8 @@ export class ItemSheetHM3v2 extends ItemSheet {
 
     /** @override */
     async getData(options = {}) {
-        options.classes.push(this.item.type);
+        options.classes.push(this.item.type.toLowerCase().replace(' ', '-'));
+        if (this.item.system.type) options.classes.push(this.item.system.type.toLowerCase().replace(' ', '-'));
         if (this.item.system.arcane?.isArtifact) options.classes.push('silver');
         else if (this.item.type === ItemType.WEAPONGEAR) options.classes.push('gold');
         else options.classes.push('maroon');
@@ -201,9 +202,9 @@ export class ItemSheetHM3v2 extends ItemSheet {
             };
         }
 
-        data.effects = {};
+        data.effects = [];
         this.item.effects.forEach((effect) => {
-            data.effects[effect.id] = {
+            data.effects.push({
                 'changes': utility.aeChanges(effect),
                 'disabled': effect.disabled,
                 'duration': utility.aeDuration(effect),
@@ -211,7 +212,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
                 'img': effect.img,
                 'name': effect.name,
                 'sourceName': effect.sourceName
-            };
+            });
         });
 
         if (
