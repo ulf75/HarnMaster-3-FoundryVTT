@@ -51,9 +51,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
     async getData(options = {}) {
         options.classes.push(this.item.type.toLowerCase().replace(' ', '-'));
         if (this.item.system.type) options.classes.push(this.item.system.type.toLowerCase().replace(' ', '-'));
-        if (this.item.system.arcane?.isArtifact) options.classes.push('silver');
-        else if (this.item.type === ItemType.WEAPONGEAR) options.classes.push('gold');
-        else options.classes.push('maroon');
+        if (this.item.system.arcane?.isArtifact) options.classes.push('artifact');
 
         const data = await super.getData(options);
         data.editable = this.isEditable && this._mode === this.constructor.MODES.EDIT;
