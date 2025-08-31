@@ -1,13 +1,15 @@
 {{#> item_layout_partial nameReadOnly=(not hasRwPermission) list=config.companionTypes }}
 
-<div class="resource">
-    <label
-        for="system.actorUuid"
-        class="resource-label">
-        Actor Uuid
-    </label>
-    <input class="value" type="text" id="system.actorUuid" name="system.actorUuid" value="{{ idata.actorUuid }}" data-dtype="String"
-    {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+<div class="grid grid-fixed-row grid-1col">
+    <div class="resource">
+        <label
+            for="system.actorUuid"
+            class="resource-label">
+            Actor Uuid
+        </label>
+        <input class="value" type="text" id="system.actorUuid" name="system.actorUuid" value="{{ idata.actorUuid }}" data-dtype="String"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+    </div>
 </div>
 
 {{> item_standard_partial}}

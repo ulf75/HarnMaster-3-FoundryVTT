@@ -27,12 +27,22 @@
                     class="label">
                     In Container
                 </label>
+                {{#if editable}}
                 <select
                     class="value"
                     id="system.container"
                     name="system.container">
                     {{selectOptions containers selected=idata.container valueAttr="key" labelAttr="label"}}
                 </select>
+                {{else}}
+                <input
+                    class="value"
+                    type="text"
+                    id="system.container"
+                    name="system.container"
+                    value="{{ idata.container }}"
+                    disabled />
+                {{/if}}
             </div>
             {{/if}}
             {{#if list}}
@@ -42,7 +52,7 @@
                     class="label">
                     Type
                 </label>
-                {{#if hasRwPermission}}
+                {{#if (and hasRwPermission editable)}}
                 <select
                     class="value"
                     id="system.type"
@@ -50,13 +60,13 @@
                     {{selectOptions list selected=idata.type valueAttr="key" labelAttr="key"}}
                 </select>
                 {{else}}
-                <select
+                <input
                     class="value"
+                    type="text"
                     id="system.type"
                     name="system.type"
-                    readonly>
-                    {{selectOptions list selected=idata.type valueAttr="key" labelAttr="key"}}
-                </select>
+                    value="{{ idata.type }}"
+                    disabled />
                 {{/if}}
             </div>
             {{/if}}
