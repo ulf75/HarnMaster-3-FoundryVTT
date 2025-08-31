@@ -2,6 +2,7 @@
     margin: 15px 0px;
 }
 
+.resource-block.resource,
 .resource {
     margin: 3px 0px;
 
@@ -17,16 +18,26 @@
         padding-left: 2px;
         vertical-align: middle;
     }
+
+    input:disabled,
+    span {
+        display: inline-block;
+        font-size: larger;
+        height: 26px;
+        padding-left: 3px;
+        vertical-align: text-top;
+        width: calc(100% - 2px);
+    }
 }
 
-.resource-label {
-    font-size: var(--font-size-15);
-    font-variant: small-caps;
-    font-weight: bold;
-    margin: 2px 0px;
-    padding-left: 2px;
-    vertical-align: middle;
-}
+// .resource-label {
+//     font-size: var(--font-size-15);
+//     font-variant: small-caps;
+//     font-weight: bold;
+//     margin: 2px 0px;
+//     padding-left: 2px;
+//     vertical-align: middle;
+// }
 
 .resource-span {
     overflow: hidden;

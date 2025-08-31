@@ -1,28 +1,60 @@
-<form class="{{ cssClass }}" autocomplete="off">
+<form
+    class="{{ cssClass }}"
+    autocomplete="off">
     <header class="sheet-header skill-header tab-header">
-        <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
+        <img
+            class="profile-img"
+            src="{{ item.img }}"
+            data-edit="img"
+            title="{{ item.name }}" />
         <div class="header-fields">
             <h1 class="charname">
-                <input name="name" type="text" value="{{ item.name }}" placeholder="Name" autocomplete="off"
-                {{#if nameReadOnly}}disabled{{/if}} />
+                {{#if (or nameReadOnly (not editable))}}
+                {{ item.name }}
+                {{else}}
+                <input
+                    name="name"
+                    type="text"
+                    value="{{ item.name }}"
+                    placeholder="Name"
+                    autocomplete="off" />
+                {{/if}}
             </h1>
             {{#if container}}
             <div class="skill-container flexrow">
-                <label for="system.container" class="label">In Container</label>
-                <select class="value" id="system.container" name="system.container">
+                <label
+                    for="system.container"
+                    class="label">
+                    In Container
+                </label>
+                <select
+                    class="value"
+                    id="system.container"
+                    name="system.container">
                     {{selectOptions containers selected=idata.container valueAttr="key" labelAttr="label"}}
                 </select>
             </div>
             {{/if}}
             {{#if list}}
             <div class="skill-type flexrow">
-                <label for="system.type" class="label">Type</label>
+                <label
+                    for="system.type"
+                    class="label">
+                    Type
+                </label>
                 {{#if hasRwPermission}}
-                <select class="value" id="system.type" name="system.type">
+                <select
+                    class="value"
+                    id="system.type"
+                    name="system.type">
                     {{selectOptions list selected=idata.type valueAttr="key" labelAttr="key"}}
                 </select>
                 {{else}}
-                <select class="value" id="system.type" name="system.type" disabled>
+                <select
+                    class="value"
+                    id="system.type"
+                    name="system.type"
+                    readonly>
                     {{selectOptions list selected=idata.type valueAttr="key" labelAttr="key"}}
                 </select>
                 {{/if}}
@@ -33,12 +65,30 @@
 
     <div class="tab-container">
         {{!-- Sheet Tab Navigation --}}
-        <nav class="sheet-tabs-v2 v2" data-group="primary">
-            <a class="item" data-tab="properties">Properties</a>
-            <a class="item" data-tab="description">Description</a>
-            <a class="item" data-tab="effects">Effects</a>
+        <nav
+            class="sheet-tabs-v2 v2"
+            data-group="primary">
+            <a
+                class="item"
+                data-tab="properties">
+                Properties
+            </a>
+            <a
+                class="item"
+                data-tab="description">
+                Description
+            </a>
+            <a
+                class="item"
+                data-tab="effects">
+                Effects
+            </a>
             {{#if idata.macros.command}}
-            <a class="item" data-tab="legacy-macro">Legacy</a>
+            <a
+                class="item"
+                data-tab="legacy-macro">
+                Legacy
+            </a>
             {{/if}}
         </nav>
     </div>
@@ -48,19 +98,31 @@
         {{!-- Main Content --}}
         <div class="main-content">
             {{!-- Properties Tab --}}
-            <div class="tab properties" data-group="primary" data-tab="properties">
+            <div
+                class="tab properties"
+                data-group="primary"
+                data-tab="properties">
                 {{> @partial-block}}
             </div>
 
-            <div class="tab description" data-group="primary" data-tab="description">
+            <div
+                class="tab description"
+                data-group="primary"
+                data-tab="description">
                 {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
             </div>
 
-            <div class="tab effects" data-group="primary" data-tab="effects">
+            <div
+                class="tab effects"
+                data-group="primary"
+                data-tab="effects">
                 {{> effects_partial}}
             </div>
 
-            <div class="tab legacy-macro" data-group="primary" data-tab="legacy-macro">
+            <div
+                class="tab legacy-macro"
+                data-group="primary"
+                data-tab="legacy-macro">
                 {{> legacy_macro_partial}}
             </div>
         </div>

@@ -173,7 +173,8 @@ section.highlight {
 }
 
 .grid-fixed-row {
-    grid-template-rows: 25px 5px;
+    grid-template-rows: 52px;
+    margin: 5px 0;
 }
 
 .grid-1col {
@@ -1305,14 +1306,17 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     margin: 15px 0px;
 }
 
+.hm3 .resource-block.resource,
 .hm3 .resource {
     margin: 3px 0px;
 }
 
+.hm3 .resource-block.resource .disabled,
 .hm3 .resource .disabled {
     color: #9a998f;
 }
 
+.hm3 .resource-block.resource label,
 .hm3 .resource label {
     font-size: var(--font-size-15);
     font-variant: small-caps;
@@ -1322,13 +1326,16 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     vertical-align: middle;
 }
 
-.hm3 .resource-label {
-    font-size: var(--font-size-15);
-    font-variant: small-caps;
-    font-weight: bold;
-    margin: 2px 0px;
-    padding-left: 2px;
-    vertical-align: middle;
+.hm3 .resource-block.resource input:disabled,
+.hm3 .resource-block.resource span,
+.hm3 .resource input:disabled,
+.hm3 .resource span {
+    display: inline-block;
+    font-size: larger;
+    height: 26px;
+    padding-left: 3px;
+    vertical-align: text-top;
+    width: calc(100% - 2px);
 }
 
 .hm3 .resource-span {
@@ -1469,6 +1476,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     -webkit-box-shadow: 0 2px 3px #0a0a01, 0 0 0 1px #0a0a01;
     box-shadow: 0 2px 3px #0a0a01, 0 0 0 1px #0a0a01;
     line-height: 20px;
+    min-height: 112px;
     padding: 10px;
     text-align: left;
 }
@@ -1661,6 +1669,40 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     table
     tr:nth-child(even) {
     background-color: rgba(157, 37, 59, 0.2);
+}
+
+.hm3.item-v2 section.window-content form input[type='text']:disabled:hover,
+.hm3.item-v2 section.window-content form input[type='number']:disabled:hover,
+.hm3.item-v2 section.window-content form input[type='checkbox']:disabled:hover,
+.hm3.item-v2 section.window-content form input[type='text']:disabled:focus,
+.hm3.item-v2 section.window-content form input[type='number']:disabled:focus {
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.hm3.item-v2 section.window-content form input:disabled {
+    background: none;
+    border: none;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.hm3.item-v2 section.window-content form h1.charname:first-letter {
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: linear-gradient(160deg, #d6516a, #741b2b);
+    color: #741b2b;
+    color: transparent;
+    font-family: 'Cardinal';
+    font-weight: 600;
+    initial-letter: 2 1;
+    margin: 0.15em;
+    text-shadow: 4px 4px 8px #21080c;
+    text-transform: uppercase;
 }
 
 .hm3 .items h2 {

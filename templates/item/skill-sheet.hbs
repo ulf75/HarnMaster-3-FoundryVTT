@@ -2,26 +2,46 @@
 
 <div class="grid grid-fixed-row grid-3col">
     <div class="resource">
-        <label for="system.skillBase.value" class="resource-label">Skill Base (SB)</label>
-        <input type="text" id="system.skillBase.value" name="system.skillBase.value" value="{{ idata.skillBase.value }}" data-dtype="Number"
-        {{#if idata.skillBase.formula}}readonly{{/if}} {{#unless hasRwPermission}}disabled{{/unless}} />
+        <label
+            for="system.skillBase.value"
+            class="resource-label">
+            Skill Base (SB)
+        </label>
+        <input class="value" type="text" id="system.skillBase.value" name="system.skillBase.value" value="{{ idata.skillBase.value }}"
+        data-dtype="Number" {{#if idata.skillBase.formula}}readonly{{/if}} {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
     </div>
     <div class="resource">
-        <label for="system.masteryLevel" class="resource-label">Mastery Level (ML)</label>
-        <input type="number" id="system.masteryLevel" name="system.masteryLevel" value="{{ idata.masteryLevel }}" data-dtype="Number"
-        {{#unless hasRwPermission}}disabled{{/unless}} />
+        <label
+            for="system.masteryLevel"
+            class="resource-label">
+            Mastery Level (ML)
+        </label>
+        <input class="value" type="number" id="system.masteryLevel" name="system.masteryLevel" value="{{ idata.masteryLevel }}"
+        data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
     </div>
     {{#if (eq idata.type "Ritual")}}
     <div class="resource">
-        <label for="system.ritual.piety" class="resource-label">Piety</label>
-        <input type="number" id="system.ritual.piety" name="system.ritual.piety" value="{{ idata.ritual.piety }}" data-dtype="Number" />
+        <label
+            for="system.ritual.piety"
+            class="resource-label">
+            Piety
+        </label>
+        <input
+            class="value"
+            type="number"
+            id="system.ritual.piety"
+            name="system.ritual.piety"
+            value="{{ idata.ritual.piety }}"
+            data-dtype="Number" />
     </div>
     {{/if}}
 </div>
 
 <div class="grid grid-fixed-row grid-1col">
     <div class="resource">
-        <label for="system.skillBase.formula" class="resource-label tooltip">
+        <label
+            for="system.skillBase.formula"
+            class="resource-label tooltip">
             Skill Base Formula
             <span class="tooltiptext">
                 Enter a formula to automatically calculate skill base. For example: "@str, @sta, @wil, Ulandus, Aralius:2". This will
@@ -29,8 +49,8 @@
                 three attributes. Valid attributes are: @str, @sta, @dex, @agl, @int, @aur, @wil, @eye, @hrg, @sml, @voi, @cml, @mor
             </span>
         </label>
-        <input type="text" id="system.skillBase.formula" name="system.skillBase.formula" value="{{ idata.skillBase.formula }}"
-        data-dtype="String" {{#unless hasRwPermission}}disabled{{/unless}} />
+        <input class="value" type="text" id="system.skillBase.formula" name="system.skillBase.formula" value="{{ idata.skillBase.formula }}"
+        data-dtype="String" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
         {{#unless idata.skillBase.isFormulaValid}}
         <div class="error">Error: Invalid SkillBase Formula!</div>
         {{/unless}}
@@ -42,14 +62,36 @@
 {{#if isRiding}}
 <div class="resource-block">
     <div class="resource">
-        <label for="system.actorUuid" class="resource-label">Steed</label>
-        <select class="value" id="system.actorUuid" name="system.actorUuid">
+        <label
+            for="system.actorUuid"
+            class="resource-label">
+            Steed
+        </label>
+        <select
+            class="value"
+            id="system.actorUuid"
+            name="system.actorUuid">
             {{selectOptions steeds selected=idata.actorUuid valueAttr="key" labelAttr="label"}}
         </select>
     </div>
     <div class="resource">
-        <label for="mounted" class="resource-label">Mounted</label>
-        <span class="resource-span"><input type="checkbox" id="mounted" name="mounted" {{ checked mounted }} disabled /></span>
+        <label
+            for="mounted"
+            class="resource-label">
+            Mounted
+        </label>
+        <span class="resource-span">
+            <input
+                class="value"
+                type="checkbox"
+                id="mounted"
+                name="mounted"
+                {{
+                checked
+                mounted
+                }}
+                disabled />
+        </span>
     </div>
 </div>
 {{/if}}

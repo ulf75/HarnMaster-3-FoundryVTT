@@ -20,6 +20,7 @@
                 "parser": "angular",
                 "printWidth": 140,
                 "semi": false,
+                "singleAttributePerLine": true,
                 "singleQuote": false,
                 "trailingComma": "all",
                 "useTabs": false

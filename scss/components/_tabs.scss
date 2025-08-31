@@ -230,6 +230,7 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
                 border-top: 1px solid #3b3d3f;
                 box-shadow: 0 2px 3px rgb(10, 10, 10 / 10%), 0 0 0 1px rgb(10, 10, 10 / 10%);
                 line-height: 20px;
+                min-height: 112px;
                 padding: 10px;
                 text-align: left;
             }
@@ -376,6 +377,35 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
                         }
                     }
                 }
+            }
+
+            input[type='text']:disabled:hover,
+            input[type='number']:disabled:hover,
+            input[type='checkbox']:disabled:hover,
+            input[type='text']:disabled:focus,
+            input[type='number']:disabled:focus {
+                border: none;
+                box-shadow: none;
+            }
+
+            input:disabled {
+                background: none;
+                border: none;
+                pointer-events: none;
+                user-select: none;
+            }
+
+            h1.charname:first-letter {
+                background-clip: text;
+                background-image: linear-gradient(160deg, $maroon-lightest, $maroon-base);
+                color: $maroon-base;
+                color: transparent;
+                font-family: 'Cardinal';
+                font-weight: 600;
+                initial-letter: 2 1;
+                margin: 0.15em;
+                text-shadow: 4px 4px 8px $maroon-darkest;
+                text-transform: uppercase;
             }
         }
     }

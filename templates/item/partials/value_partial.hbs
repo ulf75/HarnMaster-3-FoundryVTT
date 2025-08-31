@@ -1,0 +1,26 @@
+<div class="resource">
+    <label class="resource-label">Value</label>
+    {{#if (and hasRwPermission editable)}}
+    <input
+        class="value"
+        type="number"
+        name="system.value"
+        value="{{ idata.value }}"
+        data-dtype="Number" />
+    {{else}}
+    {{#if hasRwPermission}}
+    <span>{{ idata.value }}d</span>
+    {{else}}
+    {{#if idata.unknownValue}}
+    <input
+        class="value"
+        type="text"
+        value="Unknown"
+        data-dtype="String"
+        disabled />
+    {{else}}
+    <span>{{ idata.value }}d</span>
+    {{/if}}
+    {{/if}}
+    {{/if}}
+</div>

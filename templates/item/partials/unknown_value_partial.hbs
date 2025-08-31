@@ -1,15 +1,15 @@
 {{#if isGM}}
 <div class="resource artifact flexrow">
     {{#if strictMode}}
-    <input
-        type="checkbox"
-        id="system.unknownValue"
-        name="system.unknownValue"
-        value="{{ idata.unknownValue }}"
-        data-dtype="Boolean"
-        {{checked
-        idata.unknownValue}} />
-    <label for="system.unknownValue" class="resource-label">Unknown Value</label>
+    <input type="checkbox" id="system.unknownValue" name="system.unknownValue" value="{{ idata.unknownValue }}" data-dtype="Boolean"
+    {{checked
+        idata.unknownValue}}
+    {{#unless editable}}disabled{{/unless}} />
+    <label
+        for="system.unknownValue"
+        class="resource-label">
+        Unknown Value
+    </label>
     If checked, the value is not displayed to the players.
     {{else}}
     <input
@@ -21,7 +21,11 @@
         {{checked
         idata.unknownValue}}
         disabled />
-    <label for="system.unknownValue" class="resource-label">Unknown Value</label>
+    <label
+        for="system.unknownValue"
+        class="resource-label">
+        Unknown Value
+    </label>
     Only available, if strict mode is turned on.
     {{/if}}
 </div>

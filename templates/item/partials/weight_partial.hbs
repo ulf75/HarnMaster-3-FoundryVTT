@@ -1,0 +1,13 @@
+<div class="resource">
+    <label class="resource-label">Weight</label>
+    {{#if (and hasRwPermission editable)}}
+    <input
+        class="value"
+        type="number"
+        name="system.weight"
+        value="{{ idata.weight }}"
+        data-dtype="Number" />
+    {{else}}
+    <span>{{ idata.weight }} lbs</span>
+    {{/if}}
+</div>

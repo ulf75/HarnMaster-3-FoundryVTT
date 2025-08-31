@@ -2,8 +2,14 @@
 
 {{#if isPsycheTrait}}
 <div class="resource">
-    <label for="system.severity" class="resource-label">Severity</label>
-    <select id="system.severity" name="system.severity">
+    <label
+        for="system.severity"
+        class="resource-label">
+        Severity
+    </label>
+    <select
+        id="system.severity"
+        name="system.severity">
         {{selectOptions config.psycheSeverity selected=idata.severity valueAttr="key" labelAttr="label"}}
     </select>
 </div>

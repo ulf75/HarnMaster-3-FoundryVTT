@@ -1,38 +1,31 @@
 {{#> item_layout_partial container=true }}
 
 <div class="grid grid-fixed-row grid-3col">
-    <div class="resource" id="missilegear-qty">
-        <label class="resource-label">Quantity</label>
-        <input type="number" name="system.quantity" value="{{ idata.quantity }}" data-dtype="Number" />
-    </div>
-    <div class="resource" id="missilegear-weight">
-        <label class="resource-label">Weight</label>
-        <input type="number" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
-        {{#unless hasRwPermission}}disabled{{/unless}} />
-    </div>
-    <div class="resource" id="missilegear-value">
-        <label class="resource-label">Value</label>
-        {{#if hasRwPermission}}
-        <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" />
-        {{else}}
-        {{#if idata.unknownValue}}
-        <input type="text" value="Unknown" data-dtype="String" disabled />
-        {{else}}
-        <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" disabled />
-        {{/if}}
-        {{/if}}
-    </div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div class="resource" id="missilegear-quality">
+    {{> item_quantity_partial}}
+    {{> item_weight_partial}}
+    {{> item_value_partial}}
+</div>
+<div class="grid grid-fixed-row grid-3col">
+    <div
+        class="resource"
+        id="missilegear-quality">
         <label class="resource-label">Weapon Quality</label>
-        <input type="number" name="system.weaponQuality" value="{{ idata.weaponQuality }}" data-dtype="Number"
-        {{#unless hasRwPermission}}disabled{{/unless}} />
+        <input class="value" type="number" name="system.weaponQuality" value="{{ idata.weaponQuality }}" data-dtype="Number"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
     </div>
-    <div class="resource" id="missilegear=weaponaspect">
-        <label class="resource-label" for="system.weaponAspect">Weapon Aspect</label>
-        <select class="resource-value" name="system.weaponAspect" data-dtype="String">
+    <div
+        class="resource"
+        id="missilegear=weaponaspect">
+        <label
+            for="system.weaponAspect"
+            class="resource-label">
+            Weapon Aspect
+        </label>
+        <select
+            class="resource-value"
+            id="system.weaponAspect"
+            name="system.weaponAspect"
+            data-dtype="String">
             {{#select idata.weaponAspect}}
             <option value="Piercing">Piercing</option>
             <option value="Blunt">Blunt</option>
@@ -40,84 +33,143 @@
             {{/select}}
         </select>
     </div>
-    <div class="resource" id="missilegear-assocskill">
-        <label class="resource-label" for="system.assocSkill">Associated Skill</label>
+    <div
+        class="resource"
+        id="missilegear-assocskill">
+        <label
+            for="system.assocSkill"
+            class="resource-label">
+            Associated Skill
+        </label>
         {{#if hasCombatSkills}}
-        <select class="resource-value" name="system.assocSkill" data-dtype="String">
+        <select
+            class="resource-value"
+            id="system.assocSkill"
+            name="system.assocSkill"
+            data-dtype="String">
             {{selectOptions combatSkills selected=idata.assocSkill valueAttr="key" labelAttr="key"}}
         </select>
         {{else}}
-        <input type="text" name="system.assocSkill" value="{{ idata.assocSkill }}" data-dtype="String" />
+        <input class="value" type="text" id="system.assocSkill" name="system.assocSkill" value="{{ idata.assocSkill }}" data-dtype="String"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
         {{/if}}
     </div>
 </div>
-<ol class="range-table">
-    <li class="flexrow range-header" id="missilegear-range-header">
-        <div class="range-label"></div>
-        <div class="range-value">Short</div>
-        <div class="range-value">Medium</div>
-        <div class="range-value">Long</div>
-        <div class="range-value">Extreme</div>
-    </li>
-    <li class="flexrow" id="missilegear-range-values">
-        {{#if isGridDistanceUnits}}
-        <div class="range-label">Range (hex)</div>
-        {{else}}
-        <div class="range-label">Range (ft)</div>
-        {{/if}}
-        <div class="range-value" id="missilegear-range-short">
+<div class="resource-block">
+    <ol class="range-table">
+        <li
+            class="flexrow range-header"
+            id="missilegear-range-header">
+            <div class="range-label"></div>
+            <div class="range-value">Short</div>
+            <div class="range-value">Medium</div>
+            <div class="range-value">Long</div>
+            <div class="range-value">Extreme</div>
+        </li>
+        <li
+            class="flexrow"
+            id="missilegear-range-values">
             {{#if isGridDistanceUnits}}
-            <input type="text" name="system.range.short" value="{{ rangeGrid.short }}" data-dtype="Number" disabled />
+            <div class="range-label">Range (hex)</div>
             {{else}}
-            <input type="text" name="system.range.short" value="{{ idata.range.short }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
+            <div class="range-label">Range (ft)</div>
             {{/if}}
-        </div>
-        <div class="range-value" id="missilegear-range-medium">
-            {{#if isGridDistanceUnits}}
-            <input type="text" name="system.range.medium" value="{{ rangeGrid.medium }}" data-dtype="Number" disabled />
-            {{else}}
-            <input type="text" name="system.range.medium" value="{{ idata.range.medium }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-            {{/if}}
-        </div>
-        <div class="range-value" id="missilegear-range-long">
-            {{#if isGridDistanceUnits}}
-            <input type="text" name="system.range.long" value="{{ rangeGrid.long }}" data-dtype="Number" disabled />
-            {{else}}
-            <input type="text" name="system.range.long" value="{{ idata.range.long }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-            {{/if}}
-        </div>
-        <div class="range-value" id="missilegear-range-extreme">
-            {{#if isGridDistanceUnits}}
-            <input type="text" name="system.range.extreme" value="{{ rangeGrid.extreme }}" data-dtype="Number" disabled />
-            {{else}}
-            <input type="text" name="system.range.extreme" value="{{ idata.range.extreme }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-            {{/if}}
-        </div>
-    </li>
-    <li class="flexrow" id="missilegear-impact-values">
-        <div class="range-label">Impact</div>
-        <div class="range-value" id="missilegear-impact-short">
-            <input type="text" name="system.impact.short" value="{{ idata.impact.short }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div class="range-value" id="missilegear-impact-medium">
-            <input type="text" name="system.impact.medium" value="{{ idata.impact.medium }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div class="range-value" id="missilegear-impact-long">
-            <input type="text" name="system.impact.long" value="{{ idata.impact.long }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-        <div class="range-value" id="missilegear-impact-extreme">
-            <input type="text" name="system.impact.extreme" value="{{ idata.impact.extreme }}" data-dtype="Number"
-            {{#unless hasRwPermission}}disabled{{/unless}} />
-        </div>
-    </li>
-</ol>
+            <div
+                class="range-value"
+                id="missilegear-range-short">
+                {{#if isGridDistanceUnits}}
+                <input
+                    class="value"
+                    type="text"
+                    name="system.range.short"
+                    value="{{ rangeGrid.short }}"
+                    data-dtype="Number"
+                    disabled />
+                {{else}}
+                <input class="value" type="text" name="system.range.short" value="{{ idata.range.short }}" data-dtype="Number"
+                {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+                {{/if}}
+            </div>
+            <div
+                class="range-value"
+                id="missilegear-range-medium">
+                {{#if isGridDistanceUnits}}
+                <input
+                    class="value"
+                    type="text"
+                    name="system.range.medium"
+                    value="{{ rangeGrid.medium }}"
+                    data-dtype="Number"
+                    disabled />
+                {{else}}
+                <input class="value" type="text" name="system.range.medium" value="{{ idata.range.medium }}" data-dtype="Number"
+                {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+                {{/if}}
+            </div>
+            <div
+                class="range-value"
+                id="missilegear-range-long">
+                {{#if isGridDistanceUnits}}
+                <input
+                    class="value"
+                    type="text"
+                    name="system.range.long"
+                    value="{{ rangeGrid.long }}"
+                    data-dtype="Number"
+                    disabled />
+                {{else}}
+                <input class="value" type="text" name="system.range.long" value="{{ idata.range.long }}" data-dtype="Number"
+                {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+                {{/if}}
+            </div>
+            <div
+                class="range-value"
+                id="missilegear-range-extreme">
+                {{#if isGridDistanceUnits}}
+                <input
+                    class="value"
+                    type="text"
+                    name="system.range.extreme"
+                    value="{{ rangeGrid.extreme }}"
+                    data-dtype="Number"
+                    disabled />
+                {{else}}
+                <input class="value" type="text" name="system.range.extreme" value="{{ idata.range.extreme }}" data-dtype="Number"
+                {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+                {{/if}}
+            </div>
+        </li>
+        <li
+            class="flexrow"
+            id="missilegear-impact-values">
+            <div class="range-label">Impact</div>
+            <div
+                class="range-value"
+                id="missilegear-impact-short">
+                <input class="value" type="text" name="system.impact.short" value="{{ idata.impact.short }}" data-dtype="Number"
+                {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+            </div>
+            <div
+                class="range-value"
+                id="missilegear-impact-medium">
+                <input class="value" type="text" name="system.impact.medium" value="{{ idata.impact.medium }}" data-dtype="Number"
+                {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+            </div>
+            <div
+                class="range-value"
+                id="missilegear-impact-long">
+                <input class="value" type="text" name="system.impact.long" value="{{ idata.impact.long }}" data-dtype="Number"
+                {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+            </div>
+            <div
+                class="range-value"
+                id="missilegear-impact-extreme">
+                <input class="value" type="text" name="system.impact.extreme" value="{{ idata.impact.extreme }}" data-dtype="Number"
+                {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+            </div>
+        </li>
+    </ol>
+</div>
 {{> item_standard_partial}}
 {{> item_unknown_value_partial}}
 {{> item_artifact_partial}}

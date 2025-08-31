@@ -1,13 +1,29 @@
 <div class="grid grid-fixed-row grid-2col">
     <div class="resource">
-        <label for="{{ powerId }}.power" class="resource-label">{{ powerType }} Artifact Power</label>
-        <select class="value" id="{{ powerId }}.power" name="{{ powerId }}.power" data-dtype="String">
+        <label
+            for="{{ powerId }}.power"
+            class="resource-label">
+            {{ powerType }} Artifact Power
+        </label>
+        <select
+            class="value"
+            id="{{ powerId }}.power"
+            name="{{ powerId }}.power"
+            data-dtype="String">
             {{selectOptions arcane.powers selected=selectedPower valueAttr="key" labelAttr="label"}}
         </select>
     </div>
     <div class="resource">
-        <label for="{{ powerId }}.duration" class="resource-label">{{ powerType }} Artifact Duration</label>
-        <select class="value" id="{{ powerId }}.duration" name="{{ powerId }}.duration" data-dtype="String">
+        <label
+            for="{{ powerId }}.duration"
+            class="resource-label">
+            {{ powerType }} Artifact Duration
+        </label>
+        <select
+            class="value"
+            id="{{ powerId }}.duration"
+            name="{{ powerId }}.duration"
+            data-dtype="String">
             {{selectOptions arcane.durations selected=selectedDuration valueAttr="key" labelAttr="key"}}
         </select>
     </div>
@@ -26,5 +42,9 @@
 </div>
 <div class="resource">
     <label class="resource-label">Description</label>
-    <div class="value" id="{{ powerId }}.description">{{{arcane.description}}}</div>
+    <div
+        class="value"
+        id="{{ powerId }}.description">
+        {{{arcane.description}}}
+    </div>
 </div>

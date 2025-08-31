@@ -3,16 +3,26 @@
 <div class="grid grid-fixed-row grid-3col">
     <div class="resource">
         <label class="resource-label">Skill Base (SB)</label>
-        <input type="text" name="system.skillBase.value" value="{{ idata.skillBase.value }}" data-dtype="Number"
+        <input class="value" type="text" name="system.skillBase.value" value="{{ idata.skillBase.value }}" data-dtype="Number"
         {{#if idata.skillBase.formula}}readonly{{/if}} />
     </div>
     <div class="resource">
         <label class="resource-label">Mastery Level (ML)</label>
-        <input type="number" name="system.masteryLevel" value="{{ idata.masteryLevel }}" data-dtype="Number" />
+        <input
+            class="value"
+            type="number"
+            name="system.masteryLevel"
+            value="{{ idata.masteryLevel }}"
+            data-dtype="Number" />
     </div>
     <div class="resource">
         <label class="resource-label">Fatigue</label>
-        <input type="number" name="system.fatigue" value="{{ idata.fatigue }}" data-dtype="Number" />
+        <input
+            class="value"
+            type="number"
+            name="system.fatigue"
+            value="{{ idata.fatigue }}"
+            data-dtype="Number" />
     </div>
 </div>
 <div class="resource">
@@ -24,7 +34,12 @@
             attributes. Valid attributes are: @str, @sta, @dex, @agl, @int, @aur, @wil, @eye, @hrg, @sml, @voi, @cml, @mor
         </span>
     </label>
-    <input type="text" name="system.skillBase.formula" value="{{ idata.skillBase.formula }}" data-dtype="String" />
+    <input
+        class="value"
+        type="text"
+        name="system.skillBase.formula"
+        value="{{ idata.skillBase.formula }}"
+        data-dtype="String" />
     {{#unless idata.skillBase.isFormulaValid}}
     <div class="error">Error: Invalid SkillBase Formula!</div>
     {{/unless}}
