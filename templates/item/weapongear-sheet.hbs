@@ -109,6 +109,7 @@
             Associated Skill
         </label>
         {{#if hasCombatSkills}}
+        {{#if editable}}
         <select
             class="resource-value"
             id="system.assocSkill"
@@ -123,7 +124,12 @@
             id="system.assocSkill"
             name="system.assocSkill"
             value="{{ idata.assocSkill }}"
-            data-dtype="String" />
+            data-dtype="String"
+            disabled />
+        {{/if}}
+        {{else}}
+        <input class="value" type="text" id="system.assocSkill" name="system.assocSkill" value="{{ idata.assocSkill }}" data-dtype="String"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
         {{/if}}
     </div>
 </div>
