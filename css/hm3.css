@@ -1394,22 +1394,6 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     margin-right: 5px;
 }
 
-.hm3.item-v2.weapongear {
-    --hm3-itemv2-background: linear-gradient(
-        45deg,
-        #9e6100 5%,
-        #ffc66b 10%,
-        #ff9f05 30%,
-        #ffb338 50%,
-        #ff9f05 70%,
-        #ffc66b 80%,
-        #9e6100 95%
-    );
-    --hm3-itemv2-background-border: #ffedd1;
-    --hm3-itemv2-header-color: #484132;
-    --hm3-itemv2-header-shadow: -1px 0 #ded9cf, 0 1px #ded9cf, 1px 0 #ded9cf, 0 -1px #ded9cf;
-}
-
 .hm3.item-v2.artifact {
     --hm3-itemv2-background: linear-gradient(
         45deg,

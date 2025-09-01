@@ -28,126 +28,6 @@
     margin-right: 5px;
 }
 
-$tab-width: 110px;
-
-$background-rotation: 160deg;
-
-$parchment-darkest: hsl(20, 24%, 63%);
-$parchment-darker: hsl(20, 24%, 83%);
-$parchment-base: hsl(20, 24%, 93%);
-$parchment-lighter: hsl(20, 24%, 100%);
-
-$blue-darkest: hsl(195, 100%, 20%);
-$blue-darker: hsl(195, 100%, 40%);
-$blue-base: hsl(195, 100%, 50%);
-$blue-lighter: hsl(195, 100%, 60%);
-$blue-lightest: hsl(195, 100%, 80%);
-
-$gold-metallic-darkest: hsl(46, 65%, 22%);
-$gold-metallic-darker: hsl(46, 65%, 42%);
-$gold-metallic-base: hsl(46, 65%, 52%);
-$gold-metallic-lighter: hsl(46, 65%, 62%);
-$gold-metallic-lightest: hsl(46, 65%, 82%);
-
-$gold-old-darkest: hsl(41, 18%, 24%);
-$gold-old-darker: hsl(41, 18%, 44%);
-$gold-old-base: hsl(41, 18%, 54%);
-$gold-old-lighter: hsl(41, 18%, 64%);
-$gold-old-lightest: hsl(41, 18%, 84%);
-
-$gold-darkest: hsl(37, 100%, 31%);
-$gold-darker: hsl(37, 100%, 51%);
-$gold-base: hsl(37, 100%, 61%); // #ffb338
-$gold-lighter: hsl(37, 100%, 71%);
-$gold-lightest: hsl(37, 100%, 91%);
-
-$green-darkest: hsl(116, 36%, 26%);
-$green-darker: hsl(116, 36%, 46%);
-$green-base: hsl(116, 36%, 56%);
-$green-lighter: hsl(116, 36%, 66%);
-$green-lightest: hsl(116, 36%, 86%);
-
-$maroon-darkest: hsl(349, 62%, 8%);
-$maroon-darker: hsl(349, 62%, 18%);
-$maroon-base: hsl(349, 62%, 28%);
-$maroon-lighter: hsl(349, 62%, 38%);
-$maroon-lightest: hsl(349, 62%, 58%);
-$maroon-highlight: hsl(349, 62%, 78%);
-
-$orange-darkest: hsl(23, 100%, 33%);
-$orange-darker: hsl(23, 100%, 53%);
-$orange-base: hsl(23, 100%, 63%);
-$orange-lighter: hsl(23, 100%, 73%);
-$orange-lightest: hsl(23, 100%, 93%);
-
-$pink-darkest: hsl(304, 100%, 54%);
-$pink-darker: hsl(304, 100%, 74%);
-$pink-base: hsl(304, 100%, 84%);
-$pink-lighter: hsl(304, 100%, 94%);
-$pink-lightest: hsl(304, 100%, 100%);
-
-$silver-lightest: #fff;
-
-$tab-background-active: $parchment-base;
-$tab-background-inactive: linear-gradient(180deg, $parchment-darker, $parchment-darkest);
-$header-background: linear-gradient(90deg, $maroon-base, $maroon-darker);
-
-$background-maroon: linear-gradient(
-    $background-rotation,
-    $maroon-highlight,
-    $maroon-lightest 30px,
-    $maroon-lighter 60px,
-    $maroon-base,
-    $maroon-darker
-);
-$background-silver: linear-gradient(
-    45deg,
-    #999 5%,
-    $silver-lightest 10%,
-    #ccc 30%,
-    #ddd 50%,
-    #ccc 70%,
-    $silver-lightest 80%,
-    #999 95%
-);
-$background-gold: linear-gradient(
-    45deg,
-    $gold-darkest 5%,
-    $gold-lighter 10%,
-    $gold-darker 30%,
-    $gold-base 50%,
-    $gold-darker 70%,
-    $gold-lighter 80%,
-    $gold-darkest 95%
-);
-$background-gold-old: linear-gradient(
-    45deg,
-    $gold-old-darkest 5%,
-    $gold-old-lighter 10%,
-    $gold-old-darker 30%,
-    $gold-old-base 50%,
-    $gold-old-darker 70%,
-    $gold-old-lighter 80%,
-    $gold-old-darkest 95%
-);
-$background-gold-metallic: linear-gradient(
-    45deg,
-    $gold-metallic-darkest 5%,
-    $gold-metallic-lighter 10%,
-    $gold-metallic-darker 30%,
-    $gold-metallic-base 50%,
-    $gold-metallic-darker 70%,
-    $gold-metallic-lighter 80%,
-    $gold-metallic-darkest 95%
-);
-
-$sheet-radius: 8px 8px 8px 8px;
-
-$header-shadow-dark: -1px 0 $gold-old-darkest, 0 1px $gold-old-darkest, 1px 0 $gold-old-darkest,
-    0 -1px $gold-old-darkest;
-$header-shadow-light: -1px 0 $gold-old-lightest, 0 1px $gold-old-lightest, 1px 0 $gold-old-lightest,
-    0 -1px $gold-old-lightest;
-
 // Custom styles for item types
 $itemv2-background: var(--hm3-itemv2-background);
 $itemv2-background-border: var(--hm3-itemv2-background-border);
@@ -156,12 +36,12 @@ $itemv2-header-shadow: var(--hm3-itemv2-header-shadow);
 $itemv2-tab-text-color: var(--hm3-itemv2-tab-text-color);
 $itemv2-hover-color: var(--hm3-itemv2-hover-color);
 
-&.item-v2.weapongear {
-    --hm3-itemv2-background: #{$background-gold};
-    --hm3-itemv2-background-border: #{$gold-lightest};
-    --hm3-itemv2-header-color: #{$gold-old-darkest};
-    --hm3-itemv2-header-shadow: #{$header-shadow-light};
-}
+// &.item-v2.weapongear {
+//     --hm3-itemv2-background: #{$background-gold};
+//     --hm3-itemv2-background-border: #{$gold-lightest};
+//     --hm3-itemv2-header-color: #{$gold-old-darkest};
+//     --hm3-itemv2-header-shadow: #{$header-shadow-light};
+// }
 
 &.item-v2.artifact {
     --hm3-itemv2-background: #{$background-silver};

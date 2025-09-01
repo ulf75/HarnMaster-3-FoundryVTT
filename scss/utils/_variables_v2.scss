@@ -1,0 +1,63 @@
+$tab-width: 110px;
+
+$background-rotation: 160deg;
+
+$tab-background-active: $parchment-base;
+$tab-background-inactive: linear-gradient(180deg, $parchment-darker, $parchment-darkest);
+$header-background: linear-gradient(90deg, $maroon-base, $maroon-darker);
+
+$background-maroon: linear-gradient(
+    $background-rotation,
+    $maroon-highlight,
+    $maroon-lightest 30px,
+    $maroon-lighter 60px,
+    $maroon-base,
+    $maroon-darker
+);
+$background-silver: linear-gradient(
+    45deg,
+    #999 5%,
+    $silver-lightest 10%,
+    #ccc 30%,
+    #ddd 50%,
+    #ccc 70%,
+    $silver-lightest 80%,
+    #999 95%
+);
+$background-gold: linear-gradient(
+    45deg,
+    $gold-darkest 5%,
+    $gold-lighter 10%,
+    $gold-darker 30%,
+    $gold-base 50%,
+    $gold-darker 70%,
+    $gold-lighter 80%,
+    $gold-darkest 95%
+);
+$background-gold-old: linear-gradient(
+    45deg,
+    $gold-old-darkest 5%,
+    $gold-old-lighter 10%,
+    $gold-old-darker 30%,
+    $gold-old-base 50%,
+    $gold-old-darker 70%,
+    $gold-old-lighter 80%,
+    $gold-old-darkest 95%
+);
+$background-gold-metallic: linear-gradient(
+    45deg,
+    $gold-metallic-darkest 5%,
+    $gold-metallic-lighter 10%,
+    $gold-metallic-darker 30%,
+    $gold-metallic-base 50%,
+    $gold-metallic-darker 70%,
+    $gold-metallic-lighter 80%,
+    $gold-metallic-darkest 95%
+);
+
+$sheet-radius: 8px 8px 8px 8px;
+
+$header-shadow-dark: -1px 0 $gold-old-darkest, 0 1px $gold-old-darkest, 1px 0 $gold-old-darkest,
+    0 -1px $gold-old-darkest;
+$header-shadow-light: -1px 0 $gold-old-lightest, 0 1px $gold-old-lightest, 1px 0 $gold-old-lightest,
+    0 -1px $gold-old-lightest;
