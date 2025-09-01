@@ -324,7 +324,8 @@ Hooks.once('init', async function () {
         item_weight_partial: await (await fetch(`${root}item/partials/weight_partial.hbs`)).text(),
         // global
         effects_partial: await (await fetch(`${root}partials/effects_partial.hbs`)).text(),
-        legacy_macro_partial: await (await fetch(`${root}partials/legacy_macro_partial.hbs`)).text()
+        legacy_macro_partial: await (await fetch(`${root}partials/legacy_macro_partial.hbs`)).text(),
+        macros_partial: await (await fetch(`${root}partials/macros_partial.hbs`)).text()
     });
 
     // Add a font selector dropdown to the TineMCE editor

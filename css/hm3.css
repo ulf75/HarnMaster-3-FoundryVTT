@@ -4204,6 +4204,56 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     margin-top: 5px;
 }
 
+.hm3 .v2 .macros .macros-list .macros-header {
+    background: -webkit-gradient(linear, left top, right top, from(#741b2b), to(#4a111c));
+    background: linear-gradient(90deg, #741b2b, #4a111c);
+    border-radius: 2px;
+    border: none;
+    color: white;
+    font-family: 'Amasis MT Medium';
+    font-size: 18px;
+    font-variant: small-caps;
+    font-weight: 550;
+}
+
+.hm3 .v2 .macros .macros-list .macros-header h3.macro-name {
+    border: none;
+    color: white;
+    font-family: 'Amasis MT Medium';
+    font-size: 18px;
+    font-variant: small-caps;
+    font-weight: 550;
+}
+
+.hm3 .v2 .macros .macros-list .macros-header .macro-controls {
+    color: white;
+    font-size: 12px;
+    font-weight: 550;
+}
+
+.hm3 .v2 .macros .macros-list .macros-header .macro-controls .active {
+    color: white;
+}
+
+.hm3 .v2 .macros .macros-list .macro-name,
+.hm3 .v2 .macros .macros-list .macro-source,
+.hm3 .v2 .macros .macros-list .macro-changes {
+    border: none;
+}
+
+.hm3 .v2 .macros input[type='text'].macros-name-filter {
+    background-color: rgba(214, 81, 106, 0.05);
+    background-image: url('../images/png/searchicon.png');
+    background-position: 5px -1px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: 2px groove #d6516a;
+    font-size: 15px;
+    margin-top: 5px;
+    padding: 5px 0px 5px 40px;
+    width: 100%;
+}
+
 .hm3 .f-f-f h2 {
     -webkit-box-flex: 1;
     -ms-flex: 1;

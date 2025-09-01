@@ -95,6 +95,13 @@
                 data-tab="effects">
                 Effects
             </a>
+            {{#if isGM}}
+            <a
+                class="item"
+                data-tab="macros">
+                Macros
+            </a>
+            {{/if}}
             {{#if idata.macros.command}}
             <a
                 class="item"
@@ -131,12 +138,23 @@
                 {{> effects_partial}}
             </div>
 
+            {{#if isGM}}
+            <div
+                class="tab macros"
+                data-group="primary"
+                data-tab="macros">
+                {{> macros_partial}}
+            </div>
+            {{/if}}
+
+            {{#if idata.macros.command}}
             <div
                 class="tab legacy-macro"
                 data-group="primary"
                 data-tab="legacy-macro">
                 {{> legacy_macro_partial}}
             </div>
+            {{/if}}
         </div>
     </section>
 </form>

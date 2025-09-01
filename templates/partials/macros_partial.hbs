@@ -1,0 +1,66 @@
+<div class="macros">
+    <div class="flexrow">
+        <input
+            class="macros-name-filter"
+            type="text"
+            name="system.macrosNameFilter"
+            placeholder="Filter macros by name..."
+            data-dtype="String" />
+    </div>
+    <ol class="macros-list">
+        <li class="macros-header flexrow">
+            <h3 class="macro-name flexrow">
+                Macro {{!--
+                <a
+                    class="more-info"
+                    data-journal-entry="Sheet - Macro Tab">
+                    <i class="far fa-question-circle"></i>
+                </a>
+                --}}
+            </h3>
+            <div class="macro-source">Type</div>
+            <!-- <div class="macro-duration">Trigger</div> -->
+            <div class="macro-changes">Trigger</div>
+            <a
+                class="macro-controls macro-control"
+                title="Add Macro"
+                data-action="create">
+                <span class="active">
+                    <i class="fas fa-plus"></i>
+                    Add
+                </span>
+            </a>
+        </li>
+        <ol class="macro-list item-list">
+            {{#each adata.macrolist as |macro|}}
+            <li
+                class="macro {{#if macro.disabled}}disabled{{/if}} flexrow"
+                data-macro-name="{{ macro.name }}"
+                data-macro-id="{{ macro._id }}">
+                <div class="macro-name flexrow">
+                    <div
+                        class="macro-image"
+                        style="background-image: url('{{ macro.img }}')"></div>
+                    <h4>{{ macro.name }}</h4>
+                </div>
+                <div class="macro-ele macro-source">{{ macro.type }}</div>
+                <!-- <div class="macro-ele macro-duration">{{macro.trigger}}</div> -->
+                <div class="macro-ele macro-changes">{{ macro.trigger }}</div>
+                <div class="macro-controls">
+                    <!-- <a class="macro-control" data-action="toggle"><i class="{{#unless macro.disabled}}active{{/unless}} fas fa-circle-notch"></i></a> -->
+                    <a
+                        class="macro-control"
+                        data-action="edit">
+                        <i class="active fas fa-edit"></i>
+                    </a>
+                    <a
+                        class="macro-control"
+                        data-action="delete">
+                        <i class="active fas fa-trash"></i>
+                    </a>
+                </div>
+            </li>
+            {{/each}}
+        </ol>
+    </ol>
+</div>
