@@ -4,25 +4,17 @@
     <div class="resource">
         <label class="resource-label">Skill Base (SB)</label>
         <input class="value" type="text" name="system.skillBase.value" value="{{ idata.skillBase.value }}" data-dtype="Number"
-        {{#if idata.skillBase.formula}}readonly{{/if}} />
+        {{#if idata.skillBase.formula}}readonly{{/if}} {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
     <div class="resource">
         <label class="resource-label">Mastery Level (ML)</label>
-        <input
-            class="value"
-            type="number"
-            name="system.masteryLevel"
-            value="{{ idata.masteryLevel }}"
-            data-dtype="Number" />
+        <input class="value" type="number" name="system.masteryLevel" value="{{ idata.masteryLevel }}" data-dtype="Number"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
     <div class="resource">
         <label class="resource-label">Fatigue</label>
-        <input
-            class="value"
-            type="number"
-            name="system.fatigue"
-            value="{{ idata.fatigue }}"
-            data-dtype="Number" />
+        <input class="value" type="number" name="system.fatigue" value="{{ idata.fatigue }}" data-dtype="Number"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
 </div>
 <div class="resource">
@@ -34,12 +26,8 @@
             attributes. Valid attributes are: @str, @sta, @dex, @agl, @int, @aur, @wil, @eye, @hrg, @sml, @voi, @cml, @mor
         </span>
     </label>
-    <input
-        class="value"
-        type="text"
-        name="system.skillBase.formula"
-        value="{{ idata.skillBase.formula }}"
-        data-dtype="String" />
+    <input class="value" type="text" name="system.skillBase.formula" value="{{ idata.skillBase.formula }}" data-dtype="String"
+    {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     {{#unless idata.skillBase.isFormulaValid}}
     <div class="error">Error: Invalid SkillBase Formula!</div>
     {{/unless}}

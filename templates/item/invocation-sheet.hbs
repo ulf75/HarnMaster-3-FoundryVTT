@@ -1,6 +1,6 @@
 {{#> item_layout_partial nameReadOnly=(not hasRwPermission) }}
 
-<div class="resource-block">
+<div class="grid grid-2col">
     <div class="resource">
         <label
             for="system.diety"
@@ -10,7 +10,7 @@
         {{#if hasRitualSkills}}
         <span class="resource-span">
             <select
-                class="resource-value"
+                class="value"
                 id="system.diety"
                 name="system.diety"
                 data-dtype="String">
@@ -22,13 +22,8 @@
             </select>
         </span>
         {{else}}
-        <input
-            class="value"
-            type="text"
-            id="system.diety"
-            name="system.diety"
-            value="{{ idata.diety }}"
-            data-dtype="String" />
+        <input class="value" type="text" id="system.diety" name="system.diety" value="{{ idata.diety }}" data-dtype="String"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
         {{/if}}
     </div>
     <div class="resource">
@@ -37,13 +32,8 @@
             class="resource-label">
             Circle
         </label>
-        <input
-            class="value"
-            type="number"
-            id="system.circle"
-            name="system.circle"
-            value="{{ idata.circle }}"
-            data-dtype="Number" />
+        <input class="value" type="number" id="system.circle" name="system.circle" value="{{ idata.circle }}" data-dtype="Number"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
 </div>
 {{> item_standard_partial}}

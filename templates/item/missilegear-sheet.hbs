@@ -21,6 +21,7 @@
             class="resource-label">
             Weapon Aspect
         </label>
+        {{#if (and hasRwPermission editable)}}
         <select
             class="resource-value"
             id="system.weaponAspect"
@@ -32,6 +33,16 @@
             <option value="Edged">Edged</option>
             {{/select}}
         </select>
+        {{else}}
+        <input
+            class="value"
+            type="text"
+            id="system.weaponAspect"
+            name="system.weaponAspect"
+            value="{{ idata.weaponAspect }}"
+            data-dtype="String"
+            disabled />
+        {{/if}}
     </div>
     <div
         class="resource"
@@ -42,6 +53,7 @@
             Associated Skill
         </label>
         {{#if hasCombatSkills}}
+        {{#if editable}}
         <select
             class="resource-value"
             id="system.assocSkill"
@@ -49,6 +61,16 @@
             data-dtype="String">
             {{selectOptions combatSkills selected=idata.assocSkill valueAttr="key" labelAttr="key"}}
         </select>
+        {{else}}
+        <input
+            class="value"
+            type="text"
+            id="system.assocSkill"
+            name="system.assocSkill"
+            value="{{ idata.assocSkill }}"
+            data-dtype="String"
+            disabled />
+        {{/if}}
         {{else}}
         <input class="value" type="text" id="system.assocSkill" name="system.assocSkill" value="{{ idata.assocSkill }}" data-dtype="String"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>

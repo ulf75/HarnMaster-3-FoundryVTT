@@ -300,6 +300,11 @@ Hooks.once('init', async function () {
         return !obj;
     });
 
+    Handlebars.registerHelper('getLabel', function (data, key) {
+        var val = data.find((d) => d.key === key);
+        return val.label;
+    });
+
     const root = 'systems/hm3/templates/';
     Handlebars.registerPartial({
         //character

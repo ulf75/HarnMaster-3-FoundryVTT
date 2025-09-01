@@ -1,4 +1,5 @@
 <div class="resource-block">
+    {{#if (or idata.source (and hasRwPermission editable))}}
     <div class="grid grid-fixed-row grid-1col">
         <div class="resource">
             <label
@@ -10,6 +11,8 @@
             {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
         </div>
     </div>
+    {{/if}}
+    {{#if (or idata.notes editable)}}
     <div class="grid grid-fixed-row grid-1col">
         <div class="resource">
             <label
@@ -21,4 +24,5 @@
             {{#unless editable}}disabled{{/unless}} />
         </div>
     </div>
+    {{/if}}
 </div>

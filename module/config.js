@@ -74,9 +74,9 @@ HM3.socialClasses = [{key: 'Slave'}, {key: 'Serf'}, {key: 'Unguilded'}, {key: 'G
 HM3.gender = [{key: 'Male'}, {key: 'Female'}];
 
 HM3.psycheSeverity = [
-    {key: 5, label: 'Mild'},
-    {key: 3, label: 'Moderate'},
-    {key: 1, label: 'Severe'}
+    {key: '5', label: 'Mild'},
+    {key: '3', label: 'Moderate'},
+    {key: '1', label: 'Severe'}
 ];
 
 HM3.months = [
