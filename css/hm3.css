@@ -177,6 +177,11 @@ section.highlight {
     margin: 5px 0;
 }
 
+.grid-fixed-row-sml {
+    grid-template-rows: 20px;
+    margin: 5px 0;
+}
+
 .grid-1col {
     grid-column: span 1 / span 1;
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -1364,7 +1369,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     flex: 0 0 15px;
     font-family: 'Amasis MT Medium';
     font-size: 19px;
-    font-variant-caps: petite-caps;
+    font-variant-caps: small-caps;
     font-weight: 500;
     margin-bottom: 5px;
 }
@@ -1602,7 +1607,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     display: -ms-inline-flexbox;
     display: inline-flex;
     font-size: var(--font-size-14);
-    font-variant-caps: petite-caps;
+    font-variant-caps: small-caps;
     font-weight: 700;
     -webkit-box-pack: start;
     -ms-flex-pack: start;
@@ -1765,6 +1770,11 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     table
     tr:nth-child(even) {
     background-color: rgba(157, 37, 59, 0.2);
+}
+
+.hm3.item-v2 section.window-content form section.sheet-body-v2 .main-content fieldset legend {
+    font-size: 16px;
+    font-variant: small-caps;
 }
 
 .hm3.item-v2 section.window-content form input[type='text']:disabled:hover,

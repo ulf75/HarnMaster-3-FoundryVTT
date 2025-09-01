@@ -90,7 +90,7 @@
     class="armor-locations-list"
     id="armorgear-locations-list">
     <legend>Locations</legend>
-    {{#if hasRwPermission}}
+    {{#if (and hasRwPermission editable)}}
     <div
         class="armorgear-location resource flexrow"
         id="armorgear-location-select">
@@ -120,7 +120,7 @@
     </div>
     {{/if}}
     <ol
-        class="grid grid-fixed-row grid-4col"
+        class="grid grid-fixed-row-sml grid-4col"
         id="armorgear-location-display">
         {{#each idata.locations}}
         <li class="armor-location">

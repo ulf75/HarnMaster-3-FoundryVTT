@@ -2,7 +2,7 @@
     flex: 0 0 15px;
     font-family: $font-primary;
     font-size: 19px;
-    font-variant-caps: petite-caps;
+    font-variant-caps: small-caps;
     font-weight: 500;
     margin-bottom: 5px;
 
@@ -337,7 +337,7 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
                         cursor: pointer;
                         display: inline-flex;
                         font-size: var(--font-size-14);
-                        font-variant-caps: petite-caps;
+                        font-variant-caps: small-caps;
                         font-weight: 700;
                         justify-content: flex-start;
                         left: 6px;
@@ -457,6 +457,13 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
                                     }
                                 }
                             }
+                        }
+                    }
+
+                    fieldset {
+                        legend {
+                            font-size: 16px;
+                            font-variant: small-caps;
                         }
                     }
                 }
