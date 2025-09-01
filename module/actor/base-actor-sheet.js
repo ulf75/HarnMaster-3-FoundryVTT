@@ -94,8 +94,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 if (i.type === ItemType.TRAIT) {
                     if (i.system.type === 'Psyche') {
                         const sev =
-                            data.config.psycheSeverity.find((v) => v.key === parseInt(i.system.severity))?.label ||
-                            'Mild';
+                            data.config.psycheSeverity.find((v) => v.key === i.system.severity)?.label || 'Mild';
                         i.psycheName = sev + ' ' + i.name;
                     }
                 }
