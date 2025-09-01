@@ -217,7 +217,7 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
         overflow: visible;
 
         form {
-            .tab-header {
+            header.item-header {
                 background: linear-gradient(
                     $background-rotation,
                     $parchment-lighter,
@@ -233,6 +233,89 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
                 min-height: 112px;
                 padding: 10px;
                 text-align: left;
+
+                img.profile-img {
+                    flex: 0 0 85px;
+                    height: 85px;
+                    margin-right: 6px;
+                }
+
+                .header-fields {
+                    min-height: 100px;
+
+                    .item-name {
+                        min-height: 74px;
+                    }
+
+                    .item-name.disabled {
+                        font-size: 2em;
+                        font-weight: normal;
+                        line-height: 1em;
+                    }
+
+                    .item-name:first-letter {
+                        background-clip: text;
+                        background-image: linear-gradient(160deg, $maroon-lightest, $maroon-base);
+                        color: $maroon-base;
+                        color: transparent;
+                        font-family: 'Cardinal';
+                        font-size: 2em;
+                        font-weight: 600;
+                        initial-letter: 2 1;
+                        line-height: 1em;
+                        margin: 0.15em;
+                        text-shadow: 4px 4px 8px $maroon-darkest;
+                        text-transform: uppercase;
+                    }
+
+                    .item-type {
+                        align-items: center;
+                        height: 26px;
+
+                        .label {
+                            color: black;
+                            flex: 0 0 50px;
+                            font-family: $font-primary;
+                            font-size: var(--font-size-15);
+                            font-variant: small-caps;
+                            font-weight: bold;
+                            height: 100%;
+                            padding-left: 8px;
+                            padding-top: 2px;
+                            text-shadow: none;
+                        }
+
+                        .value {
+                            flex: 0 0 110px;
+                            // font-size: 14px;
+                            height: 100%;
+                        }
+                    }
+
+                    .item-container {
+                        align-items: center;
+                        height: 26px;
+
+                        .label {
+                            color: black;
+                            flex: 0 0 110px;
+                            font-family: $font-primary;
+                            font-size: var(--font-size-15);
+                            font-variant: small-caps;
+                            font-weight: bold;
+                            height: 100%;
+                            padding-left: 8px;
+                            padding-top: 2px;
+                            text-shadow: none;
+                        }
+
+                        .value {
+                            flex: 0 0 200px;
+                            // font-size: 14px;
+                            height: 100%;
+                        }
+                    }
+                }
             }
 
             .tab-container {
@@ -290,7 +373,7 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
                 border-radius: 5px;
                 border-top: 1px solid #3b3d3f;
                 box-shadow: 0 2px 3px rgb(10, 10, 10 / 10%), 0 0 0 1px rgb(10, 10, 10 / 10%);
-                height: calc(100% - 172px);
+                height: calc(100% - 192px);
                 line-height: 20px;
                 position: relative;
 
@@ -393,19 +476,6 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
                 border: none;
                 pointer-events: none;
                 user-select: none;
-            }
-
-            h1.charname:first-letter {
-                background-clip: text;
-                background-image: linear-gradient(160deg, $maroon-lightest, $maroon-base);
-                color: $maroon-base;
-                color: transparent;
-                font-family: 'Cardinal';
-                font-weight: 600;
-                initial-letter: 2 1;
-                margin: 0.15em;
-                text-shadow: 4px 4px 8px $maroon-darkest;
-                text-transform: uppercase;
             }
         }
     }

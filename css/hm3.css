@@ -1469,7 +1469,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     overflow: visible;
 }
 
-.hm3.item-v2 section.window-content form .tab-header {
+.hm3.item-v2 section.window-content form header.item-header {
     background: linear-gradient(160deg, white, #f1ece9 20%, #f1ece9 60%, #ded0c9, #b7998a);
     border-radius: 5px;
     border-top: 1px solid #3b3d3f;
@@ -1479,6 +1479,102 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     min-height: 112px;
     padding: 10px;
     text-align: left;
+}
+
+.hm3.item-v2 section.window-content form header.item-header img.profile-img {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 85px;
+    flex: 0 0 85px;
+    height: 85px;
+    margin-right: 6px;
+}
+
+.hm3.item-v2 section.window-content form header.item-header .header-fields {
+    min-height: 100px;
+}
+
+.hm3.item-v2 section.window-content form header.item-header .header-fields .item-name {
+    min-height: 74px;
+}
+
+.hm3.item-v2 section.window-content form header.item-header .header-fields .item-name.disabled {
+    font-size: 2em;
+    font-weight: normal;
+    line-height: 1em;
+}
+
+.hm3.item-v2 section.window-content form header.item-header .header-fields .item-name:first-letter {
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: linear-gradient(160deg, #d6516a, #741b2b);
+    color: #741b2b;
+    color: transparent;
+    font-family: 'Cardinal';
+    font-size: 2em;
+    font-weight: 600;
+    initial-letter: 2 1;
+    line-height: 1em;
+    margin: 0.15em;
+    text-shadow: 4px 4px 8px #21080c;
+    text-transform: uppercase;
+}
+
+.hm3.item-v2 section.window-content form header.item-header .header-fields .item-type {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 26px;
+}
+
+.hm3.item-v2 section.window-content form header.item-header .header-fields .item-type .label {
+    color: black;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50px;
+    flex: 0 0 50px;
+    font-family: 'Amasis MT Medium';
+    font-size: var(--font-size-15);
+    font-variant: small-caps;
+    font-weight: bold;
+    height: 100%;
+    padding-left: 8px;
+    padding-top: 2px;
+    text-shadow: none;
+}
+
+.hm3.item-v2 section.window-content form header.item-header .header-fields .item-type .value {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 110px;
+    flex: 0 0 110px;
+    height: 100%;
+}
+
+.hm3.item-v2 section.window-content form header.item-header .header-fields .item-container {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 26px;
+}
+
+.hm3.item-v2 section.window-content form header.item-header .header-fields .item-container .label {
+    color: black;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 110px;
+    flex: 0 0 110px;
+    font-family: 'Amasis MT Medium';
+    font-size: var(--font-size-15);
+    font-variant: small-caps;
+    font-weight: bold;
+    height: 100%;
+    padding-left: 8px;
+    padding-top: 2px;
+    text-shadow: none;
+}
+
+.hm3.item-v2 section.window-content form header.item-header .header-fields .item-container .value {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 200px;
+    flex: 0 0 200px;
+    height: 100%;
 }
 
 .hm3.item-v2 section.window-content form .tab-container {
@@ -1537,7 +1633,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     border-top: 1px solid #3b3d3f;
     -webkit-box-shadow: 0 2px 3px #0a0a01, 0 0 0 1px #0a0a01;
     box-shadow: 0 2px 3px #0a0a01, 0 0 0 1px #0a0a01;
-    height: calc(100% - 172px);
+    height: calc(100% - 192px);
     line-height: 20px;
     position: relative;
 }
@@ -1689,20 +1785,6 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
-
-.hm3.item-v2 section.window-content form h1.charname:first-letter {
-    -webkit-background-clip: text;
-    background-clip: text;
-    background-image: linear-gradient(160deg, #d6516a, #741b2b);
-    color: #741b2b;
-    color: transparent;
-    font-family: 'Cardinal';
-    font-weight: 600;
-    initial-letter: 2 1;
-    margin: 0.15em;
-    text-shadow: 4px 4px 8px #21080c;
-    text-transform: uppercase;
 }
 
 .hm3 .items h2 {

@@ -1,27 +1,29 @@
 <form
     class="{{ cssClass }}"
     autocomplete="off">
-    <header class="sheet-header skill-header tab-header">
+    <header class="sheet-header item-header">
         <img
             class="profile-img"
             src="{{ item.img }}"
             data-edit="img"
             title="{{ item.name }}" />
         <div class="header-fields">
-            <h1 class="charname">
-                {{#if (or nameReadOnly (not editable))}}
+            {{#if (or nameReadOnly (not editable))}}
+            <h1 class="item-name disabled">
                 {{ item.name }}
-                {{else}}
+            </h1>
+            {{else}}
+            <h1 class="item-name">
                 <input
                     name="name"
                     type="text"
                     value="{{ item.name }}"
                     placeholder="Name"
                     autocomplete="off" />
-                {{/if}}
             </h1>
+            {{/if}}
             {{#if container}}
-            <div class="skill-container flexrow">
+            <div class="item-container resource flexrow">
                 <label
                     for="system.container"
                     class="label">
@@ -46,7 +48,7 @@
             </div>
             {{/if}}
             {{#if list}}
-            <div class="skill-type flexrow">
+            <div class="item-type resource flexrow">
                 <label
                     for="system.type"
                     class="label">
