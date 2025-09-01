@@ -9,6 +9,7 @@
         </label>
         {{#if hasRitualSkills}}
         <span class="resource-span">
+            {{#if (and hasRwPermission editable)}}
             <select
                 class="value"
                 id="system.diety"
@@ -20,6 +21,20 @@
                 {{/each}}
                 {{/select}}
             </select>
+            {{else}}
+            <select
+                class="value"
+                id="system.diety"
+                name="system.diety"
+                data-dtype="String"
+                disabled>
+                {{#select idata.diety}}
+                {{#each dieties}}
+                <option value="{{ this }}">{{ this }}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            {{/if}}
         </span>
         {{else}}
         <input class="value" type="text" id="system.diety" name="system.diety" value="{{ idata.diety }}" data-dtype="String"
