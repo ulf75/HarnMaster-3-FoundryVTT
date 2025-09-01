@@ -16,13 +16,13 @@ $background-maroon: linear-gradient(
 );
 $background-silver: linear-gradient(
     45deg,
-    #999 5%,
+    $silver-darkest 5%,
     $silver-lightest 10%,
-    #ccc 30%,
-    #ddd 50%,
-    #ccc 70%,
+    $silver-darker 30%,
+    $silver-base 50%,
+    $silver-darker 70%,
     $silver-lightest 80%,
-    #999 95%
+    $silver-darkest 95%
 );
 $background-gold: linear-gradient(
     45deg,
