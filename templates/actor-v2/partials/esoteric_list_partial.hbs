@@ -27,7 +27,9 @@
         <div class="item-controls-wide">
             <a
                 class="item-control item-create active"
-                title="Create {{ header }}"
+                aria-label="Create {{ header }}"
+                data-tooltip="Create {{ header }}"
+                data-tooltip-direction="UP"
                 data-type="{{ dataType }}">
                 <i class="fas fa-plus"></i>
                 Add
@@ -65,7 +67,9 @@
                 {{#if item.isSkillImprovement}}
                 <a
                     class="item-control item-improve"
-                    title="Improve Skill">
+                    aria-label="Improve Skill"
+                    data-tooltip="Improve Skill"
+                    data-tooltip-direction="UP">
                     {{#if system.improveFlag}}
                     <i class="active fas fa-star"></i>
                     {{else}}
@@ -75,17 +79,23 @@
                 {{/if}}
                 <a
                     class="item-control item-dumpdesc"
-                    title="Post {{ ../type }} Description to Chat">
+                    aria-label="Post {{ ../type }} Description to Chat"
+                    data-tooltip="Post {{ ../type }} Description to Chat"
+                    data-tooltip-direction="UP">
                     <i class="active far fa-comment"></i>
                 </a>
                 <a
                     class="item-control item-edit"
-                    title="Edit {{ ../type }}">
+                    aria-label="Edit {{ ../type }}"
+                    data-tooltip="Edit {{ ../type }}"
+                    data-tooltip-direction="UP">
                     <i class="active fas fa-edit"></i>
                 </a>
                 <a
                     class="item-control item-delete"
-                    title="Delete {{ ../type }}"
+                    aria-label="Delete {{ ../type }}"
+                    data-tooltip="Delete {{ ../type }}"
+                    data-tooltip-direction="UP"
                     data-label="{{../type}}">
                     <i class="active fas fa-trash"></i>
                 </a>

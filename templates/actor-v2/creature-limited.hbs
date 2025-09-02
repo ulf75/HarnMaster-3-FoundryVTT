@@ -8,7 +8,9 @@
                 class="profile-img"
                 src="{{ actor.img }}"
                 data-edit="img"
-                title="{{ actor.name }}"
+                aria-label="{{ actor.name }}"
+                data-tooltip="{{ actor.name }}"
+                data-tooltip-direction="UP"
                 height="100"
                 width="100" />
             <div class="flexcol header-fields">
@@ -79,7 +81,9 @@
                     class="facade-image"
                     src="{{ adata.bioImage }}"
                     data-edit="system.bioImage"
-                    title="{{ actor.name }}"
+                    aria-label="{{ actor.name }}"
+                    data-tooltip="{{ actor.name }}"
+                    data-tooltip-direction="UP"
                     height="300"
                     width="200" />
                 <div class="facade-description">

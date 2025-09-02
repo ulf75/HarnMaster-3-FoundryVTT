@@ -8,7 +8,9 @@
                 class="profile-img"
                 src="{{ actor.img }}"
                 data-edit="img"
-                title="{{ actor.name }}"
+                aria-label="{{ actor.name }}"
+                data-tooltip="{{ actor.name }}"
+                data-tooltip-direction="UP"
                 height="100"
                 width="100" />
             <div class="flexcol header-fields">
@@ -73,7 +75,9 @@
                     class="facade-image"
                     src="{{ adata.bioImage }}"
                     data-edit="system.bioImage"
-                    title="{{ actor.name }}"
+                    aria-label="{{ actor.name }}"
+                    data-tooltip="{{ actor.name }}"
+                    data-tooltip-direction="UP"
                     height="300"
                     width="200" />
                 <div class="facade-description">
@@ -142,7 +146,9 @@
                     <div class="item-controls">
                         <a
                             class="item-control item-create active"
-                            title="Add Gear"
+                            aria-label="Add Gear"
+                            data-tooltip="Add Gear"
+                            data-tooltip-direction="UP"
                             data-type="gear"
                             data-container-id="{{ cid }}"
                             data-container-name="{{ citem.name }}">
@@ -175,24 +181,32 @@
                             {{#unless (or (eq item.type "containergear") (eq item.type "miscgear"))}}
                             <a
                                 class="item-control item-equip"
-                                title="Equip">
+                                aria-label="Equip"
+                                data-tooltip="Equip"
+                                data-tooltip-direction="UP">
                                 <i class="{{#if system.isEquipped}}active{{/if}} fas fa-shield-alt"></i>
                             </a>
                             {{/unless}}
                             <a
                                 class="item-control item-carry"
-                                title="Carry">
+                                aria-label="Carry"
+                                data-tooltip="Carry"
+                                data-tooltip-direction="UP">
                                 <i class="{{#if system.isCarried}}active{{/if}} fas fa-suitcase"></i>
                             </a>
                             {{/if}}
                             <a
                                 class="item-control item-edit"
-                                title="Edit">
+                                aria-label="Edit"
+                                data-tooltip="Edit"
+                                data-tooltip-direction="UP">
                                 <i class="active fas fa-edit"></i>
                             </a>
                             <a
                                 class="item-control item-delete"
-                                title="Delete"
+                                aria-label="Delete"
+                                data-tooltip="Delete"
+                                data-tooltip-direction="UP"
                                 data-label="Miscellaneous Gear">
                                 <i class="active fas fa-trash"></i>
                             </a>

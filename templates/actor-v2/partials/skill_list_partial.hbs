@@ -20,7 +20,9 @@
         <div class="item-controls{{#if ../isSkillImprovement}}-wide{{/if}}">
             <a
                 class="item-control item-create active"
-                title="Create {{ skillType }} Skill"
+                aria-label="Create {{ skillType }} Skill"
+                data-tooltip="Create {{ skillType }} Skill"
+                data-tooltip-direction="UP"
                 data-type="skill"
                 data-skilltype="{{ skillType }}">
                 <i class="fas fa-plus"></i>
@@ -66,7 +68,9 @@
                 {{#if item.isSkillImprovement}}
                 <a
                     class="item-control item-improve"
-                    title="Improve Skill">
+                    aria-label="Improve Skill"
+                    data-tooltip="Improve Skill"
+                    data-tooltip-direction="UP">
                     {{#if system.improveFlag}}
                     <i class="active fas fa-star"></i>
                     {{else}}
@@ -76,12 +80,16 @@
                 {{/if}}
                 <a
                     class="item-control item-edit"
-                    title="Edit Skill">
+                    aria-label="Edit Skill"
+                    data-tooltip="Edit Skill"
+                    data-tooltip-direction="UP">
                     <i class="active fas fa-edit"></i>
                 </a>
                 <a
                     class="item-control item-delete"
-                    title="Delete Skill"
+                    aria-label="Delete Skill"
+                    data-tooltip="Delete Skill"
+                    data-tooltip-direction="UP"
                     data-label="{{ skillType }} Skill">
                     <i class="active fas fa-trash"></i>
                 </a>
