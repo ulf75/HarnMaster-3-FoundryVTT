@@ -29,38 +29,61 @@
 }
 
 // Custom styles for item types
-$itemv2-background: var(--hm3-itemv2-background);
-$itemv2-background-border: var(--hm3-itemv2-background-border);
-$itemv2-header-color: var(--hm3-itemv2-header-color);
-$itemv2-header-shadow: var(--hm3-itemv2-header-shadow);
-$itemv2-tab-text-color: var(--hm3-itemv2-tab-text-color);
+$itemv2-background-list: var(--hm3-itemv2-background-list);
+$itemv2-background-sheet-border: var(--hm3-itemv2-background-sheet-border);
+$itemv2-background-sheet: var(--hm3-itemv2-background-sheet);
 $itemv2-hover-color: var(--hm3-itemv2-hover-color);
+$itemv2-initial-letter-background: var(--hm3-itemv2-initial-letter-background);
+$itemv2-initial-letter-font: var(--hm3-itemv2-initial-letter-font);
+$itemv2-initial-letter-shadow: var(--hm3-itemv2-initial-letter-shadow);
+$itemv2-tab-text-color: var(--hm3-itemv2-tab-text-color);
+$itemv2-tab-text-inactive-color: var(--hm3-itemv2-tab-text-inactive-color);
+$itemv2-window-header-color: var(--hm3-itemv2-window-header-color);
+$itemv2-window-header-shadow: var(--hm3-itemv2-window-header-shadow);
 
-// &.item-v2.weapongear {
-//     --hm3-itemv2-background: #{$background-gold};
-//     --hm3-itemv2-background-border: #{$gold-lightest};
-//     --hm3-itemv2-header-color: #{$gold-old-darkest};
-//     --hm3-itemv2-header-shadow: #{$header-shadow-light};
-// }
+&.item-v2.herb {
+    --hm3-itemv2-background-list: linear-gradient(90deg, #{$green-base}, #{$green-darker});
+    --hm3-itemv2-background-sheet-border: #{$green-lightest};
+    --hm3-itemv2-background-sheet: #{$background-green};
+    --hm3-itemv2-hover-color: #{$green-lighter};
+    --hm3-itemv2-initial-letter-background: linear-gradient(160deg, #{$green-lightest}, #{$green-base});
+    --hm3-itemv2-initial-letter-shadow: #{$green-darker};
+}
 
 &.item-v2.artifact {
-    --hm3-itemv2-background: #{$background-silver};
-    --hm3-itemv2-background-border: #{$silver-lightest};
-    --hm3-itemv2-header-color: #{$gold-old-darkest};
-    --hm3-itemv2-header-shadow: #{$header-shadow-light};
+    --hm3-itemv2-background-sheet-border: #{$silver-lightest};
+    --hm3-itemv2-background-sheet: #{$background-silver};
+    // --hm3-itemv2-initial-letter-background: linear-gradient(
+    //     160deg,
+    //     #{$silver-darkest} 5%,
+    //     #{$silver-lightest} 10%,
+    //     #{$silver-darker} 30%,
+    //     #{$silver-base} 50%,
+    //     #{$silver-darker} 70%,
+    //     #{$silver-lightest} 80%,
+    //     #{$silver-darkest} 95%
+    // );
+    // --hm3-itemv2-initial-letter-shadow: #{$silver-darkest};
+    --hm3-itemv2-window-header-color: #{$gold-old-darkest};
+    --hm3-itemv2-window-header-shadow: #{$header-shadow-light};
 }
 
 &.item-v2 {
-    --hm3-itemv2-background: #{$background-maroon};
-    --hm3-itemv2-background-border: #{$maroon-lighter};
-    --hm3-itemv2-header-color: #{$gold-old-lightest};
-    --hm3-itemv2-header-shadow: #{$header-shadow-dark};
-    --hm3-itemv2-tab-text-color: #000;
+    --hm3-itemv2-background-list: linear-gradient(90deg, #{$maroon-base}, #{$maroon-darker});
+    --hm3-itemv2-background-sheet-border: #{$maroon-lighter};
+    --hm3-itemv2-background-sheet: #{$background-maroon};
     --hm3-itemv2-hover-color: #{$maroon-lighter};
+    --hm3-itemv2-initial-letter-background: linear-gradient(160deg, #{$maroon-lightest}, #{$maroon-base});
+    --hm3-itemv2-initial-letter-font: 'Cardinal';
+    --hm3-itemv2-initial-letter-shadow: #{$maroon-darker};
+    --hm3-itemv2-tab-text-color: #000;
+    --hm3-itemv2-tab-text-inactive-color: #666;
+    --hm3-itemv2-window-header-color: #{$gold-old-lightest};
+    --hm3-itemv2-window-header-shadow: #{$header-shadow-dark};
 
-    background: $itemv2-background;
+    background: $itemv2-background-sheet;
     border-radius: $sheet-radius;
-    border: thin solid $itemv2-background-border;
+    border: thin solid $itemv2-background-sheet-border;
 
     input[type='text']:hover,
     input[type='number']:hover,
@@ -82,8 +105,8 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
 
     header.window-header {
         border: none;
-        color: $itemv2-header-color;
-        text-shadow: $itemv2-header-shadow;
+        color: $itemv2-window-header-color;
+        text-shadow: $itemv2-window-header-shadow;
 
         > .window-title {
             visibility: hidden;
@@ -135,16 +158,16 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
 
                     .item-name:first-letter {
                         background-clip: text;
-                        background-image: linear-gradient(160deg, $maroon-lightest, $maroon-base);
+                        background-image: $itemv2-initial-letter-background;
                         color: $maroon-base;
                         color: transparent;
-                        font-family: 'Cardinal';
+                        font-family: $itemv2-initial-letter-font;
                         font-size: 2em;
                         font-weight: 600;
                         initial-letter: 2 1;
                         line-height: 1em;
                         margin: 0.15em;
-                        text-shadow: 4px 4px 8px $maroon-darkest;
+                        text-shadow: 4px 4px 8px $itemv2-initial-letter-shadow;
                         text-transform: uppercase;
                     }
 
@@ -167,7 +190,6 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
 
                         .value {
                             flex: 0 0 110px;
-                            // font-size: 14px;
                             height: 100%;
                         }
                     }
@@ -191,7 +213,6 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
 
                         .value {
                             flex: 0 0 200px;
-                            // font-size: 14px;
                             height: 100%;
                         }
                     }
@@ -213,7 +234,7 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
                         border-radius: 7px 7px 0 0;
                         border-top: 1px solid #3b3d3f;
                         box-shadow: 1px 1px 2px 1px #231f20;
-                        color: #666;
+                        color: $itemv2-tab-text-inactive-color;
                         cursor: pointer;
                         display: inline-flex;
                         font-size: var(--font-size-14);
@@ -299,14 +320,14 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
 
                                 > p:first-child:first-letter {
                                     background-clip: text;
-                                    background-image: linear-gradient(160deg, $maroon-lightest, $maroon-base);
+                                    background-image: $itemv2-initial-letter-background;
                                     color: $maroon-base;
                                     color: transparent;
-                                    font-family: 'Cardinal';
+                                    font-family: $itemv2-initial-letter-font;
                                     font-weight: 600;
                                     initial-letter: 2.5 2;
                                     margin-right: 0.5em;
-                                    text-shadow: 4px 4px 8px $maroon-darkest;
+                                    text-shadow: 4px 4px 8px $itemv2-initial-letter-shadow;
                                     text-transform: uppercase;
                                 }
 
@@ -317,14 +338,14 @@ $itemv2-hover-color: var(--hm3-itemv2-hover-color);
 
                                 > h1 + p:first-letter {
                                     background-clip: text;
-                                    background-image: linear-gradient(160deg, $maroon-lightest, $maroon-base);
+                                    background-image: $itemv2-initial-letter-background;
                                     color: $maroon-base;
                                     color: transparent;
-                                    font-family: 'Cardinal';
+                                    font-family: $itemv2-initial-letter-font;
                                     font-weight: 600;
                                     initial-letter: 2;
                                     margin-right: 0.5em;
-                                    text-shadow: 4px 4px 8px $maroon-darkest;
+                                    text-shadow: 4px 4px 8px $itemv2-initial-letter-shadow;
                                     text-transform: uppercase;
                                 }
 

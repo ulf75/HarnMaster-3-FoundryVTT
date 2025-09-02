@@ -27,11 +27,14 @@ $gold-base: hsl(37, 100%, 61%); // #ffb338
 $gold-lighter: hsl(37, 100%, 71%);
 $gold-lightest: hsl(37, 100%, 91%);
 
-$green-darkest: hsl(116, 36%, 26%);
-$green-darker: hsl(116, 36%, 46%);
-$green-base: hsl(116, 36%, 56%);
-$green-lighter: hsl(116, 36%, 66%);
-$green-lightest: hsl(116, 36%, 86%);
+$green-darkest: hsl(116, 36%, 6%);
+$green-darker: hsl(116, 36%, 16%);
+$green-base: hsl(116, 36%, 26%);
+$green-lighter: hsl(116, 36%, 36%);
+$green-lightest: hsl(116, 36%, 56%);
+$green-highlight: hsl(116, 36%, 76%);
+$green-background: hsla(116, 36%, 58%, 0.05);
+$green-background2: hsla(116, 36%, 38%, 0.2);
 
 $maroon-darkest: hsl(349, 62%, 8%);
 $maroon-darker: hsl(349, 62%, 18%);
@@ -54,8 +57,10 @@ $pink-base: hsl(304, 100%, 84%);
 $pink-lighter: hsl(304, 100%, 94%);
 $pink-lightest: hsl(304, 100%, 100%);
 
-$silver-darkest: #999;
-$silver-darker: #ccc;
-$silver-base: #ddd;
-$silver-lighter: #eee;
-$silver-lightest: #fff;
+$silver-darkest3: hsl(0, 0%, 20%);
+$silver-darkest2: hsl(0, 0%, 40%);
+$silver-darkest: hsl(0, 0%, 60%); // #999;
+$silver-darker: hsl(0, 0%, 80%); // #ccc;
+$silver-base: hsl(0, 0%, 87%); // #ddd;
+$silver-lighter: hsl(0, 0%, 93%); // #eee;
+$silver-lightest: hsl(0, 0%, 100%); // #fff;

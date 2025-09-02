@@ -1394,32 +1394,46 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     margin-right: 5px;
 }
 
+.hm3.item-v2.herb {
+    --hm3-itemv2-background-list: linear-gradient(90deg, #2e5a2a, #1c371a);
+    --hm3-itemv2-background-sheet-border: #6cb766;
+    --hm3-itemv2-background-sheet: linear-gradient(160deg, #afd8ac, #6cb766 30px, #3f7d3b 60px, #2e5a2a, #1c371a);
+    --hm3-itemv2-hover-color: #3f7d3b;
+    --hm3-itemv2-initial-letter-background: linear-gradient(160deg, #6cb766, #2e5a2a);
+    --hm3-itemv2-initial-letter-shadow: #1c371a;
+}
+
 .hm3.item-v2.artifact {
-    --hm3-itemv2-background: linear-gradient(
+    --hm3-itemv2-background-sheet-border: white;
+    --hm3-itemv2-background-sheet: linear-gradient(
         45deg,
-        #999 5%,
-        #fff 10%,
-        #ccc 30%,
-        #ddd 50%,
-        #ccc 70%,
-        #fff 80%,
-        #999 95%
+        #999999 5%,
+        white 10%,
+        #cccccc 30%,
+        #dedede 50%,
+        #cccccc 70%,
+        white 80%,
+        #999999 95%
     );
-    --hm3-itemv2-background-border: #fff;
-    --hm3-itemv2-header-color: #484132;
-    --hm3-itemv2-header-shadow: -1px 0 #ded9cf, 0 1px #ded9cf, 1px 0 #ded9cf, 0 -1px #ded9cf;
+    --hm3-itemv2-window-header-color: #484132;
+    --hm3-itemv2-window-header-shadow: -1px 0 #ded9cf, 0 1px #ded9cf, 1px 0 #ded9cf, 0 -1px #ded9cf;
 }
 
 .hm3.item-v2 {
-    --hm3-itemv2-background: linear-gradient(160deg, #eaa4b1, #d6516a 30px, #9d253b 60px, #741b2b, #4a111c);
-    --hm3-itemv2-background-border: #9d253b;
-    --hm3-itemv2-header-color: #ded9cf;
-    --hm3-itemv2-header-shadow: -1px 0 #484132, 0 1px #484132, 1px 0 #484132, 0 -1px #484132;
-    --hm3-itemv2-tab-text-color: #000;
+    --hm3-itemv2-background-list: linear-gradient(90deg, #741b2b, #4a111c);
+    --hm3-itemv2-background-sheet-border: #9d253b;
+    --hm3-itemv2-background-sheet: linear-gradient(160deg, #eaa4b1, #d6516a 30px, #9d253b 60px, #741b2b, #4a111c);
     --hm3-itemv2-hover-color: #9d253b;
-    background: var(--hm3-itemv2-background);
+    --hm3-itemv2-initial-letter-background: linear-gradient(160deg, #d6516a, #741b2b);
+    --hm3-itemv2-initial-letter-font: 'Cardinal';
+    --hm3-itemv2-initial-letter-shadow: #4a111c;
+    --hm3-itemv2-tab-text-color: #000;
+    --hm3-itemv2-tab-text-inactive-color: #666;
+    --hm3-itemv2-window-header-color: #ded9cf;
+    --hm3-itemv2-window-header-shadow: -1px 0 #484132, 0 1px #484132, 1px 0 #484132, 0 -1px #484132;
+    background: var(--hm3-itemv2-background-sheet);
     border-radius: 8px 8px 8px 8px;
-    border: thin solid var(--hm3-itemv2-background-border);
+    border: thin solid var(--hm3-itemv2-background-sheet-border);
 }
 
 .hm3.item-v2 input[type='text']:hover,
@@ -1443,8 +1457,8 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 
 .hm3.item-v2 header.window-header {
     border: none;
-    color: var(--hm3-itemv2-header-color);
-    text-shadow: var(--hm3-itemv2-header-shadow);
+    color: var(--hm3-itemv2-window-header-color);
+    text-shadow: var(--hm3-itemv2-window-header-shadow);
 }
 
 .hm3.item-v2 header.window-header > .window-title {
@@ -1495,16 +1509,16 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 .hm3.item-v2 section.window-content form header.item-header .header-fields .item-name:first-letter {
     -webkit-background-clip: text;
     background-clip: text;
-    background-image: linear-gradient(160deg, #d6516a, #741b2b);
+    background-image: var(--hm3-itemv2-initial-letter-background);
     color: #741b2b;
     color: transparent;
-    font-family: 'Cardinal';
+    font-family: var(--hm3-itemv2-initial-letter-font);
     font-size: 2em;
     font-weight: 600;
     initial-letter: 2 1;
     line-height: 1em;
     margin: 0.15em;
-    text-shadow: 4px 4px 8px #21080c;
+    text-shadow: 4px 4px 8px var(--hm3-itemv2-initial-letter-shadow);
     text-transform: uppercase;
 }
 
@@ -1585,7 +1599,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     border-top: 1px solid #3b3d3f;
     -webkit-box-shadow: 1px 1px 2px 1px #231f20;
     box-shadow: 1px 1px 2px 1px #231f20;
-    color: #666;
+    color: var(--hm3-itemv2-tab-text-inactive-color);
     cursor: pointer;
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
@@ -1682,14 +1696,14 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     > p:first-child:first-letter {
     -webkit-background-clip: text;
     background-clip: text;
-    background-image: linear-gradient(160deg, #d6516a, #741b2b);
+    background-image: var(--hm3-itemv2-initial-letter-background);
     color: #741b2b;
     color: transparent;
-    font-family: 'Cardinal';
+    font-family: var(--hm3-itemv2-initial-letter-font);
     font-weight: 600;
     initial-letter: 2.5 2;
     margin-right: 0.5em;
-    text-shadow: 4px 4px 8px #21080c;
+    text-shadow: 4px 4px 8px var(--hm3-itemv2-initial-letter-shadow);
     text-transform: uppercase;
 }
 
@@ -1727,14 +1741,14 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     + p:first-letter {
     -webkit-background-clip: text;
     background-clip: text;
-    background-image: linear-gradient(160deg, #d6516a, #741b2b);
+    background-image: var(--hm3-itemv2-initial-letter-background);
     color: #741b2b;
     color: transparent;
-    font-family: 'Cardinal';
+    font-family: var(--hm3-itemv2-initial-letter-font);
     font-weight: 600;
     initial-letter: 2;
     margin-right: 0.5em;
-    text-shadow: 4px 4px 8px #21080c;
+    text-shadow: 4px 4px 8px var(--hm3-itemv2-initial-letter-shadow);
     text-transform: uppercase;
 }
 
@@ -3951,8 +3965,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .v2 .effects .effects-list .effects-header {
-    background: -webkit-gradient(linear, left top, right top, from(#741b2b), to(#4a111c));
-    background: linear-gradient(90deg, #741b2b, #4a111c);
+    background: var(--hm3-itemv2-background-list);
     border-radius: 2px;
     border: none;
     color: white;
@@ -4189,8 +4202,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .v2 .macros .macros-list .macros-header {
-    background: -webkit-gradient(linear, left top, right top, from(#741b2b), to(#4a111c));
-    background: linear-gradient(90deg, #741b2b, #4a111c);
+    background: var(--hm3-itemv2-background-list);
     border-radius: 2px;
     border: none;
     color: white;

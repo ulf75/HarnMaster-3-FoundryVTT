@@ -1,11 +1,18 @@
-$tab-width: 110px;
-
 $background-rotation: 160deg;
+$sheet-radius: 8px 8px 8px 8px;
+$tab-width: 110px;
 
 $tab-background-active: $parchment-base;
 $tab-background-inactive: linear-gradient(180deg, $parchment-darker, $parchment-darkest);
-$header-background: linear-gradient(90deg, $maroon-base, $maroon-darker);
 
+$background-green: linear-gradient(
+    $background-rotation,
+    $green-highlight,
+    $green-lightest 30px,
+    $green-lighter 60px,
+    $green-base,
+    $green-darker
+);
 $background-maroon: linear-gradient(
     $background-rotation,
     $maroon-highlight,
@@ -54,8 +61,6 @@ $background-gold-metallic: linear-gradient(
     $gold-metallic-lighter 80%,
     $gold-metallic-darkest 95%
 );
-
-$sheet-radius: 8px 8px 8px 8px;
 
 $header-shadow-dark: -1px 0 $gold-old-darkest, 0 1px $gold-old-darkest, 1px 0 $gold-old-darkest,
     0 -1px $gold-old-darkest;
