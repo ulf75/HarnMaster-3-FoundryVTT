@@ -20,6 +20,8 @@
       "run": "Run",
       "sprint": "Sprint",
       "walk": "Walk"
-    }
+    },
+    "SheetModeEdit": "Edit",
+    "SheetModePlay": "Play"
   }
 }

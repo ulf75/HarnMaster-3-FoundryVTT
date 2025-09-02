@@ -437,8 +437,8 @@ export class ItemSheetHM3v2 extends ItemSheet {
             const toggle = document.createElement('slide-toggle');
             toggle.checked = this._mode === this.constructor.MODES.EDIT;
             toggle.classList.add('mode-slider');
-            toggle.dataset.tooltip = 'DND5E.SheetModeEdit';
-            toggle.setAttribute('aria-label', game.i18n.localize('DND5E.SheetModeEdit'));
+            toggle.dataset.tooltip = 'hm3.SheetModeEdit';
+            toggle.setAttribute('aria-label', game.i18n.localize('hm3.SheetModeEdit'));
             toggle.addEventListener('change', this._onChangeSheetMode.bind(this));
             toggle.addEventListener('dblclick', (event) => event.stopPropagation());
             header.insertAdjacentElement('afterbegin', toggle);
@@ -459,7 +459,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
     async _onChangeSheetMode(event) {
         const {MODES} = this.constructor;
         const toggle = event.currentTarget;
-        const label = game.i18n.localize(`DND5E.SheetMode${toggle.checked ? 'Play' : 'Edit'}`);
+        const label = game.i18n.localize(`hm3.SheetMode${toggle.checked ? 'Play' : 'Edit'}`);
         toggle.dataset.tooltip = label;
         toggle.setAttribute('aria-label', label);
         this._mode = toggle.checked ? MODES.EDIT : MODES.PLAY;
