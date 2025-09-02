@@ -3,7 +3,9 @@
     <li class="items-header spell flexrow">
         <h3 class="item-name spell-name">
             {{ header }}
-            <a class="more-info" data-journal-entry="Sheet - Esoterics Tab">
+            <a
+                class="more-info"
+                data-journal-entry="Sheet - Esoterics Tab">
                 <i class="far fa-question-circle"></i>
             </a>
         </h3>
@@ -23,7 +25,10 @@
         <div class="item-detail spell-eml">EML</div>
         <div class="item-detail spell-notes">Notes</div>
         <div class="item-controls-wide">
-            <a class="item-control item-create active" title="Create {{ header }}" data-type="{{ dataType }}">
+            <a
+                class="item-control item-create active"
+                title="Create {{ header }}"
+                data-type="{{ dataType }}">
                 <i class="fas fa-plus"></i>
                 Add
             </a>
@@ -31,9 +36,14 @@
     </li>
     <ol class="item-list spell-list">
         {{#each skillList as | item |}}
-        <li class="item spell flexrow" data-item-id="{{ item.id }}" data-item-name="{{ item.name }}">
+        <li
+            class="item spell flexrow"
+            data-item-id="{{ item.id }}"
+            data-item-name="{{ item.name }}">
             <div class="item-name spell-name {{ ../dataType }}-roll flexrow">
-                <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
+                <div
+                    class="item-image"
+                    style="background-image: url('{{ item.img }}')"></div>
                 <h4>{{ item.name }}</h4>
             </div>
             {{#if (eq ../type "Spell")}}
@@ -53,7 +63,9 @@
             <div class="item-detail spell-notes">{{ system.notes }}</div>
             <div class="item-controls-wide">
                 {{#if item.isSkillImprovement}}
-                <a class="item-control item-improve" title="Improve Skill">
+                <a
+                    class="item-control item-improve"
+                    title="Improve Skill">
                     {{#if system.improveFlag}}
                     <i class="active fas fa-star"></i>
                     {{else}}
@@ -61,13 +73,20 @@
                     {{/if}}
                 </a>
                 {{/if}}
-                <a class="item-control item-dumpdesc" title="Post {{ ../type }} Description to Chat">
+                <a
+                    class="item-control item-dumpdesc"
+                    title="Post {{ ../type }} Description to Chat">
                     <i class="active far fa-comment"></i>
                 </a>
-                <a class="item-control item-edit" title="Edit {{ ../type }}">
+                <a
+                    class="item-control item-edit"
+                    title="Edit {{ ../type }}">
                     <i class="active fas fa-edit"></i>
                 </a>
-                <a class="item-control item-delete" title="Delete {{ ../type }}" data-label="{{../type}}">
+                <a
+                    class="item-control item-delete"
+                    title="Delete {{ ../type }}"
+                    data-label="{{../type}}">
                     <i class="active fas fa-trash"></i>
                 </a>
             </div>

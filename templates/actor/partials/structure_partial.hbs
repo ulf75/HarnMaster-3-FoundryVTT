@@ -246,7 +246,7 @@
                     </h3>
                 </div>
             </div>
-            <div class="items-list combat-stats grid grid-fixed-row grid-5col">
+            <div class="items-list combat-stats grid grid-fixed-row-sml grid-5col">
                 <div
                     class="combat-stat flexrow"
                     id="combat-stat-fatigue">
@@ -302,7 +302,7 @@
                     <div class="combat-stat-value">{{ adata.endurance }}</div>
                 </div>
             </div>
-            <div class="items-list combat-stats grid grid-fixed-row {{#if isGM}}grid-7col{{else}}grid-6col{{/if}}">
+            <div class="items-list combat-stats grid grid-fixed-row-sml {{#if isGM}}grid-7col{{else}}grid-6col{{/if}}">
                 <div
                     class="combat-stat flexrow"
                     id="combat-injuryroll">
@@ -406,7 +406,7 @@
                 {{/if}}
             </div>
             {{#if hasSteed}}
-            <div class="items-list combat-stats grid grid-fixed-row grid-5col">
+            <div class="items-list combat-stats grid grid-fixed-row-sml grid-5col">
                 {{#if (not adata.mounted)}}
                 <div
                     class="combat-stat flexrow"

@@ -327,6 +327,11 @@ Hooks.once('init', async function () {
         char_fff_list_partial: await (await fetch(`${root}actor/partials/fff_list_partial.hbs`)).text(),
         char_layout_partial: await (await fetch(`${root}actor/partials/structure_partial.hbs`)).text(),
         char_skill_list_partial: await (await fetch(`${root}actor/partials/skill_list_partial.hbs`)).text(),
+        //character v2
+        char_v2_esoteric_list_partial: await (await fetch(`${root}actor-v2/partials/esoteric_list_partial.hbs`)).text(),
+        char_v2_fff_list_partial: await (await fetch(`${root}actor-v2/partials/fff_list_partial.hbs`)).text(),
+        char_v2_layout_partial: await (await fetch(`${root}actor-v2/partials/structure_partial.hbs`)).text(),
+        char_v2_skill_list_partial: await (await fetch(`${root}actor-v2/partials/skill_list_partial.hbs`)).text(),
         // item
         item_artifact_partial: await (await fetch(`${root}item/partials/artifact_partial.hbs`)).text(),
         item_artifact_power_partial: await (await fetch(`${root}item/partials/artifact_power_partial.hbs`)).text(),

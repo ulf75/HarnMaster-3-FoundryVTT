@@ -130,7 +130,7 @@
 
     {{!-- Sheet Tab Navigation --}}
     <nav
-        class="sheet-tabs tabs"
+        class="sheet-tabs sheet-tabs-v2 tabs"
         data-group="primary">
         <a
             class="item"
@@ -186,7 +186,7 @@
     </nav>
 
     {{!-- Sheet Body --}}
-    <section class="sheet-body">
+    <section class="sheet-body sheet-body-v2">
         {{!-- Facade Tab --}}
         <div
             class="tab facade"
@@ -221,12 +221,12 @@
                     placeholder="Filter skills by name..."
                     data-dtype="String" />
             </div>
-            {{> char_skill_list_partial skillType='Physical' skills=physicalSkills}}
-            {{> char_skill_list_partial skillType='Communication' skills=communicationSkills}}
-            {{> char_skill_list_partial skillType='Combat' skills=combatSkills}}
-            {{> char_skill_list_partial skillType='Craft' skills=craftSkills}}
-            {{> char_skill_list_partial skillType='Magic' skills=magicSkills}}
-            {{> char_skill_list_partial skillType='Ritual' skills=ritualSkills}}
+            {{> char_v2_skill_list_partial skillType='Physical' skills=physicalSkills}}
+            {{> char_v2_skill_list_partial skillType='Communication' skills=communicationSkills}}
+            {{> char_v2_skill_list_partial skillType='Combat' skills=combatSkills}}
+            {{> char_v2_skill_list_partial skillType='Craft' skills=craftSkills}}
+            {{> char_v2_skill_list_partial skillType='Magic' skills=magicSkills}}
+            {{> char_v2_skill_list_partial skillType='Ritual' skills=ritualSkills}}
         </div>
 
         {{!-- Combat Tab --}}
@@ -246,7 +246,7 @@
                     </h3>
                 </div>
             </div>
-            <div class="items-list combat-stats grid grid-fixed-row grid-5col">
+            <div class="items-list combat-stats grid grid-fixed-row-sml grid-5col">
                 <div
                     class="combat-stat flexrow"
                     id="combat-stat-fatigue">
@@ -302,7 +302,7 @@
                     <div class="combat-stat-value">{{ adata.endurance }}</div>
                 </div>
             </div>
-            <div class="items-list combat-stats grid grid-fixed-row {{#if isGM}}grid-7col{{else}}grid-6col{{/if}}">
+            <div class="items-list combat-stats grid grid-fixed-row-sml {{#if isGM}}grid-7col{{else}}grid-6col{{/if}}">
                 <div
                     class="combat-stat flexrow"
                     id="combat-injuryroll">
@@ -406,7 +406,7 @@
                 {{/if}}
             </div>
             {{#if hasSteed}}
-            <div class="items-list combat-stats grid grid-fixed-row grid-5col">
+            <div class="items-list combat-stats grid grid-fixed-row-sml grid-5col">
                 {{#if (not adata.mounted)}}
                 <div
                     class="combat-stat flexrow"
@@ -883,9 +883,9 @@
             class="tab esoteric items"
             data-group="primary"
             data-tab="esoteric">
-            {{> char_esoteric_list_partial header="Psionic Talents" type="Psionic" dataType="psionic" skillList=psionics}}
-            {{> char_esoteric_list_partial header="Magic Spells" type="Spell" dataType="spell" skillList=spells}}
-            {{> char_esoteric_list_partial header="Ritual Invocations" type="Invocation" dataType="invocation" skillList=invocations}}
+            {{> char_v2_esoteric_list_partial header="Psionic Talents" type="Psionic" dataType="psionic" skillList=psionics}}
+            {{> char_v2_esoteric_list_partial header="Magic Spells" type="Spell" dataType="spell" skillList=spells}}
+            {{> char_v2_esoteric_list_partial header="Ritual Invocations" type="Invocation" dataType="invocation" skillList=invocations}}
         </div>
 
         {{!-- Friends, Foes & Followers Tab --}}
@@ -893,13 +893,13 @@
             class="tab f-f-f items"
             data-group="primary"
             data-tab="fff">
-            {{> char_fff_list_partial header='Party' character=true companions=companionParty}}
-            {{> char_fff_list_partial header='Animal Companions' companions=companionAnimal}}
-            {{> char_fff_list_partial header='Steeds' companions=companionSteed}}
-            {{> char_fff_list_partial header='Followers' character=true companions=companionFollower}}
-            {{> char_fff_list_partial header='Noteworthy Connections' character=true companions=companionConnection}}
-            {{> char_fff_list_partial header='Noteworthy Friends' character=true companions=companionFriend}}
-            {{> char_fff_list_partial header='Noteworthy Foes' character=true companions=companionFoe}}
+            {{> char_v2_fff_list_partial header='Party' character=true companions=companionParty}}
+            {{> char_v2_fff_list_partial header='Animal Companions' companions=companionAnimal}}
+            {{> char_v2_fff_list_partial header='Steeds' companions=companionSteed}}
+            {{> char_v2_fff_list_partial header='Followers' character=true companions=companionFollower}}
+            {{> char_v2_fff_list_partial header='Noteworthy Connections' character=true companions=companionConnection}}
+            {{> char_v2_fff_list_partial header='Noteworthy Friends' character=true companions=companionFriend}}
+            {{> char_v2_fff_list_partial header='Noteworthy Foes' character=true companions=companionFoe}}
         </div>
 
         {{!-- Inventory Tab --}}

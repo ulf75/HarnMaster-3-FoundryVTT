@@ -1,12 +1,24 @@
-<form class="{{ cssClass }} sheet flexcol" autocomplete="off">
+<form
+    class="{{ cssClass }} sheet flexcol"
+    autocomplete="off">
     {{! Sheet Header }}
     <header class="sheet-header sheet-header-character">
         <div class="flexrow">
-            <img class="profile-img" src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" height="100" width="100" />
+            <img
+                class="profile-img"
+                src="{{ actor.img }}"
+                data-edit="img"
+                title="{{ actor.name }}"
+                height="100"
+                width="100" />
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
                     <h1 class="charname">
-                        <input name="name" type="text" value="{{ actor.name }}" placeholder="Name" />
+                        <input
+                            name="name"
+                            type="text"
+                            value="{{ actor.name }}"
+                            placeholder="Name" />
                     </h1>
                     <div class="header-stat-block">
                         <!-- <div class="endurance flexrow">
@@ -20,7 +32,11 @@
                 <div class="header-attributes">
                     <ol class="flexrow">
                         <li class="attribute creature-species flexcol">
-                            <label for="system.species" class="label">Species</label>
+                            <label
+                                for="system.species"
+                                class="label">
+                                Species
+                            </label>
                             <input
                                 class="value"
                                 type="text"
@@ -30,8 +46,16 @@
                                 data-dtype="String" />
                         </li>
                         <li class="attribute creature-size flexcol">
-                            <label for="system.size" class="label">Size</label>
-                            <select class="value" id="system.size" name="system.size" disabled>
+                            <label
+                                for="system.size"
+                                class="label">
+                                Size
+                            </label>
+                            <select
+                                class="value"
+                                id="system.size"
+                                name="system.size"
+                                disabled>
                                 {{selectOptions
                                     config.creatureSizes
                                     selected=adata.size

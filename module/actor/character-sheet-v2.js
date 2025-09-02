@@ -8,11 +8,12 @@ export class CharacterSheetHM3v2 extends BaseActorSheetHM3v2 {
     /** @override */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ['hm3', 'sheet', 'actor', 'character'],
+            classes: ['hm3', 'sheet', 'actor', 'actor-v2', 'character'],
             width: 810,
             height: 850,
-            tabs: [{navSelector: '.sheet-tabs', contentSelector: '.sheet-body', initial: 'facade'}],
-            resizable: true
+            tabs: [{navSelector: '.sheet-tabs-v2', contentSelector: '.sheet-body-v2', initial: 'facade'}],
+            scrollY: ['.main-content'],
+            resizable: false
         });
     }
 
