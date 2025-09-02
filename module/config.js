@@ -44,6 +44,17 @@ HM3.skillTypes = [
     {key: 'Ritual'}
 ];
 
+HM3.miscItemTypes = [
+    {key: 'Coin'},
+    {key: 'Gem'},
+    {key: 'Herb'},
+    {key: 'Jewelry'},
+    {key: 'Misc'},
+    {key: 'Potion'},
+    {key: 'Rider'},
+    {key: 'Written'}
+];
+
 HM3.traitTypes = [{key: 'Physical'}, {key: 'Psyche'}];
 
 HM3.containerTypes = [{key: 'Container'}, {key: 'Group'}];

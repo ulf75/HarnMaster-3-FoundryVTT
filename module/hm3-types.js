@@ -287,9 +287,14 @@ export const Location = Object.freeze({
 });
 
 export const MiscItemType = Object.freeze({
-    STANDARD: 'Standard',
+    COIN: 'Coin',
+    GEM: 'Gem',
+    HERB: 'Herb',
+    JEWELRY: 'Jewelry',
+    MISC: 'Misc',
     POTION: 'Potion',
-    RIDER: 'Rider'
+    RIDER: 'Rider',
+    WRITTEN: 'Written'
 });
 
 /**

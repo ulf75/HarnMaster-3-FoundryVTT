@@ -7,6 +7,33 @@
 </div>
 {{> item_standard_partial}}
 {{> item_unknown_value_partial}}
+{{#if isGM}}
+<div class="resource-block">
+    <div class="item-type resource flexrow">
+        <label
+            for="system.type"
+            class="label">
+            Type
+        </label>
+        {{#if editable}}
+        <select
+            class="value"
+            id="system.type"
+            name="system.type">
+            {{selectOptions config.miscItemTypes selected=idata.type valueAttr="key" labelAttr="key"}}
+        </select>
+        {{else}}
+        <input
+            class="value"
+            type="text"
+            id="system.type"
+            name="system.type"
+            value="{{ idata.type }}"
+            disabled />
+        {{/if}}
+    </div>
+</div>
+{{/if}}
 {{> item_artifact_partial}}
 
 {{/item_layout_partial}}
