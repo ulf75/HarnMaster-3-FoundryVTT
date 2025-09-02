@@ -1,28 +1,46 @@
-<form class="{{ cssClass }} flexcol" spellcheck="false" autocomplete="off">
+<form
+    class="{{ cssClass }} flexcol"
+    spellcheck="false"
+    autocomplete="off">
     <header class="sheet-header">
-        <img src="{{ data.img }}" data-edit="img" title="{{ data.name }}" height="64" width="64" />
+        <img
+            src="{{ data.img }}"
+            data-edit="img"
+            title="{{ data.name }}"
+            height="64"
+            width="64" />
         <h1>
-            <input name="name" type="text" value="{{ data.name }}" placeholder="{{localize &quot;Name&quot;}}" />
+            <input
+                name="name"
+                type="text"
+                value="{{ data.name }}"
+                placeholder="{{localize &quot;Name&quot;}}" />
         </h1>
     </header>
 
     <div class="form-group">
         <label>{{localize 'Scope'}}</label>
-        <select name="scope" disabled>
+        <select
+            name="scope"
+            disabled>
             {{selectOptions macroScopes selected=data.scope}}
         </select>
     </div>
 
     <div class="form-group">
         <label>{{localize 'Type'}}</label>
-        <select name="type" disabled>
+        <select
+            name="type"
+            disabled>
             {{selectOptions macroTypes selected=data.type}}
         </select>
     </div>
 
     <div class="form-group">
         <label>Trigger</label>
-        <select name="trigger" disabled>
+        <select
+            name="trigger"
+            disabled>
             {{selectOptions triggerTypes selected='confidential'}}
         </select>
     </div>
@@ -37,7 +55,9 @@
             <i class="fas fa-save"></i>
             {{localize 'MACRO.Save'}}
         </button>
-        <button class="execute" type="button">
+        <button
+            class="execute"
+            type="button">
             <i class="fas fa-dice-d20"></i>
             {{localize 'MACRO.Execute'}}
         </button>

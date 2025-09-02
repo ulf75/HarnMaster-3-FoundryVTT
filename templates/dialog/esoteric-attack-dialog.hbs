@@ -2,7 +2,9 @@
     {{#if isMentalConflict}}
     <div class="form-group">
         <label for="mentalConflictType">Type:</label>
-        <select id="mentalConflictType" name="mentalConflictType">
+        <select
+            id="mentalConflictType"
+            name="mentalConflictType">
             {{selectOptions mentalConflictTypes selected=mentalConflictType valueAttr='key' labelAttr='label'}}
         </select>
     </div>
@@ -21,6 +23,10 @@
 
     <div class="form-group">
         <label for="addlModifier">Additional {{ type }} Modifier:</label>
-        <input type="number" id="addlModifier" name="addlModifier" value="{{ defaultModifier }}" />
+        <input
+            type="number"
+            id="addlModifier"
+            name="addlModifier"
+            value="{{ defaultModifier }}" />
     </div>
 </form>

@@ -13,7 +13,10 @@
     </li>
     <ol class="item-list fff-list">
         {{#each companions as | item |}}
-        <li class="item fff flexrow" data-item-id="{{ item.id }}" data-item-name="{{ item.name }}">
+        <li
+            class="item fff flexrow"
+            data-item-id="{{ item.id }}"
+            data-item-name="{{ item.name }}">
             <div class="item-name fff-name fff-roll flexrow">
                 <div
                     id="companion"
@@ -30,10 +33,15 @@
             {{/if}}
             <div class="item-detail fff-notes">{{ system.notes }}</div>
             <div class="item-controls-wide">
-                <a class="item-control item-edit" title="Edit Companion">
+                <a
+                    class="item-control item-edit"
+                    title="Edit Companion">
                     <i class="active fas fa-edit"></i>
                 </a>
-                <a class="item-control item-delete" title="Delete Companion" data-label="Companion">
+                <a
+                    class="item-control item-delete"
+                    title="Delete Companion"
+                    data-label="Companion">
                     <i class="active fas fa-trash"></i>
                 </a>
             </div>

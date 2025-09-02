@@ -1,8 +1,15 @@
-<form id="document-create actor-create" autocomplete="off">
+<form
+    id="document-create actor-create"
+    autocomplete="off">
     <div class="form-group">
         <label for="name">{{localize 'Name'}}</label>
         <div class="form-fields">
-            <input type="text" id="name" name="name" placeholder="{{ name }}" required />
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="{{ name }}"
+                required />
         </div>
     </div>
 
@@ -10,7 +17,9 @@
     <div class="form-group">
         <label for="type">{{localize 'Type'}}</label>
         <div class="form-fields">
-            <select id="type" name="type">
+            <select
+                id="type"
+                name="type">
                 {{selectOptions types selected=type}}
             </select>
         </div>
@@ -21,7 +30,9 @@
     <div class="form-group">
         <label for="folder">{{localize 'DOCUMENT.Folder'}}</label>
         <div class="form-fields">
-            <select id="folder" name="folder">
+            <select
+                id="folder"
+                name="folder">
                 {{selectOptions folders selected=folder blank='' valueAttr='id' labelAttr='name'}}
             </select>
         </div>
@@ -30,6 +41,9 @@
 
     <div class="form-group">
         <label class="init-checkbox">Initialize default skills &amp; locations</label>
-        <input type="checkbox" name="initDefaults" checked />
+        <input
+            type="checkbox"
+            name="initDefaults"
+            checked />
     </div>
 </form>

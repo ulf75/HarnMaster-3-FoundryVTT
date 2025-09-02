@@ -1,13 +1,21 @@
 <form id="create-item">
     <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="{{ placeholder }}" />
+        <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="{{ placeholder }}" />
     </div>
     {{#if extraLabel}}
     <div class="form-group">
         <label for="extra_value">{{ extraLabel }}</label>
         {{#if extraList}}
-        <select class="resource-value" id="extra_value" name="extra_value" data-dtype="String">
+        <select
+            class="resource-value"
+            id="extra_value"
+            name="extra_value"
+            data-dtype="String">
             {{#select extra_value}}
             {{#each extraList}}
             <option value="{{ this }}">{{ this }}</option>
@@ -15,7 +23,11 @@
             {{/select}}
         </select>
         {{else}}
-        <input type="text" id="extra_value" name="extra_value" data-dtype="String" />
+        <input
+            type="text"
+            id="extra_value"
+            name="extra_value"
+            data-dtype="String" />
         {{/if}}
     </div>
     {{/if}}

@@ -4,7 +4,10 @@
     </div>
     <div class="form-group">
         <label>Num Damage Dice:</label>
-        <input type="text" name="damageDice" value="{{ damageDice }}" />
+        <input
+            type="text"
+            name="damageDice"
+            value="{{ damageDice }}" />
     </div>
     <div class="form-group">
         <label for="weaponAspect">Weapon Aspect (&plus; Impact):</label>
@@ -12,7 +15,11 @@
             {{#select weaponAspect}}
             {{#each weaponAspects as |value key|}}
             {{#if (eq key weaponAspect)}}
-            <option value="{{ key }}" selected>{{ key }} ({{ value }})</option>
+            <option
+                value="{{ key }}"
+                selected>
+                {{ key }} ({{ value }})
+            </option>
             {{else}}
             <option value="{{ key }}">{{ key }} ({{ value }})</option>
             {{/if}}
@@ -22,6 +29,9 @@
     </div>
     <div class="form-group">
         <label>Additional Weapon Impact:</label>
-        <input type="text" name="addlWeaponImpact" value="{{ addlWeaponImpact }}" />
+        <input
+            type="text"
+            name="addlWeaponImpact"
+            value="{{ addlWeaponImpact }}" />
     </div>
 </form>

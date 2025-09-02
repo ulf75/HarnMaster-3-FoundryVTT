@@ -5,11 +5,18 @@
     {{#if isAbility}}
     <div class="form-group">
         <label for="effSkillBase">Eff Ability Base:</label>
-        <input readonly type="text" id="effSkillBase" name="effSkillBase" value="{{ effSkillBase }}" />
+        <input
+            readonly
+            type="text"
+            id="effSkillBase"
+            name="effSkillBase"
+            value="{{ effSkillBase }}" />
     </div>
     <div class="form-group">
         <label for="multipliers">Multiplier:</label>
-        <select id="multipliers" name="multipliers">
+        <select
+            id="multipliers"
+            name="multipliers">
             {{selectOptions multipliers selected=multiplier valueAttr='key' labelAttr='label'}}
         </select>
     </div>
@@ -17,19 +24,28 @@
     <div class="form-group">
         {{#if isTreatment}}
         <label for="physicianEml">Physician EML:</label>
-        <select id="physicianEml" name="physicianEml">
+        <select
+            id="physicianEml"
+            name="physicianEml">
             {{selectOptions physicianSkills selected=physicianEml valueAttr='key' labelAttr='label'}}
         </select>
         {{else}}
         <label for="target">Target:</label>
-        <input type="text" id="target" name="target" value="{{ target }}" readonly />
+        <input
+            type="text"
+            id="target"
+            name="target"
+            value="{{ target }}"
+            readonly />
         {{/if}}
     </div>
     {{/if}}
     {{#if isPhysician}}
     <div class="form-group">
         <label for="physicianEml">Physician ({{ physicianMod }}):</label>
-        <select id="physicianEml" name="physicianEml">
+        <select
+            id="physicianEml"
+            name="physicianEml">
             {{selectOptions physicianSkills selected=physicianEml valueAttr='key' labelAttr='label'}}
         </select>
     </div>
@@ -37,7 +53,11 @@
     {{#if isTreatment}}
     <div class="form-group">
         <label>Treatment Modifier:</label>
-        <input readonly type="text" name="treatmentModifier" value="{{ treatmentModifier }}" />
+        <input
+            readonly
+            type="text"
+            name="treatmentModifier"
+            value="{{ treatmentModifier }}" />
     </div>
     {{/if}}
     {{#if isMorale}}
@@ -50,12 +70,18 @@
     {{/if}}
     <div class="form-group">
         <label for="modifier">Modifier:</label>
-        <input type="text" id="modifier" name="modifier" value="{{ modifier }}" />
+        <input
+            type="text"
+            id="modifier"
+            name="modifier"
+            value="{{ modifier }}" />
     </div>
     {{#if isCraftOrLore}}
     <div class="form-group">
         <label>Analysis / Appraisal?</label>
-        <input type="checkbox" name="appraisal" />
+        <input
+            type="checkbox"
+            name="appraisal" />
     </div>
     {{/if}}
 </form>

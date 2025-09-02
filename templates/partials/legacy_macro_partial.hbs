@@ -1,15 +1,29 @@
 {{#if idata.macros.command}}
 <div class="macros">
     <div class="form-group">
-        <label for="system.macros.type" class="resource-label">Type</label>
-        <select id="system.macros.type" name="system.macros.type">
+        <label
+            for="system.macros.type"
+            class="resource-label">
+            Type
+        </label>
+        <select
+            id="system.macros.type"
+            name="system.macros.type">
             {{selectOptions macroTypes selected=idata.macros.type valueAttr="key" labelAttr="label"}}
         </select>
     </div>
 
     <div class="form-group stacked command">
-        <label for="system.macros.command" class="resource-label">Command</label>
-        <textarea id="system.macros.command" name="system.macros.command">{{ idata.macros.command }}</textarea>
+        <label
+            for="system.macros.command"
+            class="resource-label">
+            Command
+        </label>
+        <textarea
+            id="system.macros.command"
+            name="system.macros.command"
+            >{{ idata.macros.command }}</textarea
+        >
     </div>
 </div>
 {{/if}}

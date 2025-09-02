@@ -1,12 +1,18 @@
 <form>
     <div class="form-group">
         <label for="height">Height [ft]:</label>
-        <input type="text" id="height" name="height" value="{{ height }}" />
+        <input
+            type="text"
+            id="height"
+            name="height"
+            value="{{ height }}" />
     </div>
 
     <div class="form-group">
         <label for="surfaces">Landing surface:</label>
-        <select id="surfaces" name="surfaces">
+        <select
+            id="surfaces"
+            name="surfaces">
             {{selectOptions surfaces selected=surface valueAttr='key' labelAttr='label'}}
         </select>
     </div>
@@ -17,18 +23,30 @@
     </p>
     <div class="form-group">
         <label for="clear">Clear fall:</label>
-        <input type="checkbox" id="clear" name="clear" value="{{ clear }}" data-dtype="Boolean" checked />
+        <input
+            type="checkbox"
+            id="clear"
+            name="clear"
+            value="{{ clear }}"
+            data-dtype="Boolean"
+            checked />
     </div>
     <div class="form-group">
         <label for="skills">Skill:</label>
-        <select id="skills" name="skills">
+        <select
+            id="skills"
+            name="skills">
             {{selectOptions skills selected=skill valueAttr='key' labelAttr='key'}}
         </select>
     </div>
 
     <div class="form-group">
         <label for="modifier">Modifier:</label>
-        <input type="text" id="modifier" name="modifier" value="{{ modifier }}" />
+        <input
+            type="text"
+            id="modifier"
+            name="modifier"
+            value="{{ modifier }}" />
     </div>
 
     <p>
@@ -37,6 +55,11 @@
     </p>
     <div class="form-group">
         <label for="grabbing">Grabbing:</label>
-        <input type="checkbox" id="grabbing" name="grabbing" value="{{ grabbing }}" data-dtype="Boolean" />
+        <input
+            type="checkbox"
+            id="grabbing"
+            name="grabbing"
+            value="{{ grabbing }}"
+            data-dtype="Boolean" />
     </div>
 </form>

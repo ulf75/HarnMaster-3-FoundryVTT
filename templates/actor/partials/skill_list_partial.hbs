@@ -3,7 +3,9 @@
     <li class="items-header skill flexrow">
         <h3 class="item-name skill-name">
             {{ skillType }} Skills
-            <a class="more-info" data-journal-entry="Sheet - Skills Tab">
+            <a
+                class="more-info"
+                data-journal-entry="Sheet - Skills Tab">
                 <i class="far fa-question-circle"></i>
             </a>
         </h3>
@@ -28,18 +30,33 @@
     </li>
     <ol class="item-list skill-list">
         {{#each skills as | item |}}
-        <li class="item skill skill-item flexrow" data-item-id="{{ item.id }}" data-item-name="{{ item.name }}">
+        <li
+            class="item skill skill-item flexrow"
+            data-item-id="{{ item.id }}"
+            data-item-name="{{ item.name }}">
             <div class="item-name skill-roll skill-name flexrow">
-                <div class="item-image" style="background-image: url('{{ item.img }}')"></div>
+                <div
+                    class="item-image"
+                    style="background-image: url('{{ item.img }}')"></div>
                 <h4>{{ item.name }}</h4>
             </div>
             <div class="skill-ele item-detail">{{ system.skillBase.value }}</div>
             {{#if ../isCharacterMancer}}
             <div class="skill-ele item-detail">
-                <input type="text" name="item-sbx-special" id="{{ item.id }}-SBx" value="{{ system.skillBase.SBx }}" data-dtype="Number" />
+                <input
+                    type="text"
+                    name="item-sbx-special"
+                    id="{{ item.id }}-SBx"
+                    value="{{ system.skillBase.SBx }}"
+                    data-dtype="Number" />
             </div>
             <div class="skill-ele item-detail">
-                <input type="text" name="item-op-special" id="{{ item.id }}-OP" value="{{ system.skillBase.OP }}" data-dtype="Number" />
+                <input
+                    type="text"
+                    name="item-op-special"
+                    id="{{ item.id }}-OP"
+                    value="{{ system.skillBase.OP }}"
+                    data-dtype="Number" />
             </div>
             {{/if}}
             <div class="skill-ele item-detail">{{ system.masteryLevel }}</div>
@@ -47,7 +64,9 @@
             <div class="skill-notes">{{ system.notes }}</div>
             <div class="item-controls{{#if ../isSkillImprovement}}-wide{{/if}}">
                 {{#if item.isSkillImprovement}}
-                <a class="item-control item-improve" title="Improve Skill">
+                <a
+                    class="item-control item-improve"
+                    title="Improve Skill">
                     {{#if system.improveFlag}}
                     <i class="active fas fa-star"></i>
                     {{else}}
@@ -55,10 +74,15 @@
                     {{/if}}
                 </a>
                 {{/if}}
-                <a class="item-control item-edit" title="Edit Skill">
+                <a
+                    class="item-control item-edit"
+                    title="Edit Skill">
                     <i class="active fas fa-edit"></i>
                 </a>
-                <a class="item-control item-delete" title="Delete Skill" data-label="{{ skillType }} Skill">
+                <a
+                    class="item-control item-delete"
+                    title="Delete Skill"
+                    data-label="{{ skillType }} Skill">
                     <i class="active fas fa-trash"></i>
                 </a>
             </div>

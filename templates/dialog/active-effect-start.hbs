@@ -3,16 +3,26 @@
 
     <div class="form-group">
         <label class="checkbox">
-            <input type="radio" name="startType" value="unspecified" />
+            <input
+                type="radio"
+                name="startType"
+                value="unspecified" />
             Unspecified
         </label>
         <label class="checkbox">
-            <input type="radio" name="startType" value="nowGameTime" checked />
+            <input
+                type="radio"
+                name="startType"
+                value="nowGameTime"
+                checked />
             Now (Game Time)
         </label>
         {{#if combatId}}
         <label class="checkbox">
-            <input type="radio" name="startType" value="nowCombat" />
+            <input
+                type="radio"
+                name="startType"
+                value="nowCombat" />
             Now (Current Combat)
         </label>
         {{/if}}

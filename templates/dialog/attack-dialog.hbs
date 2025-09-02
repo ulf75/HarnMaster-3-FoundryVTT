@@ -36,7 +36,9 @@
 
     <div class="form-group">
         <label for="range">Range (Max Distance):</label>
-        <select id="range" name="range">
+        <select
+            id="range"
+            name="range">
             {{selectOptions ranges selected=defaultRange valueAttr='key' labelAttr='label'}}
         </select>
     </div>
@@ -44,20 +46,28 @@
 
     <div class="form-group">
         <label for="aim">Aim:</label>
-        <select id="aim" name="aim">
+        <select
+            id="aim"
+            name="aim">
             {{selectOptions aimLocations selected=defaultAim valueAttr='key' labelAttr='label'}}
         </select>
     </div>
 
     <div class="form-group">
         <label for="addlModifier">Additional {{ type }} Modifier:</label>
-        <input type="number" id="addlModifier" name="addlModifier" value="{{ defaultModifier }}" />
+        <input
+            type="number"
+            id="addlModifier"
+            name="addlModifier"
+            value="{{ defaultModifier }}" />
     </div>
 
     {{#if unarmed}}
     <div class="form-group">
         <label>Grapple Attack?</label>
-        <input type="checkbox" name="grapple" />
+        <input
+            type="checkbox"
+            name="grapple" />
     </div>
     {{/if}}
 </form>
