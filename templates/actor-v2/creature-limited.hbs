@@ -1,0 +1,74 @@
+<form class="{{ cssClass }} sheet flexcol" autocomplete="off">
+    {{! Sheet Header }}
+    <header class="sheet-header sheet-header-character">
+        <div class="flexrow">
+            <img class="profile-img" src="{{ actor.img }}" data-edit="img" title="{{ actor.name }}" height="100" width="100" />
+            <div class="flexcol header-fields">
+                <div class="flexrow name-attribute">
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{ actor.name }}" placeholder="Name" />
+                    </h1>
+                    <div class="header-stat-block">
+                        <!-- <div class="endurance flexrow">
+                            <span class="label">Shock Index: {{adata.shockIndex.value}}</span>
+                        </div>
+                        <div class="endbar">
+                            <span class="bar" style="width: {{adata.shockIndex.value}}%"></span>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="header-attributes">
+                    <ol class="flexrow">
+                        <li class="attribute creature-species flexcol">
+                            <label for="system.species" class="label">Species</label>
+                            <input
+                                class="value"
+                                type="text"
+                                id="system.species"
+                                name="system.species"
+                                value="{{ adata.species }}"
+                                data-dtype="String" />
+                        </li>
+                        <li class="attribute creature-size flexcol">
+                            <label for="system.size" class="label">Size</label>
+                            <select class="value" id="system.size" name="system.size" disabled>
+                                {{selectOptions
+                                    config.creatureSizes
+                                    selected=adata.size
+                                    valueAttr='key'
+                                    labelAttr='label'
+                                }}
+                            </select>
+                        </li>
+                        <li class="attribute flexcol"></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {{! Sheet Body }}
+    <section class="sheet-body">
+        <div class="facade">
+            <div class="flexrow">
+                <img
+                    class="facade-image"
+                    src="{{ adata.bioImage }}"
+                    data-edit="system.bioImage"
+                    title="{{ actor.name }}"
+                    height="300"
+                    width="200" />
+                <div class="facade-description">
+                    {{editor
+                        descriptionHTML
+                        target='system.description'
+                        button=true
+                        engine='prosemirror'
+                        owner=owner
+                        editable=editable
+                    }}
+                </div>
+            </div>
+        </div>
+    </section>
+</form>

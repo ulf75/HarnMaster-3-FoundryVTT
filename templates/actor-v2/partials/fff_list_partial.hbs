@@ -1,0 +1,44 @@
+{{#if companions}}
+<ol class="items-list fffs-list">
+    <li class="items-header fff flexrow">
+        <h3 class="item-name fff-name">{{ header }}</h3>
+        <div class="item-detail fff-gender">Gender</div>
+        {{#if character}}
+        <div class="item-detail fff-occupation">Occupation</div>
+        {{else}}
+        <div class="item-detail fff-species">Species</div>
+        {{/if}}
+        <div class="item-detail fff-notes">Notes</div>
+        <div class="item-controls-wide"></div>
+    </li>
+    <ol class="item-list fff-list">
+        {{#each companions as | item |}}
+        <li class="item fff flexrow" data-item-id="{{ item.id }}" data-item-name="{{ item.name }}">
+            <div class="item-name fff-name fff-roll flexrow">
+                <div
+                    id="companion"
+                    class="item-image"
+                    style="background-image: url('{{ item.img }}')"
+                    data-item-actor-uuid="{{ item.system.actorUuid }}"></div>
+                <h4>{{ item.name }}</h4>
+            </div>
+            <div class="item-detail fff-gender">{{ gender }}</div>
+            {{#if character}}
+            <div class="item-detail fff-occupation">{{ occupation }}</div>
+            {{else}}
+            <div class="item-detail fff-species">{{ species }}</div>
+            {{/if}}
+            <div class="item-detail fff-notes">{{ system.notes }}</div>
+            <div class="item-controls-wide">
+                <a class="item-control item-edit" title="Edit Companion">
+                    <i class="active fas fa-edit"></i>
+                </a>
+                <a class="item-control item-delete" title="Delete Companion" data-label="Companion">
+                    <i class="active fas fa-trash"></i>
+                </a>
+            </div>
+        </li>
+        {{/each}}
+    </ol>
+</ol>
+{{/if}}

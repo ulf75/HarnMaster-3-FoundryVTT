@@ -2,8 +2,11 @@
 import {BaseTestHM3} from '../tests/hm3-basetest.js';
 import {runner} from '../tests/runner.js';
 import {ActorHM3} from './actor/actor.js';
+import {CharacterSheetHM3v2} from './actor/character-sheet-v2.js';
 import {CharacterSheetHM3} from './actor/character-sheet.js';
+import {ContainerSheetHM3v2} from './actor/container-sheet-v2.js';
 import {ContainerSheetHM3} from './actor/container-sheet.js';
+import {CreatureSheetHM3v2} from './actor/creature-sheet-v2.js';
 import {CreatureSheetHM3} from './actor/creature-sheet.js';
 import * as combat from './combat.js';
 import {HM3} from './config.js';
@@ -251,18 +254,30 @@ Hooks.once('init', async function () {
     Actors.unregisterSheet('core', ActorSheet);
     Actors.registerSheet('hm3', CharacterSheetHM3, {
         types: ['character'],
+        label: 'HM3 Character Sheet'
+    });
+    Actors.registerSheet('hm3', CharacterSheetHM3v2, {
+        types: ['character'],
         makeDefault: true,
-        label: 'Default HarnMaster Character Sheet'
+        label: 'HM3 Character Sheet v2'
     });
     Actors.registerSheet('hm3', CreatureSheetHM3, {
         types: ['creature'],
+        label: 'HM3 Creature Sheet'
+    });
+    Actors.registerSheet('hm3', CreatureSheetHM3v2, {
+        types: ['creature'],
         makeDefault: true,
-        label: 'Default HarnMaster Creature Sheet'
+        label: 'HM3 Creature Sheet v2'
     });
     Actors.registerSheet('hm3', ContainerSheetHM3, {
         types: ['container'],
+        label: 'HM3 Container Sheet'
+    });
+    Actors.registerSheet('hm3', ContainerSheetHM3v2, {
+        types: ['container'],
         makeDefault: true,
-        label: 'Default HarnMaster Container Sheet'
+        label: 'HM3 Container Sheet v2'
     });
 
     DocumentSheetConfig.unregisterSheet(ActiveEffect, 'core', ActiveEffectConfig);
