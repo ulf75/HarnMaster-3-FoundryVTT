@@ -24,6 +24,17 @@ export class ItemHM3 extends Item {
                 };
                 const t = ctx.system.type || gearTypes[ctx.type];
                 return t === 'Misc' ? 'Misc. Gear' : t;
+            },
+            get equipLabel() {
+                if (ctx.derived.type === 'Armour')
+                    return ctx.system.isEquipped ? `Doff ${ctx.name}` : `Don ${ctx.name}`;
+                return ctx.system.isEquipped ? `Unequip ${ctx.name}` : `Equip ${ctx.name}`;
+            },
+            get carryLabel() {
+                return ctx.system.isCarried ? `Drop ${ctx.name}` : `Carry ${ctx.name}`;
+            },
+            get injuryRollLabel() {
+                return ctx.system.healRate === 0 ? `Treatment Roll` : `Healing Roll`;
             }
         };
     }

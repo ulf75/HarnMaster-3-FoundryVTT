@@ -836,8 +836,8 @@
                         <div class="item-detail injury-healrate active">
                             <a
                                 class="healing-roll"
-                                aria-label="{{ item.name }} Healing Roll"
-                                data-tooltip="{{ item.name }} Healing Roll"
+                                aria-label="{{ item.derived.injuryRollLabel }}"
+                                data-tooltip="{{ item.derived.injuryRollLabel }}"
                                 data-tooltip-direction="UP">
                                 {{#if (gt system.healRate 6)}}EE{{else}}{{ system.healRate }}{{/if}}
                             </a>
@@ -1098,16 +1098,16 @@
                             {{#unless (or (eq item.type "containergear") (eq item.type "miscgear"))}}
                             <a
                                 class="item-control item-equip"
-                                aria-label="Equip {{ item.name }}"
-                                data-tooltip="Equip {{ item.name }}"
+                                aria-label="{{ item.derived.equipLabel }}"
+                                data-tooltip="{{ item.derived.equipLabel }}"
                                 data-tooltip-direction="UP">
                                 <i class="{{#if system.isEquipped}}active{{/if}} fas fa-shield-alt"></i>
                             </a>
                             {{/unless}}
                             <a
                                 class="item-control item-carry"
-                                aria-label="Carry {{ item.name }}"
-                                data-tooltip="Carry {{ item.name }}"
+                                aria-label="{{ item.derived.carryLabel }}"
+                                data-tooltip="{{ item.derived.carryLabel }}"
                                 data-tooltip-direction="UP">
                                 <i class="{{#if system.isCarried}}active{{/if}} fas fa-suitcase"></i>
                             </a>
