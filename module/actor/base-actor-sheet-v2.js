@@ -245,15 +245,6 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             }
         });
 
-        data.gearTypes = {
-            'armorgear': 'Armour',
-            'containergear': 'Container',
-            'effectgear': 'Effect',
-            'miscgear': 'Misc. Gear',
-            'missilegear': 'Missile Wpn',
-            'weapongear': 'Melee Wpn'
-        };
-
         // get active effects
         data.effects = {};
         this.actor.allApplicableEffects().forEach((effect) => {

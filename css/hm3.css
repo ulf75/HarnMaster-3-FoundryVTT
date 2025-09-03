@@ -2724,6 +2724,10 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     font-size: 13px;
 }
 
+.hm3 .sheet-body .ability-scores .ability .ability-name:first-letter {
+    text-transform: uppercase;
+}
+
 .hm3 .sheet-body .ability-scores .ability .ability-value {
     font-size: 25px;
     font-weight: bold;

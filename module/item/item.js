@@ -10,6 +10,24 @@ import * as utility from '../utility.js';
 export class ItemHM3 extends Item {
     _impactTypeChanged = false;
 
+    get derived() {
+        const ctx = this;
+        return {
+            get type() {
+                const gearTypes = {
+                    'armorgear': 'Armour',
+                    'containergear': 'Container',
+                    'effectgear': 'Effect',
+                    'miscgear': 'Misc. Gear',
+                    'missilegear': 'Missile Wpn',
+                    'weapongear': 'Melee Wpn'
+                };
+                const t = ctx.system.type || gearTypes[ctx.type];
+                return t === 'Misc' ? 'Misc. Gear' : t;
+            }
+        };
+    }
+
     /**
      * @override
      */

@@ -19,6 +19,7 @@
       "run": "Run",
       "sprint": "Sprint",
       "walk": "Walk"
-    }
+    },
+    "gear": {"Carry": "Tragen"}
   }
 }

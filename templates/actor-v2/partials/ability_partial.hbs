@@ -1,0 +1,36 @@
+<li
+    class="ability"
+    data-ability="{{ name }}">
+    <h4 class="ability-name box-title rollable">{{ name }}</h4>
+    <h3 class="ability-value">{{ eff }}</h3>
+    <div class="ability-modifiers flexrow">
+        <div class="item-dice">
+            <a
+                class="ability-d6-roll"
+                data-ability="{{ name }}"
+                aria-label="3d6 {{ capitalizeFirstLetter name }} Roll"
+                data-tooltip="3d6 {{ capitalizeFirstLetter name }} Roll"
+                data-tooltip-direction="UP">
+                <i class="fas fa-dice-d6"></i>
+            </a>
+        </div>
+        <div class="ability-box">
+            <input
+                class="ability-base"
+                type="number"
+                name="system.abilities.{{ name }}.base"
+                value="{{ base }}"
+                data-dtype="Number" />
+        </div>
+        <div class="item-dice">
+            <a
+                class="ability-d100-roll"
+                data-ability="{{ name }}"
+                aria-label="1d100 {{ capitalizeFirstLetter name }} Roll"
+                data-tooltip="1d100 {{ capitalizeFirstLetter name }} Roll"
+                data-tooltip-direction="UP">
+                <i class="fas fa-dice-d20"></i>
+            </a>
+        </div>
+    </div>
+</li>

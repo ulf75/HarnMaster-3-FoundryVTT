@@ -22,6 +22,10 @@
                 font-size: 13px;
             }
 
+            .ability-name:first-letter {
+                text-transform: uppercase;
+            }
+
             .ability-value {
                 font-size: 25px;
                 font-weight: bold;

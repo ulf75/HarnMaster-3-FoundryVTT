@@ -311,6 +311,10 @@ Hooks.once('init', async function () {
         return str.toLowerCase();
     });
 
+    Handlebars.registerHelper('capitalizeFirstLetter', function (str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    });
+
     Handlebars.registerHelper('not', function (obj) {
         return !obj;
     });
@@ -328,6 +332,7 @@ Hooks.once('init', async function () {
         char_layout_partial: await (await fetch(`${root}actor/partials/structure_partial.hbs`)).text(),
         char_skill_list_partial: await (await fetch(`${root}actor/partials/skill_list_partial.hbs`)).text(),
         //character v2
+        char_v2_ability_partial: await (await fetch(`${root}actor-v2/partials/ability_partial.hbs`)).text(),
         char_v2_esoteric_list_partial: await (await fetch(`${root}actor-v2/partials/esoteric_list_partial.hbs`)).text(),
         char_v2_fff_list_partial: await (await fetch(`${root}actor-v2/partials/fff_list_partial.hbs`)).text(),
         char_v2_layout_partial: await (await fetch(`${root}actor-v2/partials/structure_partial.hbs`)).text(),

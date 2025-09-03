@@ -2,8 +2,8 @@ export class RollHM3 extends Roll {
     constructor(formula, data = {}, options = {}) {
         super(formula, data, options);
 
-        console.assert(options.name, '');
-        console.assert(options.type, '');
+        // console.assert(options.name, '');
+        // console.assert(options.type, '');
 
         this._target = options.target ?? null;
         this._check = this._target !== null ? (formula.toLowerCase().includes('d100') ? 'd100' : 'd6') : null;

@@ -7,424 +7,21 @@
     data-tab="profile">
     <div class="flexcol">
         <ul class="flexrow ability-scores">
-            <li
-                class="ability"
-                data-ability="strength">
-                <h4 class="ability-name box-title rollable">Strength</h4>
-                <h3 class="ability-value">{{ adata.abilities.strength.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="strength"
-                            title="d6 Strength Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.strength.base"
-                            value="{{ adata.abilities.strength.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="strength"
-                            title="d100 Strength Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <li
-                class="ability"
-                data-ability="stamina">
-                <h4 class="ability-name box-title rollable">Stamina</h4>
-                <h3 class="ability-value">{{ adata.abilities.stamina.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="stamina"
-                            title="d6 Stamina Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.stamina.base"
-                            value="{{ adata.abilities.stamina.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="stamina"
-                            title="d100 Stamina Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <li
-                class="ability"
-                data-ability="dexterity">
-                <h4 class="ability-name box-title rollable">Dexterity</h4>
-                <h3 class="ability-value">{{ adata.abilities.dexterity.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="dexterity"
-                            title="d6 Dexterity Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.dexterity.base"
-                            value="{{ adata.abilities.dexterity.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="dexterity"
-                            title="d100 Dexterity Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <li
-                class="ability"
-                data-ability="agility">
-                <h4 class="ability-name box-title rollable">Agility</h4>
-                <h3 class="ability-value">{{ adata.abilities.agility.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="agility"
-                            title="d6 Agility Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.agility.base"
-                            value="{{ adata.abilities.agility.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="agility"
-                            title="d100 Agility Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <li
-                class="ability"
-                data-ability="intelligence">
-                <h4 class="ability-name box-title rollable">Intelligence</h4>
-                <h3 class="ability-value">{{ adata.abilities.intelligence.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="intelligence"
-                            title="d6 Intelligence Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.intelligence.base"
-                            value="{{ adata.abilities.intelligence.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="intelligence"
-                            title="d100 Intelligence Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <li
-                class="ability"
-                data-ability="aura">
-                <h4 class="ability-name box-title rollable">Aura</h4>
-                <h3 class="ability-value">{{ adata.abilities.aura.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="aura"
-                            title="d6 Aura Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.aura.base"
-                            value="{{ adata.abilities.aura.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="aura"
-                            title="d100 Aura Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <li
-                class="ability"
-                data-ability="will">
-                <h4 class="ability-name box-title rollable">Will</h4>
-                <h3 class="ability-value">{{ adata.abilities.will.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="will"
-                            title="d6 Will Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.will.base"
-                            value="{{ adata.abilities.will.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="will"
-                            title="d100 Will Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
+            {{> char_v2_ability_partial name='strength' base=adata.abilities.strength.base eff=adata.abilities.strength.effective}}
+            {{> char_v2_ability_partial name='stamina' base=adata.abilities.stamina.base eff=adata.abilities.stamina.effective}}
+            {{> char_v2_ability_partial name='dexterity' base=adata.abilities.dexterity.base eff=adata.abilities.dexterity.effective}}
+            {{> char_v2_ability_partial name='agility' base=adata.abilities.agility.base eff=adata.abilities.agility.effective}}
+            {{> char_v2_ability_partial name='intelligence' base=adata.abilities.intelligence.base eff=adata.abilities.intelligence.effective}}
+            {{> char_v2_ability_partial name='aura' base=adata.abilities.aura.base eff=adata.abilities.aura.effective}}
+            {{> char_v2_ability_partial name='will' base=adata.abilities.will.base eff=adata.abilities.will.effective}}
         </ul>
         <ul class="flexrow ability-scores">
-            <li
-                class="ability"
-                data-ability="eyesight">
-                <h4 class="ability-name box-title rollable">Eyesight</h4>
-                <h3 class="ability-value">{{ adata.abilities.eyesight.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="eyesight"
-                            title="d6 Eyesight Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.eyesight.base"
-                            value="{{ adata.abilities.eyesight.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="eyesight"
-                            title="d100 Eyesight Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <li
-                class="ability"
-                data-ability="hearing">
-                <h4 class="ability-name box-title rollable">Hearing</h4>
-                <h3 class="ability-value">{{ adata.abilities.hearing.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="hearing"
-                            title="d6 Hearing Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.hearing.base"
-                            value="{{ adata.abilities.hearing.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="hearing"
-                            title="d100 Hearing Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <li
-                class="ability"
-                data-ability="smell">
-                <h4 class="ability-name box-title rollable">Smell</h4>
-                <h3 class="ability-value">{{ adata.abilities.smell.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="smell"
-                            title="d6 Smell Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.smell.base"
-                            value="{{ adata.abilities.smell.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="smell"
-                            title="d100 Smell Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <li
-                class="ability"
-                data-ability="voice">
-                <h4 class="ability-name box-title rollable">Voice</h4>
-                <h3 class="ability-value">{{ adata.abilities.voice.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="voice"
-                            title="d6 Voice Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.voice.base"
-                            value="{{ adata.abilities.voice.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="voice"
-                            title="d100 Voice Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <li
-                class="ability"
-                data-ability="comeliness">
-                <h4 class="ability-name box-title rollable">Comeliness</h4>
-                <h3 class="ability-value">{{ adata.abilities.comeliness.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="comeliness"
-                            title="d6 Comeliness Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.comeliness.base"
-                            value="{{ adata.abilities.comeliness.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="comeliness"
-                            title="d100 Comeliness Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <li
-                class="ability"
-                data-ability="morality">
-                <h4 class="ability-name box-title rollable">Morality</h4>
-                <h3 class="ability-value">{{ adata.abilities.morality.effective }}</h3>
-                <div class="ability-modifiers flexrow">
-                    <div class="item-dice">
-                        <a
-                            class="ability-d6-roll"
-                            data-ability="morality"
-                            title="d6 Morality Roll">
-                            <i class="fas fa-dice-d6"></i>
-                        </a>
-                    </div>
-                    <div class="ability-box">
-                        <input
-                            class="ability-base"
-                            type="number"
-                            name="system.abilities.morality.base"
-                            value="{{ adata.abilities.morality.base }}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="item-dice">
-                        <a
-                            class="ability-d100-roll"
-                            data-ability="morality"
-                            title="d100 Morality Roll">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
+            {{> char_v2_ability_partial name='eyesight' base=adata.abilities.eyesight.base eff=adata.abilities.eyesight.effective}}
+            {{> char_v2_ability_partial name='hearing' base=adata.abilities.hearing.base eff=adata.abilities.hearing.effective}}
+            {{> char_v2_ability_partial name='smell' base=adata.abilities.smell.base eff=adata.abilities.smell.effective}}
+            {{> char_v2_ability_partial name='voice' base=adata.abilities.voice.base eff=adata.abilities.voice.effective}}
+            {{> char_v2_ability_partial name='comeliness' base=adata.abilities.comeliness.base eff=adata.abilities.comeliness.effective}}
+            {{> char_v2_ability_partial name='morality' base=adata.abilities.morality.base eff=adata.abilities.morality.effective}}
         </ul>
         <div class="profile-params">
             <div class="flexrow profile-item">
@@ -636,7 +233,9 @@
                     <div class="item-controls">
                         <a
                             class="item-control item-create active"
-                            title="Create Physical Trait"
+                            aria-label="Create Physical Trait"
+                            data-tooltip="Create Physical Trait"
+                            data-tooltip-direction="UP"
                             data-type="trait"
                             data-traittype="Physical">
                             <i class="fas fa-plus"></i>
@@ -661,12 +260,16 @@
                         <div class="item-controls">
                             <a
                                 class="item-control item-edit"
-                                title="Edit Trait">
+                                aria-label="Edit Trait"
+                                data-tooltip="Edit Trait"
+                                data-tooltip-direction="UP">
                                 <i class="active fas fa-edit"></i>
                             </a>
                             <a
                                 class="item-control item-delete"
-                                title="Delete Trait"
+                                aria-label="Delete Trait"
+                                data-tooltip="Delete Trait"
+                                data-tooltip-direction="UP"
                                 data-label="Physical Trait">
                                 <i class="active fas fa-trash"></i>
                             </a>
@@ -690,7 +293,9 @@
                     <div class="item-controls">
                         <a
                             class="item-control item-create active"
-                            title="Create Psyche Trait"
+                            aria-label="Create Psyche Trait"
+                            data-tooltip="Create Psyche Trait"
+                            data-tooltip-direction="UP"
                             data-type="trait"
                             data-traittype="Psyche">
                             <i class="fas fa-plus"></i>
@@ -715,12 +320,16 @@
                         <div class="item-controls">
                             <a
                                 class="item-control item-edit"
-                                title="Edit Trait">
+                                aria-label="Edit Trait"
+                                data-tooltip="Edit Trait"
+                                data-tooltip-direction="UP">
                                 <i class="active fas fa-edit"></i>
                             </a>
                             <a
                                 class="item-control item-delete"
-                                title="Delete Trait"
+                                aria-label="Delete Trait"
+                                data-tooltip="Delete Trait"
+                                data-tooltip-direction="UP"
                                 data-label="Psyche Trait">
                                 <i class="active fas fa-trash"></i>
                             </a>
