@@ -1,0 +1,57 @@
+{{#> item_v2_layout_partial nameReadOnly=(not hasRwPermission) }}
+
+<div class="grid grid-2col">
+    <div class="resource">
+        <label
+            for="system.diety"
+            class="resource-label">
+            Diety
+        </label>
+        {{#if hasRitualSkills}}
+        <span class="resource-span">
+            {{#if (and hasRwPermission editable)}}
+            <select
+                class="value"
+                id="system.diety"
+                name="system.diety"
+                data-dtype="String">
+                {{#select idata.diety}}
+                {{#each dieties}}
+                <option value="{{ this }}">{{ this }}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            {{else}}
+            <select
+                class="value"
+                id="system.diety"
+                name="system.diety"
+                data-dtype="String"
+                disabled>
+                {{#select idata.diety}}
+                {{#each dieties}}
+                <option value="{{ this }}">{{ this }}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            {{/if}}
+        </span>
+        {{else}}
+        <input class="value" type="text" id="system.diety" name="system.diety" value="{{ idata.diety }}" data-dtype="String"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
+        {{/if}}
+    </div>
+    <div class="resource">
+        <label
+            for="system.circle"
+            class="resource-label">
+            Circle
+        </label>
+        <input class="value" type="number" id="system.circle" name="system.circle" value="{{ idata.circle }}" data-dtype="Number"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
+    </div>
+</div>
+{{> item_v2_standard_partial}}
+{{> item_v2_esoteric_combat_partial}}
+
+{{/item_v2_layout_partial}}

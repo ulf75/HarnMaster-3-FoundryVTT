@@ -1,0 +1,40 @@
+{{#> item_v2_layout_partial nameReadOnly=(not hasRwPermission) }}
+
+<div class="grid grid-fixed-row grid-2col">
+    <div class="resource">
+        <label
+            for="system.convocation"
+            class="resource-label">
+            Convocation
+        </label>
+        {{#if hasMagicSkills}}
+        <select
+            class="resource-value"
+            id="system.convocation"
+            name="system.convocation"
+            data-dtype="String">
+            {{#select idata.convocation}}
+            {{#each convocations}}
+            <option value="{{ this }}">{{ this }}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+        {{else}}
+        <input class="value" type="text" id="system.convocation" name="system.convocation" value="{{ idata.convocation }}"
+        data-dtype="String" {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
+        {{/if}}
+    </div>
+    <div class="resource">
+        <label
+            for="system.level"
+            class="resource-label">
+            Level
+        </label>
+        <input class="value" type="number" id="system.level" name="system.level" value="{{ idata.level }}" data-dtype="Number"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
+    </div>
+</div>
+{{> item_v2_standard_partial}}
+{{> item_v2_esoteric_combat_partial}}
+
+{{/item_v2_layout_partial}}

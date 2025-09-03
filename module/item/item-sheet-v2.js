@@ -21,7 +21,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
 
     /** @override */
     get template() {
-        const path = 'systems/hm3/templates/item';
+        const path = 'systems/hm3/templates/item-v2';
         return `${path}/${this.item.type}-sheet.hbs`;
     }
 

@@ -1,0 +1,21 @@
+{{#> item_v2_layout_partial  }}
+
+<div class="grid grid-fixed-row grid-2col">
+    <div
+        class="resource"
+        id="injury-healrate">
+        <label class="resource-label">Heal Rate (HR)</label>
+        <input class="value" type="number" name="system.healRate" value="{{ idata.healRate }}" data-dtype="Number"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
+    </div>
+    <div
+        class="resource"
+        id="injury-level">
+        <label class="resource-label">Injury Level (IL)</label>
+        <input class="value" type="number" name="system.injuryLevel" value="{{ idata.injuryLevel }}" data-dtype="Number"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
+    </div>
+</div>
+{{> item_v2_standard_partial}}
+
+{{/item_v2_layout_partial}}

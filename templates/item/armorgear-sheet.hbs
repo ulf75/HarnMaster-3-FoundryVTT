@@ -1,108 +1,76 @@
 {{#> item_layout_partial container=true }}
 
 <div class="grid grid-fixed-row grid-3col">
-    {{> item_quantity_partial}}
-    {{> item_weight_partial}}
-    {{> item_value_partial}}
+    <div class="resource" id="armorgear-qty">
+        <label class="resource-label">Quantity</label>
+        <input type="number" name="system.quantity" value="{{ idata.quantity }}" data-dtype="Number" />
+    </div>
+    <div class="resource" id="armorgear-weight">
+        <label class="resource-label">Weight</label>
+        <input type="number" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div class="resource" id="armorgear-value">
+        <label class="resource-label">Value</label>
+        {{#if hasRwPermission}}
+        <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" />
+        {{else}}
+        {{#if idata.unknownValue}}
+        <input type="text" value="Unknown" data-dtype="String" disabled />
+        {{else}}
+        <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" disabled />
+        {{/if}}
+        {{/if}}
+    </div>
 </div>
 <div class="grid grid-fixed-row grid-3col">
-    <div
-        class="resource"
-        id="armorgear-quality">
+    <div class="resource" id="armorgear-quality">
         <label class="resource-label">Armor Quality</label>
         <input class="value" type="number" id="system.armorQuality" name="system.armorQuality" value="{{ idata.armorQuality }}"
-        data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+        data-dtype="Number" {{#unless hasRwPermission}}disabled{{/unless}} />
     </div>
-    <div
-        class="resource"
-        id="armorgear-material">
-        <label
-            for="system.material"
-            class="resource-label">
-            Material
-        </label>
+    <div class="resource" id="armorgear-material">
+        <label for="system.material" class="resource-label">Material</label>
         <input class="value" type="text" id="system.material" name="system.material" value="{{ idata.material }}" data-dtype="String"
-        {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+        {{#unless hasRwPermission}}disabled{{/unless}} />
     </div>
-    <div
-        class="resource"
-        id="armorgear-size">
-        <label
-            for="system.size"
-            class="resource-label">
-            Size
-        </label>
-        <input class="value" type="number" id="system.size" name="system.size" value="{{ idata.size }}" data-dtype="Number"
-        {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+    <div class="resource" id="armorgear-size">
+        <label class="resource-label">Size</label>
+        <input class="value" type="number" name="system.size" value="{{ idata.size }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
     </div>
 </div>
 <fieldset class="armorgear-protection">
     <legend>Protection</legend>
     <div class="grid grid-fixed-row grid-4col">
-        <div class="resource">
-            <label
-                for="system.protection.blunt"
-                class="resource-label">
-                Blunt
-            </label>
-            <input class="value" type="number" id="system.protection.blunt" name="system.protection.blunt" value="{{
-                idata.protection.blunt
-            }}" data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+        <div class="resource" id="armorgear-blunt">
+            <label class="resource-label">Blunt</label>
+            <input class="value" type="number" name="system.protection.blunt" value="{{ idata.protection.blunt }}" data-dtype="Number"
+            {{#unless hasRwPermission}}disabled{{/unless}} />
         </div>
-        <div
-            class="resource"
-            id="armorgear-edged">
-            <label
-                for="system.protection.edged"
-                class="resource-label">
-                Edged
-            </label>
-            <input class="value" type="number" id="system.protection.edged" name="system.protection.edged" value="{{
-                idata.protection.edged
-            }}" data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+        <div class="resource" id="armorgear-edged">
+            <label class="resource-label">Edged</label>
+            <input class="value" type="number" name="system.protection.edged" value="{{ idata.protection.edged }}" data-dtype="Number"
+            {{#unless hasRwPermission}}disabled{{/unless}} />
         </div>
-        <div
-            class="resource"
-            id="armorgear-piercing">
-            <label
-                for="system.protection.piercing"
-                class="resource-label">
-                Piercing
-            </label>
-            <input class="value" type="number" id="system.protection.piercing" name="system.protection.piercing" value="{{
-                idata.protection.piercing
-            }}" data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+        <div class="resource" id="armorgear-piercing">
+            <label class="resource-label">Piercing</label>
+            <input class="value" type="number" name="system.protection.piercing" value="{{ idata.protection.piercing }}" data-dtype="Number"
+            {{#unless hasRwPermission}}disabled{{/unless}} />
         </div>
-        <div
-            class="resource"
-            id="armorgear-fire">
-            <label
-                for="system.protection.fire"
-                class="resource-label">
-                Fire
-            </label>
-            <input class="value" type="number" id="system.protection.fire" name="system.protection.fire" value="{{ idata.protection.fire }}"
-            data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+        <div class="resource" id="armorgear-fire">
+            <label class="resource-label">Fire</label>
+            <input class="value" type="number" name="system.protection.fire" value="{{ idata.protection.fire }}" data-dtype="Number"
+            {{#unless hasRwPermission}}disabled{{/unless}} />
         </div>
     </div>
 </fieldset>
-<fieldset
-    class="armor-locations-list"
-    id="armorgear-locations-list">
+<fieldset class="armor-locations-list" id="armorgear-locations-list">
     <legend>Locations</legend>
-    {{#if (and hasRwPermission editable)}}
-    <div
-        class="armorgear-location resource flexrow"
-        id="armorgear-location-select">
-        <label
-            for="system.targetLocation"
-            class="resource-label">
-            Location
-        </label>
-        <select
-            class="value"
-            id="system.targetLocation"
-            name="system.targetLocation">
+    {{#if hasRwPermission}}
+    <div class="armorgear-location resource flexrow" id="armorgear-location-select">
+        <label for="system.targetLocation" class="resource-label">Location</label>
+        <select class="value" id="system.targetLocation" name="system.targetLocation">
             {{#select idata.targetLocation}}
             {{#each config.injuryLocations as |value key|}}
             {{#if (ne key "Custom")}}
@@ -111,25 +79,18 @@
             {{/each}}
             {{/select}}
         </select>
-        <a
-            class="armorgear-location-add"
-            data-location="{{ idata.targetLocation }}">
+        <a class="armorgear-location-add" data-location="{{ idata.targetLocation }}">
             <i class="fas fa-plus"></i>
             Add
         </a>
     </div>
     {{/if}}
-    <ol
-        class="grid grid-fixed-row-xs grid-4col"
-        id="armorgear-location-display">
+    <ol class="grid grid-fixed-row grid-4col" id="armorgear-location-display">
         {{#each idata.locations}}
         <li class="armor-location">
             <span class="name">{{ this }}</span>
             {{#if hasRwPermission}}
-            <a
-                class="armorgear-location-delete"
-                data-location="{{ this }}"
-                title="Delete Location">
+            <a class="armorgear-location-delete" data-location="{{ this }}" title="Delete Location">
                 <i class="fas fa-trash"></i>
             </a>
             {{/if}}

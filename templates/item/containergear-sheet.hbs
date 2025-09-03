@@ -2,13 +2,31 @@
 
 {{#unless (eq idata.type "Group")}}
 <div class="grid grid-fixed-row grid-4col">
-    {{> item_quantity_partial}}
-    {{> item_weight_partial}}
-    {{> item_value_partial}}
+    <div class="resource">
+        <label class="resource-label">Quantity</label>
+        <input type="number" name="system.quantity" value="{{ idata.quantity }}" readonly data-dtype="Number" />
+    </div>
+    <div class="resource">
+        <label class="resource-label">Weight</label>
+        <input type="number" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div class="resource">
+        <label class="resource-label">Value</label>
+        {{#if hasRwPermission}}
+        <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" />
+        {{else}}
+        {{#if idata.unknownValue}}
+        <input type="text" value="Unknown" data-dtype="String" disabled />
+        {{else}}
+        <input type="number" name="system.value" value="{{ idata.value }}" data-dtype="Number" disabled />
+        {{/if}}
+        {{/if}}
+    </div>
     <div class="resource">
         <label class="resource-label">Max Capacity</label>
-        <input class="value" type="number" name="system.capacity.max" value="{{ idata.capacity.max }}" data-dtype="Number"
-        {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+        <input type="number" name="system.capacity.max" value="{{ idata.capacity.max }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
     </div>
 </div>
 {{/unless}}

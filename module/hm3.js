@@ -342,11 +342,22 @@ Hooks.once('init', async function () {
         item_artifact_power_partial: await (await fetch(`${root}item/partials/artifact_power_partial.hbs`)).text(),
         item_esoteric_combat_partial: await (await fetch(`${root}item/partials/esoteric_combat_partial.hbs`)).text(),
         item_layout_partial: await (await fetch(`${root}item/partials/structure_partial.hbs`)).text(),
-        item_quantity_partial: await (await fetch(`${root}item/partials/quantity_partial.hbs`)).text(),
         item_standard_partial: await (await fetch(`${root}item/partials/standard_partial.hbs`)).text(),
         item_unknown_value_partial: await (await fetch(`${root}item/partials/unknown_value_partial.hbs`)).text(),
-        item_value_partial: await (await fetch(`${root}item/partials/value_partial.hbs`)).text(),
-        item_weight_partial: await (await fetch(`${root}item/partials/weight_partial.hbs`)).text(),
+        // item v2
+        item_v2_artifact_partial: await (await fetch(`${root}item-v2/partials/artifact_partial.hbs`)).text(),
+        item_v2_artifact_power_partial: await (
+            await fetch(`${root}item-v2/partials/artifact_power_partial.hbs`)
+        ).text(),
+        item_v2_esoteric_combat_partial: await (
+            await fetch(`${root}item-v2/partials/esoteric_combat_partial.hbs`)
+        ).text(),
+        item_v2_layout_partial: await (await fetch(`${root}item-v2/partials/structure_partial.hbs`)).text(),
+        item_v2_quantity_partial: await (await fetch(`${root}item-v2/partials/quantity_partial.hbs`)).text(),
+        item_v2_standard_partial: await (await fetch(`${root}item-v2/partials/standard_partial.hbs`)).text(),
+        item_v2_unknown_value_partial: await (await fetch(`${root}item-v2/partials/unknown_value_partial.hbs`)).text(),
+        item_v2_value_partial: await (await fetch(`${root}item-v2/partials/value_partial.hbs`)).text(),
+        item_v2_weight_partial: await (await fetch(`${root}item-v2/partials/weight_partial.hbs`)).text(),
         // global
         effects_partial: await (await fetch(`${root}partials/effects_partial.hbs`)).text(),
         legacy_macro_partial: await (await fetch(`${root}partials/legacy_macro_partial.hbs`)).text(),

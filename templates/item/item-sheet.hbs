@@ -1,8 +1,14 @@
 {{#> item_layout_partial  }}
 
 <div class="grid grid-2col">
-    {{> item_quantity_partial}}
-    {{> item_weight_partial}}
+    <div class="resource">
+        <label class="resource-label">Quantity</label>
+        <input type="number" name="system.quantity" value="{{ idata.quantity }}" data-dtype="Number" />
+    </div>
+    <div class="resource">
+        <label class="resource-label">Weight</label>
+        <input type="number" name="system.weight" value="{{ idata.weight }}" data-dtype="Number" />
+    </div>
 </div>
 {{> item_standard_partial}}
 

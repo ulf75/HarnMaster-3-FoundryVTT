@@ -1,6 +1,6 @@
-{{#> item_layout_partial  }}
+{{#> item_v2_layout_partial  }}
 
-{{> item_standard_partial}}
+{{> item_v2_standard_partial}}
 {{#if isGM}}
 <div class="resource artifact flexrow">
     <input
@@ -11,7 +11,11 @@
         data-dtype="Boolean"
         {{checked
         idata.hidden}} />
-    <label for="system.hidden" class="resource-label">Hidden</label>
+    <label
+        for="system.hidden"
+        class="resource-label">
+        Hidden
+    </label>
     If checked, the effect is not displayed to the players.
 </div>
 <div class="resource artifact flexrow">
@@ -23,9 +27,13 @@
         data-dtype="Boolean"
         {{checked
         idata.selfDestroy}} />
-    <label for="system.selfDestroy" class="resource-label">Self Destroy</label>
+    <label
+        for="system.selfDestroy"
+        class="resource-label">
+        Self Destroy
+    </label>
     If checked, the item & effect will be deleted after completion.
 </div>
 {{/if}}
 
-{{/item_layout_partial}}
+{{/item_v2_layout_partial}}

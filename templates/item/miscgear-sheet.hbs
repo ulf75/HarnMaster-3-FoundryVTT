@@ -1,39 +1,31 @@
 {{#> item_layout_partial container=true }}
 
+{{!-- Properties Tab --}}
 <div class="grid grid-fixed-row grid-3col">
-    {{> item_quantity_partial}}
-    {{> item_weight_partial}}
-    {{> item_value_partial}}
-</div>
-{{> item_standard_partial}}
-{{> item_unknown_value_partial}}
-{{#if isGM}}
-<div class="resource-block">
-    <div class="item-type resource flexrow">
-        <label
-            for="system.type"
-            class="label">
-            Type
-        </label>
-        {{#if editable}}
-        <select
-            class="value"
-            id="system.type"
-            name="system.type">
-            {{selectOptions config.miscItemTypes selected=idata.type valueAttr="key" labelAttr="key"}}
-        </select>
+    <div class="resource">
+        <label for="system.quantity" class="resource-label">Quantity</label>
+        <input type="number" id="system.quantity" name="system.quantity" value="{{ idata.quantity }}" data-dtype="Number" />
+    </div>
+    <div class="resource">
+        <label for="system.weight" class="resource-label">Weight</label>
+        <input type="number" id="system.weight" name="system.weight" value="{{ idata.weight }}" data-dtype="Number"
+        {{#unless hasRwPermission}}disabled{{/unless}} />
+    </div>
+    <div class="resource">
+        <label for="system.value" class="resource-label">Value</label>
+        {{#if hasRwPermission}}
+        <input type="number" id="system.value" name="system.value" value="{{ idata.value }}" data-dtype="Number" />
         {{else}}
-        <input
-            class="value"
-            type="text"
-            id="system.type"
-            name="system.type"
-            value="{{ idata.type }}"
-            disabled />
+        {{#if idata.unknownValue}}
+        <input type="text" id="system.value" value="Unknown" data-dtype="String" disabled />
+        {{else}}
+        <input type="number" id="system.value" name="system.value" value="{{ idata.value }}" data-dtype="Number" disabled />
+        {{/if}}
         {{/if}}
     </div>
 </div>
-{{/if}}
+{{> item_standard_partial}}
+{{> item_unknown_value_partial}}
 {{> item_artifact_partial}}
 
 {{/item_layout_partial}}

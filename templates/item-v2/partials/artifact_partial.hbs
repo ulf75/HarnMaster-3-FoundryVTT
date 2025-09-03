@@ -1,0 +1,151 @@
+{{#if isGM}}
+<div
+    class="resource artifact flexrow"
+    id="isarcane">
+    <input type="checkbox" id="system.arcane.isArtifact" name="system.arcane.isArtifact" value="{{ idata.arcane.isArtifact }}"
+    data-dtype="Boolean"
+    {{checked
+        idata.arcane.isArtifact}}
+    {{#unless editable}}disabled{{/unless}} />
+    <label
+        for="system.arcane.isArtifact"
+        class="resource-label">
+        Artifact
+    </label>
+</div>
+
+{{#if idata.arcane.isArtifact}}
+<fieldset id="artifact">
+    <legend>Artifact Properties</legend>
+    <div class="resource artifact flexrow">
+        <input type="checkbox" id="system.arcane.isOwnerAware" name="system.arcane.isOwnerAware" value="{{ idata.arcane.isOwnerAware }}"
+        data-dtype="Boolean"
+        {{checked
+            idata.arcane.isOwnerAware}}
+        {{#unless editable}}disabled{{/unless}} />
+        <label for="system.arcane.isOwnerAware">Is owner aware of Artifact?</label>
+    </div>
+
+    <div class="grid grid-fixed-row grid-4col">
+        <div class="resource">
+            <label
+                for="system.arcane.type"
+                class="resource-label">
+                Artifact Type
+            </label>
+            <select
+                class="value"
+                id="system.arcane.type"
+                name="system.arcane.type"
+                data-dtype="String">
+                {{selectOptions arcane.choices selected=idata.arcane.type valueAttr="key" labelAttr="key"}}
+            </select>
+        </div>
+    </div>
+
+    {{#if (eq idata.arcane.type 'Minor')}}
+    <fieldset id="minor-artifact">
+        <legend>Minor Artifact Power</legend>
+        {{> item_v2_artifact_power_partial powerType='Minor' powerId='system.arcane.minor' selectedPower=idata.arcane.minor.power selectedDuration=idata.arcane.minor.duration selectedAware=idata.arcane.minor.isOwnerAware}}
+    </fieldset>
+    {{else}}
+    <fieldset id="major-artifact">
+        <legend>Major Artifact Powers</legend>
+        <div class="resource artifact flexrow">
+            <input
+                type="checkbox"
+                id="system.arcane.needsAttunement"
+                name="system.arcane.needsAttunement"
+                value="{{ idata.arcane.needsAttunement }}"
+                data-dtype="Boolean"
+                {{checked
+                idata.arcane.needsAttunement}} />
+            <label for="system.arcane.needsAttunement">Needs attunement?</label>
+        </div>
+        <div class="resource artifact flexrow">
+            <input
+                type="checkbox"
+                id="system.arcane.naturalPersonality"
+                name="system.arcane.naturalPersonality"
+                value="{{ idata.arcane.naturalPersonality }}"
+                data-dtype="Boolean"
+                {{checked
+                idata.arcane.naturalPersonality}} />
+            <label for="system.arcane.naturalPersonality">Natural Personality</label>
+        </div>
+        <div class="resource artifact flexrow">
+            <input
+                type="checkbox"
+                id="system.arcane.isAttuned"
+                name="system.arcane.isAttuned"
+                value="{{ idata.arcane.isAttuned }}"
+                data-dtype="Boolean"
+                {{checked
+                idata.arcane.isAttuned}}
+                {{disabled
+                (not
+                idata.arcane.needsAttunement)}} />
+            <label
+                for="system.arcane.isAttuned"
+                class="{{#unless idata.arcane.needsAttunement}}disabled{{/unless}}">
+                Attuned
+            </label>
+        </div>
+        <div class="grid grid-fixed-row grid-3col">
+            <div
+                class="resource"
+                id="artifact-charges">
+                <label
+                    for="system.arcane.charges"
+                    class="resource-label">
+                    Charges
+                </label>
+                <input
+                    type="number"
+                    id="system.arcane.charges"
+                    name="system.arcane.charges"
+                    value="{{ idata.arcane.charges }}"
+                    data-dtype="Number" />
+            </div>
+            <div
+                class="resource"
+                id="artifact-ego">
+                <label
+                    for="system.arcane.ego"
+                    class="resource-label">
+                    {{#if idata.arcane.naturalPersonality}}Will{{else}}Ego{{/if}}
+                </label>
+                <input
+                    type="number"
+                    id="system.arcane.ego"
+                    name="system.arcane.ego"
+                    value="{{ idata.arcane.ego }}"
+                    data-dtype="Number" />
+            </div>
+            <div
+                class="resource"
+                id="artifact-morality">
+                <label
+                    for="system.arcane.morality"
+                    class="resource-label">
+                    Morality
+                </label>
+                <input
+                    type="number"
+                    id="system.arcane.morality"
+                    name="system.arcane.morality"
+                    value="{{ idata.arcane.morality }}"
+                    data-dtype="Number" />
+            </div>
+        </div>
+
+        {{> item_v2_artifact_power_partial powerType='Major' powerId='system.arcane.major.power1' selectedPower=idata.arcane.major.power1.power selectedDuration=idata.arcane.major.power1.duration selectedAware=idata.arcane.major.power1.isOwnerAware}}
+        {{> item_v2_artifact_power_partial powerType='Major' powerId='system.arcane.major.power2' selectedPower=idata.arcane.major.power2.power selectedDuration=idata.arcane.major.power2.duration selectedAware=idata.arcane.major.power2.isOwnerAware}}
+        {{> item_v2_artifact_power_partial powerType='Major' powerId='system.arcane.major.power3' selectedPower=idata.arcane.major.power3.power selectedDuration=idata.arcane.major.power3.duration selectedAware=idata.arcane.major.power3.isOwnerAware}}
+        {{> item_v2_artifact_power_partial powerType='Major' powerId='system.arcane.major.power4' selectedPower=idata.arcane.major.power4.power selectedDuration=idata.arcane.major.power4.duration selectedAware=idata.arcane.major.power4.isOwnerAware}}
+        {{> item_v2_artifact_power_partial powerType='Major' powerId='system.arcane.major.power5' selectedPower=idata.arcane.major.power5.power selectedDuration=idata.arcane.major.power5.duration selectedAware=idata.arcane.major.power5.isOwnerAware}}
+    </fieldset>
+    {{/if}}
+</fieldset>
+{{/if}}
+{{/if}}

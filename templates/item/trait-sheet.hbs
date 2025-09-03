@@ -1,29 +1,11 @@
 {{#> item_layout_partial nameReadOnly=(not hasRwPermission) list=config.traitTypes }}
 
 {{#if isPsycheTrait}}
-<div class="grid grid-fixed-row grid-1col">
-    <div class="resource">
-        <label
-            for="system.severity"
-            class="resource-label">
-            Severity
-        </label>
-        {{#if (and hasRwPermission editable)}}
-        <select
-            id="system.severity"
-            name="system.severity">
-            {{selectOptions config.psycheSeverity selected=idata.severity valueAttr="key" labelAttr="label"}}
-        </select>
-        {{else}}
-        <input
-            class="value"
-            type="text"
-            id="system.severity"
-            name="system.severity"
-            value="{{ getLabel config.psycheSeverity idata.severity }}"
-            disabled />
-        {{/if}}
-    </div>
+<div class="resource">
+    <label for="system.severity" class="resource-label">Severity</label>
+    <select id="system.severity" name="system.severity">
+        {{selectOptions config.psycheSeverity selected=idata.severity valueAttr="key" labelAttr="label"}}
+    </select>
 </div>
 {{/if}}
 {{> item_standard_partial}}

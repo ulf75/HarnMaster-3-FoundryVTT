@@ -1,0 +1,160 @@
+<form
+    class="{{ cssClass }}"
+    autocomplete="off">
+    <header class="sheet-header item-header">
+        <img
+            class="profile-img"
+            src="{{ item.img }}"
+            data-edit="img"
+            title="{{ item.name }}" />
+        <div class="header-fields">
+            {{#if (or nameReadOnly (not editable))}}
+            <h1 class="item-name disabled">
+                {{ item.name }}
+            </h1>
+            {{else}}
+            <h1 class="item-name">
+                <input
+                    name="name"
+                    type="text"
+                    value="{{ item.name }}"
+                    placeholder="Name"
+                    autocomplete="off" />
+            </h1>
+            {{/if}}
+            {{#if container}}
+            <div class="item-container resource flexrow">
+                <label
+                    for="system.container"
+                    class="label">
+                    In Container
+                </label>
+                {{#if editable}}
+                <select
+                    class="value"
+                    id="system.container"
+                    name="system.container">
+                    {{selectOptions containers selected=idata.container valueAttr="key" labelAttr="label"}}
+                </select>
+                {{else}}
+                <input
+                    class="value"
+                    type="text"
+                    id="system.container"
+                    name="system.container"
+                    value="{{getLabel containers idata.container }}"
+                    disabled />
+                {{/if}}
+            </div>
+            {{/if}}
+            {{#if list}}
+            <div class="item-type resource flexrow">
+                <label
+                    for="system.type"
+                    class="label">
+                    Type
+                </label>
+                {{#if (and hasRwPermission editable)}}
+                <select
+                    class="value"
+                    id="system.type"
+                    name="system.type">
+                    {{selectOptions list selected=idata.type valueAttr="key" labelAttr="key"}}
+                </select>
+                {{else}}
+                <input
+                    class="value"
+                    type="text"
+                    id="system.type"
+                    name="system.type"
+                    value="{{ idata.type }}"
+                    disabled />
+                {{/if}}
+            </div>
+            {{/if}}
+        </div>
+    </header>
+
+    <div class="tab-container">
+        {{!-- Sheet Tab Navigation --}}
+        <nav
+            class="sheet-tabs-v2 v2"
+            data-group="primary">
+            <a
+                class="item"
+                data-tab="properties">
+                Properties
+            </a>
+            <a
+                class="item"
+                data-tab="description">
+                Description
+            </a>
+            <a
+                class="item"
+                data-tab="effects">
+                Effects
+            </a>
+            {{#if isGM}}
+            <a
+                class="item"
+                data-tab="macros">
+                Macros
+            </a>
+            {{/if}}
+            {{#if idata.macros.command}}
+            <a
+                class="item"
+                data-tab="legacy-macro">
+                Legacy
+            </a>
+            {{/if}}
+        </nav>
+    </div>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body-v2 v2">
+        {{!-- Main Content --}}
+        <div class="main-content">
+            {{!-- Properties Tab --}}
+            <div
+                class="tab properties"
+                data-group="primary"
+                data-tab="properties">
+                {{> @partial-block}}
+            </div>
+
+            <div
+                class="tab description"
+                data-group="primary"
+                data-tab="description">
+                {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
+            </div>
+
+            <div
+                class="tab effects"
+                data-group="primary"
+                data-tab="effects">
+                {{> effects_partial}}
+            </div>
+
+            {{#if isGM}}
+            <div
+                class="tab macros"
+                data-group="primary"
+                data-tab="macros">
+                {{> macros_partial}}
+            </div>
+            {{/if}}
+
+            {{#if idata.macros.command}}
+            <div
+                class="tab legacy-macro"
+                data-group="primary"
+                data-tab="legacy-macro">
+                {{> legacy_macro_partial}}
+            </div>
+            {{/if}}
+        </div>
+    </section>
+</form>

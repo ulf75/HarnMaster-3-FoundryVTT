@@ -1,160 +1,128 @@
-<form
-    class="{{ cssClass }}"
-    autocomplete="off">
-    <header class="sheet-header item-header">
-        <img
-            class="profile-img"
-            src="{{ item.img }}"
-            data-edit="img"
-            title="{{ item.name }}" />
+<form class="{{ cssClass }}" autocomplete="off">
+    <header class="sheet-header skill-header">
+        <img class="profile-img" src="{{ item.img }}" data-edit="img" title="{{ item.name }}" />
         <div class="header-fields">
-            {{#if (or nameReadOnly (not editable))}}
-            <h1 class="item-name disabled">
-                {{ item.name }}
+            <h1 class="charname">
+                <input name="name" type="text" value="{{ item.name }}" placeholder="Name" autocomplete="off"
+                {{#if nameReadOnly}}disabled{{/if}} />
             </h1>
-            {{else}}
-            <h1 class="item-name">
-                <input
-                    name="name"
-                    type="text"
-                    value="{{ item.name }}"
-                    placeholder="Name"
-                    autocomplete="off" />
-            </h1>
-            {{/if}}
             {{#if container}}
-            <div class="item-container resource flexrow">
-                <label
-                    for="system.container"
-                    class="label">
-                    In Container
-                </label>
-                {{#if editable}}
-                <select
-                    class="value"
-                    id="system.container"
-                    name="system.container">
+            <div class="skill-container flexrow">
+                <label for="system.container" class="label">In Container</label>
+                <select class="value" id="system.container" name="system.container">
                     {{selectOptions containers selected=idata.container valueAttr="key" labelAttr="label"}}
                 </select>
-                {{else}}
-                <input
-                    class="value"
-                    type="text"
-                    id="system.container"
-                    name="system.container"
-                    value="{{getLabel containers idata.container }}"
-                    disabled />
-                {{/if}}
             </div>
             {{/if}}
             {{#if list}}
-            <div class="item-type resource flexrow">
-                <label
-                    for="system.type"
-                    class="label">
-                    Type
-                </label>
-                {{#if (and hasRwPermission editable)}}
-                <select
-                    class="value"
-                    id="system.type"
-                    name="system.type">
+            <div class="skill-type flexrow">
+                <label for="system.type" class="label">Type</label>
+                {{#if hasRwPermission}}
+                <select class="value" id="system.type" name="system.type">
                     {{selectOptions list selected=idata.type valueAttr="key" labelAttr="key"}}
                 </select>
                 {{else}}
-                <input
-                    class="value"
-                    type="text"
-                    id="system.type"
-                    name="system.type"
-                    value="{{ idata.type }}"
-                    disabled />
+                <select class="value" id="system.type" name="system.type" disabled>
+                    {{selectOptions list selected=idata.type valueAttr="key" labelAttr="key"}}
+                </select>
                 {{/if}}
             </div>
             {{/if}}
         </div>
     </header>
 
-    <div class="tab-container">
-        {{!-- Sheet Tab Navigation --}}
-        <nav
-            class="sheet-tabs-v2 v2"
-            data-group="primary">
-            <a
-                class="item"
-                data-tab="properties">
-                Properties
-            </a>
-            <a
-                class="item"
-                data-tab="description">
-                Description
-            </a>
-            <a
-                class="item"
-                data-tab="effects">
-                Effects
-            </a>
-            {{#if isGM}}
-            <a
-                class="item"
-                data-tab="macros">
-                Macros
-            </a>
-            {{/if}}
-            {{#if idata.macros.command}}
-            <a
-                class="item"
-                data-tab="legacy-macro">
-                Legacy
-            </a>
-            {{/if}}
-        </nav>
-    </div>
+    {{#if idata.arcane.isArtifact}}
+    {{#if (or idata.arcane.isOwnerAware isGM)}}
+    <div class="flexrow item-artifact">&raquo; {{ idata.arcane.type }} Artifact &laquo;</div>
+    {{/if}}
+    {{/if}}
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="properties">Properties</a>
+        <a class="item" data-tab="description">Description</a>
+        {{#if idata.arcane.isArtifact}}
+        {{#if (or idata.arcane.isOwnerAware isGM)}}
+        <a class="item" data-tab="artifact">Artifact</a>
+        {{/if}}
+        {{/if}}
+        {{#if hasRwPermission}}
+        <a class="item" data-tab="effects">Effects</a>
+        <a class="item" data-tab="macro">Macro</a>
+        {{/if}}
+    </nav>
 
     {{!-- Sheet Body --}}
-    <section class="sheet-body-v2 v2">
-        {{!-- Main Content --}}
-        <div class="main-content">
-            {{!-- Properties Tab --}}
-            <div
-                class="tab properties"
-                data-group="primary"
-                data-tab="properties">
-                {{> @partial-block}}
+    <section class="sheet-body skill-body">
+        {{!-- Properties Tab --}}
+        <div class="tab properties" data-group="primary" data-tab="properties">
+            {{> @partial-block}}
+        </div>
+
+        {{!-- Description Tab --}}
+        <div class="tab description" data-group="primary" data-tab="description">
+            {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
+        </div>
+
+        {{!-- Artifact Tab --}}
+        {{!--
+        <div class="tab artifact" data-group="primary" data-tab="artifact"></div>
+        --}}
+
+        {{!-- Macro Tab --}}
+        <div class="tab macro" data-group="primary" data-tab="macro">
+            <div class="form-group">
+                <label for="system.macros.type">Type</label>
+                <select id="system.macros.type" name="system.macros.type">
+                    {{selectOptions macroTypes selected=idata.macros.type valueAttr="key" labelAttr="label"}}
+                </select>
             </div>
 
-            <div
-                class="tab description"
-                data-group="primary"
-                data-tab="description">
-                {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
+            <div class="form-group stacked command">
+                <label for="system.macros.command">Command</label>
+                <textarea id="system.macros.command" name="system.macros.command">{{ idata.macros.command }}</textarea>
             </div>
+        </div>
 
-            <div
-                class="tab effects"
-                data-group="primary"
-                data-tab="effects">
-                {{> effects_partial}}
-            </div>
+        {{!-- Effects Tab --}}
+        <div class="tab effects" data-group="primary" data-tab="effects">
+            <ol class="effects-list">
+                <li class="effects-header flexrow">
+                    <h3 class="effect-name flexrow">Effect</h3>
+                    <div class="effect-duration">Duration</div>
+                    <div class="effect-changes">Changes</div>
+                    <a class="effect-controls effect-control" title="Add Effect" data-action="create">
+                        <span class="active">
+                            <i class="fas fa-plus"></i>
+                            Add
+                        </span>
+                    </a>
+                </li>
 
-            {{#if isGM}}
-            <div
-                class="tab macros"
-                data-group="primary"
-                data-tab="macros">
-                {{> macros_partial}}
-            </div>
-            {{/if}}
-
-            {{#if idata.macros.command}}
-            <div
-                class="tab legacy-macro"
-                data-group="primary"
-                data-tab="legacy-macro">
-                {{> legacy_macro_partial}}
-            </div>
-            {{/if}}
+                <ol class="effect-list item-list">
+                    {{#each effects as |effect id|}}
+                    <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-id="{{ effect.id }}">
+                        <div class="effect-name flexrow">
+                            <div class="effect-image" style="background-image: url('{{ effect.img }}')"></div>
+                            <h4>{{ effect.name }}</h4>
+                        </div>
+                        <div class="effect-ele effect-duration">{{ effect.duration.label }}</div>
+                        <div class="effect-ele effect-changes">{{ effect.changes }}</div>
+                        <div class="effect-controls">
+                            <a class="effect-control" data-action="toggle">
+                                <i class="{{#unless (or effect.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i>
+                            </a>
+                            <a class="effect-control" data-action="edit">
+                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i>
+                            </a>
+                            <a class="effect-control" data-action="delete">
+                                <i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ol>
+            </ol>
         </div>
     </section>
 </form>
