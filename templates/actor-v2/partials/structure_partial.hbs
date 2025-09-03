@@ -8,7 +8,9 @@
                 class="profile-img"
                 src="{{ actor.img }}"
                 data-edit="img"
-                title="{{ actor.name }}" />
+                aria-label="{{ actor.name }}"
+                data-tooltip="{{ actor.name }}"
+                data-tooltip-direction="UP" />
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
                     <h1 class="charname">
@@ -121,7 +123,9 @@
         ................CHARACTER MANCER ACTIVE................
         <a
             class="character-mancer"
-            title="Close Character Mancer"
+            aria-label="Close Character Mancer"
+            data-tooltip="Close Character Mancer"
+            data-tooltip-direction="UP"
             data-type="skill">
             Close
         </a>
@@ -197,7 +201,9 @@
                     class="facade-image"
                     src="{{ adata.bioImage }}"
                     data-edit="system.bioImage"
-                    title="{{ actor.name }}"
+                    aria-label="{{ actor.name }}"
+                    data-tooltip="{{ actor.name }}"
+                    data-tooltip-direction="UP"
                     height="300"
                     width="200" />
                 <div class="facade-description">
@@ -246,7 +252,7 @@
                     </h3>
                 </div>
             </div>
-            <div class="items-list combat-stats grid grid-fixed-row-sml grid-5col">
+            <div class="items-list combat-stats grid grid-fixed-row-s grid-5col">
                 <div
                     class="combat-stat flexrow"
                     id="combat-stat-fatigue">
@@ -281,7 +287,9 @@
                     <label class="combat-stat-label">
                         <a
                             class="dodge-roll"
-                            title="Dodge Roll">
+                            aria-label="Dodge Roll"
+                            data-tooltip="Dodge Roll"
+                            data-tooltip-direction="UP">
                             Dodge
                         </a>
                     </label>
@@ -302,7 +310,7 @@
                     <div class="combat-stat-value">{{ adata.endurance }}</div>
                 </div>
             </div>
-            <div class="items-list combat-stats grid grid-fixed-row-sml {{#if isGM}}grid-7col{{else}}grid-6col{{/if}}">
+            <div class="items-list combat-stats grid grid-fixed-row-s {{#if isGM}}grid-7col{{else}}grid-6col{{/if}}">
                 <div
                     class="combat-stat flexrow"
                     id="combat-injuryroll">
@@ -312,7 +320,9 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="injury-roll"
-                            title="Injury Roll">
+                            aria-label="Injury Roll"
+                            data-tooltip="Injury Roll"
+                            data-tooltip-direction="UP">
                             Injury
                         </a>
                         <span class="tooltiptext">Calculate my hit location and injury level</span>
@@ -327,7 +337,9 @@
                     <label class="combat-stat-label">
                         <a
                             class="shock-roll"
-                            title="Shock Roll">
+                            aria-label="Shock Roll"
+                            data-tooltip="Shock Roll"
+                            data-tooltip-direction="UP">
                             Shock
                         </a>
                     </label>
@@ -341,7 +353,9 @@
                     <label class="combat-stat-label">
                         <a
                             class="stumble-roll"
-                            title="Stumble Roll">
+                            aria-label="Stumble Roll"
+                            data-tooltip="Stumble Roll"
+                            data-tooltip-direction="UP">
                             Stumble
                         </a>
                     </label>
@@ -355,7 +369,9 @@
                     <label class="combat-stat-label">
                         <a
                             class="fumble-roll"
-                            title="Fumble Roll">
+                            aria-label="Fumble Roll"
+                            data-tooltip="Fumble Roll"
+                            data-tooltip-direction="UP">
                             Fumble
                         </a>
                     </label>
@@ -369,7 +385,9 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="damage-roll"
-                            title="Damage Roll">
+                            aria-label="Damage Roll"
+                            data-tooltip="Damage Roll"
+                            data-tooltip-direction="UP">
                             Damage
                         </a>
                     </label>
@@ -383,7 +401,9 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="falling-roll"
-                            title="Falling Roll">
+                            aria-label="Falling Roll"
+                            data-tooltip="Falling Roll"
+                            data-tooltip-direction="UP">
                             Falling
                         </a>
                     </label>
@@ -398,7 +418,9 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="morale-roll"
-                            title="Morale Roll">
+                            aria-label="Morale Roll"
+                            data-tooltip="Morale Roll"
+                            data-tooltip-direction="UP">
                             Morale
                         </a>
                     </label>
@@ -406,7 +428,7 @@
                 {{/if}}
             </div>
             {{#if hasSteed}}
-            <div class="items-list combat-stats grid grid-fixed-row-sml grid-5col">
+            <div class="items-list combat-stats grid grid-fixed-row-s grid-5col">
                 {{#if (not adata.mounted)}}
                 <div
                     class="combat-stat flexrow"
@@ -415,7 +437,9 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="mount-action"
-                            title="Mount">
+                            aria-label="Mount"
+                            data-tooltip="Mount"
+                            data-tooltip-direction="UP">
                             Mount
                         </a>
                     </label>
@@ -428,7 +452,9 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="mount-action"
-                            title="Dismount">
+                            aria-label="Dismount"
+                            data-tooltip="Dismount"
+                            data-tooltip-direction="UP">
                             Dismount
                         </a>
                     </label>
@@ -443,7 +469,9 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="steedcommand-roll{{#unless adata.mounted}} disabled{{/unless}}"
-                            title="Steed Command Check">
+                            aria-label="Steed Command Check"
+                            data-tooltip="Steed Command Check"
+                            data-tooltip-direction="UP">
                             Steed Command
                         </a>
                     </label>
@@ -457,7 +485,9 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="unhorsing-roll{{#unless adata.mounted}} disabled{{/unless}}"
-                            title="Unhorsing Roll">
+                            aria-label="Unhorsing Roll"
+                            data-tooltip="Unhorsing Roll"
+                            data-tooltip-direction="UP">
                             Unhorsing
                         </a>
                     </label>
@@ -514,7 +544,9 @@
                             {{#if (and system.isEquipped system.isCarried)}}
                             <a
                                 class="weapon-damage-roll"
-                                title="{{ item.name }} Blunt Damage Roll"
+                                aria-label="{{ item.name }} Blunt Damage Roll"
+                                data-tooltip="{{ item.name }} Blunt Damage Roll"
+                                data-tooltip-direction="UP"
                                 data-weapon="{{ item.name }}"
                                 data-aspect="Blunt">
                                 {{ system.blunt }}
@@ -529,7 +561,9 @@
                             {{#if (and system.isEquipped system.isCarried)}}
                             <a
                                 class="weapon-damage-roll"
-                                title="{{ item.name }} Edged Damage Roll"
+                                aria-label="{{ item.name }} Edged Damage Roll"
+                                data-tooltip="{{ item.name }} Edged Damage Roll"
+                                data-tooltip-direction="UP"
                                 data-weapon="{{ item.name }}"
                                 data-aspect="Edged">
                                 {{ system.edged }}
@@ -544,7 +578,9 @@
                             {{#if (and system.isEquipped system.isCarried)}}
                             <a
                                 class="weapon-damage-roll"
-                                title="{{ item.name }} Piercing Damage Roll"
+                                aria-label="{{ item.name }} Piercing Damage Roll"
+                                data-tooltip="{{ item.name }} Piercing Damage Roll"
+                                data-tooltip-direction="UP"
                                 data-weapon="{{ item.name }}"
                                 data-aspect="Piercing">
                                 {{ system.piercing }}
@@ -556,7 +592,9 @@
                             {{#if (and system.isEquipped system.isCarried)}}
                             <a
                                 class="weapon-attack-roll"
-                                title="{{ item.name }} Attack Roll">
+                                aria-label="{{ item.name }} Attack Roll"
+                                data-tooltip="{{ item.name }} Attack Roll"
+                                data-tooltip-direction="UP">
                                 {{ system.attackMasteryLevel }}
                             </a>
                             {{else}}
@@ -567,7 +605,9 @@
                             {{#if (and system.isEquipped system.isCarried)}}
                             <a
                                 class="weapon-defend-roll"
-                                title="{{ item.name }} Defense Roll">
+                                aria-label="{{ item.name }} Defense Roll"
+                                data-tooltip="{{ item.name }} Defense Roll"
+                                data-tooltip-direction="UP">
                                 {{ system.defenseMasteryLevel }}
                             </a>
                             {{else}}{{ system.defenseMasteryLevel }}{{/if}}
@@ -623,7 +663,9 @@
                             {{#if (and system.isEquipped system.isCarried)}}
                             <a
                                 class="missile-damage-roll"
-                                title="{{ item.name }} Short-Range Damage Roll"
+                                aria-label="{{ item.name }} Short-Range Damage Roll"
+                                data-tooltip="{{ item.name }} Short-Range Damage Roll"
+                                data-tooltip-direction="UP"
                                 data-weapon="{{ item.name }}"
                                 data-range="Short">
                                 {{#if ../isGridDistanceUnits}}{{ system.rangeGrid.short }}{{else}} {{ system.range.short }}{{/if}}/{{
@@ -642,7 +684,9 @@
                             {{#if (and system.isEquipped system.isCarried)}}
                             <a
                                 class="missile-damage-roll"
-                                title="{{ item.name }} Medium-Range Damage Roll"
+                                aria-label="{{ item.name }} Medium-Range Damage Roll"
+                                data-tooltip="{{ item.name }} Medium-Range Damage Roll"
+                                data-tooltip-direction="UP"
                                 data-weapon="{{ item.name }}"
                                 data-range="Medium">
                                 {{#if ../isGridDistanceUnits}}{{ system.rangeGrid.medium }}{{else}}{{ system.range.medium }}{{/if}}/{{
@@ -661,7 +705,9 @@
                             {{#if (and system.isEquipped system.isCarried)}}
                             <a
                                 class="missile-damage-roll"
-                                title="{{ item.name }} Long-Range Damage Roll"
+                                aria-label="{{ item.name }} Long-Range Damage Roll"
+                                data-tooltip="{{ item.name }} Long-Range Damage Roll"
+                                data-tooltip-direction="UP"
                                 data-weapon="{{ item.name }}"
                                 data-range="Long">
                                 {{#if ../isGridDistanceUnits}}{{ system.rangeGrid.long }}{{else}}{{ system.range.long }}{{/if}}/{{
@@ -680,7 +726,9 @@
                             {{#if (and system.isEquipped system.isCarried)}}
                             <a
                                 class="missile-damage-roll"
-                                title="{{ item.name }} Extreme-Range Damage Roll"
+                                aria-label="{{ item.name }} Extreme-Range Damage Roll"
+                                data-tooltip="{{ item.name }} Extreme-Range Damage Roll"
+                                data-tooltip-direction="UP"
                                 data-weapon="{{ item.name }}"
                                 data-range="Extreme">
                                 {{#if ../isGridDistanceUnits}}{{ system.rangeGrid.extreme }}{{else}}{{ system.range.extreme }}{{/if}}/{{
@@ -696,7 +744,9 @@
                             {{#if (and system.isEquipped system.isCarried)}}
                             <a
                                 class="missile-attack-roll"
-                                title="Missile Attack Roll">
+                                aria-label="Missile Attack Roll"
+                                data-tooltip="Missile Attack Roll"
+                                data-tooltip-direction="UP">
                                 {{ system.attackMasteryLevel }}
                             </a>
                             {{else}}
@@ -765,7 +815,9 @@
                     <div class="item-controls">
                         <a
                             class="item-control item-create active"
-                            title="Create Injury"
+                            aria-label="Create Injury"
+                            data-tooltip="Create Injury"
+                            data-tooltip-direction="UP"
                             data-type="injury">
                             <i class="fas fa-plus"></i>
                             Add
@@ -784,7 +836,9 @@
                         <div class="item-detail injury-healrate active">
                             <a
                                 class="healing-roll"
-                                title="{{ item.name }} Healing Roll">
+                                aria-label="{{ item.name }} Healing Roll"
+                                data-tooltip="{{ item.name }} Healing Roll"
+                                data-tooltip-direction="UP">
                                 {{#if (gt system.healRate 6)}}EE{{else}}{{ system.healRate }}{{/if}}
                             </a>
                         </div>
@@ -793,12 +847,16 @@
                         <div class="item-controls">
                             <a
                                 class="item-control item-edit"
-                                title="Edit Injury">
+                                aria-label="Edit Injury"
+                                data-tooltip="Edit Injury"
+                                data-tooltip-direction="UP">
                                 <i class="active fas fa-edit"></i>
                             </a>
                             <a
                                 class="item-control item-delete"
-                                title="Delete Injury"
+                                aria-label="Delete Injury"
+                                data-tooltip="Delete Injury"
+                                data-tooltip-direction="UP"
                                 data-label="Injury">
                                 <i class="active fas fa-trash"></i>
                             </a>
@@ -832,7 +890,9 @@
                     <div class="item-controls">
                         <a
                             class="item-control item-create active"
-                            title="Create Location"
+                            aria-label="Create Location"
+                            data-tooltip="Create Location"
+                            data-tooltip-direction="UP"
                             data-type="armorlocation">
                             <i class="fas fa-plus"></i>
                             Add
@@ -861,12 +921,16 @@
                         <div class="item-controls">
                             <a
                                 class="item-control item-edit"
-                                title="Edit Location">
+                                aria-label="Edit Location"
+                                data-tooltip="Edit Location"
+                                data-tooltip-direction="UP">
                                 <i class="active fas fa-edit"></i>
                             </a>
                             <a
                                 class="item-control item-delete"
-                                title="Delete Location"
+                                aria-label="Delete Location"
+                                data-tooltip="Delete Location"
+                                data-tooltip-direction="UP"
                                 data-label="Location">
                                 <i class="active fas fa-trash"></i>
                             </a>
@@ -948,7 +1012,9 @@
                         {{#if citem.system.collapsed}}
                         <a
                             class="item-control item-maximize active"
-                            title="Maximize"
+                            aria-label="Maximize"
+                            data-tooltip="Maximize"
+                            data-tooltip-direction="UP"
                             data-action="maximize"
                             data-cuuid="{{ citem.uuid }}"
                             data-container-id="{{ cid }}"
@@ -959,7 +1025,9 @@
                         {{else}}
                         <a
                             class="item-control item-minimize active"
-                            title="Minimize"
+                            aria-label="Minimize"
+                            data-tooltip="Minimize"
+                            data-tooltip-direction="UP"
                             data-action="minimize"
                             data-cuuid="{{ citem.uuid }}"
                             data-container-id="{{ cid }}"
@@ -989,7 +1057,9 @@
                     <div class="item-controls">
                         <a
                             class="item-control item-create active"
-                            title="Add Gear"
+                            aria-label="Add Gear"
+                            data-tooltip="Add Gear"
+                            data-tooltip-direction="UP"
                             data-type="gear"
                             data-container-id="{{ cid }}"
                             data-container-name="{{ citem.name }}">
@@ -1015,7 +1085,7 @@
                                 style="background-image: url('{{ item.img }}')"></div>
                             <h4>{{ item.name }}</h4>
                         </div>
-                        <div class="item-detail gear-type">{{lookup ../../gearTypes item.type}}</div>
+                        <div class="item-detail gear-type">{{ item.derived.type }}</div>
                         <div class="item-detail gear-qty">
                             <input type="text" {{#unless system.isCarried}}class="nocarry"{{/unless}} name="item-quantity-special" id="{{
                                 item.id
@@ -1028,25 +1098,33 @@
                             {{#unless (or (eq item.type "containergear") (eq item.type "miscgear"))}}
                             <a
                                 class="item-control item-equip"
-                                title="Equip">
+                                aria-label="Equip {{ item.name }}"
+                                data-tooltip="Equip {{ item.name }}"
+                                data-tooltip-direction="UP">
                                 <i class="{{#if system.isEquipped}}active{{/if}} fas fa-shield-alt"></i>
                             </a>
                             {{/unless}}
                             <a
                                 class="item-control item-carry"
-                                title="Carry">
+                                aria-label="Carry {{ item.name }}"
+                                data-tooltip="Carry {{ item.name }}"
+                                data-tooltip-direction="UP">
                                 <i class="{{#if system.isCarried}}active{{/if}} fas fa-suitcase"></i>
                             </a>
                             {{/if}}
                             <a
                                 class="item-control item-edit"
-                                title="Edit">
+                                aria-label="Edit {{ item.name }}"
+                                data-tooltip="Edit {{ item.name }}"
+                                data-tooltip-direction="UP">
                                 <i class="active fas fa-edit"></i>
                             </a>
                             <a
                                 class="item-control item-delete"
-                                title="{{ system.type }}"
-                                data-label="Miscellaneous Gear">
+                                aria-label="Delete {{ item.name }}"
+                                data-tooltip="Delete {{ item.name }}"
+                                data-tooltip-direction="UP"
+                                data-label="{{ item.name }}">
                                 <i class="active fas fa-trash"></i>
                             </a>
                         </div>
@@ -1097,7 +1175,9 @@
                     {{#if hasRwPermission}}
                     <a
                         class="effect-controls effect-control"
-                        title="Add Effect"
+                        aria-label="Add Effect"
+                        data-tooltip="Add Effect"
+                        data-tooltip-direction="UP"
                         data-action="create">
                         <span class="active">
                             <i class="fas fa-plus"></i>
@@ -1137,19 +1217,26 @@
                             {{#if ../hasRwPermission}}
                             <a
                                 class="effect-control"
-                                title="Toggle Effect on|off"
+                                aria-label="Toggle Effect on|off"
+                                data-tooltip="Toggle Effect on|off"
+                                data-tooltip-direction="UP"
                                 data-action="toggle">
                                 <i class="{{#unless effect.disabled}}active{{/unless}} fas fa-circle-notch"></i>
                             </a>
                             <a
                                 class="effect-control"
-                                title="Edit Effect"
+                                aria-label="Edit {{ item.name }} Effect"
+                                data-tooltip="Edit {{ item.name }} Effect"
+                                data-tooltip-direction="UP"
                                 data-action="edit">
                                 <i class="active fas fa-edit"></i>
                             </a>
                             <a
                                 class="effect-control"
-                                title="Delete Effect"
+                                aria-label="Delete {{ item.name }} Effect"
+                                data-tooltip="Delete {{ item.name }} Effect"
+                                data-tooltip-direction="UP"
+                                data-label="{{ item.name }} Effect"
                                 data-action="delete">
                                 <i class="active fas fa-trash"></i>
                             </a>

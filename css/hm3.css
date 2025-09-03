@@ -177,7 +177,12 @@ section.highlight {
     margin: 5px 0;
 }
 
-.grid-fixed-row-sml {
+.grid-fixed-row-s {
+    grid-template-rows: 30px;
+    margin: 5px 0;
+}
+
+.grid-fixed-row-xs {
     grid-template-rows: 20px;
     margin: 5px 0;
 }

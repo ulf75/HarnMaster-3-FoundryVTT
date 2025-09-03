@@ -50,11 +50,18 @@
                     <!-- <a class="macro-control" data-action="toggle"><i class="{{#unless macro.disabled}}active{{/unless}} fas fa-circle-notch"></i></a> -->
                     <a
                         class="macro-control"
+                        aria-label="Edit {{ macro.name }} Macro"
+                        data-tooltip="Edit {{ macro.name }} Macro"
+                        data-tooltip-direction="UP"
                         data-action="edit">
                         <i class="active fas fa-edit"></i>
                     </a>
                     <a
                         class="macro-control"
+                        aria-label="Delete {{ macro.name }} Macro"
+                        data-tooltip="Delete {{ macro.name }} Macro"
+                        data-tooltip-direction="UP"
+                        data-label="{{ macro.name }} Macro"
                         data-action="delete">
                         <i class="active fas fa-trash"></i>
                     </a>
