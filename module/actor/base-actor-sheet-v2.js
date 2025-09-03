@@ -9,6 +9,26 @@ import * as utility from '../utility.js';
  * @extends {ActorSheet}
  */
 export class BaseActorSheetHM3v2 extends ActorSheet {
+    /**
+     * Is this PseudoDocument sheet editable by the current User?
+     * This is governed by the editPermission threshold configured for the class.
+     * @type {boolean}
+     */
+    // get isEditable() {
+    //     if (game.packs.get(this.item.pack)?.locked) return false;
+    //     return this.item.testUserPermission(game.user, this.options.editPermission);
+    // }
+
+    /** @inheritDoc */
+    async _prepareContext(options) {
+        return {
+            ...(await super._prepareContext(options)),
+            document: this.document,
+            editable: this.isEditable,
+            options: this.options
+        };
+    }
+
     /** @override */
     async getData(options = {}) {
         if (!this.actor.system.eph.stumbleTarget) {
@@ -1687,5 +1707,79 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         if (force || this._tabs[0].active === 'effects' || aeDisabled || aeStarted) {
             return super.render(force);
         }
+    }
+
+    static MODES = {
+        PLAY: 1,
+        EDIT: 2
+    };
+
+    _mode = null;
+
+    /** @inheritDoc */
+    async _render(force, {mode, ...options} = {}) {
+        if (mode === undefined && options.renderContext === 'createItem') mode = this.constructor.MODES.EDIT;
+        this._mode = mode ?? this._mode ?? this.constructor.MODES.PLAY;
+        if (this.rendered) {
+            const toggle = this.element[0].querySelector('.window-header .mode-slider');
+            toggle.checked = this._mode === this.constructor.MODES.EDIT;
+        }
+        return super._render(force, options);
+    }
+
+    /** @inheritDoc */
+    async _renderOuter() {
+        const html = await super._renderOuter();
+        const header = html[0].querySelector('.window-header');
+
+        // Adjust header buttons.
+        header.querySelectorAll('.header-button').forEach((btn) => {
+            const label = btn.querySelector(':scope > i').nextSibling;
+            btn.dataset.tooltip = label.textContent;
+            btn.dataset.tooltipDirection = 'UP';
+            btn.setAttribute('aria-label', label.textContent);
+            btn.addEventListener('dblclick', (event) => event.stopPropagation());
+            label.remove();
+        });
+
+        if (!game.user.isGM && this.document.limited) {
+            html[0].classList.add('limited');
+            return html;
+        }
+
+        // Add edit <-> play slide toggle.
+        if (this.isEditable) {
+            const toggle = document.createElement('slide-toggle');
+            toggle.checked = this._mode === this.constructor.MODES.EDIT;
+            toggle.classList.add('mode-slider');
+            toggle.dataset.tooltip = 'hm3.SheetModeEdit';
+            toggle.dataset.tooltipDirection = 'UP';
+            toggle.setAttribute('aria-label', game.i18n.localize('hm3.SheetModeEdit'));
+            toggle.addEventListener('change', this._onChangeSheetMode.bind(this));
+            toggle.addEventListener('dblclick', (event) => event.stopPropagation());
+            header.insertAdjacentElement('afterbegin', toggle);
+        }
+
+        // Document UUID link.
+        const firstButton = header.querySelector('.header-button');
+        const idLink = header.querySelector('.document-id-link');
+        if (idLink) {
+            firstButton?.insertAdjacentElement('beforebegin', idLink);
+            idLink.classList.add('pseudo-header-button');
+            idLink.dataset.tooltipDirection = 'UP';
+        }
+
+        return html;
+    }
+
+    async _onChangeSheetMode(event) {
+        const {MODES} = this.constructor;
+        const toggle = event.currentTarget;
+        const label = game.i18n.localize(`hm3.SheetMode${toggle.checked ? 'Play' : 'Edit'}`);
+        toggle.dataset.tooltip = label;
+        toggle.setAttribute('aria-label', label);
+        this._mode = toggle.checked ? MODES.EDIT : MODES.PLAY;
+        await this.submit();
+        this.render();
     }
 }

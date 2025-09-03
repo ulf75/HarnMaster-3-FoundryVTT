@@ -1424,6 +1424,22 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     --hm3-itemv2-window-header-shadow: -1px 0 #ded9cf, 0 1px #ded9cf, 1px 0 #ded9cf, 0 -1px #ded9cf;
 }
 
+.hm3.actor-v2.minimized,
+.hm3.item-v2.minimized {
+    background: url(/ui/denim075.png);
+    border: unset;
+}
+
+.hm3.actor-v2.minimized header.window-header > .window-title,
+.hm3.item-v2.minimized header.window-header > .window-title {
+    visibility: visible !important;
+}
+
+.hm3.actor-v2 header.window-header > .window-title,
+.hm3.item-v2 header.window-header > .window-title {
+    visibility: hidden;
+}
+
 .hm3.item-v2 {
     --hm3-itemv2-background-list: linear-gradient(90deg, #741b2b, #4a111c);
     --hm3-itemv2-background-sheet-border: #9d253b;
@@ -1451,23 +1467,10 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     box-shadow: 0 0 8px var(--hm3-itemv2-hover-color);
 }
 
-.hm3.item-v2.minimized {
-    background: url(/ui/denim075.png);
-    border: unset;
-}
-
-.hm3.item-v2.minimized header.window-header > .window-title {
-    visibility: visible !important;
-}
-
 .hm3.item-v2 header.window-header {
     border: none;
     color: var(--hm3-itemv2-window-header-color);
     text-shadow: var(--hm3-itemv2-window-header-shadow);
-}
-
-.hm3.item-v2 header.window-header > .window-title {
-    visibility: hidden;
 }
 
 .hm3.item-v2 section.window-content {

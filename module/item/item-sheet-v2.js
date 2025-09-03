@@ -422,6 +422,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
         header.querySelectorAll('.header-button').forEach((btn) => {
             const label = btn.querySelector(':scope > i').nextSibling;
             btn.dataset.tooltip = label.textContent;
+            btn.dataset.tooltipDirection = 'UP';
             btn.setAttribute('aria-label', label.textContent);
             btn.addEventListener('dblclick', (event) => event.stopPropagation());
             label.remove();
@@ -438,6 +439,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
             toggle.checked = this._mode === this.constructor.MODES.EDIT;
             toggle.classList.add('mode-slider');
             toggle.dataset.tooltip = 'hm3.SheetModeEdit';
+            toggle.dataset.tooltipDirection = 'UP';
             toggle.setAttribute('aria-label', game.i18n.localize('hm3.SheetModeEdit'));
             toggle.addEventListener('change', this._onChangeSheetMode.bind(this));
             toggle.addEventListener('dblclick', (event) => event.stopPropagation());
@@ -450,7 +452,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
         if (idLink) {
             firstButton?.insertAdjacentElement('beforebegin', idLink);
             idLink.classList.add('pseudo-header-button');
-            idLink.dataset.tooltipDirection = 'DOWN';
+            idLink.dataset.tooltipDirection = 'UP';
         }
 
         return html;

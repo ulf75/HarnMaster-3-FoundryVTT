@@ -68,6 +68,22 @@ $itemv2-window-header-shadow: var(--hm3-itemv2-window-header-shadow);
     --hm3-itemv2-window-header-shadow: #{$header-shadow-light};
 }
 
+&.actor-v2,
+&.item-v2 {
+    &.minimized {
+        background: url(/ui/denim075.png);
+        border: unset;
+
+        header.window-header > .window-title {
+            visibility: visible !important;
+        }
+    }
+
+    header.window-header > .window-title {
+        visibility: hidden;
+    }
+}
+
 &.item-v2 {
     --hm3-itemv2-background-list: linear-gradient(90deg, #{$maroon-base}, #{$maroon-darker});
     --hm3-itemv2-background-sheet-border: #{$maroon-lighter};
@@ -94,23 +110,10 @@ $itemv2-window-header-shadow: var(--hm3-itemv2-window-header-shadow);
         box-shadow: 0 0 8px $itemv2-hover-color;
     }
 
-    &.minimized {
-        background: url(/ui/denim075.png);
-        border: unset;
-    }
-
-    &.minimized header.window-header > .window-title {
-        visibility: visible !important;
-    }
-
     header.window-header {
         border: none;
         color: $itemv2-window-header-color;
         text-shadow: $itemv2-window-header-shadow;
-
-        > .window-title {
-            visibility: hidden;
-        }
     }
 
     section.window-content {
