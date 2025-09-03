@@ -325,6 +325,8 @@ Hooks.once('init', async function () {
     });
 
     const root = 'systems/hm3/templates/';
+    const root_item_v2 = `${root}item-v2/partials/`;
+    const root_actor_v2 = `${root}actor-v2/partials/`;
     Handlebars.registerPartial({
         //character
         char_esoteric_list_partial: await (await fetch(`${root}actor/partials/esoteric_list_partial.hbs`)).text(),
@@ -332,11 +334,11 @@ Hooks.once('init', async function () {
         char_layout_partial: await (await fetch(`${root}actor/partials/structure_partial.hbs`)).text(),
         char_skill_list_partial: await (await fetch(`${root}actor/partials/skill_list_partial.hbs`)).text(),
         //character v2
-        char_v2_ability_partial: await (await fetch(`${root}actor-v2/partials/ability_partial.hbs`)).text(),
-        char_v2_esoteric_list_partial: await (await fetch(`${root}actor-v2/partials/esoteric_list_partial.hbs`)).text(),
-        char_v2_fff_list_partial: await (await fetch(`${root}actor-v2/partials/fff_list_partial.hbs`)).text(),
-        char_v2_layout_partial: await (await fetch(`${root}actor-v2/partials/structure_partial.hbs`)).text(),
-        char_v2_skill_list_partial: await (await fetch(`${root}actor-v2/partials/skill_list_partial.hbs`)).text(),
+        char_v2_ability_partial: await (await fetch(`${root_actor_v2}ability_partial.hbs`)).text(),
+        char_v2_esoteric_list_partial: await (await fetch(`${root_actor_v2}esoteric_list_partial.hbs`)).text(),
+        char_v2_fff_list_partial: await (await fetch(`${root_actor_v2}fff_list_partial.hbs`)).text(),
+        char_v2_layout_partial: await (await fetch(`${root_actor_v2}structure_partial.hbs`)).text(),
+        char_v2_skill_list_partial: await (await fetch(`${root_actor_v2}skill_list_partial.hbs`)).text(),
         // item
         item_artifact_partial: await (await fetch(`${root}item/partials/artifact_partial.hbs`)).text(),
         item_artifact_power_partial: await (await fetch(`${root}item/partials/artifact_power_partial.hbs`)).text(),
@@ -345,19 +347,15 @@ Hooks.once('init', async function () {
         item_standard_partial: await (await fetch(`${root}item/partials/standard_partial.hbs`)).text(),
         item_unknown_value_partial: await (await fetch(`${root}item/partials/unknown_value_partial.hbs`)).text(),
         // item v2
-        item_v2_artifact_partial: await (await fetch(`${root}item-v2/partials/artifact_partial.hbs`)).text(),
-        item_v2_artifact_power_partial: await (
-            await fetch(`${root}item-v2/partials/artifact_power_partial.hbs`)
-        ).text(),
-        item_v2_esoteric_combat_partial: await (
-            await fetch(`${root}item-v2/partials/esoteric_combat_partial.hbs`)
-        ).text(),
-        item_v2_layout_partial: await (await fetch(`${root}item-v2/partials/structure_partial.hbs`)).text(),
-        item_v2_quantity_partial: await (await fetch(`${root}item-v2/partials/quantity_partial.hbs`)).text(),
-        item_v2_standard_partial: await (await fetch(`${root}item-v2/partials/standard_partial.hbs`)).text(),
-        item_v2_unknown_value_partial: await (await fetch(`${root}item-v2/partials/unknown_value_partial.hbs`)).text(),
-        item_v2_value_partial: await (await fetch(`${root}item-v2/partials/value_partial.hbs`)).text(),
-        item_v2_weight_partial: await (await fetch(`${root}item-v2/partials/weight_partial.hbs`)).text(),
+        item_v2_artifact_partial: await (await fetch(`${root_item_v2}artifact_partial.hbs`)).text(),
+        item_v2_artifact_power_partial: await (await fetch(`${root_item_v2}artifact_power_partial.hbs`)).text(),
+        item_v2_esoteric_combat_partial: await (await fetch(`${root_item_v2}esoteric_combat_partial.hbs`)).text(),
+        item_v2_layout_partial: await (await fetch(`${root_item_v2}structure_partial.hbs`)).text(),
+        item_v2_quantity_partial: await (await fetch(`${root_item_v2}quantity_partial.hbs`)).text(),
+        item_v2_standard_partial: await (await fetch(`${root_item_v2}standard_partial.hbs`)).text(),
+        item_v2_unknown_value_partial: await (await fetch(`${root_item_v2}unknown_value_partial.hbs`)).text(),
+        item_v2_value_partial: await (await fetch(`${root_item_v2}value_partial.hbs`)).text(),
+        item_v2_weight_partial: await (await fetch(`${root_item_v2}weight_partial.hbs`)).text(),
         // global
         effects_partial: await (await fetch(`${root}partials/effects_partial.hbs`)).text(),
         legacy_macro_partial: await (await fetch(`${root}partials/legacy_macro_partial.hbs`)).text(),
