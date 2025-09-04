@@ -80,6 +80,10 @@
                 overflow: hidden;
                 border-right: 1px solid #c9c7b8;
 
+                > a.tooltip {
+                    display: flex;
+                }
+
                 h4 {
                     margin: 0;
                     white-space: nowrap;

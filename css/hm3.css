@@ -1893,6 +1893,12 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     border-right: 1px solid #c9c7b8;
 }
 
+.hm3 .items .items-list .item .item-name > a.tooltip {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
 .hm3 .items .items-list .item .item-name h4 {
     margin: 0;
     white-space: nowrap;

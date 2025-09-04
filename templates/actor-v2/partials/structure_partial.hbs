@@ -437,8 +437,8 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="mount-action"
-                            aria-label="Mount"
-                            data-tooltip="Mount"
+                            aria-label="Mount Steed"
+                            data-tooltip="Mount Steed"
                             data-tooltip-direction="UP">
                             Mount
                         </a>
@@ -452,8 +452,8 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="mount-action"
-                            aria-label="Dismount"
-                            data-tooltip="Dismount"
+                            aria-label="Dismount Steed"
+                            data-tooltip="Dismount Steed"
                             data-tooltip-direction="UP">
                             Dismount
                         </a>
@@ -527,10 +527,16 @@
                         data-item-name="{{ item.name }}">
                         <div
                             class="item-name weapon-name {{#if (and system.isEquipped system.isCarried)}}melee-weapon-attack{{/if}} flexrow">
-                            <div
-                                class="item-image"
-                                style="background-image: url('{{ item.img }}')"></div>
-                            <h4>{{ item.name }}</h4>
+                            <a
+                                class="tooltip"
+                                aria-label="Initiate {{ item.name }} Melee Attack"
+                                data-tooltip="Initiate {{ item.name }} Melee Attack"
+                                data-tooltip-direction="UP">
+                                <div
+                                    class="item-image"
+                                    style="background-image: url('{{ item.img }}')"></div>
+                                <h4>{{ item.name }}</h4>
+                            </a>
                         </div>
                         <div class="item-detail weapon-qty">{{ system.quantity }}</div>
                         <div class="item-detail weapon-skill">{{ system.assocSkill }}</div>
@@ -649,10 +655,16 @@
                         data-item-name="{{ item.name }}">
                         <div
                             class="item-name missile-name {{#if (and system.isEquipped system.isCarried)}}missile-weapon-attack{{/if}} flexrow">
-                            <div
-                                class="item-image"
-                                style="background-image: url('{{ item.img }}')"></div>
-                            <h4>{{ item.name }}</h4>
+                            <a
+                                class="tooltip"
+                                aria-label="Initiate {{ item.name }} Missile Attack"
+                                data-tooltip="Initiate {{ item.name }} Missile Attack"
+                                data-tooltip-direction="UP">
+                                <div
+                                    class="item-image"
+                                    style="background-image: url('{{ item.img }}')"></div>
+                                <h4>{{ item.name }}</h4>
+                            </a>
                         </div>
                         <div class="item-detail missile-qty">{{ system.quantity }}</div>
                         <div class="item-detail missile-skill">{{ system.assocSkill }}</div>
@@ -783,10 +795,16 @@
                         data-item-id="{{ item._id }}"
                         data-item-name="{{ system.name }}">
                         <div class="item-name missile-name esoteric-attack flexrow">
-                            <div
-                                class="item-image"
-                                style="background-image: url('{{ item.img }}')"></div>
-                            <h4>{{ item.name }}</h4>
+                            <a
+                                class="tooltip"
+                                aria-label="Initiate {{ item.name }} Esoteric Attack"
+                                data-tooltip="Initiate {{ item.name }} Esoteric Attack"
+                                data-tooltip-direction="UP">
+                                <div
+                                    class="item-image"
+                                    style="background-image: url('{{ item.img }}')"></div>
+                                <h4>{{ item.name }}</h4>
+                            </a>
                         </div>
                         <div class="item-detail missile-attack">{{ system.effectiveMasteryLevel }}</div>
                         <div class="item-detail missile-short">{{ system.masteryLevel }} ft</div>
