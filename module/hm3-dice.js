@@ -97,6 +97,10 @@ export class DiceHM3 {
         if (rollData.fluffResult) {
             if (roll.isCritical) fluffResult = roll.isSuccess ? rollData.fluffResult.CS : rollData.fluffResult.CF;
             else fluffResult = roll.isSuccess ? rollData.fluffResult.MS : rollData.fluffResult.MF;
+            if (roll.preData.isTreatment && roll.preData.noTreatment) {
+                rollData.fluff = null;
+                fluffResult = 'No Treatment';
+            }
         }
 
         const chatTemplateData = {
@@ -358,8 +362,9 @@ export class DiceHM3 {
                 dialogData.isPhysician = true;
                 dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
                     return {
-                        key: Math.round(p.system.effectiveMasteryLevel / 2),
-                        label: `${p.actor.name} (EML/2 ${Math.round(p.system.effectiveMasteryLevel / 2)})`
+                        key: p.uuid, // Math.round(p.system.effectiveMasteryLevel / 2),
+                        label: `${p.actor.name} (EML/2 ${Math.round(p.system.effectiveMasteryLevel / 2)})`,
+                        value: Math.round(p.system.effectiveMasteryLevel / 2)
                     };
                 });
                 dialogData.physicianSkills.push({key: 0, label: '3rd Party Physician skill'});
@@ -369,8 +374,9 @@ export class DiceHM3 {
                 dialogData.isPhysician = true;
                 dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
                     return {
-                        key: Math.floor(p.system.masteryLevel / 10),
-                        label: `${p.actor.name} (SI ${Math.floor(p.system.masteryLevel / 10)})`
+                        key: p.uuid, // Math.floor(p.system.masteryLevel / 10),
+                        label: `${p.actor.name} (SI ${Math.floor(p.system.masteryLevel / 10)})`,
+                        value: Math.floor(p.system.masteryLevel / 10)
                     };
                 });
                 dialogData.physicianSkills.push({key: 0, label: '3rd Party Physician skill'});
@@ -383,15 +389,17 @@ export class DiceHM3 {
             dialogData.treatmentModifier = dialogOptions.treatmentTable.eml;
             dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
                 return {
-                    key: p.system.effectiveMasteryLevel,
-                    label: `${p.actor.name} (EML ${p.system.effectiveMasteryLevel})`
+                    key: p.uuid, // p.system.effectiveMasteryLevel,
+                    label: `${p.actor.name} (EML ${p.system.effectiveMasteryLevel})`,
+                    value: p.system.effectiveMasteryLevel
                 };
             });
             dialogData.physicianSkills.push(
-                {key: 0, label: '3rd Party Physician skill'},
-                {key: -1, label: 'No Treatment'}
+                {key: 'Other', label: '3rd Party Physician skill', value: 0},
+                {key: 'NT', label: 'No Treatment', value: -1}
             );
-            dialogData.physicianEml = dialogData.physicianSkills[0].key;
+            dialogData.physicianEml = dialogData.physicianSkills[0].value;
+            dialogData.physicianMod = 'EML';
         }
 
         const html = await renderTemplate(dlgTemplate, dialogData);
@@ -401,12 +409,26 @@ export class DiceHM3 {
             title: dialogOptions.label,
             content: html.trim(),
             label: 'Roll',
+            options: {width: 520},
             callback: (html) => {
                 const form = html[0].querySelector('form');
                 const formModifier = form.modifier.value;
-                const formPhysicianEml = form.physicianEml?.value || '0';
+                const physician = fromUuidSync(form.physicianEml?.value);
+                let formPhysicianEml = 0;
+                let noTreatment = false;
+                let noSubstantial = false;
+                if (physician) {
+                    if (dialogData.physicianMod === 'EML') formPhysicianEml = physician.system.effectiveMasteryLevel;
+                    else if (dialogData.physicianMod === 'EML/2')
+                        formPhysicianEml = Math.round(physician.system.effectiveMasteryLevel / 2);
+                    else if (dialogData.physicianMod === 'SI')
+                        formPhysicianEml = Math.floor(physician.system.effectiveMasteryLevel / 10);
+                } else {
+                    if (form.physicianEml?.value === 'NT') noTreatment = true;
+                }
+                // const formPhysicianEml = form.physicianEml?.value || '0';
                 const formTarget = form.target.value;
-                const formTreatmentModifier = form.treatmentModifier?.value || '0';
+                let formTreatmentModifier = form.treatmentModifier?.value || '0';
                 const isAppraisal = form.appraisal?.checked || false;
                 const moraleModification = form.moraleModifications?.value || '0';
                 const multiplier = form.multipliers?.selectedIndex + 1 || -1;
@@ -418,8 +440,12 @@ export class DiceHM3 {
                         dialogOptions.target + dialogOptions.effSkillBase,
                         5 * dialogOptions.effSkillBase
                     );
-                if (dialogOptions.isTreatment)
+                if (dialogOptions.isHealingRoll) noSubstantial = true;
+                if (dialogOptions.isTreatment) {
                     target = !isNaN(Number(formPhysicianEml)) ? Number(formPhysicianEml) : dialogOptions.target;
+                    noSubstantial = true;
+                    if (noTreatment) formTreatmentModifier = '0';
+                }
                 const phyBonus =
                     !isNaN(Number(formPhysicianEml)) && dialogData.isPhysician ? Number(formPhysicianEml) : 0;
 
@@ -434,7 +460,9 @@ export class DiceHM3 {
                         Number(formModifier) + Number(formTreatmentModifier) + Number(moraleModification) + phyBonus,
                     multiplier,
                     name: dialogOptions.name,
-                    noTreatment: target === -1,
+                    noSubstantial,
+                    noTreatment,
+                    physician,
                     target,
                     type: dialogOptions.type
                 });
@@ -1560,9 +1588,15 @@ export class DiceHM3 {
         const diceType = testData.diceSides === 6 ? 'd6' : 'd100';
         const numDice = testData.diceNum > 0 ? testData.diceNum : 1;
         const diceSpec = numDice + diceType;
+
+        const modifier = Number(testData.modifier);
+        const baseTargetNum = Number(testData.target) + modifier;
+        // Ensure target num is between 9 and 95; always a 5% chance of success/failure
+        const targetNum = diceType === 'd100' ? game.hm3.macros.HM100Check(baseTargetNum) : baseTargetNum;
+
         const roll = await game.hm3.macros.rollObjectEvaluatedAsync(diceSpec, {
             name: testData.name,
-            target: testData.target,
+            target: targetNum,
             targetCritical: testData.isTreatment && testData.noTreatment ? false : null, // No Treatment should auto fail with MF
             targetSuccess: testData.isTreatment && testData.noTreatment ? false : null, // No Treatment should auto fail with MF
             type: testData.type
@@ -1571,10 +1605,6 @@ export class DiceHM3 {
         if (!roll) {
             console.error(`Roll evaluation failed, diceSpec=${diceSpec}`);
         }
-        const modifier = Number(testData.modifier);
-        const baseTargetNum = Number(testData.target) + modifier;
-        // Ensure target num is between 9 and 95; always a 5% chance of success/failure
-        const targetNum = diceType === 'd100' ? game.hm3.macros.HM100Check(baseTargetNum) : baseTargetNum;
 
         let description = '';
         let isCrit = false;
@@ -1612,6 +1642,8 @@ export class DiceHM3 {
             isSuccess = roll.total <= targetNum;
             description = isSuccess ? 'Success' : 'Failure';
         }
+
+        if (testData.noSubstantial) description = description.replace('Substantial', 'Marginal');
 
         let rollResults = {
             'description': description,

@@ -863,6 +863,8 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
         item.runCustomMacro(result);
         if (result) {
             await heal(item, result);
+            if (result.roll.preData?.physician)
+                await utility.improveFlag(result.roll.preData.physician, {actor, success: result.isSuccess});
             callOnHooks('hm3.onHealingRoll', actor, result, stdRollData, item);
         }
         return result;
@@ -957,6 +959,8 @@ async function treatmentRoll(actor, injury, speaker) {
             success += result.isSuccess ? 's' : 'f';
             const hr = treatmentTable[success];
             await injury.update({'system.healRate': hr});
+            if (result.roll.preData?.physician)
+                await utility.improveFlag(result.roll.preData.physician, {actor, success: result.isSuccess});
             callOnHooks('hm3.onTreatmentRoll', actor, result, stdRollData, injury);
         }
         return result;

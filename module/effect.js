@@ -112,21 +112,29 @@ export async function onManageActiveEffect(event, owner) {
 }
 
 export async function checkStartedActiveEffects() {
-    // Handle game actors first
-    for (let actor of game.actors.values()) {
-        if (actor.isOwner && actor.allApplicableEffects(true)?.length) {
+    const actors = utility.getRelevantActors();
+    for (let actor of actors) {
+        if (actor.allApplicableEffects(true)?.length) {
             const aeStarted = await setAEStatus(actor);
             actor.sheet.conditionalRender({aeStarted});
         }
     }
 
-    // Next, handle tokens (only unlinked tokens)
-    for (let token of canvas.tokens.ownedTokens.values()) {
-        if (!token.document.actorLink && token.actor?.allApplicableEffects(true)?.length) {
-            const aeStarted = await setAEStatus(token.actor);
-            token.actor.sheet.conditionalRender({aeStarted});
-        }
-    }
+    // // Handle game actors first
+    // for (let actor of game.actors.values()) {
+    //     if (actor.player?.active && actor.isOwner && actor.allApplicableEffects(true)?.length) {
+    //         const aeStarted = await setAEStatus(actor);
+    //         actor.sheet.conditionalRender({aeStarted});
+    //     }
+    // }
+
+    // // Next, handle tokens (only unlinked tokens)
+    // for (let token of canvas.tokens.ownedTokens.values()) {
+    //     if (!token.document.actorLink && token.actor?.allApplicableEffects(true)?.length) {
+    //         const aeStarted = await setAEStatus(token.actor);
+    //         token.actor.sheet.conditionalRender({aeStarted});
+    //     }
+    // }
 }
 
 async function setAEStatus(actor) {
@@ -155,21 +163,29 @@ async function setAEStatus(actor) {
  * by the user and disables them if their duration has expired.
  */
 export async function checkExpiredActiveEffects() {
-    // Handle game actors first
-    for (let actor of game.actors.values()) {
-        if (actor.isOwner && actor.allApplicableEffects(true)?.length) {
+    const actors = utility.getRelevantActors();
+    for (let actor of actors) {
+        if (actor.allApplicableEffects(true)?.length) {
             const aeDisabled = await disableExpiredAE(actor);
             actor.sheet.conditionalRender({aeDisabled});
         }
     }
 
-    // Next, handle tokens (only unlinked tokens)
-    for (let token of canvas.tokens.ownedTokens.values()) {
-        if (!token.document.actorLink && token.actor?.allApplicableEffects(true)?.length) {
-            const aeDisabled = await disableExpiredAE(token.actor);
-            token.actor.sheet.conditionalRender({aeDisabled});
-        }
-    }
+    // // Handle game actors first
+    // for (let actor of game.actors.values()) {
+    //     if (actor.player?.active && actor.isOwner && actor.allApplicableEffects(true)?.length) {
+    //         const aeDisabled = await disableExpiredAE(actor);
+    //         actor.sheet.conditionalRender({aeDisabled});
+    //     }
+    // }
+
+    // // Next, handle tokens (only unlinked tokens)
+    // for (let token of canvas.tokens.ownedTokens.values()) {
+    //     if (!token.document.actorLink && token.actor?.allApplicableEffects(true)?.length) {
+    //         const aeDisabled = await disableExpiredAE(token.actor);
+    //         token.actor.sheet.conditionalRender({aeDisabled});
+    //     }
+    // }
 }
 
 /**

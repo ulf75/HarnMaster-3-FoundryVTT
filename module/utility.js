@@ -702,3 +702,33 @@ export async function weaponBroke(weapon, diff) {
 export async function fatigueReceived(actor, fatigue) {
     await game.hm3.socket.executeAsGM('fatigueReceived', actor.uuid, fatigue);
 }
+
+export function getRelevantActors() {
+    return [
+        // Handle game actors first
+        ...game.actors
+            .values()
+            .filter(
+                (actor) =>
+                    (actor.player ? actor.player.active : true) && actor.prototypeToken.actorLink && actor.isOwner
+            ),
+        // Next, handle tokens (only unlinked tokens)
+        ...canvas.tokens.ownedTokens
+            .values()
+            .filter((token) => !token.document.actorLink && token.actor.isOwner)
+            .map((token) => {
+                return token.actor;
+            })
+    ];
+}
+
+globalThis.utility = {
+    beautify,
+    fatigueReceived,
+    getAssocSkill,
+    getRelevantActors,
+    improveFlag,
+    romanize,
+    truncatedOML,
+    weaponBroke
+};
