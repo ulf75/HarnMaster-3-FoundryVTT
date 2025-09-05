@@ -242,8 +242,6 @@ export class ActorHM3 extends Actor {
     async _onCreate(data, options, userId) {
         await super._onCreate(data, options, userId);
         if (this.testUserPermission(game.user, 'OWNER') && this.type === game.hm3.ActorType.CHARACTER)
-            await this.setFlag('hm3', 'CharacterMancer', true);
-        if (this.testUserPermission(game.user, 'OWNER') && this.type === game.hm3.ActorType.CHARACTER)
             await this.setFlag('hm3', 'SkillImprovement', true);
     }
 
