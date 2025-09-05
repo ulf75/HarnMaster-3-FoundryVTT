@@ -1554,8 +1554,8 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 
 .hm3.item-v2 section.window-content form header.item-header .header-fields .item-type .value {
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 110px;
-    flex: 0 0 110px;
+    -ms-flex: 0 0 140px;
+    flex: 0 0 140px;
     height: 100%;
 }
 
