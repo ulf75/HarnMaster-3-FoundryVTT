@@ -37,26 +37,7 @@
     {{/if}}
 </div>
 
-<div class="grid grid-fixed-row grid-1col">
-    <div class="resource">
-        <label
-            for="system.skillBase.formula"
-            class="resource-label tooltip">
-            Skill Base Formula
-            <span class="tooltiptext">
-                Enter a formula to automatically calculate skill base. For example: "@str, @sta, @wil, Ulandus, Aralius:2". This will
-                average strength, stamina, and will; if Ulandus sunsign, add 1; if Aralius sunsign, add 2. There must always be exactly
-                three attributes. Valid attributes are: @str, @sta, @dex, @agl, @int, @aur, @wil, @eye, @hrg, @sml, @voi, @cml, @mor
-            </span>
-        </label>
-        <input class="value" type="text" id="system.skillBase.formula" name="system.skillBase.formula" value="{{ idata.skillBase.formula }}"
-        data-dtype="String" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
-        {{#unless idata.skillBase.isFormulaValid}}
-        <div class="error">Error: Invalid SkillBase Formula!</div>
-        {{/unless}}
-    </div>
-</div>
-
+{{> item_v2_sb_partial}}
 {{> item_v2_standard_partial}}
 
 {{#if isRiding}}

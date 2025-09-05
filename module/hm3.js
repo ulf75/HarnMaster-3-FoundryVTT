@@ -352,6 +352,7 @@ Hooks.once('init', async function () {
         item_v2_esoteric_combat_partial: await (await fetch(`${root_item_v2}esoteric_combat_partial.hbs`)).text(),
         item_v2_layout_partial: await (await fetch(`${root_item_v2}structure_partial.hbs`)).text(),
         item_v2_quantity_partial: await (await fetch(`${root_item_v2}quantity_partial.hbs`)).text(),
+        item_v2_sb_partial: await (await fetch(`${root_item_v2}sb_partial.hbs`)).text(),
         item_v2_standard_partial: await (await fetch(`${root_item_v2}standard_partial.hbs`)).text(),
         item_v2_unknown_value_partial: await (await fetch(`${root_item_v2}unknown_value_partial.hbs`)).text(),
         item_v2_value_partial: await (await fetch(`${root_item_v2}value_partial.hbs`)).text(),
