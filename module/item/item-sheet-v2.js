@@ -315,14 +315,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
-        if (!game.user.isGM) {
-            html.find('.profile-img').click(async (ev) => {
-                new ImagePopout(this.item.img, {
-                    title: this.item.name,
-                    uuid: this.item.uuid
-                }).render(true);
-            });
-        }
+        html.find('.profile-img').on('click', this._onShowProfileImage.bind(this));
 
         // Everything below here is only needed if the sheet is editable
         if (!this.options.editable) return;
@@ -467,5 +460,21 @@ export class ItemSheetHM3v2 extends ItemSheet {
         this._mode = toggle.checked ? MODES.EDIT : MODES.PLAY;
         await this.submit();
         this.render();
+    }
+
+    _onShowProfileImage() {
+        // Play mode only.
+        if (this._mode === this.constructor.MODES.PLAY || !game.user.isGM) {
+            const img = this.item.img;
+            if (game.release.generation < 13) {
+                new ImagePopout(img, {title: this.item.name, uuid: this.item.uuid}).render(true);
+            } else {
+                new foundry.applications.apps.ImagePopout({
+                    src: img,
+                    uuid: this.item.uuid,
+                    window: {title: this.item.name}
+                }).render({force: true});
+            }
+        }
     }
 }

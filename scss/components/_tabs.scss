@@ -141,6 +141,7 @@ $itemv2-window-header-shadow: var(--hm3-itemv2-window-header-shadow);
                 text-align: left;
 
                 img.profile-img {
+                    cursor: pointer;
                     flex: 0 0 85px;
                     height: 85px;
                     margin-right: 6px;

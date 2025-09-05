@@ -51,6 +51,9 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             owner: isOwner
         };
 
+        data.editable = this.isEditable && this._mode === this.constructor.MODES.EDIT;
+        data.cssClass = data.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked';
+
         data.hasDescription = 'description' in this.object.system;
         if (data.hasDescription) {
             data.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {
@@ -1056,6 +1059,10 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
         // More Info
         html.find('.more-info').click(this._onMoreInfo.bind(this));
+
+        html.find('.facade-image').on('click', this._onShowBioImage.bind(this));
+
+        html.find('.profile-img').on('click', this._onShowProfileImage.bind(this));
     }
 
     /* -------------------------------------------- */
@@ -1781,5 +1788,41 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         this._mode = toggle.checked ? MODES.EDIT : MODES.PLAY;
         await this.submit();
         this.render();
+    }
+
+    /**
+     * Handle showing the character's portrait or token art.
+     * @protected
+     */
+    _onShowBioImage() {
+        // Play mode only.
+        if (this._mode === this.constructor.MODES.PLAY && game.user.isGM) {
+            const img = this.actor.system.bioImage;
+            if (game.release.generation < 13) {
+                new ImagePopout(img, {title: this.actor.name, uuid: this.actor.uuid}).render(true);
+            } else {
+                new foundry.applications.apps.ImagePopout({
+                    src: img,
+                    uuid: this.actor.uuid,
+                    window: {title: this.actor.name}
+                }).render({force: true});
+            }
+        }
+    }
+
+    _onShowProfileImage() {
+        // Play mode only.
+        if (this._mode === this.constructor.MODES.PLAY && game.user.isGM) {
+            const img = this.actor.img;
+            if (game.release.generation < 13) {
+                new ImagePopout(img, {title: this.actor.name, uuid: this.actor.uuid}).render(true);
+            } else {
+                new foundry.applications.apps.ImagePopout({
+                    src: img,
+                    uuid: this.actor.uuid,
+                    window: {title: this.actor.name}
+                }).render({force: true});
+            }
+        }
     }
 }

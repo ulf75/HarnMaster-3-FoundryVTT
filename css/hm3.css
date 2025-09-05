@@ -926,6 +926,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 .hm3 .facade img.facade-image {
     background: transparent;
     border: none;
+    cursor: pointer;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 200px;
     flex: 0 0 200px;
@@ -965,6 +966,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .sheet .sheet-header-character .profile-img {
+    cursor: pointer;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 120px;
     flex: 0 0 120px;
@@ -1493,6 +1495,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3.item-v2 section.window-content form header.item-header img.profile-img {
+    cursor: pointer;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 85px;
     flex: 0 0 85px;
