@@ -2,11 +2,24 @@
     class="{{ cssClass }}"
     autocomplete="off">
     <header class="sheet-header item-header">
+        {{#if editable}}
         <img
             class="profile-img"
             src="{{ item.img }}"
+            alt="{{ item.name }}"
             data-edit="img"
-            title="{{ item.name }}" />
+            aria-label="{{ item.name }}"
+            data-tooltip="{{ item.name }}"
+            data-tooltip-direction="UP" />
+        {{else}}
+        <img
+            class="profile-img"
+            src="{{ item.img }}"
+            alt="{{ item.name }}"
+            aria-label="{{ item.name }}"
+            data-tooltip="{{ item.name }}"
+            data-tooltip-direction="UP" />
+        {{/if}}
         <div class="header-fields">
             {{#if (or nameReadOnly (not editable))}}
             <h1 class="item-name disabled">

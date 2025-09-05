@@ -4,15 +4,7 @@
     {{! Sheet Header }}
     <header class="sheet-header sheet-header-character">
         <div class="flexrow">
-            <img
-                class="profile-img"
-                src="{{ actor.img }}"
-                data-edit="img"
-                aria-label="{{ actor.name }}"
-                data-tooltip="{{ actor.name }}"
-                data-tooltip-direction="UP"
-                height="100"
-                width="100" />
+            {{> char_v2_img_partial cls='profile-img' src=actor.img edit='img' h=100 w=100}}
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
                     <h1 class="charname">
@@ -50,15 +42,7 @@
     <section class="sheet-body">
         <div class="facade">
             <div class="flexrow">
-                <img
-                    class="facade-image"
-                    src="{{ adata.bioImage }}"
-                    data-edit="system.bioImage"
-                    aria-label="{{ actor.name }}"
-                    data-tooltip="{{ actor.name }}"
-                    data-tooltip-direction="UP"
-                    height="300"
-                    width="200" />
+                {{> char_v2_img_partial cls='facade-image' src=adata.bioImage edit='system.bioImage' h=300 w=200}}
                 <div class="facade-description">
                     {{editor
                         descriptionHTML

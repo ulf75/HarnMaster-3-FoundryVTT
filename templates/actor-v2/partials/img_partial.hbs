@@ -1,0 +1,22 @@
+{{#if editable}}
+<img
+    class="{{ cls }}"
+    src="{{ src }}"
+    alt="{{ actor.name }}"
+    data-edit="{{ edit }}"
+    aria-label="{{ actor.name }}"
+    data-tooltip="{{ actor.name }}"
+    data-tooltip-direction="UP"
+    height="{{ h }}"
+    width="{{ w }}" />
+{{else}}
+<img
+    class="{{ cls }}"
+    src="{{ src }}"
+    alt="{{ actor.name }}"
+    aria-label="{{ actor.name }}"
+    data-tooltip="{{ actor.name }}"
+    data-tooltip-direction="UP"
+    height="{{ h }}"
+    width="{{ w }}" />
+{{/if}}
