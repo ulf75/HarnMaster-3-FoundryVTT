@@ -119,6 +119,20 @@ HM3.creatureSizes = [
     {key: 20, label: 'Gargantuan'}
 ];
 
+HM3.weightCoversions = [
+    {key: 1, label: 'lb'},
+    {key: 16, label: 'oz'},
+    {key: 256, label: 'dr'},
+    {key: 2272, label: 'ct'}
+];
+
+HM3.weightTableLabel = {
+    lb: {singular: 'pound', plural: 'pounds'},
+    oz: {singular: 'ounce', plural: 'ounces'},
+    dr: {singular: 'dram', plural: 'drams'},
+    ct: {singular: 'carat', plural: 'carats'}
+};
+
 HM3.ITEM_TYPE_LABEL = {
     skill: {singular: 'Skill', plural: 'Skills'},
     spell: {singular: 'Spell', plural: 'Spells'},
