@@ -109,6 +109,14 @@
                 Legacy
             </a>
             {{/if}}
+            {{#if (and isGM editable)}}
+            <a
+                class="item small"
+                data-tab="settings">
+                &nbsp;
+                <i class="fas fa-cog"></i>
+            </a>
+            {{/if}}
         </nav>
     </div>
 
@@ -153,6 +161,33 @@
                 data-group="primary"
                 data-tab="legacy-macro">
                 {{> legacy_macro_partial}}
+            </div>
+            {{/if}}
+
+            {{#if (and isGM editable)}}
+            <div
+                class="tab settings"
+                data-group="primary"
+                data-tab="settings">
+                {{#if (eq item.type "miscgear")}}
+
+                <div class="item-type resource flexrow">
+                    <label
+                        for="system.type"
+                        class="resource-label">
+                        Misc. Item Type
+                    </label>
+                    <select
+                        class="value"
+                        id="system.type"
+                        name="system.type">
+                        {{selectOptions config.miscItemTypes selected=idata.type valueAttr="key" labelAttr="key"}}
+                    </select>
+                </div>
+                {{/if}}
+                {{> item_v2_unknown_value_partial}}
+                {{> item_v2_esoteric_combat_partial}}
+                {{> item_v2_artifact_partial}}
             </div>
             {{/if}}
         </div>

@@ -1,16 +1,20 @@
-{{#if isGM}}
+{{#if item.derived.hasValue}}
 <div class="resource artifact flexrow">
     {{#if strictMode}}
-    <input type="checkbox" id="system.unknownValue" name="system.unknownValue" value="{{ idata.unknownValue }}" data-dtype="Boolean"
-    {{checked
-        idata.unknownValue}}
-    {{#unless editable}}disabled{{/unless}} />
+    <input
+        type="checkbox"
+        id="system.unknownValue"
+        name="system.unknownValue"
+        value="{{ idata.unknownValue }}"
+        data-dtype="Boolean"
+        {{checked
+        idata.unknownValue}} />
     <label
         for="system.unknownValue"
         class="resource-label">
         Unknown Value
     </label>
-    If checked, the value is not displayed to the players.
+    If checked, the price of the item is not displayed to the players.
     {{else}}
     <input
         type="checkbox"

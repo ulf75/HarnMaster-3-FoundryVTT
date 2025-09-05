@@ -35,6 +35,27 @@ export class ItemHM3 extends Item {
             },
             get injuryRollLabel() {
                 return ctx.system.healRate === 0 ? `Treatment Roll` : `Healing Roll`;
+            },
+            get hasValue() {
+                return [
+                    ItemType.ARMORGEAR,
+                    ItemType.CONTAINERGEAR,
+                    ItemType.MISCGEAR,
+                    ItemType.MISSILEGEAR,
+                    ItemType.WEAPONGEAR
+                ].includes(ctx.type);
+            },
+            get canBeArtifact() {
+                return [
+                    ItemType.ARMORGEAR,
+                    ItemType.CONTAINERGEAR,
+                    ItemType.MISCGEAR,
+                    ItemType.MISSILEGEAR,
+                    ItemType.WEAPONGEAR
+                ].includes(ctx.type);
+            },
+            get canBeEsotericCombat() {
+                return [ItemType.INVOCATION, ItemType.PSIONIC, ItemType.SKILL, ItemType.SPELL].includes(ctx.type);
             }
         };
     }

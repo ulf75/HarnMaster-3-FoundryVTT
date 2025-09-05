@@ -1627,6 +1627,10 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     width: 110px;
 }
 
+.hm3.item-v2 section.window-content form .tab-container nav.v2 a.small {
+    width: 40px;
+}
+
 .hm3.item-v2 section.window-content form .tab-container nav.v2 a:hover {
     color: #000;
     text-shadow: none;

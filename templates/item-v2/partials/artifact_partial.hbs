@@ -1,12 +1,15 @@
-{{#if isGM}}
+{{#if item.derived.canBeArtifact}}
 <div
     class="resource artifact flexrow"
     id="isarcane">
-    <input type="checkbox" id="system.arcane.isArtifact" name="system.arcane.isArtifact" value="{{ idata.arcane.isArtifact }}"
-    data-dtype="Boolean"
-    {{checked
-        idata.arcane.isArtifact}}
-    {{#unless editable}}disabled{{/unless}} />
+    <input
+        type="checkbox"
+        id="system.arcane.isArtifact"
+        name="system.arcane.isArtifact"
+        value="{{ idata.arcane.isArtifact }}"
+        data-dtype="Boolean"
+        {{checked
+        idata.arcane.isArtifact}} />
     <label
         for="system.arcane.isArtifact"
         class="resource-label">
@@ -18,11 +21,14 @@
 <fieldset id="artifact">
     <legend>Artifact Properties</legend>
     <div class="resource artifact flexrow">
-        <input type="checkbox" id="system.arcane.isOwnerAware" name="system.arcane.isOwnerAware" value="{{ idata.arcane.isOwnerAware }}"
-        data-dtype="Boolean"
-        {{checked
-            idata.arcane.isOwnerAware}}
-        {{#unless editable}}disabled{{/unless}} />
+        <input
+            type="checkbox"
+            id="system.arcane.isOwnerAware"
+            name="system.arcane.isOwnerAware"
+            value="{{ idata.arcane.isOwnerAware }}"
+            data-dtype="Boolean"
+            {{checked
+            idata.arcane.isOwnerAware}} />
         <label for="system.arcane.isOwnerAware">Is owner aware of Artifact?</label>
     </div>
 

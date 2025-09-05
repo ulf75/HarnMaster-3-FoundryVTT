@@ -1,23 +1,22 @@
+{{#if item.derived.canBeEsotericCombat}}
 {{#if isEsotericCombat}}
-{{#if isGM}}
-<div class="resource-block">
-    <div class="resource">
-        <label
-            for="system.isEquipped"
-            class="resource-label">
-            Attack Option
-        </label>
-        <span class="resource-span">
-            <input
-                type="checkbox"
-                id="system.isEquipped"
-                name="system.isEquipped"
-                {{
-                checked
-                idata.isEquipped
-                }} />
-        </span>
-    </div>
+<div class="resource flexrow">
+    <input
+        type="checkbox"
+        id="system.isEquipped"
+        name="system.isEquipped"
+        value="{{ idata.isEquipped }}"
+        data-dtype="Boolean"
+        {{
+        checked
+        idata.isEquipped
+        }} />
+    <label
+        for="system.isEquipped"
+        class="resource-label">
+        Attack Option
+    </label>
+    If checked, the item can be used for Esoteric Attacks.
 </div>
 {{/if}}
 {{/if}}

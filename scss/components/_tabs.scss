@@ -253,6 +253,10 @@ $itemv2-window-header-shadow: var(--hm3-itemv2-window-header-shadow);
                         width: $tab-width;
                     }
 
+                    a.small {
+                        width: $tab-width-small;
+                    }
+
                     a:hover {
                         color: #000;
                         text-shadow: none;
