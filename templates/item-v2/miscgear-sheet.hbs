@@ -5,6 +5,37 @@
     {{> item_v2_weight_partial}}
     {{> item_v2_value_partial}}
 </div>
+{{#if (eq idata.type "Written")}}
+<div class="grid grid-fixed-row grid-3col">
+    <div class="resource">
+        <label
+            for="system.written.condition"
+            class="resource-label">
+            Condition
+        </label>
+        <input class="value" type="text" id="system.written.condition" name="system.written.condition" value="{{ idata.written.condition }}"
+        data-dtype="String" {{#unless editable}}disabled{{/unless}} />
+    </div>
+    <div class="resource">
+        <label
+            for="system.written.medium"
+            class="resource-label">
+            Medium
+        </label>
+        <input class="value" type="text" id="system.written.medium" name="system.written.medium" value="{{ idata.written.medium }}"
+        data-dtype="String" {{#unless editable}}disabled{{/unless}} />
+    </div>
+    <div class="resource">
+        <label
+            for="system.written.pages"
+            class="resource-label">
+            Pages
+        </label>
+        <input class="value" type="number" id="system.written.pages" name="system.written.pages" value="{{ idata.written.pages }}"
+        data-dtype="Number" {{#unless editable}}disabled{{/unless}} />
+    </div>
+</div>
+{{/if}}
 {{> item_v2_standard_partial}}
 {{> item_v2_unknown_value_partial}}
 {{#if (and isGM editable)}}
