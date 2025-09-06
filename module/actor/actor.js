@@ -9,6 +9,97 @@ import * as utility from '../utility.js';
  * @extends {Actor}
  */
 export class ActorHM3 extends Actor {
+    get derived() {
+        const ctx = this;
+        return {
+            get END() {
+                const ML = ctx.items.find((it) => it.name === 'Condition')?.system?.masteryLevel;
+                return Math.round(
+                    ML
+                        ? ML / 5
+                        : (ctx.system.abilities.strength.base +
+                              ctx.system.abilities.stamina.base +
+                              ctx.system.abilities.will.base) /
+                              3
+                );
+            },
+            get totalArmorWeight() {
+                return utility.truncate(
+                    ctx.items.contents
+                        .filter((it) => it.type === ItemType.ARMORGEAR && it.system.isCarried)
+                        .reduce((partialSum, it) => partialSum + it.system.quantity * it.system.weight, 0)
+                );
+            },
+            get totalMiscGearWeight() {
+                return utility.truncate(
+                    ctx.items.contents
+                        .filter(
+                            (it) =>
+                                (it.type === ItemType.MISCGEAR || it.type === ItemType.CONTAINERGEAR) &&
+                                it.system.isCarried
+                        )
+                        .reduce((partialSum, it) => partialSum + it.system.quantity * it.system.weight, 0)
+                );
+            },
+            get totalMissileWeight() {
+                return utility.truncate(
+                    ctx.items.contents
+                        .filter((it) => it.type === ItemType.MISSILEGEAR && it.system.isCarried)
+                        .reduce((partialSum, it) => partialSum + it.system.quantity * it.system.weight, 0)
+                );
+            },
+            get totalWeaponWeight() {
+                return utility.truncate(
+                    ctx.items.contents
+                        .filter((it) => it.type === ItemType.WEAPONGEAR && it.system.isCarried)
+                        .reduce((partialSum, it) => partialSum + it.system.quantity * it.system.weight, 0)
+                );
+            },
+            get totalGearWeight() {
+                return utility.truncate(
+                    ctx.derived.totalArmorWeight +
+                        ctx.derived.totalMiscGearWeight +
+                        ctx.derived.totalMissileWeight +
+                        ctx.derived.totalWeaponWeight
+                );
+            },
+            // Encumbrance Penalty
+            get EP() {
+                return Math.floor(ctx.derived.totalGearWeight / ctx.derived.END);
+            },
+            // Fatigue Penalty
+            get FP() {
+                return ctx.system.fatigue || 0;
+            },
+            // Injury Penalty
+            get IP() {
+                return ctx.items.contents
+                    .filter((it) => it.type === ItemType.INJURY)
+                    .reduce((partialSum, it) => partialSum + it.system.injuryLevel, 0);
+            },
+            get UP() {
+                return ctx.derived.IP + ctx.derived.FP;
+            },
+            get PP() {
+                return ctx.derived.UP + ctx.derived.EP;
+            },
+            get containers() {
+                const containers = [{label: 'On Person', key: 'on-person'}];
+
+                // Containers are not allowed in other containers.  So if this item is a container,
+                // don't show any other containers.
+                if (ctx.actor && ctx.type !== ItemType.CONTAINERGEAR) {
+                    ctx.actor.items.forEach((it) => {
+                        if (it.type === ItemType.CONTAINERGEAR) {
+                            containers.push({label: it.name, key: it.id});
+                        }
+                    });
+                }
+                return containers;
+            }
+        };
+    }
+
     get macrolist() {
         return game.macros.contents.filter((m) => m.getFlag('hm3', 'ownerId') === this.id) || [];
     }

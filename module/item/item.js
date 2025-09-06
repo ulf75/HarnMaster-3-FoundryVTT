@@ -34,7 +34,11 @@ export class ItemHM3 extends Item {
                 return ctx.system.isCarried ? `Drop ${ctx.name}` : `Carry ${ctx.name}`;
             },
             get injuryRollLabel() {
-                return ctx.system.healRate === 0 ? `Treatment Roll` : `Healing Roll`;
+                return ctx.system.healRate !== undefined
+                    ? ctx.system.healRate === 0
+                        ? `Treatment Roll`
+                        : `Healing Roll`
+                    : undefined;
             },
             get hasValue() {
                 return [
@@ -56,6 +60,23 @@ export class ItemHM3 extends Item {
             },
             get canBeEsotericCombat() {
                 return [ItemType.INVOCATION, ItemType.PSIONIC, ItemType.SKILL, ItemType.SPELL].includes(ctx.type);
+            },
+            get weight() {
+                return utility.truncate(ctx.system.weight, 3);
+            },
+            get containers() {
+                const containers = [{label: 'On Person', key: 'on-person'}];
+
+                // Containers are not allowed in other containers.  So if this item is a container,
+                // don't show any other containers.
+                if (ctx.actor && ctx.type !== ItemType.CONTAINERGEAR) {
+                    ctx.actor.items.forEach((it) => {
+                        if (it.type === ItemType.CONTAINERGEAR) {
+                            containers.push({label: it.name, key: it.id});
+                        }
+                    });
+                }
+                return containers;
             }
         };
     }
