@@ -51,6 +51,8 @@ import {SlideToggleElement} from './toggle.js';
 import * as utility from './utility.js';
 import {Weather} from './weather.js';
 
+// import '../scss/hm3.scss';
+
 Hooks.once('init', async function () {
     console.info(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
 
