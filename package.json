@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "CSS compiler for the HarnMaster 3 system",
   "scripts": {
-    "build": "gulp",
+    "build": "webpack --watch",
+    "build:css": "gulp css",
+    "build:sass": "gulp sass",
     "compile": "gulp css",
     "watch": "gulp",
     "gulp": "gulp"
@@ -21,6 +23,10 @@
   },
   "devDependencies": {
     "gulp-sass": "^5.1.0",
-    "node-sass": "^9.0.0"
+    "node-sass": "^9.0.0",
+    "sass": "^1.92.1",
+    "sass-loader": "^16.0.5",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1"
   }
 }
