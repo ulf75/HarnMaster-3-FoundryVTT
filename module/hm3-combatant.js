@@ -1,3 +1,5 @@
+import {ItemType} from './hm3-types';
+
 export class CombatantHM3 extends Combatant {
     /**
      *
@@ -8,14 +10,14 @@ export class CombatantHM3 extends Combatant {
         if (this.actor.system.mounted) {
             // For mounted combat, initiative is equal to Riding EML (COMBAT 20)
             const iniSkill = this.actor.items.find(
-                (item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding')
+                (item) => item.type === ItemType.SKILL && item.name.includes('Riding')
             );
             this.actor.system.initiative = iniSkill.system.effectiveMasteryLevel;
             this.actor.system.initiative += iniSkill.system.skillBase.value / 10;
             if (mark) iniSkill.update({'system.improveFlag': iniSkill.system.improveFlag + 1});
         } else {
             const iniSkill = this.actor.items.find(
-                (item) => item.type === game.hm3.ItemType.SKILL && item.name === 'Initiative'
+                (item) => item.type === ItemType.SKILL && item.name === 'Initiative'
             );
             this.actor.system.initiative = !this.token?.hasCondition(game.hm3.Condition.SHOCKED)
                 ? iniSkill.system.effectiveMasteryLevel

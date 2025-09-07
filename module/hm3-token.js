@@ -1,5 +1,5 @@
 import {rangeToTarget} from './combat.js';
-import {Condition} from './hm3-types.js';
+import {Condition, ItemType} from './hm3-types.js';
 import * as macros from './macros.js';
 import {Mutex} from './mutex.js';
 
@@ -116,7 +116,7 @@ export class TokenHM3 extends Token {
     }
 
     getInjuries() {
-        return this.actor.items.filter((item) => item.type === game.hm3.ItemType.INJURY);
+        return this.actor.items.filter((item) => item.type === ItemType.INJURY);
     }
 
     isInjured() {

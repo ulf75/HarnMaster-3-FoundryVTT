@@ -1302,9 +1302,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     async _onToggleMount(event) {
         event.preventDefault();
 
-        const riding = this.actor.items.find(
-            (item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding')
-        );
+        const riding = this.actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
 
         const steed = fromUuidSync(riding.system.actorUuid);
         if (steed) {
