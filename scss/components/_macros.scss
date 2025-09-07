@@ -172,7 +172,7 @@
     }
 
     input[type='text'].macros-name-filter {
-        background-image: url('../images/png/searchicon.png');
+        background-image: url(/systems/hm3/images/png/searchicon.png);
         background-size: contain;
         background-position: 5px -1px;
         background-repeat: no-repeat;
@@ -227,7 +227,7 @@
 
         input[type='text'].macros-name-filter {
             background-color: $maroon-background;
-            background-image: url('../images/png/searchicon.png');
+            background-image: url(/systems/hm3/images/png/searchicon.png);
             background-position: 5px -1px;
             background-repeat: no-repeat;
             background-size: contain;
