@@ -1,5 +1,4 @@
 // Import Modules
-import {BaseTestHM3} from '../tests/hm3-basetest.js';
 import {runner} from '../tests/runner.js';
 import {ActorHM3} from './actor/actor.js';
 import {CharacterSheetHM3v2} from './actor/character-sheet-v2.js';
@@ -15,7 +14,6 @@ import {ActiveEffectHM3} from './hm3-active-effect.js';
 import {ChatMessageHM3} from './hm3-chatmessage.js';
 import {CombatHM3} from './hm3-combat.js';
 import {CombatantHM3} from './hm3-combatant.js';
-import {DiceHM3} from './hm3-dice.js';
 import {MacroHM3} from './hm3-macro.js';
 import {RollHM3} from './hm3-roll.js';
 import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
@@ -44,7 +42,6 @@ import {WallHM3} from './hm3/hm3-wall.js';
 import {ItemSheetHM3v2} from './item/item-sheet-v2.js';
 import {ItemSheetHM3} from './item/item-sheet.js';
 import {ItemHM3} from './item/item.js';
-import {WeaponItem} from './item/weapon-item.js';
 import {registerHooks} from './macro.js';
 import * as macros from './macros.js';
 import * as migrations from './migrations.js';
@@ -59,14 +56,14 @@ Hooks.once('init', async function () {
 
     CONFIG.ActiveEffect.legacyTransferral = false;
 
-    globalThis.WeaponItem = WeaponItem;
+    // globalThis.WeaponItem = WeaponItem;
 
     window.customElements.define('slide-toggle', SlideToggleElement);
 
     game.hm3 = {
-        DiceHM3,
-        ActorHM3,
-        ItemHM3,
+        // DiceHM3,
+        // ActorHM3,
+        // ItemHM3,
 
         config: HM3,
         macros,
@@ -512,10 +509,10 @@ Hooks.on('hm3.onMount', async (actor, steed) => {
 
     await actor.update({'system.mounted': true});
     actor.prepareData();
-    const riding = actor.items.find((item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding'));
+    const riding = actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
     riding.sheet.render();
 
-    const rider = steed.items.find((item) => item.type === game.hm3.ItemType.MISCGEAR && item.name.includes('Rider'));
+    const rider = steed.items.find((item) => item.type === ItemType.MISCGEAR && item.name.includes('Rider'));
     await rider?.delete();
     await Item.create(
         {
@@ -533,10 +530,10 @@ Hooks.on('hm3.onUnmount', async (actor, steed) => {
 
     await actor.update({'system.mounted': false});
     actor.prepareData();
-    const riding = actor.items.find((item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding'));
+    const riding = actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
     riding.sheet.render();
 
-    const rider = steed.items.find((item) => item.type === game.hm3.ItemType.MISCGEAR && item.name.includes('Rider'));
+    const rider = steed.items.find((item) => item.type === ItemType.MISCGEAR && item.name.includes('Rider'));
     await rider?.delete();
 });
 
@@ -567,7 +564,6 @@ Hooks.once('ready', async function () {
     if (game.settings.get('hm3', 'debugMode')) {
         CONFIG.debug.hm3 = true;
         // CONFIG.debug.hooks = true;
-        game.hm3.BaseTest = BaseTestHM3;
         game.hm3.runner = runner;
         game.hm3.socket.register('defButtonsFromChatMsg', game.hm3.BaseTest.DefButtonsFromChatMsgProxy);
         game.hm3.socket.register('defAction', game.hm3.BaseTest.DefActionProxy);
