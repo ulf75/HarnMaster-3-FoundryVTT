@@ -1,4 +1,6 @@
-export class TestCase extends game.hm3.BaseTest {
+import {BaseTestHM3} from '../hm3-basetest';
+
+export class ZonesTestCase extends BaseTestHM3 {
     async _postSetup() {
         await this._createActor('Actor.XCCoFJojZ90dmPkL', 'Alon');
     }

@@ -1,6 +1,8 @@
+import {BaseTestHM3} from '../hm3-basetest';
+
 const CENTER = {x: 7870, y: 14258};
 
-export class TestCase extends game.hm3.BaseTest {
+export class MeleeDodgeTestCase extends BaseTestHM3 {
     async _prerequisites() {
         if (!game.users.get(this.ALICE_USER_ID).active) return 'Alice user is not active';
         if (!game.users.get(this.INEN_USER_ID).active) return 'Inen user is not active';

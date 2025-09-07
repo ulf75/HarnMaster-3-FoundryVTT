@@ -1,6 +1,8 @@
+import {BaseTestHM3} from '../hm3-basetest';
+
 const CENTER = {x: 7870, y: 14258};
 
-export class TestCase extends game.hm3.BaseTest {
+export class DefeatedTestCase extends BaseTestHM3 {
     async _postSetup() {
         await this._createActor('Actor.XCCoFJojZ90dmPkL', 'Alon');
     }

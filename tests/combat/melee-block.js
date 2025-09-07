@@ -1,6 +1,8 @@
+import {BaseTestHM3} from '../hm3-basetest';
+
 const CENTER = {x: 7870, y: 14258};
 
-export class TestCase extends game.hm3.BaseTest {
+export class MeleeBlockTestCase extends BaseTestHM3 {
     async _test() {
         const alice = await this._dropActor(this.actors.get('Alice'), CENTER);
         const bob = await this._dropActor(this.actors.get('Bob'), CENTER, this.SOUTH);

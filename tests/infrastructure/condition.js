@@ -1,4 +1,6 @@
-export class TestCase extends game.hm3.BaseTest {
+import {BaseTestHM3} from '../hm3-basetest';
+
+export class ConditionTestCase extends BaseTestHM3 {
     CENTER = {x: 7870, y: 14258};
 
     async _test() {

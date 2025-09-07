@@ -1,14 +1,16 @@
+import {MoraleTestCase} from './infrastructure/morale';
+
 const tests = new Map([
-    // ['(i01) - condition', './infrastructure/condition.js'],
-    // ['(i02) - morale', './infrastructure/morale.js'],
-    ['(c01) - defeated', './combat/defeated.js'],
-    ['(c02) - shock', './combat/shock.js'],
-    ['(c03) - zones', './combat/zones.js'],
-    // ['(c04) - Melee Block', './combat/melee-block.js'],
-    // ['(c05) - Melee Counterstrike', './combat/melee-counterstrike.js'],
-    // ['(c06) - Melee Dodge', './combat/melee-dodge.js'],
-    // ['(c07) - Melee Ignore', './combat/melee-ignore.js']
-    ['(c08) - Outnumbered', './combat/outnumbered.js']
+    // ['(i01) - condition', new ConditionTestCase()],
+    ['(i02) - morale', new MoraleTestCase()]
+    // ['(c01) - defeated', new DefeatedTestCase()],
+    // ['(c02) - shock', new ShockTestCase()],
+    // ['(c03) - zones', new ZonesTestCase()],
+    // ['(c04) - Melee Block', new MeleeBlockTestCase()],
+    // ['(c05) - Melee Counterstrike', new MeleeCSTestCase()],
+    // ['(c06) - Melee Dodge', new MeleeDodgeTestCase()],
+    // ['(c07) - Melee Ignore', new MeleeIgnoreTestCase()],
+    // ['(c08) - Outnumbered', new OutnumberedTestCase()]
 ]);
 
 let isRunning = false;
@@ -24,12 +26,8 @@ export async function runner() {
     for (const test of tests.keys()) {
         console.info('%c\n----------------------------------------', 'color: #b6b4a5');
         console.info(`%cRunning test: ${test}`, 'color: #b6b4a5');
-        const Module = await import(tests.get(test));
-        if (!Module || !Module.TestCase) {
-            console.error(`Test module for "${test}" not found or does not export TestCase.`);
-            continue;
-        }
-        var t = new Module.TestCase();
+
+        var t = tests.get(test);
         const success = await t.start();
         if (success) {
             console.info(`%cTest "${test}" completed successfully.`, 'color: #00990d');
