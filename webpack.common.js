@@ -17,7 +17,6 @@ module.exports = {
         ]
     },
     entry: './module/hm3',
-    mode: 'development',
     output: {
         filename: 'hm3.js',
         // Setting webpack to generate the library with a global variable as
@@ -27,9 +26,5 @@ module.exports = {
         libraryExport: 'default',
         globalObject: 'this',
         path: path.resolve(__dirname, 'dist')
-    },
-    devtool: 'inline-source-map',
-    devServer: {
-        contentBase: path.resolve(__dirname, 'dist')
     }
 };
