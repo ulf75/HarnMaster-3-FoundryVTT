@@ -1,22 +1,21 @@
 // Import Modules
-import {runner} from '../tests/runner.js';
-import {ActorHM3} from './actor/actor.js';
-import {CharacterSheetHM3v2} from './actor/character-sheet-v2.js';
-import {CharacterSheetHM3} from './actor/character-sheet.js';
-import {ContainerSheetHM3v2} from './actor/container-sheet-v2.js';
-import {ContainerSheetHM3} from './actor/container-sheet.js';
-import {CreatureSheetHM3v2} from './actor/creature-sheet-v2.js';
-import {CreatureSheetHM3} from './actor/creature-sheet.js';
-import * as combat from './combat.js';
-import {HM3} from './config.js';
-import * as effect from './effect.js';
-import {ActiveEffectHM3} from './hm3-active-effect.js';
-import {ChatMessageHM3} from './hm3-chatmessage.js';
-import {CombatHM3} from './hm3-combat.js';
-import {CombatantHM3} from './hm3-combatant.js';
-import {MacroHM3} from './hm3-macro.js';
-import {RollHM3} from './hm3-roll.js';
-import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
+import {ActorHM3} from './module/actor/actor.js';
+import {CharacterSheetHM3v2} from './module/actor/character-sheet-v2.js';
+import {CharacterSheetHM3} from './module/actor/character-sheet.js';
+import {ContainerSheetHM3v2} from './module/actor/container-sheet-v2.js';
+import {ContainerSheetHM3} from './module/actor/container-sheet.js';
+import {CreatureSheetHM3v2} from './module/actor/creature-sheet-v2.js';
+import {CreatureSheetHM3} from './module/actor/creature-sheet.js';
+import * as combat from './module/combat.js';
+import {HM3} from './module/config.js';
+import * as effect from './module/effect.js';
+import {ActiveEffectHM3} from './module/hm3-active-effect.js';
+import {ChatMessageHM3} from './module/hm3-chatmessage.js';
+import {CombatHM3} from './module/hm3-combat.js';
+import {CombatantHM3} from './module/hm3-combatant.js';
+import {MacroHM3} from './module/hm3-macro.js';
+import {RollHM3} from './module/hm3-roll.js';
+import {TokenDocumentHM3, TokenHM3} from './module/hm3-token.js';
 import {
     ActorType,
     ArcanePower,
@@ -29,29 +28,30 @@ import {
     MiscItemType,
     Range,
     SkillType
-} from './hm3-types.js';
-import {ActiveEffectConfigHM3} from './hm3/hm3-active-effect-config.js';
-import {AmbientLightHM3} from './hm3/hm3-ambient-light.js';
-import {AmbientSoundHM3} from './hm3/hm3-ambient-sound.js';
-import {DrawingHM3} from './hm3/hm3-drawing.js';
-import {MacroConfigHM3} from './hm3/hm3-macro-config.js';
-import {NoteHM3} from './hm3/hm3-note.js';
-import {RegionHM3} from './hm3/hm3-region.js';
-import {TileHM3} from './hm3/hm3-tile.js';
-import {WallHM3} from './hm3/hm3-wall.js';
-import {ItemSheetHM3v2} from './item/item-sheet-v2.js';
-import {ItemSheetHM3} from './item/item-sheet.js';
-import {ItemHM3} from './item/item.js';
-import {registerHooks} from './macro.js';
-import * as macros from './macros.js';
-import * as migrations from './migrations.js';
-import {Mutex} from './mutex.js';
-import {registerSystemSettings} from './settings.js';
-import {SlideToggleElement} from './toggle.js';
-import * as utility from './utility.js';
-import {Weather} from './weather.js';
+} from './module/hm3-types.js';
+import {ActiveEffectConfigHM3} from './module/hm3/hm3-active-effect-config.js';
+import {AmbientLightHM3} from './module/hm3/hm3-ambient-light.js';
+import {AmbientSoundHM3} from './module/hm3/hm3-ambient-sound.js';
+import {DrawingHM3} from './module/hm3/hm3-drawing.js';
+import {MacroConfigHM3} from './module/hm3/hm3-macro-config.js';
+import {NoteHM3} from './module/hm3/hm3-note.js';
+import {RegionHM3} from './module/hm3/hm3-region.js';
+import {TileHM3} from './module/hm3/hm3-tile.js';
+import {WallHM3} from './module/hm3/hm3-wall.js';
+import {ItemSheetHM3v2} from './module/item/item-sheet-v2.js';
+import {ItemSheetHM3} from './module/item/item-sheet.js';
+import {ItemHM3} from './module/item/item.js';
+import {registerHooks} from './module/macro.js';
+import * as macros from './module/macros.js';
+import * as migrations from './module/migrations.js';
+import {Mutex} from './module/mutex.js';
+import {registerSystemSettings} from './module/settings.js';
+import {SlideToggleElement} from './module/toggle.js';
+import * as utility from './module/utility.js';
+import {Weather} from './module/weather.js';
+import {runner} from './tests/runner.js';
 
-// import '../scss/hm3.scss';
+// import './scss/hm3.scss';
 
 Hooks.once('init', async function () {
     console.info(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);

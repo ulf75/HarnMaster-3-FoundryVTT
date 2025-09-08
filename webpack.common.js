@@ -16,7 +16,7 @@ module.exports = {
             }
         ]
     },
-    entry: './module/hm3',
+    entry: './hm3.js',
     output: {
         filename: 'hm3.js',
         // Setting webpack to generate the library with a global variable as
