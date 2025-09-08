@@ -2,6 +2,18 @@ import {ActorHM3} from '../actor/actor.js';
 import {HM3} from '../config.js';
 import {ItemType, SkillType} from '../hm3-types.js';
 import * as utility from '../utility.js';
+import {ArmorProxy} from './proxies/armor-proxy.js';
+import {ArmorlocationProxy} from './proxies/armorlocation-proxy.js';
+import {CompanionProxy} from './proxies/companion-proxy.js';
+import {ContainerProxy} from './proxies/container-proxy.js';
+import {EffectProxy} from './proxies/effect-proxy.js';
+import {InjuryProxy} from './proxies/injury-proxy.js';
+import {InvocationProxy} from './proxies/invocation-proxy.js';
+import {MissileProxy} from './proxies/missile-proxy.js';
+import {PsionicProxy} from './proxies/psionic-proxy.js';
+import {SkillProxy} from './proxies/skill-proxy.js';
+import {SpellProxy} from './proxies/spell-proxy.js';
+import {WeaponProxy} from './proxies/weapon-proxy.js';
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -9,6 +21,36 @@ import * as utility from '../utility.js';
  */
 export class ItemHM3 extends Item {
     _impactTypeChanged = false;
+
+    get proxy() {
+        switch (this.type) {
+            case ItemType.ARMORGEAR:
+                return new ArmorProxy(this);
+            case ItemType.ARMORLOCATION:
+                return new ArmorlocationProxy(this);
+            case ItemType.COMPANION:
+                return new CompanionProxy(this);
+            case ItemType.CONTAINERGEAR:
+                return new ContainerProxy(this);
+            case ItemType.EFFECT:
+                return new EffectProxy(this);
+            case ItemType.INJURY:
+                return new InjuryProxy(this);
+            case ItemType.INVOCATION:
+                return new InvocationProxy(this);
+            case ItemType.MISCGEAR:
+            case ItemType.MISSILEGEAR:
+                return new MissileProxy(this);
+            case ItemType.PSIONIC:
+                return new PsionicProxy(this);
+            case ItemType.SKILL:
+                return new SkillProxy(this);
+            case ItemType.SPELL:
+                return new SpellProxy(this);
+            case ItemType.WEAPONGEAR:
+                return new WeaponProxy(this);
+        }
+    }
 
     get derived() {
         const ctx = this;

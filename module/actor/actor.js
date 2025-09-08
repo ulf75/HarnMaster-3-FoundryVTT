@@ -9,6 +9,12 @@ import * as utility from '../utility.js';
  * @extends {Actor}
  */
 export class ActorHM3 extends Actor {
+    get proxies() {
+        return this.items.contents.map((item) => {
+            return item.proxy;
+        });
+    }
+
     get derived() {
         const ctx = this;
         return {
