@@ -38,7 +38,7 @@
         text-align: center;
 
         &.active:hover {
-            background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
+            background-image: $image-url-d20-grey !important;
             background-size: 27px;
             color: black;
         }

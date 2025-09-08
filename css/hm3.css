@@ -2127,13 +2127,13 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .combat .weapons-list .weapon .item-name.damage-roll:hover .item-image {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-repeat: no-repeat;
     background-position: center;
 }
 
 .hm3 .combat .weapons-list .weapon .item-name.damage-roll .item-image:hover {
-    background-image: url('../../../icons/svg/d20-black.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-black.svg) !important;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -2250,7 +2250,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .combat .weapons-list .weapon .weapon-blunt.active:hover {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-size: 27px;
     background-repeat: no-repeat;
     background-position: center;
@@ -2265,7 +2265,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .combat .weapons-list .weapon .weapon-edged.active:hover {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-size: 27px;
     background-repeat: no-repeat;
     background-position: center;
@@ -2280,7 +2280,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .combat .weapons-list .weapon .weapon-piercing.active:hover {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-size: 27px;
     background-repeat: no-repeat;
     background-position: center;
@@ -2302,7 +2302,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .combat .weapons-list .weapon .weapon-attack.active:hover {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-size: 27px;
     background-repeat: no-repeat;
     background-position: center;
@@ -2317,7 +2317,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .combat .weapons-list .weapon .weapon-defense.active:hover {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-size: 27px;
     background-repeat: no-repeat;
     background-position: center;
@@ -2376,13 +2376,13 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .combat .missiles-list .missile .item-name.missile-damage-roll:hover .item-image {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-repeat: no-repeat;
     background-position: center;
 }
 
 .hm3 .combat .missiles-list .missile .item-name.missile-damage-roll .item-image:hover {
-    background-image: url('../../../icons/svg/d20-black.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-black.svg) !important;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -2478,7 +2478,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .combat .missiles-list .missile .missile-short.active:hover {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-size: 27px;
     background-repeat: no-repeat;
     background-position: center;
@@ -2493,7 +2493,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .combat .missiles-list .missile .missile-medium.active:hover {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-size: 27px;
     background-repeat: no-repeat;
     background-position: center;
@@ -2508,7 +2508,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .combat .missiles-list .missile .missile-long.active:hover {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-size: 27px;
     background-repeat: no-repeat;
     background-position: center;
@@ -2523,7 +2523,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .combat .missiles-list .missile .missile-extreme.active:hover {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-size: 27px;
     background-repeat: no-repeat;
     background-position: center;
@@ -2545,7 +2545,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .combat .missiles-list .missile .missile-attack.active:hover {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-size: 27px;
     background-repeat: no-repeat;
     background-position: center;
@@ -2975,7 +2975,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .injuries-list .injury-healrate.active:hover {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
     background-size: 27px;
     color: black;
 }
@@ -3028,7 +3028,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3.actor .skills .skill-name-filter {
-    background-image: url('../images/png/searchicon.png');
+    background-image: url(/systems/hm3/images/png/searchicon.png);
     background-size: contain;
     background-position: 5px -1px;
     background-repeat: no-repeat;
@@ -3182,11 +3182,11 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .esoteric .spells-list .spell .item-name.std-roll:hover .item-image {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
 }
 
 .hm3 .esoteric .spells-list .spell .item-name.std-roll .item-image:hover {
-    background-image: url('../../../icons/svg/d20-black.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-black.svg) !important;
 }
 
 .hm3 .esoteric .spells-list .spell .spell-image {
@@ -3270,11 +3270,11 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .esoteric .psionics-list .psionic .item-name.std-roll:hover .item-image {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
 }
 
 .hm3 .esoteric .psionics-list .psionic .item-name.std-roll .item-image:hover {
-    background-image: url('../../../icons/svg/d20-black.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-black.svg) !important;
 }
 
 .hm3 .esoteric .psionics-list .psionic .psionic-image {
@@ -3577,7 +3577,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 input[type='text'].gear-name-filter {
-    background-image: url('../images/png/searchicon.png');
+    background-image: url(/systems/hm3/images/png/searchicon.png);
     background-size: contain;
     background-position: 5px -1px;
     background-repeat: no-repeat;
@@ -3978,7 +3978,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .effects input[type='text'].effects-name-filter {
-    background-image: url('../images/png/searchicon.png');
+    background-image: url(/systems/hm3/images/png/searchicon.png);
     background-size: contain;
     background-position: 5px -1px;
     background-repeat: no-repeat;
@@ -4215,7 +4215,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .macros input[type='text'].macros-name-filter {
-    background-image: url('../images/png/searchicon.png');
+    background-image: url(/systems/hm3/images/png/searchicon.png);
     background-size: contain;
     background-position: 5px -1px;
     background-repeat: no-repeat;
@@ -4264,7 +4264,7 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 
 .hm3 .v2 .macros input[type='text'].macros-name-filter {
     background-color: rgba(214, 81, 106, 0.05);
-    background-image: url('../images/png/searchicon.png');
+    background-image: url(/systems/hm3/images/png/searchicon.png);
     background-position: 5px -1px;
     background-repeat: no-repeat;
     background-size: contain;
@@ -4307,11 +4307,11 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 }
 
 .hm3 .f-f-f .fffs-list .fff .item-name.std-roll:hover .item-image {
-    background-image: url('../../../icons/svg/d20-grey.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-grey.svg) !important;
 }
 
 .hm3 .f-f-f .fffs-list .fff .item-name.std-roll .item-image:hover {
-    background-image: url('../../../icons/svg/d20-black.svg') !important;
+    background-image: url(/systems/hm3/images/icons/svg/d20-black.svg) !important;
 }
 
 .hm3 .f-f-f .fffs-list .fff .fff-image {

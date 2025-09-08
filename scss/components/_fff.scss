@@ -27,11 +27,11 @@
             border-bottom: 1px solid #bbb;
 
             .item-name.std-roll:hover .item-image {
-                background-image: url(/systems/hm3/images/icons/svg/d20-black.svg) !important;
+                background-image: $image-url-d20-grey !important;
             }
 
             .item-name.std-roll .item-image:hover {
-                background-image: url(/systems/hm3/images/icons/svg/d20-black.svg) !important;
+                background-image: $image-url-d20-black !important;
             }
 
             .fff-image {
