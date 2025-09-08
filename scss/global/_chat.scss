@@ -1,6 +1,6 @@
 #chat-form {
     textarea {
-        background: url(/systems/hm3/ui/parchment.jpg) repeat;
+        background: $image-url-parchment repeat;
         // background: url(/systems/hm3/ui/background.webp) no-repeat;
         background-size: cover;
         color: $hm3-text;
@@ -8,28 +8,28 @@
 }
 
 .chat-message {
-    background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    background: $image-url-parchment repeat;
     // background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
     color: $hm3-text;
 }
 
 .chat-message.emote {
-    background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    background: $image-url-parchment repeat;
     // background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
     box-shadow: inset 0 0 0 2000px rgba(243, 237, 222, 0.6);
 }
 
 .chat-message.whisper {
-    background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    background: $image-url-parchment repeat;
     // background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
     box-shadow: inset 0 0 0 2000px rgba(232, 232, 239, 0.6);
 }
 
 .chat-message.blind {
-    background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    background: $image-url-parchment repeat;
     // background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
     box-shadow: inset 0 0 0 2000px rgba(245, 234, 245, 0.6);

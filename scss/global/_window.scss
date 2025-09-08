@@ -17,7 +17,7 @@
 }
 
 .window-app .window-content {
-    background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    background: $image-url-parchment repeat;
     background-size: cover;
     font-family: $font-primary;
 }
@@ -51,7 +51,7 @@ a:hover {
 }
 
 .sheet.journal-entry .journal-entry-content {
-    background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    background: $image-url-parchment repeat;
     // background: url(/systems/hm3/ui/background.webp) no-repeat;
     background-size: cover;
 

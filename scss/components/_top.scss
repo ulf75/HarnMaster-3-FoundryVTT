@@ -1,6 +1,6 @@
 .window-content {
     background-size: cover;
-    background: url(/systems/hm3/ui/parchment.jpg) repeat;
+    background: $image-url-parchment repeat;
     // background: var(--dnd5e-color-parchment);
     color: #191813;
     font-size: 13px;
@@ -91,7 +91,7 @@ label.init-checkbox {
     .window-content {
         overflow-y: hidden;
         padding: 5px;
-        background: url(/systems/hm3/ui/parchment.jpg) repeat;
+        background: $image-url-parchment repeat;
         // background: url(/systems/hm3/ui/background.webp) no-repeat;
         background-size: cover;
         font-size: 13px;
