@@ -58,15 +58,9 @@ Hooks.once('init', async function () {
 
     CONFIG.ActiveEffect.legacyTransferral = false;
 
-    // globalThis.WeaponItem = WeaponItem;
-
     window.customElements.define('slide-toggle', SlideToggleElement);
 
     game.hm3 = {
-        // DiceHM3,
-        // ActorHM3,
-        // ItemHM3,
-
         config: HM3,
         macros,
         migrations,
@@ -98,8 +92,6 @@ Hooks.once('init', async function () {
                 INDEFINITE: Number.MAX_SAFE_INTEGER
             }
         },
-
-        combatMutex: new Mutex(),
 
         gmconsole: async (level, msg, error) => {
             return game.hm3.socket.executeAsGM('gmConsole', game.user.name, level, msg, error);

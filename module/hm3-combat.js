@@ -1,4 +1,8 @@
+import {Mutex} from './mutex';
+
 export class CombatHM3 extends Combat {
+    _combatMutex = new Mutex();
+
     /**
      *
      * @override
@@ -42,7 +46,7 @@ export class CombatHM3 extends Combat {
     /** @override */
     async nextTurn(tokenId = 'true') {
         if (!game.combat?.started) return;
-        return game.hm3.combatMutex.runExclusive(async () => {
+        return this._combatMutex.runExclusive(async () => {
             if (game.combat?.started && (tokenId === 'true' || tokenId === game.combat.combatant?.token?.id)) {
                 // Remove the Tactical Advantage flag
                 await game.hm3.socket.executeAsGM('unsetTAFlag');
