@@ -1,4 +1,5 @@
 import {ItemType} from '../../hm3-types';
+import {truncate} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
 export class ArmorlocationProxy extends ItemProxy {
@@ -9,6 +10,30 @@ export class ArmorlocationProxy extends ItemProxy {
     constructor(item) {
         super(item);
         this._calcProbWeights();
+    }
+
+    get probWeightHigh() {
+        return this._item.system.probWeight.high;
+    }
+
+    get probWeightMid() {
+        return this._item.system.probWeight.mid;
+    }
+
+    get probWeightLow() {
+        return this._item.system.probWeight.low;
+    }
+
+    get probHigh() {
+        return truncate(this.probWeightHigh / this.totalWeightHigh, 1);
+    }
+
+    get probMid() {
+        return truncate(this.probWeightMid / this.totalWeightMid, 1);
+    }
+
+    get probLow() {
+        return truncate(this.probWeightLow / this.totalWeightLow, 1);
     }
 
     get totalWeightHigh() {
