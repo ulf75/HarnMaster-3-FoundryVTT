@@ -1,6 +1,6 @@
 import {onManageActiveEffect} from '../effect.js';
 import {ItemType} from '../hm3-types.js';
-import * as utility from '../utility.js';
+import {aeChanges, aeDuration} from '../utility.js';
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -176,9 +176,9 @@ export class ItemSheetHM3 extends ItemSheet {
         data.effects = {};
         this.item.effects.forEach((effect) => {
             data.effects[effect.id] = {
-                'changes': utility.aeChanges(effect),
+                'changes': aeChanges(effect),
                 'disabled': effect.disabled,
-                'duration': utility.aeDuration(effect),
+                'duration': aeDuration(effect),
                 'id': effect.id,
                 'img': effect.img,
                 'name': effect.name,

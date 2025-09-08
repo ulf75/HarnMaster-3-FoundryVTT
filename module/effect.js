@@ -1,3 +1,5 @@
+import {getRelevantActors} from './utility';
+
 /**
  * Manage Active Effect instances through the Actor Sheet via effect control buttons.
  * @param {MouseEvent} event      The left-click event on the effect control
@@ -112,7 +114,7 @@ export async function onManageActiveEffect(event, owner) {
 }
 
 export async function checkStartedActiveEffects() {
-    const actors = utility.getRelevantActors();
+    const actors = getRelevantActors();
     for (let actor of actors) {
         if (actor.allApplicableEffects(true)?.length) {
             const aeStarted = await setAEStatus(actor);
@@ -163,7 +165,7 @@ async function setAEStatus(actor) {
  * by the user and disables them if their duration has expired.
  */
 export async function checkExpiredActiveEffects() {
-    const actors = utility.getRelevantActors();
+    const actors = getRelevantActors();
     for (let actor of actors) {
         if (actor.allApplicableEffects(true)?.length) {
             const aeDisabled = await disableExpiredAE(actor);

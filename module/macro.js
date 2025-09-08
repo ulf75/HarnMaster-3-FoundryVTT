@@ -1,5 +1,5 @@
 import {Hook} from './hm3-types.js';
-import * as utility from './utility.js';
+import {getActorFromMacro} from './utility.js';
 
 const supportedHMHooks = Object.values(Hook);
 
@@ -61,7 +61,7 @@ export async function onManageMacro(event, owner) {
                         label: 'Yes',
                         callback: async (html) => {
                             await macro.delete();
-                            utility.getActorFromMacro(macro)?.sheet.render();
+                            getActorFromMacro(macro)?.sheet.render();
                         }
                     },
                     no: {

@@ -721,14 +721,3 @@ export function getRelevantActors() {
             })
     ];
 }
-
-globalThis.utility = {
-    beautify,
-    fatigueReceived,
-    getAssocSkill,
-    getRelevantActors,
-    improveFlag,
-    romanize,
-    truncatedOML,
-    weaponBroke
-};

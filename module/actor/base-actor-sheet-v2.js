@@ -54,6 +54,8 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         data.editable = this.isEditable && this._mode === this.constructor.MODES.EDIT;
         data.cssClass = data.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked';
 
+        const tmp = this.actor.proxies;
+
         data.hasDescription = 'description' in this.object.system;
         if (data.hasDescription) {
             data.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {

@@ -1,4 +1,4 @@
-import * as utility from '../utility.js';
+import {getActorFromMacro} from '../utility';
 
 /**
  * A form designed for creating and editing an Macro on an Actor or Item.
@@ -86,7 +86,7 @@ export class MacroConfigHM3 extends MacroConfig {
         if (event instanceof SubmitEvent) {
             const ret = await super._updateObject(event, formData);
             await this.object.setFlag('hm3', 'trigger', formData.trigger);
-            utility.getActorFromMacro(this.object)?.sheet.render();
+            getActorFromMacro(this.object)?.sheet.render();
             return ret;
         } else {
             return super._updateObject(event, formData);

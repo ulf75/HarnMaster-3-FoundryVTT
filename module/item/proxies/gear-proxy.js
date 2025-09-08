@@ -1,3 +1,4 @@
+import {truncate} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
 export class GearProxy extends ItemProxy {
@@ -7,6 +8,10 @@ export class GearProxy extends ItemProxy {
 
     get weight() {
         return this._item.system.weight;
+    }
+
+    get weightT() {
+        return truncate(this.weight, 3);
     }
 
     get quantity() {

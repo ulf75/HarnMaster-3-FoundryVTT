@@ -280,10 +280,10 @@ export class DiceHM3 {
 
                         if (result.isSuccess) {
                             if (result.isCritical) {
-                                const d = utility.truncate(height * CS[formJump], 0);
+                                const d = truncate(height * CS[formJump], 0);
                                 return `<p>${jump} ${d} ft</p>`;
                             } else {
-                                const d = utility.truncate(
+                                const d = truncate(
                                     height * (result.isSubstantial ? MS[formJump] * 1.25 : MS[formJump]),
                                     0
                                 );
@@ -291,7 +291,7 @@ export class DiceHM3 {
                             }
                         } else {
                             if (!result.isCritical) {
-                                const d = utility.truncate(
+                                const d = truncate(
                                     height * (result.isSubstantial ? MF[formJump] * 0.75 : MF[formJump]),
                                     0
                                 );
