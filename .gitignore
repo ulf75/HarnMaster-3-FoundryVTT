@@ -34,7 +34,7 @@ jspm_packages/
 build/
 
 # Distrubution files
-dist/
+# dist/
 
 # Package builds
 package/
