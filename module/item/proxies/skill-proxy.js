@@ -1,4 +1,4 @@
-import {SkillType} from '../../hm3-types';
+import {ActorType, SkillType} from '../../hm3-types';
 import {ItemProxy} from './item-proxy';
 
 export class SkillProxy extends ItemProxy {
@@ -18,5 +18,16 @@ export class SkillProxy extends ItemProxy {
 
     get EML() {
         return this.ML - 5 * this.Penalty;
+    }
+
+    get isSkillImprovement() {
+        // some special rules
+        if (this.actor.type === ActorType.CREATURE && this.actor.system.species.toLowerCase().includes('dog')) {
+            // With the exception of Awareness, dog skills may be improved by training and practice. (DOGS 2)
+            if (this.name === 'Awareness') {
+                return false;
+            }
+        }
+        return this.actor.skillImprovement;
     }
 }

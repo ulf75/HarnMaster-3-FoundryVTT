@@ -54,7 +54,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
         if (this.item.system.arcane?.isArtifact && (this.item.system.arcane.isOwnerAware || game.user.isGM))
             options.classes.push('artifact');
 
-        const data = await super.getData(options);
+        const data = super.getData(options);
         data.editable = this.isEditable && this._mode === this.constructor.MODES.EDIT;
         data.cssClass = data.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked';
 

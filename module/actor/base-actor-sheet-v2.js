@@ -36,25 +36,72 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             this.actor.prepareDerivedData();
         }
 
-        let isOwner = this.document.isOwner;
-        const data = {
+        let context = foundry.utils.mergeObject(super.getData(options), {
+            actor: foundry.utils.deepClone(this.actor)
+        });
+        context = foundry.utils.mergeObject(context, {
+            adata: context.actor.system,
             config: CONFIG.HM3,
-            cssClass: isOwner ? 'editable' : 'locked',
-            editable: this.isEditable,
+            customSunSign: game.settings.get('hm3', 'customSunSign'),
+            dtypes: ['String', 'Number', 'Boolean'],
+            editable: this.isEditable && this._mode === this.constructor.MODES.EDIT,
+            effects: this.actor.allApplicableEffects().map((effect) => {
+                return {
+                    'changes': utility.aeChanges(effect),
+                    'disabled': effect.disabled,
+                    'duration': utility.aeDuration(effect),
+                    'id': effect.id,
+                    'img': effect.img,
+                    'name': effect.name,
+                    'source': effect,
+                    'sourceName': effect.sourceName
+                };
+            }),
+            filters: this._filters,
+            hasRwPermission: game.user.isGM || !game.settings.get('hm3', 'strictGmMode'),
+            hasSteed: this.actor.hasLinkedSteed(),
+            isCharacter: this.document.type === ActorType.CHARACTER,
+            isCharacterMancer: this.actor.getFlag('hm3', 'CharacterMancer') || false,
+            isContainer: this.document.type === ActorType.CONTAINER,
+            isCreature: this.document.type === ActorType.CREATURE,
+            isGM: game.user.isGM,
+            isGridDistanceUnits: game.settings.get('hm3', 'distanceUnits') === 'grid',
+            isSkillImprovement: this.actor.skillImprovement,
+            items: this.actor.proxies,
+            labels: this.actor.labels || {},
+            macroTypes: [
+                {key: 'chat', label: 'Chat'},
+                {key: 'script', label: 'Script'}
+            ],
+            strictMode: game.settings.get('hm3', 'strictGmMode')
+        });
+        context = foundry.utils.mergeObject(context, {
+            cssClass: context.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked',
+            ...this._itemLists(context.items)
+        });
+
+        let owner = this.document.isOwner;
+        const data = {
+            actor: foundry.utils.deepClone(this.actor),
+            config: CONFIG.HM3,
+            cssClass: owner ? 'editable' : 'locked',
+            customSunSign: game.settings.get('hm3', 'customSunSign'),
+            editable: this.isEditable && this._mode === this.constructor.MODES.EDIT,
             isCharacter: this.document.type === 'character',
             isCharacterMancer: this.actor.getFlag('hm3', 'CharacterMancer') || false,
             isContainer: this.document.type === 'container',
             isCreature: this.document.type === 'creature',
+            isGM: game.user.isGM,
+            isGridDistanceUnits: game.settings.get('hm3', 'distanceUnits') === 'grid',
             isSkillImprovement: this.actor.skillImprovement,
             limited: this.document.limited,
             options: this.options,
-            owner: isOwner
+            owner,
+            strictMode: game.settings.get('hm3', 'strictGmMode')
         };
 
-        data.editable = this.isEditable && this._mode === this.constructor.MODES.EDIT;
         data.cssClass = data.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked';
-
-        const tmp = this.actor.proxies;
+        data.hasRwPermission = data.isGM || !data.strictMode;
 
         data.hasDescription = 'description' in this.object.system;
         if (data.hasDescription) {
@@ -62,14 +109,11 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                 secrets: game.user.isGM,
                 relativeTo: this.object.system
             });
+            context.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {
+                secrets: game.user.isGM,
+                relativeTo: this.object.system
+            });
         }
-
-        data.isGM = game.user.isGM;
-        data.strictMode = game.settings.get('hm3', 'strictGmMode');
-        data.hasRwPermission = data.isGM || !data.strictMode;
-        data.isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
-        data.customSunSign = game.settings.get('hm3', 'customSunSign');
-        data.actor = foundry.utils.deepClone(this.actor);
 
         let totalWeightHigh = 0;
         let totalWeightMid = 0;
@@ -286,20 +330,20 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // migrate legacy macro
-        let macro = this.actor.macrolist.find((m) => m.getFlag('hm3', 'trigger') === 'legacy');
-        if (!macro) {
-            (async () => {
-                macro = await Macro.create({
-                    name: `${this.actor.name} Legacy Macro`,
-                    type: this.actor.system.macros.type,
-                    command: this.actor.system.macros.command,
-                    folder: this.actor.macrofolder
-                });
-                await macro.setFlag('hm3', 'trigger', 'legacy');
-                await macro.setFlag('hm3', 'ownerId', this.actor.id);
-                this.actor.sheet.render();
-            })();
-        }
+        // let macro = this.actor.macrolist.find((m) => m.getFlag('hm3', 'trigger') === 'legacy');
+        // if (!macro) {
+        //     (async () => {
+        //         macro = await Macro.create({
+        //             name: `${this.actor.name} Legacy Macro`,
+        //             type: this.actor.system.macros.type,
+        //             command: this.actor.system.macros.command,
+        //             folder: this.actor.macrofolder
+        //         });
+        //         await macro.setFlag('hm3', 'trigger', 'legacy');
+        //         await macro.setFlag('hm3', 'ownerId', this.actor.id);
+        //         this.actor.sheet.render();
+        //     })();
+        // }
 
         // get macros
         data.adata.macrolist = this.actor.macrolist;
@@ -329,6 +373,98 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         );
 
         return data;
+        // return context;
+    }
+
+    _itemLists(proxies) {
+        return {
+            get physicalSkills() {
+                return proxies.filter((item) => item.type === ItemType.SKILL && item.subtype === SkillType.PHYSICAL);
+            },
+            get communicationSkills() {
+                return proxies.filter(
+                    (item) => item.type === ItemType.SKILL && item.subtype === SkillType.COMMUNICATION
+                );
+            },
+            get combatSkills() {
+                return proxies.filter((item) => item.type === ItemType.SKILL && item.subtype === SkillType.COMBAT);
+            },
+            get craftSkills() {
+                return proxies.filter((item) => item.type === ItemType.SKILL && item.subtype === SkillType.CRAFT);
+            },
+            get magicSkills() {
+                return proxies.filter((item) => item.type === ItemType.SKILL && item.subtype === SkillType.MAGIC);
+            },
+            get ritualSkills() {
+                return proxies.filter((item) => item.type === ItemType.SKILL && item.subtype === SkillType.RITUAL);
+            },
+            get companions() {
+                return proxies.filter((item) => item.type === ItemType.COMPANION);
+            },
+            get injuries() {
+                return proxies.filter((item) => item.type === ItemType.INJURY);
+            },
+            get invocations() {
+                return proxies.filter((item) => item.type === ItemType.INVOCATION);
+            },
+            get missiles() {
+                return proxies.filter((item) => item.type === ItemType.MISSILEGEAR);
+            },
+            get psionics() {
+                return proxies.filter((item) => item.type === ItemType.PSIONIC);
+            },
+            get spells() {
+                return proxies.filter((item) => item.type === ItemType.SPELL);
+            },
+            get esoterics() {
+                return proxies.filter((item) =>
+                    [ItemType.INVOCATION, ItemType.PSIONIC, ItemType.SPELL].includes(item.type)
+                );
+            },
+            get companionParty() {
+                return proxies.filter(
+                    (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.PARTY
+                );
+            },
+            get companionAnimal() {
+                return proxies.filter(
+                    (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.ANIMAL
+                );
+            },
+            get companionSteed() {
+                return proxies.filter(
+                    (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.STEED
+                );
+            },
+            get companionFollower() {
+                return proxies.filter(
+                    (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.FOLLOWER
+                );
+            },
+            get companionConnection() {
+                return proxies.filter(
+                    (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.CONNECTION
+                );
+            },
+            get companionFriend() {
+                return proxies.filter(
+                    (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.FRIEND
+                );
+            },
+            get companionFoe() {
+                return proxies.filter((item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.FOE);
+            },
+            // Check for esoteric attack options
+            get esotericAtkOptions() {
+                proxies.filter(
+                    (item) => game.hm3.config.esotericCombatItems.attack.includes(item.name) && item.isEquipped
+                );
+            },
+            // Check for esoteric defense options
+            get esotericDefOptions() {
+                proxies.filter((item) => game.hm3.config.esotericCombatItems.defense.includes(item.name));
+            }
+        };
     }
 
     /** @override */

@@ -18,6 +18,14 @@ export class GearProxy extends ItemProxy {
         return this._item.system.quantity;
     }
 
+    get isEquipped() {
+        return this._item.system.isEquipped;
+    }
+
+    get isCarried() {
+        return this._item.system.isCarried;
+    }
+
     get isArtifact() {
         return this._item.isArtifact;
     }

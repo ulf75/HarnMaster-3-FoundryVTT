@@ -19,6 +19,10 @@ export class ItemProxy {
         return this._item.name;
     }
 
+    get img() {
+        return this._item.img;
+    }
+
     get uuid() {
         return this._item.uuid;
     }
@@ -33,6 +37,14 @@ export class ItemProxy {
 
     get description() {
         return this._item.system.description;
+    }
+
+    get notes() {
+        return this._item.system.notes;
+    }
+
+    get source() {
+        return this._item.system.source;
     }
 
     get hasDescription() {
