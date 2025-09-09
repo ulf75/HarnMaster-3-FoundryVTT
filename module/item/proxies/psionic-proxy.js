@@ -1,6 +1,8 @@
 import {SkillProxy} from './skill-proxy';
 
 export class PsionicProxy extends SkillProxy {
+    get fatigue() {}
+
     get visible() {
         return (
             this._item.system.visible ??

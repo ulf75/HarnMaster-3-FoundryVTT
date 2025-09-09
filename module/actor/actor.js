@@ -3,107 +3,49 @@ import {DiceHM3} from '../hm3-dice.js';
 import {ActorType, CompanionType, Condition, ItemType, SkillType} from '../hm3-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
+import {CharacterProxy} from './proxies/character-proxy.js';
+import {ContainerProxy} from './proxies/container-proxy.js';
+import {CreatureProxy} from './proxies/creature-proxy.js';
 
 /**
  * Extend the base Actor by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
 export class ActorHM3 extends Actor {
-    get proxies() {
-        return this.items.contents.map((item) => {
-            return item.proxy;
-        });
+    static _proxyMap = new Map();
+    static _proxiesMap = new Map();
+
+    get proxy() {
+        if (ActorHM3._proxyMap.has(this.id)) return ActorHM3._proxyMap.get(this.id);
+
+        switch (this.type) {
+            case ActorType.CHARACTER:
+                ActorHM3._proxyMap.set(this.id, new CharacterProxy(this));
+                break;
+            case ActorType.CONTAINER:
+                ActorHM3._proxyMap.set(this.id, new ContainerProxy(this));
+                break;
+            case ActorType.CREATURE:
+                ActorHM3._proxyMap.set(this.id, new CreatureProxy(this));
+                break;
+        }
+
+        return ActorHM3._proxyMap.get(this.id);
     }
 
-    get derived() {
-        const ctx = this;
-        return {
-            get END() {
-                const ML = ctx.items.find((it) => it.name === 'Condition')?.system?.masteryLevel;
-                return Math.round(
-                    ML
-                        ? ML / 5
-                        : (ctx.system.abilities.strength.base +
-                              ctx.system.abilities.stamina.base +
-                              ctx.system.abilities.will.base) /
-                              3
-                );
-            },
-            get totalArmorWeight() {
-                return utility.truncate(
-                    ctx.items.contents
-                        .filter((it) => it.type === ItemType.ARMORGEAR && it.system.isCarried)
-                        .reduce((partialSum, it) => partialSum + it.system.quantity * it.system.weight, 0)
-                );
-            },
-            get totalMiscGearWeight() {
-                return utility.truncate(
-                    ctx.items.contents
-                        .filter(
-                            (it) =>
-                                (it.type === ItemType.MISCGEAR || it.type === ItemType.CONTAINERGEAR) &&
-                                it.system.isCarried
-                        )
-                        .reduce((partialSum, it) => partialSum + it.system.quantity * it.system.weight, 0)
-                );
-            },
-            get totalMissileWeight() {
-                return utility.truncate(
-                    ctx.items.contents
-                        .filter((it) => it.type === ItemType.MISSILEGEAR && it.system.isCarried)
-                        .reduce((partialSum, it) => partialSum + it.system.quantity * it.system.weight, 0)
-                );
-            },
-            get totalWeaponWeight() {
-                return utility.truncate(
-                    ctx.items.contents
-                        .filter((it) => it.type === ItemType.WEAPONGEAR && it.system.isCarried)
-                        .reduce((partialSum, it) => partialSum + it.system.quantity * it.system.weight, 0)
-                );
-            },
-            get totalGearWeight() {
-                return utility.truncate(
-                    ctx.derived.totalArmorWeight +
-                        ctx.derived.totalMiscGearWeight +
-                        ctx.derived.totalMissileWeight +
-                        ctx.derived.totalWeaponWeight
-                );
-            },
-            // Encumbrance Penalty
-            get EP() {
-                return Math.floor(ctx.derived.totalGearWeight / ctx.derived.END);
-            },
-            // Fatigue Penalty
-            get FP() {
-                return ctx.system.fatigue || 0;
-            },
-            // Injury Penalty
-            get IP() {
-                return ctx.items.contents
-                    .filter((it) => it.type === ItemType.INJURY)
-                    .reduce((partialSum, it) => partialSum + it.system.injuryLevel, 0);
-            },
-            get UP() {
-                return ctx.derived.IP + ctx.derived.FP;
-            },
-            get PP() {
-                return ctx.derived.UP + ctx.derived.EP;
-            },
-            get containers() {
-                const containers = [{label: 'On Person', key: 'on-person'}];
+    get proxies() {
+        if (ActorHM3._proxiesMap.has(this.id)) return ActorHM3._proxiesMap.get(this.id);
 
-                // Containers are not allowed in other containers.  So if this item is a container,
-                // don't show any other containers.
-                if (ctx.actor && ctx.type !== ItemType.CONTAINERGEAR) {
-                    ctx.actor.items.forEach((it) => {
-                        if (it.type === ItemType.CONTAINERGEAR) {
-                            containers.push({label: it.name, key: it.id});
-                        }
-                    });
-                }
-                return containers;
-            }
-        };
+        ActorHM3._proxiesMap.set(
+            this.id,
+            this.items.contents.map((item) => {
+                const p = item.proxy;
+                p.actorProxy = ActorHM3._proxyMap.get(this.id);
+                return p;
+            })
+        );
+
+        return ActorHM3._proxiesMap.get(this.id);
     }
 
     get macrolist() {

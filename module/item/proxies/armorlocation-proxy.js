@@ -9,7 +9,6 @@ export class ArmorlocationProxy extends ItemProxy {
 
     constructor(item) {
         super(item);
-        this._calcProbWeights();
     }
 
     get probWeightHigh() {
@@ -37,21 +36,24 @@ export class ArmorlocationProxy extends ItemProxy {
     }
 
     get totalWeightHigh() {
+        this._calcProbWeights();
         return ArmorlocationProxy.TotalWeightHigh;
     }
 
     get totalWeightMid() {
+        this._calcProbWeights();
         return ArmorlocationProxy.TotalWeightMid;
     }
 
     get totalWeightLow() {
+        this._calcProbWeights();
         return ArmorlocationProxy.TotalWeightLow;
     }
 
     _calcProbWeights() {
         if (ArmorlocationProxy.TotalWeightHigh !== 0) return;
 
-        this.actor.items.forEach((item) => {
+        this.actor.proxies.forEach((item) => {
             if (item.type === ItemType.ARMORLOCATION) {
                 ArmorlocationProxy.TotalWeightHigh += item.system.probWeight['high'];
                 ArmorlocationProxy.TotalWeightMid += item.system.probWeight['mid'];

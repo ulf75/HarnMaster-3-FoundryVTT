@@ -37,10 +37,10 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         }
 
         let context = foundry.utils.mergeObject(super.getData(options), {
-            actor: foundry.utils.deepClone(this.actor)
+            actor: this.actor.proxy
         });
         context = foundry.utils.mergeObject(context, {
-            adata: context.actor.system,
+            adata: this.actor.system,
             config: CONFIG.HM3,
             customSunSign: game.settings.get('hm3', 'customSunSign'),
             dtypes: ['String', 'Number', 'Boolean'],
