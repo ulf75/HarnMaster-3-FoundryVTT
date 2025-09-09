@@ -1,7 +1,7 @@
 export class ItemProxy {
     constructor(item) {
         this._item = item;
-        this._actorProxy = null;
+        // this._actorProxy = null;
     }
 
     get item() {
@@ -13,12 +13,13 @@ export class ItemProxy {
     }
 
     get actorProxy() {
-        return this._actorProxy;
+        return this._item.actor.proxy;
+        // return this._actorProxy;
     }
 
-    set actorProxy(ap) {
-        this._actorProxy = ap;
-    }
+    // set actorProxy(ap) {
+    //     this._actorProxy = ap;
+    // }
 
     get id() {
         return this._item.id;

@@ -11,9 +11,7 @@ export class SkillProxy extends ItemProxy {
     }
 
     get Penalty() {
-        return [SkillType.COMBAT, SkillType.PHYSICAL].includes(this.subtype)
-            ? this.actor.derived.PP
-            : this.actor.derived.UP;
+        return [SkillType.COMBAT, SkillType.PHYSICAL].includes(this.subtype) ? this.actorProxy.PP : this.actorProxy.UP;
     }
 
     get EML() {

@@ -55,9 +55,9 @@ export class ArmorlocationProxy extends ItemProxy {
 
         this.actor.proxies.forEach((item) => {
             if (item.type === ItemType.ARMORLOCATION) {
-                ArmorlocationProxy.TotalWeightHigh += item.system.probWeight['high'];
-                ArmorlocationProxy.TotalWeightMid += item.system.probWeight['mid'];
-                ArmorlocationProxy.TotalWeightLow += item.system.probWeight['low'];
+                ArmorlocationProxy.TotalWeightHigh += this.probWeightHigh;
+                ArmorlocationProxy.TotalWeightMid += this.probWeightMid;
+                ArmorlocationProxy.TotalWeightLow += this.probWeightLow;
             }
         });
         ArmorlocationProxy.TotalWeightHigh /= 100;

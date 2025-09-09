@@ -40,7 +40,7 @@ export class ActorHM3 extends Actor {
             this.id,
             this.items.contents.map((item) => {
                 const p = item.proxy;
-                p.actorProxy = ActorHM3._proxyMap.get(this.id);
+                // p.actorProxy = ActorHM3._proxyMap.get(this.id);
                 return p;
             })
         );

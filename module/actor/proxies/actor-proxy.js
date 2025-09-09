@@ -98,7 +98,7 @@ export class ActorProxy {
 
     // Fatigue Penalty
     get FP() {
-        return this.system.fatigue || 0;
+        return this._actor.system.fatigue || 0;
     }
 
     // Injury Penalty
