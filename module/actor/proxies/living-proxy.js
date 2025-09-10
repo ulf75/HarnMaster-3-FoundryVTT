@@ -102,6 +102,39 @@ export class LivingProxy extends ActorProxy {
     get STA() {
         return this.stamina;
     }
+    get DEX() {
+        return this.dexterity;
+    }
+    get AGL() {
+        return this.agility;
+    }
+    get INT() {
+        return this.intelligence;
+    }
+    get AUR() {
+        return this.aura;
+    }
+    get WIL() {
+        return this.will;
+    }
+    get EYE() {
+        return this.eyesight;
+    }
+    get HRG() {
+        return this.hearing;
+    }
+    get SML() {
+        return this.smell;
+    }
+    get VOI() {
+        return this.voice;
+    }
+    get CML() {
+        return this.comeliness;
+    }
+    get MOR() {
+        return this.morality;
+    }
 
     _ability(path, penalty = 0) {
         return new Ability(path, this._actor, penalty);

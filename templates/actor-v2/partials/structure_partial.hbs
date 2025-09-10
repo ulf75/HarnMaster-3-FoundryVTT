@@ -830,8 +830,8 @@
                         <div class="item-detail injury-healrate active">
                             <a
                                 class="healing-roll"
-                                aria-label="{{ item.derived.injuryRollLabel }}"
-                                data-tooltip="{{ item.derived.injuryRollLabel }}"
+                                aria-label="{{ label }}"
+                                data-tooltip="{{ label }}"
                                 data-tooltip-direction="UP">
                                 {{#if (gt HR 6)}}EE{{else}}{{ HR }}{{/if}}
                             </a>
@@ -1079,10 +1079,10 @@
                                 style="background-image: url('{{ img }}')"></div>
                             <h4>{{ name }}</h4>
                         </div>
-                        <div class="item-detail gear-type">{{ item.derived.type }}</div>
+                        <div class="item-detail gear-type">{{ type }}</div>
                         <div class="item-detail gear-qty">
                             <input type="text" {{#unless isCarried}}class="nocarry"{{/unless}} name="item-quantity-special" id="{{ id }}"
-                            value="{{ item.system.quantity }}" data-dtype="Number"/>
+                            value="{{ quantity }}" data-dtype="Number"/>
                         </div>
                         <div class="item-detail gear-weight">{{ system.weightT }}</div>
                         <div class="item-detail gear-notes">{{ notes }}</div>
@@ -1091,16 +1091,16 @@
                             {{#unless (or (eq type "containergear") (eq type "miscgear"))}}
                             <a
                                 class="item-control item-equip"
-                                aria-label="{{ item.derived.equipLabel }}"
-                                data-tooltip="{{ item.derived.equipLabel }}"
+                                aria-label="{{ equipLabel }}"
+                                data-tooltip="{{ equipLabel }}"
                                 data-tooltip-direction="UP">
                                 <i class="{{#if isEquipped}}active{{/if}} fas fa-shield-alt"></i>
                             </a>
                             {{/unless}}
                             <a
                                 class="item-control item-carry"
-                                aria-label="{{ item.derived.carryLabel }}"
-                                data-tooltip="{{ item.derived.carryLabel }}"
+                                aria-label="{{ carryLabel }}"
+                                data-tooltip="{{ carryLabel }}"
                                 data-tooltip-direction="UP">
                                 <i class="{{#if isCarried}}active{{/if}} fas fa-suitcase"></i>
                             </a>

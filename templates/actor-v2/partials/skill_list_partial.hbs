@@ -37,10 +37,16 @@
             data-item-id="{{ id }}"
             data-item-name="{{ name }}">
             <div class="item-name skill-roll skill-name flexrow">
-                <div
-                    class="item-image"
-                    style="background-image: url('{{ img }}')"></div>
-                <h4>{{ name }}</h4>
+                <a
+                    class="tooltip"
+                    aria-label="{{ name }} Skill Check"
+                    data-tooltip="{{ name }} Skill Check"
+                    data-tooltip-direction="UP">
+                    <div
+                        class="item-image"
+                        style="background-image: url('{{ img }}')"></div>
+                    <h4>{{ name }}</h4>
+                </a>
             </div>
             <div class="skill-ele item-detail">{{ SB }}</div>
             {{#if ../isCharacterMancer}}
