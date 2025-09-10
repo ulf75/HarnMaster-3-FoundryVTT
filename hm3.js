@@ -65,6 +65,8 @@ Hooks.once('init', async function () {
         macros,
         migrations,
 
+        ActorHM3,
+
         ActorType,
         ArcanePower,
         Aspect,
