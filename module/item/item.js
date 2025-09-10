@@ -25,50 +25,51 @@ export class ItemHM3 extends Item {
     static _proxyMap = new Map();
 
     get proxy() {
-        if (ItemHM3._proxyMap.has(this.id)) return ItemHM3._proxyMap.get(this.id);
-
-        switch (this.type) {
-            case ItemType.ARMORGEAR:
-                ItemHM3._proxyMap.set(this.id, new ArmorProxy(this));
-                break;
-            case ItemType.ARMORLOCATION:
-                ItemHM3._proxyMap.set(this.id, new ArmorlocationProxy(this));
-                break;
-            case ItemType.COMPANION:
-                ItemHM3._proxyMap.set(this.id, new CompanionProxy(this));
-                break;
-            case ItemType.CONTAINERGEAR:
-                ItemHM3._proxyMap.set(this.id, new ContainerProxy(this));
-                break;
-            case ItemType.EFFECT:
-                ItemHM3._proxyMap.set(this.id, new EffectProxy(this));
-                break;
-            case ItemType.INJURY:
-                ItemHM3._proxyMap.set(this.id, new InjuryProxy(this));
-                break;
-            case ItemType.INVOCATION:
-                ItemHM3._proxyMap.set(this.id, new InvocationProxy(this));
-                break;
-            case ItemType.MISCGEAR:
-            case ItemType.MISSILEGEAR:
-                ItemHM3._proxyMap.set(this.id, new MissileProxy(this));
-                break;
-            case ItemType.PSIONIC:
-                ItemHM3._proxyMap.set(this.id, new PsionicProxy(this));
-                break;
-            case ItemType.SKILL:
-                ItemHM3._proxyMap.set(this.id, new SkillProxy(this));
-                break;
-            case ItemType.SPELL:
-                ItemHM3._proxyMap.set(this.id, new SpellProxy(this));
-                break;
-            case ItemType.TRAIT:
-                ItemHM3._proxyMap.set(this.id, new TraitProxy(this));
-                break;
-            case ItemType.WEAPONGEAR:
-                ItemHM3._proxyMap.set(this.id, new WeaponProxy(this));
-                break;
+        if (!ItemHM3._proxyMap.has(this.id)) {
+            switch (this.type) {
+                case ItemType.ARMORGEAR:
+                    ItemHM3._proxyMap.set(this.id, new ArmorProxy(this));
+                    break;
+                case ItemType.ARMORLOCATION:
+                    ItemHM3._proxyMap.set(this.id, new ArmorlocationProxy(this));
+                    break;
+                case ItemType.COMPANION:
+                    ItemHM3._proxyMap.set(this.id, new CompanionProxy(this));
+                    break;
+                case ItemType.CONTAINERGEAR:
+                    ItemHM3._proxyMap.set(this.id, new ContainerProxy(this));
+                    break;
+                case ItemType.EFFECT:
+                    ItemHM3._proxyMap.set(this.id, new EffectProxy(this));
+                    break;
+                case ItemType.INJURY:
+                    ItemHM3._proxyMap.set(this.id, new InjuryProxy(this));
+                    break;
+                case ItemType.INVOCATION:
+                    ItemHM3._proxyMap.set(this.id, new InvocationProxy(this));
+                    break;
+                case ItemType.MISCGEAR:
+                case ItemType.MISSILEGEAR:
+                    ItemHM3._proxyMap.set(this.id, new MissileProxy(this));
+                    break;
+                case ItemType.PSIONIC:
+                    ItemHM3._proxyMap.set(this.id, new PsionicProxy(this));
+                    break;
+                case ItemType.SKILL:
+                    ItemHM3._proxyMap.set(this.id, new SkillProxy(this));
+                    break;
+                case ItemType.SPELL:
+                    ItemHM3._proxyMap.set(this.id, new SpellProxy(this));
+                    break;
+                case ItemType.TRAIT:
+                    ItemHM3._proxyMap.set(this.id, new TraitProxy(this));
+                    break;
+                case ItemType.WEAPONGEAR:
+                    ItemHM3._proxyMap.set(this.id, new WeaponProxy(this));
+                    break;
+            }
         }
+
         return ItemHM3._proxyMap.get(this.id);
     }
 
