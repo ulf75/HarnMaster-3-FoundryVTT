@@ -34,15 +34,15 @@
         {{#each skills as | item |}}
         <li
             class="item skill skill-item flexrow"
-            data-item-id="{{ item.id }}"
-            data-item-name="{{ item.name }}">
+            data-item-id="{{ id }}"
+            data-item-name="{{ name }}">
             <div class="item-name skill-roll skill-name flexrow">
                 <div
                     class="item-image"
-                    style="background-image: url('{{ item.img }}')"></div>
-                <h4>{{ item.name }}</h4>
+                    style="background-image: url('{{ img }}')"></div>
+                <h4>{{ name }}</h4>
             </div>
-            <div class="skill-ele item-detail">{{ system.skillBase.value }}</div>
+            <div class="skill-ele item-detail">{{ SB }}</div>
             {{#if ../isCharacterMancer}}
             <div class="skill-ele item-detail">
                 <input
@@ -61,9 +61,9 @@
                     data-dtype="Number" />
             </div>
             {{/if}}
-            <div class="skill-ele item-detail">{{ system.masteryLevel }}</div>
-            <div class="skill-ele item-detail">{{ system.effectiveMasteryLevel }}</div>
-            <div class="skill-notes">{{ system.notes }}</div>
+            <div class="skill-ele item-detail">{{ ML }}</div>
+            <div class="skill-ele item-detail">{{ EML }}</div>
+            <div class="skill-notes">{{ notes }}</div>
             <div class="item-controls{{#if ../isSkillImprovement}}-wide{{/if}}">
                 {{#if item.isSkillImprovement}}
                 <a

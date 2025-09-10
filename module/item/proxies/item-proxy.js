@@ -14,12 +14,7 @@ export class ItemProxy {
 
     get actorProxy() {
         return this._item.actor.proxy;
-        // return this._actorProxy;
     }
-
-    // set actorProxy(ap) {
-    //     this._actorProxy = ap;
-    // }
 
     get id() {
         return this._item.id;

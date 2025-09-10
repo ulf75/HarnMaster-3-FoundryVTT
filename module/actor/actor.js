@@ -13,39 +13,29 @@ import {CreatureProxy} from './proxies/creature-proxy.js';
  */
 export class ActorHM3 extends Actor {
     static _proxyMap = new Map();
-    static _proxiesMap = new Map();
 
     get proxy() {
-        if (ActorHM3._proxyMap.has(this.id)) return ActorHM3._proxyMap.get(this.id);
-
-        switch (this.type) {
-            case ActorType.CHARACTER:
-                ActorHM3._proxyMap.set(this.id, new CharacterProxy(this));
-                break;
-            case ActorType.CONTAINER:
-                ActorHM3._proxyMap.set(this.id, new ContainerProxy(this));
-                break;
-            case ActorType.CREATURE:
-                ActorHM3._proxyMap.set(this.id, new CreatureProxy(this));
-                break;
+        if (!ActorHM3._proxyMap.has(this.id)) {
+            switch (this.type) {
+                case ActorType.CHARACTER:
+                    ActorHM3._proxyMap.set(this.id, new CharacterProxy(this));
+                    break;
+                case ActorType.CONTAINER:
+                    ActorHM3._proxyMap.set(this.id, new ContainerProxy(this));
+                    break;
+                case ActorType.CREATURE:
+                    ActorHM3._proxyMap.set(this.id, new CreatureProxy(this));
+                    break;
+            }
         }
 
         return ActorHM3._proxyMap.get(this.id);
     }
 
     get proxies() {
-        if (ActorHM3._proxiesMap.has(this.id)) return ActorHM3._proxiesMap.get(this.id);
-
-        ActorHM3._proxiesMap.set(
-            this.id,
-            this.items.contents.map((item) => {
-                const p = item.proxy;
-                // p.actorProxy = ActorHM3._proxyMap.get(this.id);
-                return p;
-            })
-        );
-
-        return ActorHM3._proxiesMap.get(this.id);
+        return this.items.contents.map((item) => {
+            return item.proxy;
+        });
     }
 
     get macrolist() {

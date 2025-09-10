@@ -40,29 +40,29 @@
         {{#each skillList as | item |}}
         <li
             class="item spell flexrow"
-            data-item-id="{{ item.id }}"
-            data-item-name="{{ item.name }}">
+            data-item-id="{{ id }}"
+            data-item-name="{{ name }}">
             <div class="item-name spell-name {{ ../dataType }}-roll flexrow">
                 <div
                     class="item-image"
-                    style="background-image: url('{{ item.img }}')"></div>
-                <h4>{{ item.name }}</h4>
+                    style="background-image: url('{{ img }}')"></div>
+                <h4>{{ name }}</h4>
             </div>
             {{#if (eq ../type "Spell")}}
-            <div class="item-detail spell-convocation">{{ system.convocation }}</div>
-            <div class="item-detail spell-level">{{ system.level }}</div>
+            <div class="item-detail spell-convocation">{{ convocation }}</div>
+            <div class="item-detail spell-level">{{ level }}</div>
             {{/if}}
             {{#if (eq ../type "Invocation")}}
-            <div class="item-detail spell-convocation">{{ system.diety }}</div>
-            <div class="item-detail spell-level">{{ system.circle }}</div>
+            <div class="item-detail spell-convocation">{{ diety }}</div>
+            <div class="item-detail spell-level">{{ circle }}</div>
             {{/if}}
             {{#if (eq ../type "Psionic")}}
-            <div class="item-detail spell-level">{{ system.fatigue }}</div>
-            <div class="item-detail spell-eml">{{ system.skillBase.value }}</div>
-            <div class="item-detail spell-eml">{{ system.masteryLevel }}</div>
+            <div class="item-detail spell-level">{{ fatigue }}</div>
+            <div class="item-detail spell-eml">{{ SB }}</div>
+            <div class="item-detail spell-eml">{{ ML }}</div>
             {{/if}}
-            <div class="item-detail spell-eml">{{ system.effectiveMasteryLevel }}</div>
-            <div class="item-detail spell-notes">{{ system.notes }}</div>
+            <div class="item-detail spell-eml">{{ EML }}</div>
+            <div class="item-detail spell-notes">{{ notes }}</div>
             <div class="item-controls-wide">
                 {{#if item.isSkillImprovement}}
                 <a

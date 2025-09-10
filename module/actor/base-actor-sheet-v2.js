@@ -36,11 +36,10 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             this.actor.prepareDerivedData();
         }
 
-        let context = foundry.utils.mergeObject(super.getData(options), {
-            actor: this.actor.proxy
-        });
+        let context = foundry.utils.mergeObject(super.getData(options), {actor: null, items: null});
         context = foundry.utils.mergeObject(context, {
-            adata: this.actor.system,
+            // adata: this.actor.system,
+            aproxy: this.actor.proxy,
             config: CONFIG.HM3,
             customSunSign: game.settings.get('hm3', 'customSunSign'),
             dtypes: ['String', 'Number', 'Boolean'],
@@ -372,8 +371,8 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             game.hm3.config.esotericCombatItems.defense.includes(item.name)
         );
 
-        return data;
-        // return context;
+        // return data;
+        return context;
     }
 
     _itemLists(proxies) {

@@ -7,36 +7,47 @@ export class ActorProxy {
     }
 
     get id() {
-        return this._item.id;
+        return this._actor.id;
     }
-
-    get name() {
-        return this._item.name;
-    }
-
     get img() {
-        return this._item.img;
+        return this._actor.img;
     }
-
-    get uuid() {
-        return this._item.uuid;
+    get link() {
+        return this._actor.link;
     }
-
+    get name() {
+        return this._actor.name;
+    }
+    get proxies() {
+        return this._actor.proxies;
+    }
     get type() {
-        return this._item.type;
+        return this._actor.type;
+    }
+    get subtype() {
+        return this._actor.subtype;
+    }
+    get uuid() {
+        return this._actor.uuid;
     }
 
+    //
+    // System Stats
+    //
+
+    get bioImage() {
+        return this._actor.system.bioImage;
+    }
     get description() {
-        return this._item.system.description;
+        return this._actor.system.description;
     }
-
     get hasDescription() {
         return this.description && this.description.length > 0;
     }
 
-    get proxies() {
-        return this._actor.proxies;
-    }
+    //
+    // Derived Stats
+    //
 
     get END() {
         const ML = this.proxies.find((item) => item.name === 'Condition')?.ML;
@@ -89,6 +100,14 @@ export class ActorProxy {
         return truncate(
             this.totalArmorWeight + this.totalMiscGearWeight + this.totalMissileWeight + this.totalWeaponWeight
         );
+    }
+
+    get dodge() {
+        return this.proxies.find((item) => item.name === 'Dodge')?.EML;
+    }
+
+    get initiative() {
+        return this.proxies.find((item) => item.name === 'Initiative')?.EML;
     }
 
     // Encumbrance Penalty
