@@ -141,4 +141,18 @@ export class ActorProxy {
         }
         return containers;
     }
+
+    HM100Check(value) {
+        return Math.max(Math.min(Math.round(value), 95), 5);
+    }
+
+    HM6Check(value) {
+        return Math.max(Math.round(value), 1);
+    }
+
+    Skill(name) {
+        return this.proxies.find(
+            (item) => item.type === ItemType.SKILL && item.name.toLowerCase().includes(name.toLowerCase())
+        );
+    }
 }
