@@ -1,9 +1,9 @@
 import {ActorProxy} from './actor-proxy';
 
 class Ability {
-    _ability = '';
+    _ability = null;
     _actor = null;
-    _penalty = 0;
+    _penalty = null;
     constructor(ability, actor, penalty) {
         this._ability = ability;
         this._actor = actor;
@@ -14,7 +14,8 @@ class Ability {
         return this._getDescendantProp(this._actor, this._ability).base || 0;
     }
     get effective() {
-        return this.HM6Check(this.base - this._penalty);
+        const p = this._penalty ? this._getDescendantProp(this._actor.proxy, this._penalty) : 0;
+        return this.HM6Check(this.base - p);
     }
 
     HM6Check(value) {
@@ -33,16 +34,16 @@ export class LivingProxy extends ActorProxy {
         return this._actor.system.biography;
     }
     get dodge() {
-        return this.proxies.find((item) => item.name === 'Dodge')?.EML || 0;
+        return this.Skill('Dodge')?.EML || 0;
     }
     get gender() {
         return this._actor.system.gender;
     }
     get initiative() {
-        return this.proxies.find((item) => item.name === 'Initiative')?.EML || 0;
+        return this.Skill('Initiative')?.EML || 0;
     }
     get move() {
-        return this._ability('system.move', this.PP);
+        return this._ability('system.move', 'PP');
     }
     get shockIndex() {
         return {value: this._actor.system.shockIndex.value, max: 100};
@@ -58,37 +59,37 @@ export class LivingProxy extends ActorProxy {
     // Abilities
     //
     get strength() {
-        return this._ability('system.abilities.strength', this.PP);
+        return this._ability('system.abilities.strength', 'PP');
     }
     get stamina() {
-        return this._ability('system.abilities.stamina', this.PP);
+        return this._ability('system.abilities.stamina', 'PP');
     }
     get dexterity() {
-        return this._ability('system.abilities.dexterity', this.PP);
+        return this._ability('system.abilities.dexterity', 'PP');
     }
     get agility() {
-        return this._ability('system.abilities.agility', this.PP);
+        return this._ability('system.abilities.agility', 'PP');
     }
     get intelligence() {
-        return this._ability('system.abilities.intelligence', this.UP);
+        return this._ability('system.abilities.intelligence', 'UP');
     }
     get aura() {
-        return this._ability('system.abilities.aura', this.UP);
+        return this._ability('system.abilities.aura', 'UP');
     }
     get will() {
-        return this._ability('system.abilities.will', this.UP);
+        return this._ability('system.abilities.will', 'UP');
     }
     get eyesight() {
-        return this._ability('system.abilities.eyesight', this.UP);
+        return this._ability('system.abilities.eyesight', 'UP');
     }
     get hearing() {
-        return this._ability('system.abilities.hearing', this.UP);
+        return this._ability('system.abilities.hearing', 'UP');
     }
     get smell() {
-        return this._ability('system.abilities.smell', this.UP);
+        return this._ability('system.abilities.smell', 'UP');
     }
     get voice() {
-        return this._ability('system.abilities.voice', this.UP);
+        return this._ability('system.abilities.voice', 'UP');
     }
     get comeliness() {
         return this._ability('system.abilities.comeliness');
@@ -136,7 +137,16 @@ export class LivingProxy extends ActorProxy {
         return this.morality;
     }
 
-    _ability(path, penalty = 0) {
+    //
+    // Derived Stats
+    //
+
+    get END() {
+        const ML = this.Skill('Condition')?.ML;
+        return Math.round(ML ? ML / 5 : (this.STR.base + this.STA.base + this.WIL.base) / 3);
+    }
+
+    _ability(path, penalty = null) {
         return new Ability(path, this._actor, penalty);
     }
 }

@@ -49,18 +49,6 @@ export class ActorProxy {
     // Derived Stats
     //
 
-    get END() {
-        const ML = this.proxies.find((item) => item.name === 'Condition')?.ML;
-        return Math.round(
-            ML
-                ? ML / 5
-                : (this.system.abilities.strength.base +
-                      this.system.abilities.stamina.base +
-                      this.system.abilities.will.base) /
-                      3
-        );
-    }
-
     get totalArmorWeight() {
         return truncate(
             this.proxies
