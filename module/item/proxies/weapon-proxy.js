@@ -1,20 +1,26 @@
 import {GearProxy} from './gear-proxy';
 
 export class WeaponProxy extends GearProxy {
-    get WQ() {
-        return this._item.system.weaponQuality;
+    get AML() {
+        return this.HM100Check(this.Skill(this.assocSkill).EML + this.attack);
     }
-
-    get wqModifier() {
-        return this._item.system.wqModifier || 0;
+    get assocSkill() {
+        return this._item.system.assocSkill;
     }
-
-    get wqTotal() {
-        return this.WQ + this.wqModifier;
+    get attack() {
+        return this._item.system.attack;
     }
-
+    get attackModifier() {
+        return this._item.system.attackModifier;
+    }
     get blunt() {
         return this._item.system.blunt;
+    }
+    get defense() {
+        return this._item.system.defense;
+    }
+    get DML() {
+        return this.HM100Check(this.Skill(this.assocSkill).EML + this.defense);
     }
     get edged() {
         return this._item.system.edged;
@@ -22,22 +28,13 @@ export class WeaponProxy extends GearProxy {
     get piercing() {
         return this._item.system.piercing;
     }
-    get attack() {
-        return this._item.system.attack;
+    get WQ() {
+        return this._item.system.weaponQuality;
     }
-    get defense() {
-        return this._item.system.defense;
+    get wqModifier() {
+        return this._item.system.wqModifier || 0;
     }
-    get attackModifier() {
-        return this._item.system.attackModifier;
-    }
-    get assocSkill() {
-        return this._item.system.assocSkill;
-    }
-    get AML() {
-        return this.actor.proxies.find((item) => item.name === this.assocSkill).EML + this.attack;
-    }
-    get DML() {
-        return this.actor.proxies.find((item) => item.name === this.assocSkill).EML + this.defense;
+    get wqTotal() {
+        return this.WQ + this.wqModifier;
     }
 }

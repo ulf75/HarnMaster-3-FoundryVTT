@@ -3,7 +3,7 @@ import {ItemProxy} from './item-proxy';
 
 export class SkillProxy extends ItemProxy {
     get EML() {
-        return this.ML - 5 * this.penalty;
+        return this.HM100Check(this.ML - 5 * this.penalty);
     }
     get improveFlag() {
         return this._item.system.improveFlag;

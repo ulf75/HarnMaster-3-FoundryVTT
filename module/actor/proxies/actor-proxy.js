@@ -102,18 +102,6 @@ export class ActorProxy {
         );
     }
 
-    get shockIndex() {
-        return {value: this._actor.system.shockIndex.value, max: 100};
-    }
-
-    get dodge() {
-        return this.proxies.find((item) => item.name === 'Dodge')?.EML;
-    }
-
-    get initiative() {
-        return this.proxies.find((item) => item.name === 'Initiative')?.EML;
-    }
-
     // Encumbrance Penalty
     get EP() {
         return Math.floor(this.totalGearWeight / this.END);

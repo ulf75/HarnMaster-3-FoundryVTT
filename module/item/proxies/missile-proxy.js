@@ -5,6 +5,10 @@ export class MissileProxy extends GearProxy {
         return game.settings.get('hm3', 'distanceUnits') !== 'grid';
     }
 
+    get assocSkill() {
+        return this._item.system.assocSkill;
+    }
+
     get short() {
         return {
             range: this.isFeet
