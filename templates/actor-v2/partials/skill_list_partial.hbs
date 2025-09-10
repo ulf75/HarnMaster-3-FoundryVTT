@@ -48,16 +48,16 @@
                 <input
                     type="text"
                     name="item-sbx-special"
-                    id="{{ item.id }}-SBx"
-                    value="{{ system.skillBase.SBx }}"
+                    id="{{ id }}-SBx"
+                    value="{{ SBx }}"
                     data-dtype="Number" />
             </div>
             <div class="skill-ele item-detail">
                 <input
                     type="text"
                     name="item-op-special"
-                    id="{{ item.id }}-OP"
-                    value="{{ system.skillBase.OP }}"
+                    id="{{ id }}-OP"
+                    value="{{ OP }}"
                     data-dtype="Number" />
             </div>
             {{/if}}
@@ -65,13 +65,13 @@
             <div class="skill-ele item-detail">{{ EML }}</div>
             <div class="skill-notes">{{ notes }}</div>
             <div class="item-controls{{#if ../isSkillImprovement}}-wide{{/if}}">
-                {{#if item.isSkillImprovement}}
+                {{#if isSkillImprovement}}
                 <a
                     class="item-control item-improve"
                     aria-label="Improve Skill"
                     data-tooltip="Improve Skill"
                     data-tooltip-direction="UP">
-                    {{#if system.improveFlag}}
+                    {{#if improveFlag}}
                     <i class="active fas fa-star"></i>
                     {{else}}
                     <i class="far fa-star"></i>

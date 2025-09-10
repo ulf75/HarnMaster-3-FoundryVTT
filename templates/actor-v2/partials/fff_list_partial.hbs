@@ -15,15 +15,15 @@
         {{#each companions as | item |}}
         <li
             class="item fff flexrow"
-            data-item-id="{{ item.id }}"
-            data-item-name="{{ item.name }}">
+            data-item-id="{{ id }}"
+            data-item-name="{{ name }}">
             <div class="item-name fff-name fff-roll flexrow">
                 <div
                     id="companion"
                     class="item-image"
-                    style="background-image: url('{{ item.img }}')"
-                    data-item-actor-uuid="{{ item.system.actorUuid }}"></div>
-                <h4>{{ item.name }}</h4>
+                    style="background-image: url('{{ img }}')"
+                    data-item-actor-uuid="{{ actorUuid }}"></div>
+                <h4>{{ name }}</h4>
             </div>
             <div class="item-detail fff-gender">{{ gender }}</div>
             {{#if character}}
@@ -31,7 +31,7 @@
             {{else}}
             <div class="item-detail fff-species">{{ species }}</div>
             {{/if}}
-            <div class="item-detail fff-notes">{{ system.notes }}</div>
+            <div class="item-detail fff-notes">{{ notes }}</div>
             <div class="item-controls-wide">
                 <a
                     class="item-control item-edit"

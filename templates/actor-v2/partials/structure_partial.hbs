@@ -21,12 +21,12 @@
                             <div class="statend">PP: {{ aproxy.PP }}</div>
                         </div>
                         <div class="endurance flexrow">
-                            <span class="label">Shock Index: {{ adata.shockIndex.value }}</span>
+                            <span class="label">Shock Index: {{ aproxy.shockIndex.value }}</span>
                         </div>
                         <div class="endbar">
                             <span
                                 class="bar"
-                                style="width: {{ adata.shockIndex.value }}%"></span>
+                                style="width: {{ aproxy.shockIndex.value }}%"></span>
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                                 class="value"
                                 id="system.size"
                                 name="system.size">
-                                {{selectOptions config.creatureSizes selected=adata.size valueAttr="key" labelAttr="label"}}
+                                {{selectOptions config.creatureSizes selected=aproxy.size valueAttr="key" labelAttr="label"}}
                             </select>
                             {{else}}
                             <select
@@ -82,7 +82,7 @@
                                 id="system.size"
                                 name="system.size"
                                 disabled>
-                                {{selectOptions config.creatureSizes selected=adata.size valueAttr="key" labelAttr="label"}}
+                                {{selectOptions config.creatureSizes selected=aproxy.size valueAttr="key" labelAttr="label"}}
                             </select>
                             {{/if}}
                         </li>
@@ -652,7 +652,7 @@
                         </div>
                         <div class="item-detail missile-qty">{{ quantity }}</div>
                         <div class="item-detail missile-skill">{{ system.assocSkill }}</div>
-                        {{#if (lt short 0)}}
+                        {{#if (lt short.range 0)}}
                         <div class="item-detail missile-short"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail missile-short {{#if (and isEquipped isCarried)}}active{{/if}}">
@@ -664,10 +664,10 @@
                                 data-tooltip-direction="UP"
                                 data-weapon="{{ name }}"
                                 data-range="Short">
-                                {{ short }}/{{ system.impact.short }}
+                                {{ short.range }}/{{ short.impact }}
                             </a>
                             {{else}}
-                            {{ short }}/{{ system.impact.short }}
+                            {{ short.range }}/{{ short.impact }}
                             {{/if}}
                         </div>
                         {{/if}}
@@ -977,11 +977,11 @@
                     </li>
                     <li class="weight-line flexrow">
                         <div class="weight-detail title">Weight</div>
-                        <div class="weight-detail weapon">{{ adata.eph.totalWeaponWeight }}</div>
-                        <div class="weight-detail missile">{{ adata.eph.totalMissileWeight }}</div>
-                        <div class="weight-detail armor">{{ adata.eph.totalArmorWeight }}</div>
-                        <div class="weight-detail misc-gear">{{ adata.eph.totalMiscGearWeight }}</div>
-                        <div class="total">{{ adata.eph.totalGearWeight }}</div>
+                        <div class="weight-detail weapon">{{ aproxy.totalWeaponWeight }}</div>
+                        <div class="weight-detail missile">{{ aproxy.totalMissileWeight }}</div>
+                        <div class="weight-detail armor">{{ aproxy.totalArmorWeight }}</div>
+                        <div class="weight-detail misc-gear">{{ aproxy.totalMiscGearWeight }}</div>
+                        <div class="total">{{ aproxy.totalGearWeight }}</div>
                     </li>
                 </ol>
                 <div class="buf"></div>

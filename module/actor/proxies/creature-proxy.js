@@ -1,7 +1,3 @@
-import {ActorProxy} from './actor-proxy';
+import {LivingProxy} from './living-proxy';
 
-export class CreatureProxy extends ActorProxy {
-    get species() {
-        return this._actor.system.species;
-    }
-}
+export class CreatureProxy extends LivingProxy {}

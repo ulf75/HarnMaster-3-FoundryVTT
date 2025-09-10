@@ -61,18 +61,18 @@
                 </li>
                 <ol class="item-list trait-list">
                     {{#each items as |item id|}}
-                    {{#if (and (eq item.type "trait") (eq item.system.type "Physical"))}}
+                    {{#if (and (eq type "trait") (eq subtype "Physical"))}}
                     <li
                         class="item trait trait-item flexrow"
-                        data-item-id="{{ item._id }}"
-                        data-item-name="{{ item.name }}">
+                        data-item-id="{{ id }}"
+                        data-item-name="{{ name }}">
                         <div class="item-name trait-name flexrow">
                             <div
                                 class="item-image"
-                                style="background-image: url('{{ item.img }}')"></div>
-                            <h4>{{ item.name }}</h4>
+                                style="background-image: url('{{ img }}')"></div>
+                            <h4>{{ label }}</h4>
                         </div>
-                        <div class="trait-notes">{{ adata.notes }}</div>
+                        <div class="trait-notes">{{ notes }}</div>
                         <div class="item-controls">
                             <a
                                 class="item-control item-edit"
@@ -121,18 +121,18 @@
                 </li>
                 <ol class="item-list trait-list">
                     {{#each items as |item id|}}
-                    {{#if (and (eq item.type "trait") (eq item.system.type "Psyche"))}}
+                    {{#if (and (eq type "trait") (eq subtype "Psyche"))}}
                     <li
                         class="item trait trait-item flexrow"
-                        data-item-id="{{ item._id }}"
-                        data-item-name="{{ item.name }}">
+                        data-item-id="{{ id }}"
+                        data-item-name="{{ name }}">
                         <div class="item-name trait-name flexrow">
                             <div
                                 class="item-image"
-                                style="background-image: url('{{ item.img }}')"></div>
-                            <h4>{{ item.name }}</h4>
+                                style="background-image: url('{{ img }}')"></div>
+                            <h4>{{ label }}</h4>
                         </div>
-                        <div class="trait-notes">{{ adata.notes }}</div>
+                        <div class="trait-notes">{{ notes }}</div>
                         <div class="item-controls">
                             <a
                                 class="item-control item-edit"
@@ -167,7 +167,7 @@
                     </a>
                 </label>
                 <div class="description">
-                    {{editor adata.biography target="system.biography" button=true owner=owner editable=editable}}
+                    {{editor aproxy.biography target="system.biography" button=true owner=owner editable=editable}}
                 </div>
             </div>
         </div>

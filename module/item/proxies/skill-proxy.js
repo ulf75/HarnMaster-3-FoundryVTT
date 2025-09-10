@@ -3,16 +3,25 @@ import {ItemProxy} from './item-proxy';
 
 export class SkillProxy extends ItemProxy {
     get EML() {
-        return this.ML - 5 * this.Penalty;
+        return this.ML - 5 * this.penalty;
+    }
+    get improveFlag() {
+        return this._item.system.improveFlag;
     }
     get ML() {
         return this._item.system.masteryLevel;
     }
-    get Penalty() {
+    get OP() {
+        return this._item.system.skillBase.OP;
+    }
+    get penalty() {
         return [SkillType.COMBAT, SkillType.PHYSICAL].includes(this.subtype) ? this.actorProxy.PP : this.actorProxy.UP;
     }
     get SB() {
         return this._item.system.skillBase.value;
+    }
+    get SBx() {
+        return this._item.system.skillBase.SBx;
     }
     get SI() {
         return Math.floor(this.ML / 10);

@@ -1,12 +1,13 @@
 import {ItemProxy} from './item-proxy';
 
 export class TraitProxy extends ItemProxy {
-    get severity() {
-        return this.subtype === 'Psyche' ? this._item.system.severity ?? '5' : null;
+    get label() {
+        if (this.subtype === 'Psyche')
+            return `${game.hm3.config.psycheSeverity.find((v) => v.key === this.severity).label} ${this.name}`;
+        else return this.name;
     }
 
-    get severityLabel() {
-        if (this.subtype === 'Psyche') return config.hm3.psycheSeverity.find((v) => v.key === this.severity)?.label;
-        return null;
+    get severity() {
+        return this.subtype === 'Psyche' ? this._item.system.severity ?? '5' : null;
     }
 }

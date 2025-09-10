@@ -9,6 +9,7 @@ import {ContainerProxy} from './proxies/container-proxy.js';
 import {EffectProxy} from './proxies/effect-proxy.js';
 import {InjuryProxy} from './proxies/injury-proxy.js';
 import {InvocationProxy} from './proxies/invocation-proxy.js';
+import {MiscProxy} from './proxies/misc-proxy.js';
 import {MissileProxy} from './proxies/missile-proxy.js';
 import {PsionicProxy} from './proxies/psionic-proxy.js';
 import {SkillProxy} from './proxies/skill-proxy.js';
@@ -49,6 +50,8 @@ export class ItemHM3 extends Item {
                     ItemHM3._proxyMap.set(this.id, new InvocationProxy(this));
                     break;
                 case ItemType.MISCGEAR:
+                    ItemHM3._proxyMap.set(this.id, new MiscProxy(this));
+                    break;
                 case ItemType.MISSILEGEAR:
                     ItemHM3._proxyMap.set(this.id, new MissileProxy(this));
                     break;

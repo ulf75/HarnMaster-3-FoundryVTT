@@ -102,6 +102,10 @@ export class ActorProxy {
         );
     }
 
+    get shockIndex() {
+        return {value: this._actor.system.shockIndex.value, max: 100};
+    }
+
     get dodge() {
         return this.proxies.find((item) => item.name === 'Dodge')?.EML;
     }
