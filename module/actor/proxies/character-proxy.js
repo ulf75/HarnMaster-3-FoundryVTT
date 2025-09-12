@@ -16,6 +16,9 @@ export class CharacterProxy extends LivingProxy {
     get socialClass() {
         return this._actor.system.socialClass;
     }
+    get species() {
+        return super.species || 'Human';
+    }
     get sunsign() {
         return this._actor.system.sunsign;
     }

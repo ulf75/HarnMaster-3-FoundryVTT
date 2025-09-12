@@ -95,7 +95,7 @@
                                 Move
                             </label>
                             <div class="flexrow move-values">
-                                <span class="move-eff">{{ aproxy.move.effective }}</span>
+                                <span class="move-eff">{{ aproxy.MOV }}</span>
                                 <span class="sep">/</span>
                                 <input
                                     class="move-base"
@@ -496,7 +496,7 @@
                     <div class="item-detail weapon-skill">Skill</div>
                     <div class="item-detail weapon-quality">WQ</div>
                     <div class="item-detail weapon-atkdef">A/D</div>
-                    <div class="item-detail weapon-atkmod">Mod</div>
+                    <div class="item-detail weapon-atkmod">HM</div>
                     <div class="item-detail weapon-blunt">B</div>
                     <div class="item-detail weapon-edged">E</div>
                     <div class="item-detail weapon-piercing">P</div>
@@ -651,7 +651,7 @@
                             </a>
                         </div>
                         <div class="item-detail missile-qty">{{ quantity }}</div>
-                        <div class="item-detail missile-skill">{{ system.assocSkill }}</div>
+                        <div class="item-detail missile-skill">{{ assocSkill }}</div>
                         {{#if (lt short.range 0)}}
                         <div class="item-detail missile-short"><i class="fas fa-times"></i></div>
                         {{else}}
@@ -671,7 +671,7 @@
                             {{/if}}
                         </div>
                         {{/if}}
-                        {{#if (lt medium 0)}}
+                        {{#if (lt medium.range 0)}}
                         <div class="item-detail missile-medium"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail missile-medium {{#if (and isEquipped isCarried)}}active{{/if}}">
@@ -683,14 +683,14 @@
                                 data-tooltip-direction="UP"
                                 data-weapon="{{ name }}"
                                 data-range="Medium">
-                                {{ medium }}/{{ system.impact.medium }}
+                                {{ medium.range }}/{{ medium.impact }}
                             </a>
                             {{else}}
-                            {{ medium }}/{{ system.impact.medium }}
+                            {{ medium.range }}/{{ medium.impact }}
                             {{/if}}
                         </div>
                         {{/if}}
-                        {{#if (lt long 0)}}
+                        {{#if (lt long.range 0)}}
                         <div class="item-detail missile-long"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail missile-long {{#if (and isEquipped isCarried)}}active{{/if}}">
@@ -702,14 +702,14 @@
                                 data-tooltip-direction="UP"
                                 data-weapon="{{ name }}"
                                 data-range="Long">
-                                {{ long }}/{{ longImpact }}
+                                {{ long.range }}/{{ long.impact }}
                             </a>
                             {{else}}
-                            {{ long }}/{{ longImpact }}
+                            {{ long.range }}/{{ long.impact }}
                             {{/if}}
                         </div>
                         {{/if}}
-                        {{#if (lt extreme 0)}}
+                        {{#if (lt extreme.range 0)}}
                         <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail missile-extreme {{#if (and isEquipped isCarried)}}active{{/if}}">
@@ -721,10 +721,10 @@
                                 data-tooltip-direction="UP"
                                 data-weapon="{{ name }}"
                                 data-range="Extreme">
-                                {{ extreme }}/{{ system.impact.extreme }}
+                                {{ extreme.range }}/{{ extreme.impact }}
                             </a>
                             {{else}}
-                            {{ extreme }}/{{ system.impact.extreme }}
+                            {{ extreme.range }}/{{ extreme.impact }}
                             {{/if}}
                         </div>
                         {{/if}}
@@ -735,10 +735,10 @@
                                 aria-label="Missile Attack Roll"
                                 data-tooltip="Missile Attack Roll"
                                 data-tooltip-direction="UP">
-                                {{ system.attackMasteryLevel }}
+                                {{ AML }}
                             </a>
                             {{else}}
-                            {{ system.attackMasteryLevel }}{{/if}}
+                            {{ AML }}{{/if}}
                         </div>
                         <div class="item-detail missile-notes">{{ notes }}</div>
                     </li>
@@ -977,11 +977,11 @@
                     </li>
                     <li class="weight-line flexrow">
                         <div class="weight-detail title">Weight</div>
-                        <div class="weight-detail weapon">{{ aproxy.totalWeaponWeight }}</div>
-                        <div class="weight-detail missile">{{ aproxy.totalMissileWeight }}</div>
-                        <div class="weight-detail armor">{{ aproxy.totalArmorWeight }}</div>
-                        <div class="weight-detail misc-gear">{{ aproxy.totalMiscGearWeight }}</div>
-                        <div class="total">{{ aproxy.totalGearWeight }}</div>
+                        <div class="weight-detail weapon">{{ adata.eph.totalWeaponWeight }}</div>
+                        <div class="weight-detail missile">{{ adata.eph.totalMissileWeight }}</div>
+                        <div class="weight-detail armor">{{ adata.eph.totalArmorWeight }}</div>
+                        <div class="weight-detail misc-gear">{{ adata.eph.totalMiscGearWeight }}</div>
+                        <div class="total">{{ adata.eph.totalGearWeight }}</div>
                     </li>
                 </ol>
                 <div class="buf"></div>
@@ -996,43 +996,39 @@
                     placeholder="Filter gear by name..."
                     data-dtype="String" />
             </div>
-            {{#each containers as |citem cid|}}
+            {{#each aproxy.containers as |citem cid|}}
             <ol class="items-list gear-list">
                 <li
                     class="items-header gear flexrow"
                     data-container-id="{{ cid }}"
-                    data-container-name="{{ cname }}">
+                    data-container-name="{{ citem.name }}">
                     <div class="citem-controls">
-                        {{#if citem.system.collapsed}}
+                        {{#if citem.collapsed}}
                         <a
                             class="item-control item-maximize active"
-                            aria-label="Maximize"
-                            data-tooltip="Maximize"
-                            data-tooltip-direction="UP"
+                            title="Maximize"
                             data-action="maximize"
                             data-cuuid="{{ citem.uuid }}"
                             data-container-id="{{ cid }}"
-                            data-container-name="{{ cname }}"
+                            data-container-name="{{ citem.name }}"
                             data-type="gear">
                             <i class="fas fa-plus"></i>
                         </a>
                         {{else}}
                         <a
                             class="item-control item-minimize active"
-                            aria-label="Minimize"
-                            data-tooltip="Minimize"
-                            data-tooltip-direction="UP"
+                            title="Minimize"
                             data-action="minimize"
                             data-cuuid="{{ citem.uuid }}"
                             data-container-id="{{ cid }}"
-                            data-container-name="{{ cname }}"
+                            data-container-name="{{ citem.name }}"
                             data-type="gear">
                             <i class="fas fa-minus"></i>
                         </a>
                         {{/if}}
                     </div>
                     <h3 class="item-name gear-name-h">
-                        {{ cname }}
+                        {{ citem.name }}
                         <a
                             class="more-info"
                             data-journal-entry="Sheet - Gear Tab">
@@ -1043,20 +1039,18 @@
                     <div class="item-detail gear-qty">Qty</div>
                     <div class="item-detail gear-weight">Weight</div>
                     <div class="item-detail gear-notes">Notes</div>
-                    {{#unless (eq citem.system.type "Group")}}
-                    <div class="item detail gear-capacity {{#if (gt system.capacity.value system.capacity.max)}}overcapacity{{/if}}">
-                        Capacity: {{ system.capacity.value }}/{{ system.capacity.max }}
+                    {{#unless (eq citem.subtype "Group")}}
+                    <div class="item detail gear-capacity {{#if (gt citem.capacityVal citem.capacityMax)}}overcapacity{{/if}}">
+                        Capacity: {{ citem.capacityVal }}/{{ citem.capacityMax }}
                     </div>
                     {{/unless}}
                     <div class="item-controls">
                         <a
                             class="item-control item-create active"
-                            aria-label="Add Gear"
-                            data-tooltip="Add Gear"
-                            data-tooltip-direction="UP"
+                            title="Add Gear"
                             data-type="gear"
                             data-container-id="{{ cid }}"
-                            data-container-name="{{ cname }}">
+                            data-container-name="{{ citem.name }}">
                             <i class="fas fa-plus"></i>
                             Add
                         </a>
@@ -1064,60 +1058,53 @@
                 </li>
                 <ol class="item-list gear-list">
                     {{#each ../items as | item |}}
-                    {{#if (and (endswith type "gear") (eq item.system.container cid))}}
+                    {{#if (and (endswith item.type "gear") (eq item.container cid))}}
                     {{#unless citem.system.collapsed}}
                     <li
-                        class="item gear-item {{#unless isCarried}}nocarry{{/unless}} flexrow"
-                        data-item-id="{{ id }}"
-                        data-item-name="{{ name }}"
+                        class="item gear-item {{#unless item.isCarried}}nocarry{{/unless}} flexrow"
+                        data-item-id="{{ item.id }}"
+                        data-item-name="{{ item.name }}"
                         data-container-id="{{ cid }}"
-                        data-container-name="{{ cname }}">
+                        data-container-name="{{ citem.name }}">
                         <div class="citem-controls-0 flexrow"></div>
                         <div class="item-name gear-name flexrow">
                             <div
                                 class="item-image"
-                                style="background-image: url('{{ img }}')"></div>
-                            <h4>{{ name }}</h4>
+                                style="background-image: url('{{ item.img }}')"></div>
+                            <h4>{{ item.name }}</h4>
                         </div>
-                        <div class="item-detail gear-type">{{ type }}</div>
+                        <div class="item-detail gear-type">{{lookup ../../gearTypes item.type}}</div>
                         <div class="item-detail gear-qty">
-                            <input type="text" {{#unless isCarried}}class="nocarry"{{/unless}} name="item-quantity-special" id="{{ id }}"
-                            value="{{ quantity }}" data-dtype="Number"/>
+                            <input type="text" {{#unless item.isCarried}}class="nocarry"{{/unless}} name="item-quantity-special" id="{{
+                                item.id
+                            }}" value="{{ item.quantity }}" data-dtype="Number"/>
                         </div>
-                        <div class="item-detail gear-weight">{{ system.weightT }}</div>
-                        <div class="item-detail gear-notes">{{ notes }}</div>
+                        <div class="item-detail gear-weight">{{ item.weightT }}</div>
+                        <div class="item-detail gear-notes">{{ item.notes }}</div>
                         <div class="item-controls-wide">
-                            {{#if (or (eq cid "on-person") (eq citem.system.type "Group"))}}
-                            {{#unless (or (eq type "containergear") (eq type "miscgear"))}}
+                            {{#if (or (eq cid "on-person") (eq citem.subtype "Group"))}}
+                            {{#unless (or (eq item.type "containergear") (eq item.type "miscgear"))}}
                             <a
                                 class="item-control item-equip"
-                                aria-label="{{ equipLabel }}"
-                                data-tooltip="{{ equipLabel }}"
-                                data-tooltip-direction="UP">
-                                <i class="{{#if isEquipped}}active{{/if}} fas fa-shield-alt"></i>
+                                title="Equip">
+                                <i class="{{#if item.isEquipped}}active{{/if}} fas fa-shield-alt"></i>
                             </a>
                             {{/unless}}
                             <a
                                 class="item-control item-carry"
-                                aria-label="{{ carryLabel }}"
-                                data-tooltip="{{ carryLabel }}"
-                                data-tooltip-direction="UP">
-                                <i class="{{#if isCarried}}active{{/if}} fas fa-suitcase"></i>
+                                title="Carry">
+                                <i class="{{#if item.isCarried}}active{{/if}} fas fa-suitcase"></i>
                             </a>
                             {{/if}}
                             <a
                                 class="item-control item-edit"
-                                aria-label="Edit {{ name }}"
-                                data-tooltip="Edit {{ name }}"
-                                data-tooltip-direction="UP">
+                                title="Edit">
                                 <i class="active fas fa-edit"></i>
                             </a>
                             <a
                                 class="item-control item-delete"
-                                aria-label="Delete {{ name }}"
-                                data-tooltip="Delete {{ name }}"
-                                data-tooltip-direction="UP"
-                                data-label="{{ name }}">
+                                title="{{ subtype }}"
+                                data-label="Miscellaneous Gear">
                                 <i class="active fas fa-trash"></i>
                             </a>
                         </div>

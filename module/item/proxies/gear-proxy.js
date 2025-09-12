@@ -3,6 +3,9 @@ import {truncate} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
 export class GearProxy extends ItemProxy {
+    get container() {
+        return this._item.system.container;
+    }
     get hasValue() {
         return true;
     }

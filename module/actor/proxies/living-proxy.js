@@ -36,16 +36,19 @@ export class LivingProxy extends ActorProxy {
         return this._actor.system.biography;
     }
     get dodge() {
-        return this.Skill('Dodge')?.EML || 0;
+        return this.Skill('Dodge')?.EML ?? 0;
     }
     get fatigue() {
-        return this._actor.system.fatigue || 0;
+        return this._actor.system.fatigue ?? 0;
     }
     get gender() {
-        return this._actor.system.gender;
+        return this._actor.system.gender ?? 'Male';
     }
     get initiative() {
-        return this.Skill('Initiative')?.EML || 0;
+        return this.Skill('Initiative')?.EML ?? 0;
+    }
+    get loadRating() {
+        return this._actor.system.loadRating ?? 0;
     }
     get mounted() {
         return this._actor.system.mounted ?? false;
@@ -57,7 +60,7 @@ export class LivingProxy extends ActorProxy {
         return {value: this._actor.system.shockIndex.value, max: 100};
     }
     get size() {
-        return this._actor.system.size;
+        return this._actor.system.size || 6;
     }
     get species() {
         return this._actor.system.species;
@@ -106,57 +109,71 @@ export class LivingProxy extends ActorProxy {
         return this._ability('system.abilities.morality');
     }
     get STR() {
-        return this.strength;
+        return this.strength.effective;
     }
     get STA() {
-        return this.stamina;
+        return this.stamina.effective;
     }
     get DEX() {
-        return this.dexterity;
+        return this.dexterity.effective;
     }
     get AGL() {
-        return this.agility;
+        return this.agility.effective;
     }
     get INT() {
-        return this.intelligence;
+        return this.intelligence.effective;
     }
     get AUR() {
-        return this.aura;
+        return this.aura.effective;
     }
     get WIL() {
-        return this.will;
+        return this.will.effective;
     }
     get EYE() {
-        return this.eyesight;
+        return this.eyesight.effective;
     }
     get HRG() {
-        return this.hearing;
+        return this.hearing.effective;
     }
     get SML() {
-        return this.smell;
+        return this.smell.effective;
     }
     get VOI() {
-        return this.voice;
+        return this.voice.effective;
     }
     get CML() {
-        return this.comeliness;
+        return this.comeliness.effective;
     }
     get MOR() {
-        return this.morality;
+        return this.morality.effective;
+    }
+    get END() {
+        return this.endurance;
+    }
+    get MOV() {
+        return this.move.effective;
     }
 
     //
     // Derived Stats
     //
 
+    get capacityMax() {
+        return this.loadRating + this.endurance * 10;
+    }
+
+    get capacityVal() {
+        return this.totalGearWeight;
+    }
+
     // Endurance
-    get END() {
+    get endurance() {
         const ML = this.Skill('Condition')?.ML;
-        return Math.round(ML ? ML / 5 : (this.STR.base + this.STA.base + this.WIL.base) / 3);
+        return Math.round(ML ? ML / 5 : (this.strength.base + this.stamina.base + this.will.base) / 3);
     }
     // Encumbrance
     get encumbrance() {
-        return Math.floor(this.totalGearWeight / this.END);
+        return Math.floor(Math.max(this.totalGearWeight - this.loadRating, 0) / this.END);
     }
     // Encumbrance Penalty
     get EP() {
@@ -228,6 +245,32 @@ export class LivingProxy extends ActorProxy {
 
     get steed() {
         return this.hasSteed ? fromUuidSync(this.Skill('Riding').actorUuid) : null;
+    }
+
+    get containers() {
+        // Setup the fake container entry for "On Person" container
+        const containers = {
+            'on-person': {
+                'name': 'On Person',
+                'type': ItemType.CONTAINERGEAR,
+                'system': {
+                    'container': 'on-person',
+                    'collapsed': this.actor.getFlag('hm3', 'onPersonContainerCollapsed') || false,
+                    'capacity': {
+                        'max': this.capacityMax,
+                        'value': this.capacityVal
+                    }
+                }
+            }
+        };
+
+        this.proxies.forEach((item) => {
+            if (item.type === ItemType.CONTAINERGEAR) {
+                containers[item.id] = item;
+            }
+        });
+
+        return containers;
     }
 
     _ability(path, penalty = null) {

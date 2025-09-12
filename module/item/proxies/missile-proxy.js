@@ -1,12 +1,14 @@
 import {GearProxy} from './gear-proxy';
 
 export class MissileProxy extends GearProxy {
-    get isFeet() {
-        return game.settings.get('hm3', 'distanceUnits') !== 'grid';
+    get AML() {
+        return this.HM100Check(this.Skill(this.assocSkill).EML);
     }
-
     get assocSkill() {
         return this._item.system.assocSkill;
+    }
+    get isFeet() {
+        return game.settings.get('hm3', 'distanceUnits') !== 'grid';
     }
 
     get short() {

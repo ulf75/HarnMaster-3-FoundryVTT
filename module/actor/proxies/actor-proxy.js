@@ -51,20 +51,20 @@ export class ActorProxy {
     // Derived Stats
     //
 
-    get containers() {
-        const containers = [{label: 'On Person', key: 'on-person'}];
+    // get containers() {
+    //     const containers = [{label: 'On Person', key: 'on-person'}];
 
-        // Containers are not allowed in other containers.  So if this item is a container,
-        // don't show any other containers.
-        if (this.actor && this.type !== ItemType.CONTAINERGEAR) {
-            this.actor.items.forEach((item) => {
-                if (item.type === ItemType.CONTAINERGEAR) {
-                    containers.push({label: item.name, key: item.id});
-                }
-            });
-        }
-        return containers;
-    }
+    //     // Containers are not allowed in other containers.  So if this item is a container,
+    //     // don't show any other containers.
+    //     if (this.actor && this.type !== ItemType.CONTAINERGEAR) {
+    //         this.actor.items.forEach((item) => {
+    //             if (item.type === ItemType.CONTAINERGEAR) {
+    //                 containers.push({label: item.name, key: item.id});
+    //             }
+    //         });
+    //     }
+    //     return containers;
+    // }
 
     HM100Check(value) {
         return Math.max(Math.min(Math.round(value), 95), 5);

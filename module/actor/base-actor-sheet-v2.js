@@ -328,22 +328,6 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             };
         });
 
-        // migrate legacy macro
-        // let macro = this.actor.macrolist.find((m) => m.getFlag('hm3', 'trigger') === 'legacy');
-        // if (!macro) {
-        //     (async () => {
-        //         macro = await Macro.create({
-        //             name: `${this.actor.name} Legacy Macro`,
-        //             type: this.actor.system.macros.type,
-        //             command: this.actor.system.macros.command,
-        //             folder: this.actor.macrofolder
-        //         });
-        //         await macro.setFlag('hm3', 'trigger', 'legacy');
-        //         await macro.setFlag('hm3', 'ownerId', this.actor.id);
-        //         this.actor.sheet.render();
-        //     })();
-        // }
-
         // get macros
         data.adata.macrolist = this.actor.macrolist;
         data.adata.macrolist.map((m) => {
