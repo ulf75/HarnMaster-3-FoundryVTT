@@ -158,12 +158,8 @@ export class LivingProxy extends ActorProxy {
     // Derived Stats
     //
 
-    get capacityMax() {
-        return this.loadRating + this.endurance * 10;
-    }
-
-    get capacityVal() {
-        return this.totalGearWeight;
+    get capacity() {
+        return {max: this.loadRating + this.endurance * 10, value: this.totalGearWeight};
     }
 
     // Endurance
@@ -253,13 +249,12 @@ export class LivingProxy extends ActorProxy {
             'on-person': {
                 'name': 'On Person',
                 'type': ItemType.CONTAINERGEAR,
-                'system': {
-                    'container': 'on-person',
-                    'collapsed': this.actor.getFlag('hm3', 'onPersonContainerCollapsed') || false,
-                    'capacity': {
-                        'max': this.capacityMax,
-                        'value': this.capacityVal
-                    }
+
+                'container': 'on-person',
+                'collapsed': this.actor.getFlag('hm3', 'onPersonContainerCollapsed') || false,
+                'capacity': {
+                    'max': this.capacity.max,
+                    'value': this.capacity.value
                 }
             }
         };

@@ -1,11 +1,8 @@
 import {GearProxy} from './gear-proxy';
 
 export class ContainerProxy extends GearProxy {
-    get capacityMax() {
-        return this._item.system.capacity.max;
-    }
-    get capacityVal() {
-        return this._item.system.capacity.value;
+    get capacity() {
+        return this._item.system.capacity;
     }
     get collapsed() {
         return this._item.system.collapsed;

@@ -1044,8 +1044,8 @@
                     <div class="item-detail gear-weight">Weight</div>
                     <div class="item-detail gear-notes">Notes</div>
                     {{#unless (eq citem.subtype "Group")}}
-                    <div class="item detail gear-capacity {{#if (gt citem.capacityVal citem.capacityMax)}}overcapacity{{/if}}">
-                        Capacity: {{ citem.capacityVal }}/{{ citem.capacityMax }}
+                    <div class="item detail gear-capacity {{#if (gt citem.capacity.value citem.capacity.max)}}overcapacity{{/if}}">
+                        Capacity: {{ citem.capacity.value }}/{{ citem.capacity.max }}
                     </div>
                     {{/unless}}
                     <div class="item-controls">
