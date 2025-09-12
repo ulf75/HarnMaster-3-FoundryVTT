@@ -17,6 +17,21 @@ export class ActorProxy {
     get link() {
         return this._actor.link;
     }
+    get macrolist() {
+        return this._actor.macrolist
+            .map((m) => {
+                m.trigger = game.macros.get(m.id)?.getFlag('hm3', 'trigger');
+                m.ownerId = game.macros.get(m.id)?.getFlag('hm3', 'ownerId'); // currently not needed
+                return m;
+            })
+            .sort((a, b) =>
+                a?.name.toLowerCase() > b?.name.toLowerCase()
+                    ? 1
+                    : b?.name.toLowerCase() > a?.name.toLowerCase()
+                    ? -1
+                    : 0
+            );
+    }
     get name() {
         return this._actor.name;
     }
