@@ -1,5 +1,6 @@
-import {ItemType} from '../../hm3-types';
+import {Condition, ItemType} from '../../hm3-types';
 import {truncate} from '../../utility';
+import {ActorHM3} from '../actor';
 import {ActorProxy} from './actor-proxy';
 
 class Ability {
@@ -57,7 +58,12 @@ export class LivingProxy extends ActorProxy {
         return this._ability('system.move', 'PP');
     }
     get shockIndex() {
-        return {value: this._actor.system.shockIndex.value, max: 100};
+        return {
+            value: this.isInanimate
+                ? Math.max(100 - Math.round(100 * (this.IP / this.endurance)), 0)
+                : ActorHM3.normProb(this.endurance, this.UP * 3.5, this.UP),
+            max: 100
+        };
     }
     get size() {
         return this._actor.system.size || 6;
@@ -187,7 +193,7 @@ export class LivingProxy extends ActorProxy {
     }
     // Universal Penalty
     get UP() {
-        return this.IP + this.FP;
+        return this.isInanimate ? 0 : this.IP + this.FP;
     }
     // Physical Penalty
     get PP() {
@@ -266,6 +272,13 @@ export class LivingProxy extends ActorProxy {
         });
 
         return containers;
+    }
+
+    //
+    // Conditions
+    //
+    get isInanimate() {
+        return this.actor.hasCondition(Condition.INANIMATE);
     }
 
     _ability(path, penalty = null) {
