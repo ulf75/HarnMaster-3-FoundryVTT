@@ -46,6 +46,20 @@ export class ItemProxy {
         return this._item.system.type ?? this.type;
     }
 
+    get canBeArtifact() {
+        return [
+            ItemType.ARMORGEAR,
+            ItemType.CONTAINERGEAR,
+            ItemType.MISCGEAR,
+            ItemType.MISSILEGEAR,
+            ItemType.WEAPONGEAR
+        ].includes(this.type);
+    }
+
+    get canBeEsotericCombat() {
+        return [ItemType.INVOCATION, ItemType.PSIONIC, ItemType.SKILL, ItemType.SPELL].includes(this.type);
+    }
+
     HM100Check(value) {
         return Math.max(Math.min(Math.round(value), 95), 5);
     }

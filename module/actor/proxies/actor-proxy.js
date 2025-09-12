@@ -1,11 +1,13 @@
 import {ItemType} from '../../hm3-types';
-import {truncate} from '../../utility';
 
 export class ActorProxy {
     constructor(actor) {
         this._actor = actor;
     }
 
+    get actor() {
+        return this._actor;
+    }
     get id() {
         return this._actor.id;
     }
@@ -48,72 +50,6 @@ export class ActorProxy {
     //
     // Derived Stats
     //
-
-    get totalArmorWeight() {
-        return truncate(
-            this.proxies
-                .filter((item) => item.type === ItemType.ARMORGEAR && item.isCarried)
-                .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
-        );
-    }
-
-    get totalMiscGearWeight() {
-        return truncate(
-            this.proxies
-                .filter(
-                    (item) =>
-                        (item.type === ItemType.MISCGEAR || item.type === ItemType.CONTAINERGEAR) && item.isCarried
-                )
-                .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
-        );
-    }
-
-    get totalMissileWeight() {
-        return truncate(
-            this.proxies
-                .filter((item) => item.type === ItemType.MISSILEGEAR && item.isCarried)
-                .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
-        );
-    }
-
-    get totalWeaponWeight() {
-        return truncate(
-            this.proxies
-                .filter((item) => item.type === ItemType.WEAPONGEAR && item.isCarried)
-                .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
-        );
-    }
-
-    get totalGearWeight() {
-        return truncate(
-            this.totalArmorWeight + this.totalMiscGearWeight + this.totalMissileWeight + this.totalWeaponWeight
-        );
-    }
-
-    // Encumbrance Penalty
-    get EP() {
-        return Math.floor(this.totalGearWeight / this.END);
-    }
-
-    // Fatigue Penalty
-    get FP() {
-        return this._actor.system.fatigue || 0;
-    }
-
-    // Injury Penalty
-    get IP() {
-        return this.proxies
-            .filter((item) => item.type === ItemType.INJURY)
-            .reduce((partialSum, item) => partialSum + item.IL, 0);
-    }
-
-    get UP() {
-        return this.IP + this.FP;
-    }
-
-    get PP() {
-        return this.UP + this.EP;
-    }
 
     get containers() {
         const containers = [{label: 'On Person', key: 'on-person'}];

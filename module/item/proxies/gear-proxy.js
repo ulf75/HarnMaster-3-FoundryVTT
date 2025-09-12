@@ -34,6 +34,19 @@ export class GearProxy extends ItemProxy {
         return truncate(this.weight, 3);
     }
 
+    get label() {
+        const gearTypes = {
+            'armorgear': 'Armour',
+            'containergear': 'Container',
+            'effectgear': 'Effect',
+            'miscgear': 'Misc. Gear',
+            'missilegear': 'Missile Wpn',
+            'weapongear': 'Melee Wpn'
+        };
+        const t = this._item.system.type || gearTypes[this.type];
+        return t === 'Misc' ? 'Misc. Gear' : t;
+    }
+
     get equipLabel() {
         if (this.type === ItemType.ARMORGEAR) return this.isEquipped ? `Doff ${this.name}` : `Don ${this.name}`;
         return this.isEquipped ? `Unequip ${this.name}` : `Equip ${this.name}`;
