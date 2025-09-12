@@ -977,11 +977,11 @@
                     </li>
                     <li class="weight-line flexrow">
                         <div class="weight-detail title">Weight</div>
-                        <div class="weight-detail weapon">{{ adata.eph.totalWeaponWeight }}</div>
-                        <div class="weight-detail missile">{{ adata.eph.totalMissileWeight }}</div>
-                        <div class="weight-detail armor">{{ adata.eph.totalArmorWeight }}</div>
-                        <div class="weight-detail misc-gear">{{ adata.eph.totalMiscGearWeight }}</div>
-                        <div class="total">{{ adata.eph.totalGearWeight }}</div>
+                        <div class="weight-detail weapon">{{ aproxy.totalWeaponWeight }}</div>
+                        <div class="weight-detail missile">{{ aproxy.totalMissileWeight }}</div>
+                        <div class="weight-detail armor">{{ aproxy.totalArmorWeight }}</div>
+                        <div class="weight-detail misc-gear">{{ aproxy.totalMiscGearWeight }}</div>
+                        <div class="total">{{ aproxy.totalGearWeight }}</div>
                     </li>
                 </ol>
                 <div class="buf"></div>
@@ -1073,7 +1073,7 @@
                                 style="background-image: url('{{ item.img }}')"></div>
                             <h4>{{ item.name }}</h4>
                         </div>
-                        <div class="item-detail gear-type">{{lookup ../../gearTypes item.type}}</div>
+                        <div class="item-detail gear-type">{{ item.label }}</div>
                         <div class="item-detail gear-qty">
                             <input type="text" {{#unless item.isCarried}}class="nocarry"{{/unless}} name="item-quantity-special" id="{{
                                 item.id
