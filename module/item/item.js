@@ -12,6 +12,7 @@ import {InvocationProxy} from './proxies/invocation-proxy.js';
 import {MiscProxy} from './proxies/misc-proxy.js';
 import {MissileProxy} from './proxies/missile-proxy.js';
 import {PsionicProxy} from './proxies/psionic-proxy.js';
+import {RidingSkillProxy} from './proxies/riding-skill-proxy.js';
 import {SkillProxy} from './proxies/skill-proxy.js';
 import {SpellProxy} from './proxies/spell-proxy.js';
 import {TraitProxy} from './proxies/trait-proxy.js';
@@ -59,7 +60,8 @@ export class ItemHM3 extends Item {
                     ItemHM3._proxyMap.set(this.id, new PsionicProxy(this));
                     break;
                 case ItemType.SKILL:
-                    ItemHM3._proxyMap.set(this.id, new SkillProxy(this));
+                    if (this.name.includes('Riding')) ItemHM3._proxyMap.set(this.id, new RidingSkillProxy(this));
+                    else ItemHM3._proxyMap.set(this.id, new SkillProxy(this));
                     break;
                 case ItemType.SPELL:
                     ItemHM3._proxyMap.set(this.id, new SpellProxy(this));

@@ -415,7 +415,7 @@
             </div>
             {{#if hasSteed}}
             <div class="items-list combat-stats grid grid-fixed-row-s grid-5col">
-                {{#if (not adata.mounted)}}
+                {{#if (not aproxy.mounted)}}
                 <div
                     class="combat-stat flexrow"
                     id="combat-mount">
@@ -423,8 +423,8 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="mount-action"
-                            aria-label="Mount Steed"
-                            data-tooltip="Mount Steed"
+                            aria-label="Mount {{ aproxy.steed.name }}"
+                            data-tooltip="Mount {{ aproxy.steed.name }}"
                             data-tooltip-direction="UP">
                             Mount
                         </a>
@@ -438,8 +438,8 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="mount-action"
-                            aria-label="Dismount Steed"
-                            data-tooltip="Dismount Steed"
+                            aria-label="Dismount {{ aproxy.steed.name }}"
+                            data-tooltip="Dismount {{ aproxy.steed.name }}"
                             data-tooltip-direction="UP">
                             Dismount
                         </a>
@@ -454,7 +454,7 @@
                     </div>
                     <label class="combat-stat-label tooltip">
                         <a
-                            class="steedcommand-roll{{#unless adata.mounted}} disabled{{/unless}}"
+                            class="steedcommand-roll{{#unless aproxy.mounted}} disabled{{/unless}}"
                             aria-label="Steed Command Check"
                             data-tooltip="Steed Command Check"
                             data-tooltip-direction="UP">
@@ -470,7 +470,7 @@
                     </div>
                     <label class="combat-stat-label tooltip">
                         <a
-                            class="unhorsing-roll{{#unless adata.mounted}} disabled{{/unless}}"
+                            class="unhorsing-roll{{#unless aproxy.mounted}} disabled{{/unless}}"
                             aria-label="Unhorsing Roll"
                             data-tooltip="Unhorsing Roll"
                             data-tooltip-direction="UP">
