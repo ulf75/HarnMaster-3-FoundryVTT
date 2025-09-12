@@ -27,10 +27,13 @@ export class ItemProxy {
         return this._item.type;
     }
     get sort() {
-        return this._item.sort;
+        return this._item.sort || 0;
     }
     get uuid() {
         return this._item.uuid;
+    }
+    get visible() {
+        return true;
     }
 
     get description() {

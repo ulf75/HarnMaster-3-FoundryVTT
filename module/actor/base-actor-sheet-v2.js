@@ -64,11 +64,9 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             isContainer: this.document.type === ActorType.CONTAINER,
             isCreature: this.document.type === ActorType.CREATURE,
             isGM: game.user.isGM,
-            isGridDistanceUnits: game.settings.get('hm3', 'distanceUnits') === 'grid',
+            // isGridDistanceUnits: game.settings.get('hm3', 'distanceUnits') === 'grid',
             isSkillImprovement: this.actor.skillImprovement,
-            items: this.actor.proxies
-                .filter((item) => item.type !== ItemType.EFFECT || game.user.isGM)
-                .sort((a, b) => (a.sort || 0) - (b.sort || 0)),
+            items: this.actor.proxies.filter((item) => item.visible).sort((a, b) => a.sort - b.sort),
             labels: this.actor.labels || {},
             macroTypes: [
                 {key: 'chat', label: 'Chat'},

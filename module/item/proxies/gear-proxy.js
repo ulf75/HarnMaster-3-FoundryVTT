@@ -50,12 +50,12 @@ export class GearProxy extends ItemProxy {
         return t === 'Misc' ? 'Misc. Gear' : t;
     }
 
-    get equipLabel() {
+    get ariaLabelEquip() {
         if (this.type === ItemType.ARMORGEAR) return this.isEquipped ? `Doff ${this.name}` : `Don ${this.name}`;
         return this.isEquipped ? `Unequip ${this.name}` : `Equip ${this.name}`;
     }
 
-    get carryLabel() {
+    get ariaLabelCarry() {
         return this.isCarried ? `Drop ${this.name}` : `Carry ${this.name}`;
     }
 }
