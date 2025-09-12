@@ -26,6 +26,9 @@ export class ItemProxy {
     get type() {
         return this._item.type;
     }
+    get sort() {
+        return this._item.sort;
+    }
     get uuid() {
         return this._item.uuid;
     }
