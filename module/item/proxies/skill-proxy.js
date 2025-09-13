@@ -1,9 +1,10 @@
 import {ActorType, SkillType} from '../../hm3-types';
+import {HM100Check} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
 export class SkillProxy extends ItemProxy {
     get EML() {
-        return this.HM100Check(this.ML - 5 * this.penalty);
+        return HM100Check(this.ML - 5 * this.penalty);
     }
     get improveFlag() {
         return this._item.system.improveFlag;

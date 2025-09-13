@@ -721,3 +721,11 @@ export function getRelevantActors() {
             })
     ];
 }
+
+export function HM100Check(value) {
+    return Math.max(Math.min(Math.round(value), 95), 5);
+}
+
+export function HM6Check(value) {
+    return Math.max(Math.round(value), 1);
+}

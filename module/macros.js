@@ -1504,7 +1504,7 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
                     formSkill === 'Acrobatics'
                         ? acrobaticsSkill.system.effectiveMasteryLevel
                         : dodgeSkill.system.effectiveMasteryLevel;
-                target = game.hm3.macros.HM100Check(target + formModifier);
+                target = HM100Check(target + formModifier);
 
                 const stdRollData = {
                     actor: actorInfo.actor,

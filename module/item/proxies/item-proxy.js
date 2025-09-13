@@ -66,10 +66,6 @@ export class ItemProxy {
         return [ItemType.INVOCATION, ItemType.PSIONIC, ItemType.SKILL, ItemType.SPELL].includes(this.type);
     }
 
-    HM100Check(value) {
-        return Math.max(Math.min(Math.round(value), 95), 5);
-    }
-
     Skill(name) {
         return this.actor.proxies.find(
             (item) => item.type === ItemType.SKILL && item.name.toLowerCase().includes(name.toLowerCase())

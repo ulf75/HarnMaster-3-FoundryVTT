@@ -1,8 +1,9 @@
+import {HM100Check} from '../../utility';
 import {GearProxy} from './gear-proxy';
 
 export class WeaponProxy extends GearProxy {
     get AML() {
-        return this.HM100Check(this.Skill(this.assocSkill).EML + this.attack);
+        return HM100Check(this.Skill(this.assocSkill).EML + this.attack);
     }
     get assocSkill() {
         return this._item.system.assocSkill;
@@ -20,7 +21,7 @@ export class WeaponProxy extends GearProxy {
         return this._item.system.defense;
     }
     get DML() {
-        return this.HM100Check(this.Skill(this.assocSkill).EML + this.defense);
+        return HM100Check(this.Skill(this.assocSkill).EML + this.defense);
     }
     get edged() {
         return this._item.system.edged;

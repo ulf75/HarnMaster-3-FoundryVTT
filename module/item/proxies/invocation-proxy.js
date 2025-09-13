@@ -1,3 +1,4 @@
+import {HM100Check} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
 export class InvocationProxy extends ItemProxy {
@@ -8,6 +9,6 @@ export class InvocationProxy extends ItemProxy {
         return this._item.system.diety;
     }
     get EML() {
-        return this.HM100Check(this.Skill(this.diety).EML - 5 * this.circle);
+        return HM100Check(this.Skill(this.diety).EML - 5 * this.circle);
     }
 }

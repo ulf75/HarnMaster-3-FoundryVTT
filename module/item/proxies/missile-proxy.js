@@ -1,8 +1,9 @@
+import {HM100Check} from '../../utility';
 import {GearProxy} from './gear-proxy';
 
 export class MissileProxy extends GearProxy {
     get AML() {
-        return this.HM100Check(this.Skill(this.assocSkill).EML);
+        return HM100Check(this.Skill(this.assocSkill).EML);
     }
     get assocSkill() {
         return this._item.system.assocSkill;
