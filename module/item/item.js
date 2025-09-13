@@ -27,55 +27,57 @@ export class ItemHM3 extends Item {
     static _proxyMap = new Map();
 
     get proxy() {
-        if (!ItemHM3._proxyMap.has(this.id)) {
+        if (!ItemHM3._proxyMap.has(this.uuid)) {
+            let iproxy = null;
             switch (this.type) {
                 case ItemType.ARMORGEAR:
-                    ItemHM3._proxyMap.set(this.id, new ArmorProxy(this));
+                    iproxy = new ArmorProxy(this);
                     break;
                 case ItemType.ARMORLOCATION:
-                    ItemHM3._proxyMap.set(this.id, new ArmorlocationProxy(this));
+                    iproxy = new ArmorlocationProxy(this);
                     break;
                 case ItemType.COMPANION:
-                    ItemHM3._proxyMap.set(this.id, new CompanionProxy(this));
+                    iproxy = new CompanionProxy(this);
                     break;
                 case ItemType.CONTAINERGEAR:
-                    ItemHM3._proxyMap.set(this.id, new ContainerProxy(this));
+                    iproxy = new ContainerProxy(this);
                     break;
                 case ItemType.EFFECT:
-                    ItemHM3._proxyMap.set(this.id, new EffectProxy(this));
+                    iproxy = new EffectProxy(this);
                     break;
                 case ItemType.INJURY:
-                    ItemHM3._proxyMap.set(this.id, new InjuryProxy(this));
+                    iproxy = new InjuryProxy(this);
                     break;
                 case ItemType.INVOCATION:
-                    ItemHM3._proxyMap.set(this.id, new InvocationProxy(this));
+                    iproxy = new InvocationProxy(this);
                     break;
                 case ItemType.MISCGEAR:
-                    ItemHM3._proxyMap.set(this.id, new MiscProxy(this));
+                    iproxy = new MiscProxy(this);
                     break;
                 case ItemType.MISSILEGEAR:
-                    ItemHM3._proxyMap.set(this.id, new MissileProxy(this));
+                    iproxy = new MissileProxy(this);
                     break;
                 case ItemType.PSIONIC:
-                    ItemHM3._proxyMap.set(this.id, new PsionicProxy(this));
+                    iproxy = new PsionicProxy(this);
                     break;
                 case ItemType.SKILL:
-                    if (this.name.includes('Riding')) ItemHM3._proxyMap.set(this.id, new RidingSkillProxy(this));
-                    else ItemHM3._proxyMap.set(this.id, new SkillProxy(this));
+                    if (this.name.includes('Riding')) iproxy = new RidingSkillProxy(this);
+                    else iproxy = new SkillProxy(this);
                     break;
                 case ItemType.SPELL:
-                    ItemHM3._proxyMap.set(this.id, new SpellProxy(this));
+                    iproxy = new SpellProxy(this);
                     break;
                 case ItemType.TRAIT:
-                    ItemHM3._proxyMap.set(this.id, new TraitProxy(this));
+                    iproxy = new TraitProxy(this);
                     break;
                 case ItemType.WEAPONGEAR:
-                    ItemHM3._proxyMap.set(this.id, new WeaponProxy(this));
+                    iproxy = new WeaponProxy(this);
                     break;
             }
+            ItemHM3._proxyMap.set(this.uuid, iproxy);
         }
 
-        return ItemHM3._proxyMap.get(this.id);
+        return ItemHM3._proxyMap.get(this.uuid);
     }
 
     /**

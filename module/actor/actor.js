@@ -15,21 +15,23 @@ export class ActorHM3 extends Actor {
     static _proxyMap = new Map();
 
     get proxy() {
-        if (!ActorHM3._proxyMap.has(this.id)) {
+        if (!ActorHM3._proxyMap.has(this.uuid)) {
+            let aproxy = null;
             switch (this.type) {
                 case ActorType.CHARACTER:
-                    ActorHM3._proxyMap.set(this.id, new CharacterProxy(this));
+                    aproxy = new CharacterProxy(this);
                     break;
                 case ActorType.CONTAINER:
-                    ActorHM3._proxyMap.set(this.id, new ContainerProxy(this));
+                    aproxy = new ContainerProxy(this);
                     break;
                 case ActorType.CREATURE:
-                    ActorHM3._proxyMap.set(this.id, new CreatureProxy(this));
+                    aproxy = new CreatureProxy(this);
                     break;
             }
+            ActorHM3._proxyMap.set(this.uuid, aproxy);
         }
 
-        return ActorHM3._proxyMap.get(this.id);
+        return ActorHM3._proxyMap.get(this.uuid);
     }
 
     get proxies() {
