@@ -4,14 +4,14 @@
     {{! Sheet Header }}
     <header class="sheet-header sheet-header-character">
         <div class="flexrow">
-            {{> char_v2_img_partial cls='profile-img' src=actor.img edit='img' h=100 w=100}}
+            {{> char_v2_img_partial cls='profile-img' src=aproxy.img edit='img' h=100 w=100}}
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
                     <h1 class="charname">
                         <input
                             name="name"
                             type="text"
-                            value="{{ actor.name }}"
+                            value="{{ aproxy.name }}"
                             placeholder="Name" />
                     </h1>
                     <div class="header-stat-block">
@@ -38,7 +38,7 @@
                                 type="text"
                                 id="system.species"
                                 name="system.species"
-                                value="{{ adata.species }}"
+                                value="{{ aproxy.species }}"
                                 data-dtype="String" />
                         </li>
                         <li class="attribute gender flexcol">
@@ -52,7 +52,7 @@
                                 type="text"
                                 id="system.gender"
                                 name="system.gender"
-                                value="{{ adata.gender }}"
+                                value="{{ aproxy.gender }}"
                                 data-dtype="String" />
                         </li>
                     </ol>
@@ -65,7 +65,7 @@
     <section class="sheet-body">
         <div class="facade">
             <div class="flexrow">
-                {{> char_v2_img_partial cls='facade-image' src=adata.bioImage edit='system.bioImage' h=300 w=200}}
+                {{> char_v2_img_partial cls='facade-image' src=aproxy.bioImage edit='system.bioImage' h=300 w=200}}
                 <div class="facade-description">
                     {{editor
                         descriptionHTML

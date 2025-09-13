@@ -238,7 +238,7 @@
                     </h3>
                 </div>
             </div>
-            <div class="items-list combat-stats grid grid-fixed-row-s grid-5col">
+            <div class="items-list combat-stats grid grid-fixed-row-s grid-6col">
                 <div
                     class="combat-stat flexrow"
                     id="combat-stat-fatigue">
@@ -261,39 +261,70 @@
                     class="combat-stat flexrow"
                     id="combat-stat-initiative">
                     <div class="item-dice"></div>
-                    <label class="combat-stat-label">Init.</label>
+                    <label class="combat-stat-label">
+                        <div
+                            aria-label="Initiative"
+                            data-tooltip="Initiative"
+                            data-tooltip-direction="UP">
+                            Init
+                        </div>
+                    </label>
                     <div class="combat-stat-value">{{ aproxy.initiative }}</div>
                 </div>
                 <div
                     class="combat-stat flexrow"
                     id="combat-stat-dodge">
-                    <div class="item-dice">
-                        <i class="active fas fa-dice-d10"></i>
-                    </div>
                     <label class="combat-stat-label">
-                        <a
-                            class="dodge-roll"
-                            aria-label="Dodge Roll"
-                            data-tooltip="Dodge Roll"
+                        <div
+                            aria-label="Chance to Dodge"
+                            data-tooltip="Chance to Dodge"
                             data-tooltip-direction="UP">
                             Dodge
-                        </a>
+                        </div>
                     </label>
                     <div class="combat-stat-value">{{ aproxy.dodge }}</div>
                 </div>
                 <div
                     class="combat-stat flexrow"
-                    id="combat-stat-encumbrance">
+                    id="combat-stat-load">
                     <div class="item-dice"></div>
-                    <label class="combat-stat-label">Encumb.</label>
-                    <div class="combat-stat-value">{{ aproxy.encumbrance }}</div>
+                    <label class="combat-stat-label">
+                        <div
+                            aria-label="Total Weight Carried"
+                            data-tooltip="Total Weight Carried"
+                            data-tooltip-direction="UP">
+                            Load
+                        </div>
+                    </label>
+                    <div class="combat-stat-value">{{ aproxy.load }}</div>
                 </div>
                 <div
                     class="combat-stat flexrow"
                     id="combat-stat-endurance">
                     <div class="item-dice"></div>
-                    <label class="combat-stat-label">Endur.</label>
+                    <label class="combat-stat-label">
+                        <div
+                            aria-label="Endurance"
+                            data-tooltip="Endurance"
+                            data-tooltip-direction="UP">
+                            End
+                        </div>
+                    </label>
                     <div class="combat-stat-value">{{ aproxy.END }}</div>
+                </div>
+                <div
+                    class="combat-stat flexrow"
+                    id="combat-stat-encumbrance">
+                    <div class="item-dice"></div>
+                    <label class="combat-stat-label">
+                        <div
+                            aria-label="Encumbrance"
+                            data-tooltip="Encumbrance"
+                            data-tooltip-direction="UP">
+                            Encumb.
+                        </div>
+                    </label>
+                    <div class="combat-stat-value">{{ aproxy.encumbrance }}</div>
                 </div>
             </div>
             <div class="items-list combat-stats grid grid-fixed-row-s {{#if isGM}}grid-7col{{else}}grid-6col{{/if}}">

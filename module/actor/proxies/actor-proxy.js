@@ -1,4 +1,5 @@
 import {ItemType} from '../../hm3-types';
+import {truncate} from '../../utility';
 
 export class ActorProxy {
     constructor(actor) {
@@ -66,21 +67,46 @@ export class ActorProxy {
     // Derived Stats
     //
 
-    // get containers() {
-    //     const containers = [{label: 'On Person', key: 'on-person'}];
+    get totalArmorWeight() {
+        return truncate(
+            this.proxies
+                .filter((item) => item.type === ItemType.ARMORGEAR && item.isCarried)
+                .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
+        );
+    }
 
-    //     // Containers are not allowed in other containers.  So if this item is a container,
-    //     // don't show any other containers.
-    //     if (this.actor && this.type !== ItemType.CONTAINERGEAR) {
-    //         this.actor.items.forEach((item) => {
-    //             if (item.type === ItemType.CONTAINERGEAR) {
-    //                 containers.push({label: item.name, key: item.id});
-    //             }
-    //         });
-    //     }
-    //     return containers;
-    // }
+    get totalMiscGearWeight() {
+        return truncate(
+            this.proxies
+                .filter(
+                    (item) =>
+                        (item.type === ItemType.MISCGEAR || item.type === ItemType.CONTAINERGEAR) && item.isCarried
+                )
+                .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
+        );
+    }
 
+    get totalMissileWeight() {
+        return truncate(
+            this.proxies
+                .filter((item) => item.type === ItemType.MISSILEGEAR && item.isCarried)
+                .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
+        );
+    }
+
+    get totalWeaponWeight() {
+        return truncate(
+            this.proxies
+                .filter((item) => item.type === ItemType.WEAPONGEAR && item.isCarried)
+                .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
+        );
+    }
+
+    get totalGearWeight() {
+        return truncate(
+            this.totalArmorWeight + this.totalMiscGearWeight + this.totalMissileWeight + this.totalWeaponWeight
+        );
+    }
     HM100Check(value) {
         return Math.max(Math.min(Math.round(value), 95), 5);
     }

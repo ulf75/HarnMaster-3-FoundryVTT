@@ -48,6 +48,9 @@ export class LivingProxy extends ActorProxy {
     get initiative() {
         return this.Skill('Initiative')?.EML ?? 0;
     }
+    get load() {
+        return truncate(this.totalGearWeight, 0);
+    }
     get loadRating() {
         return this._actor.system.loadRating ?? 0;
     }
@@ -198,47 +201,6 @@ export class LivingProxy extends ActorProxy {
     // Physical Penalty
     get PP() {
         return this.UP + this.EP;
-    }
-
-    get totalArmorWeight() {
-        return truncate(
-            this.proxies
-                .filter((item) => item.type === ItemType.ARMORGEAR && item.isCarried)
-                .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
-        );
-    }
-
-    get totalMiscGearWeight() {
-        return truncate(
-            this.proxies
-                .filter(
-                    (item) =>
-                        (item.type === ItemType.MISCGEAR || item.type === ItemType.CONTAINERGEAR) && item.isCarried
-                )
-                .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
-        );
-    }
-
-    get totalMissileWeight() {
-        return truncate(
-            this.proxies
-                .filter((item) => item.type === ItemType.MISSILEGEAR && item.isCarried)
-                .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
-        );
-    }
-
-    get totalWeaponWeight() {
-        return truncate(
-            this.proxies
-                .filter((item) => item.type === ItemType.WEAPONGEAR && item.isCarried)
-                .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
-        );
-    }
-
-    get totalGearWeight() {
-        return truncate(
-            this.totalArmorWeight + this.totalMiscGearWeight + this.totalMissileWeight + this.totalWeaponWeight
-        );
     }
 
     get hasSteed() {
