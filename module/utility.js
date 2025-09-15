@@ -474,21 +474,25 @@ export function aeChanges(effect) {
                 val = truncate(Number.parseFloat(parts[1])) || 0;
                 const itemName = parts[0];
                 switch (key) {
-                    case 'system.eph.itemEMLMod':
+                    // case 'system.eph.itemEMLMod':
+                    case 'system.v2.skillEMLMod':
                         prefix = `${itemName} EML`;
                         break;
 
-                    case 'system.eph.itemAMLMod':
+                    // case 'system.eph.itemAMLMod':
+                    case 'system.v2.itemAMLMod':
                         prefix = `${itemName} AML`;
                         break;
 
-                    case 'system.eph.itemDMLMod':
+                    // case 'system.eph.itemDMLMod':
+                    case 'system.v2.itemDMLMod':
                         prefix = `${itemName} DML`;
                         break;
                 }
             } else {
                 val = ch.value;
-                prefix = HM3.activeEffectKey[key];
+                // prefix = HM3.activeEffectKey[key];
+                prefix = HM3.activeEffectKeyV2[key];
             }
             switch (ch.mode) {
                 case modes.ADD:
@@ -506,9 +510,13 @@ export function aeChanges(effect) {
             }
         })
         .join(', ')
+        .replace('Fatigue Penalty', 'FP')
+        .replace('Injury Penalty', 'IP')
         .replace('Endurance', 'END')
         .replace('Strength', 'STR')
-        .replace('Stamina', 'STA');
+        .replace('Stamina', 'STA')
+        .replace('Dexterity', 'DEX')
+        .replace('Agility', 'AGL');
 }
 
 function toNormTime(seconds) {

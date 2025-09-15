@@ -30,7 +30,10 @@ export class LivingProxy extends ActorProxy {
         return 6;
     }
     get dodge() {
-        return this.Skill('Dodge')?.EML ?? 0;
+        return (
+            this._actor.system.v2.dodge ??
+            this.applySpecificActiveEffect('system.v2.dodge', this.Skill('Dodge')?.EML ?? 0)
+        );
     }
     get fatigue() {
         return this._actor.system.fatigue ?? 0;
@@ -39,7 +42,10 @@ export class LivingProxy extends ActorProxy {
         return this._actor.system.gender ?? 'Male';
     }
     get initiative() {
-        return this.Skill('Initiative')?.EML ?? 0;
+        return (
+            this._actor.system.v2.initiative ??
+            this.applySpecificActiveEffect('system.v2.initiative', this.Skill('Initiative')?.EML ?? 0)
+        );
     }
     get load() {
         return truncate(this.totalGearWeight, 0);
@@ -160,14 +166,20 @@ export class LivingProxy extends ActorProxy {
     // Derived Stats
     //
 
+    // Maximum weight carried
     get capacity() {
         return {max: this.loadRating + this.endurance * 10, value: this.totalGearWeight};
     }
-
     // Endurance
     get endurance() {
         const ML = this.Skill('Condition')?.ML;
-        return Math.round(ML ? ML / 5 : (this.strength.base + this.stamina.base + this.will.base) / 3);
+        return (
+            this._actor.system.v2.endurance ??
+            this.applySpecificActiveEffect(
+                'system.v2.endurance',
+                Math.round(ML ? ML / 5 : (this.strength.base + this.stamina.base + this.will.base) / 3)
+            )
+        );
     }
     // Encumbrance
     get encumbrance() {
@@ -175,26 +187,53 @@ export class LivingProxy extends ActorProxy {
     }
     // Encumbrance Penalty
     get EP() {
-        return this.mounted ? Math.round(this.encumbrance / 2) : this.encumbrance;
+        return (
+            this._actor.system.v2.encumbrancePenalty ??
+            this.applySpecificActiveEffect(
+                'system.v2.encumbrancePenalty',
+                this.mounted ? Math.round(this.encumbrance / 2) : this.encumbrance
+            )
+        );
     }
     // Fatigue Penalty
     get FP() {
-        return this.mounted ? Math.round(this.fatigue / 2) : this.fatigue;
+        return (
+            this._actor.system.v2.fatiguePenalty ??
+            (this.isInanimate
+                ? 0
+                : this.applySpecificActiveEffect(
+                      'system.v2.fatiguePenalty',
+                      this.mounted ? Math.round(this.fatigue / 2) : this.fatigue
+                  ))
+        );
     }
     // Injury Penalty
     get IP() {
-        return this.proxies
-            .filter((item) => item.type === ItemType.INJURY)
-            .reduce((partialSum, item) => partialSum + item.IL, 0);
+        return (
+            this._actor.system.v2.injuryPenalty ??
+            (this.isInanimate
+                ? 0
+                : this.applySpecificActiveEffect(
+                      'system.v2.injuryPenalty',
+                      this.proxies
+                          .filter((item) => item.type === ItemType.INJURY)
+                          .reduce((partialSum, item) => partialSum + item.IL, 0)
+                  ))
+        );
     }
     // Universal Penalty
     get UP() {
-        const up = this.applySpecificActiveEffect('system.universalPenalty', this.IP + this.FP);
-        return this.isInanimate ? 0 : up;
+        return (
+            this._actor.system.v2.universalPenalty ??
+            this.applySpecificActiveEffect('system.v2.universalPenalty', this.IP + this.FP)
+        );
     }
     // Physical Penalty
     get PP() {
-        return this.applySpecificActiveEffect('system.physicalPenalty', this.UP + this.EP);
+        return (
+            this._actor.system.v2.physicalPenalty ??
+            this.applySpecificActiveEffect('system.v2.physicalPenalty', this.UP + this.EP)
+        );
     }
 
     get hasSteed() {

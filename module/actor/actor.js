@@ -67,7 +67,7 @@ export class ActorHM3 extends Actor {
                     break;
             }
 
-            aproxy = createCachingHandler(aproxy, this.name);
+            // aproxy = createCachingHandler(aproxy, this.name);
             ActorHM3._proxyMap.set(this.uuid, aproxy);
         }
 
@@ -585,6 +585,10 @@ export class ActorHM3 extends Actor {
         // but it is not in the data model so it will not be saved.
         if (!actorData.eph) actorData.eph = {};
         const eph = actorData.eph;
+        actorData.v2 = {};
+        for (const key of Object.keys(game.hm3.config.activeEffectKeyV2)) {
+            foundry.utils.setProperty(this, key, null);
+        }
 
         actorData.totalWeight = 0;
 

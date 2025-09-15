@@ -1125,6 +1125,52 @@ HM3.activeEffectKey = {
     'system.eph.unhorsing': 'Unhorsing'
 };
 
+HM3.activeEffectKeyV2 = {
+    // Attacks & Defenses
+    'system.v2.itemAMLMod': 'Weapon Attack ML',
+    'system.v2.itemDMLMod': 'Weapon Defense ML',
+    'system.v2.meleeAMLMod': 'Melee Attacks',
+    'system.v2.meleeDMLMod': 'Melee Defenses',
+    'system.v2.missileAMLMod': 'Missile Attacks',
+    // Skill Checks
+    'system.v2.combatSkillsMod': 'Combat Skills EML',
+    'system.v2.commSkillsMod': 'Communication Skills EML',
+    'system.v2.craftSkillsMod': 'Craft Skills EML',
+    'system.v2.magicSkillsMod': 'Magic Skills EML',
+    'system.v2.physicalSkillsMod': 'Physical Skills EML',
+    'system.v2.psionicTalentsMod': 'Psionic Talents EML',
+    'system.v2.ritualSkillsMod': 'Ritual Skills EML',
+    'system.v2.skillEMLMod': 'Skill EML',
+    // Penalties
+    'system.v2.encumbrancePenalty': 'Encumbrance Penalty',
+    'system.v2.fatiguePenalty': 'Fatigue Penalty',
+    'system.v2.injuryPenalty': 'Injury Penalty',
+    'system.v2.physicalPenalty': 'Physical Penalty',
+    'system.v2.universalPenalty': 'Universal Penalty',
+    // Combat
+    'system.v2.dodge': 'Dodge',
+    'system.v2.endurance': 'Endurance',
+    'system.v2.initiative': 'Initiative',
+    'system.v2.move': 'Move',
+    // Abilities
+    'system.v2.strength': 'Strength',
+    'system.v2.stamina': 'Stamina',
+    'system.v2.dexterity': 'Dexterity',
+    'system.v2.agility': 'Agility',
+    'system.v2.eyesight': 'Eyesight',
+    'system.v2.hearing': 'Hearing',
+    'system.v2.smell': 'Smell',
+    'system.v2.voice': 'Voice',
+    'system.v2.intelligence': 'Intelligence',
+    'system.v2.will': 'Will',
+    'system.v2.aura': 'Aura',
+    'system.v2.morality': 'Morality',
+    'system.v2.comeliness': 'Comeliness',
+    // Misc
+    'system.v2.outnumbered': 'Outnumbered',
+    'system.v2.unhorsing': 'Unhorsing'
+};
+
 HM3.defaultMagicIconName = 'pentacle';
 HM3.defaultRitualIconName = 'circle';
 HM3.defaultMiscItemIconName = 'miscgear';

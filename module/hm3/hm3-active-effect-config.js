@@ -20,7 +20,8 @@ export class ActiveEffectConfigHM3 extends ActiveEffectConfig {
     /** @override */
     async getData(options = {}) {
         const context = await super.getData(options);
-        context.keyChoices = HM3.activeEffectKey;
+        // context.keyChoices = HM3.activeEffectKey;
+        context.keyChoices = HM3.activeEffectKeyV2;
         return context;
     }
 }
