@@ -34,7 +34,8 @@ jspm_packages/
 build/
 
 # Distrubution files
-# dist/
+dist/hm3.js
+dist/hm3.js.map
 
 # Package builds
 package/
@@ -47,4 +48,3 @@ foundryconfig.json
 
 system.zip
 images/webp/gear/convert png to webp.cmd
-dist/hm3.js
