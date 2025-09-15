@@ -3,25 +3,6 @@ import {HM6Check, truncate} from '../../utility';
 import {ActorHM3} from '../actor';
 import {ActorProxy} from './actor-proxy';
 
-class Ability {
-    _ability = null;
-    _actor = null;
-    _penalty = null;
-    constructor(ability, actor, penalty) {
-        this._ability = ability;
-        this._actor = actor;
-        this._penalty = penalty;
-    }
-
-    get base() {
-        return foundry.utils.getProperty(this._actor, this._ability).base || 0;
-    }
-    get effective() {
-        const p = this._penalty ? foundry.utils.getProperty(this._actor.proxy, this._penalty) : 0;
-        return HM6Check(this.base - p);
-    }
-}
-
 export class LivingProxy extends ActorProxy {
     get biography() {
         return this._actor.system.biography;
@@ -57,7 +38,7 @@ export class LivingProxy extends ActorProxy {
         return this._actor.system.mounted ?? false;
     }
     get move() {
-        return this._ability('system.move', 'PP');
+        return this._calcAbility('system.move', true);
     }
     get shockIndex() {
         return {
@@ -78,43 +59,43 @@ export class LivingProxy extends ActorProxy {
     // Abilities
     //
     get strength() {
-        return this._ability('system.abilities.strength', 'PP');
+        return this._calcAbility('system.abilities.strength', true);
     }
     get stamina() {
-        return this._ability('system.abilities.stamina', 'PP');
+        return this._calcAbility('system.abilities.stamina', true);
     }
     get dexterity() {
-        return this._ability('system.abilities.dexterity', 'PP');
+        return this._calcAbility('system.abilities.dexterity', true);
     }
     get agility() {
-        return this._ability('system.abilities.agility', 'PP');
+        return this._calcAbility('system.abilities.agility', true);
     }
     get intelligence() {
-        return this._ability('system.abilities.intelligence', 'UP');
+        return this._calcAbility('system.abilities.intelligence', false);
     }
     get aura() {
-        return this._ability('system.abilities.aura', 'UP');
+        return this._calcAbility('system.abilities.aura', false);
     }
     get will() {
-        return this._ability('system.abilities.will', 'UP');
+        return this._calcAbility('system.abilities.will', false);
     }
     get eyesight() {
-        return this._ability('system.abilities.eyesight', 'UP');
+        return this._calcAbility('system.abilities.eyesight', false);
     }
     get hearing() {
-        return this._ability('system.abilities.hearing', 'UP');
+        return this._calcAbility('system.abilities.hearing', false);
     }
     get smell() {
-        return this._ability('system.abilities.smell', 'UP');
+        return this._calcAbility('system.abilities.smell', false);
     }
     get voice() {
-        return this._ability('system.abilities.voice', 'UP');
+        return this._calcAbility('system.abilities.voice', false);
     }
     get comeliness() {
-        return this._ability('system.abilities.comeliness');
+        return this._calcAbility('system.abilities.comeliness', null);
     }
     get morality() {
-        return this._ability('system.abilities.morality');
+        return this._calcAbility('system.abilities.morality', null);
     }
     get STR() {
         return this.strength.effective;
@@ -276,7 +257,25 @@ export class LivingProxy extends ActorProxy {
         return this.actor.hasCondition(Condition.INANIMATE);
     }
 
-    _ability(path, penalty = null) {
-        return new Ability(path, this._actor, penalty);
+    _calcAbility(ability, isPhysical) {
+        const ctx = this;
+        const prop = foundry.utils.getProperty(this._actor, ability)?.base || 0;
+        let v2Ability = ability.replace('abilities', 'v2');
+        if (v2Ability === 'system.move') v2Ability = 'system.v2.move';
+        const value = foundry.utils.getProperty(v2Ability);
+        return {
+            get base() {
+                return prop;
+            },
+            get effective() {
+                return (
+                    value ??
+                    ctx.applySpecificActiveEffect(
+                        v2Ability,
+                        HM6Check(prop - (isPhysical === null ? 0 : isPhysical ? ctx.PP : ctx.UP))
+                    )
+                );
+            }
+        };
     }
 }
