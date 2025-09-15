@@ -7,6 +7,9 @@ export class ArmorlocationProxy extends ItemProxy {
     static TotalWeightMid = 0;
     static TotalWeightLow = 0;
 
+    get cls() {
+        return super.cls + '-armor-location';
+    }
     get layers() {
         return this._item.system.layers;
     }
@@ -75,5 +78,9 @@ export class ArmorlocationProxy extends ItemProxy {
         ArmorlocationProxy.TotalWeightHigh /= 100;
         ArmorlocationProxy.TotalWeightMid /= 100;
         ArmorlocationProxy.TotalWeightLow /= 100;
+    }
+
+    activateListeners(html) {
+        super.activateListeners(html);
     }
 }

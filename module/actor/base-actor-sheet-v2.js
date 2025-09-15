@@ -31,6 +31,8 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
     /** @override */
     async getData(options = {}) {
+        const start = performance.now();
+
         if (!this.actor.system.eph.stumbleTarget) {
             // sometimes it is not initialized correctly
             this.actor.prepareDerivedData();
@@ -81,6 +83,8 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             secrets: game.user.isGM,
             relativeTo: this.object.system
         });
+
+        console.info(`HM3 | ActorHM3.getData: ${utility.truncate(performance.now() - start)} ms`);
 
         return context;
     }
@@ -483,6 +487,8 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // Everything below here is only needed if the sheet is editable
         if (!this.options.editable) return;
 
+        this.actor.proxy.activateListeners(html);
+
         html.find('.character-mancer').click(async (ev) => {
             await this.actor.unsetFlag('hm3', 'CharacterMancer');
             this.actor.sheet.render();
@@ -506,13 +512,13 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
         html.find('.item-minimize, .item-maximize').click(this._onContainerCollapse.bind(this));
 
-        html.on('click', '.fff-name', (ev) => {
-            const el = ev.currentTarget.querySelector('#companion'); //.dataset; // .innerText;
-            if (!el) return;
-            const uuid = el.dataset.itemActorUuid;
-            const actor = fromUuidSync(uuid);
-            actor.sheet.render(true);
-        });
+        // html.on('click', '.fff-name', (ev) => {
+        //     const el = ev.currentTarget.querySelector('#companion'); //.dataset; // .innerText;
+        //     if (!el) return;
+        //     const uuid = el.dataset.itemActorUuid;
+        //     const actor = fromUuidSync(uuid);
+        //     actor.sheet.render(true);
+        // });
 
         html.on('click', '.item-name, .spell-name', (ev) => {
             switch (ev.currentTarget.innerText) {
@@ -608,42 +614,42 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // Filter on name for Skills
-        html.on('keyup', '.skill-name-filter', (ev) => {
-            this.skillNameFilter = $(ev.currentTarget).val();
-            const lcSkillNameFilter = this.skillNameFilter.toLowerCase();
-            let skills = html.find('.skill-item');
-            for (let skill of skills) {
-                const skillName = skill.getAttribute('data-item-name');
-                if (lcSkillNameFilter) {
-                    if (skillName.toLowerCase().includes(lcSkillNameFilter)) {
-                        $(skill).show();
-                    } else {
-                        $(skill).hide();
-                    }
-                } else {
-                    $(skill).show();
-                }
-            }
-        });
+        // html.on('keyup', '.skill-name-filter', (ev) => {
+        //     this.skillNameFilter = $(ev.currentTarget).val();
+        //     const lcSkillNameFilter = this.skillNameFilter.toLowerCase();
+        //     let skills = html.find('.skill-item');
+        //     for (let skill of skills) {
+        //         const skillName = skill.getAttribute('data-item-name');
+        //         if (lcSkillNameFilter) {
+        //             if (skillName.toLowerCase().includes(lcSkillNameFilter)) {
+        //                 $(skill).show();
+        //             } else {
+        //                 $(skill).hide();
+        //             }
+        //         } else {
+        //             $(skill).show();
+        //         }
+        //     }
+        // });
 
         // Filter on name for gear
-        html.on('keyup', '.gear-name-filter', (ev) => {
-            this.gearNameFilter = $(ev.currentTarget).val();
-            const lcGearNameFilter = this.gearNameFilter.toLowerCase();
-            let gearItems = html.find('.gear-item');
-            for (let gear of gearItems) {
-                const gearName = gear.getAttribute('data-item-name');
-                if (lcGearNameFilter) {
-                    if (gearName.toLowerCase().includes(lcGearNameFilter)) {
-                        $(gear).show();
-                    } else {
-                        $(gear).hide();
-                    }
-                } else {
-                    $(gear).show();
-                }
-            }
-        });
+        // html.on('keyup', '.gear-name-filter', (ev) => {
+        //     this.gearNameFilter = $(ev.currentTarget).val();
+        //     const lcGearNameFilter = this.gearNameFilter.toLowerCase();
+        //     let gearItems = html.find('.gear-item');
+        //     for (let gear of gearItems) {
+        //         const gearName = gear.getAttribute('data-item-name');
+        //         if (lcGearNameFilter) {
+        //             if (gearName.toLowerCase().includes(lcGearNameFilter)) {
+        //                 $(gear).show();
+        //             } else {
+        //                 $(gear).hide();
+        //             }
+        //         } else {
+        //             $(gear).show();
+        //         }
+        //     }
+        // });
 
         // Filter on name for macros
         html.on('keyup', '.macros-name-filter', (ev) => {
@@ -665,55 +671,55 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // Filter on name for effects
-        html.on('keyup', '.effects-name-filter', (ev) => {
-            this.effectsNameFilter = $(ev.currentTarget).val();
-            const lcEffectsNameFilter = this.effectsNameFilter.toLowerCase();
-            let effectItems = html.find('.effect');
-            for (let effect of effectItems) {
-                const effectName = effect.getAttribute('data-effect-name');
-                if (lcEffectsNameFilter) {
-                    if (effectName.toLowerCase().includes(lcEffectsNameFilter)) {
-                        $(effect).show();
-                    } else {
-                        $(effect).hide();
-                    }
-                } else {
-                    $(effect).show();
-                }
-            }
-        });
+        // html.on('keyup', '.effects-name-filter', (ev) => {
+        //     this.effectsNameFilter = $(ev.currentTarget).val();
+        //     const lcEffectsNameFilter = this.effectsNameFilter.toLowerCase();
+        //     let effectItems = html.find('.effect');
+        //     for (let effect of effectItems) {
+        //         const effectName = effect.getAttribute('data-effect-name');
+        //         if (lcEffectsNameFilter) {
+        //             if (effectName.toLowerCase().includes(lcEffectsNameFilter)) {
+        //                 $(effect).show();
+        //             } else {
+        //                 $(effect).hide();
+        //             }
+        //         } else {
+        //             $(effect).show();
+        //         }
+        //     }
+        // });
 
         // Standard 1d100 Skill Roll
-        html.find('.skill-roll').click((ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data('itemId'));
-            macros.skillRoll(item?.uuid, fastforward, this.actor);
-        });
+        // html.find('.skill-roll').click((ev) => {
+        //     const li = $(ev.currentTarget).parents('.item');
+        //     const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+        //     const item = this.actor.items.get(li.data('itemId'));
+        //     macros.skillRoll(item?.uuid, fastforward, this.actor);
+        // });
 
         // Standard 1d100 Spell Casting Roll
-        html.find('.spell-roll').click((ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data('itemId'));
-            macros.castSpellRoll(item?.uuid, fastforward, this.actor);
-        });
+        // html.find('.spell-roll').click((ev) => {
+        //     const li = $(ev.currentTarget).parents('.item');
+        //     const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+        //     const item = this.actor.items.get(li.data('itemId'));
+        //     macros.castSpellRoll(item?.uuid, fastforward, this.actor);
+        // });
 
         // Standard 1d100 Ritual Invocation Roll
-        html.find('.invocation-roll').click((ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data('itemId'));
-            macros.invokeRitualRoll(item?.uuid, fastforward, this.actor);
-        });
+        // html.find('.invocation-roll').click((ev) => {
+        //     const li = $(ev.currentTarget).parents('.item');
+        //     const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+        //     const item = this.actor.items.get(li.data('itemId'));
+        //     macros.invokeRitualRoll(item?.uuid, fastforward, this.actor);
+        // });
 
         // Standard 1d100 Psionic Talent Roll
-        html.find('.psionic-roll').click((ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data('itemId'));
-            macros.usePsionicRoll(item?.uuid, fastforward, this.actor);
-        });
+        // html.find('.psionic-roll').click((ev) => {
+        //     const li = $(ev.currentTarget).parents('.item');
+        //     const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+        //     const item = this.actor.items.get(li.data('itemId'));
+        //     macros.usePsionicRoll(item?.uuid, fastforward, this.actor);
+        // });
 
         // d6 Ability Score Roll
         html.find('.ability-d6-roll').click((ev) => {

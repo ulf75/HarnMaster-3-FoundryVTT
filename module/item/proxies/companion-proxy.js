@@ -6,6 +6,9 @@ export class CompanionProxy extends ItemProxy {
         this._companion = fromUuidSync(this._item.system.actorUuid);
     }
 
+    get cls() {
+        return super.cls + '-companion';
+    }
     get actorUuid() {
         return this._item.system.actorUuid;
     }
@@ -29,5 +32,18 @@ export class CompanionProxy extends ItemProxy {
     }
     get species() {
         return this.companion?.system.species ?? 'Unknown';
+    }
+
+    activateListeners(html) {
+        super.activateListeners(html);
+
+        html.off('click', `.${this.cls}-open`);
+        html.on('click', `.${this.cls}-open`, (ev) => {
+            const el = ev.currentTarget.querySelector('#companion'); //.dataset; // .innerText;
+            if (!el) return;
+            const uuid = el.dataset.itemActorUuid;
+            const actor = fromUuidSync(uuid);
+            actor.sheet.render(true);
+        });
     }
 }

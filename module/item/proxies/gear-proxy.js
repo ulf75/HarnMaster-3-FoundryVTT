@@ -3,6 +3,9 @@ import {truncate} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
 export class GearProxy extends ItemProxy {
+    get cls() {
+        return super.cls + '-gear';
+    }
     get container() {
         return this._item.system.container;
     }
@@ -57,5 +60,28 @@ export class GearProxy extends ItemProxy {
 
     get ariaLabelCarry() {
         return this.isCarried ? `Drop ${this.name}` : `Carry ${this.name}`;
+    }
+
+    activateListeners(html) {
+        super.activateListeners(html);
+
+        html.off('keyup', '.gear-name-filter');
+        html.on('keyup', '.gear-name-filter', (ev) => {
+            this.gearNameFilter = $(ev.currentTarget).val();
+            const lcGearNameFilter = this.gearNameFilter.toLowerCase();
+            let gearItems = html.find('.gear-item');
+            for (let gear of gearItems) {
+                const gearName = gear.getAttribute('data-item-name');
+                if (lcGearNameFilter) {
+                    if (gearName.toLowerCase().includes(lcGearNameFilter)) {
+                        $(gear).show();
+                    } else {
+                        $(gear).hide();
+                    }
+                } else {
+                    $(gear).show();
+                }
+            }
+        });
     }
 }

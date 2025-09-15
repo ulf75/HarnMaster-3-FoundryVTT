@@ -291,7 +291,7 @@ export class DiceHM3 {
                             }
                         } else {
                             if (!result.isCritical) {
-                                const d = truncate(
+                                const d = utility.truncate(
                                     height * (result.isSubstantial ? MF[formJump] * 0.75 : MF[formJump]),
                                     0
                                 );

@@ -5,6 +5,9 @@ export class ItemProxy {
         this._item = item;
     }
 
+    get cls() {
+        return 'itemv2';
+    }
     get actor() {
         return this._item.actor;
     }
@@ -71,4 +74,6 @@ export class ItemProxy {
             (item) => item.type === ItemType.SKILL && item.name.toLowerCase().includes(name.toLowerCase())
         );
     }
+
+    activateListeners(html) {}
 }

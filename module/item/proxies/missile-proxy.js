@@ -2,6 +2,9 @@ import {HM100Check} from '../../utility';
 import {GearProxy} from './gear-proxy';
 
 export class MissileProxy extends GearProxy {
+    get cls() {
+        return super.cls + '-missile';
+    }
     get AML() {
         return HM100Check(this.Skill(this.assocSkill).EML);
     }
@@ -46,5 +49,9 @@ export class MissileProxy extends GearProxy {
                 : this._item.system.range.extreme / canvas.dimensions.distance,
             impact: this._item.system.impact.extreme
         };
+    }
+
+    activateListeners(html) {
+        super.activateListeners(html);
     }
 }

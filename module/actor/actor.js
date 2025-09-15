@@ -13,6 +13,8 @@ function createCachingHandler(api, name) {
 
     return new Proxy(api, {
         get(target, property, receiver) {
+            if (typeof target[property] === 'function') return Reflect.get(target, property);
+
             const now = Date.now();
 
             // Check if we have a valid cached response

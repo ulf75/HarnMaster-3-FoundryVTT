@@ -17,13 +17,19 @@
             class="item fff flexrow"
             data-item-id="{{ id }}"
             data-item-name="{{ name }}">
-            <div class="item-name fff-name fff-roll flexrow">
-                <div
-                    id="companion"
-                    class="item-image"
-                    style="background-image: url('{{ img }}')"
-                    data-item-actor-uuid="{{ actorUuid }}"></div>
-                <h4>{{ name }}</h4>
+            <div class="item-name fff-name {{ cls }}-open flexrow">
+                <a
+                    class="tooltip"
+                    aria-label="Open {{ name }}"
+                    data-tooltip="Open {{ name }}"
+                    data-tooltip-direction="UP">
+                    <div
+                        id="companion"
+                        class="item-image"
+                        style="background-image: url('{{ img }}')"
+                        data-item-actor-uuid="{{ actorUuid }}"></div>
+                    <h4>{{ name }}</h4>
+                </a>
             </div>
             <div class="item-detail fff-gender">{{ gender }}</div>
             {{#if character}}

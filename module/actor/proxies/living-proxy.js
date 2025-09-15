@@ -1,5 +1,5 @@
 import {Condition, ItemType} from '../../hm3-types';
-import {truncate} from '../../utility';
+import {HM6Check, truncate} from '../../utility';
 import {ActorHM3} from '../actor';
 import {ActorProxy} from './actor-proxy';
 
@@ -14,27 +14,20 @@ class Ability {
     }
 
     get base() {
-        return this._getDescendantProp(this._actor, this._ability).base || 0;
+        return foundry.utils.getProperty(this._actor, this._ability).base || 0;
     }
     get effective() {
-        const p = this._penalty ? this._getDescendantProp(this._actor.proxy, this._penalty) : 0;
-        return this.HM6Check(this.base - p);
-    }
-
-    HM6Check(value) {
-        return Math.max(Math.round(value), 1);
-    }
-
-    _getDescendantProp(obj, desc) {
-        var arr = desc.split('.');
-        while (arr.length && (obj = obj[arr.shift()]));
-        return obj;
+        const p = this._penalty ? foundry.utils.getProperty(this._actor.proxy, this._penalty) : 0;
+        return HM6Check(this.base - p);
     }
 }
 
 export class LivingProxy extends ActorProxy {
     get biography() {
         return this._actor.system.biography;
+    }
+    get damageDie() {
+        return 6;
     }
     get dodge() {
         return this.Skill('Dodge')?.EML ?? 0;
@@ -196,11 +189,12 @@ export class LivingProxy extends ActorProxy {
     }
     // Universal Penalty
     get UP() {
-        return this.isInanimate ? 0 : this.IP + this.FP;
+        const up = this.applySpecificActiveEffect('system.universalPenalty', this.IP + this.FP);
+        return this.isInanimate ? 0 : up;
     }
     // Physical Penalty
     get PP() {
-        return this.UP + this.EP;
+        return this.applySpecificActiveEffect('system.physicalPenalty', this.UP + this.EP);
     }
 
     get hasSteed() {

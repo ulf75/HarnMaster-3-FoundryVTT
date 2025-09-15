@@ -2,6 +2,9 @@ import {HM100Check} from '../../utility';
 import {GearProxy} from './gear-proxy';
 
 export class WeaponProxy extends GearProxy {
+    get cls() {
+        return super.cls + '-weapon';
+    }
     get AML() {
         return HM100Check(this.Skill(this.assocSkill).EML + this.attack);
     }
@@ -37,5 +40,9 @@ export class WeaponProxy extends GearProxy {
     }
     get wqTotal() {
         return this.WQ + this.wqModifier;
+    }
+
+    activateListeners(html) {
+        super.activateListeners(html);
     }
 }
