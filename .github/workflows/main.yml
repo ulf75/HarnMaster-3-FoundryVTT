@@ -23,7 +23,7 @@ jobs:
         uses: restackio/update-json-file-action@v2.0
         with:
           file: 'system.json'
-          fields: '{"version": "${{env.VERSION}}", "manifest": "${{env.FOUNDRY_MANIFEST}}", "download": "${{env.FOUNDRY_DOWNLOAD}}"}'
+          fields: '{"version": "${{env.VERSION}}", "manifest": "${{env.FOUNDRY_MANIFEST}}", "download": "${{env.FOUNDRY_DOWNLOAD}}", "esmodules": ["dist/hm3.min.js"]}'
 
       # Create a zip file with all files required by the system to add to the release
       - run: zip -r ./system.zip *
