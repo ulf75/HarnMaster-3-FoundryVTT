@@ -1034,6 +1034,19 @@
                     data-container-id="{{ cid }}"
                     data-container-name="{{ citem.name }}">
                     <div class="citem-controls">
+                        {{#if citem.locked}}
+                        <div
+                            class="item-control item-locked active"
+                            aria-label="Locked"
+                            data-tooltip="Locked"
+                            data-tooltip-direction="UP"
+                            data-cuuid="{{ citem.uuid }}"
+                            data-container-id="{{ cid }}"
+                            data-container-name="{{ citem.name }}"
+                            data-type="gear">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        {{else}}
                         {{#if citem.collapsed}}
                         <a
                             class="item-control item-maximize active"
@@ -1060,6 +1073,7 @@
                             data-type="gear">
                             <i class="fas fa-minus"></i>
                         </a>
+                        {{/if}}
                         {{/if}}
                     </div>
                     <h3 class="item-name gear-name-h">

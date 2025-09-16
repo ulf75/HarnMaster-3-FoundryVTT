@@ -8,7 +8,10 @@ export class ContainerProxy extends GearProxy {
         return this._item.system.capacity;
     }
     get collapsed() {
-        return this._item.system.collapsed;
+        return (this._item.system.collapsed ?? false) || this.locked;
+    }
+    get locked() {
+        return this._item.system.locked ?? false;
     }
 
     activateListeners(html) {}

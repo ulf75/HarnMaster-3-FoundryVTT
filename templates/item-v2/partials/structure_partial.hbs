@@ -183,7 +183,6 @@
                 data-group="primary"
                 data-tab="settings">
                 {{#if (eq item.type "miscgear")}}
-
                 <div class="item-type resource flexrow">
                     <label
                         for="system.type"
@@ -196,6 +195,25 @@
                         name="system.type">
                         {{selectOptions config.miscItemTypes selected=idata.type valueAttr="key" labelAttr="key"}}
                     </select>
+                </div>
+                {{/if}}
+                {{#if (eq item.type "containergear")}}
+                <div class="resource flexrow">
+                    <input
+                        type="checkbox"
+                        id="system.locked"
+                        name="system.locked"
+                        value="{{ idata.locked }}"
+                        data-dtype="Boolean"
+                        {{
+                        checked
+                        idata.locked
+                        }} />
+                    <label
+                        for="system.locked"
+                        class="resource-label">
+                        Container is locked
+                    </label>
                 </div>
                 {{/if}}
                 {{> item_v2_unknown_value_partial}}
