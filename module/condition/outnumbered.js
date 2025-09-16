@@ -55,7 +55,14 @@ if (!unconscious)
                 hm3: {uuid}
             }
         },
-        changes: [{key: 'eph.outnumbered', mode: 2, priority: null, value: `${options.outnumbered}`}],
+        changes: [
+            {
+                key: 'v2.outnumbered',
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                priority: null,
+                value: `${options.outnumbered}`
+            }
+        ],
         options: {unique: true}
     };
 }

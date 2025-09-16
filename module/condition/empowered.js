@@ -53,7 +53,7 @@ console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
                 hm3: {uuid}
             }
         },
-        changes: [{key: 'eph.meleeAMLMod', mode: 2, priority: null, value: '10'}], // TODO must be a general bonus on ALL skills
+        changes: [{key: 'v2.meleeAMLMod', mode: CONST.ACTIVE_EFFECT_MODES.ADD, priority: null, value: '10'}], // TODO must be a general bonus on ALL skills
         options: {selfDestroy: true, unique: true}
     };
 }

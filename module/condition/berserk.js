@@ -55,7 +55,7 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is in <b>B
                 hm3: {uuid}
             }
         },
-        changes: [{key: 'eph.meleeAMLMod', mode: 2, priority: null, value: '20'}],
+        changes: [{key: 'v2.meleeAMLMod', mode: CONST.ACTIVE_EFFECT_MODES.ADD, priority: null, value: '20'}],
         options: {unique: true}
     };
 }

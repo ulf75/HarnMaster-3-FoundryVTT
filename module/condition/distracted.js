@@ -57,7 +57,7 @@ if (!unconscious) {
                 hm3: {uuid}
             }
         },
-        changes: [{key: 'eph.meleeDMLMod', mode: 2, priority: null, value: '-10'}],
+        changes: [{key: 'v2.meleeDMLMod', mode: CONST.ACTIVE_EFFECT_MODES.ADD, priority: null, value: '-10'}],
         options: {selfDestroy: true, unique: true}
     };
 }

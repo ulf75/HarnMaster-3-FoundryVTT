@@ -43,7 +43,7 @@ if (!unconscious)
                 hm3: {uuid}
             }
         },
-        changes: [{key: 'eph.meleeAMLMod', mode: 2, value: '-10'}],
+        changes: [{key: 'v2.meleeAMLMod', mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: '-10'}],
         options: {unique: true}
     };
 }

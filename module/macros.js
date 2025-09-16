@@ -2626,7 +2626,10 @@ export async function createActiveEffect(effectData, changes = [], options = {})
         options = foundry.utils.mergeObject({hidden: false, selfDestroy: false, unique: false}, options);
 
         changes = changes.map((change) => {
-            change = foundry.utils.mergeObject({key: '', value: 0, mode: 2, priority: null}, change);
+            change = foundry.utils.mergeObject(
+                {key: '', value: 0, mode: CONST.ACTIVE_EFFECT_MODES.ADD, priority: null},
+                change
+            );
             const keys = getObjectKeys(effectData.token.actor.system);
             change.key = 'system.' + keys.find((v) => v.includes(change.key));
             return change;
