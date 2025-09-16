@@ -72,7 +72,7 @@ export class DiceHM3 {
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.hbs';
 
-        const notesData = foundry.utils.mergeObject(rollData.notesData, {
+        const notesData = foundry.utils.mergeObject(rollData.notesData ?? {}, {
             actor: speaker.alias,
             isCF: !roll.isSuccess && roll.isCritical,
             isCritical: roll.isCritical,
@@ -524,7 +524,7 @@ export class DiceHM3 {
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.hbs';
 
-        const notesData = foundry.utils.mergeObject(rollData.notesData, {
+        const notesData = foundry.utils.mergeObject(rollData.notesData ?? {}, {
             actor: speaker.alias,
             isSuccess: roll.isSuccess,
             roll: roll.rollObj.total,
