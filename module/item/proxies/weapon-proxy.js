@@ -2,44 +2,100 @@ import {HM100Check} from '../../utility';
 import {GearProxy} from './gear-proxy';
 
 export class WeaponProxy extends GearProxy {
+    /**
+     * @type {string}
+     */
     get cls() {
         return super.cls + '-weapon';
     }
+    /**
+     * @type {number}
+     */
     get AML() {
         return HM100Check(this.Skill(this.assocSkill)?.EML ?? 0 + this.attack);
     }
+    /**
+     * @type {string}
+     */
     get assocSkill() {
-        return this._item.system.assocSkill;
+        return this.item.system.assocSkill;
     }
+    /**
+     * @type {number}
+     */
     get attack() {
-        return this._item.system.attack ?? 0;
+        return this.item.system.attack ?? 0;
     }
+    /**
+     * @type {number}
+     */
     get attackModifier() {
-        return this._item.system.attackModifier ?? 0;
+        return this.item.system.attackModifier ?? 0;
     }
+    /**
+     * @type {number}
+     */
     get blunt() {
-        return this._item.system.blunt;
+        return this.item.system.blunt;
     }
+    /**
+     * @type {number}
+     */
     get defense() {
-        return this._item.system.defense ?? 0;
+        return this.item.system.defense ?? 0;
     }
+    /**
+     * @type {number}
+     */
     get DML() {
         return HM100Check(this.Skill(this.assocSkill)?.EML ?? 0 + this.defense);
     }
+    /**
+     * @type {number}
+     */
     get edged() {
-        return this._item.system.edged;
+        return this.item.system.edged;
     }
+    /**
+     * @type {number}
+     */
     get piercing() {
-        return this._item.system.piercing;
+        return this.item.system.piercing;
     }
+    /**
+     * @type {number}
+     */
     get WQ() {
-        return this._item.system.weaponQuality;
+        return this.item.system.weaponQuality;
     }
+    /**
+     * @type {number}
+     */
     get wqModifier() {
-        return this._item.system.wqModifier ?? 0;
+        return this.item.system.wqModifier ?? 0;
     }
+    /**
+     * @type {number}
+     */
     get wqTotal() {
         return this.WQ + this.wqModifier;
+    }
+
+    //
+    // Derived
+    //
+
+    /**
+     * @type {boolean}
+     */
+    get isUnarmed() {
+        return this.assocSkill.toLowerCase().includes('unarmed');
+    }
+    /**
+     * @type {boolean}
+     */
+    get isShield() {
+        return this.isEquipped && /shield|\bbuckler\b/i.test(this.name);
     }
 
     activateListeners(html) {

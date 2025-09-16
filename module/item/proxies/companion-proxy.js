@@ -1,35 +1,58 @@
+import {ActorHM3} from '../../actor/actor';
 import {ItemProxy} from './item-proxy';
 
 export class CompanionProxy extends ItemProxy {
-    constructor(item) {
-        super(item);
-        this._companion = fromUuidSync(this._item.system.actorUuid);
-    }
-
+    /**
+     * @type {string}
+     */
     get cls() {
         return super.cls + '-companion';
     }
+    /**
+     * @type {string}
+     */
     get actorUuid() {
-        return this._item.system.actorUuid;
+        return this.item.system.actorUuid;
     }
+    /**
+     * @type {ActorHM3}
+     */
     get companion() {
-        return this._companion;
+        return fromUuidSync(this.item.system.actorUuid);
     }
+    /**
+     * @type {string}
+     */
     get gender() {
         return this.companion?.system.gender ?? 'Male';
     }
+    /**
+     * @type {string}
+     */
     get img() {
         return this.companion?.img;
     }
+    /**
+     * @type {string}
+     */
     get linkToActor() {
         return this.companion?.link;
     }
+    /**
+     * @type {string}
+     */
     get name() {
         return this.companion?.name ?? 'Unknown';
     }
+    /**
+     * @type {string}
+     */
     get occupation() {
         return this.companion?.system.occupation ?? 'Unknown';
     }
+    /**
+     * @type {string}
+     */
     get species() {
         return this.companion?.system.species ?? 'Unknown';
     }

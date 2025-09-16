@@ -1,60 +1,113 @@
+import {ActorHM3} from '../../actor/actor';
+import {ActorProxy} from '../../actor/proxies/actor-proxy';
 import {ItemType} from '../../hm3-types';
+import {ItemHM3} from '../item';
 
 export class ItemProxy {
+    #item = null;
+
     constructor(item) {
-        this._item = item;
+        this.#item = item;
     }
 
+    /**
+     * @type {string}
+     */
     get cls() {
         return 'itemv2';
     }
+    /**
+     * @type {ActorHM3}
+     */
     get actor() {
-        return this._item.actor;
+        return this.item.actor;
     }
+    /**
+     * @type {ActorProxy}
+     */
     get actorProxy() {
-        return this._item.actor.proxy;
+        return this.item.actor.proxy;
     }
+    /**
+     * @type {string}
+     */
     get id() {
-        return this._item.id;
+        return this.item.id;
     }
+    /**
+     * @type {string}
+     */
     get img() {
-        return this._item.img;
+        return this.item.img;
     }
+    /**
+     * @type {ItemHM3}
+     */
     get item() {
-        return this._item;
+        return this.#item;
     }
+    /**
+     * @type {string}
+     */
     get name() {
-        return this._item.name;
+        return this.item.name;
     }
+    /**
+     * @type {ItemType}
+     */
     get type() {
-        return this._item.type;
+        return this.item.type;
     }
     get sort() {
-        return this._item.sort || 0;
+        return this.item.sort || 0;
     }
+    /**
+     * @type {string}
+     */
     get uuid() {
-        return this._item.uuid;
+        return this.item.uuid;
     }
+    /**
+     * @type {boolean}
+     */
     get visible() {
         return true;
     }
 
+    /**
+     * @type {string}
+     */
     get description() {
-        return this._item.system.description;
+        return this.item.system.description;
     }
+    /**
+     * @type {boolean}
+     */
     get hasDescription() {
         return this.description && this.description.length > 0;
     }
+    /**
+     * @type {string}
+     */
     get notes() {
-        return this._item.system.notes;
+        return this.item.system.notes;
     }
+    /**
+     * @type {string}
+     */
     get source() {
-        return this._item.system.source;
+        return this.item.system.source;
     }
+    /**
+     * @type {string}
+     */
     get subtype() {
-        return this._item.system.type ?? this.type;
+        return this.item.system.type ?? this.type;
     }
 
+    /**
+     * @type {boolean}
+     */
     get canBeArtifact() {
         return [
             ItemType.ARMORGEAR,
@@ -65,6 +118,9 @@ export class ItemProxy {
         ].includes(this.type);
     }
 
+    /**
+     * @type {boolean}
+     */
     get canBeEsotericCombat() {
         return [ItemType.INVOCATION, ItemType.PSIONIC, ItemType.SKILL, ItemType.SPELL].includes(this.type);
     }

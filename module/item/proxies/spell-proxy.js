@@ -3,17 +3,29 @@ import {HM100Check} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
 export class SpellProxy extends ItemProxy {
+    /**
+     * @type {string}
+     */
     get cls() {
         return super.cls + '-spell';
     }
+    /**
+     * @type {string}
+     */
     get convocation() {
-        return this._item.system.convocation;
+        return this.item.system.convocation;
     }
+    /**
+     * @type {number}
+     */
     get EML() {
         return HM100Check(this.Skill(this.convocation)?.EML ?? 0 - 5 * this.level);
     }
+    /**
+     * @type {number}
+     */
     get level() {
-        return this._item.system.level;
+        return this.item.system.level;
     }
 
     activateListeners(html) {

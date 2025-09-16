@@ -2,21 +2,34 @@ import {DiceHM3} from '../../hm3-dice';
 import {ItemType} from '../../hm3-types';
 import {callOnHooks} from '../../macros';
 import {HM100Check, truncate} from '../../utility';
+import {ActorHM3} from '../actor';
 
 export class ActorProxy {
     constructor(actor) {
         this._actor = actor;
     }
 
+    /**
+     * @type {ActorHM3}
+     */
     get actor() {
         return this._actor;
     }
+    /**
+     * @type {string}
+     */
     get id() {
         return this._actor.id;
     }
+    /**
+     * @type {string}
+     */
     get img() {
         return this._actor.img;
     }
+    /**
+     * @type {string}
+     */
     get link() {
         return this._actor.link;
     }
@@ -35,18 +48,30 @@ export class ActorProxy {
                     : 0
             );
     }
+    /**
+     * @type {string}
+     */
     get name() {
         return this._actor.name;
     }
     get proxies() {
         return this._actor.proxies;
     }
+    /**
+     * @type {string}
+     */
     get type() {
         return this._actor.type;
     }
+    /**
+     * @type {string}
+     */
     get subtype() {
         return this._actor.subtype;
     }
+    /**
+     * @type {string}
+     */
     get uuid() {
         return this._actor.uuid;
     }
@@ -55,9 +80,15 @@ export class ActorProxy {
     // System Stats
     //
 
+    /**
+     * @type {string}
+     */
     get bioImage() {
         return this._actor.system.bioImage;
     }
+    /**
+     * @type {string}
+     */
     get description() {
         return this._actor.system.description;
     }

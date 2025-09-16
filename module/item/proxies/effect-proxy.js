@@ -1,9 +1,15 @@
 import {GearProxy} from './gear-proxy';
 
 export class EffectProxy extends GearProxy {
+    /**
+     * @type {string}
+     */
     get cls() {
         return super.cls + '-effect';
     }
+    /**
+     * @type {boolean}
+     */
     get visible() {
         return game.user.isGM;
     }

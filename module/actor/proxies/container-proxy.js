@@ -2,6 +2,9 @@ import {ItemType} from '../../hm3-types';
 import {ActorProxy} from './actor-proxy';
 
 export class ContainerProxy extends ActorProxy {
+    /**
+     * @type {{max: number,pct: number, value: number}}
+     */
     get capacity() {
         const max = this._actor.system.capacity.max;
         const value = this.totalGearWeight;

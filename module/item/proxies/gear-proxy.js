@@ -3,43 +3,81 @@ import {truncate} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
 export class GearProxy extends ItemProxy {
+    /**
+     * @type {string}
+     */
     get cls() {
         return super.cls + '-gear';
     }
+    /**
+     * @type {string}
+     */
     get container() {
-        return this._item.system.container;
+        return this.item.system.container;
     }
+    /**
+     * @type {boolean}
+     */
     get hasValue() {
         return true;
     }
+    /**
+     * @type {boolean}
+     */
     get isArtifact() {
-        return this._item.isArtifact;
+        return this.item.isArtifact;
     }
+    /**
+     * @type {boolean}
+     */
     get isCarried() {
-        return this._item.system.isCarried;
+        return this.item.system.isCarried;
     }
+    /**
+     * @type {boolean}
+     */
     get isEquipped() {
-        return this._item.system.isEquipped;
+        return this.item.system.isEquipped;
     }
+    /**
+     * @type {boolean}
+     */
     get isMajorArtifact() {
-        return this._item.isMajorArtifact;
+        return this.item.isMajorArtifact;
     }
+    /**
+     * @type {boolean}
+     */
     get isMinorArtifact() {
-        return this._item.isMinorArtifact;
+        return this.item.isMinorArtifact;
     }
+    /**
+     * @type {number}
+     */
     get quantity() {
-        return this._item.system.quantity;
+        return this.item.system.quantity;
     }
+    /**
+     * @type {number}
+     */
     get value() {
-        return this._item.system.value;
+        return this.item.system.value;
     }
+    /**
+     * @type {number}
+     */
     get weight() {
-        return this._item.system.weight;
+        return this.item.system.weight;
     }
+    /**
+     * @type {number}
+     */
     get weightT() {
         return truncate(this.weight, 3);
     }
-
+    /**
+     * @type {string}
+     */
     get label() {
         const gearTypes = {
             'armorgear': 'Armour',
@@ -49,15 +87,19 @@ export class GearProxy extends ItemProxy {
             'missilegear': 'Missile Wpn',
             'weapongear': 'Melee Wpn'
         };
-        const t = this._item.system.type || gearTypes[this.type];
+        const t = this.item.system.type || gearTypes[this.type];
         return t === 'Misc' ? 'Misc. Gear' : t;
     }
-
+    /**
+     * @type {string}
+     */
     get ariaLabelEquip() {
         if (this.type === ItemType.ARMORGEAR) return this.isEquipped ? `Doff ${this.name}` : `Don ${this.name}`;
         return this.isEquipped ? `Unequip ${this.name}` : `Equip ${this.name}`;
     }
-
+    /**
+     * @type {string}
+     */
     get ariaLabelCarry() {
         return this.isCarried ? `Drop ${this.name}` : `Carry ${this.name}`;
     }

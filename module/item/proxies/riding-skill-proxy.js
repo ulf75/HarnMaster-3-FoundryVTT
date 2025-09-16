@@ -2,11 +2,17 @@ import {skillRoll} from '../../macros';
 import {SkillProxy} from './skill-proxy';
 
 export class RidingSkillProxy extends SkillProxy {
+    /**
+     * @type {string}
+     */
     get cls() {
         return super.cls + '-riding';
     }
+    /**
+     * @type {string}
+     */
     get actorUuid() {
-        return this._item.system.actorUuid;
+        return this.item.system.actorUuid;
     }
 
     activateListeners(html) {

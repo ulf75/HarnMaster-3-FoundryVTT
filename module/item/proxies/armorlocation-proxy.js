@@ -7,35 +7,41 @@ export class ArmorlocationProxy extends ItemProxy {
     static TotalWeightMid = 0;
     static TotalWeightLow = 0;
 
+    /**
+     * @type {string}
+     */
     get cls() {
         return super.cls + '-armor-location';
     }
+    /**
+     * @type {string}
+     */
     get layers() {
-        return this._item.system.layers;
+        return this.item.system.layers;
     }
     get blunt() {
-        return this._item.system.blunt;
+        return this.item.system.blunt;
     }
     get edged() {
-        return this._item.system.edged;
+        return this.item.system.edged;
     }
     get piercing() {
-        return this._item.system.piercing;
+        return this.item.system.piercing;
     }
     get fire() {
-        return this._item.system.fire;
+        return this.item.system.fire;
     }
 
     get probWeightHigh() {
-        return this._item.system.probWeight.high;
+        return this.item.system.probWeight.high;
     }
 
     get probWeightMid() {
-        return this._item.system.probWeight.mid;
+        return this.item.system.probWeight.mid;
     }
 
     get probWeightLow() {
-        return this._item.system.probWeight.low;
+        return this.item.system.probWeight.low;
     }
 
     get probHigh() {

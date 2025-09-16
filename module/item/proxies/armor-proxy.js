@@ -1,6 +1,9 @@
 import {GearProxy} from './gear-proxy';
 
 export class ArmorProxy extends GearProxy {
+    /**
+     * @type {string}
+     */
     get cls() {
         return +super.cls + '-armor';
     }

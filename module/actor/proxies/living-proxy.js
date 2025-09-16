@@ -4,39 +4,66 @@ import {ActorHM3} from '../actor';
 import {ActorProxy} from './actor-proxy';
 
 export class LivingProxy extends ActorProxy {
+    /**
+     * @type {string}
+     */
     get biography() {
         return this._actor.system.biography;
     }
+    /**
+     * @type {string}
+     */
     get damageDie() {
-        return 6;
+        return '6';
     }
+    /**
+     * @type {number}
+     */
     get dodge() {
         return (
             this._actor.system.v2.dodge ??
             this.applySpecificActiveEffect('system.v2.dodge', this.Skill('Dodge')?.EML ?? 0)
         );
     }
+    /**
+     * @type {number}
+     */
     get fatigue() {
         return this._actor.system.fatigue ?? 0;
     }
+    /**
+     * @type {string}
+     */
     get gender() {
         return this._actor.system.gender ?? 'Male';
     }
+    /**
+     * @type {number}
+     */
     get initiative() {
         return (
             this._actor.system.v2.initiative ??
             this.applySpecificActiveEffect('system.v2.initiative', this.Skill('Initiative')?.EML ?? 0)
         );
     }
+    /**
+     * @type {number}
+     */
     get load() {
         return truncate(this.totalGearWeight, 0);
     }
+    /**
+     * @type {number}
+     */
     get loadRating() {
         return this._actor.system.loadRating ?? 0;
     }
     get mounted() {
         return this._actor.system.mounted ?? false;
     }
+    /**
+     * @type {number}
+     */
     get move() {
         return this._calcAbility('system.move', true);
     }
@@ -48,9 +75,15 @@ export class LivingProxy extends ActorProxy {
             max: 100
         };
     }
+    /**
+     * @type {number}
+     */
     get size() {
-        return this._actor.system.size || 6;
+        return Number(this._actor.system.size) || 6;
     }
+    /**
+     * @type {string}
+     */
     get species() {
         return this._actor.system.species;
     }
@@ -97,48 +130,93 @@ export class LivingProxy extends ActorProxy {
     get morality() {
         return this._calcAbility('system.abilities.morality', null);
     }
+    /**
+     * @type {number}
+     */
     get STR() {
         return this.strength.effective;
     }
+    /**
+     * @type {number}
+     */
     get STA() {
         return this.stamina.effective;
     }
+    /**
+     * @type {number}
+     */
     get DEX() {
         return this.dexterity.effective;
     }
+    /**
+     * @type {number}
+     */
     get AGL() {
         return this.agility.effective;
     }
+    /**
+     * @type {number}
+     */
     get INT() {
         return this.intelligence.effective;
     }
+    /**
+     * @type {number}
+     */
     get AUR() {
         return this.aura.effective;
     }
+    /**
+     * @type {number}
+     */
     get WIL() {
         return this.will.effective;
     }
+    /**
+     * @type {number}
+     */
     get EYE() {
         return this.eyesight.effective;
     }
+    /**
+     * @type {number}
+     */
     get HRG() {
         return this.hearing.effective;
     }
+    /**
+     * @type {number}
+     */
     get SML() {
         return this.smell.effective;
     }
+    /**
+     * @type {number}
+     */
     get VOI() {
         return this.voice.effective;
     }
+    /**
+     * @type {number}
+     */
     get CML() {
         return this.comeliness.effective;
     }
+    /**
+     * @type {number}
+     */
     get MOR() {
         return this.morality.effective;
     }
+    /**
+     * @type {number}
+     */
     get END() {
         return this.endurance;
     }
+    /**
+     * @type {number}
+     */
     get MOV() {
         return this.move.effective;
     }
@@ -147,7 +225,10 @@ export class LivingProxy extends ActorProxy {
     // Derived Stats
     //
 
-    // Maximum weight carried
+    /**
+     * Maximum weight carried
+     * @type {{max: number, value: number}}
+     */
     get capacity() {
         return {max: this.loadRating + this.endurance * 10, value: this.totalGearWeight};
     }
