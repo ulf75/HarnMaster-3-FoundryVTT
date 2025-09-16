@@ -722,18 +722,18 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // });
 
         // d6 Ability Score Roll
-        html.find('.ability-d6-roll').click((ev) => {
-            const ability = ev.currentTarget.dataset.ability;
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            macros.testAbilityD6Roll(ability, fastforward, this.actor);
-        });
+        // html.find('.ability-d6-roll').click((ev) => {
+        //     const ability = ev.currentTarget.dataset.ability;
+        //     const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+        //     macros.testAbilityD6Roll(ability, fastforward, this.actor);
+        // });
 
         // d100 Ability Score Roll
-        html.find('.ability-d100-roll').click((ev) => {
-            const ability = ev.currentTarget.dataset.ability;
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            macros.testAbilityD100Roll(ability, fastforward, this.actor);
-        });
+        // html.find('.ability-d100-roll').click((ev) => {
+        //     const ability = ev.currentTarget.dataset.ability;
+        //     const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+        //     macros.testAbilityD100Roll(ability, fastforward, this.actor);
+        // });
 
         // Weapon Damage Roll
         html.find('.weapon-damage-roll').click((ev) => {

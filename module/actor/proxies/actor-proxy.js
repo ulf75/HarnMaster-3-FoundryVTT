@@ -1,5 +1,7 @@
+import {DiceHM3} from '../../hm3-dice';
 import {ItemType} from '../../hm3-types';
-import {truncate} from '../../utility';
+import {callOnHooks} from '../../macros';
+import {HM100Check, truncate} from '../../utility';
 
 export class ActorProxy {
     constructor(actor) {
@@ -123,6 +125,64 @@ export class ActorProxy {
             }
         });
         visited = {};
+
+        html.off('click', '.ability-d6-roll');
+        html.on('click', '.ability-d6-roll', async (ev) => {
+            const ability = ev.currentTarget.dataset.ability;
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            const target = this[ability].effective;
+
+            const stdRollData = {
+                fastforward,
+                label: `3d6 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
+                numdice: 3,
+                skill: `${ability[0].toUpperCase()}${ability.slice(1)}`,
+                speaker: ChatMessage.getSpeaker({actor: this.actor}),
+                target,
+                type: `${ability}-d6`
+            };
+
+            if (this.actor.isToken) stdRollData.token = this.actor.token.id;
+            else stdRollData.actor = this.actor.id;
+
+            const hooksOk = Hooks.call('hm3.preAbilityRollD6', stdRollData, this.actor);
+            if (hooksOk) {
+                const result = await DiceHM3.d6Roll(stdRollData);
+                if (result) callOnHooks('hm3.onAbilityRollD6', result, result, stdRollData);
+                return result;
+            }
+            return null;
+        });
+
+        html.off('click', '.ability-d100-roll');
+        html.on('click', '.ability-d100-roll', async (ev) => {
+            const ability = ev.currentTarget.dataset.ability;
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            const effSkillBase = this[ability].effective;
+
+            const stdRollData = {
+                effSkillBase,
+                fastforward,
+                isAbility: true,
+                label: `1d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
+                multiplier: 5,
+                skill: `${ability[0].toUpperCase()}${ability.slice(1)}`,
+                speaker: ChatMessage.getSpeaker({actor: this.actor}),
+                target: HM100Check(effSkillBase * 5),
+                type: `${ability}-d100`
+            };
+
+            if (this.actor.isToken) stdRollData.token = this.actor.token.id;
+            else stdRollData.actor = this.actor.id;
+
+            const hooksOk = Hooks.call('hm3.preAbilityRollD100', stdRollData, this.actor);
+            if (hooksOk) {
+                const result = await DiceHM3.d100StdRoll(stdRollData);
+                if (result) callOnHooks('hm3.onAbilityRollD100', this.actor, result, stdRollData);
+                return result;
+            }
+            return null;
+        });
     }
 
     /**
