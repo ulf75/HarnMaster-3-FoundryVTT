@@ -6,25 +6,25 @@ export class WeaponProxy extends GearProxy {
         return super.cls + '-weapon';
     }
     get AML() {
-        return HM100Check(this.Skill(this.assocSkill).EML + this.attack);
+        return HM100Check(this.Skill(this.assocSkill)?.EML ?? 0 + this.attack);
     }
     get assocSkill() {
         return this._item.system.assocSkill;
     }
     get attack() {
-        return this._item.system.attack;
+        return this._item.system.attack ?? 0;
     }
     get attackModifier() {
-        return this._item.system.attackModifier;
+        return this._item.system.attackModifier ?? 0;
     }
     get blunt() {
         return this._item.system.blunt;
     }
     get defense() {
-        return this._item.system.defense;
+        return this._item.system.defense ?? 0;
     }
     get DML() {
-        return HM100Check(this.Skill(this.assocSkill).EML + this.defense);
+        return HM100Check(this.Skill(this.assocSkill)?.EML ?? 0 + this.defense);
     }
     get edged() {
         return this._item.system.edged;
@@ -36,7 +36,7 @@ export class WeaponProxy extends GearProxy {
         return this._item.system.weaponQuality;
     }
     get wqModifier() {
-        return this._item.system.wqModifier || 0;
+        return this._item.system.wqModifier ?? 0;
     }
     get wqTotal() {
         return this.WQ + this.wqModifier;

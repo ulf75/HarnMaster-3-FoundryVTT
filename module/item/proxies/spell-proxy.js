@@ -10,7 +10,7 @@ export class SpellProxy extends ItemProxy {
         return this._item.system.convocation;
     }
     get EML() {
-        return HM100Check(this.Skill(this.convocation).EML - 5 * this.level);
+        return HM100Check(this.Skill(this.convocation)?.EML ?? 0 - 5 * this.level);
     }
     get level() {
         return this._item.system.level;

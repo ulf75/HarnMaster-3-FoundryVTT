@@ -13,7 +13,7 @@ export class InvocationProxy extends ItemProxy {
         return this._item.system.diety;
     }
     get EML() {
-        return HM100Check(this.Skill(this.diety).EML - 5 * this.circle);
+        return HM100Check(this.Skill(this.diety)?.EML ?? 0 - 5 * this.circle);
     }
 
     activateListeners(html) {

@@ -6,7 +6,7 @@ export class MissileProxy extends GearProxy {
         return super.cls + '-missile';
     }
     get AML() {
-        return HM100Check(this.Skill(this.assocSkill).EML);
+        return HM100Check(this.Skill(this.assocSkill)?.EML ?? 0);
     }
     get assocSkill() {
         return this._item.system.assocSkill;

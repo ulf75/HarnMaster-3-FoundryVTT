@@ -5,7 +5,7 @@ export class ContainerProxy extends GearProxy {
         return super.cls + '-container';
     }
     get capacity() {
-        return this._item.system.capacity;
+        return this._item.system.capacity ?? 1;
     }
     get collapsed() {
         return (this._item.system.collapsed ?? false) || this.locked;
