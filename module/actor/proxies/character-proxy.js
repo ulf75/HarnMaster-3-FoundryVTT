@@ -5,28 +5,28 @@ export class CharacterProxy extends LivingProxy {
      * @type {string}
      */
     get culture() {
-        return this._actor.system.culture;
+        return this.actor.system.culture;
     }
     /**
      * @type {string}
      */
     get frame() {
-        return this._actor.system.frame;
+        return this.actor.system.frame;
     }
     get heigth() {
-        return this._actor.system.heigth;
+        return this.actor.system.heigth;
     }
     /**
      * @type {string}
      */
     get occupation() {
-        return this._actor.system.occupation;
+        return this.actor.system.occupation;
     }
     /**
      * @type {string}
      */
     get socialClass() {
-        return this._actor.system.socialClass;
+        return this.actor.system.socialClass;
     }
     /**
      * @type {string}
@@ -38,9 +38,9 @@ export class CharacterProxy extends LivingProxy {
      * @type {string}
      */
     get sunsign() {
-        return this._actor.system.sunsign;
+        return this.actor.system.sunsign;
     }
     get weight() {
-        return this._actor.system.weight;
+        return this.actor.system.weight;
     }
 }

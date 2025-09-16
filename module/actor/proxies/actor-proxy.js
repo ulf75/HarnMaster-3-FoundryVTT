@@ -5,36 +5,38 @@ import {HM100Check, truncate} from '../../utility';
 import {ActorHM3} from '../actor';
 
 export class ActorProxy {
+    #actor = null;
+
     constructor(actor) {
-        this._actor = actor;
+        this.#actor = actor;
     }
 
     /**
      * @type {ActorHM3}
      */
     get actor() {
-        return this._actor;
+        return this.#actor;
     }
     /**
      * @type {string}
      */
     get id() {
-        return this._actor.id;
+        return this.actor.id;
     }
     /**
      * @type {string}
      */
     get img() {
-        return this._actor.img;
+        return this.actor.img;
     }
     /**
      * @type {string}
      */
     get link() {
-        return this._actor.link;
+        return this.actor.link;
     }
     get macrolist() {
-        return this._actor.macrolist
+        return this.actor.macrolist
             .map((m) => {
                 m.trigger = game.macros.get(m.id)?.getFlag('hm3', 'trigger');
                 m.ownerId = game.macros.get(m.id)?.getFlag('hm3', 'ownerId'); // currently not needed
@@ -52,28 +54,28 @@ export class ActorProxy {
      * @type {string}
      */
     get name() {
-        return this._actor.name;
+        return this.actor.name;
     }
     get proxies() {
-        return this._actor.proxies;
+        return this.actor.proxies;
     }
     /**
      * @type {string}
      */
     get type() {
-        return this._actor.type;
+        return this.actor.type;
     }
     /**
      * @type {string}
      */
     get subtype() {
-        return this._actor.subtype;
+        return this.actor.subtype;
     }
     /**
      * @type {string}
      */
     get uuid() {
-        return this._actor.uuid;
+        return this.actor.uuid;
     }
 
     //
@@ -84,13 +86,13 @@ export class ActorProxy {
      * @type {string}
      */
     get bioImage() {
-        return this._actor.system.bioImage;
+        return this.actor.system.bioImage;
     }
     /**
      * @type {string}
      */
     get description() {
-        return this._actor.system.description;
+        return this.actor.system.description;
     }
     get hasDescription() {
         return this.description && this.description.length > 0;

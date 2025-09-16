@@ -8,7 +8,7 @@ export class LivingProxy extends ActorProxy {
      * @type {string}
      */
     get biography() {
-        return this._actor.system.biography;
+        return this.actor.system.biography;
     }
     /**
      * @type {string}
@@ -21,7 +21,7 @@ export class LivingProxy extends ActorProxy {
      */
     get dodge() {
         return (
-            this._actor.system.v2.dodge ??
+            this.actor.system.v2.dodge ??
             this.applySpecificActiveEffect('system.v2.dodge', this.Skill('Dodge')?.EML ?? 0)
         );
     }
@@ -29,20 +29,20 @@ export class LivingProxy extends ActorProxy {
      * @type {number}
      */
     get fatigue() {
-        return this._actor.system.fatigue ?? 0;
+        return this.actor.system.fatigue ?? 0;
     }
     /**
      * @type {string}
      */
     get gender() {
-        return this._actor.system.gender ?? 'Male';
+        return this.actor.system.gender ?? 'Male';
     }
     /**
      * @type {number}
      */
     get initiative() {
         return (
-            this._actor.system.v2.initiative ??
+            this.actor.system.v2.initiative ??
             this.applySpecificActiveEffect('system.v2.initiative', this.Skill('Initiative')?.EML ?? 0)
         );
     }
@@ -56,10 +56,10 @@ export class LivingProxy extends ActorProxy {
      * @type {number}
      */
     get loadRating() {
-        return this._actor.system.loadRating ?? 0;
+        return this.actor.system.loadRating ?? 0;
     }
     get mounted() {
-        return this._actor.system.mounted ?? false;
+        return this.actor.system.mounted ?? false;
     }
     /**
      * @type {number}
@@ -79,13 +79,13 @@ export class LivingProxy extends ActorProxy {
      * @type {number}
      */
     get size() {
-        return Number(this._actor.system.size) || 6;
+        return Number(this.actor.system.size) || 6;
     }
     /**
      * @type {string}
      */
     get species() {
-        return this._actor.system.species;
+        return this.actor.system.species;
     }
 
     //
@@ -236,7 +236,7 @@ export class LivingProxy extends ActorProxy {
     get endurance() {
         const ML = this.Skill('Condition')?.ML;
         return (
-            this._actor.system.v2.endurance ??
+            this.actor.system.v2.endurance ??
             this.applySpecificActiveEffect(
                 'system.v2.endurance',
                 Math.round(ML ? ML / 5 : (this.strength.base + this.stamina.base + this.will.base) / 3)
@@ -250,7 +250,7 @@ export class LivingProxy extends ActorProxy {
     // Encumbrance Penalty
     get EP() {
         return (
-            this._actor.system.v2.encumbrancePenalty ??
+            this.actor.system.v2.encumbrancePenalty ??
             this.applySpecificActiveEffect(
                 'system.v2.encumbrancePenalty',
                 this.mounted ? Math.round(this.encumbrance / 2) : this.encumbrance
@@ -260,40 +260,36 @@ export class LivingProxy extends ActorProxy {
     // Fatigue Penalty
     get FP() {
         return (
-            this._actor.system.v2.fatiguePenalty ??
-            (this.isInanimate
-                ? 0
-                : this.applySpecificActiveEffect(
-                      'system.v2.fatiguePenalty',
-                      this.mounted ? Math.round(this.fatigue / 2) : this.fatigue
-                  ))
+            this.actor.system.v2.fatiguePenalty ??
+            this.applySpecificActiveEffect(
+                'system.v2.fatiguePenalty',
+                this.mounted ? Math.round(this.fatigue / 2) : this.fatigue
+            )
         );
     }
     // Injury Penalty
     get IP() {
         return (
-            this._actor.system.v2.injuryPenalty ??
-            (this.isInanimate
-                ? 0
-                : this.applySpecificActiveEffect(
-                      'system.v2.injuryPenalty',
-                      this.proxies
-                          .filter((item) => item.type === ItemType.INJURY)
-                          .reduce((partialSum, item) => partialSum + item.IL, 0)
-                  ))
+            this.actor.system.v2.injuryPenalty ??
+            this.applySpecificActiveEffect(
+                'system.v2.injuryPenalty',
+                this.proxies
+                    .filter((item) => item.type === ItemType.INJURY)
+                    .reduce((partialSum, item) => partialSum + item.IL, 0)
+            )
         );
     }
     // Universal Penalty
     get UP() {
         return (
-            this._actor.system.v2.universalPenalty ??
+            this.actor.system.v2.universalPenalty ??
             this.applySpecificActiveEffect('system.v2.universalPenalty', this.IP + this.FP)
         );
     }
     // Physical Penalty
     get PP() {
         return (
-            this._actor.system.v2.physicalPenalty ??
+            this.actor.system.v2.physicalPenalty ??
             this.applySpecificActiveEffect('system.v2.physicalPenalty', this.UP + this.EP)
         );
     }
@@ -340,7 +336,7 @@ export class LivingProxy extends ActorProxy {
 
     _calcAbility(ability, isPhysical) {
         const ctx = this;
-        const prop = foundry.utils.getProperty(this._actor, ability)?.base || 0;
+        const prop = foundry.utils.getProperty(this.actor, ability)?.base || 0;
         let v2Ability = ability.replace('abilities', 'v2');
         if (v2Ability === 'system.move') v2Ability = 'system.v2.move';
         const value = foundry.utils.getProperty(v2Ability);

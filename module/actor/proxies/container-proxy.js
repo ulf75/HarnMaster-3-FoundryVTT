@@ -6,7 +6,7 @@ export class ContainerProxy extends ActorProxy {
      * @type {{max: number,pct: number, value: number}}
      */
     get capacity() {
-        const max = this._actor.system.capacity.max;
+        const max = this.actor.system.capacity.max;
         const value = this.totalGearWeight;
         let pct = Math.round(((max - value) / (max || 1)) * 100);
         pct = Math.max(Math.min(pct, 100), 0); // ensure value is between 0 and 100 inclusive)
