@@ -502,6 +502,7 @@ export class DiceHM3 {
             items: rollData.items,
             label: rollData.label,
             modifier: rollData.modifier || 0,
+            name: game.actors.get(rollData.actor)?.name ?? 'Unknown',
             numdice: Number(rollData.numdice),
             target: Number(rollData.target),
             type: rollData.type
@@ -513,6 +514,7 @@ export class DiceHM3 {
                   diceNum: Number(rollData.numdice),
                   diceSides: 6,
                   modifier: rollData.modifier || 0,
+                  name: dialogOptions.name,
                   target: rollData.target,
                   type: rollData.type
               })
@@ -603,12 +605,13 @@ export class DiceHM3 {
             callback: (html) => {
                 const formModifier = html[0].querySelector('form').modifier.value;
                 return DiceHM3.rollTest({
-                    type: dialogOptions.type,
-                    target: dialogOptions.target,
                     data: null,
-                    diceSides: 6,
                     diceNum: dialogOptions.numdice,
-                    modifier: formModifier
+                    diceSides: 6,
+                    modifier: formModifier,
+                    name: dialogOptions.name,
+                    target: dialogOptions.target,
+                    type: dialogOptions.type
                 });
             }
         });
