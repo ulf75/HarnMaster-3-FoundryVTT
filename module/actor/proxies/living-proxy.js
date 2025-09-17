@@ -64,6 +64,9 @@ export class LivingProxy extends ActorProxy {
     get loadRating() {
         return this.actor.system.loadRating ?? 0;
     }
+    /**
+     * @type {boolean}
+     */
     get mounted() {
         return this.actor.system.mounted ?? false;
     }
@@ -73,6 +76,9 @@ export class LivingProxy extends ActorProxy {
     get move() {
         return this._calcAbility('system.move', true);
     }
+    /**
+     * @type {{value: number, max: number}}
+     */
     get shockIndex() {
         return {
             value: this.isInanimate
@@ -292,11 +298,17 @@ export class LivingProxy extends ActorProxy {
             )
         );
     }
-    // Encumbrance
+    /**
+     * Encumbrance
+     * @type {number}
+     */
     get encumbrance() {
         return Math.floor(Math.max(this.totalGearWeight - this.loadRating, 0) / this.END);
     }
-    // Encumbrance Penalty
+    /**
+     * Encumbrance Penalty
+     * @type {number}
+     */
     get EP() {
         return (
             this.actor.system.v2.encumbrancePenalty ??
@@ -306,7 +318,10 @@ export class LivingProxy extends ActorProxy {
             )
         );
     }
-    // Fatigue Penalty
+    /**
+     * Fatigue Penalty
+     * @type {number}
+     */
     get FP() {
         return (
             this.actor.system.v2.fatiguePenalty ??

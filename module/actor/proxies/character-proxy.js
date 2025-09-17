@@ -18,6 +18,9 @@ export class CharacterProxy extends LivingProxy {
     get frame() {
         return this.actor.system.frame;
     }
+    /**
+     * @type {number}
+     */
     get heigth() {
         return this.actor.system.heigth;
     }
@@ -45,6 +48,9 @@ export class CharacterProxy extends LivingProxy {
     get sunsign() {
         return this.actor.system.sunsign;
     }
+    /**
+     * @type {number}
+     */
     get weight() {
         return this.actor.system.weight;
     }

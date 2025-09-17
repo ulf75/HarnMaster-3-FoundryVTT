@@ -52,6 +52,9 @@ function createCachingHandler(api, name) {
 export class ActorHM3 extends Actor {
     static _proxyMap = new Map();
 
+    /**
+     * @type {ActorProxy}
+     */
     get proxy() {
         if (!ActorHM3._proxyMap.has(this.uuid)) {
             let aproxy = null;

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "checkJs": false,
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "noImplicitAny": false,
     "strict": true,

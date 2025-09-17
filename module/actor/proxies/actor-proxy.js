@@ -110,14 +110,20 @@ export class ActorProxy {
     get description() {
         return this.actor.system.description;
     }
+    /**
+     * @type {boolean}
+     */
     get hasDescription() {
-        return this.description && this.description.length > 0;
+        return !!this.description && this.description.length > 0;
     }
 
     //
     // Derived Stats
     //
 
+    /**
+     * @type {number}
+     */
     get totalArmorWeight() {
         return truncate(
             this.proxies
@@ -125,7 +131,9 @@ export class ActorProxy {
                 .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
         );
     }
-
+    /**
+     * @type {number}
+     */
     get totalMiscGearWeight() {
         return truncate(
             this.proxies
@@ -136,7 +144,9 @@ export class ActorProxy {
                 .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
         );
     }
-
+    /**
+     * @type {number}
+     */
     get totalMissileWeight() {
         return truncate(
             this.proxies
@@ -144,7 +154,9 @@ export class ActorProxy {
                 .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
         );
     }
-
+    /**
+     * @type {number}
+     */
     get totalWeaponWeight() {
         return truncate(
             this.proxies
@@ -152,11 +164,29 @@ export class ActorProxy {
                 .reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0)
         );
     }
-
+    /**
+     * @type {number}
+     */
     get totalGearWeight() {
         return truncate(
             this.totalArmorWeight + this.totalMiscGearWeight + this.totalMissileWeight + this.totalWeaponWeight
         );
+    }
+    /**
+     *  Universal Penalty
+     * @type {number}
+     * @abstract
+     */
+    get UP() {
+        return 0;
+    }
+    /**
+     * Physical Penalty
+     * @type {number}
+     * @abstract
+     */
+    get PP() {
+        return 0;
     }
 
     Skill(name) {

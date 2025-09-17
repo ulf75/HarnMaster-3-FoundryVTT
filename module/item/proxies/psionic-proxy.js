@@ -15,6 +15,9 @@ export class PsionicProxy extends SkillProxy {
     get fatigue() {
         return this.item.system.fatigue;
     }
+    /**
+     * @type {boolean}
+     */
     get visible() {
         // @ts-expect-error
         return !game.settings.get('hm3', 'dormantPsionicTalents') || this.ML > 20 || this.EML > 20 || game.user.isGM;
