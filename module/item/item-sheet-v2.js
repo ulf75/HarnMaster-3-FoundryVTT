@@ -54,6 +54,44 @@ export class ItemSheetHM3v2 extends ItemSheet {
         if (this.item.system.arcane?.isArtifact && (this.item.system.arcane.isOwnerAware || game.user.isGM))
             options.classes.push('artifact');
 
+        let context = foundry.utils.mergeObject(super.getData(options), {item: null});
+        context = foundry.utils.mergeObject(context, {
+            config: CONFIG.HM3,
+            editable: this.isEditable && this._mode === this.constructor.MODES.EDIT,
+            effects: this.item.effects.map((effect) => {
+                return {
+                    'changes': aeChanges(effect),
+                    'disabled': effect.disabled,
+                    'duration': aeDuration(effect),
+                    'id': effect.id,
+                    'img': effect.img,
+                    'name': effect.name,
+                    'sourceName': effect.sourceName
+                };
+            }),
+            hasActor: !!this.actor,
+            hasCombatSkills: false,
+            hasRitualSkills: false,
+            hasRwPermission: game.user.isGM || !game.settings.get('hm3', 'strictGmMode'),
+            iproxy: this.item.proxy,
+            isGM: game.user.isGM,
+            isGridDistanceUnits: game.settings.get('hm3', 'distanceUnits') === 'grid',
+            itemType: this.item.type,
+            macroTypes: [
+                {key: 'chat', label: 'Chat'},
+                {key: 'script', label: 'Script'}
+            ],
+            strictMode: game.settings.get('hm3', 'strictGmMode')
+        });
+        context = foundry.utils.mergeObject(context, {
+            containers: context.containers,
+            cssClass: context.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked',
+            hasMagicSkills: context.iproxy.convocations?.length > 0 || false,
+            isEsotericCombat:
+                context.config.esotericCombatItems.attack.includes(this.item.name) ||
+                context.config.esotericCombatItems.defense.includes(this.item.name)
+        });
+
         const data = super.getData(options);
         data.editable = this.isEditable && this._mode === this.constructor.MODES.EDIT;
         data.cssClass = data.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked';
@@ -61,6 +99,10 @@ export class ItemSheetHM3v2 extends ItemSheet {
         data.hasDescription = 'description' in this.object.system;
         if (data.hasDescription) {
             data.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {
+                secrets: game.user.isGM,
+                relativeTo: this.object.system
+            });
+            context.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {
                 secrets: game.user.isGM,
                 relativeTo: this.object.system
             });
@@ -296,6 +338,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
         }
 
         return data;
+        return context;
     }
 
     /* -------------------------------------------- */

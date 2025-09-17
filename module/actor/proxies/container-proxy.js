@@ -1,3 +1,4 @@
+// @ts-check
 import {ItemType} from '../../hm3-types';
 import {ActorProxy} from './actor-proxy';
 

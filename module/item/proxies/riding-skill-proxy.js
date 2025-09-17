@@ -1,3 +1,4 @@
+// @ts-check
 import {skillRoll} from '../../macros';
 import {SkillProxy} from './skill-proxy';
 

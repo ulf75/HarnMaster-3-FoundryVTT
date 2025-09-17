@@ -1,3 +1,4 @@
+// @ts-check
 import {ItemProxy} from './item-proxy';
 
 export class TraitProxy extends ItemProxy {
@@ -16,7 +17,7 @@ export class TraitProxy extends ItemProxy {
         else return this.name;
     }
     /**
-     * @type {string}
+     * @type {string | null}
      */
     get severity() {
         return this.subtype === 'Psyche' ? this.item.system.severity ?? '5' : null;

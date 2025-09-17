@@ -1,3 +1,4 @@
+// @ts-check
 import {DiceHM3} from '../../hm3-dice';
 import {ItemType} from '../../hm3-types';
 import {callOnHooks} from '../../macros';
@@ -5,14 +6,15 @@ import {HM100Check, parseAEValue, truncate} from '../../utility';
 import {ActorHM3} from '../actor';
 
 export class ActorProxy {
-    #actor = null;
+    /** @type ActorHM3 */
+    #actor;
 
     constructor(actor) {
         this.#actor = actor;
     }
 
     /**
-     * @type {ActorHM3}
+     * @type {Actor}
      */
     get actor() {
         return this.#actor;

@@ -1,3 +1,4 @@
+// @ts-check
 import {GearProxy} from './gear-proxy';
 
 export class EffectProxy extends GearProxy {
@@ -11,6 +12,7 @@ export class EffectProxy extends GearProxy {
      * @type {boolean}
      */
     get visible() {
+        // @ts-expect-error
         return game.user.isGM;
     }
 

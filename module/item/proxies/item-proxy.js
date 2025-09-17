@@ -1,10 +1,12 @@
+// @ts-check
 import {ActorHM3} from '../../actor/actor';
 import {ActorProxy} from '../../actor/proxies/actor-proxy';
 import {ItemType} from '../../hm3-types';
 import {ItemHM3} from '../item';
 
 export class ItemProxy {
-    #item = null;
+    /** @type {ItemHM3} */
+    #item;
 
     constructor(item) {
         this.#item = item;
@@ -41,7 +43,7 @@ export class ItemProxy {
         return this.item.img;
     }
     /**
-     * @type {ItemHM3}
+     * @type {Item}
      */
     get item() {
         return this.#item;
@@ -84,7 +86,7 @@ export class ItemProxy {
      * @type {boolean}
      */
     get hasDescription() {
-        return this.description && this.description.length > 0;
+        return !!this.description && this.description.length > 0;
     }
     /**
      * @type {string}

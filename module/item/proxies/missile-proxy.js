@@ -1,3 +1,4 @@
+// @ts-check
 import {HM100Check} from '../../utility';
 import {GearProxy} from './gear-proxy';
 

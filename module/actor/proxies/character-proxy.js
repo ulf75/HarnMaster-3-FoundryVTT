@@ -1,3 +1,4 @@
+// @ts-check
 import {LivingProxy} from './living-proxy';
 
 export class CharacterProxy extends LivingProxy {

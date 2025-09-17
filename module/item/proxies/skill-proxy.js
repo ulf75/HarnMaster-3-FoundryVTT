@@ -1,3 +1,4 @@
+// @ts-check
 import {ActorType, SkillType} from '../../hm3-types';
 import {skillRoll} from '../../macros';
 import {HM100Check, truncatedOML} from '../../utility';

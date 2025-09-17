@@ -1,3 +1,4 @@
+// @ts-check
 import {usePsionicRoll} from '../../macros';
 import {SkillProxy} from './skill-proxy';
 

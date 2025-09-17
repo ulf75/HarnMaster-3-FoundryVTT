@@ -1,3 +1,4 @@
+// @ts-check
 import {Condition, ItemType} from '../../hm3-types';
 import {HM6Check, truncate} from '../../utility';
 import {ActorHM3} from '../actor';

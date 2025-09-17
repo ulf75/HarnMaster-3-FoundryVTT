@@ -1,3 +1,4 @@
+// @ts-check
 import {invokeRitualRoll} from '../../macros';
 import {HM100Check} from '../../utility';
 import {ItemProxy} from './item-proxy';

@@ -1,3 +1,4 @@
+// @ts-check
 import {ItemType} from '../../hm3-types';
 import {truncate} from '../../utility';
 import {ItemProxy} from './item-proxy';
@@ -102,6 +103,23 @@ export class GearProxy extends ItemProxy {
      */
     get ariaLabelCarry() {
         return this.isCarried ? `Drop ${this.name}` : `Carry ${this.name}`;
+    }
+    /**
+     * @type {{label: string, key: string}[]}
+     */
+    get containers() {
+        const containers = [{label: 'On Person', key: 'on-person'}];
+        // Containers are not allowed in other containers.  So if this item is a container,
+        // don't show any other containers.
+
+        if (this.actor && this.type !== ItemType.CONTAINERGEAR) {
+            this.actor.proxies.forEach((item) => {
+                if (item.type === ItemType.CONTAINERGEAR) {
+                    containers.push({label: item.name, key: item.id});
+                }
+            });
+        }
+        return containers;
     }
 
     activateListeners(html) {

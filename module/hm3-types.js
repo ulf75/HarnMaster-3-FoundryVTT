@@ -1,7 +1,9 @@
 /**
  * Combat Action types enum.
+ * @readonly
+ * @enum {string}
  */
-export const Action = Object.freeze({
+export const Action = {
     CHARGE: 'Charge',
     DISENGAGE: 'Disengage',
     ENGAGE: 'Engage',
@@ -15,18 +17,24 @@ export const Action = Object.freeze({
     PASS: 'Pass',
     REST: 'Rest',
     RISE: 'Rise'
-});
+};
 
 /**
  * Actor types enum.
+ * @readonly
+ * @enum {string}
  */
-export const ActorType = Object.freeze({
+export const ActorType = {
     CHARACTER: 'character',
     CREATURE: 'creature',
     CONTAINER: 'container'
-});
+};
 
-export const ArcanePower = Object.freeze({
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ArcanePower = {
     ANVIL_PYTAMA: 'anvil-pytama',
     FOCUS: 'focus',
     FOUNT_POWER: 'fount-power',
@@ -43,20 +51,26 @@ export const ArcanePower = Object.freeze({
     THERIS_CHARM_GREATER: 'theris-charm-greater',
     VESSEL_ILADAN: 'vessel-iladan',
     WARD_AKANA: 'ward-akana'
-});
+};
 
 /**
  * Aspect types enum.
+ * @readonly
+ * @enum {string}
  */
-export const Aspect = Object.freeze({
+export const Aspect = {
     BLUNT: 'Blunt',
     EDGED: 'Edged',
     FIRE: 'Fire',
     FROST: 'Frost',
     PIERCING: 'Piercing'
-});
+};
 
-export const CompanionType = Object.freeze({
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const CompanionType = {
     ANIMAL: 'Animal',
     CONNECTION: 'Connection',
     FOE: 'Foe',
@@ -64,12 +78,14 @@ export const CompanionType = Object.freeze({
     FRIEND: 'Friend',
     PARTY: 'Party',
     STEED: 'Steed'
-});
+};
 
 /**
  * Condition types enum. A Condition is just a special type of Active Effect.
+ * @readonly
+ * @enum {string}
  */
-export const Condition = Object.freeze({
+export const Condition = {
     /**@constant {string} - This is a special state of battle frenzy. Any character who enters this mode must take the most
      * aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike.
      * Further Initiative rolls are ignored until the battle ends. (COMBAT 16) */
@@ -145,7 +161,7 @@ export const Condition = Object.freeze({
 
     /**@constant {string} - TODO */
     WEAKENED: 'Weakened'
-});
+};
 
 /**
  * Hook types enum.
@@ -230,7 +246,11 @@ export const Hook = Object.freeze({
     PRE_WEAPON_DEFEND_ROLL: 'hm3.preWeaponDefendRoll'
 });
 
-export const InjuryType = Object.freeze({
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const InjuryType = {
     BLOODLOSS: 'bloodloss',
     DISEASE: 'disease',
     HEALING: 'healing',
@@ -238,12 +258,14 @@ export const InjuryType = Object.freeze({
     POISON: 'poison',
     SHOCK: 'shock',
     TOXIN: 'toxin'
-});
+};
 
 /**
  * Item types enum.
+ * @readonly
+ * @enum {string}
  */
-export const ItemType = Object.freeze({
+export const ItemType = {
     ARMORGEAR: 'armorgear',
     ARMORLOCATION: 'armorlocation',
     COMPANION: 'companion',
@@ -258,12 +280,14 @@ export const ItemType = Object.freeze({
     SPELL: 'spell',
     TRAIT: 'trait',
     WEAPONGEAR: 'weapongear'
-});
+};
 
 /**
  * Location types enum.
+ * @readonly
+ * @enum {string}
  */
-export const Location = Object.freeze({
+export const Location = {
     ABDOMEN: 'Abdomen',
     CALF: 'Calf',
     CUSTOM: 'Custom',
@@ -284,9 +308,13 @@ export const Location = Object.freeze({
     THORAX: 'Thorax',
     UPPER_ARM: 'Upper Arm',
     WING: 'Wing'
-});
+};
 
-export const MiscItemType = Object.freeze({
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const MiscItemType = {
     COIN: 'Coin',
     GEM: 'Gem',
     HERB: 'Herb',
@@ -295,10 +323,12 @@ export const MiscItemType = Object.freeze({
     POTION: 'Potion',
     RIDER: 'Rider',
     WRITTEN: 'Written'
-});
+};
 
 /**
  * Range types enum.
+ * @readonly
+ * @enum {string}
  */
 export const Range = Object.freeze({
     EXTREME: 'Extreme',
@@ -309,6 +339,8 @@ export const Range = Object.freeze({
 
 /**
  * Skill types enum.
+ * @readonly
+ * @enum {string}
  */
 export const SkillType = Object.freeze({
     COMBAT: 'Combat',

@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "checkJs": false,
+    "noEmit": true,
+    "noImplicitAny": false,
+    "strict": true,
+    "target": "esnext",
+    "types": ["fvtt-types"]
+  }
+}
