@@ -5,6 +5,10 @@ import {callOnHooks} from '../../macros';
 import {HM100Check, parseAEValue, truncate} from '../../utility';
 import {ActorHM3} from '../actor';
 
+/**
+ * @class
+ * @abstract
+ */
 export class ActorProxy {
     /** @type ActorHM3 */
     #actor;
@@ -32,6 +36,7 @@ export class ActorProxy {
         return this.actor.img;
     }
     get itemTypes() {
+        // @ts-expect-error
         const types = Object.fromEntries(game.documentTypes.Item.map((t) => [t, []]));
         for (const item of this.proxies) {
             types[item.type].push(item);
@@ -47,7 +52,9 @@ export class ActorProxy {
     get macrolist() {
         return this.actor.macrolist
             .map((m) => {
+                // @ts-expect-error
                 m.trigger = game.macros.get(m.id)?.getFlag('hm3', 'trigger');
+                // @ts-expect-error
                 m.ownerId = game.macros.get(m.id)?.getFlag('hm3', 'ownerId'); // currently not needed
                 return m;
             })
@@ -239,6 +246,7 @@ export class ActorProxy {
      */
     _applySpecificActiveEffect(property, value) {
         const overrides = {};
+        // @ts-expect-error
         foundry.utils.setProperty(this.actor, property, value);
 
         // Organize non-disabled effects by their application priority
@@ -247,6 +255,7 @@ export class ActorProxy {
             const chgList = effect.changes.filter((chg) => chg.key === property);
             return chgs.concat(
                 chgList.map((chg) => {
+                    // @ts-expect-error
                     chg = foundry.utils.duplicate(chg);
                     chg.effect = effect;
                     chg.priority = chg.priority ?? chg.mode * 10;
@@ -310,7 +319,7 @@ export class ActorProxy {
                     const magnitude = Number.parseInt(val[1], 10);
                     if (isNaN(magnitude)) return false;
                     const skillName = val[0];
-                    for (let item of this.items.contents) {
+                    for (let item of this.proxies) {
                         if (item.name === skillName && item.type === ItemType.WEAPONGEAR) return true;
                     }
                 }
@@ -321,6 +330,7 @@ export class ActorProxy {
             const allChanges = amlChanges.concat(dmlChanges);
             return chgs.concat(
                 allChanges.map((chg) => {
+                    // @ts-expect-error
                     chg = foundry.utils.duplicate(chg);
                     const val = parseAEValue(chg.value);
                     const itemName = val[0];
@@ -360,10 +370,13 @@ export class ActorProxy {
     }
 
     _roundChange(item, change) {
+        // @ts-expect-error
         const current = foundry.utils.getProperty(item, change.key) ?? null;
+        // @ts-expect-error
         const ct = foundry.utils.getType(current);
         if (ct === 'number' && !Number.isInteger(current)) {
             const update = Math.round(current + Number.EPSILON);
+            // @ts-expect-error
             foundry.utils.setProperty(item, change.key, update);
             return update;
         } else {

@@ -1,6 +1,10 @@
 // @ts-check
 import {LivingProxy} from './living-proxy';
 
+/**
+ * @class
+ * @extends LivingProxy
+ */
 export class CharacterProxy extends LivingProxy {
     /**
      * @type {string}

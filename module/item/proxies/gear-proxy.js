@@ -3,6 +3,11 @@ import {ItemType} from '../../hm3-types';
 import {truncate} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
+/**
+ * @class
+ * @abstract
+ * @extends ItemProxy
+ */
 export class GearProxy extends ItemProxy {
     /**
      * @type {string}

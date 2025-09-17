@@ -330,23 +330,23 @@ export const MiscItemType = {
  * @readonly
  * @enum {string}
  */
-export const Range = Object.freeze({
+export const Range = {
     EXTREME: 'Extreme',
     LONG: 'Long',
     MEDIUM: 'Medium',
     SHORT: 'Short'
-});
+};
 
 /**
  * Skill types enum.
  * @readonly
  * @enum {string}
  */
-export const SkillType = Object.freeze({
+export const SkillType = {
     COMBAT: 'Combat',
     COMMUNICATION: 'Communication',
     CRAFT: 'Craft',
     MAGIC: 'Magic',
     PHYSICAL: 'Physical',
     RITUAL: 'Ritual'
-});
+};

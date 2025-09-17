@@ -4,6 +4,11 @@ import {HM6Check, truncate} from '../../utility';
 import {ActorHM3} from '../actor';
 import {ActorProxy} from './actor-proxy';
 
+/**
+ * @class
+ * @abstract
+ * @extends ActorProxy
+ */
 export class LivingProxy extends ActorProxy {
     /**
      * @type {string}
@@ -12,10 +17,10 @@ export class LivingProxy extends ActorProxy {
         return this.actor.system.biography;
     }
     /**
-     * @type {string}
+     * @type {number}
      */
     get damageDie() {
-        return '6';
+        return 6;
     }
     /**
      * @type {number}
@@ -63,7 +68,7 @@ export class LivingProxy extends ActorProxy {
         return this.actor.system.mounted ?? false;
     }
     /**
-     * @type {number}
+     * @type {{base: number, effective:number}}
      */
     get move() {
         return this._calcAbility('system.move', true);
@@ -92,42 +97,82 @@ export class LivingProxy extends ActorProxy {
     //
     // Abilities
     //
+
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get strength() {
         return this._calcAbility('system.abilities.strength', true);
     }
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get stamina() {
         return this._calcAbility('system.abilities.stamina', true);
     }
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get dexterity() {
         return this._calcAbility('system.abilities.dexterity', true);
     }
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get agility() {
         return this._calcAbility('system.abilities.agility', true);
     }
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get intelligence() {
         return this._calcAbility('system.abilities.intelligence', false);
     }
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get aura() {
         return this._calcAbility('system.abilities.aura', false);
     }
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get will() {
         return this._calcAbility('system.abilities.will', false);
     }
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get eyesight() {
         return this._calcAbility('system.abilities.eyesight', false);
     }
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get hearing() {
         return this._calcAbility('system.abilities.hearing', false);
     }
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get smell() {
         return this._calcAbility('system.abilities.smell', false);
     }
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get voice() {
         return this._calcAbility('system.abilities.voice', false);
     }
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get comeliness() {
         return this._calcAbility('system.abilities.comeliness', null);
     }
+    /**
+     * @type {{base: number, effective:number}}
+     */
     get morality() {
         return this._calcAbility('system.abilities.morality', null);
     }
@@ -233,7 +278,10 @@ export class LivingProxy extends ActorProxy {
     get capacity() {
         return {max: this.loadRating + this.endurance * 10, value: this.totalGearWeight};
     }
-    // Endurance
+    /**
+     *  Endurance
+     * @type {number}
+     */
     get endurance() {
         const ML = this.Skill('Condition')?.ML;
         return (
@@ -268,7 +316,10 @@ export class LivingProxy extends ActorProxy {
             )
         );
     }
-    // Injury Penalty
+    /**
+     * Injury Penalty
+     * @type {number}
+     */
     get IP() {
         return (
             this.actor.system.v2.injuryPenalty ??
@@ -280,14 +331,20 @@ export class LivingProxy extends ActorProxy {
             )
         );
     }
-    // Universal Penalty
+    /**
+     *  Universal Penalty
+     * @type {number}
+     */
     get UP() {
         return (
             this.actor.system.v2.universalPenalty ??
             this._applySpecificActiveEffect('system.v2.universalPenalty', this.IP + this.FP)
         );
     }
-    // Physical Penalty
+    /**
+     * Physical Penalty
+     * @type {number}
+     */
     get PP() {
         return (
             this.actor.system.v2.physicalPenalty ??
@@ -295,6 +352,9 @@ export class LivingProxy extends ActorProxy {
         );
     }
 
+    /**
+     * @type {boolean}
+     */
     get hasSteed() {
         return !!this.Skill('Riding')?.actorUuid;
     }
@@ -331,15 +391,26 @@ export class LivingProxy extends ActorProxy {
     //
     // Conditions
     //
+
+    /**
+     * @type {boolean}
+     */
     get isInanimate() {
         return this.actor.hasCondition(Condition.INANIMATE);
     }
 
+    /**
+     * @param {string} ability
+     * @param {boolean | null} isPhysical
+     * @returns {{base: number, effective:number}}
+     */
     _calcAbility(ability, isPhysical) {
         const ctx = this;
+        // @ts-expect-error
         const prop = foundry.utils.getProperty(this.actor, ability)?.base || 0;
         let v2Ability = ability.replace('abilities', 'v2');
         if (v2Ability === 'system.move') v2Ability = 'system.v2.move';
+        // @ts-expect-error
         const value = foundry.utils.getProperty(v2Ability);
         return {
             get base() {

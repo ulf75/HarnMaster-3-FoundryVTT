@@ -1,5 +1,4 @@
 // @ts-check
-import {ActorHM3} from '../../actor/actor';
 import {ItemProxy} from './item-proxy';
 
 export class CompanionProxy extends ItemProxy {
@@ -16,7 +15,7 @@ export class CompanionProxy extends ItemProxy {
         return this.item.system.actorUuid;
     }
     /**
-     * @type {ActorHM3}
+     * @type {Actor}
      */
     get companion() {
         return fromUuidSync(this.item.system.actorUuid);

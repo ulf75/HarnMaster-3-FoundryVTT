@@ -2,9 +2,13 @@
 import {ItemType} from '../../hm3-types';
 import {ActorProxy} from './actor-proxy';
 
+/**
+ * @class
+ * @extends ActorProxy
+ */
 export class ContainerProxy extends ActorProxy {
     /**
-     * @type {{max: number,pct: number, value: number}}
+     * @type {{max: number, pct: number, value: number}}
      */
     get capacity() {
         const max = this.actor.system.capacity.max;
@@ -15,6 +19,9 @@ export class ContainerProxy extends ActorProxy {
         return {max, pct, value};
     }
 
+    /**
+     * @type {*}
+     */
     get containers() {
         // Setup the fake container entry for "Content" container
         const containers = {

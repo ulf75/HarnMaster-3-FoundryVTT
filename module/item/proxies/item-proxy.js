@@ -1,12 +1,22 @@
 // @ts-check
-import {ActorProxy} from '../../actor/proxies/actor-proxy';
-import {ItemType} from '../../hm3-types';
+import {CharacterProxy} from '../../actor/proxies/character-proxy';
+import {ContainerProxy} from '../../actor/proxies/container-proxy';
+import {CreatureProxy} from '../../actor/proxies/creature-proxy';
+import {ItemType, SkillType} from '../../hm3-types';
 import {ItemHM3} from '../item';
 
+/**
+ * @class
+ * @abstract
+ */
 export class ItemProxy {
     /** @type {ItemHM3} */
     #item;
 
+    /**
+     *
+     * @param {ItemHM3} item
+     */
     constructor(item) {
         this.#item = item;
     }
@@ -24,7 +34,7 @@ export class ItemProxy {
         return this.item.actor;
     }
     /**
-     * @type {ActorProxy}
+     * @type {CharacterProxy | CreatureProxy | ContainerProxy}
      */
     get actorProxy() {
         return this.item.actor.proxy;
@@ -100,7 +110,7 @@ export class ItemProxy {
         return this.item.system.source;
     }
     /**
-     * @type {string}
+     * @type {SkillType | ItemType}
      */
     get subtype() {
         return this.item.system.type ?? this.type;
