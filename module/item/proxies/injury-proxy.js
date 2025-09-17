@@ -24,7 +24,7 @@ export class InjuryProxy extends ItemProxy {
      * @type {string}
      */
     get label() {
-        return this.HR !== undefined ? (this.HR === 0 ? `Treatment Roll` : `Healing Roll`) : undefined;
+        return this.HR !== undefined ? (this.HR === 0 ? `Treatment Roll` : `Healing Roll`) : '';
     }
     get severity() {
         return this.item.system.severity;

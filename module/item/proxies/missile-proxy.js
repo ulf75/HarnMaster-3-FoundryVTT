@@ -25,10 +25,11 @@ export class MissileProxy extends GearProxy {
      * @type {boolean}
      */
     get isFeet() {
+        // @ts-expect-error
         return game.settings.get('hm3', 'distanceUnits') !== 'grid';
     }
     /**
-     * @type {number}
+     * @type {{range: number, impact: number}}
      */
     get short() {
         return {
@@ -39,7 +40,7 @@ export class MissileProxy extends GearProxy {
         };
     }
     /**
-     * @type {number}
+     * @type {{range: number, impact: number}}
      */
     get medium() {
         return {
@@ -50,7 +51,7 @@ export class MissileProxy extends GearProxy {
         };
     }
     /**
-     * @type {number}
+     * @type {{range: number, impact: number}}
      */
     get long() {
         return {
@@ -59,7 +60,7 @@ export class MissileProxy extends GearProxy {
         };
     }
     /**
-     * @type {number}
+     * @type {{range: number, impact: number}}
      */
     get extreme() {
         return {

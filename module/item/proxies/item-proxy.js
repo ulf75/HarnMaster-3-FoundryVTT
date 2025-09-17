@@ -1,5 +1,4 @@
 // @ts-check
-import {ActorHM3} from '../../actor/actor';
 import {ActorProxy} from '../../actor/proxies/actor-proxy';
 import {ItemType} from '../../hm3-types';
 import {ItemHM3} from '../item';
@@ -19,7 +18,7 @@ export class ItemProxy {
         return 'itemv2';
     }
     /**
-     * @type {ActorHM3}
+     * @type {Actor}
      */
     get actor() {
         return this.item.actor;

@@ -12,9 +12,10 @@ export class TraitProxy extends ItemProxy {
      * @type {string}
      */
     get label() {
-        if (this.subtype === 'Psyche')
+        if (this.subtype === 'Psyche') {
+            // @ts-expect-error
             return `${game.hm3.config.psycheSeverity.find((v) => v.key === this.severity).label} ${this.name}`;
-        else return this.name;
+        } else return this.name;
     }
     /**
      * @type {string | null}
