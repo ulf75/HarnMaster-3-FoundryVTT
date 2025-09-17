@@ -586,9 +586,11 @@ export class ActorHM3 extends Actor {
         if (!actorData.eph) actorData.eph = {};
         const eph = actorData.eph;
         actorData.v2 = {};
-        for (const key of Object.keys(game.hm3.config.activeEffectKeyV2)) {
-            foundry.utils.setProperty(this, key, null);
-        }
+        actorItems.forEach((i) => (i.system.v2 = {}));
+        // for (const key of Object.keys(game.hm3.config.activeEffectKeyV2)) {
+        //     foundry.utils.setProperty(this, key, null);
+        // }
+        this.proxy.applyWeaponActiveEffects();
 
         actorData.totalWeight = 0;
 

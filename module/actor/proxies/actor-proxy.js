@@ -1,7 +1,7 @@
 import {DiceHM3} from '../../hm3-dice';
 import {ItemType} from '../../hm3-types';
 import {callOnHooks} from '../../macros';
-import {HM100Check, truncate} from '../../utility';
+import {HM100Check, parseAEValue, truncate} from '../../utility';
 import {ActorHM3} from '../actor';
 
 export class ActorProxy {
@@ -28,6 +28,13 @@ export class ActorProxy {
      */
     get img() {
         return this.actor.img;
+    }
+    get itemTypes() {
+        const types = Object.fromEntries(game.documentTypes.Item.map((t) => [t, []]));
+        for (const item of this.proxies) {
+            types[item.type].push(item);
+        }
+        return types;
     }
     /**
      * @type {string}
@@ -228,20 +235,20 @@ export class ActorProxy {
      * @param {String} property The Actor data model property to apply
      * @param {number} value
      */
-    applySpecificActiveEffect(property, value) {
+    _applySpecificActiveEffect(property, value) {
         const overrides = {};
         foundry.utils.setProperty(this.actor, property, value);
 
         // Organize non-disabled effects by their application priority
-        const changes = this.actor.allApplicableEffects(true).reduce((chgs, e) => {
-            if (!e.active) return chgs;
-            const chgList = e.changes.filter((chg) => chg.key === property);
+        const changes = this.actor.allApplicableEffects(true).reduce((chgs, effect) => {
+            if (!effect.active) return chgs;
+            const chgList = effect.changes.filter((chg) => chg.key === property);
             return chgs.concat(
-                chgList.map((c) => {
-                    c = foundry.utils.duplicate(c);
-                    c.effect = e;
-                    c.priority = c.priority ?? c.mode * 10;
-                    return c;
+                chgList.map((chg) => {
+                    chg = foundry.utils.duplicate(chg);
+                    chg.effect = effect;
+                    chg.priority = chg.priority ?? chg.mode * 10;
+                    return chg;
                 })
             );
         }, []);
@@ -250,7 +257,7 @@ export class ActorProxy {
         // Apply all changes
         for (let change of changes) {
             change.effect.apply(this.actor, change);
-            const result = this.roundChange(this.actor, change);
+            const result = this._roundChange(this.actor, change);
             if (result !== null) overrides[change.key] = result;
         }
 
@@ -259,7 +266,98 @@ export class ActorProxy {
         return Math.max(Math.round(overrides[property] ?? value), 0);
     }
 
-    roundChange(item, change) {
+    /**
+     * This method implements Item-based weapon effects.  It applies two types of AE:
+     *   Weapon Attack ML - Modifies the AML of a single weapon
+     *   Weapon Defense ML - Modifies the DML of a single weapon
+     *
+     * Note that unlike normal Active Effects, these effects apply to the Items data model,
+     * not the Actor's data model.
+     *
+     * The "value" field should look like "<item name>:<magnitude>"
+     */
+    applyWeaponActiveEffects() {
+        const overrides = {};
+        // foundry.utils.setProperty(this.actor, 'system.v2.itemAMLMod', value);
+
+        const changes = this.actor.allApplicableEffects(true).reduce((chgs, effect) => {
+            if (!effect.active) return chgs;
+            const amlChanges = effect.changes.filter((chg) => {
+                if (chg.key === 'system.v2.itemAMLMod') {
+                    const val = parseAEValue(chg.value);
+                    if (val.length != 2) return false;
+                    const magnitude = Number.parseInt(val[1], 10);
+                    if (isNaN(magnitude)) return false;
+                    const skillName = val[0];
+                    for (let item of this.proxies) {
+                        if (
+                            item.name === skillName &&
+                            (item.type === ItemType.WEAPONGEAR || item.type === ItemType.MISSILEGEAR)
+                        )
+                            return true;
+                    }
+                }
+
+                return false;
+            });
+
+            const dmlChanges = effect.changes.filter((chg) => {
+                if (chg.key === 'system.v2.itemDMLMod') {
+                    const val = parseAEValue(chg.value);
+                    if (val.length != 2) return false;
+                    const magnitude = Number.parseInt(val[1], 10);
+                    if (isNaN(magnitude)) return false;
+                    const skillName = val[0];
+                    for (let item of this.items.contents) {
+                        if (item.name === skillName && item.type === ItemType.WEAPONGEAR) return true;
+                    }
+                }
+
+                return false;
+            });
+
+            const allChanges = amlChanges.concat(dmlChanges);
+            return chgs.concat(
+                allChanges.map((chg) => {
+                    chg = foundry.utils.duplicate(chg);
+                    const val = parseAEValue(chg.value);
+                    const itemName = val[0];
+                    chg.value = Number.parseInt(val[1], 10);
+                    switch (chg.key) {
+                        case 'system.v2.itemAMLMod':
+                            chg.key = 'system.v2.attackMasteryLevel';
+                            chg.item = this.itemTypes.weapongear.find((item) => item.name === itemName);
+                            if (!chg.item) chg.item = this.itemTypes.missilegear.find((it) => it.name === itemName);
+                            break;
+
+                        case 'system.v2.itemDMLMod':
+                            chg.key = 'system.v2.defenseMasteryLevel';
+                            chg.item = this.itemTypes.weapongear.find((it) => it.name === itemName);
+                            break;
+                    }
+
+                    chg.effect = effect;
+                    chg.priority = chg.priority ?? chg.mode * 10;
+                    return chg;
+                })
+            );
+        }, []);
+        changes.sort((a, b) => a.priority - b.priority);
+
+        // Apply all changes
+        for (let change of changes) {
+            if (!change.item) continue; // THIS IS AN ERROR; Should generate an error
+            change.effect.apply(change.item.item, change);
+            const result = this._roundChange(change.item.item, change);
+            if (result !== null) overrides[change.key] = result;
+        }
+
+        // Expand the set of final overrides
+        // foundry.utils.mergeObject(this.overrides, foundry.utils.expandObject(overrides));
+        // return Math.max(Math.round(overrides[property] ?? value), 0);
+    }
+
+    _roundChange(item, change) {
         const current = foundry.utils.getProperty(item, change.key) ?? null;
         const ct = foundry.utils.getType(current);
         if (ct === 'number' && !Number.isInteger(current)) {
