@@ -12,7 +12,7 @@ export class MissileProxy extends GearProxy {
      * @type {number}
      */
     get AML() {
-        return HM100Check(this.Skill(this.assocSkill)?.EML ?? 0);
+        return HM100Check(this.SML + this.AMLEffect + this.AMLItemEffect);
     }
     /**
      * @type {string}
@@ -68,12 +68,30 @@ export class MissileProxy extends GearProxy {
             impact: this.item.system.impact.extreme
         };
     }
-
     /**
      * @type {boolean}
      */
     get isHighVelocity() {
         return /\bbow\b|shortbow|longbow|crossbow|\bsling\b|\barrow\b|\bbolt\b|\bbullet\b/i.test(this.name);
+    }
+    /**
+     * Skill Mastery Level
+     * @type {number}
+     */
+    get SML() {
+        return this.Skill(this.assocSkill)?.EML ?? 0;
+    }
+    /**
+     * @type {number}
+     */
+    get AMLEffect() {
+        return this.actor.system.v2.missileAMLMod ?? 0;
+    }
+    /**
+     * @type {number}
+     */
+    get AMLItemEffect() {
+        return this.item.system.v2.attackMasteryLevel ?? 0;
     }
 
     activateListeners(html) {

@@ -12,7 +12,7 @@ export class WeaponProxy extends GearProxy {
      * @type {number}
      */
     get AML() {
-        return HM100Check(this.Skill(this.assocSkill)?.EML ?? 0 + this.attack);
+        return HM100Check(this.SML + this.attack + this.attackModifier + this.AMLEffect + this.AMLItemEffect);
     }
     /**
      * @type {string}
@@ -48,7 +48,7 @@ export class WeaponProxy extends GearProxy {
      * @type {number}
      */
     get DML() {
-        return HM100Check(this.Skill(this.assocSkill)?.EML ?? 0 + this.defense);
+        return HM100Check(this.SML + this.defense + this.DMLEffect + this.DMLItemEffect);
     }
     /**
      * @type {number}
@@ -61,6 +61,13 @@ export class WeaponProxy extends GearProxy {
      */
     get piercing() {
         return this.item.system.piercing;
+    }
+    /**
+     * Skill Mastery Level
+     * @type {number}
+     */
+    get SML() {
+        return this.Skill(this.assocSkill)?.EML ?? 0;
     }
     /**
      * @type {number}
@@ -96,6 +103,30 @@ export class WeaponProxy extends GearProxy {
      */
     get isShield() {
         return this.isEquipped && /shield|\bbuckler\b/i.test(this.name);
+    }
+    /**
+     * @type {number}
+     */
+    get AMLEffect() {
+        return this.actor.system.v2.meleeAMLMod ?? 0;
+    }
+    /**
+     * @type {number}
+     */
+    get DMLEffect() {
+        return this.actor.system.v2.meleeDMLMod ?? 0;
+    }
+    /**
+     * @type {number}
+     */
+    get AMLItemEffect() {
+        return this.actor.system.v2.attackMasteryLevel ?? 0;
+    }
+    /**
+     * @type {number}
+     */
+    get DMLItemEffect() {
+        return this.actor.system.v2.defenseMasteryLevel ?? 0;
     }
 
     activateListeners(html) {

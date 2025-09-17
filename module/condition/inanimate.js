@@ -24,8 +24,8 @@ export async function createCondition(token, options = {}) {
             type: 'GameTime'
         },
         changes: [
-            {key: 'v2.fatiguePenalty', mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, priority: null, value: `0`},
-            {key: 'v2.injuryPenalty', mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, priority: null, value: `0`}
+            {key: 'v2.fatiguePenalty', mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, priority: 1000, value: `0`},
+            {key: 'v2.injuryPenalty', mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, priority: 1000, value: `0`}
         ],
         options: {hidden: true, unique: true}
     };
