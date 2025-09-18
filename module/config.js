@@ -1,3 +1,5 @@
+// @ts-check
+
 // Namespace Configuration Values
 export const HM3 = {};
 
@@ -1449,7 +1451,11 @@ HM3.miscGearIcons = [
     ['steel helm', 'systems/hm3/images/icons/svg/helm.svg']
 ];
 
+/**
+ * @type {Map<string, string>}
+ */
 HM3.defaultItemIcons = new Map(
+    // @ts-expect-error
     HM3.physicalSkillIcons
         .concat(HM3.commSkillIcons)
         .concat(HM3.combatSkillIcons)

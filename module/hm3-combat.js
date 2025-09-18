@@ -1,10 +1,12 @@
 import {Mutex} from './mutex';
 
+/**
+ * @extends Combat
+ */
 export class CombatHM3 extends Combat {
     _combatMutex = new Mutex();
 
     /**
-     *
      * @override
      */
     async startCombat() {

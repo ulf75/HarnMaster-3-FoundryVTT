@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * Combat Action types enum.
  * @readonly
@@ -165,8 +167,10 @@ export const Condition = {
 
 /**
  * Hook types enum.
+ * @readonly
+ * @enum {string}
  */
-export const Hook = Object.freeze({
+export const Hook = {
     /**
      * @constant {string} Is triggered when a 1d100 ability roll has been executed.
      * @param actor       The actor who owns the ability.
@@ -244,7 +248,7 @@ export const Hook = Object.freeze({
     PRE_STUMBLE_ROLL: 'hm3.preStumbleRoll',
     PRE_WEAPON_ATTACK_ROLL: 'hm3.preWeaponAttackRoll',
     PRE_WEAPON_DEFEND_ROLL: 'hm3.preWeaponDefendRoll'
-});
+};
 
 /**
  * @readonly

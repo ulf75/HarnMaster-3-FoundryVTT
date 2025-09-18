@@ -1,4 +1,5 @@
-import axios from 'axios';
+// @ts-check
+import axios from '../node_modules/axios/index';
 
 const API_KEY = 'xxxxxxxxxxxxxxxx';
 

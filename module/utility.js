@@ -1,3 +1,4 @@
+import {ActorHM3} from './actor/actor.js';
 import {HM3} from './config.js';
 import {ItemType} from './hm3-types.js';
 
@@ -329,10 +330,11 @@ export function stringReplacer(template, values) {
  * Convert an integer into a roman numeral.  Taken from:
  * http://blog.stevenlevithan.com/archives/javascript-roman-numeral-converter
  *
- * @param {Integer} num
+ * @param {number} num
+ * @returns {string}
  */
 export function romanize(num) {
-    if (isNaN(num)) return NaN;
+    if (isNaN(num)) return 'NaN';
     var digits = String(+num).split(''),
         key = [
             '',
@@ -604,6 +606,7 @@ export function truncate(value, digits = 2) {
  * @returns {ActorHM3} - actor
  */
 export function getActorFromMacro(macro) {
+    // @ts-expect-error
     return game.actors.contents.find((a) => macro.getFlag('hm3', 'ownerId') === a.id);
 }
 
@@ -616,9 +619,10 @@ export function getActorFromMacro(macro) {
  * development.
  * @link https://www.lythia.com/warflail/downloads/HMA_Rulebook_v1.4.pdf
  * @param {number} value
- * @returns truncated number
+ * @returns {number} truncated number
  */
 export function truncatedOML(value) {
+    // @ts-expect-error
     if (!game.settings.get('hm3', 'truncateHighValueSkills')) return value;
     if (value <= 70) return value;
     else if (value <= 72) return 71;
@@ -685,6 +689,7 @@ export function beautify(text) {
  * @param {boolean} [options.success=true] - Whether the skill use was successful.
  */
 export async function improveFlag(skill, {actor = null, success = true} = {}) {
+    // @ts-expect-error
     if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
         const types = [ItemType.SKILL, ItemType.PSIONIC, ItemType.WEAPONGEAR, ItemType.MISSILEGEAR];
 
@@ -698,16 +703,19 @@ export async function improveFlag(skill, {actor = null, success = true} = {}) {
             skill.parent instanceof Actor &&
             skill.parent.skillImprovement
         ) {
+            // @ts-expect-error
             await game.hm3.socket.executeAsGM('improveFlag', skill.uuid, success);
         }
     }
 }
 
 export async function weaponBroke(weapon, diff) {
+    // @ts-expect-error
     await game.hm3.socket.executeAsGM('weaponBroke', weapon.uuid, diff);
 }
 
 export async function fatigueReceived(actor, fatigue) {
+    // @ts-expect-error
     await game.hm3.socket.executeAsGM('fatigueReceived', actor.uuid, fatigue);
 }
 
@@ -730,10 +738,20 @@ export function getRelevantActors() {
     ];
 }
 
+/**
+ *
+ * @param {number} value
+ * @returns {number}
+ */
 export function HM100Check(value) {
     return Math.max(Math.min(Math.round(value), 95), 5);
 }
 
+/**
+ *
+ * @param {number} value
+ * @returns {number}
+ */
 export function HM6Check(value) {
     return Math.max(Math.round(value), 1);
 }
