@@ -5,14 +5,14 @@
         class="resource"
         id="injury-healrate">
         <label class="resource-label">Heal Rate (HR)</label>
-        <input class="value" type="number" name="system.healRate" value="{{ idata.healRate }}" data-dtype="Number"
+        <input class="value" type="number" name="system.healRate" value="{{ iproxy.HR }}" data-dtype="Number"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
     <div
         class="resource"
         id="injury-level">
         <label class="resource-label">Injury Level (IL)</label>
-        <input class="value" type="number" name="system.injuryLevel" value="{{ idata.injuryLevel }}" data-dtype="Number"
+        <input class="value" type="number" name="system.injuryLevel" value="{{ iproxy.IL }}" data-dtype="Number"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
 </div>

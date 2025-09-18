@@ -3,17 +3,17 @@
 <div class="grid grid-fixed-row grid-3col">
     <div class="resource">
         <label class="resource-label">Skill Base (SB)</label>
-        <input class="value" type="text" name="system.skillBase.value" value="{{ idata.skillBase.value }}" data-dtype="Number"
-        {{#if idata.skillBase.formula}}readonly{{/if}} {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
+        <input class="value" type="text" name="system.skillBase.value" value="{{ iproxy.SB.value }}" data-dtype="Number"
+        {{#if iproxy.SB.formula}}readonly{{/if}} {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
     <div class="resource">
         <label class="resource-label">Mastery Level (ML)</label>
-        <input class="value" type="number" name="system.masteryLevel" value="{{ idata.masteryLevel }}" data-dtype="Number"
+        <input class="value" type="number" name="system.masteryLevel" value="{{ iproxy.ML }}" data-dtype="Number"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
     <div class="resource">
         <label class="resource-label">Fatigue</label>
-        <input class="value" type="number" name="system.fatigue" value="{{ idata.fatigue }}" data-dtype="Number"
+        <input class="value" type="number" name="system.fatigue" value="{{ iproxy.fatigue }}" data-dtype="Number"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
 </div>

@@ -72,7 +72,7 @@
                     class="value"
                     id="system.type"
                     name="system.type">
-                    {{selectOptions list selected=iproxy.type valueAttr="key" labelAttr="key"}}
+                    {{selectOptions list selected=iproxy.subtype valueAttr="key" labelAttr="key"}}
                 </select>
                 {{else}}
                 <input
@@ -80,7 +80,7 @@
                     type="text"
                     id="system.type"
                     name="system.type"
-                    value="{{ iproxy.type }}"
+                    value="{{ iproxy.subtype }}"
                     disabled />
                 {{/if}}
             </div>
