@@ -4,6 +4,7 @@ import {ItemProxy} from './item-proxy';
 export class TraitProxy extends ItemProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-trait';
@@ -24,6 +25,10 @@ export class TraitProxy extends ItemProxy {
         return this.subtype === 'Psyche' ? this.item.system.severity ?? '5' : null;
     }
 
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
         super.activateListeners(html);
     }

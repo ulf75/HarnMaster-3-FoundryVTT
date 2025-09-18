@@ -5,6 +5,7 @@ import {SkillProxy} from './skill-proxy';
 export class PsionicProxy extends SkillProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-psionic';
@@ -17,12 +18,17 @@ export class PsionicProxy extends SkillProxy {
     }
     /**
      * @type {boolean}
+     * @override
      */
     get visible() {
         // @ts-expect-error
         return !game.settings.get('hm3', 'dormantPsionicTalents') || this.ML > 20 || this.EML > 20 || game.user.isGM;
     }
 
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
         super.activateListeners(html);
 

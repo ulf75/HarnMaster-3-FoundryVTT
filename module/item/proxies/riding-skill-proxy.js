@@ -5,6 +5,7 @@ import {SkillProxy} from './skill-proxy';
 export class RidingSkillProxy extends SkillProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-riding';
@@ -16,6 +17,10 @@ export class RidingSkillProxy extends SkillProxy {
         return this.item.system.actorUuid;
     }
 
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
         super.activateListeners(html);
 

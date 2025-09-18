@@ -38,6 +38,7 @@ export class CharacterProxy extends LivingProxy {
     }
     /**
      * @type {string}
+     * @override
      */
     get species() {
         return super.species || 'Human';

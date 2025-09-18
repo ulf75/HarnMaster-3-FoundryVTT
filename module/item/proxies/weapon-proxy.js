@@ -5,6 +5,7 @@ import {GearProxy} from './gear-proxy';
 export class WeaponProxy extends GearProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-weapon';
@@ -130,6 +131,10 @@ export class WeaponProxy extends GearProxy {
         return this.actor.system.v2.defenseMasteryLevel ?? 0;
     }
 
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
         super.activateListeners(html);
     }

@@ -11,6 +11,7 @@ import {ItemProxy} from './item-proxy';
 export class GearProxy extends ItemProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-gear';
@@ -127,6 +128,10 @@ export class GearProxy extends ItemProxy {
         return containers;
     }
 
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
         super.activateListeners(html);
 
@@ -138,7 +143,7 @@ export class GearProxy extends ItemProxy {
             for (let gear of gearItems) {
                 const gearName = gear.getAttribute('data-item-name');
                 if (lcGearNameFilter) {
-                    if (gearName.toLowerCase().includes(lcGearNameFilter)) {
+                    if (gearName && gearName.toLowerCase().includes(lcGearNameFilter)) {
                         $(gear).show();
                     } else {
                         $(gear).hide();

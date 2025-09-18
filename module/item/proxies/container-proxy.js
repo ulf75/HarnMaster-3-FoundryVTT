@@ -4,6 +4,7 @@ import {GearProxy} from './gear-proxy';
 export class ContainerProxy extends GearProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-container';
@@ -27,5 +28,11 @@ export class ContainerProxy extends GearProxy {
         return this.item.system.locked ?? false;
     }
 
-    activateListeners(html) {}
+    /**
+     * @param {JQuery} html
+     * @override
+     */
+    activateListeners(html) {
+        super.activateListeners(html);
+    }
 }

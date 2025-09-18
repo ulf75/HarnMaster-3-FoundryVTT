@@ -4,6 +4,7 @@ import {ItemProxy} from './item-proxy';
 export class CompanionProxy extends ItemProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-companion';
@@ -28,6 +29,7 @@ export class CompanionProxy extends ItemProxy {
     }
     /**
      * @type {string}
+     * @override
      */
     get img() {
         return this.companion?.img;
@@ -40,6 +42,7 @@ export class CompanionProxy extends ItemProxy {
     }
     /**
      * @type {string}
+     * @override
      */
     get name() {
         return this.companion?.name ?? 'Unknown';
@@ -57,6 +60,10 @@ export class CompanionProxy extends ItemProxy {
         return this.companion?.system.species ?? 'Unknown';
     }
 
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
         super.activateListeners(html);
 

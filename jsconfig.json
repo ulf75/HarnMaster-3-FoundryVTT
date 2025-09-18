@@ -4,6 +4,7 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "noImplicitAny": false,
+    "noImplicitOverride": true,
     "strict": true,
     "target": "esnext",
     "types": ["fvtt-types"]

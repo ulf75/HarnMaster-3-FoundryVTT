@@ -8,6 +8,7 @@ import {LivingProxy} from './living-proxy';
 export class CreatureProxy extends LivingProxy {
     /**
      * @type {number}
+     * @override
      */
     get damageDie() {
         return this.size;

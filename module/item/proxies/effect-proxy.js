@@ -4,18 +4,24 @@ import {GearProxy} from './gear-proxy';
 export class EffectProxy extends GearProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-effect';
     }
     /**
      * @type {boolean}
+     * @override
      */
     get visible() {
         // @ts-expect-error
         return game.user.isGM;
     }
 
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
         super.activateListeners(html);
 
@@ -27,7 +33,7 @@ export class EffectProxy extends GearProxy {
             for (let effect of effectItems) {
                 const effectName = effect.getAttribute('data-effect-name');
                 if (lcEffectsNameFilter) {
-                    if (effectName.toLowerCase().includes(lcEffectsNameFilter)) {
+                    if (effectName && effectName.toLowerCase().includes(lcEffectsNameFilter)) {
                         $(effect).show();
                     } else {
                         $(effect).hide();

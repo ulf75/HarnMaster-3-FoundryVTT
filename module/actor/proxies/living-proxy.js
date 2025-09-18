@@ -349,6 +349,7 @@ export class LivingProxy extends ActorProxy {
     /**
      *  Universal Penalty
      * @type {number}
+     * @override
      */
     get UP() {
         return (
@@ -359,6 +360,7 @@ export class LivingProxy extends ActorProxy {
     /**
      * Physical Penalty
      * @type {number}
+     * @override
      */
     get PP() {
         return (

@@ -140,5 +140,10 @@ export class ItemProxy {
         );
     }
 
+    /**
+     * After rendering, activate event listeners which provide interactivity for the Application.
+     * This is where user-defined Application subclasses should attach their event-handling logic.
+     * @param {JQuery} html
+     */
     activateListeners(html) {}
 }

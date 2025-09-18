@@ -7,6 +7,7 @@ import {ItemProxy} from './item-proxy';
 export class SkillProxy extends ItemProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-skill';
@@ -33,7 +34,7 @@ export class SkillProxy extends ItemProxy {
      * @type {number}
      */
     get OML() {
-        return truncatedOML(this.SBx * this.SB);
+        return truncatedOML(this.SBx * this.SB.value);
     }
     /**
      * @type {number}
@@ -48,10 +49,10 @@ export class SkillProxy extends ItemProxy {
         return [SkillType.COMBAT, SkillType.PHYSICAL].includes(this.subtype) ? this.actorProxy.PP : this.actorProxy.UP;
     }
     /**
-     * @type {number}
+     * @type {{value: number, isFormulaValid: boolean}}
      */
     get SB() {
-        return this.item.system.skillBase.value;
+        return this.item.system.skillBase;
     }
     /**
      * @type {number}
@@ -80,7 +81,10 @@ export class SkillProxy extends ItemProxy {
         return this.actor.skillImprovement;
     }
 
-    /** @override */
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
         super.activateListeners(html);
 
@@ -92,7 +96,7 @@ export class SkillProxy extends ItemProxy {
             for (let skill of skills) {
                 const skillName = skill.getAttribute('data-item-name');
                 if (lcSkillNameFilter) {
-                    if (skillName.toLowerCase().includes(lcSkillNameFilter)) {
+                    if (skillName && skillName.toLowerCase().includes(lcSkillNameFilter)) {
                         $(skill).show();
                     } else {
                         $(skill).hide();

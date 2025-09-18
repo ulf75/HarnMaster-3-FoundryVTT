@@ -5,6 +5,7 @@ import {GearProxy} from './gear-proxy';
 export class MissileProxy extends GearProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-missile';
@@ -96,6 +97,10 @@ export class MissileProxy extends GearProxy {
         return this.item.system.v2.attackMasteryLevel ?? 0;
     }
 
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
         super.activateListeners(html);
     }

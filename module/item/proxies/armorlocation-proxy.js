@@ -13,6 +13,7 @@ export class ArmorlocationProxy extends ItemProxy {
 
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-armor-location';
@@ -121,6 +122,10 @@ export class ArmorlocationProxy extends ItemProxy {
         ArmorlocationProxy.TotalWeightLow /= 100;
     }
 
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
         super.activateListeners(html);
     }

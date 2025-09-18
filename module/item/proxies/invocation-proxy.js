@@ -6,6 +6,7 @@ import {ItemProxy} from './item-proxy';
 export class InvocationProxy extends ItemProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-invocation';
@@ -26,11 +27,18 @@ export class InvocationProxy extends ItemProxy {
      * @type {number}
      */
     get EML() {
-        return HM100Check(this.Skill(this.diety)?.EML ?? 0 - 5 * this.circle);
+        return HM100Check((this.Skill(this.diety)?.EML ?? 0) - 5 * this.circle);
     }
 
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
-        html.find('.invocation-roll').click((ev) => {
+        super.activateListeners(html);
+
+        html.off('click', '.invocation-roll');
+        html.on('click', '.invocation-roll', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));

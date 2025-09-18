@@ -6,6 +6,7 @@ import {ItemProxy} from './item-proxy';
 export class SpellProxy extends ItemProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-spell';
@@ -38,6 +39,10 @@ export class SpellProxy extends ItemProxy {
         return convocations;
     }
 
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
         super.activateListeners(html);
 

@@ -464,7 +464,10 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         return super._onDropItemCreate(itemData);
     }
 
-    /** @override */
+    /**
+     * @param {JQuery} html
+     * @override
+     * */
     activateListeners(html) {
         super.activateListeners(html);
 

@@ -4,6 +4,7 @@ import {ItemProxy} from './item-proxy';
 export class InjuryProxy extends ItemProxy {
     /**
      * @type {string}
+     * @override
      */
     get cls() {
         return super.cls + '-injury';
@@ -30,6 +31,10 @@ export class InjuryProxy extends ItemProxy {
         return this.item.system.severity;
     }
 
+    /**
+     * @param {JQuery} html
+     * @override
+     */
     activateListeners(html) {
         super.activateListeners(html);
     }
