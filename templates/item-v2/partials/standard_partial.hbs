@@ -1,5 +1,5 @@
 <div class="resource-block">
-    {{#if (or idata.source (and hasRwPermission editable))}}
+    {{#if (or iproxy.source (and hasRwPermission editable))}}
     <div class="grid grid-fixed-row grid-1col">
         <div class="resource">
             <label
@@ -7,12 +7,12 @@
                 class="resource-label">
                 Source
             </label>
-            <input class="value" type="text" id="system.source" name="system.source" value="{{ idata.source }}" data-dtype="String"
+            <input class="value" type="text" id="system.source" name="system.source" value="{{ iproxy.source }}" data-dtype="String"
             {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
         </div>
     </div>
     {{/if}}
-    {{#if (or idata.notes editable)}}
+    {{#if (or iproxy.notes editable)}}
     <div class="grid grid-fixed-row grid-1col">
         <div class="resource">
             <label
@@ -20,7 +20,7 @@
                 class="resource-label">
                 Note
             </label>
-            <input class="value" type="text" id="system.notes" name="system.notes" value="{{ idata.notes }}" data-dtype="String"
+            <input class="value" type="text" id="system.notes" name="system.notes" value="{{ iproxy.notes }}" data-dtype="String"
             {{#unless editable}}disabled{{/unless}} />
         </div>
     </div>

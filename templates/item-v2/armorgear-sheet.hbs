@@ -10,8 +10,8 @@
         class="resource"
         id="armorgear-quality">
         <label class="resource-label">Armor Quality</label>
-        <input class="value" type="number" id="system.armorQuality" name="system.armorQuality" value="{{ idata.armorQuality }}"
-        data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+        <input class="value" type="number" id="system.armorQuality" name="system.armorQuality" value="{{ iproxy.AQ }}" data-dtype="Number"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
     </div>
     <div
         class="resource"
@@ -21,7 +21,7 @@
             class="resource-label">
             Material
         </label>
-        <input class="value" type="text" id="system.material" name="system.material" value="{{ idata.material }}" data-dtype="String"
+        <input class="value" type="text" id="system.material" name="system.material" value="{{ iproxy.material }}" data-dtype="String"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
     </div>
     <div
@@ -32,7 +32,7 @@
             class="resource-label">
             Size
         </label>
-        <input class="value" type="number" id="system.size" name="system.size" value="{{ idata.size }}" data-dtype="Number"
+        <input class="value" type="number" id="system.size" name="system.size" value="{{ iproxy.size }}" data-dtype="Number"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
     </div>
 </div>
@@ -45,9 +45,8 @@
                 class="resource-label">
                 Blunt
             </label>
-            <input class="value" type="number" id="system.protection.blunt" name="system.protection.blunt" value="{{
-                idata.protection.blunt
-            }}" data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+            <input class="value" type="number" id="system.protection.blunt" name="system.protection.blunt" value="{{ iproxy.blunt }}"
+            data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
         </div>
         <div
             class="resource"
@@ -57,9 +56,8 @@
                 class="resource-label">
                 Edged
             </label>
-            <input class="value" type="number" id="system.protection.edged" name="system.protection.edged" value="{{
-                idata.protection.edged
-            }}" data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+            <input class="value" type="number" id="system.protection.edged" name="system.protection.edged" value="{{ iproxy.edged }}"
+            data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
         </div>
         <div
             class="resource"
@@ -70,7 +68,7 @@
                 Piercing
             </label>
             <input class="value" type="number" id="system.protection.piercing" name="system.protection.piercing" value="{{
-                idata.protection.piercing
+                iproxy.piercing
             }}" data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
         </div>
         <div
@@ -81,7 +79,7 @@
                 class="resource-label">
                 Fire
             </label>
-            <input class="value" type="number" id="system.protection.fire" name="system.protection.fire" value="{{ idata.protection.fire }}"
+            <input class="value" type="number" id="system.protection.fire" name="system.protection.fire" value="{{ iproxy.fire }}"
             data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
         </div>
     </div>
@@ -103,7 +101,7 @@
             class="value"
             id="system.targetLocation"
             name="system.targetLocation">
-            {{#select idata.targetLocation}}
+            {{#select iproxy.targetLocation}}
             {{#each config.injuryLocations as |value key|}}
             {{#if (ne key "Custom")}}
             <option value="{{ key }}">{{ key }}</option>
@@ -113,7 +111,7 @@
         </select>
         <a
             class="armorgear-location-add"
-            data-location="{{ idata.targetLocation }}">
+            data-location="{{ iproxy.targetLocation }}">
             <i class="fas fa-plus"></i>
             Add
         </a>
@@ -122,7 +120,7 @@
     <ol
         class="grid grid-fixed-row-xs grid-4col"
         id="armorgear-location-display">
-        {{#each idata.locations}}
+        {{#each iproxy.locations}}
         <li class="armor-location">
             <span class="name">{{ this }}</span>
             {{#if hasRwPermission}}

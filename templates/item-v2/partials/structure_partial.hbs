@@ -5,32 +5,32 @@
         {{#if editable}}
         <img
             class="profile-img"
-            src="{{ item.img }}"
-            alt="{{ item.name }}"
+            src="{{ iproxy.img }}"
+            alt="{{ iproxy.name }}"
             data-edit="img"
-            aria-label="{{ item.name }}"
-            data-tooltip="{{ item.name }}"
+            aria-label="{{ iproxy.name }}"
+            data-tooltip="{{ iproxy.name }}"
             data-tooltip-direction="UP" />
         {{else}}
         <img
             class="profile-img"
-            src="{{ item.img }}"
-            alt="{{ item.name }}"
-            aria-label="{{ item.name }}"
-            data-tooltip="{{ item.name }}"
+            src="{{ iproxy.img }}"
+            alt="{{ iproxy.name }}"
+            aria-label="{{ iproxy.name }}"
+            data-tooltip="{{ iproxy.name }}"
             data-tooltip-direction="UP" />
         {{/if}}
         <div class="header-fields">
             {{#if (or nameReadOnly (not editable))}}
             <h1 class="item-name disabled">
-                {{ item.name }}
+                {{ iproxy.name }}
             </h1>
             {{else}}
             <h1 class="item-name">
                 <input
                     name="name"
                     type="text"
-                    value="{{ item.name }}"
+                    value="{{ iproxy.name }}"
                     placeholder="Name"
                     autocomplete="off" />
             </h1>
@@ -47,7 +47,7 @@
                     class="value"
                     id="system.container"
                     name="system.container">
-                    {{selectOptions containers selected=idata.container valueAttr="key" labelAttr="label"}}
+                    {{selectOptions iproxy.containers selected=iproxy.container valueAttr="key" labelAttr="label"}}
                 </select>
                 {{else}}
                 <input
@@ -55,7 +55,7 @@
                     type="text"
                     id="system.container"
                     name="system.container"
-                    value="{{getLabel containers idata.container }}"
+                    value="{{getLabel iproxy.containers iproxy.container }}"
                     disabled />
                 {{/if}}
             </div>
@@ -72,7 +72,7 @@
                     class="value"
                     id="system.type"
                     name="system.type">
-                    {{selectOptions list selected=idata.type valueAttr="key" labelAttr="key"}}
+                    {{selectOptions list selected=iproxy.type valueAttr="key" labelAttr="key"}}
                 </select>
                 {{else}}
                 <input
@@ -80,7 +80,7 @@
                     type="text"
                     id="system.type"
                     name="system.type"
-                    value="{{ idata.type }}"
+                    value="{{ iproxy.type }}"
                     disabled />
                 {{/if}}
             </div>
@@ -115,7 +115,7 @@
                 Macros
             </a>
             {{/if}}
-            {{#if idata.macros.command}}
+            {{#if iproxy.macros.command}}
             <a
                 class="item"
                 data-tab="legacy-macro">
@@ -168,7 +168,7 @@
             </div>
             {{/if}}
 
-            {{#if idata.macros.command}}
+            {{#if iproxy.macros.command}}
             <div
                 class="tab legacy-macro"
                 data-group="primary"
@@ -193,7 +193,7 @@
                         class="value"
                         id="system.type"
                         name="system.type">
-                        {{selectOptions config.miscItemTypes selected=idata.type valueAttr="key" labelAttr="key"}}
+                        {{selectOptions config.miscItemTypes selected=iproxy.type valueAttr="key" labelAttr="key"}}
                     </select>
                 </div>
                 {{/if}}
@@ -203,11 +203,11 @@
                         type="checkbox"
                         id="system.locked"
                         name="system.locked"
-                        value="{{ idata.locked }}"
+                        value="{{ iproxy.locked }}"
                         data-dtype="Boolean"
                         {{
                         checked
-                        idata.locked
+                        iproxy.locked
                         }} />
                     <label
                         for="system.locked"

@@ -16,6 +16,30 @@ export class RidingSkillProxy extends SkillProxy {
     get actorUuid() {
         return this.item.system.actorUuid;
     }
+    /**
+     * @type {boolean}
+     */
+    get isRiding() {
+        return true;
+    }
+    /**
+     * @type {boolean}
+     */
+    get mounted() {
+        return this.actor.mounted;
+    }
+    /**
+     * @type {{key: string, label: string}[]}
+     */
+    get steeds() {
+        const steeds = this.actor.getSteeds();
+        return [
+            {key: '', label: `No Steed`},
+            ...steeds.map((steed) => {
+                if (steed) return {key: steed.uuid, label: steed.name};
+            })
+        ];
+    }
 
     /**
      * @param {JQuery} html

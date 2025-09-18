@@ -7,8 +7,8 @@
             class="resource-label">
             Skill Base (SB)
         </label>
-        <input class="value" type="text" id="system.skillBase.value" name="system.skillBase.value" value="{{ idata.skillBase.value }}"
-        data-dtype="Number" {{#if idata.skillBase.formula}}readonly{{/if}} {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+        <input class="value" type="text" id="system.skillBase.value" name="system.skillBase.value" value="{{ iproxy.SB.value }}"
+        data-dtype="Number" {{#if iproxy.SB.formula}}readonly{{/if}} {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
     </div>
     <div class="resource">
         <label
@@ -16,10 +16,10 @@
             class="resource-label">
             Mastery Level (ML)
         </label>
-        <input class="value" type="number" id="system.masteryLevel" name="system.masteryLevel" value="{{ idata.masteryLevel }}"
-        data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+        <input class="value" type="number" id="system.masteryLevel" name="system.masteryLevel" value="{{ iproxy.ML }}" data-dtype="Number"
+        {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
     </div>
-    {{#if (eq idata.type "Ritual")}}
+    {{#if (eq iproxy.type "Ritual")}}
     <div class="resource">
         <label
             for="system.ritual.piety"
@@ -31,7 +31,7 @@
             type="number"
             id="system.ritual.piety"
             name="system.ritual.piety"
-            value="{{ idata.ritual.piety }}"
+            value="{{ iproxy.ritual.piety }}"
             data-dtype="Number" />
     </div>
     {{/if}}
@@ -40,7 +40,7 @@
 {{> item_v2_sb_partial}}
 {{> item_v2_standard_partial}}
 
-{{#if isRiding}}
+{{#if iproxy.isRiding}}
 <div class="resource-block">
     <div class="resource">
         <label
@@ -52,7 +52,7 @@
             class="value"
             id="system.actorUuid"
             name="system.actorUuid">
-            {{selectOptions steeds selected=idata.actorUuid valueAttr="key" labelAttr="label"}}
+            {{selectOptions iproxy.steeds selected=iproxy.actorUuid valueAttr="key" labelAttr="label"}}
         </select>
     </div>
     <div class="resource">
@@ -69,7 +69,7 @@
                 name="mounted"
                 {{
                 checked
-                mounted
+                iproxy.mounted
                 }}
                 disabled />
         </span>

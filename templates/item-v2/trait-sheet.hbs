@@ -12,7 +12,7 @@
         <select
             id="system.severity"
             name="system.severity">
-            {{selectOptions config.psycheSeverity selected=idata.severity valueAttr="key" labelAttr="label"}}
+            {{selectOptions config.psycheSeverity selected=iproxy.severity valueAttr="key" labelAttr="label"}}
         </select>
         {{else}}
         <input
@@ -20,7 +20,7 @@
             type="text"
             id="system.severity"
             name="system.severity"
-            value="{{ getLabel config.psycheSeverity idata.severity }}"
+            value="{{ getLabel config.psycheSeverity iproxy.severity }}"
             disabled />
         {{/if}}
     </div>

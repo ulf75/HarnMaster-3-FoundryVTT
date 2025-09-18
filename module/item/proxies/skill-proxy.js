@@ -49,7 +49,7 @@ export class SkillProxy extends ItemProxy {
         return [SkillType.COMBAT, SkillType.PHYSICAL].includes(this.subtype) ? this.actorProxy.PP : this.actorProxy.UP;
     }
     /**
-     * @type {{value: number, isFormulaValid: boolean}}
+     * @type {{value: number, formula: number, isFormulaValid: boolean, delta: number}}
      */
     get SB() {
         return this.item.system.skillBase;
