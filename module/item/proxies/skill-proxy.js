@@ -49,7 +49,7 @@ export class SkillProxy extends ItemProxy {
         return [SkillType.COMBAT, SkillType.PHYSICAL].includes(this.subtype) ? this.actorProxy.PP : this.actorProxy.UP;
     }
     /**
-     * @type {{value: number, formula: number, isFormulaValid: boolean, delta: number}}
+     * @type {{value: number, formula: string, isFormulaValid: boolean, delta: number}}
      */
     get SB() {
         return this.item.system.skillBase;
@@ -79,6 +79,12 @@ export class SkillProxy extends ItemProxy {
             }
         }
         return this.actor.skillImprovement;
+    }
+    /**
+     * @type {number}
+     */
+    get piety() {
+        return this.item.system.ritual.piety;
     }
 
     /**
