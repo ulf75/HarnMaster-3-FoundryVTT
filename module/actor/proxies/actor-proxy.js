@@ -10,7 +10,7 @@ import {ActorHM3} from '../actor';
  * @abstract
  */
 export class ActorProxy {
-    /** @type ActorHM3 */
+    /** @type {ActorHM3} */
     #actor;
 
     constructor(actor) {
@@ -18,19 +18,19 @@ export class ActorProxy {
     }
 
     /**
-     * @type {Actor}
+     * @type {ActorHM3}
      */
     get actor() {
         return this.#actor;
     }
     /**
-     * @type {string}
+     * @type {string | null}
      */
     get id() {
         return this.actor.id;
     }
     /**
-     * @type {string}
+     * @type {string | null}
      */
     get img() {
         return this.actor.img;
@@ -221,7 +221,7 @@ export class ActorProxy {
                 type: `${ability}-d6`
             };
 
-            if (this.actor.isToken) stdRollData.token = this.actor.token.id;
+            if (this.actor.isToken) stdRollData.token = this.actor.token?.id;
             else stdRollData.actor = this.actor.id;
 
             const hooksOk = Hooks.call('hm3.preAbilityRollD6', stdRollData, this.actor);
@@ -360,7 +360,6 @@ export class ActorProxy {
             const allChanges = amlChanges.concat(dmlChanges);
             return chgs.concat(
                 allChanges.map((chg) => {
-                    // @ts-expect-error
                     chg = foundry.utils.duplicate(chg);
                     const val = parseAEValue(chg.value);
                     const itemName = val[0];
@@ -400,13 +399,10 @@ export class ActorProxy {
     }
 
     _roundChange(item, change) {
-        // @ts-expect-error
-        const current = foundry.utils.getProperty(item, change.key) ?? null;
-        // @ts-expect-error
+        const current = hm3vtt.foundry.utils.getProperty(item, change.key) ?? null;
         const ct = foundry.utils.getType(current);
         if (ct === 'number' && !Number.isInteger(current)) {
             const update = Math.round(current + Number.EPSILON);
-            // @ts-expect-error
             foundry.utils.setProperty(item, change.key, update);
             return update;
         } else {

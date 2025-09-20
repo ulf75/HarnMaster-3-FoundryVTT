@@ -26,6 +26,13 @@ export class ItemHM3 extends Item {
     _impactTypeChanged = false;
     static _proxyMap = new Map();
 
+    /**
+     * @type {ActorHM3}
+     */
+    get actor() {
+        return super.actor;
+    }
+
     get proxy() {
         if (!ItemHM3._proxyMap.has(this.uuid)) {
             let iproxy = null;

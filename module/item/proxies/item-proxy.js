@@ -1,4 +1,5 @@
 // @ts-check
+import {ActorHM3} from '../../actor/actor';
 import {ActorProxy} from '../../actor/proxies/actor-proxy';
 import {ItemType, SkillType} from '../../hm3-types';
 import {ItemHM3} from '../item';
@@ -26,7 +27,7 @@ export class ItemProxy {
         return 'itemv2';
     }
     /**
-     * @type {Actor}
+     * @type {ActorHM3}
      */
     get actor() {
         return this.item.actor;
@@ -38,19 +39,19 @@ export class ItemProxy {
         return this.actor.proxy;
     }
     /**
-     * @type {string}
+     * @type {string | null}
      */
     get id() {
         return this.item.id;
     }
     /**
-     * @type {string}
+     * @type {string | null}
      */
     get img() {
         return this.item.img;
     }
     /**
-     * @type {Item}
+     * @type {ItemHM3}
      */
     get item() {
         return this.#item;
