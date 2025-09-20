@@ -4,8 +4,12 @@
     <div
         class="resource"
         id="armorlocation-layers">
-        <label class="resource-label">Layers</label>
-        <input class="value" type="text" name="system.layers" value="{{ idata.layers }}" data-dtype="String"
+        <label
+            for="system.layers"
+            class="resource-label">
+            Layers
+        </label>
+        <input class="value" type="text" id="system.layers" name="system.layers" value="{{ iproxy.layers }}" data-dtype="String"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
     {{!--
@@ -13,7 +17,7 @@
         class="resource"
         id="armorlocation-quality">
         <label class="resource-label">Armor Quality (AQ)</label>
-        <input class="value" type="number" name="system.armorQuality" value="{{ idata.armorQuality }}" data-dtype="Number"
+        <input class="value" type="number" name="system.armorQuality" value="{{ iproxy.armorQuality }}" data-dtype="Number"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
     --}}
@@ -27,28 +31,40 @@
             class="resource-label">
             Blunt
         </label>
-        <input class="value" type="number" id="system.blunt" name="system.blunt" value="{{ idata.blunt }}" data-dtype="Number"
+        <input class="value" type="number" id="system.blunt" name="system.blunt" value="{{ iproxy.blunt }}" data-dtype="Number"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
     <div
         class="resource"
         id="armorlocation-edged">
-        <label class="resource-label">Edged</label>
-        <input class="value" type="number" name="system.edged" value="{{ idata.edged }}" data-dtype="Number"
+        <label
+            for="system.edged"
+            class="resource-label">
+            Edged
+        </label>
+        <input class="value" type="number" id="system.edged" name="system.edged" value="{{ iproxy.edged }}" data-dtype="Number"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
     <div
         class="resource"
         id="armorlocation-piercing">
-        <label class="resource-label">Piercing</label>
-        <input class="value" type="number" name="system.piercing" value="{{ idata.piercing }}" data-dtype="Number"
+        <label
+            for="system.piercing"
+            class="resource-label">
+            Piercing
+        </label>
+        <input class="value" type="number" id="system.piercing" name="system.piercing" value="{{ iproxy.piercing }}" data-dtype="Number"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
     </div>
     <div
         class="resource"
         id="armorlocation-fire">
-        <label class="resource-label">Fire</label>
-        <input class="value" type="number" name="system.fire" value="{{ idata.fire }}" data-dtype="Number"
+        <label
+            for="system.fire"
+            class="resource-label">
+            Fire
+        </label>
+        <input class="value" type="number" id="system.fire" name="system.fire" value="{{ iproxy.fire }}" data-dtype="Number"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
     </div>
 </div>
@@ -58,21 +74,33 @@
         <div
             class="resource"
             id="armorlocation-probweight-high">
-            <label class="resource-label">High Aim</label>
-            <input class="value" type="number" name="system.probWeight.high" value="{{ idata.probWeight.high }}" data-dtype="Number"
-            {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
+            <label
+                for="system.probWeight.high"
+                class="resource-label">
+                High Aim
+            </label>
+            <input class="value" type="number" id="system.probWeight.high" name="system.probWeight.high" value="{{ iproxy.probWeightHigh }}"
+            data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
         </div>
         <div
             class="resource"
             id="armorlocation-probweight-mid">
-            <label class="resource-label">Medium Aim</label>
-            <input class="value" type="number" name="system.probWeight.mid" value="{{ idata.probWeight.mid }}" data-dtype="Number"
-            {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
+            <label
+                for="system.probWeight.mid"
+                class="resource-label">
+                Medium Aim
+            </label>
+            <input class="value" type="number" id="system.probWeight.mid" name="system.probWeight.mid" value="{{ iproxy.probWeightMid }}"
+            data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
         </div>
         <div class="resource">
-            <label class="resource-label">Low Aim</label>
-            <input class="value" type="number" name="system.probWeight.low" value="{{ idata.probWeight.low }}" data-dtype="Number"
-            {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
+            <label
+                for="system.probWeight.low"
+                class="resource-label">
+                Low Aim
+            </label>
+            <input class="value" type="number" id="system.probWeight.low" name="system.probWeight.low" value="{{ iproxy.probWeightLow }}"
+            data-dtype="Number" {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>
         </div>
     </div>
 </fieldset>
@@ -87,20 +115,20 @@
                     type="checkbox"
                     id="system.isFumble"
                     name="system.isFumble"
-                    value="{{ idata.isFumble }}"
+                    value="{{ iproxy.isFumble }}"
                     data-dtype="Boolean"
                     {{checked
-                    idata.isFumble}} />
+                    iproxy.isFumble}} />
                 {{else}}
                 <input
                     class="value"
                     type="checkbox"
                     id="system.isFumble"
                     name="system.isFumble"
-                    value="{{ idata.isFumble }}"
+                    value="{{ iproxy.isFumble }}"
                     data-dtype="Boolean"
                     {{checked
-                    idata.isFumble}}
+                    iproxy.isFumble}}
                     disabled />
                 {{/if}}
                 <label
@@ -116,20 +144,20 @@
                     type="checkbox"
                     id="system.isStumble"
                     name="system.isStumble"
-                    value="{{ idata.isStumble }}"
+                    value="{{ iproxy.isStumble }}"
                     data-dtype="Boolean"
                     {{checked
-                    idata.isStumble}} />
+                    iproxy.isStumble}} />
                 {{else}}
                 <input
                     class="value"
                     type="checkbox"
                     id="system.isStumble"
                     name="system.isStumble"
-                    value="{{ idata.isStumble }}"
+                    value="{{ iproxy.isStumble }}"
                     data-dtype="Boolean"
                     {{checked
-                    idata.isStumble}}
+                    iproxy.isStumble}}
                     disabled />
                 {{/if}}
                 <label
@@ -145,20 +173,20 @@
                     type="checkbox"
                     id="system.isAmputate"
                     name="system.isAmputate"
-                    value="{{ idata.isAmputate }}"
+                    value="{{ iproxy.isAmputate }}"
                     data-dtype="Boolean"
                     {{checked
-                    idata.isAmputate}} />
+                    iproxy.isAmputate}} />
                 {{else}}
                 <input
                     class="value"
                     type="checkbox"
                     id="system.isAmputate"
                     name="system.isAmputate"
-                    value="{{ idata.isAmputate }}"
+                    value="{{ iproxy.isAmputate }}"
                     data-dtype="Boolean"
                     {{checked
-                    idata.isAmputate}}
+                    iproxy.isAmputate}}
                     disabled />
                 {{/if}}
                 <label
@@ -179,7 +207,7 @@
                 class="value"
                 id="system.impactType"
                 name="system.impactType">
-                {{#select idata.impactType}}
+                {{#select iproxy.impactType}}
                 {{#each config.injuryLocations as |value key|}}
                 <option value="{{ value.impactType }}">{{ key }}</option>
                 {{/each}}
@@ -191,7 +219,7 @@
                 id="system.impactType"
                 name="system.impactType"
                 disabled>
-                {{#select idata.impactType}}
+                {{#select iproxy.impactType}}
                 {{#each config.injuryLocations as |value key|}}
                 <option value="{{ value.impactType }}">{{ key }}</option>
                 {{/each}}
@@ -216,7 +244,7 @@
             id="armorlocation-effimp-ei1"
             name="system.effectiveImpact.ei1"
             data-dtype="String">
-            {{#select idata.effectiveImpact.ei1}}
+            {{#select iproxy.effectiveImpact.ei1}}
             {{#each config.injuryLevels}}
             <option value="{{ this }}">{{ this }}</option>
             {{/each}}
@@ -229,7 +257,7 @@
             name="system.effectiveImpact.ei1"
             data-dtype="String"
             disabled>
-            {{#select idata.effectiveImpact.ei1}}
+            {{#select iproxy.effectiveImpact.ei1}}
             {{#each config.injuryLevels}}
             <option value="{{ this }}">{{ this }}</option>
             {{/each}}
@@ -242,7 +270,7 @@
             id="armorlocation-effimp-ei5"
             name="system.effectiveImpact.ei5"
             data-dtype="String">
-            {{#select idata.effectiveImpact.ei5}}
+            {{#select iproxy.effectiveImpact.ei5}}
             {{#each config.injuryLevels}}
             <option value="{{ this }}">{{ this }}</option>
             {{/each}}
@@ -255,7 +283,7 @@
             name="system.effectiveImpact.ei5"
             data-dtype="String"
             disabled>
-            {{#select idata.effectiveImpact.ei5}}
+            {{#select iproxy.effectiveImpact.ei5}}
             {{#each config.injuryLevels}}
             <option value="{{ this }}">{{ this }}</option>
             {{/each}}
@@ -268,7 +296,7 @@
             id="armorlocation-effimp-ei9"
             name="system.effectiveImpact.ei9"
             data-dtype="String">
-            {{#select idata.effectiveImpact.ei9}}
+            {{#select iproxy.effectiveImpact.ei9}}
             {{#each config.injuryLevels}}
             <option value="{{ this }}">{{ this }}</option>
             {{/each}}
@@ -281,7 +309,7 @@
             name="system.effectiveImpact.ei9"
             data-dtype="String"
             disabled>
-            {{#select idata.effectiveImpact.ei9}}
+            {{#select iproxy.effectiveImpact.ei9}}
             {{#each config.injuryLevels}}
             <option value="{{ this }}">{{ this }}</option>
             {{/each}}
@@ -294,7 +322,7 @@
             id="armorlocation-effimp-ei13"
             name="system.effectiveImpact.ei13"
             data-dtype="String">
-            {{#select idata.effectiveImpact.ei13}}
+            {{#select iproxy.effectiveImpact.ei13}}
             {{#each config.injuryLevels}}
             <option value="{{ this }}">{{ this }}</option>
             {{/each}}
@@ -307,7 +335,7 @@
             name="system.effectiveImpact.ei13"
             data-dtype="String"
             disabled>
-            {{#select idata.effectiveImpact.ei13}}
+            {{#select iproxy.effectiveImpact.ei13}}
             {{#each config.injuryLevels}}
             <option value="{{ this }}">{{ this }}</option>
             {{/each}}
@@ -320,7 +348,7 @@
             id="armorlocation-effimp-ei17"
             name="system.effectiveImpact.ei17"
             data-dtype="String">
-            {{#select idata.effectiveImpact.ei17}}
+            {{#select iproxy.effectiveImpact.ei17}}
             {{#each config.injuryLevels}}
             <option value="{{ this }}">{{ this }}</option>
             {{/each}}
@@ -333,7 +361,7 @@
             name="system.effectiveImpact.ei17"
             data-dtype="String"
             disabled>
-            {{#select idata.effectiveImpact.ei17}}
+            {{#select iproxy.effectiveImpact.ei17}}
             {{#each config.injuryLevels}}
             <option value="{{ this }}">{{ this }}</option>
             {{/each}}

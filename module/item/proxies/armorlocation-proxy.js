@@ -49,6 +49,22 @@ export class ArmorlocationProxy extends ItemProxy {
         return this.item.system.fire;
     }
 
+    get effectiveImpact() {
+        return this.item.system.effectiveImpact;
+    }
+    get impactType() {
+        return this.item.system.impactType;
+    }
+    get isAmputate() {
+        return this.item.system.isAmputate;
+    }
+    get isFumble() {
+        return this.item.system.isFumble;
+    }
+    get isStumble() {
+        return this.item.system.isStumble;
+    }
+
     /**
      * @type {number}
      */
