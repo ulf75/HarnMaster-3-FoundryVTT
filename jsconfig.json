@@ -2,9 +2,11 @@
   "compilerOptions": {
     "checkJs": false,
     "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "bundler",
     "noEmit": true,
     "noImplicitAny": false,
     "noImplicitOverride": true,
+    "paths": {},
     "strict": true,
     "target": "esnext",
     "types": ["fvtt-types"]
