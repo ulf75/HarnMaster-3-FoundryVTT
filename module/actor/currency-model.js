@@ -1,4 +1,18 @@
+// @ts-check
+
 import {SystemDataModel} from './system-model';
+
+const {
+    ArrayField,
+    BooleanField,
+    HTMLField,
+    IntegerSortField,
+    NumberField,
+    ObjectField,
+    SchemaField,
+    SetField,
+    StringField
+} = foundry.data.fields;
 
 /**
  * A template for currently held currencies.
@@ -7,11 +21,11 @@ import {SystemDataModel} from './system-model';
  * @mixin
  */
 export class CurrencyTemplate extends SystemDataModel {
-    /** @inheritDoc */
+    /** @override */
     static defineSchema() {
         return {
             currency: new MappingField(
-                new foundry.data.fields.NumberField({
+                new NumberField({
                     required: true,
                     nullable: false,
                     integer: true,

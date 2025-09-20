@@ -15,6 +15,18 @@
 import {CurrencyTemplate} from './currency-model';
 import {ActorDataModel} from './proxies/actor-model';
 
+const {
+    ArrayField,
+    BooleanField,
+    HTMLField,
+    IntegerSortField,
+    NumberField,
+    ObjectField,
+    SchemaField,
+    SetField,
+    StringField
+} = foundry.data.fields;
+
 /**
  * A template for all actors that share the common template.
  *
@@ -26,8 +38,8 @@ export class CommonTemplate extends ActorDataModel.mixin(CurrencyTemplate) {
     static defineSchema() {
         return this.mergeSchema(super.defineSchema(), {
             abilities: new MappingField(
-                new SchemaField$k({
-                    value: new NumberField$g({
+                new SchemaField({
+                    value: new NumberField({
                         required: true,
                         nullable: false,
                         integer: true,
@@ -35,7 +47,7 @@ export class CommonTemplate extends ActorDataModel.mixin(CurrencyTemplate) {
                         initial: 10,
                         label: 'DND5E.AbilityScore'
                     }),
-                    proficient: new NumberField$g({
+                    proficient: new NumberField({
                         required: true,
                         integer: true,
                         min: 0,
@@ -43,7 +55,7 @@ export class CommonTemplate extends ActorDataModel.mixin(CurrencyTemplate) {
                         initial: 0,
                         label: 'DND5E.ProficiencyLevel'
                     }),
-                    max: new NumberField$g({
+                    max: new NumberField({
                         required: true,
                         integer: true,
                         nullable: true,
@@ -51,7 +63,7 @@ export class CommonTemplate extends ActorDataModel.mixin(CurrencyTemplate) {
                         initial: null,
                         label: 'DND5E.AbilityScoreMax'
                     }),
-                    bonuses: new SchemaField$k(
+                    bonuses: new SchemaField(
                         {
                             check: new FormulaField({required: true, label: 'DND5E.AbilityCheckBonus'}),
                             save: new FormulaField({required: true, label: 'DND5E.SaveBonus'})

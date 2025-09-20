@@ -2,7 +2,17 @@
 
 import {CommonTemplate} from './common-model';
 
-const {NumberField: NumberField$f, SchemaField: SchemaField$j} = foundry.data.fields;
+const {
+    ArrayField,
+    BooleanField,
+    HTMLField,
+    IntegerSortField,
+    NumberField,
+    ObjectField,
+    SchemaField,
+    SetField,
+    StringField
+} = foundry.data.fields;
 
 /**
  * A template for all actors that are creatures
@@ -23,6 +33,7 @@ const {NumberField: NumberField$f, SchemaField: SchemaField$j} = foundry.data.fi
  * @property {Record<string, SpellSlotData>} spells  Actor's spell slots.
  */
 export class CreatureTemplate extends CommonTemplate {
+    /** @override */
     static defineSchema() {
         return this.mergeSchema(super.defineSchema(), {
             bonuses: new SchemaField$j({
