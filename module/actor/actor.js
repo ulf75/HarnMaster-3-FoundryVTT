@@ -1,49 +1,12 @@
 import {HM3} from '../config.js';
 import {DiceHM3} from '../hm3-dice.js';
 import {ActorType, CompanionType, Condition, ItemType, SkillType} from '../hm3-types.js';
+// import {ItemProxy} from '../item/proxies/item-proxy.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 import {CharacterProxy} from './proxies/character-proxy.js';
 import {ContainerProxy} from './proxies/container-proxy.js';
 import {CreatureProxy} from './proxies/creature-proxy.js';
-
-function createCachingHandler(api, name) {
-    const cache = new Map();
-    const cacheTTL = 200; // [ms]
-
-    return new Proxy(api, {
-        get(target, property, receiver) {
-            if (typeof target[property] === 'function') return Reflect.get(target, property);
-
-            const now = Date.now();
-
-            // Check if we have a valid cached response
-            if (cache.has(property)) {
-                const {data, timestamp} = cache.get(property);
-
-                // If the cache is still fresh, use it
-                if (now - timestamp < cacheTTL) {
-                    console.info(`HM3 | Using cached data for actor ${name} ${property} by ${target[property]}`);
-                    return data;
-                } else {
-                    console.info(`HM3 | Cache expired for ${property}`);
-                }
-            }
-
-            // Otherwise, call the actual API
-            console.info(`HM3 | Fetching data for actor ${name} ${property} by ${target[property]}`);
-            const data = Reflect.get(target, property);
-
-            // Cache the response
-            cache.set(property, {
-                data,
-                timestamp: now
-            });
-
-            return data;
-        }
-    });
-}
 
 /**
  * Extend the base Actor by defining a custom roll data structure which is ideal for the Simple system.
@@ -77,6 +40,9 @@ export class ActorHM3 extends Actor {
         return ActorHM3._proxyMap.get(this.uuid);
     }
 
+    /**
+     * @type {ItemProxy[]}
+     */
     get proxies() {
         return this.items.contents.map((item) => {
             return item.proxy;
@@ -87,10 +53,16 @@ export class ActorHM3 extends Actor {
         return game.macros.contents.filter((m) => m.getFlag('hm3', 'ownerId') === this.id) || [];
     }
 
+    /**
+     * @type {string | null}
+     */
     get macrofolder() {
         return game.folders.get(game.settings.get('hm3', 'actorMacrosFolderId')) || null;
     }
 
+    /**
+     * @type {User | null}
+     */
     get player() {
         return game.users.find((u) => !u.isGM && this.testUserPermission(u, 'OWNER')) || null;
     }
