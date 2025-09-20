@@ -1,5 +1,6 @@
 import {onManageActiveEffect} from '../effect.js';
 import {ActorType, CompanionType, ItemType, SkillType} from '../hm3-types.js';
+import {ItemHM3} from '../item/item.js';
 import {onManageMacro} from '../macro.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
@@ -42,7 +43,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         context = foundry.utils.mergeObject(context, {
             aproxy: this.actor.proxy,
             config: CONFIG.HM3,
-            customSunSign: game.settings.get('hm3', 'customSunSign'),
+            customSunSign: game.settings?.get('hm3', 'customSunSign'),
             dtypes: ['String', 'Number', 'Boolean'],
             editable: this.isEditable && this._mode === this.constructor.MODES.EDIT,
             effects: this.actor.allApplicableEffects().map((effect) => {
@@ -58,13 +59,13 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                 };
             }),
             filters: this._filters,
-            hasRwPermission: game.user.isGM || !game.settings.get('hm3', 'strictGmMode'),
+            hasRwPermission: game.user?.isGM || !game.settings?.get('hm3', 'strictGmMode'),
             hasSteed: this.actor.hasLinkedSteed(),
             isCharacter: this.document.type === ActorType.CHARACTER,
             isCharacterMancer: this.actor.getFlag('hm3', 'CharacterMancer') || false,
             isContainer: this.document.type === ActorType.CONTAINER,
             isCreature: this.document.type === ActorType.CREATURE,
-            isGM: game.user.isGM,
+            isGM: game.user?.isGM,
             isSkillImprovement: this.actor.skillImprovement,
             items: this.actor.proxies.filter((item) => item.visible).sort((a, b) => a.sort - b.sort),
             labels: this.actor.labels || {},
@@ -72,7 +73,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                 {key: 'chat', label: 'Chat'},
                 {key: 'script', label: 'Script'}
             ],
-            strictMode: game.settings.get('hm3', 'strictGmMode')
+            strictMode: game.settings?.get('hm3', 'strictGmMode')
         });
         context = foundry.utils.mergeObject(context, {
             cssClass: context.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked',
@@ -80,7 +81,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         context.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {
-            secrets: game.user.isGM,
+            secrets: game.user?.isGM,
             relativeTo: this.object.system
         });
 
@@ -169,13 +170,13 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             },
             // Check for esoteric attack options
             get esotericAtkOptions() {
-                proxies.filter(
+                return proxies.filter(
                     (item) => game.hm3.config.esotericCombatItems.attack.includes(item.name) && item.isEquipped
                 );
             },
             // Check for esoteric defense options
             get esotericDefOptions() {
-                proxies.filter((item) => game.hm3.config.esotericCombatItems.defense.includes(item.name));
+                return proxies.filter((item) => game.hm3.config.esotericCombatItems.defense.includes(item.name));
             }
         };
     }
@@ -218,16 +219,16 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         if (!this.actor.isOwner) return false;
 
         const companion = await Actor.fromDropData(data);
-        if (!companion || companion?.type === 'container') return false;
+        if (!companion || companion?.type === ActorType.CONTAINER) return false;
         if (this.actor.id === companion.id) {
-            ui.notifications.warn('You cannot add yourself.');
+            ui.notifications?.warn('You cannot add yourself.');
             return false;
         }
 
         await this.actor.createEmbeddedDocuments('Item', [
             {
                 name: companion.name,
-                type: 'companion',
+                type: ItemType.COMPANION,
                 system: {
                     actorUuid: companion.uuid
                 }
@@ -246,19 +247,20 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // Check if coming from a compendium pack ||
         // Skills, spells, etc. (non-gear) ||
         // Gear coming from world items list
-        if (droppedItem.pack || !droppedItem.type?.endsWith('gear') || !droppedItem.parent) {
+        if (droppedItem?.pack || !droppedItem?.type?.endsWith('gear') || !droppedItem?.parent) {
             const closestContainer = event.target.closest('[data-container-id]');
             const destContainer = closestContainer?.dataset.containerId
                 ? closestContainer.dataset.containerId
                 : 'on-person';
 
-            let newItem = await super._onDropItem(event, data);
-            if (!newItem) return;
-            newItem = newItem[0];
+            const newItemArr = await super._onDropItem(event, data);
+            if (!newItemArr) return;
+            /** @type {ItemHM3} */
+            const newItem = newItemArr[0];
             // If the item is some type of gear (other than containergear), then
             // make sure we set the container to the same as the dropped location
             // (this allows people to move items into containers easily)
-            if (newItem?.type?.endsWith('gear') && newItem?.type !== 'containergear') {
+            if (newItem?.type?.endsWith('gear') && newItem?.type !== ItemType.CONTAINERGEAR) {
                 if (newItem.system.container !== destContainer) {
                     await newItem.update({'system.container': destContainer});
                 }
@@ -274,13 +276,13 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
             // Dropping an item into the same actor (Token or Linked)
             if (
-                (droppedItem.parent.isToken && this.actor.token?.id === droppedItem.parent.token.id) ||
+                (droppedItem.parent.isToken && this.actor.token?.id === droppedItem.parent.token?.id) ||
                 (!droppedItem.parent.isToken && !this.actor.isToken && droppedItem.parent.id === this.actor.id)
             ) {
                 // If the item is some type of gear (other than containergear), then
                 // make sure we set the container to the same as the dropped location
                 // (this allows people to move items into containers easily)
-                if (droppedItem.type.endsWith('gear') && droppedItem.type !== 'containergear') {
+                if (droppedItem.type.endsWith('gear') && droppedItem.type !== ItemType.CONTAINERGEAR) {
                     if (droppedItem.system.container !== destContainer) {
                         await droppedItem.update({'system.container': destContainer});
                     }
@@ -316,7 +318,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // create new container
 
         if (!item.parent) {
-            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
+            ui.notifications?.warn(`Error accessing actor where container is coming from, move aborted`);
             throw Error(`Error accessing actor where container is coming from, move aborted`);
         }
 
@@ -324,7 +326,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         delete itData._id;
         const containerResult = await Item.create(itData, {parent: this.actor});
         if (!containerResult) {
-            ui.notifications.warn(`Error while moving container, move aborted`);
+            ui.notifications?.warn(`Error while moving container, move aborted`);
             return null;
         }
 
@@ -345,7 +347,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         }
 
         if (failure) {
-            ui.notifications.error(
+            ui.notifications?.error(
                 `Error duing move of items from source to destination, container has been only partially moved!`
             );
             return null;
@@ -359,7 +361,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
     async _moveQtyDialog(event, item) {
         // Get source actor
         if (!item.parent) {
-            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
+            ui.notifications?.warn(`Error accessing actor where container is coming from, move aborted`);
             throw Error(`Error accessing actor where container is coming from, move aborted`);
         }
 
@@ -401,7 +403,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         const sourceQuantity = item.system.quantity;
 
         if (!item.parent) {
-            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
+            ui.notifications?.warn(`Error accessing actor where container is coming from, move aborted`);
             return null;
         }
 
@@ -440,7 +442,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
         if (!itemData.type.endsWith('gear')) {
             if (actor.type === ActorType.CONTAINER) {
-                ui.notifications.warn(
+                ui.notifications?.warn(
                     `You may only place physical objects in a container; drop of ${itemData.name} refused.`
                 );
                 return false;
@@ -471,7 +473,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
-        if (!game.user.isGM) {
+        if (!game.user?.isGM) {
             html.find('.facade-image').click(async (ev) => {
                 new ImagePopout(this.actor.system.bioImage, {
                     title: this.actor.name,
@@ -504,7 +506,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         html.find('.item-edit, .gear-name').click((ev) => {
             const li = $(ev.currentTarget).parents('.item');
             const item = this.actor.items.get(li.data('itemId'));
-            item.sheet.render(true);
+            item.sheet?.render(true);
         });
 
         // Delete Inventory Item
@@ -526,7 +528,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         html.on('click', '.item-name, .spell-name', (ev) => {
             switch (ev.currentTarget.innerText) {
                 case 'Magic Spells':
-                    ui.notifications.info('Magic Spells sorted!');
+                    ui.notifications?.info('Magic Spells sorted!');
                     const convocations = new Map([
                         ['Fyvria', 1],
                         ['Jmorvi', 2],
@@ -554,7 +556,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                     break;
 
                 case 'Ritual Invocations':
-                    ui.notifications.info('Ritual Invocations sorted!');
+                    ui.notifications?.info('Ritual Invocations sorted!');
                     this.object.items.forEach(async (i) => {
                         if (i.type === ItemType.INVOCATION) {
                             await i.update({
@@ -572,7 +574,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                     break;
 
                 case 'Psionic Talents':
-                    ui.notifications.info('Psionic Talents sorted!');
+                    ui.notifications?.info('Psionic Talents sorted!');
                     this.object.items.forEach(async (i) => {
                         if (i.type === ItemType.PSIONIC) {
                             await i.update({
@@ -762,12 +764,12 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                 // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
                 const tokens = this.actor.getActiveTokens(true);
                 if (tokens.length == 0) {
-                    ui.notifications.warn(
+                    ui.notifications?.warn(
                         `There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`
                     );
                     return null;
                 } else if (tokens.length > 1) {
-                    ui.notifications.warn(
+                    ui.notifications?.warn(
                         `There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`
                     );
                     return null;
@@ -788,12 +790,12 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                 // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
                 const tokens = this.actor.getActiveTokens(true);
                 if (tokens.length == 0) {
-                    ui.notifications.warn(
+                    ui.notifications?.warn(
                         `There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`
                     );
                     return null;
                 } else if (tokens.length > 1) {
-                    ui.notifications.warn(
+                    ui.notifications?.warn(
                         `There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`
                     );
                     return null;
@@ -814,12 +816,12 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                 // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
                 const tokens = this.actor.getActiveTokens(true);
                 if (tokens.length == 0) {
-                    ui.notifications.warn(
+                    ui.notifications?.warn(
                         `There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`
                     );
                     return null;
                 } else if (tokens.length > 1) {
-                    ui.notifications.warn(
+                    ui.notifications?.warn(
                         `There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`
                     );
                     return null;
@@ -951,7 +953,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
             let title = `Delete ${data.label}`;
             let content;
-            if (item.type === 'containergear') {
+            if (item.type === ItemType.CONTAINERGEAR) {
                 title = 'Delete Container';
                 content = '<p>WARNING: All items in this container will be deleted as well!</p><p>Are you sure?</p>';
             } else {
@@ -970,9 +972,9 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                 const deleteItems = [];
 
                 // Add all items in the container to the delete list
-                if (item.type === 'containeritem') {
+                if (item.type === ItemType.CONTAINERGEAR) {
                     this.actor.items.forEach((it) => {
-                        if (item.type.endsWith('gear') && it.systemn.container === itemId) deleteItems.push(it.id);
+                        if (item.type.endsWith('gear') && it.system.container === itemId) deleteItems.push(it.id);
                     });
                 }
 
@@ -989,6 +991,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
     async _onContainerCollapse(ev) {
         const el = ev.currentTarget.dataset;
         if (!el) return;
+        /** @type {ItemHM3} */
         const container = fromUuidSync(el.cuuid);
         if (container) {
             if (el.action === 'minimize') {
@@ -1023,7 +1026,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         updateData['img'] = other.img;
 
         switch (item.type) {
-            case 'skill':
+            case ItemType.SKILL:
                 // If the skill types don't match, return without change
                 if (data.type != otherData.type) {
                     return;
@@ -1040,17 +1043,17 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                 }
                 break;
 
-            case 'spell':
+            case ItemType.SPELL:
                 updateData['system.convocation'] = otherData.convocation;
                 updateData['system.level'] = otherData.level;
                 break;
 
-            case 'invocation':
+            case ItemType.INVOCATION:
                 updateData['system.diety'] = otherData.diety;
                 updateData['system.circle'] = otherData.circle;
                 break;
 
-            case 'psionic':
+            case ItemType.PSIONIC:
                 // If the skillbase is blank, copy it over from dropped item
                 if (!data.skillBase.formula) {
                     updateData['system.skillBase.formula'] = otherData.skillBase.formula;
@@ -1078,9 +1081,9 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
         // Ask type
         // Initialize a default name.
-        if (dataset.type === 'skill' && dataset.skilltype) {
+        if (dataset.type === ItemType.SKILL && dataset.skilltype) {
             name = utility.createUniqueName(`New ${dataset.skilltype} Skill`, this.actor.itemTypes.skill);
-        } else if (dataset.type == 'trait' && dataset.traittype) {
+        } else if (dataset.type == ItemType.TRAIT && dataset.traittype) {
             name = utility.createUniqueName(`New ${dataset.traittype} Trait`, this.actor.itemTypes.trait);
         } else if (dataset.type.endsWith('gear')) {
             name = 'New Gear';
@@ -1092,19 +1095,19 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                     name = utility.createUniqueName('New Location', this.actor.itemTypes.armorlocation);
                     break;
 
-                case 'injury':
+                case ItemType.INJURY:
                     name = utility.createUniqueName('New Injury', this.actor.itemTypes.injury);
                     break;
 
-                case 'spell':
+                case ItemType.SPELL:
                     name = utility.createUniqueName('New Spell', this.actor.itemTypes.spell);
                     break;
 
-                case 'invocation':
+                case ItemType.INVOCATION:
                     name = utility.createUniqueName('New Invocation', this.actor.itemTypes.invocation);
                     break;
 
-                case 'psionic':
+                case ItemType.PSIONIC:
                     name = utility.createUniqueName('New Psionic', this.actor.itemTypes.psionic);
                     break;
 
@@ -1140,19 +1143,19 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
                 const updateData = {name: itemName, type: dataset.type};
                 if (dataset.type === 'gear') {
-                    if (extraValue === 'Container') updateData.type = 'containergear';
-                    else if (extraValue === 'Armor') updateData.type = 'armorgear';
-                    else if (extraValue === 'Melee Weapon') updateData.type = 'weapongear';
-                    else if (extraValue === 'Missile Weapon') updateData.type = 'missilegear';
-                    else updateData.type = 'miscgear';
+                    if (extraValue === 'Container') updateData.type = ItemType.CONTAINERGEAR;
+                    else if (extraValue === 'Armor') updateData.type = ItemType.ARMORGEAR;
+                    else if (extraValue === 'Melee Weapon') updateData.type = ItemType.WEAPONGEAR;
+                    else if (extraValue === 'Missile Weapon') updateData.type = ItemType.MISSILEGEAR;
+                    else updateData.type = ItemType.MISCGEAR;
                 }
 
                 // Item Data
-                if (dataset.type === 'skill') updateData['system.type'] = dataset.skilltype;
-                else if (dataset.type === 'trait') updateData['system.type'] = dataset.traittype;
+                if (dataset.type === ItemType.SKILL) updateData['system.type'] = dataset.skilltype;
+                else if (dataset.type === ItemType.TRAIT) updateData['system.type'] = dataset.traittype;
                 else if (dataset.type.endsWith('gear')) updateData['system.container'] = dataset.containerId;
-                else if (dataset.type === 'spell') updateData['system.convocation'] = extraValue;
-                else if (dataset.type === 'invocation') updateData['system.diety'] = extraValue;
+                else if (dataset.type === ItemType.SPELL) updateData['system.convocation'] = extraValue;
+                else if (dataset.type === ItemType.INVOCATION) updateData['system.diety'] = extraValue;
 
                 // Finally, create the item!
                 const result = await Item.create(updateData, {parent: this.actor});
@@ -1165,7 +1168,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
                 // Bring up edit dialog to complete creating item
                 const item = this.actor.items.get(result.id);
-                item.sheet.render(true);
+                item?.sheet?.render(true);
 
                 return result;
             },
@@ -1176,11 +1179,9 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
     async _onToggleMount(event) {
         event.preventDefault();
 
-        const riding = this.actor.items.find(
-            (item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding')
-        );
+        const riding = this.actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
 
-        const steed = fromUuidSync(riding.system.actorUuid);
+        const steed = fromUuidSync(riding?.system.actorUuid);
         if (steed) {
             if (!this.actor.system.mounted) {
                 Hooks.call('hm3.onMount', this.actor, steed);
@@ -1197,11 +1198,11 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
      */
     async _onToggleCarry(event) {
         event.preventDefault();
-        const itemId = event.currentTarget.closest('.item').dataset.itemId;
+        const itemId = event.currentTarget?.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
 
         // Only process inventory ("gear") items, otherwise ignore
-        if (item.type.endsWith('gear')) {
+        if (item && item.type.endsWith('gear')) {
             const attr = 'system.isCarried';
             const ret = await item.update({[attr]: !foundry.utils.getProperty(item, attr)});
 
@@ -1222,11 +1223,11 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
      */
     async _onToggleEquip(event) {
         event.preventDefault();
-        const itemId = event.currentTarget.closest('.item').dataset.itemId;
+        const itemId = event.currentTarget?.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
 
         // Only process inventory ("gear") items, otherwise ignore
-        if (item.type.endsWith('gear')) {
+        if (item && item.type.endsWith('gear')) {
             const attr = 'system.isEquipped';
             const ret = await item.update({[attr]: !foundry.utils.getProperty(item, attr)});
 
@@ -1247,15 +1248,17 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
      */
     async _onToggleImprove(event) {
         event.preventDefault();
-        const itemId = event.currentTarget.closest('.item').dataset.itemId;
+        const itemId = event.currentTarget?.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
 
         // Only process skills and psionics, otherwise ignore
-        if (item.type === 'skill' || item.type === 'psionic') {
-            if (!item.system.improveFlag) {
-                return item.update({'system.improveFlag': 1});
-            } else {
-                return this._improveToggleDialog(item);
+        if (item) {
+            if (item.type === ItemType.SKILL || item.type === ItemType.PSIONIC) {
+                if (!item.system.improveFlag) {
+                    return item.update({'system.improveFlag': 1});
+                } else {
+                    return this._improveToggleDialog(item);
+                }
             }
         }
 
@@ -1273,32 +1276,33 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             console.error(`HM3 | Can't find journal entry with name "${journalEntry}".`);
             return null;
         }
-        article.sheet.render(true, {editable: false});
+        article.sheet?.render(true, {editable: false});
         return null;
     }
 
     async _improveToggleDialog(item) {
         // Condition skill is maxed out (SKILLS 9)
-        if (item.type === 'skill' && item.name === 'Condition') {
+        if (item.type === ItemType.SKILL && item.name === 'Condition') {
             if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
                 await game.hm3.GmSays({
-                    text: `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.ConditionSkillMax'),
+                    text:
+                        `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n?.localize('hm3.SDR.ConditionSkillMax'),
                     source: 'SKILLS 9'
                 });
                 return;
             }
         }
 
-        let dlghtml = game.i18n.localize('hm3.SDR.MainDlgHtml');
+        let dlghtml = game.i18n?.localize('hm3.SDR.MainDlgHtml');
         // Create the dialog window
         return new Promise((resolve) => {
             new Dialog(
                 {
-                    title: game.i18n.localize('hm3.SDR.Toggle'),
+                    title: game.i18n?.localize('hm3.SDR.Toggle'),
                     content: dlghtml.trim(),
                     buttons: {
                         performSDR: {
-                            label: game.i18n.localize('hm3.SDR.Perform'),
+                            label: game.i18n?.localize('hm3.SDR.Perform'),
                             callback: async () => {
                                 let num = item.system.improveFlag;
 
@@ -1315,16 +1319,16 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                             }
                         },
                         performTrainingSDR: {
-                            label: game.i18n.localize('hm3.SDR.PerformTraining'),
+                            label: game.i18n?.localize('hm3.SDR.PerformTraining'),
                             callback: async (html) => {
                                 // Special rules for combat skills
-                                if (item.type === 'skill' && item.system.type === 'Combat') {
+                                if (item.type === ItemType.SKILL && item.system.type === 'Combat') {
                                     // Once opened, Development Rolls are made only for Combat Experience (SKILLS 18)
                                     if (item.name === 'Initiative') {
                                         await game.hm3.GmSays({
                                             text:
                                                 `<h4>${this.actor.name}: ${item.name}</h4>` +
-                                                game.i18n.localize('hm3.SDR.InitiativeExperience'),
+                                                game.i18n?.localize('hm3.SDR.InitiativeExperience'),
                                             source: 'SKILLS 18'
                                         });
                                         return;
@@ -1335,26 +1339,26 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                         await game.hm3.GmSays({
                                             text:
                                                 `<h4>${this.actor.name}: ${item.name}</h4>` +
-                                                game.i18n.localize('hm3.SDR.CombatExperience'),
+                                                game.i18n?.localize('hm3.SDR.CombatExperience'),
                                             source: 'SKILLS 18'
                                         });
                                         return;
                                     }
                                 }
-                                dlghtml = game.i18n.localize('hm3.SDR.TrainingDlgHtml');
+                                dlghtml = game.i18n?.localize('hm3.SDR.TrainingDlgHtml');
                                 return new Promise((resolve) => {
                                     new Dialog({
-                                        title: game.i18n.localize('hm3.SDR.SDRs'),
+                                        title: game.i18n?.localize('hm3.SDR.SDRs'),
                                         content: dlghtml.trim(),
                                         buttons: {
                                             roll: {
-                                                label: game.i18n.localize('hm3.SDR.Roll'),
+                                                label: game.i18n?.localize('hm3.SDR.Roll'),
                                                 callback: async (html) => {
                                                     const num = Number(html.find('#sdr')[0].value);
                                                     let success = 0;
                                                     for (let i = 0; i < num; i++) {
                                                         // Condition skill is maxed out (SKILLS 9)
-                                                        if (item.type === 'skill' && item.name === 'Condition') {
+                                                        if (item.type === ItemType.SKILL && item.name === 'Condition') {
                                                             if (
                                                                 item.system.masteryLevel >=
                                                                 7 * item.system.skillBase.value
@@ -1362,7 +1366,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                                                 await game.hm3.GmSays({
                                                                     text:
                                                                         `<h4>${this.actor.name}: ${item.name}</h4>` +
-                                                                        game.i18n.localize(
+                                                                        game.i18n?.localize(
                                                                             'hm3.SDR.ConditionSkillMax'
                                                                         ) +
                                                                         `<p>(${num - i} SDRs left)</p>`,
@@ -1371,12 +1375,17 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                                                 break;
                                                             }
                                                         }
-                                                        if (item.type === 'skill' && item.system.type === 'Combat') {
+                                                        if (
+                                                            item.type === ItemType.SKILL &&
+                                                            item.system.type === 'Combat'
+                                                        ) {
                                                             if (item.system.masteryLevel >= 70) {
                                                                 await game.hm3.GmSays({
                                                                     text:
                                                                         `<h4>${this.actor.name}: ${item.name}</h4>` +
-                                                                        game.i18n.localize('hm3.SDR.CombatExperience') +
+                                                                        game.i18n?.localize(
+                                                                            'hm3.SDR.CombatExperience'
+                                                                        ) +
                                                                         `<p>(${num - i} SDRs left)</p>`,
                                                                     source: 'SKILLS 18'
                                                                 });
@@ -1400,7 +1409,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                             }
                         },
                         disableFlag: {
-                            label: game.i18n.localize('hm3.SDR.DisableFlag'),
+                            label: game.i18n?.localize('hm3.SDR.DisableFlag'),
                             callback: async () => {
                                 return item.update({'system.improveFlag': 0});
                             }
@@ -1428,21 +1437,21 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
             const itemData = item.system;
 
-            if (['spell', 'invocation', 'psionic'].includes(item.type)) {
+            if ([ItemType.SPELL, ItemType.INVOCATION, ItemType.PSIONIC].includes(item.type)) {
                 const chatData = {
                     name: item.name,
                     desc: itemData.description,
                     notes: itemData.notes || null,
-                    fatigue: item.type === 'psionic' ? itemData.fatigue : null
+                    fatigue: item.type === ItemType.PSIONIC ? itemData.fatigue : null
                 };
 
-                if (item.type === 'spell') {
+                if (item.type === ItemType.SPELL) {
                     chatData.level = utility.romanize(itemData.level);
                     chatData.title = `${itemData.convocation} Spell`;
-                } else if (item.type === 'invocation') {
+                } else if (item.type === ItemType.INVOCATION) {
                     chatData.level = utility.romanize(itemData.circle);
                     chatData.title = `${itemData.diety} Invocation`;
-                } else if (item.type === 'psionic') {
+                } else if (item.type === ItemType.PSIONIC) {
                     chatData.level = `F${itemData.fatigue}`;
                     chatData.title = `Psionic Talent`;
                 }
@@ -1452,7 +1461,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                 const html = await renderTemplate(chatTemplate, chatData);
 
                 const messageData = {
-                    user: game.user.id,
+                    user: game.user?.id,
                     speaker: ChatMessage.getSpeaker({actor: this.object}),
                     content: html.trim(),
                     type: CONST.CHAT_MESSAGE_STYLES.OTHER
@@ -1579,7 +1588,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
     _mode = null;
 
-    /** @inheritDoc */
+    /** @override */
     async _render(force, {mode, ...options} = {}) {
         if (mode === undefined && options.renderContext === 'createItem') mode = this.constructor.MODES.EDIT;
         this._mode = mode ?? this._mode ?? this.constructor.MODES.PLAY;
@@ -1590,7 +1599,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         return super._render(force, options);
     }
 
-    /** @inheritDoc */
+    /** @override */
     async _renderOuter() {
         const html = await super._renderOuter();
         const header = html[0].querySelector('.window-header');
@@ -1605,7 +1614,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             label.remove();
         });
 
-        if (!game.user.isGM && this.document.limited) {
+        if (!game.user?.isGM && this.document.limited) {
             html[0].classList.add('limited');
             return html;
         }
@@ -1617,7 +1626,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             toggle.classList.add('mode-slider');
             toggle.dataset.tooltip = 'hm3.SheetModeEdit';
             toggle.dataset.tooltipDirection = 'UP';
-            toggle.setAttribute('aria-label', game.i18n.localize('hm3.SheetModeEdit'));
+            toggle.setAttribute('aria-label', game.i18n?.localize('hm3.SheetModeEdit'));
             toggle.addEventListener('change', this._onChangeSheetMode.bind(this));
             toggle.addEventListener('dblclick', (event) => event.stopPropagation());
             header.insertAdjacentElement('afterbegin', toggle);
@@ -1638,7 +1647,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
     async _onChangeSheetMode(event) {
         const {MODES} = this.constructor;
         const toggle = event.currentTarget;
-        const label = game.i18n.localize(`hm3.SheetMode${toggle.checked ? 'Play' : 'Edit'}`);
+        const label = game.i18n?.localize(`hm3.SheetMode${toggle.checked ? 'Play' : 'Edit'}`);
         toggle.dataset.tooltip = label;
         toggle.setAttribute('aria-label', label);
         this._mode = toggle.checked ? MODES.EDIT : MODES.PLAY;
@@ -1652,7 +1661,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
      */
     _onShowBioImage() {
         // Play mode only.
-        if (this._mode === this.constructor.MODES.PLAY && game.user.isGM) {
+        if (this._mode === this.constructor.MODES.PLAY && game.user?.isGM) {
             const img = this.actor.system.bioImage;
             if (game.release.generation < 13) {
                 new ImagePopout(img, {title: this.actor.name, uuid: this.actor.uuid}).render(true);
@@ -1668,7 +1677,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
     _onShowProfileImage() {
         // Play mode only.
-        if (this._mode === this.constructor.MODES.PLAY && game.user.isGM) {
+        if (this._mode === this.constructor.MODES.PLAY && game.user?.isGM) {
             const img = this.actor.img;
             if (game.release.generation < 13) {
                 new ImagePopout(img, {title: this.actor.name, uuid: this.actor.uuid}).render(true);
