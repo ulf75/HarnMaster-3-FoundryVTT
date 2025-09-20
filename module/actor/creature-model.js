@@ -1,3 +1,5 @@
+// @ts-check
+
 import {CommonTemplate} from './common-model';
 
 const {NumberField: NumberField$f, SchemaField: SchemaField$j} = foundry.data.fields;

@@ -1,3 +1,5 @@
+// @ts-check
+
 // Import Modules
 import {ActorHM3} from './module/actor/actor.js';
 import {CharacterSheetHM3v2} from './module/actor/character-sheet-v2.js';
@@ -96,12 +98,12 @@ Hooks.once('init', async function () {
         },
 
         gmconsole: async (level, msg, error) => {
-            return game.hm3.socket.executeAsGM('gmConsole', game.user.name, level, msg, error);
+            return game.hm3.socket.executeAsGM('gmConsole', game.user?.name, level, msg, error);
         },
         Gm2GmSays: async (text, source, token = null) => {
             return game.hm3.socket.executeAsGM('GmSays', {
                 gmonly: true,
-                sendingUserId: game.user.id,
+                sendingUserId: game.user?.id,
                 source,
                 text,
                 tokenId: token ? token.id : null
@@ -109,14 +111,14 @@ Hooks.once('init', async function () {
         },
         GmSays: async ({gmonly = false, sendingUser = null, source = null, text = null, token = null}) => {
             console.assert(text, 'Parameter text not set');
-            console.assert(game.user.isGM ? true : token, 'Parameter token not set');
+            console.assert(game.user?.isGM ? true : token, 'Parameter token not set');
             if (!text) return;
 
-            const gmUsers = game.users.filter((user) => user.isGM).map((user) => user.id);
+            const gmUsers = game.users?.filter((user) => user.isGM).map((user) => user.id);
             const content = !!source
                 ? `<div class="chat-card gmsays"><blockquote lang="en"><p>${text}</p><cite>&ndash; ${source}</cite></blockquote></div>`
                 : `<div class="chat-card gmsays"><blockquote lang="en"><p>${text}</p></blockquote></div>`;
-            const speaker = game.user.isGM
+            const speaker = game.user?.isGM
                 ? ChatMessageHM3.getSpeaker({alias: 'Simon says...', user: game.user})
                 : ChatMessageHM3.getSpeaker({token});
             const msg = {
@@ -126,7 +128,7 @@ Hooks.once('init', async function () {
             };
 
             // If the message is GM only, send it to the GM users
-            if (gmonly && game.user.isGM) {
+            if (gmonly && game.user?.isGM) {
                 msg['whisper'] = gmUsers;
                 console.info(
                     `HM3 [GmSays] | GM only: ${text
@@ -202,6 +204,12 @@ Hooks.once('init', async function () {
         creature: 'Creature',
         container: 'Container'
     };
+    // CONFIG.Actor.dataModels = {
+    //     character: ActorDataModel,
+    //     creature: ActorDataModel,
+    //     container: ActorDataModel
+    // };
+
     CONFIG.Item.documentClass = ItemHM3;
     CONFIG.Item.typeLabels = {
         base: 'Base',
@@ -399,7 +407,7 @@ Hooks.once('init', async function () {
             },
             condition: (html) => {
                 const actor = game.actors.get(html.data('documentId'));
-                return game.user.isGM && actor?.system?.bioImage;
+                return game.user?.isGM && actor?.system?.bioImage;
             }
         });
     });
@@ -535,7 +543,7 @@ Hooks.on('hm3.onUnmount', async (actor, steed) => {
 
 Hooks.on('dropCanvasData', async (canvas, data) => {
     if (data.type === 'Item') {
-        const targetToken = canvas.tokens.placeables.find((t) => t.bounds.contains(data.x, data.y));
+        const targetToken = canvas?.tokens?.placeables.find((t) => t.bounds.contains(data.x, data.y));
         if (!targetToken) return;
 
         const actor = targetToken.actor;
@@ -546,7 +554,7 @@ Hooks.on('dropCanvasData', async (canvas, data) => {
 
         await actor.createEmbeddedDocuments('Item', [item.toObject()]);
 
-        ui.notifications.info(`"${item.name}" was added to ${targetToken.name}.`);
+        ui.notifications?.info(`"${item.name}" was added to ${targetToken.name}.`);
     }
 });
 
@@ -557,7 +565,7 @@ Hooks.on('dropCanvasData', async (canvas, data) => {
 Hooks.once('ready', async function () {
     game.hm3['socket'] = socketlib.registerSystem('hm3');
 
-    if (game.settings.get('hm3', 'debugMode')) {
+    if (game.settings?.get('hm3', 'debugMode')) {
         CONFIG.debug.hm3 = true;
         // CONFIG.debug.hooks = true;
         game.hm3.runner = runner;
@@ -570,36 +578,36 @@ Hooks.once('ready', async function () {
         console.log = () => {};
         console.debug = () => {};
         console.trace = () => {};
-        game.hm3.runner = () => ui.notifications.info('Please turn on Debug Mode.');
+        game.hm3.runner = () => ui.notifications?.info('Please turn on Debug Mode.');
         console.clear();
     }
 
     // Determine whether a system migration is required
-    const currentMigrationVersion = game.settings.get('hm3', 'systemMigrationVersion');
+    const currentMigrationVersion = game.settings?.get('hm3', 'systemMigrationVersion');
     const NEEDS_MIGRATION_VERSION = '12.0.99'; // Anything older than this must be migrated
 
     if (currentMigrationVersion) {
         let needMigration = foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentMigrationVersion);
-        if (needMigration && game.user.isGM) {
+        if (needMigration && game.user?.isGM) {
             await migrations.migrateWorld();
         }
     } else {
-        game.settings.set('hm3', 'systemMigrationVersion', game.system.version);
+        game.settings?.set('hm3', 'systemMigrationVersion', game.system.version);
     }
 
     Hooks.on('hotbarDrop', (bar, data, slot) => macros.createHM3Macro(data, slot));
 
     // if not exists, create and set
     if (
-        !game.settings.get('hm3', 'actorMacrosFolderId') ||
-        (game.actors.contents.length > 0 && !game.actors.contents[0].macrofolder)
+        !game.settings?.get('hm3', 'actorMacrosFolderId') ||
+        (game.actors?.contents.length > 0 && !game.actors?.contents[0].macrofolder)
     ) {
         const folder = await Folder.create({
             name: 'Actor Macros (DO NOT DELETE)',
             type: 'Macro',
             color: 0x999999
         });
-        await game.settings.set('hm3', 'actorMacrosFolderId', folder.id);
+        await game.settings?.set('hm3', 'actorMacrosFolderId', folder.id);
     }
 
     await registerHooks();
@@ -638,14 +646,14 @@ Hooks.once('ready', async function () {
 
     HM3.ready = true;
 
-    if (game.settings.get('hm3', 'showWelcomeDialog')) {
+    if (game.settings?.get('hm3', 'showWelcomeDialog')) {
         welcomeDialog().then((showAgain) => {
-            game.settings.set('hm3', 'showWelcomeDialog', showAgain);
+            game.settings?.set('hm3', 'showWelcomeDialog', showAgain);
         });
     }
 
-    if (!game.user.can('MACRO_SCRIPT')) {
-        ui.notifications.warn(
+    if (!game.user?.can('MACRO_SCRIPT')) {
+        ui.notifications?.warn(
             'You do not have permission to run JavaScript macros, so all skill and esoterics macros have been disabled.'
         );
     }
@@ -658,8 +666,8 @@ Hooks.on('renderPause', (_app, html) => html.find('img').attr('src', 'systems/hm
 // that no die roll is needed.
 Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
     if (!combatant.initiative) {
-        let token = canvas.tokens.get(combatant.tokenId);
-        combatant.initiative = token.actor.system.initiative;
+        let token = canvas?.tokens?.get(combatant.tokenId);
+        combatant.initiative = token?.actor?.system.initiative;
     }
 });
 
@@ -867,10 +875,10 @@ async function fatigueReceived(actorUuid, fatigue) {
 async function gmSays({gmonly, sendingUserId, source, text, tokenId}) {
     return game.hm3.GmSays({
         gmonly,
-        sendingUser: game.users.get(sendingUserId),
+        sendingUser: game.users?.get(sendingUserId),
         source,
         text,
-        token: canvas.tokens.get(tokenId)
+        token: canvas?.tokens?.get(tokenId)
     });
 }
 
@@ -887,27 +895,27 @@ function gmConsole(user, level, msg, error) {
 
     switch (level) {
         case 'trace':
-            if (game.settings.get('hm3', 'debugMode')) {
+            if (game.settings?.get('hm3', 'debugMode')) {
                 console.trace(message, error);
             }
             break;
         case 'debug':
-            if (game.settings.get('hm3', 'debugMode')) {
+            if (game.settings?.get('hm3', 'debugMode')) {
                 console.debug(message, error);
             }
             break;
         case 'info':
         case 'log':
             console.info(message, error);
-            ui.notifications.info(`${user} logged a GM message: ${msg}`, {permanent: true});
+            ui.notifications?.info(`${user} logged a GM message: ${msg}`, {permanent: true});
             break;
         case 'warn':
             console.warn(message, error);
-            ui.notifications.warn(`${user} logged a GM message: ${msg}`, {permanent: true});
+            ui.notifications?.warn(`${user} logged a GM message: ${msg}`, {permanent: true});
             break;
         case 'error':
             console.error(message, error);
-            ui.notifications.error(`${user} logged a GM message: ${msg}`, {permanent: true});
+            ui.notifications?.error(`${user} logged a GM message: ${msg}`, {permanent: true});
             break;
         default:
             console.warn(`Unknown log level: ${level}.`, error);
@@ -1043,7 +1051,7 @@ let outMutex = new Mutex();
  * @returns {Promise<void>}
  */
 async function updateOutnumbered({aeName = 'true', hook = 'nohook'} = {}) {
-    if (game.combat?.started && game.user.isGM) {
+    if (game.combat?.started && game.user?.isGM) {
         if (aeName === 'true' || combat.outnumberedConditions().includes(aeName)) {
             return outMutex.runExclusive(async () => {
                 console.info(`HM3 | Run updateOutnumbered (aeName = ${aeName}, hook = ${hook})`);

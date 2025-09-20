@@ -1,3 +1,5 @@
+// @ts-check
+
 import {CreatureTemplate} from './creature-model';
 
 const {

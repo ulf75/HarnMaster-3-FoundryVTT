@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * @typedef {object} AbilityData
  * @property {number} value          Ability score.
