@@ -23,11 +23,22 @@ export class MissileProxy extends GearProxy {
         return this.item.system.assocSkill;
     }
     /**
+     * @type {string}
+     */
+    get weaponAspect() {
+        return this.item.system.weaponAspect;
+    }
+    /**
+     * @type {number}
+     */
+    get WQ() {
+        return this.item.system.weaponQuality;
+    }
+    /**
      * @type {boolean}
      */
     get isFeet() {
-        // @ts-expect-error
-        return game.settings.get('hm3', 'distanceUnits') !== 'grid';
+        return game.settings?.get('hm3', 'distanceUnits') !== 'grid';
     }
     /**
      * @type {{range: number, impact: number}}

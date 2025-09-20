@@ -108,14 +108,14 @@
             class="resource-label">
             Associated Skill
         </label>
-        {{#if hasCombatSkills}}
+        {{#if iproxy.combatSkills}}
         {{#if editable}}
         <select
             class="resource-value"
             id="system.assocSkill"
             name="system.assocSkill"
             data-dtype="String">
-            {{selectOptions combatSkills selected=iproxy.assocSkill valueAttr="key" labelAttr="key"}}
+            {{selectOptions iproxy.combatSkills selected=iproxy.assocSkill valueAttr="key" labelAttr="key"}}
         </select>
         {{else}}
         <input

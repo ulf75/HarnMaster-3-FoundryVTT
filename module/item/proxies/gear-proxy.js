@@ -1,5 +1,5 @@
 // @ts-check
-import {ItemType} from '../../hm3-types';
+import {ItemType, SkillType} from '../../hm3-types';
 import {truncate} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
@@ -126,6 +126,37 @@ export class GearProxy extends ItemProxy {
             });
         }
         return containers;
+    }
+    /**
+     * @type {{key: string}[]}
+     */
+    get combatSkills() {
+        const combatSkills = [];
+
+        if (this.actor) {
+            if (this.item.type === ItemType.WEAPONGEAR) {
+                // For weapons, we add a "None" item to the front of the list
+                // as a default (in case no other combat skill applies)
+                combatSkills.push({key: 'None'});
+            } else {
+                // For missiles, we add the "Throwing" skill to the front
+                // of the list as a default (in case no other combat
+                // skill applies)
+                combatSkills.push({key: 'Throwing'});
+            }
+
+            this.actor.itemTypes.skill.forEach((item) => {
+                if (item.system.type === SkillType.COMBAT) {
+                    const lcName = item.name.toLowerCase();
+                    // Ignore the 'Dodge' and 'Initiative' skills,
+                    // since you never want a weapon based on those skills.
+                    if (!(lcName.includes('initiative') || lcName.includes('dodge') || lcName.includes('riding'))) {
+                        combatSkills.push({key: item.name});
+                    }
+                }
+            });
+        }
+        return combatSkills;
     }
 
     /**

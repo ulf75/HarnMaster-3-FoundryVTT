@@ -10,7 +10,7 @@
         class="resource"
         id="missilegear-quality">
         <label class="resource-label">Weapon Quality</label>
-        <input class="value" type="number" name="system.weaponQuality" value="{{ iproxy.weaponQuality }}" data-dtype="Number"
+        <input class="value" type="number" name="system.weaponQuality" value="{{ iproxy.WQ }}" data-dtype="Number"
         {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
     </div>
     <div
@@ -52,14 +52,14 @@
             class="resource-label">
             Associated Skill
         </label>
-        {{#if hasCombatSkills}}
+        {{#if iproxy.combatSkills}}
         {{#if editable}}
         <select
             class="resource-value"
             id="system.assocSkill"
             name="system.assocSkill"
             data-dtype="String">
-            {{selectOptions combatSkills selected=iproxy.assocSkill valueAttr="key" labelAttr="key"}}
+            {{selectOptions iproxy.combatSkills selected=iproxy.assocSkill valueAttr="key" labelAttr="key"}}
         </select>
         {{else}}
         <input
@@ -91,74 +91,74 @@
         <li
             class="flexrow"
             id="missilegear-range-values">
-            {{#if isGridDistanceUnits}}
-            <div class="range-label">Range (hex)</div>
-            {{else}}
+            {{#if iproxy.isFeet}}
             <div class="range-label">Range (ft)</div>
+            {{else}}
+            <div class="range-label">Range (hex)</div>
             {{/if}}
             <div
                 class="range-value"
                 id="missilegear-range-short">
-                {{#if isGridDistanceUnits}}
+                {{#unless iproxy.isFeet}}
                 <input
                     class="value"
                     type="text"
                     name="system.range.short"
-                    value="{{ rangeGrid.short }}"
+                    value="{{ iproxy.short.range }}"
                     data-dtype="Number"
                     disabled />
                 {{else}}
-                <input class="value" type="text" name="system.range.short" value="{{ iproxy.range.short }}" data-dtype="Number"
+                <input class="value" type="text" name="system.range.short" value="{{ iproxy.short.range }}" data-dtype="Number"
                 {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
-                {{/if}}
+                {{/unless}}
             </div>
             <div
                 class="range-value"
                 id="missilegear-range-medium">
-                {{#if isGridDistanceUnits}}
+                {{#unless iproxy.isFeet}}
                 <input
                     class="value"
                     type="text"
                     name="system.range.medium"
-                    value="{{ rangeGrid.medium }}"
+                    value="{{ iproxy.medium.range }}"
                     data-dtype="Number"
                     disabled />
                 {{else}}
-                <input class="value" type="text" name="system.range.medium" value="{{ iproxy.range.medium }}" data-dtype="Number"
+                <input class="value" type="text" name="system.range.medium" value="{{ iproxy.medium.range }}" data-dtype="Number"
                 {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
-                {{/if}}
+                {{/unless}}
             </div>
             <div
                 class="range-value"
                 id="missilegear-range-long">
-                {{#if isGridDistanceUnits}}
+                {{#unless iproxy.isFeet}}
                 <input
                     class="value"
                     type="text"
                     name="system.range.long"
-                    value="{{ rangeGrid.long }}"
+                    value="{{ iproxy.long.range }}"
                     data-dtype="Number"
                     disabled />
                 {{else}}
-                <input class="value" type="text" name="system.range.long" value="{{ iproxy.range.long }}" data-dtype="Number"
+                <input class="value" type="text" name="system.range.long" value="{{ iproxy.long.range }}" data-dtype="Number"
                 {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
-                {{/if}}
+                {{/unless}}
             </div>
             <div
                 class="range-value"
                 id="missilegear-range-extreme">
-                {{#if isGridDistanceUnits}}
+                {{#unless iproxy.isFeet}}
                 <input
                     class="value"
                     type="text"
                     name="system.range.extreme"
-                    value="{{ rangeGrid.extreme }}"
+                    value="{{ iproxy.extreme.range }}"
                     data-dtype="Number"
                     disabled />
                 {{else}}
-                <input class="value" type="text" name="system.range.extreme" value="{{ iproxy.range.extreme }}" data-dtype="Number"
+                <input class="value" type="text" name="system.range.extreme" value="{{ iproxy.extreme.range }}" data-dtype="Number"
                 {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
-                {{/if}}
+                {{/unless}}
             </div>
         </li>
         <li
@@ -168,25 +168,25 @@
             <div
                 class="range-value"
                 id="missilegear-impact-short">
-                <input class="value" type="text" name="system.impact.short" value="{{ iproxy.impact.short }}" data-dtype="Number"
+                <input class="value" type="text" name="system.impact.short" value="{{ iproxy.short.impact }}" data-dtype="Number"
                 {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
             </div>
             <div
                 class="range-value"
                 id="missilegear-impact-medium">
-                <input class="value" type="text" name="system.impact.medium" value="{{ iproxy.impact.medium }}" data-dtype="Number"
+                <input class="value" type="text" name="system.impact.medium" value="{{ iproxy.medium.impact }}" data-dtype="Number"
                 {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
             </div>
             <div
                 class="range-value"
                 id="missilegear-impact-long">
-                <input class="value" type="text" name="system.impact.long" value="{{ iproxy.impact.long }}" data-dtype="Number"
+                <input class="value" type="text" name="system.impact.long" value="{{ iproxy.long.impact }}" data-dtype="Number"
                 {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
             </div>
             <div
                 class="range-value"
                 id="missilegear-impact-extreme">
-                <input class="value" type="text" name="system.impact.extreme" value="{{ iproxy.impact.extreme }}" data-dtype="Number"
+                <input class="value" type="text" name="system.impact.extreme" value="{{ iproxy.extreme.impact }}" data-dtype="Number"
                 {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
             </div>
         </li>
