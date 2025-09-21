@@ -719,6 +719,22 @@ export class ActorHM3 extends Actor {
             Hooks.call('hm3.onTotalInjuryLevelsChanged', this, oldTotalInjuryLevels, actorData.totalInjuryLevels);
         }
 
+        // TODO
+        const ability = actorData.abilities;
+        actorData.abilities.strength.modified = ability.strength.base;
+        actorData.abilities.stamina.modified = ability.stamina.base;
+        actorData.abilities.dexterity.modified = ability.dexterity.base;
+        actorData.abilities.agility.modified = ability.agility.base;
+        actorData.abilities.eyesight.modified = ability.eyesight.base;
+        actorData.abilities.hearing.modified = ability.hearing.base;
+        actorData.abilities.smell.modified = ability.smell.base;
+        actorData.abilities.voice.modified = ability.voice.base;
+        actorData.abilities.intelligence.modified = ability.intelligence.base;
+        actorData.abilities.will.modified = ability.will.base;
+        actorData.abilities.aura.modified = ability.aura.base;
+        actorData.abilities.morality.modified = ability.morality.base;
+        actorData.abilities.comeliness.modified = ability.comeliness.base;
+
         Hooks.call('hm3.onActorPrepareBaseData', this);
     }
 
@@ -732,6 +748,7 @@ export class ActorHM3 extends Actor {
      * @override */
     prepareDerivedData() {
         super.prepareDerivedData();
+        return;
         const actorData = this.system;
 
         const eph = actorData.eph;

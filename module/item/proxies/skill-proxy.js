@@ -1,7 +1,7 @@
 // @ts-check
 import {ActorType, SkillType} from '../../hm3-types';
 import {skillRoll} from '../../macros';
-import {HM100Check, truncatedOML} from '../../utility';
+import {calcSkillBase, HM100Check, truncatedOML} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
 export class SkillProxy extends ItemProxy {
@@ -52,6 +52,7 @@ export class SkillProxy extends ItemProxy {
      * @type {{value: number, formula: string, isFormulaValid: boolean, delta: number}}
      */
     get SB() {
+        calcSkillBase(this.item);
         return this.item.system.skillBase;
     }
     /**
