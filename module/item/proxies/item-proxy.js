@@ -88,13 +88,13 @@ export class ItemProxy {
      * @type {string}
      */
     get description() {
-        return this.item.system.description;
+        return this.item.system.description ?? '';
     }
     /**
      * @type {boolean}
      */
     get hasDescription() {
-        return !!this.description && this.description.length > 0;
+        return this.description.length > 0;
     }
     /**
      * @type {string}

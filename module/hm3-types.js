@@ -37,6 +37,7 @@ export const ActorType = {
  * @enum {string}
  */
 export const ArcanePower = {
+    NONE: 'None',
     ANVIL_PYTAMA: 'anvil-pytama',
     FOCUS: 'focus',
     FOUNT_POWER: 'fount-power',
@@ -53,6 +54,15 @@ export const ArcanePower = {
     THERIS_CHARM_GREATER: 'theris-charm-greater',
     VESSEL_ILADAN: 'vessel-iladan',
     WARD_AKANA: 'ward-akana'
+};
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ArcaneType = {
+    MAJOR: 'Major',
+    MINOR: 'Minor'
 };
 
 /**

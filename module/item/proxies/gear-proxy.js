@@ -1,5 +1,5 @@
 // @ts-check
-import {ItemType, SkillType} from '../../hm3-types';
+import {ArcanePower, ArcaneType, ItemType, SkillType} from '../../hm3-types';
 import {truncate} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
@@ -32,7 +32,7 @@ export class GearProxy extends ItemProxy {
      * @type {boolean}
      */
     get isArtifact() {
-        return this.item.isArtifact;
+        return this.item.system.arcane?.isArtifact ?? false;
     }
     /**
      * @type {boolean}
@@ -50,13 +50,13 @@ export class GearProxy extends ItemProxy {
      * @type {boolean}
      */
     get isMajorArtifact() {
-        return this.item.isMajorArtifact;
+        return this.isArtifact && this.item.system.arcane?.type === 'Major';
     }
     /**
      * @type {boolean}
      */
     get isMinorArtifact() {
-        return this.item.isMinorArtifact;
+        return this.isArtifact && this.item.system.arcane?.type === 'Minor';
     }
     /**
      * @type {number}
@@ -157,6 +157,102 @@ export class GearProxy extends ItemProxy {
             });
         }
         return combatSkills;
+    }
+    /**
+     * @type {{power: ArcanePower}[]}
+     */
+    get powers() {
+        if (this.isMinorArtifact) return [this.item.system.arcane.minor];
+        else if (this.isMajorArtifact)
+            return [
+                this.item.system.arcane.major.power1,
+                this.item.system.arcane.major.power2,
+                this.item.system.arcane.major.power3,
+                this.item.system.arcane.major.power4,
+                this.item.system.arcane.major.power5
+            ];
+        else return [];
+    }
+    /**
+     * @type {ArcaneType}
+     */
+    get arcaneType() {
+        return this.item.system.arcane.type ?? ArcaneType.MINOR;
+    }
+    /**
+     * @type {boolean}
+     */
+    get needsAttunement() {
+        return this.item.system.arcane.needsAttunement ?? false;
+    }
+    /**
+     * @type {boolean}
+     */
+    get isAttuned() {
+        return this.item.system.arcane.isAttuned ?? false;
+    }
+    /**
+     * @type {boolean}
+     */
+    get isOwnerAware() {
+        return this.item.system.arcane.isOwnerAware ?? false;
+    }
+    /**
+     * @type {{}}
+     */
+    get arcane() {
+        return this.item.system.arcane;
+    }
+    /**
+     * @type {number}
+     */
+    get charges() {
+        return this.item.system.arcane.charges ?? -1;
+    }
+    /**
+     * @type {number}
+     */
+    get morality() {
+        return this.item.system.arcane.morality ?? -1;
+    }
+    /**
+     * @type {boolean}
+     */
+    get naturalPersonality() {
+        return this.item.system.arcane.naturalPersonality ?? false;
+    }
+    /**
+     * @type {number}
+     */
+    get EGO() {
+        return this.item.system.arcane.ego ?? 0;
+    }
+
+    /**
+     * Check if the item has an arcane power.
+     * @param {ArcanePower} power - The power to check for.
+     * @returns {boolean} True if the item has the specified arcane power, false otherwise.
+     * */
+    hasArcanePower(power) {
+        return !!this.getArcanePower(power);
+    }
+
+    /**
+     * Get the arcane power object for the specified power.
+     * @param {ArcanePower} power - The power to get.
+     * @returns {{power: ArcanePower, duration: string, isOwnerAware: boolean} | null} The arcane power object or null if not found.
+     * */
+    getArcanePower(power) {
+        if (this.isArtifact) {
+            const arcane = this.powers.find((p) => p.power.startsWith(power));
+            if (arcane)
+                return foundry.utils.mergeObject(
+                    arcane,
+                    game.hm3.config.arcanePowers.find((p) => p.key === arcane.power)
+                );
+            else return {power: ArcanePower.NONE, duration: 'Permanent', isOwnerAware: false};
+        }
+        return null;
     }
 
     /**

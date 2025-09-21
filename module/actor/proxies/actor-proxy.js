@@ -108,13 +108,13 @@ export class ActorProxy {
      * @type {string}
      */
     get description() {
-        return this.actor.system.description;
+        return this.actor.system.description ?? '';
     }
     /**
      * @type {boolean}
      */
     get hasDescription() {
-        return !!this.description && this.description.length > 0;
+        return this.description.length > 0;
     }
 
     //
