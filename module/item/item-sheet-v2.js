@@ -1,5 +1,5 @@
 import {onManageActiveEffect} from '../effect.js';
-import {ItemType} from '../hm3-types.js';
+import {ArcaneType} from '../hm3-types.js';
 import {aeChanges, aeDuration} from '../utility.js';
 
 /**
@@ -51,7 +51,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
     async getData(options = {}) {
         options.classes.push(this.item.type.toLowerCase().replace(' ', '-'));
         if (this.item.system.type) options.classes.push(this.item.system.type.toLowerCase().replace(' ', '-'));
-        if (this.item.system.arcane?.isArtifact && (this.item.system.arcane.isOwnerAware || game.user.isGM))
+        if (this.item.system.arcane?.isArtifact && (this.item.system.arcane.isOwnerAware || game.user?.isGM))
             options.classes.push('artifact');
 
         let context = foundry.utils.mergeObject(super.getData(options), {item: null});
@@ -71,292 +71,54 @@ export class ItemSheetHM3v2 extends ItemSheet {
             }),
             hasActor: !!this.actor,
             hasCombatSkills: false,
-            hasRitualSkills: false,
-            hasRwPermission: game.user.isGM || !game.settings.get('hm3', 'strictGmMode'),
+            hasRwPermission: game.user?.isGM || !game.settings?.get('hm3', 'strictGmMode'),
             iproxy: this.item.proxy,
-            isGM: game.user.isGM,
-            isGridDistanceUnits: game.settings.get('hm3', 'distanceUnits') === 'grid',
+            isGM: game.user?.isGM,
+            isGridDistanceUnits: game.settings?.get('hm3', 'distanceUnits') === 'grid',
             itemType: this.item.type,
             macroTypes: [
                 {key: 'chat', label: 'Chat'},
                 {key: 'script', label: 'Script'}
             ],
-            strictMode: game.settings.get('hm3', 'strictGmMode')
+            strictMode: game.settings?.get('hm3', 'strictGmMode')
         });
         context = foundry.utils.mergeObject(context, {
-            containers: context.containers,
-            cssClass: context.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked',
-            hasMagicSkills: context.iproxy.convocations?.length > 0 || false,
-            isEsotericCombat:
-                context.config.esotericCombatItems.attack.includes(this.item.name) ||
-                context.config.esotericCombatItems.defense.includes(this.item.name)
-        });
-
-        const data = super.getData(options);
-        data.editable = this.isEditable && this._mode === this.constructor.MODES.EDIT;
-        data.cssClass = data.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked';
-
-        data.hasDescription = 'description' in this.object.system;
-        if (data.hasDescription) {
-            data.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {
-                secrets: game.user.isGM,
-                relativeTo: this.object.system
-            });
-            context.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {
-                secrets: game.user.isGM,
-                relativeTo: this.object.system
-            });
-        }
-
-        // Re-define the template data references (backwards compatible)
-        data.item = this.item;
-        data.idata = this.item.system;
-        data.config = CONFIG.HM3;
-        data.itemType = this.item.type;
-        data.hasActor = this.actor && true;
-        data.hasCombatSkills = false;
-        data.hasRitualSkills = false;
-        data.hasMagicSkills = false;
-        data.isGM = game.user.isGM;
-        data.strictMode = game.settings.get('hm3', 'strictGmMode');
-        data.hasRwPermission = data.isGM || !data.strictMode;
-        data.isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
-        data.idata.wqModifier = data.idata.wqModifier || 0;
-
-        // if (data.itemType === ItemType.ARMORGEAR) {
-        //     if (!data.idata.baseValue) data.idata.baseValue = data.idata.value;
-        //     data.idata.value = Math.ceil(data.idata.baseValue * 2 ** data.idata.armorQuality * game.hm3.config.sizes[data.idata.size]);
-        // }
-
-        data.macroTypes = [
-            {key: 'chat', label: 'Chat'},
-            {key: 'script', label: 'Script'}
-        ];
-
-        data.containers = [{label: 'On Person', key: 'on-person'}];
-        // Containers are not allowed in other containers.  So if this item is a container,
-        // don't show any other containers.
-
-        if (this.actor && this.item.type !== ItemType.CONTAINERGEAR) {
-            this.actor.items.forEach((it) => {
-                if (it.type === 'containergear') {
-                    data.containers.push({label: it.name, key: it.id});
-                }
-            });
-        }
-
-        // Fill appropriate lists for individual item sheets
-        if (this.item.type === ItemType.SPELL) {
-            // Spells need a list of convocations
-            data.convocations = [];
-            if (this.actor) {
-                this.actor.itemTypes.skill.forEach((it) => {
-                    if (it.system.type === 'Magic') {
-                        data.convocations.push(it.name);
-                        data.hasMagicSkills = true;
-                    }
-                });
-            }
-        } else if (this.item.type === ItemType.INVOCATION) {
-            // Invocations need a list of dieties
-            data.dieties = [];
-            if (this.actor) {
-                this.actor.itemTypes.skill.forEach((it) => {
-                    if (it.system.type === 'Ritual') {
-                        data.dieties.push(it.name);
-                        data.hasRitualSkills = true;
-                    }
-                });
-            }
-        } else if (this.item.type === ItemType.WEAPONGEAR || this.item.type === ItemType.MISSILEGEAR) {
-            // Weapons need a list of combat skills
-            data.combatSkills = [];
-
-            if (this.actor) {
-                if (this.item.type === ItemType.WEAPONGEAR) {
-                    // For weapons, we add a "None" item to the front of the list
-                    // as a default (in case no other combat skill applies)
-                    data.combatSkills.push({key: 'None'});
-                } else {
-                    // For missiles, we add the "Throwing" skill to the front
-                    // of the list as a default (in case no other combat
-                    // skill applies)
-                    data.combatSkills.push({key: 'Throwing'});
-                }
-
-                this.actor.itemTypes.skill.forEach((it) => {
-                    if (it.system.type === 'Combat') {
-                        const lcName = it.name.toLowerCase();
-                        // Ignore the 'Dodge' and 'Initiative' skills,
-                        // since you never want a weapon based on those skills.
-                        if (!(lcName === 'initiative' || lcName === 'dodge')) {
-                            data.combatSkills.push({key: it.name});
-                            data.hasCombatSkills = true;
-                        }
-                    }
-                });
-            }
-        } else if (this.item.type === ItemType.TRAIT) {
-            if (data.idata.type === 'Psyche') {
-                data.isPsycheTrait = true;
-                if (isNaN(parseInt(data.idata.severity))) data.idata.severity = 5;
-            }
-        } else if (this.item.type === ItemType.CONTAINERGEAR) {
-            if (data.idata.type === undefined) data.idata.type = 'Container';
-        } else if (this.item.type === ItemType.SKILL) {
-            if (this.item.name.includes('Riding')) {
-                const ridingImg = new Map(game.hm3.config.combatSkillIcons).get('riding');
-                const steeds = this.actor.getSteeds();
-                data.steeds = [
-                    {key: '', label: `No Steed`},
-                    ...steeds.map((steed) => {
-                        if (steed) return {key: steed.uuid, label: steed.name};
-                    })
-                ];
-                data.isRiding = true;
-                data.mounted = this.actor.system.mounted;
-
-                // Steed linked to Riding skill according to COMBAT 20
-                if (!!this.item.system.actorUuid && this.item.img === ridingImg) {
-                    const steed = fromUuidSync(this.item.system.actorUuid);
-                    if (steed) {
-                        this.item.img = steed.img;
-                        this.item.name += '/' + steed.name;
-                        this.item.update({'img': this.item.img, 'name': this.item.name});
-                        await steed.update({'system.ownerUuid': this.item.actor.uuid});
-                    }
-                } else if (!this.item.system.actorUuid && this.item.img !== ridingImg) {
-                    this.item.img = ridingImg;
-                    this.item.name = 'Riding';
-                    this.item.update({'img': this.item.img, 'name': this.item.name});
-                    this.item.actor.update({'system.mounted': false});
-                }
-            }
-        }
-
-        if (data.isGridDistanceUnits && !!data.idata.range) {
-            data.rangeGrid = {
-                short: data.idata.range.short / canvas.dimensions.distance,
-                medium: data.idata.range.medium / canvas.dimensions.distance,
-                long: data.idata.range.long / canvas.dimensions.distance,
-                extreme: data.idata.range.extreme / canvas.dimensions.distance
-            };
-        }
-
-        data.effects = [];
-        this.item.effects.forEach((effect) => {
-            data.effects.push({
-                'changes': aeChanges(effect),
-                'disabled': effect.disabled,
-                'duration': aeDuration(effect),
-                'id': effect.id,
-                'img': effect.img,
-                'name': effect.name,
-                'sourceName': effect.sourceName
-            });
-        });
-
-        if (
-            game.hm3.config.esotericCombatItems.attack.includes(this.item.name) ||
-            game.hm3.config.esotericCombatItems.defense.includes(this.item.name)
-        ) {
-            data.isEsotericCombat = true;
-        }
-
-        if (data.idata.arcane && data.idata.arcane.isArtifact) {
-            const updateData = {};
-
-            if (!data.idata.arcane.type) {
-                data.idata.arcane.type = 'Minor';
-                updateData['system.arcane.type'] = data.idata.arcane.type;
-            }
-
-            if (data.idata.arcane.type === 'Minor' && !data.idata.arcane.minor) {
-                data.idata.arcane.minor = {power: 'None', duration: 'Permanent', isOwnerAware: false};
-                updateData['system.arcane.minor'] = data.idata.arcane.minor;
-            } else if (data.idata.arcane.type === 'Major' && !data.idata.arcane.major) {
-                data.idata.arcane.major = {
-                    power1: {power: 'None', duration: 'Permanent', isOwnerAware: false},
-                    power2: {power: 'None', duration: 'Permanent', isOwnerAware: false},
-                    power3: {power: 'None', duration: 'Permanent', isOwnerAware: false},
-                    power4: {power: 'None', duration: 'Permanent', isOwnerAware: false},
-                    power5: {power: 'None', duration: 'Permanent', isOwnerAware: false}
-                };
-                updateData['system.arcane.major'] = data.idata.arcane.major;
-            }
-
-            if (data.idata.arcane.type === 'Minor' && data.idata.arcane.major) {
-                // Reset data
-                updateData['system.arcane.-=major'] = null;
-                updateData['system.arcane.-=needsAttunement'] = null;
-                updateData['system.arcane.-=isAttuned'] = null;
-                updateData['system.arcane.charges'] = -1;
-                updateData['system.arcane.ego'] = 0;
-                updateData['system.arcane.morality'] = -1;
-            } else if (data.idata.arcane.type === 'Major' && data.idata.arcane.minor) {
-                // Reset data
-                updateData['system.arcane.-=minor'] = null;
-            }
-            if (data.idata.arcane.isAttuned && !data.idata.arcane.needsAttunement) {
-                // Reset data
-                data.idata.arcane.isAttuned = false;
-                updateData['system.arcane.isAttuned'] = false;
-            }
-
-            if (data.idata.arcane.minorPower) updateData['system.arcane.-=minorPower'] = null;
-            if (data.idata.arcane.majorPower) updateData['system.arcane.-=majorPower'] = null;
-            if (isNaN(parseInt(data.idata.arcane.morality))) {
-                // Initialize data
-                data.idata.arcane.morality = -1;
-                updateData['system.arcane.morality'] = -1;
-            }
-
-            if (!foundry.utils.isEmpty(updateData)) {
-                await this.object.update(updateData, {enforceTypes: false});
-            }
-
-            data.arcane = {
+            arcane: {
                 choices: [{key: 'Minor'}, {key: 'Major'}],
                 durations: [{key: 'Indefinite'}, {key: 'Permanent'}],
-                description:
-                    game.hm3.config.arcanePowers.find((p) => p.key === data.idata.arcane.minor?.power)?.description ||
-                    '',
-                powers: (data.idata.arcane.type === 'Minor'
+                powers: (context.iproxy.arcaneType === ArcaneType.MINOR
                     ? JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter(
-                          (p) => p.minor && p.validFor.includes(data.data.type)
+                          (p) => p.minor && p.validFor.includes(context.iproxy.type)
                       )
                     : JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter(
-                          (p) => p.major >= 0 && p.validFor.includes(data.data.type)
+                          (p) => p.major >= 0 && p.validFor.includes(context.iproxy.type)
                       )
                 ).map((p) => {
                     p.label = `${p.label}${p.legacy ? '*' : ''}${p.lvl > 0 ? ` (${p.lvl})` : ''} ${
-                        p.major > 0 && data.idata.arcane.type === 'Major' ? `Costs: ${p.major}` : ''
+                        p.major > 0 && context.iproxy.arcaneType === ArcaneType.MAJOR ? `Costs: ${p.major}` : ''
                     }`;
                     return p;
                 })
-            };
-        }
+            },
+            cssClass: context.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked',
+            descriptionHTML: await TextEditor.enrichHTML(this.object.system.description, {
+                secrets: game.user?.isGM,
+                relativeTo: this.object.system
+            })
+        });
 
-        return data;
         return context;
     }
 
     /* -------------------------------------------- */
 
-    /** @override */
-    setPosition(options = {}) {
-        const position = super.setPosition(options);
-        const sheetBody = this.element.find('.sheet-body');
-        const bodyHeight = position.height - 192;
-        sheetBody.css('height', bodyHeight);
-        return position;
-    }
-
-    /* -------------------------------------------- */
-
-    /** @override */
+    /**
+     * @param {JQuery} html
+     * @override
+     * */
     activateListeners(html) {
         super.activateListeners(html);
+        this.item.proxy.activateListeners(html);
 
         html.find('.profile-img').on('click', this._onShowProfileImage.bind(this));
 
@@ -438,7 +200,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
 
     _mode = null;
 
-    /** @inheritDoc */
+    /** @override */
     async _render(force, {mode, ...options} = {}) {
         if (mode === undefined && options.renderContext === 'createItem') mode = this.constructor.MODES.EDIT;
         this._mode = mode ?? this._mode ?? this.constructor.MODES.PLAY;
@@ -464,7 +226,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
             label.remove();
         });
 
-        if (!game.user.isGM && this.document.limited) {
+        if (!game.user?.isGM && this.document.limited) {
             html[0].classList.add('limited');
             return html;
         }
@@ -476,7 +238,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
             toggle.classList.add('mode-slider');
             toggle.dataset.tooltip = 'hm3.SheetModeEdit';
             toggle.dataset.tooltipDirection = 'UP';
-            toggle.setAttribute('aria-label', game.i18n.localize('hm3.SheetModeEdit'));
+            toggle.setAttribute('aria-label', game.i18n?.localize('hm3.SheetModeEdit'));
             toggle.addEventListener('change', this._onChangeSheetMode.bind(this));
             toggle.addEventListener('dblclick', (event) => event.stopPropagation());
             header.insertAdjacentElement('afterbegin', toggle);
@@ -497,7 +259,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
     async _onChangeSheetMode(event) {
         const {MODES} = this.constructor;
         const toggle = event.currentTarget;
-        const label = game.i18n.localize(`hm3.SheetMode${toggle.checked ? 'Play' : 'Edit'}`);
+        const label = game.i18n?.localize(`hm3.SheetMode${toggle.checked ? 'Play' : 'Edit'}`);
         toggle.dataset.tooltip = label;
         toggle.setAttribute('aria-label', label);
         this._mode = toggle.checked ? MODES.EDIT : MODES.PLAY;
@@ -507,7 +269,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
 
     _onShowProfileImage() {
         // Play mode only.
-        if (this._mode === this.constructor.MODES.PLAY || !game.user.isGM) {
+        if (this._mode === this.constructor.MODES.PLAY || !game.user?.isGM) {
             const img = this.item.img;
             if (game.release.generation < 13) {
                 new ImagePopout(img, {title: this.item.name, uuid: this.item.uuid}).render(true);
