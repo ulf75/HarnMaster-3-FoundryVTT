@@ -24,16 +24,16 @@ export class ActorProxy {
         return this.#actor;
     }
     /**
-     * @type {string | null}
+     * @type {string}
      */
     get id() {
-        return this.actor.id;
+        return this.actor.id ?? '';
     }
     /**
-     * @type {string | null}
+     * @type {string}
      */
     get img() {
-        return this.actor.img;
+        return this.actor.img ?? '';
     }
     get itemTypes() {
         // @ts-expect-error

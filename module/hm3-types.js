@@ -176,6 +176,15 @@ export const Condition = {
 };
 
 /**
+ * @readonly
+ * @enum {string}
+ */
+export const ContainerItemType = {
+    CONTAINER: 'Container',
+    GROUP: 'Group'
+};
+
+/**
  * Hook types enum.
  * @readonly
  * @enum {string}

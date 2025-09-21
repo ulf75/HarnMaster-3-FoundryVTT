@@ -1,4 +1,5 @@
 // @ts-check
+import {MiscItemType} from '../../hm3-types';
 import {GearProxy} from './gear-proxy';
 
 export class MiscProxy extends GearProxy {
@@ -8,6 +9,10 @@ export class MiscProxy extends GearProxy {
      */
     get cls() {
         return super.cls + '-misc';
+    }
+    /** @override */
+    get subtype() {
+        return this.item.system.type ?? MiscItemType.MISC;
     }
 
     /**

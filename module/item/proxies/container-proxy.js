@@ -1,4 +1,5 @@
 // @ts-check
+import {ContainerItemType} from '../../hm3-types';
 import {GearProxy} from './gear-proxy';
 
 export class ContainerProxy extends GearProxy {
@@ -26,6 +27,10 @@ export class ContainerProxy extends GearProxy {
      */
     get locked() {
         return this.item.system.locked ?? false;
+    }
+    /** @override */
+    get subtype() {
+        return this.item.system.type ?? ContainerItemType.CONTAINER;
     }
 
     /**
