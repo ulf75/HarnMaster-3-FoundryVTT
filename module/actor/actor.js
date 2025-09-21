@@ -76,6 +76,9 @@ export class ActorHM3 extends Actor {
         else return this.type;
     }
 
+    /**
+     * @type {boolean}
+     */
     get skillImprovement() {
         return !!this.player || !!this.getFlag('hm3', 'SkillImprovement');
     }
@@ -88,11 +91,18 @@ export class ActorHM3 extends Actor {
         return capital ? p() : p().toLowerCase();
     }
 
-    hasLinkedSteed() {
+    /**
+     * @type {boolean}
+     */
+    get hasLinkedSteed() {
         const riding = this.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
         return !!riding && !!riding.system.actorUuid;
     }
 
+    /**
+     *
+     * @returns {ActorHM3[]}
+     */
     getSteeds() {
         const steeds = this.items.contents.filter(
             (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.STEED
@@ -102,6 +112,10 @@ export class ActorHM3 extends Actor {
         });
     }
 
+    /**
+     *
+     * @returns {ActorHM3[]}
+     */
     getParty() {
         const party = this.items.contents.filter(
             (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.PARTY

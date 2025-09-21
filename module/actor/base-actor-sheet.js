@@ -301,7 +301,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // default size is '6'
         if (data.adata.size === undefined) data.adata.size = '6';
 
-        data.hasSteed = this.actor.hasLinkedSteed();
+        data.hasSteed = this.actor.hasLinkedSteed;
 
         // Check for esoteric attack options
         data.esotericAtkOptions = this.actor.items.filter(

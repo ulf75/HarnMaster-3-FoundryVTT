@@ -48,31 +48,37 @@
             class="resource-label">
             Steed
         </label>
+        {{#if (and hasRwPermission editable)}}
         <select
-            class="value"
+            class="value system-actor-uuid"
             id="system.actorUuid"
             name="system.actorUuid">
             {{selectOptions iproxy.steeds selected=iproxy.actorUuid valueAttr="key" labelAttr="label"}}
         </select>
+        {{else}}
+        <input
+            class="value"
+            type="text"
+            id="system.actorUuid"
+            value="{{ iproxy.actorName }}"
+            data-dtype="String"
+            disabled />
+        {{/if}}
     </div>
-    <div class="resource">
+    <div class="resource flexrow">
+        <input
+            type="checkbox"
+            id="mounted"
+            name="mounted"
+            data-dtype="Boolean"
+            {{checked
+            iproxy.mounted}}
+            disabled />
         <label
             for="mounted"
-            class="resource-label">
+            class="resource-label disabled">
             Mounted
         </label>
-        <span class="resource-span">
-            <input
-                class="value"
-                type="checkbox"
-                id="mounted"
-                name="mounted"
-                {{
-                checked
-                iproxy.mounted
-                }}
-                disabled />
-        </span>
     </div>
 </div>
 {{/if}}

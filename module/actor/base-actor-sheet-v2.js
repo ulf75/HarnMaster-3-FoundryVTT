@@ -60,7 +60,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             }),
             filters: this._filters,
             hasRwPermission: game.user?.isGM || !game.settings?.get('hm3', 'strictGmMode'),
-            hasSteed: this.actor.hasLinkedSteed(),
+            hasSteed: this.actor.hasLinkedSteed,
             isCharacter: this.document.type === ActorType.CHARACTER,
             isCharacterMancer: this.actor.getFlag('hm3', 'CharacterMancer') || false,
             isContainer: this.document.type === ActorType.CONTAINER,

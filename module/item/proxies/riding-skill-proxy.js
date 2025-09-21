@@ -13,8 +13,20 @@ export class RidingSkillProxy extends SkillProxy {
     /**
      * @type {string}
      */
+    get actorName() {
+        return fromUuidSync(this.item.system.actorUuid)?.name ?? 'Unknown';
+    }
+    /**
+     * @type {string}
+     */
     get actorUuid() {
         return this.item.system.actorUuid;
+    }
+    /**
+     * @type {string}
+     */
+    get defaultImg() {
+        return new Map(this.config.combatSkillIcons).get('riding');
     }
     /**
      * @type {boolean}
@@ -26,7 +38,7 @@ export class RidingSkillProxy extends SkillProxy {
      * @type {boolean}
      */
     get mounted() {
-        return this.actor.mounted;
+        return this.actorProxy.mounted;
     }
     /**
      * @type {{key: string, label: string}[]}
@@ -36,7 +48,7 @@ export class RidingSkillProxy extends SkillProxy {
         return [
             {key: '', label: `No Steed`},
             ...steeds.map((steed) => {
-                if (steed) return {key: steed.uuid, label: steed.name};
+                return {key: steed.uuid, label: steed.name};
             })
         ];
     }
@@ -54,6 +66,28 @@ export class RidingSkillProxy extends SkillProxy {
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
             skillRoll(item?.uuid, fastforward, this.actor);
+        });
+
+        html.off('change', '.system-actor-uuid');
+        html.on('change', '.system-actor-uuid', async (ev) => {
+            const result = await ev.result;
+            const ridingImg = this.defaultImg;
+            // Steed linked to Riding skill according to COMBAT 20
+            if (!!result['system.actorUuid'] && result.img === ridingImg) {
+                /** @type {Actor | null} */
+                const steed = fromUuidSync(this.actorUuid);
+                if (steed) {
+                    this.item.img = steed.img;
+                    this.item.name += '/' + steed.name;
+                    this.item.update({'img': this.item.img, 'name': this.item.name});
+                    steed.update({'system.ownerUuid': this.item.actor.uuid});
+                }
+            } else if (!result['system.actorUuid'] && result.img !== ridingImg) {
+                this.item.img = ridingImg;
+                this.item.name = 'Riding';
+                this.item.update({'img': this.item.img, 'name': this.item.name});
+                this.item.actor.update({'system.mounted': false});
+            }
         });
     }
 }

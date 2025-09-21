@@ -85,7 +85,7 @@ export class ItemProxy {
     }
 
     /**
-     * @type {{}}
+     * @type {{combatSkillIcons}}
      */
     get config() {
         return CONFIG.HM3;
