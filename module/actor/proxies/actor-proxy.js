@@ -105,6 +105,12 @@ export class ActorProxy {
         return this.actor.system.bioImage;
     }
     /**
+     * @type {{}}
+     */
+    get config() {
+        return CONFIG.HM3;
+    }
+    /**
      * @type {string}
      */
     get description() {

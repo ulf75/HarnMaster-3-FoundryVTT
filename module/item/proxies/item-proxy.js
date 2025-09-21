@@ -85,6 +85,12 @@ export class ItemProxy {
     }
 
     /**
+     * @type {{}}
+     */
+    get config() {
+        return CONFIG.HM3;
+    }
+    /**
      * @type {string}
      */
     get description() {
@@ -127,12 +133,20 @@ export class ItemProxy {
             ItemType.WEAPONGEAR
         ].includes(this.type);
     }
-
     /**
      * @type {boolean}
      */
     get canBeEsotericCombat() {
         return [ItemType.INVOCATION, ItemType.PSIONIC, ItemType.SKILL, ItemType.SPELL].includes(this.type);
+    }
+    /**
+     * @type {boolean}
+     */
+    get isEsotericCombat() {
+        return (
+            this.config.esotericCombatItems.attack.includes(this.name) ||
+            this.config.esotericCombatItems.defense.includes(this.name)
+        );
     }
 
     Skill(name) {
