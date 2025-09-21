@@ -1,24 +1,41 @@
 {{#> item_v2_layout_partial nameReadOnly=(not hasRwPermission) }}
 
-<div class="grid grid-fixed-row grid-2col">
+<div class="grid grid-2col">
     <div class="resource">
         <label
             for="system.convocation"
             class="resource-label">
             Convocation
         </label>
-        {{#if hasMagicSkills}}
-        <select
-            class="resource-value"
-            id="system.convocation"
-            name="system.convocation"
-            data-dtype="String">
-            {{#select iproxy.convocation}}
-            {{#each convocations}}
-            <option value="{{ this }}">{{ this }}</option>
-            {{/each}}
-            {{/select}}
-        </select>
+        {{#if iproxy.convocations}}
+        <span class="resource-span">
+            {{#if (and hasRwPermission editable)}}
+            <select
+                class="resource-value"
+                id="system.convocation"
+                name="system.convocation"
+                data-dtype="String">
+                {{#select iproxy.convocation}}
+                {{#each iproxy.convocations}}
+                <option value="{{ this }}">{{ this }}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            {{else}}
+            <select
+                class="resource-value"
+                id="system.convocation"
+                name="system.convocation"
+                data-dtype="String"
+                disabled>
+                {{#select iproxy.convocation}}
+                {{#each iproxy.convocations}}
+                <option value="{{ this }}">{{ this }}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            {{/if}}
+        </span>
         {{else}}
         <input class="value" type="text" id="system.convocation" name="system.convocation" value="{{ iproxy.convocation }}"
         data-dtype="String" {{#unless (and hasRwPermission editable)}}disabled{{/unless}}/>

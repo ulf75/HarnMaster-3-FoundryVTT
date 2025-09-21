@@ -1,4 +1,5 @@
 // @ts-check
+import {SkillType} from '../../hm3-types';
 import {invokeRitualRoll} from '../../macros';
 import {HM100Check} from '../../utility';
 import {ItemProxy} from './item-proxy';
@@ -29,7 +30,18 @@ export class InvocationProxy extends ItemProxy {
     get EML() {
         return HM100Check((this.Skill(this.diety)?.EML ?? 0) - 5 * this.circle);
     }
-
+    /**
+     * @type {string[]}
+     */
+    get dieties() {
+        const dieties = [];
+        if (this.actor) {
+            this.actorProxy.itemTypes.skill.forEach((item) => {
+                if (item.subtype === SkillType.RITUAL) dieties.push(item.name);
+            });
+        }
+        return dieties;
+    }
     /**
      * @param {JQuery} html
      * @override

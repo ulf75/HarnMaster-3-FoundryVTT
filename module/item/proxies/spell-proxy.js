@@ -1,4 +1,5 @@
 // @ts-check
+import {SkillType} from '../../hm3-types';
 import {castSpellRoll} from '../../macros';
 import {HM100Check} from '../../utility';
 import {ItemProxy} from './item-proxy';
@@ -29,11 +30,14 @@ export class SpellProxy extends ItemProxy {
     get level() {
         return this.item.system.level;
     }
+    /**
+     * @type {string[]}
+     */
     get convocations() {
         const convocations = [];
         if (this.actor) {
             this.actorProxy.itemTypes.skill.forEach((item) => {
-                if (item.subtype === 'Magic') convocations.push(item.name);
+                if (item.subtype === SkillType.MAGIC) convocations.push(item.name);
             });
         }
         return convocations;
