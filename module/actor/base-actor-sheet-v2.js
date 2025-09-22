@@ -34,11 +34,6 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
     async getData(options = {}) {
         const start = performance.now();
 
-        if (!this.actor.system.eph.stumbleTarget) {
-            // sometimes it is not initialized correctly
-            this.actor.prepareDerivedData();
-        }
-
         let context = foundry.utils.mergeObject(super.getData(options), {actor: null, items: null});
         context = foundry.utils.mergeObject(context, {
             aproxy: this.actor.proxy,
