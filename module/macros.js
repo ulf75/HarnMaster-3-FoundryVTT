@@ -1226,42 +1226,54 @@ export async function stumbleRoll(noDialog = false, myActor = null, opponentToke
         ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
+    return stumbleRollAlt({noDialog, actor: actorInfo.actor, opponentToken, token});
+}
 
-    if (actorInfo.actor?.hasCondition(Condition.NO_STUMBLE)) {
+/**
+ *
+ * @param {Object} param0 -
+ * @param {boolean} [param0.noDialog=false] -
+ * @param {ActorHM3 | null} [param0.actor=null] -
+ * @param {TokenHM3 | null} [param0.opponentToken=null] -
+ * @param {TokenHM3 | null} [param0.token=null] -
+ * @returns
+ */
+export async function stumbleRollAlt({noDialog = false, actor = null, opponentToken = null, token = null}) {
+    console.assert(actor, '');
+    if (!actor) return;
+    if (actor.hasCondition(Condition.NO_STUMBLE)) {
         ui.notifications?.warn(`Token has No Stumble feat.`);
         return null;
     }
 
     const stdRollData = {
         fastforward: noDialog,
-        label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Stumble Roll`,
-        notes: '',
-        notesData: {},
+        label: `${actor.isToken ? actor.token?.name : actor.name} Stumble Roll`,
         numdice: 3,
         opponentToken,
-        speaker: actorInfo.speaker,
-        target: actorInfo.actor.system.eph.stumbleTarget,
+        speaker: ChatMessage.getSpeaker({actor}),
+        target: actor.proxy.AGL,
         type: 'stumble'
     };
-    if (actorInfo.actor.isToken) {
-        stdRollData.token = actorInfo.actor.token.id;
-        token = actorInfo.actor.token;
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+        token = actor.token;
     } else {
-        stdRollData.actor = actorInfo.actor.id;
+        stdRollData.actor = actor.id;
         stdRollData.token = token?.id;
     }
 
-    const hooksOk = Hooks.call('hm3.preStumbleRoll', stdRollData, actorInfo.actor);
+    const hooksOk = Hooks.call('hm3.preStumbleRoll', stdRollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.d6Roll(stdRollData);
         if (result) {
-            actorInfo.actor.runCustomMacro(result);
+            actor.runCustomMacro(result);
             if (!result.isSuccess) {
                 await token?.addCondition(Condition.PRONE);
                 // Opponent gains a TA
                 await combat.setTA();
             }
-            callOnHooks('hm3.onStumbleRoll', actorInfo.actor, result, stdRollData);
+            callOnHooks('hm3.onStumbleRoll', actor, result, stdRollData);
         }
         return result;
     }

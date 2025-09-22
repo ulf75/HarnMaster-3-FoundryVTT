@@ -875,7 +875,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
         // Stumble Roll
         html.on('click', '.stumble-roll', (ev) =>
-            macros.stumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor)
+            macros.stumbleRollAlt({noDialog: ev.shiftKey || ev.altKey || ev.ctrlKey, actor: this.actor})
         );
 
         // Fumble Roll

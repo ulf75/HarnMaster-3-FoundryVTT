@@ -159,6 +159,12 @@ export class RollHM3 extends Roll {
         return super.evaluate({minimize, maximize, allowStrings, allowInteractive, options});
     }
 
+    /**
+     *
+     * @param {*} param0
+     * @returns
+     * @protected
+     */
     async _cheatRoll({
         minimize = false,
         maximize = false,
@@ -182,6 +188,9 @@ export class RollHM3 extends Roll {
         return obj;
     }
 
+    /**
+     * @protected
+     */
     _reset() {
         this._dice = [];
         this.terms.forEach((element) => {
@@ -194,6 +203,9 @@ export class RollHM3 extends Roll {
         this._total = undefined;
     }
 
+    /**
+     * @protected
+     */
     async _minMax() {
         this._minimum = (
             await super.evaluate({
