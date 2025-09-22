@@ -100,7 +100,7 @@ async function applyMacro(name, command, slot, img, flags) {
             flags: flags
         });
     }
-    game.user.assignHotbarMacro(macro, slot);
+    game.user?.assignHotbarMacro(macro, slot);
     return null;
 }
 
@@ -1220,27 +1220,49 @@ export async function willShockRoll({myActor = null, noDialog = false, token = n
     return null;
 }
 
+/**
+ *
+ * @param {boolean} noDialog
+ * @param {ActorHM3} myActor
+ * @param {TokenHM3} opponentToken
+ * @param {TokenHM3} token
+ * @returns
+ */
 export async function stumbleRoll(noDialog = false, myActor = null, opponentToken = null, token = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
         ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
-    return stumbleRollAlt({noDialog, actor: actorInfo.actor, opponentToken, token});
+    return stumbleRollAlt({
+        actor: actorInfo.actor,
+        noDialog,
+        opponentToken,
+        target: actorInfo.actor.system.eph.stumbleTarget,
+        token
+    });
 }
 
 /**
- *
+ * Alternative implementation.
  * @param {Object} param0 -
- * @param {boolean} [param0.noDialog=false] -
  * @param {ActorHM3 | null} [param0.actor=null] -
+ * @param {boolean} [param0.noDialog=false] -
  * @param {TokenHM3 | null} [param0.opponentToken=null] -
+ * @param {number} [param0.target=-1] - Agility EML
  * @param {TokenHM3 | null} [param0.token=null] -
  * @returns
  */
-export async function stumbleRollAlt({noDialog = false, actor = null, opponentToken = null, token = null}) {
-    console.assert(actor, '');
+export async function stumbleRollAlt({
+    actor = null,
+    noDialog = false,
+    opponentToken = null,
+    target = -1,
+    token = null
+} = {}) {
+    console.assert(actor, 'This parameter MUST NOT be null.');
     if (!actor) return;
+
     if (actor.hasCondition(Condition.NO_STUMBLE)) {
         ui.notifications?.warn(`Token has No Stumble feat.`);
         return null;
@@ -1252,7 +1274,7 @@ export async function stumbleRollAlt({noDialog = false, actor = null, opponentTo
         numdice: 3,
         opponentToken,
         speaker: ChatMessage.getSpeaker({actor}),
-        target: actor.proxy.AGL,
+        target,
         type: 'stumble'
     };
     if (actor.isToken) {
@@ -1287,47 +1309,74 @@ export async function fumbleRoll(noDialog = false, myActor = null, opponentToken
         return null;
     }
 
-    if (actorInfo.actor?.hasCondition(Condition.NO_FUMBLE)) {
+    // Sometimes fumble rolls were set for animals with DEX 0. They have to make a stumble roll instead.
+    if (actorInfo.actor.system.abilities.dexterity.base <= 0) {
+        if (game.user?.isGM) ui.notifications?.warn(`Fumble target is not set for ${token.name}.`);
+        return stumbleRoll(noDialog, myActor, opponentToken, token);
+    }
+
+    return fumbleRollAlt({
+        actor: actorInfo.actor,
+        noDialog,
+        opponentToken,
+        target: actorInfo.actor.system.eph.fumbleTarget,
+        token
+    });
+}
+
+/**
+ * Alternative implementation.
+ * @param {Object} param0 -
+ * @param {ActorHM3 | null} [param0.actor=null] -
+ * @param {boolean} [param0.noDialog=false] -
+ * @param {TokenHM3 | null} [param0.opponentToken=null] -
+ * @param {number} [param0.target=-1] - Dexterity EML
+ * @param {TokenHM3 | null} [param0.token=null] -
+ * @returns
+ */
+export async function fumbleRollAlt({
+    actor = null,
+    noDialog = false,
+    opponentToken = null,
+    target = -1,
+    token = null
+} = {}) {
+    console.assert(actor, 'This parameter MUST NOT be null.');
+    if (!actor) return;
+
+    if (actor.hasCondition(Condition.NO_FUMBLE)) {
         ui.notifications?.warn(`Token has No Fumble feat.`);
         return null;
     }
 
-    // Sometimes fumble rolls were set for animals with DEX 0. They have to make a stumble roll instead.
-    if (actorInfo.actor.system.abilities.dexterity.base <= 0) {
-        if (game.user.isGM) ui.notifications?.warn(`Fumble target is not set for ${actorInfo.token.name}.`);
-        return stumbleRoll(noDialog, myActor, opponentToken, token);
-    }
-
     const stdRollData = {
-        actor: actorInfo.actor,
+        actor,
         fastforward: noDialog,
-        label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Fumble Roll`,
-        notes: '',
-        notesData: {},
+        label: `${actor.isToken ? actor.token.name : actor.name} Fumble Roll`,
         numdice: 3,
         opponentToken,
-        speaker: actorInfo.speaker,
-        target: actorInfo.actor.system.eph.fumbleTarget,
+        speaker: ChatMessage.getSpeaker({actor}),
+        target,
         type: 'fumble'
     };
-    if (actorInfo.actor.isToken) {
-        stdRollData.token = actorInfo.actor.token.id;
-        token = actorInfo.actor.token;
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+        token = actor.token;
     } else {
-        stdRollData.actor = actorInfo.actor.id;
+        stdRollData.actor = actor.id;
         stdRollData.token = token?.id;
     }
 
-    const hooksOk = Hooks.call('hm3.preFumbleRoll', stdRollData, actorInfo.actor);
+    const hooksOk = Hooks.call('hm3.preFumbleRoll', stdRollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.d6Roll(stdRollData);
         if (result) {
-            actorInfo.actor.runCustomMacro(result);
+            actor.runCustomMacro(result);
             if (!result.isSuccess) {
                 // Opponent gains a TA
                 await combat.setTA();
             }
-            callOnHooks('hm3.onFumbleRoll', actorInfo.actor, result, stdRollData);
+            callOnHooks('hm3.onFumbleRoll', actor, result, stdRollData);
         }
         return result;
     }
@@ -1415,7 +1464,7 @@ export async function throwDownRoll(atkTokenId, defTokenId, atkDice, defDice) {
             content: html.trim(),
             sound: CONFIG.sounds.dice,
             speaker: ChatMessage.getSpeaker(),
-            user: game.user.id
+            user: game.user?.id
         };
 
         // Create a chat message
@@ -2373,7 +2422,7 @@ export async function ignoreResume(
  * @param {TokenHM3} token
  */
 function getTokenInCombat(token = null, forceAllow = false) {
-    if (token && (game.user.isGM || forceAllow)) {
+    if (token && (game.user?.isGM || forceAllow)) {
         const result = {token: token, actor: token.actor};
         return result;
     }
@@ -2415,7 +2464,7 @@ function getSingleSelectedToken() {
 }
 
 function getUserTargetedToken(combatant) {
-    const targets = game.user.targets;
+    const targets = game.user?.targets;
     if (!targets?.size) {
         ui.notifications?.warn(`No targets selected, you must select exactly one target, combat aborted.`);
         return null;
@@ -2423,7 +2472,7 @@ function getUserTargetedToken(combatant) {
         ui.notifications?.warn(`${targets} targets selected, you must select exactly one target, combat aborted.`);
     }
 
-    const targetToken = Array.from(game.user.targets)[0];
+    const targetToken = Array.from(game.user?.targets)[0];
 
     if (combatant?.token && targetToken.id === combatant.token.id) {
         ui.notifications?.warn(`You have targetted the combatant, they cannot attack themself, combat aborted.`);
@@ -2686,7 +2735,7 @@ export async function createActiveEffect(effectData, changes = [], options = {})
         });
 
         if (options.unique && hasActiveEffect(effectData.token, effectData.label)) {
-            if (game.user.isGM)
+            if (game.user?.isGM)
                 ui.notifications?.info(`HM3 | Effect ${effectData.label} is unique and already exists.`);
             return null;
         }
@@ -2788,7 +2837,7 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         case Condition.BLINDED:
         case Condition.DEAFENED:
         case Condition.INCAPACITATED:
-            if (game.user.isGM) ui.notifications?.info(`Condition '${condition}' not yet implemented.`);
+            if (game.user?.isGM) ui.notifications?.info(`Condition '${condition}' not yet implemented.`);
             return null;
 
         // This is a special state of battle frenzy. Any character who enters this mode must take the most
@@ -2887,17 +2936,17 @@ export async function createCondition(token, condition, conditionOptions = {}) {
             break;
 
         default:
-            if (game.user.isGM) ui.notifications?.error(`${condition} is no valid condition.`);
+            if (game.user?.isGM) ui.notifications?.error(`${condition} is no valid condition.`);
             return null;
     }
 
     if (!condData) {
-        if (game.user.isGM) ui.notifications?.error(`Condition ${condition} could not be created.`);
+        if (game.user?.isGM) ui.notifications?.error(`Condition ${condition} could not be created.`);
         return null;
     }
 
     if (condData.options.unique && token.hasCondition(condition)) {
-        if (game.user.isGM) ui.notifications?.info(`HM3 | Condition ${condition} is unique and already exists.`);
+        if (game.user?.isGM) ui.notifications?.info(`HM3 | Condition ${condition} is unique and already exists.`);
         return null;
     }
 

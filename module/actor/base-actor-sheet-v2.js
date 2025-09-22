@@ -875,11 +875,31 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
         // Stumble Roll
         html.on('click', '.stumble-roll', (ev) =>
-            macros.stumbleRollAlt({noDialog: ev.shiftKey || ev.altKey || ev.ctrlKey, actor: this.actor})
+            macros.stumbleRollAlt({
+                actor: this.actor,
+                noDialog: ev.shiftKey || ev.altKey || ev.ctrlKey,
+                target: this.actor.proxy.AGL
+            })
         );
 
         // Fumble Roll
-        html.on('click', '.fumble-roll', (ev) => macros.fumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+        html.on('click', '.fumble-roll', (ev) => {
+            // Sometimes fumble rolls were set for animals with DEX 0. They have to make a stumble roll instead.
+            if (this.actor.proxy.DEX <= 0) {
+                if (game.user?.isGM) ui.notifications?.warn(`Fumble target is not set for ${this.actor.name}.`);
+                return macros.stumbleRollAlt({
+                    actor: this.actor,
+                    noDialog: ev.shiftKey || ev.altKey || ev.ctrlKey,
+                    target: this.actor.proxy.AGL
+                });
+            }
+
+            macros.fumbleRollAlt({
+                actor: this.actor,
+                noDialog: ev.shiftKey || ev.altKey || ev.ctrlKey,
+                target: this.actor.proxy.DEX
+            });
+        });
 
         // Generic Damage Roll
         html.on('click', '.damage-roll', (ev) => macros.genericDamageRoll(this.actor));

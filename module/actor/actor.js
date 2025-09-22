@@ -568,156 +568,156 @@ export class ActorHM3 extends Actor {
     prepareBaseData() {
         super.prepareBaseData();
         const actorData = this.system;
-        const actorItems = this.items;
+        // const actorItems = this.items;
 
         // Ephemeral data is kept together with other actor data,
         // but it is not in the data model so it will not be saved.
-        if (!actorData.eph) actorData.eph = {};
-        const eph = actorData.eph;
-        actorData.v2 = {};
-        actorItems.forEach((i) => (i.system.v2 = {}));
+        // if (!actorData.eph) actorData.eph = {};
+        // const eph = actorData.eph;
+        this.system.v2 = {};
+        this.items.forEach((i) => (i.system.v2 = {}));
         // for (const key of Object.keys(game.hm3.config.activeEffectKeyV2)) {
         //     foundry.utils.setProperty(this, key, null);
         // }
         this.proxy.applyWeaponActiveEffects();
 
-        actorData.totalWeight = 0;
+        // actorData.totalWeight = 0;
 
-        this.calcTotalGearWeight();
+        // this.calcTotalGearWeight();
 
         // Prepare data items unique to containers
-        if (this.type === 'container') {
-            actorData.capacity.value = actorData.totalWeight;
-            actorData.capacity.pct = Math.round(
-                ((actorData.capacity.max - actorData.capacity.value) / (actorData.capacity.max || 1)) * 100
-            );
-            actorData.capacity.pct = Math.max(Math.min(actorData.capacity.pct, 100), 0); // ensure value is between 0 and 100 inclusive)
-            return;
-        }
+        // if (this.type === 'container') {
+        //     actorData.capacity.value = actorData.totalWeight;
+        //     actorData.capacity.pct = Math.round(
+        //         ((actorData.capacity.max - actorData.capacity.value) / (actorData.capacity.max || 1)) * 100
+        //     );
+        //     actorData.capacity.pct = Math.max(Math.min(actorData.capacity.pct, 100), 0); // ensure value is between 0 and 100 inclusive)
+        //     return;
+        // }
 
         // Initialize derived attributes
-        actorData.abilities.strength.effective = 0;
-        actorData.abilities.stamina.effective = 0;
-        actorData.abilities.dexterity.effective = 0;
-        actorData.abilities.agility.effective = 0;
-        actorData.abilities.intelligence.effective = 0;
-        actorData.abilities.aura.effective = 0;
-        actorData.abilities.will.effective = 0;
-        actorData.abilities.eyesight.effective = 0;
-        actorData.abilities.hearing.effective = 0;
-        actorData.abilities.smell.effective = 0;
-        actorData.abilities.voice.effective = 0;
-        actorData.abilities.comeliness.effective = 0;
-        actorData.abilities.morality.effective = 0;
-        actorData.abilities.strength.modified = 0;
-        actorData.abilities.stamina.modified = 0;
-        actorData.abilities.dexterity.modified = 0;
-        actorData.abilities.agility.modified = 0;
-        actorData.abilities.intelligence.modified = 0;
-        actorData.abilities.aura.modified = 0;
-        actorData.abilities.will.modified = 0;
-        actorData.abilities.eyesight.modified = 0;
-        actorData.abilities.hearing.modified = 0;
-        actorData.abilities.smell.modified = 0;
-        actorData.abilities.voice.modified = 0;
-        actorData.abilities.comeliness.modified = 0;
-        actorData.abilities.morality.modified = 0;
-        actorData.dodge = 0;
-        actorData.initiative = 0;
-        actorData.endurance = 0;
-        if (!actorData.shockIndex) actorData.shockIndex = {value: 100, max: 100};
-        actorData.move.effective = 0;
-        actorData.universalPenalty = 0;
-        actorData.physicalPenalty = 0;
-        actorData.totalInjuryLevels = 0;
-        if (!actorData.injuryLevels) actorData.injuryLevels = {value: 0, max: 6};
-        actorData.encumbrance = 0;
-        actorData.condition = 0;
-        actorData.mounted = !!actorData.mounted;
+        // actorData.abilities.strength.effective = 0;
+        // actorData.abilities.stamina.effective = 0;
+        // actorData.abilities.dexterity.effective = 0;
+        // actorData.abilities.agility.effective = 0;
+        // actorData.abilities.intelligence.effective = 0;
+        // actorData.abilities.aura.effective = 0;
+        // actorData.abilities.will.effective = 0;
+        // actorData.abilities.eyesight.effective = 0;
+        // actorData.abilities.hearing.effective = 0;
+        // actorData.abilities.smell.effective = 0;
+        // actorData.abilities.voice.effective = 0;
+        // actorData.abilities.comeliness.effective = 0;
+        // actorData.abilities.morality.effective = 0;
+        // actorData.abilities.strength.modified = 0;
+        // actorData.abilities.stamina.modified = 0;
+        // actorData.abilities.dexterity.modified = 0;
+        // actorData.abilities.agility.modified = 0;
+        // actorData.abilities.intelligence.modified = 0;
+        // actorData.abilities.aura.modified = 0;
+        // actorData.abilities.will.modified = 0;
+        // actorData.abilities.eyesight.modified = 0;
+        // actorData.abilities.hearing.modified = 0;
+        // actorData.abilities.smell.modified = 0;
+        // actorData.abilities.voice.modified = 0;
+        // actorData.abilities.comeliness.modified = 0;
+        // actorData.abilities.morality.modified = 0;
+        // actorData.dodge = 0;
+        // actorData.initiative = 0;
+        // actorData.endurance = 0;
+        // if (!actorData.shockIndex) actorData.shockIndex = {value: 100, max: 100};
+        // actorData.move.effective = 0;
+        // actorData.universalPenalty = 0;
+        // actorData.physicalPenalty = 0;
+        // actorData.totalInjuryLevels = 0;
+        // if (!actorData.injuryLevels) actorData.injuryLevels = {value: 0, max: 6};
+        // actorData.encumbrance = 0;
+        // actorData.condition = 0;
+        // actorData.mounted = !!actorData.mounted;
 
         // Setup temporary work values masking the base values
-        eph.move = actorData.move.base;
-        eph.fatigue = actorData.fatigue || 0;
-        eph.strength = actorData.abilities.strength.base;
-        eph.stamina = actorData.abilities.stamina.base;
-        eph.dexterity = actorData.abilities.dexterity.base;
-        eph.agility = actorData.abilities.agility.base;
-        eph.eyesight = actorData.abilities.eyesight.base;
-        eph.hearing = actorData.abilities.hearing.base;
-        eph.smell = actorData.abilities.smell.base;
-        eph.voice = actorData.abilities.voice.base;
-        eph.intelligence = actorData.abilities.intelligence.base;
-        eph.will = actorData.abilities.will.base;
-        eph.aura = actorData.abilities.aura.base;
-        eph.morality = actorData.abilities.morality.base;
-        eph.comeliness = actorData.abilities.comeliness.base;
-        eph.endurance = actorData.endurance;
+        // eph.move = actorData.move.base;
+        // eph.fatigue = actorData.fatigue || 0;
+        // eph.strength = actorData.abilities.strength.base;
+        // eph.stamina = actorData.abilities.stamina.base;
+        // eph.dexterity = actorData.abilities.dexterity.base;
+        // eph.agility = actorData.abilities.agility.base;
+        // eph.eyesight = actorData.abilities.eyesight.base;
+        // eph.hearing = actorData.abilities.hearing.base;
+        // eph.smell = actorData.abilities.smell.base;
+        // eph.voice = actorData.abilities.voice.base;
+        // eph.intelligence = actorData.abilities.intelligence.base;
+        // eph.will = actorData.abilities.will.base;
+        // eph.aura = actorData.abilities.aura.base;
+        // eph.morality = actorData.abilities.morality.base;
+        // eph.comeliness = actorData.abilities.comeliness.base;
+        // eph.endurance = actorData.endurance;
 
-        eph.meleeAMLMod = 0;
-        eph.meleeDMLMod = 0;
-        eph.missileAMLMod = 0;
-        eph.outnumbered = 0;
-        eph.commSkillsMod = 0;
-        eph.physicalSkillsMod = 0;
-        eph.combatSkillsMod = 0;
-        eph.craftSkillsMod = 0;
-        eph.ritualSkillsMod = 0;
-        eph.magicSkillsMod = 0;
-        eph.psionicTalentsMod = 0;
-        eph.itemAMLMod = 0;
-        eph.itemDMLMod = 0;
-        eph.itemEMLMod = 0;
-        eph.itemCustomMod = 0;
-        eph.unhorsing = 0;
+        // eph.meleeAMLMod = 0;
+        // eph.meleeDMLMod = 0;
+        // eph.missileAMLMod = 0;
+        // eph.outnumbered = 0;
+        // eph.commSkillsMod = 0;
+        // eph.physicalSkillsMod = 0;
+        // eph.combatSkillsMod = 0;
+        // eph.craftSkillsMod = 0;
+        // eph.ritualSkillsMod = 0;
+        // eph.magicSkillsMod = 0;
+        // eph.psionicTalentsMod = 0;
+        // eph.itemAMLMod = 0;
+        // eph.itemDMLMod = 0;
+        // eph.itemEMLMod = 0;
+        // eph.itemCustomMod = 0;
+        // eph.unhorsing = 0;
 
-        // Calculate endurance (in case Condition not present)
-        actorData.endurance = Math.round(
-            (actorData.abilities.strength.base + actorData.abilities.stamina.base + actorData.abilities.will.base) / 3
-        );
+        // // Calculate endurance (in case Condition not present)
+        // actorData.endurance = Math.round(
+        //     (actorData.abilities.strength.base + actorData.abilities.stamina.base + actorData.abilities.will.base) / 3
+        // );
 
-        const oldTotalInjuryLevels = actorData.injuryLevels.value;
-        // Calculate values based on items
-        actorItems.forEach((it) => {
-            const itemData = it.system;
-            if (it.type === ItemType.INJURY) {
-                // Calculate total injury levels
-                actorData.totalInjuryLevels += itemData.injuryLevel || 0;
-            } else if (it.type === ItemType.SKILL && it.name.includes('Condition')) {
-                // if Condition skill is present, use that for endurance instead
-                if (!itemData.masteryLevel) {
-                    actorData.abilities.strength.modified = eph.strength;
-                    actorData.abilities.stamina.modified = eph.stamina;
-                    actorData.abilities.will.modified = eph.will;
-                    it.prepareData();
-                    it.postProcessItems();
-                }
-                actorData.endurance = Math.round((itemData.masteryLevel || 5 * actorData.endurance) / 5);
-                actorData.condition = itemData.masteryLevel;
-            }
-        });
+        // const oldTotalInjuryLevels = actorData.injuryLevels.value;
+        // // Calculate values based on items
+        // actorItems.forEach((it) => {
+        //     const itemData = it.system;
+        //     if (it.type === ItemType.INJURY) {
+        //         // Calculate total injury levels
+        //         actorData.totalInjuryLevels += itemData.injuryLevel || 0;
+        //     } else if (it.type === ItemType.SKILL && it.name.includes('Condition')) {
+        //         // if Condition skill is present, use that for endurance instead
+        //         if (!itemData.masteryLevel) {
+        //             actorData.abilities.strength.modified = eph.strength;
+        //             actorData.abilities.stamina.modified = eph.stamina;
+        //             actorData.abilities.will.modified = eph.will;
+        //             it.prepareData();
+        //             it.postProcessItems();
+        //         }
+        //         actorData.endurance = Math.round((itemData.masteryLevel || 5 * actorData.endurance) / 5);
+        //         actorData.condition = itemData.masteryLevel;
+        //     }
+        // });
 
-        // Safety net: We divide things by endurance, so ensure it is > 0
-        actorData.endurance = Math.max(actorData.endurance, 1);
+        // // Safety net: We divide things by endurance, so ensure it is > 0
+        // actorData.endurance = Math.max(actorData.endurance, 1);
 
-        if (this.hasCondition(Condition.INANIMATE)) {
-            // If the actor is Inanimate, ensure max injury levels is equal to endurance
-            if (actorData.injuryLevels.max !== actorData.endurance) {
-                setTimeout(() => this.update({'system.injuryLevels.max': actorData.endurance}), 500);
-            }
-        } else if (actorData.injuryLevels.max !== 6) {
-            // If the actor is not Inanimate, ensure max injury levels is 6
-            setTimeout(() => this.update({'system.injuryLevels.max': 6}), 500);
-        }
+        // if (this.hasCondition(Condition.INANIMATE)) {
+        //     // If the actor is Inanimate, ensure max injury levels is equal to endurance
+        //     if (actorData.injuryLevels.max !== actorData.endurance) {
+        //         setTimeout(() => this.update({'system.injuryLevels.max': actorData.endurance}), 500);
+        //     }
+        // } else if (actorData.injuryLevels.max !== 6) {
+        //     // If the actor is not Inanimate, ensure max injury levels is 6
+        //     setTimeout(() => this.update({'system.injuryLevels.max': 6}), 500);
+        // }
 
-        eph.totalInjuryLevels = actorData.totalInjuryLevels;
-        eph.effectiveWeight = actorData.loadRating
-            ? Math.max(actorData.totalWeight - actorData.loadRating, 0)
-            : actorData.totalWeight;
-        actorData.encumbrance = Math.floor(eph.effectiveWeight / actorData.endurance);
+        // eph.totalInjuryLevels = actorData.totalInjuryLevels;
+        // eph.effectiveWeight = actorData.loadRating
+        //     ? Math.max(actorData.totalWeight - actorData.loadRating, 0)
+        //     : actorData.totalWeight;
+        // actorData.encumbrance = Math.floor(eph.effectiveWeight / actorData.endurance);
 
-        if (oldTotalInjuryLevels !== actorData.totalInjuryLevels) {
-            Hooks.call('hm3.onTotalInjuryLevelsChanged', this, oldTotalInjuryLevels, actorData.totalInjuryLevels);
-        }
+        // if (oldTotalInjuryLevels !== actorData.totalInjuryLevels) {
+        //     Hooks.call('hm3.onTotalInjuryLevelsChanged', this, oldTotalInjuryLevels, actorData.totalInjuryLevels);
+        // }
 
         // TODO
         const ability = actorData.abilities;
