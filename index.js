@@ -522,7 +522,7 @@ Hooks.on('hm3.onMount', async (actor, steed) => {
         {
             img: actor.img,
             name: 'Rider/' + actor.name,
-            system: {actorUuid: actor.uuid, type: 'Rider', weight: actor.system.weight + actor.system.totalWeight},
+            system: {actorUuid: actor.uuid, type: 'Rider', weight: actor.proxy.weight + actor.proxy.totalGearWeight},
             type: ItemType.MISCGEAR
         },
         {parent: steed}

@@ -1,6 +1,6 @@
 // @ts-check
 import {Condition, ItemType} from '../../hm3-types';
-import {HM6Check, truncate} from '../../utility';
+import {HM6Check} from '../../utility';
 import {ActorHM3} from '../actor';
 import {ActorProxy} from './actor-proxy';
 
@@ -56,7 +56,7 @@ export class LivingProxy extends ActorProxy {
      * @type {number}
      */
     get load() {
-        return truncate(this.totalGearWeight, 0);
+        return Math.ceil(this.totalGearWeight);
     }
     /**
      * @type {number}
