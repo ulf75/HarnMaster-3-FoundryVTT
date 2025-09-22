@@ -871,7 +871,14 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         html.on('click', '.dodge-roll', (ev) => macros.dodgeRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
 
         // Shock Roll
-        html.on('click', '.shock-roll', (ev) => macros.shockRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+        html.on('click', '.shock-roll', (ev) =>
+            macros.shockRollAlt({
+                actor: this.actor,
+                noDialog: ev.shiftKey || ev.altKey || ev.ctrlKey,
+                target: this.actor.proxy.END,
+                up: this.actor.proxy.UP
+            })
+        );
 
         // Stumble Roll
         html.on('click', '.stumble-roll', (ev) =>

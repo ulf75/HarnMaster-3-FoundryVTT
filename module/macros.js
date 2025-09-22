@@ -1133,9 +1133,37 @@ export async function shockRoll(noDialog = false, myActor = null, token = null, 
         ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
+    return shockRollAlt({
+        actor: actorInfo.actor,
+        noDialog,
+        target: actorInfo.actor.system.endurance,
+        token,
+        up: actorInfo.actor.system.universalPenalty
+    });
+}
 
-    if (actorInfo.actor?.hasCondition(Condition.INANIMATE)) {
+/**
+ * Alternative implementation.
+ * @param {Object} param0 -
+ * @param {ActorHM3 | null} [param0.actor=null] -
+ * @param {number} [param0.mode=0] -
+ * @param {boolean} [param0.noDialog=false] -
+ * @param {number} [param0.target=-1] - END
+ * @param {TokenHM3 | null} [param0.token=null] -
+ * @param {number} [param0.up=0] - Universal Penalty
+ * @returns
+ */
+export async function shockRollAlt({actor = null, mode = 0, noDialog = false, target = -1, token = null, up = 0} = {}) {
+    console.assert(actor, 'This parameter MUST NOT be null.');
+    if (!actor) return;
+
+    if (actor.hasCondition(Condition.INANIMATE)) {
         ui.notifications?.warn(`Token is inanimate, and immune to shock.`);
+        return null;
+    }
+
+    if (6 * up <= target) {
+        ui.notifications?.info(`Shock Roll is not required because it cannot fail.`);
         return null;
     }
 
@@ -1143,26 +1171,24 @@ export async function shockRoll(noDialog = false, myActor = null, token = null, 
     const stdRollData = {
         fastforward: noDialog,
         label: `Shock Roll`,
-        notes: '',
-        notesData: {},
-        numdice: actorInfo.actor.system.universalPenalty,
-        speaker: actorInfo.speaker,
-        target: actorInfo.actor.system.endurance,
+        numdice: up,
+        speaker: ChatMessage.getSpeaker({actor}),
+        target,
         type: 'shock'
     };
-    if (actorInfo.actor.isToken) {
-        stdRollData.token = actorInfo.actor.token.id;
-        token = actorInfo.actor.token;
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+        token = actor.token;
     } else {
-        stdRollData.actor = actorInfo.actor.id;
+        stdRollData.actor = actor.id;
         stdRollData.token = token?.id;
     }
     if (mode > 0) stdRollData.noTA = true;
 
-    hooksOk = Hooks.call('hm3.preShockRoll', stdRollData, actorInfo.actor);
+    hooksOk = Hooks.call('hm3.preShockRoll', stdRollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.d6Roll(stdRollData);
-        actorInfo.actor.runCustomMacro(result);
+        actor.runCustomMacro(result);
 
         if (result) {
             if (mode === 0 && !result.isSuccess) {
@@ -1171,7 +1197,7 @@ export async function shockRoll(noDialog = false, myActor = null, token = null, 
             } else if (mode > 0) {
             }
 
-            callOnHooks('hm3.onShockRoll', actorInfo.actor, result, stdRollData);
+            callOnHooks('hm3.onShockRoll', actor, result, stdRollData);
         }
         return result;
     }
@@ -1190,15 +1216,22 @@ export async function willShockRoll({myActor = null, noDialog = false, token = n
         return null;
     }
 
+    const target = actorInfo.actor.proxy.WIL;
+    const up = actorInfo.actor.proxy.UP;
+    if (6 * up <= target) {
+        ui.notifications?.info(`Mental Shock Roll is not required because it cannot fail.`);
+        return null;
+    }
+
     let hooksOk = false;
     const stdRollData = {
         fastforward: noDialog,
         label: `Mental Shock Roll`,
         notes: '',
         notesData: {},
-        numdice: actorInfo.actor.system.universalPenalty,
+        numdice: up,
         speaker: actorInfo.speaker,
-        target: actorInfo.actor.system.abilities.will.base,
+        target,
         type: 'willshock'
     };
     if (actorInfo.actor.isToken) {
@@ -1223,9 +1256,9 @@ export async function willShockRoll({myActor = null, noDialog = false, token = n
 /**
  *
  * @param {boolean} noDialog
- * @param {ActorHM3} myActor
- * @param {TokenHM3} opponentToken
- * @param {TokenHM3} token
+ * @param {ActorHM3 | null} myActor
+ * @param {TokenHM3 | null} opponentToken
+ * @param {TokenHM3 | null} token
  * @returns
  */
 export async function stumbleRoll(noDialog = false, myActor = null, opponentToken = null, token = null) {
