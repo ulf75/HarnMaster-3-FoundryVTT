@@ -1,6 +1,8 @@
 // @ts-check
 import {ContainerItemType} from '../../hm3-types';
+import {truncate} from '../../utility';
 import {GearProxy} from './gear-proxy';
+import {ItemProxy} from './item-proxy';
 
 export class ContainerProxy extends GearProxy {
     /**
@@ -14,13 +16,22 @@ export class ContainerProxy extends GearProxy {
      * @type {{max: number, value: number}}
      */
     get capacity() {
-        return this.item.system.capacity ?? {max: 1, value: 0};
+        return {
+            max: truncate(this.item.system.capacity.max),
+            value: truncate(this.content.reduce((partialSum, item) => partialSum + item.quantity * item.weight, 0))
+        };
     }
     /**
      * @type {boolean}
      */
     get collapsed() {
         return (this.item.system.collapsed ?? false) || this.locked;
+    }
+    /**
+     * @type {ItemProxy[]}
+     */
+    get content() {
+        return this.actorProxy.proxies.filter((item) => item.container === this.id);
     }
     /**
      * @type {boolean}
