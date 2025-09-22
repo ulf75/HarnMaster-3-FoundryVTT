@@ -1,3 +1,8 @@
+// @ts-check
+
+/**
+ *
+ */
 export class RollHM3 extends Roll {
     constructor(formula, data = {}, options = {}) {
         super(formula, data, options);
@@ -9,8 +14,8 @@ export class RollHM3 extends Roll {
         this._check = this._target !== null ? (formula.toLowerCase().includes('d100') ? 'd100' : 'd6') : null;
 
         this._effTarget = null;
-        this._maximum = null;
-        this._minimum = null;
+        this._maximum = -1;
+        this._minimum = -1;
         this._name = options.name ?? 'Unknown';
         this._targetCode = options.targetCode ?? null;
         this._targetCritical = options.targetCritical ?? null;
@@ -26,14 +31,23 @@ export class RollHM3 extends Roll {
         }
     }
 
+    /**
+     * @type {boolean}
+     */
     get debug() {
-        return game.settings.get('hm3', 'debugMode');
+        return game.settings?.get('hm3', 'debugMode');
     }
 
+    /**
+     * @type {boolean}
+     */
     get cheating() {
-        return game.settings.get('hm3', 'cheatMode');
+        return game.settings?.get('hm3', 'cheatMode');
     }
 
+    /**
+     * @type {boolean}
+     */
     get autocheating() {
         return (
             !!this._effTarget &&
@@ -41,34 +55,55 @@ export class RollHM3 extends Roll {
         );
     }
 
+    /**
+     * @type {boolean}
+     */
     get isCritical() {
         if (this._check === 'd6') return false;
         if (this._effTarget !== null) {
             return this.total % 5 === 0;
         }
+        return false;
     }
 
+    /**
+     * @type {boolean}
+     */
     get isSubstantial() {
         if (this._check === 'd6') return false;
         if (this._effTarget !== null) {
             return this.total <= this._effTarget / 2 || this.total > this._effTarget + (100 - this._effTarget) / 2;
         }
+        return false;
     }
 
+    /**
+     * @type {boolean}
+     */
     get isSuccess() {
         if (this._effTarget !== null) {
             return this.total <= this._effTarget;
         }
+        return false;
     }
 
+    /**
+     * @type {number}
+     */
     get minimum() {
         return this._minimum;
     }
 
+    /**
+     * @type {number}
+     */
     get maximum() {
         return this._maximum;
     }
 
+    /**
+     * @type {string}
+     */
     get code() {
         if (this._check === 'd100') {
             let code = 'm';
@@ -81,8 +116,15 @@ export class RollHM3 extends Roll {
             if (this.isSuccess) return 's';
             else return 'f';
         }
+        return '';
     }
 
+    /**
+     *
+     * @param {*} param0
+     * @returns
+     * @override
+     */
     async evaluate({
         minimize = false,
         maximize = false,
