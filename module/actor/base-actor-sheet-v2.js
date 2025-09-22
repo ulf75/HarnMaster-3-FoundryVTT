@@ -871,42 +871,17 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         html.on('click', '.dodge-roll', (ev) => macros.dodgeRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
 
         // Shock Roll
-        html.on('click', '.shock-roll', (ev) =>
-            macros.shockRollAlt({
-                actor: this.actor,
-                noDialog: ev.shiftKey || ev.altKey || ev.ctrlKey,
-                target: this.actor.proxy.END,
-                up: this.actor.proxy.UP
-            })
-        );
+        html.on('click', '.shock-roll', (ev) => macros.shockRollv2(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
 
         // Stumble Roll
         html.on('click', '.stumble-roll', (ev) =>
-            macros.stumbleRollAlt({
-                actor: this.actor,
-                noDialog: ev.shiftKey || ev.altKey || ev.ctrlKey,
-                target: this.actor.proxy.AGL
-            })
+            macros.stumbleRollv2(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor)
         );
 
         // Fumble Roll
-        html.on('click', '.fumble-roll', (ev) => {
-            // Sometimes fumble rolls were set for animals with DEX 0. They have to make a stumble roll instead.
-            if (this.actor.proxy.DEX <= 0) {
-                if (game.user?.isGM) ui.notifications?.warn(`Fumble target is not set for ${this.actor.name}.`);
-                return macros.stumbleRollAlt({
-                    actor: this.actor,
-                    noDialog: ev.shiftKey || ev.altKey || ev.ctrlKey,
-                    target: this.actor.proxy.AGL
-                });
-            }
-
-            macros.fumbleRollAlt({
-                actor: this.actor,
-                noDialog: ev.shiftKey || ev.altKey || ev.ctrlKey,
-                target: this.actor.proxy.DEX
-            });
-        });
+        html.on('click', '.fumble-roll', (ev) =>
+            macros.fumbleRollv2(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor)
+        );
 
         // Generic Damage Roll
         html.on('click', '.damage-roll', (ev) => macros.genericDamageRoll(this.actor));

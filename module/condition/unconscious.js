@@ -57,7 +57,7 @@ await game.hm3.GmSays({
     gmonly: !token.player,
     token
 });
-const success = (await game.hm3.macros.shockRoll(!token.player, token.actor, token, 1)).isSuccess;
+const success = (await game.hm3.macros.shockRollv2(!token.player, token.actor, token, 1)).isSuccess;
 if (success) {
     // Combatant regains consciousness
     await game.hm3.GmSays({
@@ -85,7 +85,7 @@ if (success) {
 const token = canvas.tokens.get('${token.id}');
 if (!token) return;
 if (!game.combat?.started && !token.player) return;
-const ok = (await game.hm3.macros.shockRoll(!token.player, token.actor, token, 2)).isSuccess;
+const ok = (await game.hm3.macros.shockRollv2(!token.player, token.actor, token, 2)).isSuccess;
 await token.deleteCondition('${CONDITION}');
 if (ok) {
     // Combatant is back

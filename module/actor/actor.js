@@ -1560,11 +1560,11 @@ export class ActorHM3 extends Actor {
                 break;
 
             case 'shock':
-                macros.shockRoll(false, actor, token);
+                macros.shockRollv2(false, actor, token);
                 break;
 
             case 'willshock':
-                macros.willShockRoll({
+                macros.willShockRollv2({
                     atkToken,
                     attackerId: button.dataset.atkTokenId,
                     attackWeapon: button.dataset.attackWeapon,
@@ -1578,15 +1578,15 @@ export class ActorHM3 extends Actor {
                 break;
 
             case 'kill':
-                macros.killRoll({myActor: actor, token, injuryLevel});
+                macros.killRollv2({myActor: actor, token, injuryLevel});
                 break;
 
             case 'stumble':
-                macros.stumbleRoll(false, actor, opponentToken, token);
+                macros.stumbleRollv2(false, actor, opponentToken, token);
                 break;
 
             case 'fumble':
-                macros.fumbleRoll(false, actor, opponentToken, token);
+                macros.fumbleRollv2(false, actor, opponentToken, token);
                 break;
 
             case 'throwdown':

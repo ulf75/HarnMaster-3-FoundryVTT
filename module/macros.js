@@ -285,9 +285,9 @@ export async function skillRoll(itemUuid, noDialog = false, myActor = null) {
 
 /**
  * Alternative implementation.
- * @param {Object} param0 -
- * @param {string | null} [param0.itemUuid=null] -
- * @param {boolean} [param0.noDialog=false] -
+ * @param {Object} options -
+ * @param {string | null} [options.itemUuid=null] -
+ * @param {boolean} [options.noDialog=false] -
  * @returns
  */
 export async function skillRollAlt({itemUuid = null, noDialog = false}) {
@@ -1071,9 +1071,9 @@ export async function dodgeRoll(noDialog = false, myActor = null) {
  * TODO
  * @param {Object} options - Additional options
  * @param {boolean} [options.noDialog=false] -
- * @param {boolean} [options.myActor=null] -
- * @param {boolean} [options.token=null] -
- * @param {boolean} [options.injuryLevel=0] -
+ * @param {ActorHM3 | null} [options.myActor=null] -
+ * @param {TokenHM3 | null} [options.token=null] -
+ * @param {number} [options.injuryLevel=0] -
  */
 export async function killRoll(options) {
     options = foundry.utils.mergeObject({noDialog: false, myActor: null, token: null, injuryLevel: 0}, options);
@@ -1083,36 +1083,78 @@ export async function killRoll(options) {
         ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
+    return killRollAlt({
+        actor: actorInfo.actor,
+        injuryLevel: options.injuryLevel,
+        noDialog: options.noDialog,
+        target: actorInfo.actor.system.endurance,
+        token: options.token
+    });
+}
+/**
+ * TODO
+ * @param {Object} options - Additional options
+ * @param {boolean} [options.noDialog=false] -
+ * @param {ActorHM3 | null} [options.myActor=null] -
+ * @param {TokenHM3 | null} [options.token=null] -
+ * @param {number} [options.injuryLevel=0] -
+ */
+export async function killRollv2(options) {
+    options = foundry.utils.mergeObject({noDialog: false, myActor: null, token: null, injuryLevel: 0}, options);
+
+    const actorInfo = getActor({actor: options.myActor, item: null, speaker: null, token: options.token});
+    if (!actorInfo) {
+        ui.notifications?.warn(`No actor for this action could be determined.`);
+        return null;
+    }
+    return killRollAlt({
+        actor: actorInfo.actor,
+        injuryLevel: options.injuryLevel,
+        noDialog: options.noDialog,
+        target: actorInfo.actor.proxy.END,
+        token: options.token
+    });
+}
+
+/**
+ * TODO
+ * @param {Object} options - Additional options
+ * @param {boolean} [options.noDialog=false] -
+ * @param {ActorHM3 | null} [options.actor=null] -
+ * @param {TokenHM3 | null} [options.token=null] -
+ * @param {number} [options.injuryLevel=0] -
+ * @param {number} [options.target=-1] - END
+ */
+async function killRollAlt({noDialog = false, actor = null, token = null, injuryLevel = 0, target = -1} = {}) {
+    console.assert(actor, 'This parameter MUST NOT be null.');
+    if (!actor) return;
 
     let hooksOk = false;
-    let stdRollData = null;
-    stdRollData = {
-        fastforward: options.noDialog,
+    const stdRollData = {
+        fastforward: noDialog,
         label: `Kill Roll`,
-        notes: '',
-        notesData: {},
-        numdice: options.injuryLevel,
-        speaker: actorInfo.speaker,
-        target: actorInfo.actor.system.endurance,
+        numdice: injuryLevel,
+        speaker: ChatMessage.getSpeaker({actor}),
+        target,
         type: 'kill'
     };
-    if (actorInfo.actor.isToken) {
-        stdRollData.token = actorInfo.actor.token.id;
-        options.token = actorInfo.actor.token;
+    if (actor.isToken) {
+        stdRollData.token = actor.token?.id;
+        token = actor.token;
     } else {
-        stdRollData.actor = actorInfo.actor.id;
-        stdRollData.token = options.token?.id;
+        stdRollData.actor = actor.id;
+        stdRollData.token = token?.id;
     }
 
-    hooksOk = Hooks.call('hm3.preKillRoll', stdRollData, actorInfo.actor);
+    hooksOk = Hooks.call('hm3.preKillRoll', stdRollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.d6Roll(stdRollData);
-        actorInfo.actor.runCustomMacro(result);
+        actor.runCustomMacro(result);
 
         if (result) {
             if (!result.isSuccess) {
                 // DYING!!!
-                await options.token?.addCondition(game.hm3.Condition.DYING);
+                await options.token?.addCondition(Condition.DYING);
             } else {
                 await game.hm3.GmSays({
                     text: `<b>${options.token.name}</b> just survives this <b>Fatal</b> wound, and makes a normal <b>Shock</b> roll.`,
@@ -1142,18 +1184,33 @@ export async function shockRoll(noDialog = false, myActor = null, token = null, 
     });
 }
 
+export async function shockRollv2(noDialog = false, myActor = null, token = null, mode = 0) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null, token});
+    if (!actorInfo) {
+        ui.notifications?.warn(`No actor for this action could be determined.`);
+        return null;
+    }
+    return shockRollAlt({
+        actor: actorInfo.actor,
+        noDialog,
+        target: actorInfo.actor.proxy.END,
+        token,
+        up: actorInfo.actor.proxy.UP
+    });
+}
+
 /**
  * Alternative implementation.
- * @param {Object} param0 -
- * @param {ActorHM3 | null} [param0.actor=null] -
- * @param {number} [param0.mode=0] -
- * @param {boolean} [param0.noDialog=false] -
- * @param {number} [param0.target=-1] - END
- * @param {TokenHM3 | null} [param0.token=null] -
- * @param {number} [param0.up=0] - Universal Penalty
+ * @param {Object} options -
+ * @param {ActorHM3 | null} [options.actor=null] -
+ * @param {number} [options.mode=0] -
+ * @param {boolean} [options.noDialog=false] -
+ * @param {number} [options.target=-1] - END
+ * @param {TokenHM3 | null} [options.token=null] -
+ * @param {number} [options.up=0] - Universal Penalty
  * @returns
  */
-export async function shockRollAlt({actor = null, mode = 0, noDialog = false, target = -1, token = null, up = 0} = {}) {
+async function shockRollAlt({actor = null, mode = 0, noDialog = false, target = -1, token = null, up = 0} = {}) {
     console.assert(actor, 'This parameter MUST NOT be null.');
     if (!actor) return;
 
@@ -1204,7 +1261,7 @@ export async function shockRollAlt({actor = null, mode = 0, noDialog = false, ta
     return null;
 }
 
-export async function willShockRoll({myActor = null, noDialog = false, token = null}) {
+export async function willShockRollv2({myActor = null, noDialog = false, token = null}) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null, token});
     if (!actorInfo) {
         ui.notifications?.warn(`No actor for this action could be determined.`);
@@ -1277,22 +1334,39 @@ export async function stumbleRoll(noDialog = false, myActor = null, opponentToke
 }
 
 /**
- * Alternative implementation.
- * @param {Object} param0 -
- * @param {ActorHM3 | null} [param0.actor=null] -
- * @param {boolean} [param0.noDialog=false] -
- * @param {TokenHM3 | null} [param0.opponentToken=null] -
- * @param {number} [param0.target=-1] - Agility EML
- * @param {TokenHM3 | null} [param0.token=null] -
+ *
+ * @param {boolean} noDialog
+ * @param {ActorHM3 | null} myActor
+ * @param {TokenHM3 | null} opponentToken
+ * @param {TokenHM3 | null} token
  * @returns
  */
-export async function stumbleRollAlt({
-    actor = null,
-    noDialog = false,
-    opponentToken = null,
-    target = -1,
-    token = null
-} = {}) {
+export async function stumbleRollv2(noDialog = false, myActor = null, opponentToken = null, token = null) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null});
+    if (!actorInfo) {
+        ui.notifications?.warn(`No actor for this action could be determined.`);
+        return null;
+    }
+    return stumbleRollAlt({
+        actor: actorInfo.actor,
+        noDialog,
+        opponentToken,
+        target: actorInfo.actor.proxy.AGL,
+        token
+    });
+}
+
+/**
+ * Alternative implementation.
+ * @param {Object} options -
+ * @param {ActorHM3 | null} [options.actor=null] -
+ * @param {boolean} [options.noDialog=false] -
+ * @param {TokenHM3 | null} [options.opponentToken=null] -
+ * @param {number} [options.target=-1] - Agility EML
+ * @param {TokenHM3 | null} [options.token=null] -
+ * @returns
+ */
+async function stumbleRollAlt({actor = null, noDialog = false, opponentToken = null, target = -1, token = null} = {}) {
     console.assert(actor, 'This parameter MUST NOT be null.');
     if (!actor) return;
 
@@ -1357,23 +1431,39 @@ export async function fumbleRoll(noDialog = false, myActor = null, opponentToken
     });
 }
 
+export async function fumbleRollv2(noDialog = false, myActor = null, opponentToken = null, token = null) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: null});
+    if (!actorInfo) {
+        ui.notifications?.warn(`No actor for this action could be determined.`);
+        return null;
+    }
+
+    // Sometimes fumble rolls were set for animals with DEX 0. They have to make a stumble roll instead.
+    if (actorInfo.actor.proxy.DEX <= 0) {
+        if (game.user?.isGM) ui.notifications?.warn(`Fumble target is not set for ${actorInfo.actor.name}.`);
+        return stumbleRollv2(noDialog, myActor, opponentToken, token);
+    }
+
+    return fumbleRollAlt({
+        actor: actorInfo.actor,
+        noDialog,
+        opponentToken,
+        target: actorInfo.actor.proxy.DEX,
+        token
+    });
+}
+
 /**
  * Alternative implementation.
- * @param {Object} param0 -
- * @param {ActorHM3 | null} [param0.actor=null] -
- * @param {boolean} [param0.noDialog=false] -
- * @param {TokenHM3 | null} [param0.opponentToken=null] -
- * @param {number} [param0.target=-1] - Dexterity EML
- * @param {TokenHM3 | null} [param0.token=null] -
+ * @param {Object} options -
+ * @param {ActorHM3 | null} [options.actor=null] -
+ * @param {boolean} [options.noDialog=false] -
+ * @param {TokenHM3 | null} [options.opponentToken=null] -
+ * @param {number} [options.target=-1] - Dexterity EML
+ * @param {TokenHM3 | null} [options.token=null] -
  * @returns
  */
-export async function fumbleRollAlt({
-    actor = null,
-    noDialog = false,
-    opponentToken = null,
-    target = -1,
-    token = null
-} = {}) {
+async function fumbleRollAlt({actor = null, noDialog = false, opponentToken = null, target = -1, token = null} = {}) {
     console.assert(actor, 'This parameter MUST NOT be null.');
     if (!actor) return;
 
