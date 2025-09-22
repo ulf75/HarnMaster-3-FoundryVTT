@@ -1,6 +1,7 @@
 import {ActorHM3} from './actor/actor.js';
 import {HM3} from './config.js';
 import {ItemType} from './hm3-types.js';
+import {ItemHM3} from './item/item.js';
 
 /**
  * Determines whether the Skill Base Formula is valid. We perform that
@@ -683,7 +684,7 @@ export function beautify(text) {
  * Increases the improveFlag of a skill by 1 if success is true, or by 2 if success is false.
  * This function is only executed if the 'autoMarkUsedSkills' setting is enabled.
  *
- * @param {string|Item} skill - The skill item to update.
+ * @param {string|ItemHM3} skill - The skill item to update.
  * @param {Object} [options={}] - Options for the skill improvement.
  * @param {Actor} [options.actor=null] - The actor associated with the skill.
  * @param {boolean} [options.success=true] - Whether the skill use was successful.

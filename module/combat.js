@@ -2676,14 +2676,14 @@ export async function setTA(autoend = false) {
  */
 export function outnumberedConditions() {
     return [
-        game.hm3.Condition.CAUTIOUS,
-        game.hm3.Condition.DISTRACTED,
-        game.hm3.Condition.DYING,
-        game.hm3.Condition.GRAPPLED,
-        game.hm3.Condition.INCAPACITATED,
-        game.hm3.Condition.PRONE,
-        game.hm3.Condition.SHOCKED,
-        game.hm3.Condition.UNCONSCIOUS
+        Condition.CAUTIOUS,
+        Condition.DISTRACTED,
+        Condition.DYING,
+        Condition.GRAPPLED,
+        Condition.INCAPACITATED,
+        Condition.PRONE,
+        Condition.SHOCKED,
+        Condition.UNCONSCIOUS
     ];
 }
 

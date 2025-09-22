@@ -1,5 +1,5 @@
 // @ts-check
-import {skillRoll} from '../../macros';
+import {skillRollAlt} from '../../macros';
 import {SkillProxy} from './skill-proxy';
 
 export class RidingSkillProxy extends SkillProxy {
@@ -63,9 +63,9 @@ export class RidingSkillProxy extends SkillProxy {
         html.off('click', `.${this.cls}-roll`);
         html.on('click', `.${this.cls}-roll`, (ev) => {
             const li = $(ev.currentTarget).parents('.item');
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            const noDialog = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
-            skillRoll(item?.uuid, fastforward, this.actor);
+            skillRollAlt({itemUuid: item?.uuid, noDialog});
         });
 
         html.off('change', '.system-actor-uuid');

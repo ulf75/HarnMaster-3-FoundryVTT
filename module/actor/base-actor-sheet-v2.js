@@ -1,3 +1,5 @@
+// @ts-check
+
 import {onManageActiveEffect} from '../effect.js';
 import {ActorType, CompanionType, ItemType, SkillType} from '../hm3-types.js';
 import {ItemHM3} from '../item/item.js';
@@ -186,7 +188,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // Get the drag source and its siblings
         const source = this.actor.items.get(itemData._id);
         const siblings = this.actor.items.filter((i) => {
-            return i.type.endsWith('gear') && i.id !== source.id;
+            return i.type.endsWith('gear') && i.id !== source?.id;
         });
 
         // Get the drop target
@@ -201,7 +203,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         const sortUpdates = SortingHelpers.performIntegerSort(source, {target: target, siblings});
         const updateData = sortUpdates.map((u) => {
             const update = u.update;
-            update._id = u.target._id;
+            update._id = u.target?._id;
             return update;
         });
 
@@ -469,14 +471,14 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         super.activateListeners(html);
 
         if (!game.user?.isGM) {
-            html.find('.facade-image').click(async (ev) => {
+            html.on('click', '.facade-image', async (ev) => {
                 new ImagePopout(this.actor.system.bioImage, {
                     title: this.actor.name,
                     uuid: this.actor.uuid
                 }).render(true);
             });
 
-            html.find('.profile-img').click(async (ev) => {
+            html.on('click', '.profile-img', async (ev) => {
                 new ImagePopout(this.actor.img, {
                     title: this.actor.name,
                     uuid: this.actor.uuid
@@ -489,28 +491,28 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
         this.actor.proxy.activateListeners(html);
 
-        html.find('.character-mancer').click(async (ev) => {
+        html.on('click', '.character-mancer', async (ev) => {
             await this.actor.unsetFlag('hm3', 'CharacterMancer');
             this.actor.sheet.render();
         });
 
         // Add Inventory Item
-        html.find('.item-create').click(this._onItemCreate.bind(this));
+        html.on('click', '.item-create', this._onItemCreate.bind(this));
 
         // Update Inventory Item
-        html.find('.item-edit, .gear-name').click((ev) => {
+        html.on('click', '.item-edit, .gear-name', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
             const item = this.actor.items.get(li.data('itemId'));
             item.sheet?.render(true);
         });
 
         // Delete Inventory Item
-        html.find('.item-delete').click(this._onItemDelete.bind(this));
+        html.on('click', '.item-delete', this._onItemDelete.bind(this));
 
         // Dump Esoteric Description to Chat
-        html.find('.item-dumpdesc').click(this._onDumpEsotericDescription.bind(this));
+        html.on('click', '.item-dumpdesc', this._onDumpEsotericDescription.bind(this));
 
-        html.find('.item-minimize, .item-maximize').click(this._onContainerCollapse.bind(this));
+        html.on('click', '.item-minimize, .item-maximize', this._onContainerCollapse.bind(this));
 
         // html.on('click', '.fff-name', (ev) => {
         //     const el = ev.currentTarget.querySelector('#companion'); //.dataset; // .innerText;
@@ -588,10 +590,10 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // Active Effect management
-        html.find('.effect-control, .effect-name').click((ev) => onManageActiveEffect(ev, this.document));
+        html.on('click', '.effect-control, .effect-name', (ev) => onManageActiveEffect(ev, this.document));
 
         // Macro management
-        html.find('.macro-control, .macro-name').click((ev) => onManageMacro(ev, this.document));
+        html.on('click', '.macro-control, .macro-name', (ev) => onManageMacro(ev, this.document));
 
         // Ensure all text is selected when entering number input field
         html.on('click', "input[type='number']", (ev) => {
@@ -736,7 +738,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // });
 
         // Weapon Damage Roll
-        html.find('.weapon-damage-roll').click((ev) => {
+        html.on('click', '.weapon-damage-roll', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
             const aspect = ev.currentTarget.dataset.aspect;
             const item = this.actor.items.get(li.data('itemId'));
@@ -744,7 +746,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // Missile Damage Roll
-        html.find('.missile-damage-roll').click((ev) => {
+        html.on('click', '.missile-damage-roll', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
             const range = ev.currentTarget.dataset.range;
             const item = this.actor.items.get(li.data('itemId'));
@@ -752,7 +754,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // Melee Weapon Attack
-        html.find('.melee-weapon-attack').click((ev) => {
+        html.on('click', '.melee-weapon-attack', (ev) => {
             // If we are a synthetic actor, token will be set
             let token = this.actor.token;
             if (!token) {
@@ -778,7 +780,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // Missile Weapon Attack
-        html.find('.missile-weapon-attack').click((ev) => {
+        html.on('click', '.missile-weapon-attack', (ev) => {
             // If we are a synthetic actor, token will be set
             let token = this.actor.token;
             if (!token) {
@@ -804,7 +806,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // Esoteric Attack
-        html.find('.esoteric-attack').click((ev) => {
+        html.on('click', '.esoteric-attack', (ev) => {
             // If we are a synthetic actor, token will be set
             let token = this.actor.token;
             if (!token) {
@@ -830,7 +832,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // Weapon Attack Roll
-        html.find('.weapon-attack-roll').click((ev) => {
+        html.on('click', '.weapon-attack-roll', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
@@ -838,7 +840,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // Weapon Defend Roll
-        html.find('.weapon-defend-roll').click((ev) => {
+        html.on('click', '.weapon-defend-roll', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
@@ -846,17 +848,17 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // Missile Attack Roll
-        html.find('.missile-attack-roll').click((ev) => {
+        html.on('click', '.missile-attack-roll', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
             const item = this.actor.items.get(li.data('itemId'));
             macros.missileAttackRoll(item?.uuid, this.actor);
         });
 
         // Injury Roll
-        html.find('.injury-roll').click((ev) => macros.injuryRoll(this.actor));
+        html.on('click', '.injury-roll', (ev) => macros.injuryRoll(this.actor));
 
         // Healing Roll
-        html.find('.healing-roll').click((ev) => {
+        html.on('click', '.healing-roll', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
@@ -866,56 +868,56 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // Dodge Roll
-        html.find('.dodge-roll').click((ev) => macros.dodgeRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+        html.on('click', '.dodge-roll', (ev) => macros.dodgeRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
 
         // Shock Roll
-        html.find('.shock-roll').click((ev) => macros.shockRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+        html.on('click', '.shock-roll', (ev) => macros.shockRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
 
         // Stumble Roll
-        html.find('.stumble-roll').click((ev) =>
+        html.on('click', '.stumble-roll', (ev) =>
             macros.stumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor)
         );
 
         // Fumble Roll
-        html.find('.fumble-roll').click((ev) => macros.fumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+        html.on('click', '.fumble-roll', (ev) => macros.fumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
 
         // Generic Damage Roll
-        html.find('.damage-roll').click((ev) => macros.genericDamageRoll(this.actor));
+        html.on('click', '.damage-roll', (ev) => macros.genericDamageRoll(this.actor));
 
         // Falling Roll
-        html.find('.falling-roll').click((ev) => macros.fallingRoll(false, this.actor));
+        html.on('click', '.falling-roll', (ev) => macros.fallingRoll(false, this.actor));
 
         // Morale Roll
-        html.find('.morale-roll').click((ev) => macros.moraleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+        html.on('click', '.morale-roll', (ev) => macros.moraleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
 
         // Mount / Dismount
-        html.find('.mount-action').click(this._onToggleMount.bind(this));
+        html.on('click', '.mount-action', this._onToggleMount.bind(this));
 
         // Steed Command Check
-        html.find('.steedcommand-roll').click((ev) =>
+        html.on('click', '.steedcommand-roll', (ev) =>
             macros.steedCommandRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor)
         );
 
         // Unhorsing Roll
-        html.find('.unhorsing-roll').click((ev) =>
+        html.on('click', '.unhorsing-roll', (ev) =>
             macros.unhorsingRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor)
         );
 
         // Toggle carry state
-        html.find('.item-carry').click(this._onToggleCarry.bind(this));
+        html.on('click', '.item-carry', this._onToggleCarry.bind(this));
 
         // Toggle equip state
-        html.find('.item-equip').click(this._onToggleEquip.bind(this));
+        html.on('click', '.item-equip', this._onToggleEquip.bind(this));
 
         // Toggle improve state
-        html.find('.item-improve').click(this._onToggleImprove.bind(this));
+        html.on('click', '.item-improve', this._onToggleImprove.bind(this));
 
         // More Info
-        html.find('.more-info').click(this._onMoreInfo.bind(this));
+        html.on('click', '.more-info', this._onMoreInfo.bind(this));
 
-        html.find('.facade-image').on('click', this._onShowBioImage.bind(this));
+        html.on('click', '.facade-image', this._onShowBioImage.bind(this));
 
-        html.find('.profile-img').on('click', this._onShowProfileImage.bind(this));
+        html.on('click', '.profile-img', this._onShowProfileImage.bind(this));
     }
 
     /* -------------------------------------------- */

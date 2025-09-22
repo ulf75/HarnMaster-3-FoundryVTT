@@ -1,3 +1,5 @@
+// @ts-check
+
 import {ActorHM3} from './actor/actor.js';
 import * as combat from './combat.js';
 import * as berserk from './condition/berserk.js';
@@ -32,7 +34,7 @@ import * as utility from './utility.js';
  * Get an existing item macro if one exists, otherwise create a new one.
  * @param {Object} data     The dropped data
  * @param {number} slot     The hotbar slot to use
- * @returns {Promise}
+ * @returns {boolean}
  */
 export function createHM3Macro(data, slot) {
     if (data.type !== 'Item') return true; // Continue normal processing for non-Item documents
@@ -43,7 +45,7 @@ export function createHM3Macro(data, slot) {
 async function handleItemMacro(data, slot) {
     const item = fromUuidSync(data.uuid);
     if (!item?.system) {
-        ui.notifications.warn('No macro exists for that type of object.');
+        ui.notifications?.warn('No macro exists for that type of object.');
         return null;
     }
 
@@ -58,25 +60,25 @@ async function handleItemMacro(data, slot) {
             cmdSuffix = `skillRoll("${item.uuid}");`;
             break;
 
-        case 'psionic':
+        case ItemType.PSIONIC:
             cmdSuffix = `usePsionicRoll("${item.uuid}");`;
             break;
 
-        case 'spell':
+        case ItemType.SPELL:
             cmdSuffix = `castSpellRoll("${item.uuid}");`;
             break;
 
-        case 'invocation':
+        case ItemType.INVOCATION:
             cmdSuffix = `invokeRitualRoll("${item.uuid}");`;
             break;
 
-        case 'weapongear':
+        case ItemType.WEAPONGEAR:
             return askWeaponMacro(item.uuid, slot, item.img);
 
-        case 'missilegear':
+        case ItemType.MISSILEGEAR:
             return askMissileMacro(item.uuid, slot, item.img);
 
-        case 'injury':
+        case ItemType.INJURY:
             cmdSuffix = `healingRoll("${item.name}");`;
             break;
 
@@ -105,7 +107,8 @@ async function applyMacro(name, command, slot, img, flags) {
 function askWeaponMacro(weaponUuid, slot, img) {
     const item = fromUuidSync(weaponUuid);
     if (!item) {
-        ui.notifications.warn(`No weapon with Uuid ${weaponUuid}`);
+        ui.notifications?.warn(`No weapon with Uuid ${weaponUuid}`);
+        return;
     }
 
     const dlghtml = '<p>Select the type of weapon macro to create:</p>';
@@ -232,6 +235,13 @@ function askMissileMacro(name, slot, img, actorSuffix) {
     });
 }
 
+/**
+ *
+ * @param {string} itemName
+ * @param {ActorHM3 | null} myActor
+ * @param {ItemType} type
+ * @returns
+ */
 async function getItemAndActor(itemName, myActor, type) {
     let result = {actor: myActor, item: null, speaker: ChatMessage.getSpeaker()};
     if (itemName) {
@@ -240,11 +250,11 @@ async function getItemAndActor(itemName, myActor, type) {
 
         if (result.item?.type !== type) {
             if (result.item) {
-                ui.notifications.warn(
+                ui.notifications?.warn(
                     `Ignoring ${HM3.ITEM_TYPE_LABEL[type].singular} test because ${result.item.name} is not a ${HM3.ITEM_TYPE_LABEL[type].singular}`
                 );
             } else {
-                ui.notifications.warn(
+                ui.notifications?.warn(
                     `Ignoring ${HM3.ITEM_TYPE_LABEL[type].singular} test because no ${HM3.ITEM_TYPE_LABEL[type].singular} found for '${itemName}'`
                 );
             }
@@ -254,36 +264,62 @@ async function getItemAndActor(itemName, myActor, type) {
 
     result = getActor(result);
     if (!result) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     return result;
 }
 
-export async function skillRoll(itemName, noDialog = false, myActor = null) {
-    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'skill');
+/**
+ *
+ * @param {string} itemUuid
+ * @param {boolean} noDialog
+ * @param {ActorHM3 | null} myActor
+ * @returns
+ */
+export async function skillRoll(itemUuid, noDialog = false, myActor = null) {
+    const {actor, item, speaker} = await getItemAndActor(itemUuid, myActor, 'skill');
+    return skillRollAlt({itemUuid: item.uuid, noDialog});
+}
+
+/**
+ * Alternative implementation.
+ * @param {Object} param0 -
+ * @param {string | null} [param0.itemUuid=null] -
+ * @param {boolean} [param0.noDialog=false] -
+ * @returns
+ */
+export async function skillRollAlt({itemUuid = null, noDialog = false}) {
+    console.assert(itemUuid, 'This parameter MUST NOT be null.');
+    const item = fromUuidSync(itemUuid);
+    if (!item) return;
+    const actor = item.actor;
+    console.assert(actor, 'This parameter MUST NOT be null.');
+    const aproxy = actor?.proxy;
+    const iproxy = item.proxy;
+    const speaker = ChatMessage.getSpeaker({actor});
 
     const stdRollData = {
         type: `skill-${item.name}`,
         skill: `${item.name}`,
         label: `${item.name} Skill Test`,
-        target: item.system.effectiveMasteryLevel,
+        target: iproxy.EML,
         notesData: {
-            up: actor.system.universalPenalty,
-            pp: actor.system.physicalPenalty,
-            il: actor.system.eph.totalInjuryLevels || 0,
-            fatigue: actor.system.eph.fatigue,
-            eml: item.system.effectiveMasteryLevel,
-            ml: item.system.masteryLevel,
-            sb: item.system.skillBase.value,
-            si: item.system.skillIndex
+            up: aproxy.UP,
+            pp: aproxy.PP,
+            il: aproxy.IP,
+            fatigue: aproxy.FP,
+            eml: iproxy.EML,
+            ml: iproxy.ML,
+            sb: iproxy.SB.value,
+            si: iproxy.SI
         },
-        speaker: speaker,
+        speaker,
         fastforward: noDialog,
-        notes: item.system.notes,
-        effSkillBase: item.system.skillBase.value,
-        isCraftOrLore: [SkillType.CRAFT, 'Lore'].includes(item.system.type)
+        notes: iproxy.notes,
+        effSkillBase: iproxy.SB.value,
+        isCraftOrLore: [SkillType.CRAFT, 'Lore'].includes(iproxy.subtype)
     };
     if (actor.isToken) {
         stdRollData.token = actor.token.id;
@@ -306,7 +342,7 @@ export async function skillRoll(itemName, noDialog = false, myActor = null) {
 }
 
 export async function castSpellRoll(itemName, noDialog = false, myActor = null) {
-    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'spell');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.SPELL);
 
     const stdRollData = {
         type: `spell-${item.name}`,
@@ -349,7 +385,7 @@ export async function castSpellRoll(itemName, noDialog = false, myActor = null) 
 }
 
 export async function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
-    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'invocation');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.INVOCATION);
 
     const stdRollData = {
         type: `invocation-${item.name}`,
@@ -392,7 +428,7 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
 }
 
 export async function usePsionicRoll(itemName, noDialog = false, myActor = null) {
-    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'psionic');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.PSIONIC);
 
     const stdRollData = {
         type: `psionic-${item.name}`,
@@ -450,7 +486,7 @@ export async function testAbilityD6RollAlt(options) {
 
     const actorInfo = getActor({actor: options.myActor, item: null, speaker: ChatMessage.getSpeaker()});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
@@ -460,7 +496,7 @@ export async function testAbilityD6RollAlt(options) {
     } else if (actorInfo.actor.type === 'creature') {
         abilities = Object.keys(game.model.Actor.creature.abilities);
     } else {
-        ui.notifications.warn(`${actorInfo.name} does not have ability scores.`);
+        ui.notifications?.warn(`${actorInfo.name} does not have ability scores.`);
         return null;
     }
     if (!options.ability || !abilities.includes(options.ability)) return null;
@@ -524,7 +560,7 @@ export async function testAbilityD100RollAlt(options) {
         speaker: ChatMessage.getSpeaker({actor: options.myActor})
     });
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
@@ -534,7 +570,7 @@ export async function testAbilityD100RollAlt(options) {
     } else if (actorInfo.actor.type === 'creature') {
         abilities = Object.keys(game.model.Actor.creature.abilities);
     } else {
-        ui.notifications.warn(`${actorInfo.actor.name} does not have ability scores.`);
+        ui.notifications?.warn(`${actorInfo.actor.name} does not have ability scores.`);
         return null;
     }
     if (!options.ability || !abilities.includes(options.ability)) return null;
@@ -577,12 +613,12 @@ export async function testAbilityD100RollAlt(options) {
 export async function weaponDamageRoll(itemName, aspect = null, myActor = null) {
     if (aspect) {
         if (!HM3.allowedAspects.includes(aspect)) {
-            ui.notifications.warn(`Invalid aspect requested on damage roll: ${aspect}`);
+            ui.notifications?.warn(`Invalid aspect requested on damage roll: ${aspect}`);
             return null;
         }
     }
 
-    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'weapongear');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.WEAPONGEAR);
 
     const rollData = {
         notesData: {
@@ -619,12 +655,12 @@ export async function missileDamageRoll(itemName, range = null, myActor = null) 
     myActor &&= myActor instanceof Actor ? myActor : fromUuidSync(myActor);
     if (range) {
         if (!HM3.allowedRanges.includes(range)) {
-            ui.notifications.warn(`Invalid range requested on damage roll: ${range}`);
+            ui.notifications?.warn(`Invalid range requested on damage roll: ${range}`);
             return null;
         }
     }
 
-    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'missilegear');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.MISSILEGEAR);
 
     const rollData = {
         notesData: {
@@ -664,7 +700,7 @@ export async function missileDamageRoll(itemName, range = null, myActor = null) 
 }
 
 export async function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
-    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'weapongear');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.WEAPONGEAR);
 
     const stdRollData = {
         label: `${item.name} Attack`,
@@ -704,7 +740,7 @@ export async function weaponAttackRoll(itemName, noDialog = false, myActor = nul
 }
 
 export async function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
-    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'weapongear');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.WEAPONGEAR);
 
     let outnumberedMod = 0;
     if (actor.system?.eph?.outnumbered > 1) {
@@ -749,7 +785,7 @@ export async function weaponDefendRoll(itemName, noDialog = false, myActor = nul
 }
 
 export async function missileAttackRoll(itemName, myActor = null) {
-    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'missilegear');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.MISSILEGEAR);
 
     const rollData = {
         notesData: {
@@ -790,7 +826,7 @@ export async function missileAttackRoll(itemName, myActor = null) {
 export async function injuryRoll(myActor = null, rollData = {}) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
@@ -818,7 +854,7 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
         subType === InjuryType.HEALING &&
         (isNaN(item.system.injuryLevel) || item.system?.injuryLevel < 1 || item.system?.injuryLevel > 5)
     ) {
-        ui.notifications.warn(`No valid injury level specified.`);
+        ui.notifications?.warn(`No valid injury level specified.`);
         return null;
     }
 
@@ -1001,7 +1037,7 @@ async function heal(injury, result) {
 export async function dodgeRoll(noDialog = false, myActor = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
@@ -1044,7 +1080,7 @@ export async function killRoll(options) {
 
     const actorInfo = getActor({actor: options.myActor, item: null, speaker: null, token: options.token});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
@@ -1094,12 +1130,12 @@ export async function killRoll(options) {
 export async function shockRoll(noDialog = false, myActor = null, token = null, mode = 0) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null, token});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     if (actorInfo.actor?.hasCondition(Condition.INANIMATE)) {
-        ui.notifications.warn(`Token is inanimate, and immune to shock.`);
+        ui.notifications?.warn(`Token is inanimate, and immune to shock.`);
         return null;
     }
 
@@ -1145,12 +1181,12 @@ export async function shockRoll(noDialog = false, myActor = null, token = null, 
 export async function willShockRoll({myActor = null, noDialog = false, token = null}) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null, token});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     if (actorInfo.actor?.hasCondition(Condition.INANIMATE)) {
-        ui.notifications.warn(`Token is inanimate, and immune to shock.`);
+        ui.notifications?.warn(`Token is inanimate, and immune to shock.`);
         return null;
     }
 
@@ -1187,12 +1223,12 @@ export async function willShockRoll({myActor = null, noDialog = false, token = n
 export async function stumbleRoll(noDialog = false, myActor = null, opponentToken = null, token = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     if (actorInfo.actor?.hasCondition(Condition.NO_STUMBLE)) {
-        ui.notifications.warn(`Token has No Stumble feat.`);
+        ui.notifications?.warn(`Token has No Stumble feat.`);
         return null;
     }
 
@@ -1235,18 +1271,18 @@ export async function stumbleRoll(noDialog = false, myActor = null, opponentToke
 export async function fumbleRoll(noDialog = false, myActor = null, opponentToken = null, token = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     if (actorInfo.actor?.hasCondition(Condition.NO_FUMBLE)) {
-        ui.notifications.warn(`Token has No Fumble feat.`);
+        ui.notifications?.warn(`Token has No Fumble feat.`);
         return null;
     }
 
     // Sometimes fumble rolls were set for animals with DEX 0. They have to make a stumble roll instead.
     if (actorInfo.actor.system.abilities.dexterity.base <= 0) {
-        if (game.user.isGM) ui.notifications.warn(`Fumble target is not set for ${actorInfo.token.name}.`);
+        if (game.user.isGM) ui.notifications?.warn(`Fumble target is not set for ${actorInfo.token.name}.`);
         return stumbleRoll(noDialog, myActor, opponentToken, token);
     }
 
@@ -1295,15 +1331,15 @@ export async function fumbleRoll(noDialog = false, myActor = null, opponentToken
  * @returns
  */
 export async function throwDownRoll(atkTokenId, defTokenId, atkDice, defDice) {
-    const atkToken = canvas.tokens.get(atkTokenId);
+    const atkToken = canvas?.tokens?.get(atkTokenId);
     if (!atkToken) {
-        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        ui.notifications?.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
         return null;
     }
 
-    const defToken = canvas.tokens.get(defTokenId);
+    const defToken = canvas?.tokens?.get(defTokenId);
     if (!defToken) {
-        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        ui.notifications?.warn(`Defender ${defToken.name} could not be found on canvas.`);
         return null;
     }
 
@@ -1382,7 +1418,7 @@ export async function throwDownRoll(atkTokenId, defTokenId, atkDice, defDice) {
 export async function fallingRoll(noDialog = false, myActor = null, token = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
@@ -1578,7 +1614,7 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
 export async function genericDamageRoll(myActor = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
@@ -1609,25 +1645,25 @@ export async function genericDamageRoll(myActor = null) {
 export async function moraleRoll(noDialog = false, myActor = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     if (actorInfo.actor?.hasCondition(Condition.INANIMATE)) {
-        ui.notifications.warn(`Token is inanimate, and immune to morale.`);
+        ui.notifications?.warn(`Token is inanimate, and immune to morale.`);
         return null;
     }
 
     const ini = actorInfo.actor.items.find((x) => x.name === 'Initiative');
     if (!ini) {
-        ui.notifications.warn(`No Initiative skill for this actor for this action could be determined.`);
+        ui.notifications?.warn(`No Initiative skill for this actor for this action could be determined.`);
         return null;
     }
 
     let token = actorInfo.token;
     const unconscious = actorInfo.actor?.hasCondition(Condition.UNCONSCIOUS);
     if (unconscious) {
-        ui.notifications.warn(`Token is unconscious.`);
+        ui.notifications?.warn(`Token is unconscious.`);
         return null;
     }
 
@@ -1689,18 +1725,18 @@ export async function moraleRoll(noDialog = false, myActor = null) {
 export async function steedCommandRoll(noDialog = false, myActor = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     if (!actorInfo.actor.system.mounted) {
-        ui.notifications.warn(`Actor is not mounted.`);
+        ui.notifications?.warn(`Actor is not mounted.`);
         return null;
     }
 
     const riding = actorInfo.actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
     if (!riding) {
-        ui.notifications.warn(`No Riding skill for this actor for this action could be determined.`);
+        ui.notifications?.warn(`No Riding skill for this actor for this action could be determined.`);
         return null;
     }
 
@@ -1754,18 +1790,18 @@ export async function steedCommandRoll(noDialog = false, myActor = null) {
 export async function unhorsingRoll(noDialog = false, myActor = null, autofail = false) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     if (!actorInfo.actor.system.mounted) {
-        ui.notifications.warn(`Actor is not mounted.`);
+        ui.notifications?.warn(`Actor is not mounted.`);
         return null;
     }
 
     const riding = actorInfo.actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
     if (!riding) {
-        ui.notifications.warn(`No Riding skill for this actor for this action could be determined.`);
+        ui.notifications?.warn(`No Riding skill for this actor for this action could be determined.`);
         return null;
     }
 
@@ -1820,7 +1856,7 @@ export async function unhorsingRoll(noDialog = false, myActor = null, autofail =
 export async function changeFatigue(newValue, myActor = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
@@ -1843,10 +1879,10 @@ export async function changeFatigue(newValue, myActor = null) {
 
 export async function changeMissileQuanity(missileName, newValue, myActor = null) {
     myActor &&= myActor instanceof Actor ? myActor : fromUuidSync(myActor);
-    const missile = await combat.getItem(missileName, 'missilegear', myActor);
+    const missile = await combat.getItem(missileName, ItemType.MISSILEGEAR, myActor);
     const actorParam = {actor: myActor, item: null, speaker: ChatMessage.getSpeaker()};
 
-    if (missile?.type === 'missilegear') {
+    if (missile?.type === ItemType.MISSILEGEAR) {
         if (missile.parent) {
             actorParam.actor = missile.parent;
             actorParam.speaker = ChatMessage.getSpeaker({actor: missile.parent});
@@ -1855,12 +1891,14 @@ export async function changeMissileQuanity(missileName, newValue, myActor = null
 
     const actorInfo = getActor(result, myActor);
     if (!actorInfo) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     if (!missile) {
-        ui.notifications.warn(`${missileName} could not be found in the list of missiles for ${actorInfo.actor.name}.`);
+        ui.notifications?.warn(
+            `${missileName} could not be found in the list of missiles for ${actorInfo.actor.name}.`
+        );
         return null;
     }
 
@@ -1887,17 +1925,17 @@ export async function setSkillDevelopmentFlag(skillName, myActor = null) {
 
     const actor = getActor(result, myActor);
     if (!actor) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
+        ui.notifications?.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     if (!skill) {
-        ui.notifications.warn(`${skillName} could not be found in the list of skills for ${actor.name}.`);
+        ui.notifications?.warn(`${skillName} could not be found in the list of skills for ${actor.name}.`);
         return null;
     }
 
     if (!actor.isOwner) {
-        ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not set the skill development flag.`);
+        ui.notifications?.warn(`You are not an owner of ${actor.name}, so you may not set the skill development flag.`);
         return null;
     }
 
@@ -1922,7 +1960,7 @@ export async function weaponAttack(itemName = null, noDialog = false, myToken = 
 
     let weapon = null;
     if (itemName) {
-        weapon = await combat.getItem(itemName, 'weapongear', combatant.actor);
+        weapon = await combat.getItem(itemName, ItemType.WEAPONGEAR, combatant.actor);
     }
 
     // If an attack is carried out unarmed, you can select the GRAPPLE option.
@@ -1946,7 +1984,7 @@ export async function missileAttack(itemName = null, noDialog = false, myToken =
 
     let missile = null;
     if (itemName) {
-        missile = await combat.getItem(itemName, 'missilegear', combatant.actor);
+        missile = await combat.getItem(itemName, ItemType.MISSILEGEAR, combatant.actor);
     }
 
     const hooksOk = Hooks.call('hm3.preMissileAttack', combatant, targetToken, missile);
@@ -2003,15 +2041,15 @@ export async function meleeCounterstrikeResume(
     isGrappleAtk,
     noDialog = false
 ) {
-    const atkToken = canvas.tokens.get(atkTokenId);
+    const atkToken = canvas?.tokens?.get(atkTokenId);
     if (!atkToken) {
-        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        ui.notifications?.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
         return null;
     }
 
-    const defToken = canvas.tokens.get(defTokenId);
+    const defToken = canvas?.tokens?.get(defTokenId);
     if (!defToken) {
-        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        ui.notifications?.warn(`Defender ${defToken.name} could not be found on canvas.`);
         return null;
     }
 
@@ -2078,15 +2116,15 @@ export async function dodgeResume(
     isGrappleAtk,
     noDialog = false
 ) {
-    const atkToken = canvas.tokens.get(atkTokenId);
+    const atkToken = canvas?.tokens?.get(atkTokenId);
     if (!atkToken) {
-        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        ui.notifications?.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
         return null;
     }
 
-    const defToken = canvas.tokens.get(defTokenId);
+    const defToken = canvas?.tokens?.get(defTokenId);
     if (!defToken) {
-        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        ui.notifications?.warn(`Defender ${defToken.name} could not be found on canvas.`);
         return null;
     }
 
@@ -2156,15 +2194,15 @@ export async function blockResume(
     isGrappleAtk,
     noDialog = false
 ) {
-    const atkToken = canvas.tokens.get(atkTokenId);
+    const atkToken = canvas?.tokens?.get(atkTokenId);
     if (!atkToken) {
-        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        ui.notifications?.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
         return null;
     }
 
-    const defToken = canvas.tokens.get(defTokenId);
+    const defToken = canvas?.tokens?.get(defTokenId);
     if (!defToken) {
-        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        ui.notifications?.warn(`Defender ${defToken.name} could not be found on canvas.`);
         return null;
     }
 
@@ -2212,15 +2250,15 @@ export async function blockResume(
 }
 
 export async function esotericResume(atkTokenId, defTokenId, atkWeaponName, atkEffAML, noDialog = false) {
-    const atkToken = canvas.tokens.get(atkTokenId);
+    const atkToken = canvas?.tokens?.get(atkTokenId);
     if (!atkToken) {
-        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        ui.notifications?.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
         return null;
     }
 
-    const defToken = canvas.tokens.get(defTokenId);
+    const defToken = canvas?.tokens?.get(defTokenId);
     if (!defToken) {
-        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        ui.notifications?.warn(`Defender ${defToken.name} could not be found on canvas.`);
         return null;
     }
 
@@ -2257,15 +2295,15 @@ export async function ignoreResume(
     isGrappleAtk,
     noDialog = false
 ) {
-    const atkToken = canvas.tokens.get(atkTokenId);
+    const atkToken = canvas?.tokens?.get(atkTokenId);
     if (!atkToken) {
-        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        ui.notifications?.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
         return null;
     }
 
-    const defToken = canvas.tokens.get(defTokenId);
+    const defToken = canvas?.tokens?.get(defTokenId);
     if (!defToken) {
-        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        ui.notifications?.warn(`Defender ${defToken.name} could not be found on canvas.`);
         return null;
     }
 
@@ -2329,54 +2367,54 @@ function getTokenInCombat(token = null, forceAllow = false) {
     }
 
     if (!game.combat || game.combat.combatants.length === 0) {
-        ui.notifications.warn(`No active combatant.`);
+        ui.notifications?.warn(`No active combatant.`);
         return null;
     }
 
     const combatant = game.combat.combatant;
 
     if (token && token.id !== combatant.token.id) {
-        ui.notifications.warn(`${token.name} cannot perform that action at this time.`);
+        ui.notifications?.warn(`${token.name} cannot perform that action at this time.`);
         return null;
     }
 
     if (!combatant.actor.isOwner) {
-        ui.notifications.warn(`You do not have permissions to control ${combatant.token.name}.`);
+        ui.notifications?.warn(`You do not have permissions to control ${combatant.token.name}.`);
         return null;
     }
 
-    token = canvas.tokens.get(combatant.token.id);
+    token = canvas?.tokens?.get(combatant.token.id);
     return {token: token, actor: combatant.actor};
 }
 
 function getSingleSelectedToken() {
-    const numTargets = canvas.tokens?.controlled?.length;
+    const numTargets = canvas?.tokens?.controlled?.length;
     if (!numTargets) {
-        ui.notifications.warn(`No selected tokens on the canvas.`);
+        ui.notifications?.warn(`No selected tokens on the canvas.`);
         return null;
     }
 
     if (numTargets > 1) {
-        ui.notifications.warn(`There are ${numTargets} selected tokens on the canvas, please select only one`);
+        ui.notifications?.warn(`There are ${numTargets} selected tokens on the canvas, please select only one`);
         return null;
     }
 
-    return canvas.tokens.controlled[0];
+    return canvas?.tokens?.controlled[0];
 }
 
 function getUserTargetedToken(combatant) {
     const targets = game.user.targets;
     if (!targets?.size) {
-        ui.notifications.warn(`No targets selected, you must select exactly one target, combat aborted.`);
+        ui.notifications?.warn(`No targets selected, you must select exactly one target, combat aborted.`);
         return null;
     } else if (targets.size > 1) {
-        ui.notifications.warn(`${targets} targets selected, you must select exactly one target, combat aborted.`);
+        ui.notifications?.warn(`${targets} targets selected, you must select exactly one target, combat aborted.`);
     }
 
     const targetToken = Array.from(game.user.targets)[0];
 
     if (combatant?.token && targetToken.id === combatant.token.id) {
-        ui.notifications.warn(`You have targetted the combatant, they cannot attack themself, combat aborted.`);
+        ui.notifications?.warn(`You have targetted the combatant, they cannot attack themself, combat aborted.`);
         return null;
     }
 
@@ -2397,13 +2435,13 @@ function getActor({item, actor, speaker, token} = {}) {
                 // If actor was null, lets try to figure it out from the Speaker
                 result.speaker = ChatMessage.getSpeaker();
                 if (result.speaker?.token) {
-                    const token = canvas.tokens.get(result.speaker.token);
+                    const token = canvas?.tokens?.get(result.speaker.token);
                     result.actor = token.actor;
                 } else {
                     result.actor = result.speaker?.actor;
                 }
                 if (!result.actor) {
-                    ui.notifications.warn(`No actor selected, roll ignored.`);
+                    ui.notifications?.warn(`No actor selected, roll ignored.`);
                     return null;
                 }
             } else {
@@ -2412,15 +2450,15 @@ function getActor({item, actor, speaker, token} = {}) {
             }
 
             if (!result.actor) {
-                ui.notifications.warn(`No actor selected, roll ignored.`);
+                ui.notifications?.warn(`No actor selected, roll ignored.`);
                 return null;
             }
         }
     }
-    if (!result.token) result.token = canvas.tokens.get(result.speaker.token);
+    if (!result.token) result.token = canvas?.tokens?.get(result.speaker.token);
 
     if (!result.actor.isOwner) {
-        ui.notifications.warn(`You do not have permissions to control ${result.actor.name}.`);
+        ui.notifications?.warn(`You do not have permissions to control ${result.actor.name}.`);
         return null;
     }
 
@@ -2471,8 +2509,8 @@ export function callOnHooks(hook, actor, result, rollData, item = null) {
  * @returns
  */
 export function distanceBtwnTwoTokens(sourceTokenId, targetTokenId, gridUnits = false) {
-    const source = canvas.tokens.get(sourceTokenId);
-    const target = canvas.tokens.get(targetTokenId);
+    const source = canvas?.tokens?.get(sourceTokenId);
+    const target = canvas?.tokens?.get(targetTokenId);
 
     if (!source || !target || !canvas.scene || !canvas.scene.grid) return 9999;
 
@@ -2636,7 +2674,8 @@ export async function createActiveEffect(effectData, changes = [], options = {})
         });
 
         if (options.unique && hasActiveEffect(effectData.token, effectData.label)) {
-            if (game.user.isGM) ui.notifications.info(`HM3 | Effect ${effectData.label} is unique and already exists.`);
+            if (game.user.isGM)
+                ui.notifications?.info(`HM3 | Effect ${effectData.label} is unique and already exists.`);
             return null;
         }
 
@@ -2696,10 +2735,10 @@ let deleteMutex = new Mutex();
  * @returns {Promise<void>}
  */
 export async function deleteActiveEffect(tokenId, effectId) {
-    if (!tokenId || !effectId || !canvas.tokens.get(tokenId)) return;
+    if (!tokenId || !effectId || !canvas?.tokens?.get(tokenId)) return;
     // sometimes effect macros fire twice -> race condition
     await deleteMutex.runExclusive(async () => {
-        const token = canvas.tokens.get(tokenId);
+        const token = canvas?.tokens?.get(tokenId);
         const effect = token?.actor?.allApplicableEffects().find((e) => e.id === effectId);
         return effect?.delete();
     });
@@ -2737,7 +2776,7 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         case Condition.BLINDED:
         case Condition.DEAFENED:
         case Condition.INCAPACITATED:
-            if (game.user.isGM) ui.notifications.info(`Condition '${condition}' not yet implemented.`);
+            if (game.user.isGM) ui.notifications?.info(`Condition '${condition}' not yet implemented.`);
             return null;
 
         // This is a special state of battle frenzy. Any character who enters this mode must take the most
@@ -2836,17 +2875,17 @@ export async function createCondition(token, condition, conditionOptions = {}) {
             break;
 
         default:
-            if (game.user.isGM) ui.notifications.error(`${condition} is no valid condition.`);
+            if (game.user.isGM) ui.notifications?.error(`${condition} is no valid condition.`);
             return null;
     }
 
     if (!condData) {
-        if (game.user.isGM) ui.notifications.error(`Condition ${condition} could not be created.`);
+        if (game.user.isGM) ui.notifications?.error(`Condition ${condition} could not be created.`);
         return null;
     }
 
     if (condData.options.unique && token.hasCondition(condition)) {
-        if (game.user.isGM) ui.notifications.info(`HM3 | Condition ${condition} is unique and already exists.`);
+        if (game.user.isGM) ui.notifications?.info(`HM3 | Condition ${condition} is unique and already exists.`);
         return null;
     }
 
@@ -2971,7 +3010,7 @@ export async function createInjury(injuryData, options = {}) {
             icon: injuryData.icon,
             name: injuryData.name,
             origin: injuryData.token.actor.uuid,
-            type: 'injury',
+            type: ItemType.INJURY,
             system: {
                 aspect: injuryData.aspect,
                 healRate: injuryData.healRate,
@@ -3052,7 +3091,7 @@ export async function createInjuryHelper(injuryData) {
             flags: {
                 effectmacro: {
                     onDelete: {
-                        script: `const token = canvas.tokens.get('${injuryData.token.id}');
+                        script: `const token = canvas?.tokens?.get('${injuryData.token.id}');
 if(token.hasInjury('${injuryData.injuryId}'))
     await game.hm3.macros.createInjuryHelper(${injuryData});`
                     }

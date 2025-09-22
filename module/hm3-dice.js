@@ -283,7 +283,7 @@ export class DiceHM3 {
                                 const d = truncate(height * CS[formJump], 0);
                                 return `<p>${jump} ${d} ft</p>`;
                             } else {
-                                const d = truncate(
+                                const d = utility.truncate(
                                     height * (result.isSubstantial ? MS[formJump] * 1.25 : MS[formJump]),
                                     0
                                 );
@@ -1595,7 +1595,7 @@ export class DiceHM3 {
         const modifier = Number(testData.modifier);
         const baseTargetNum = Number(testData.target) + modifier;
         // Ensure target num is between 9 and 95; always a 5% chance of success/failure
-        const targetNum = diceType === 'd100' ? game.hm3.macros.HM100Check(baseTargetNum) : baseTargetNum;
+        const targetNum = diceType === 'd100' ? utility.HM100Check(baseTargetNum) : baseTargetNum;
 
         const roll = await game.hm3.macros.rollObjectEvaluatedAsync(diceSpec, {
             name: testData.name,
