@@ -327,7 +327,7 @@
                     <div class="combat-stat-value">{{ aproxy.encumbrance }}</div>
                 </div>
             </div>
-            <div class="items-list combat-stats grid grid-fixed-row-s {{#if isGM}}grid-7col{{else}}grid-6col{{/if}}">
+            <div class="items-list combat-stats grid grid-fixed-row-s {{#if isGM}}grid-6col{{else}}grid-5col{{/if}}">
                 <div
                     class="combat-stat flexrow"
                     id="combat-injuryroll">
@@ -390,22 +390,6 @@
                             data-tooltip="Fumble Roll"
                             data-tooltip-direction="UP">
                             Fumble
-                        </a>
-                    </label>
-                </div>
-                <div
-                    class="combat-stat flexrow"
-                    id="combat-damageroll">
-                    <div class="item-dice">
-                        <i class="active fas fa-dice-d6"></i>
-                    </div>
-                    <label class="combat-stat-label tooltip">
-                        <a
-                            class="damage-roll"
-                            aria-label="Damage Roll"
-                            data-tooltip="Damage Roll"
-                            data-tooltip-direction="UP">
-                            Damage
                         </a>
                     </label>
                 </div>
@@ -563,76 +547,28 @@
                         <div class="item-detail weapon-blunt"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail weapon-blunt {{#if (and isEquipped isCarried)}}active{{/if}}">
-                            {{#if (and isEquipped isCarried)}}
-                            <a
-                                class="weapon-damage-roll"
-                                aria-label="{{ name }} Blunt Damage Roll"
-                                data-tooltip="{{ name }} Blunt Damage Roll"
-                                data-tooltip-direction="UP"
-                                data-weapon="{{ name }}"
-                                data-aspect="Blunt">
-                                {{ blunt }}
-                            </a>
-                            {{else}}{{ blunt }}{{/if}}
+                            {{ blunt }}
                         </div>
                         {{/if}}
                         {{#if (lt edged 0)}}
                         <div class="item-detail weapon-edged"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail weapon-edged {{#if (and isEquipped isCarried)}}active{{/if}}">
-                            {{#if (and isEquipped isCarried)}}
-                            <a
-                                class="weapon-damage-roll"
-                                aria-label="{{ name }} Edged Damage Roll"
-                                data-tooltip="{{ name }} Edged Damage Roll"
-                                data-tooltip-direction="UP"
-                                data-weapon="{{ name }}"
-                                data-aspect="Edged">
-                                {{ edged }}
-                            </a>
-                            {{else}}{{ edged }}{{/if}}
+                            {{ edged }}
                         </div>
                         {{/if}}
                         {{#if (lt piercing 0)}}
                         <div class="item-detail weapon-piercing"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail weapon-piercing {{#if (and isEquipped isCarried)}}active{{/if}}">
-                            {{#if (and isEquipped isCarried)}}
-                            <a
-                                class="weapon-damage-roll"
-                                aria-label="{{ name }} Piercing Damage Roll"
-                                data-tooltip="{{ name }} Piercing Damage Roll"
-                                data-tooltip-direction="UP"
-                                data-weapon="{{ name }}"
-                                data-aspect="Piercing">
-                                {{ piercing }}
-                            </a>
-                            {{else}}{{ piercing }}{{/if}}
+                            {{ piercing }}
                         </div>
                         {{/if}}
                         <div class="item-detail weapon-attack {{#if (and isEquipped isCarried)}}active{{/if}}">
-                            {{#if (and isEquipped isCarried)}}
-                            <a
-                                class="weapon-attack-roll"
-                                aria-label="{{ name }} Attack Roll"
-                                data-tooltip="{{ name }} Attack Roll"
-                                data-tooltip-direction="UP">
-                                {{ AML }}
-                            </a>
-                            {{else}}
                             {{ AML }}
-                            {{/if}}
                         </div>
                         <div class="item-detail weapon-defense {{#if (and isEquipped isCarried)}}active{{/if}}">
-                            {{#if (and isEquipped isCarried)}}
-                            <a
-                                class="weapon-defend-roll"
-                                aria-label="{{ name }} Defense Roll"
-                                data-tooltip="{{ name }} Defense Roll"
-                                data-tooltip-direction="UP">
-                                {{ DML }}
-                            </a>
-                            {{else}}{{ DML }}{{/if}}
+                            {{ DML }}
                         </div>
                         <div class="item-detail weapon-notes">{{ notes }}</div>
                     </li>
@@ -687,89 +623,32 @@
                         <div class="item-detail missile-short"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail missile-short {{#if (and isEquipped isCarried)}}active{{/if}}">
-                            {{#if (and isEquipped isCarried)}}
-                            <a
-                                class="missile-damage-roll"
-                                aria-label="{{ name }} Short-Range Damage Roll"
-                                data-tooltip="{{ name }} Short-Range Damage Roll"
-                                data-tooltip-direction="UP"
-                                data-weapon="{{ name }}"
-                                data-range="Short">
-                                {{ short.range }}/{{ short.impact }}
-                            </a>
-                            {{else}}
                             {{ short.range }}/{{ short.impact }}
-                            {{/if}}
                         </div>
                         {{/if}}
                         {{#if (lt medium.range 0)}}
                         <div class="item-detail missile-medium"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail missile-medium {{#if (and isEquipped isCarried)}}active{{/if}}">
-                            {{#if (and isEquipped isCarried)}}
-                            <a
-                                class="missile-damage-roll"
-                                aria-label="{{ name }} Medium-Range Damage Roll"
-                                data-tooltip="{{ name }} Medium-Range Damage Roll"
-                                data-tooltip-direction="UP"
-                                data-weapon="{{ name }}"
-                                data-range="Medium">
-                                {{ medium.range }}/{{ medium.impact }}
-                            </a>
-                            {{else}}
                             {{ medium.range }}/{{ medium.impact }}
-                            {{/if}}
                         </div>
                         {{/if}}
                         {{#if (lt long.range 0)}}
                         <div class="item-detail missile-long"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail missile-long {{#if (and isEquipped isCarried)}}active{{/if}}">
-                            {{#if (and isEquipped isCarried)}}
-                            <a
-                                class="missile-damage-roll"
-                                aria-label="{{ name }} Long-Range Damage Roll"
-                                data-tooltip="{{ name }} Long-Range Damage Roll"
-                                data-tooltip-direction="UP"
-                                data-weapon="{{ name }}"
-                                data-range="Long">
-                                {{ long.range }}/{{ long.impact }}
-                            </a>
-                            {{else}}
                             {{ long.range }}/{{ long.impact }}
-                            {{/if}}
                         </div>
                         {{/if}}
                         {{#if (lt extreme.range 0)}}
                         <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
                         {{else}}
                         <div class="item-detail missile-extreme {{#if (and isEquipped isCarried)}}active{{/if}}">
-                            {{#if (and isEquipped isCarried)}}
-                            <a
-                                class="missile-damage-roll"
-                                aria-label="{{ name }} Extreme-Range Damage Roll"
-                                data-tooltip="{{ name }} Extreme-Range Damage Roll"
-                                data-tooltip-direction="UP"
-                                data-weapon="{{ name }}"
-                                data-range="Extreme">
-                                {{ extreme.range }}/{{ extreme.impact }}
-                            </a>
-                            {{else}}
                             {{ extreme.range }}/{{ extreme.impact }}
-                            {{/if}}
                         </div>
                         {{/if}}
                         <div class="item-detail missile-attack {{#if (and isEquipped isCarried)}}active{{/if}}">
-                            {{#if (and isEquipped isCarried)}}
-                            <a
-                                class="missile-attack-roll"
-                                aria-label="Missile Attack Roll"
-                                data-tooltip="Missile Attack Roll"
-                                data-tooltip-direction="UP">
-                                {{ AML }}
-                            </a>
-                            {{else}}
-                            {{ AML }}{{/if}}
+                            {{ AML }}
                         </div>
                         <div class="item-detail missile-notes">{{ notes }}</div>
                     </li>

@@ -2249,14 +2249,6 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     text-align: center;
 }
 
-.hm3 .combat .weapons-list .weapon .weapon-blunt.active:hover {
-    background-image: url(../images/icons/svg/d20-grey.svg) !important;
-    background-size: 27px;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: black;
-}
-
 .hm3 .combat .weapons-list .weapon .weapon-edged {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 25px;
@@ -2264,27 +2256,11 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     text-align: center;
 }
 
-.hm3 .combat .weapons-list .weapon .weapon-edged.active:hover {
-    background-image: url(../images/icons/svg/d20-grey.svg) !important;
-    background-size: 27px;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: black;
-}
-
 .hm3 .combat .weapons-list .weapon .weapon-piercing {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 25px;
     flex: 0 0 25px;
     text-align: center;
-}
-
-.hm3 .combat .weapons-list .weapon .weapon-piercing.active:hover {
-    background-image: url(../images/icons/svg/d20-grey.svg) !important;
-    background-size: 27px;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: black;
 }
 
 .hm3 .combat .weapons-list .weapon .weapon-value {
@@ -2301,27 +2277,11 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     text-align: center;
 }
 
-.hm3 .combat .weapons-list .weapon .weapon-attack.active:hover {
-    background-image: url(../images/icons/svg/d20-grey.svg) !important;
-    background-size: 27px;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: black;
-}
-
 .hm3 .combat .weapons-list .weapon .weapon-defense {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 30px;
     flex: 0 0 30px;
     text-align: center;
-}
-
-.hm3 .combat .weapons-list .weapon .weapon-defense.active:hover {
-    background-image: url(../images/icons/svg/d20-grey.svg) !important;
-    background-size: 27px;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: black;
 }
 
 .hm3 .combat .weapons-list .weapon .weapon-notes {
@@ -2373,12 +2333,6 @@ slide-toggle[checked] .slide-toggle-thumb::before {
 
 .hm3 .combat .missiles-list .missile {
     border-bottom: 1px solid #bbb;
-}
-
-.hm3 .combat .missiles-list .missile .item-name.missile-damage-roll:hover .item-image {
-    background-image: url(../images/icons/svg/d20-grey.svg) !important;
-    background-repeat: no-repeat;
-    background-position: center;
 }
 
 .hm3 .combat .missiles-list .missile .item-name.missile-damage-roll .item-image:hover {
@@ -2477,27 +2431,11 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     text-align: center;
 }
 
-.hm3 .combat .missiles-list .missile .missile-short.active:hover {
-    background-image: url(../images/icons/svg/d20-grey.svg) !important;
-    background-size: 27px;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: black;
-}
-
 .hm3 .combat .missiles-list .missile .missile-medium {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 45px;
     flex: 0 0 45px;
     text-align: center;
-}
-
-.hm3 .combat .missiles-list .missile .missile-medium.active:hover {
-    background-image: url(../images/icons/svg/d20-grey.svg) !important;
-    background-size: 27px;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: black;
 }
 
 .hm3 .combat .missiles-list .missile .missile-long {
@@ -2507,27 +2445,11 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     text-align: center;
 }
 
-.hm3 .combat .missiles-list .missile .missile-long.active:hover {
-    background-image: url(../images/icons/svg/d20-grey.svg) !important;
-    background-size: 27px;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: black;
-}
-
 .hm3 .combat .missiles-list .missile .missile-extreme {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 45px;
     flex: 0 0 45px;
     text-align: center;
-}
-
-.hm3 .combat .missiles-list .missile .missile-extreme.active:hover {
-    background-image: url(../images/icons/svg/d20-grey.svg) !important;
-    background-size: 27px;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: black;
 }
 
 .hm3 .combat .missiles-list .missile .missile-value {
@@ -2542,14 +2464,6 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     -ms-flex: 0 0 30px;
     flex: 0 0 30px;
     text-align: center;
-}
-
-.hm3 .combat .missiles-list .missile .missile-attack.active:hover {
-    background-image: url(../images/icons/svg/d20-grey.svg) !important;
-    background-size: 27px;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: black;
 }
 
 .hm3 .combat .missiles-list .missile .missile-notes {

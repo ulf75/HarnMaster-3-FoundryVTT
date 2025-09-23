@@ -209,7 +209,6 @@ export const Hook = {
     ON_BLOCK_RESUME: 'hm3.onBlockResume',
     ON_DAMAGE_ROLL: 'hm3.onDamageRoll',
     ON_DODGE_RESUME: 'hm3.onDodgeResume',
-    ON_DODGE_ROLL: 'hm3.onDodgeRoll',
     ON_FUMBLE_ROLL: 'hm3.onFumbleRoll',
     ON_HEALING_ROLL: 'hm3.onHealingRoll',
     ON_IGNORE_RESUME: 'hm3.onIgnoreResume',
@@ -224,16 +223,12 @@ export const Hook = {
     ON_item_PREPARE_DATA: 'hm3.onItemPrepareData',
     ON_MELEE_ATTACK: 'hm3.onMeleeAttack',
     ON_MELEE_COUNTERSTRIKE_RESUME: 'hm3.onMeleeCounterstrikeResume',
-    ON_MISSILE_ATTACK_ROLL: 'hm3.onMissileAttackRoll',
     ON_MISSILE_ATTACK: 'hm3.onMissileAttack',
-    ON_MISSILE_DAMAGE_ROLL: 'hm3.onMissileDamageRoll',
     ON_PSIONICS_ROLL: 'hm3.onPsionicsRoll',
     ON_SHOCK_ROLL: 'hm3.onShockRoll',
     ON_SKILL_ROLL: 'hm3.onSkillRoll',
     ON_SPELL_ROLL: 'hm3.onSpellRoll',
     ON_STUMBLE_ROLL: 'hm3.onStumbleRoll',
-    ON_WEAPON_ATTACK_ROLL: 'hm3.onWeaponAttackRoll',
-    ON_WEAPON_DEFEND_ROLL: 'hm3.onWeaponDefendRoll',
 
     /**
      * @constant {string} Is triggered before a 1d100 ability roll is executed.
@@ -246,7 +241,6 @@ export const Hook = {
     PRE_BLOCK_RESUME: 'hm3.preBlockResume',
     PRE_DAMAGE_ROLL: 'hm3.preDamageRoll',
     PRE_DODGE_RESUME: 'hm3.preDodgeResume',
-    PRE_DODGE_ROLL: 'hm3.preDodgeRoll',
     PRE_FUMBLE_ROLL: 'hm3.preFumbleRoll',
     PRE_HEALING_ROLL: 'hm3.preHealingRoll',
     PRE_IGNORE_RESUME: 'hm3.preIgnoreResume',
@@ -257,16 +251,12 @@ export const Hook = {
     PRE_INVOCATION_ROLL: 'hm3.preInvocationRoll',
     PRE_MELEE_ATTACK: 'hm3.preMeleeAttack',
     PRE_MELEE_COUNTERSTRIKE_RESUME: 'hm3.preMeleeCounterstrikeResume',
-    PRE_MISSILE_ATTACK_ROLL: 'hm3.preMissileAttackRoll',
     PRE_MISSILE_ATTACK: 'hm3.preMissileAttack',
-    PRE_MISSILE_DAMAGE_ROLL: 'hm3.preMissileDamageRoll',
     PRE_PSIONICS_ROLL: 'hm3.prePsionicsRoll',
     PRE_SHOCK_ROLL: 'hm3.preShockRoll',
     PRE_SKILL_ROLL: 'hm3.preSkillRoll',
     PRE_SPELL_ROLL: 'hm3.preSpellRoll',
-    PRE_STUMBLE_ROLL: 'hm3.preStumbleRoll',
-    PRE_WEAPON_ATTACK_ROLL: 'hm3.preWeaponAttackRoll',
-    PRE_WEAPON_DEFEND_ROLL: 'hm3.preWeaponDefendRoll'
+    PRE_STUMBLE_ROLL: 'hm3.preStumbleRoll'
 };
 
 /**

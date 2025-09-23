@@ -737,22 +737,6 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         //     macros.testAbilityD100Roll(ability, fastforward, this.actor);
         // });
 
-        // Weapon Damage Roll
-        html.on('click', '.weapon-damage-roll', (ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const aspect = ev.currentTarget.dataset.aspect;
-            const item = this.actor.items.get(li.data('itemId'));
-            macros.weaponDamageRoll(item?.uuid, aspect, this.actor);
-        });
-
-        // Missile Damage Roll
-        html.on('click', '.missile-damage-roll', (ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const range = ev.currentTarget.dataset.range;
-            const item = this.actor.items.get(li.data('itemId'));
-            macros.missileDamageRoll(item?.uuid, range, this.actor);
-        });
-
         // Melee Weapon Attack
         html.on('click', '.melee-weapon-attack', (ev) => {
             // If we are a synthetic actor, token will be set
@@ -831,29 +815,6 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             macros.esotericAttack(item?.uuid, false, token);
         });
 
-        // Weapon Attack Roll
-        html.on('click', '.weapon-attack-roll', (ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data('itemId'));
-            macros.weaponAttackRoll(item?.uuid, fastforward, this.actor);
-        });
-
-        // Weapon Defend Roll
-        html.on('click', '.weapon-defend-roll', (ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data('itemId'));
-            macros.weaponDefendRoll(item?.uuid, fastforward, this.actor);
-        });
-
-        // Missile Attack Roll
-        html.on('click', '.missile-attack-roll', (ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const item = this.actor.items.get(li.data('itemId'));
-            macros.missileAttackRoll(item?.uuid, this.actor);
-        });
-
         // Injury Roll
         html.on('click', '.injury-roll', (ev) => macros.injuryRoll(this.actor));
 
@@ -866,9 +827,6 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             //const ifff = new ImportFFF();
             //ifff.importFromJSON('test.json');
         });
-
-        // Dodge Roll
-        html.on('click', '.dodge-roll', (ev) => macros.dodgeRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
 
         // Shock Roll
         html.on('click', '.shock-roll', (ev) => macros.shockRollv2(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
@@ -883,14 +841,13 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             macros.fumbleRollv2(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor)
         );
 
-        // Generic Damage Roll
-        html.on('click', '.damage-roll', (ev) => macros.genericDamageRoll(this.actor));
-
         // Falling Roll
         html.on('click', '.falling-roll', (ev) => macros.fallingRollv2(false, this.actor));
 
         // Morale Roll
-        html.on('click', '.morale-roll', (ev) => macros.moraleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+        html.on('click', '.morale-roll', (ev) =>
+            macros.moraleRollv2(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor)
+        );
 
         // Mount / Dismount
         html.on('click', '.mount-action', this._onToggleMount.bind(this));

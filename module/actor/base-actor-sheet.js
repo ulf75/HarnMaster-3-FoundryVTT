@@ -978,13 +978,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             macros.weaponDefendRoll(item?.uuid, fastforward, this.actor);
         });
 
-        // Missile Attack Roll
-        html.find('.missile-attack-roll').click((ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const item = this.actor.items.get(li.data('itemId'));
-            macros.missileAttackRoll(item?.uuid, this.actor);
-        });
-
         // Injury Roll
         html.find('.injury-roll').click((ev) => macros.injuryRoll(this.actor));
 
@@ -998,9 +991,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             //ifff.importFromJSON('test.json');
         });
 
-        // Dodge Roll
-        html.find('.dodge-roll').click((ev) => macros.dodgeRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
-
         // Shock Roll
         html.find('.shock-roll').click((ev) => macros.shockRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
 
@@ -1012,14 +1002,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Fumble Roll
         html.find('.fumble-roll').click((ev) => macros.fumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
 
-        // Generic Damage Roll
-        html.find('.damage-roll').click((ev) => macros.genericDamageRoll(this.actor));
-
         // Falling Roll
         html.find('.falling-roll').click((ev) => macros.fallingRollv2(false, this.actor));
 
         // Morale Roll
-        html.find('.morale-roll').click((ev) => macros.moraleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+        html.find('.morale-roll').click((ev) =>
+            macros.moraleRollv2(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor)
+        );
 
         // Mount / Dismount
         html.find('.mount-action').click(this._onToggleMount.bind(this));

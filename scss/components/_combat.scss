@@ -163,40 +163,16 @@
             .weapon-blunt {
                 flex: 0 0 25px;
                 text-align: center;
-
-                &.active:hover {
-                    background-image: $image-url-d20-grey !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
             }
 
             .weapon-edged {
                 flex: 0 0 25px;
                 text-align: center;
-
-                &.active:hover {
-                    background-image: $image-url-d20-grey !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
             }
 
             .weapon-piercing {
                 flex: 0 0 25px;
                 text-align: center;
-
-                &.active:hover {
-                    background-image: $image-url-d20-grey !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
             }
 
             .weapon-value {
@@ -207,27 +183,11 @@
             .weapon-attack {
                 flex: 0 0 30px;
                 text-align: center;
-
-                &.active:hover {
-                    background-image: $image-url-d20-grey !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
             }
 
             .weapon-defense {
                 flex: 0 0 30px;
                 text-align: center;
-
-                &.active:hover {
-                    background-image: $image-url-d20-grey !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
             }
 
             .weapon-notes {
@@ -274,12 +234,6 @@
 
         .missile {
             border-bottom: 1px solid #bbb;
-
-            .item-name.missile-damage-roll:hover .item-image {
-                background-image: $image-url-d20-grey !important;
-                background-repeat: no-repeat;
-                background-position: center;
-            }
 
             .item-name.missile-damage-roll .item-image:hover {
                 background-image: $image-url-d20-black !important;
@@ -355,53 +309,21 @@
             .missile-short {
                 flex: 0 0 45px;
                 text-align: center;
-
-                &.active:hover {
-                    background-image: $image-url-d20-grey !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
             }
 
             .missile-medium {
                 flex: 0 0 45px;
                 text-align: center;
-
-                &.active:hover {
-                    background-image: $image-url-d20-grey !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
             }
 
             .missile-long {
                 flex: 0 0 45px;
                 text-align: center;
-
-                &.active:hover {
-                    background-image: $image-url-d20-grey !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
             }
 
             .missile-extreme {
                 flex: 0 0 45px;
                 text-align: center;
-
-                &.active:hover {
-                    background-image: $image-url-d20-grey !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
             }
 
             .missile-value {
@@ -412,14 +334,6 @@
             .missile-attack {
                 flex: 0 0 30px;
                 text-align: center;
-
-                &.active:hover {
-                    background-image: $image-url-d20-grey !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
             }
 
             .missile-notes {
