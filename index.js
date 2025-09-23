@@ -13,6 +13,7 @@ import {ChatMessageHM3} from './module/hm3-chatmessage.js';
 import {CombatHM3} from './module/hm3-combat.js';
 import {CombatantHM3} from './module/hm3-combatant.js';
 import {MacroHM3} from './module/hm3-macro.js';
+import {RollHM3} from './module/hm3-roll.js';
 import {TokenDocumentHM3, TokenHM3} from './module/hm3-token.js';
 import {
     ActorType,
@@ -240,7 +241,7 @@ Hooks.once('init', async function () {
     CONFIG.AmbientSound.objectClass = AmbientSoundHM3;
     CONFIG.ChatMessage.documentClass = ChatMessageHM3;
     CONFIG.Combatant.documentClass = CombatantHM3;
-    // CONFIG.Dice.rolls[0] = RollHM3;
+    CONFIG.Dice.rolls[0] = RollHM3;
     CONFIG.Drawing.objectClass = DrawingHM3;
     CONFIG.Macro.documentClass = MacroHM3;
     CONFIG.Note.objectClass = NoteHM3;
