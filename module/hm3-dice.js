@@ -1,3 +1,5 @@
+// @ts-check
+
 import {HM3} from './config.js';
 import {Aspect, Condition, InjuryType, ItemType} from './hm3-types.js';
 import * as utility from './utility.js';
@@ -150,7 +152,7 @@ export class DiceHM3 {
             sound: CONFIG.sounds.dice,
             speaker,
             style: CONST.CHAT_MESSAGE_STYLES.OTHER,
-            user: game.user.id
+            user: game.user?.id
         };
 
         const messageOptions = {rollMode};
@@ -190,9 +192,9 @@ export class DiceHM3 {
             title: dialogOptions.label,
             callback: (html) => {
                 const form = html[0].querySelector('form');
-                const formModifier = form.modifier.value;
-                const formDifficulty = form.difficulties.value;
-                const formGear = form.gears.value;
+                const formModifier = form?.modifier.value;
+                const formDifficulty = form?.difficulties.value;
+                const formGear = form?.gears.value;
 
                 let target = dialogOptions.target;
                 return DiceHM3.rollTest({
@@ -263,10 +265,10 @@ export class DiceHM3 {
             title: dialogOptions.label,
             callback: (html) => {
                 const form = html[0].querySelector('form');
-                const formModifier = form.modifier.value;
-                const formJump = form.jumps.value;
-                const formStart = form.starts.value;
-                const formLabel = dialogData.starts[form.starts.selectedIndex].label;
+                const formModifier = form?.modifier.value;
+                const formJump = form?.jumps.value;
+                const formStart = form?.starts.value;
+                const formLabel = dialogData.starts[form?.starts.selectedIndex].label;
                 const start = Number(formStart);
                 const height = 5 / start; // [ft]
 
@@ -412,8 +414,8 @@ export class DiceHM3 {
             options: {width: 520},
             callback: (html) => {
                 const form = html[0].querySelector('form');
-                const formModifier = form.modifier.value;
-                const physician = fromUuidSync(form.physicianEml?.value);
+                const formModifier = form?.modifier.value;
+                const physician = fromUuidSync(form?.physicianEml?.value);
                 let formPhysicianEml = 0;
                 let noTreatment = false;
                 let noSubstantial = false;
@@ -424,14 +426,14 @@ export class DiceHM3 {
                     else if (dialogData.physicianMod === 'SI')
                         formPhysicianEml = Math.floor(physician.system.effectiveMasteryLevel / 10);
                 } else {
-                    if (form.physicianEml?.value === 'NT') noTreatment = true;
+                    if (form?.physicianEml?.value === 'NT') noTreatment = true;
                 }
-                // const formPhysicianEml = form.physicianEml?.value || '0';
-                const formTarget = form.target.value;
-                let formTreatmentModifier = form.treatmentModifier?.value || '0';
-                const isAppraisal = form.appraisal?.checked || false;
-                const moraleModification = form.moraleModifications?.value || '0';
-                const multiplier = form.multipliers?.selectedIndex + 1 || -1;
+                // const formPhysicianEml = form?.physicianEml?.value || '0';
+                const formTarget = form?.target.value;
+                let formTreatmentModifier = form?.treatmentModifier?.value || '0';
+                const isAppraisal = form?.appraisal?.checked || false;
+                const moraleModification = form?.moraleModifications?.value || '0';
+                const multiplier = form?.multipliers?.selectedIndex + 1 || -1;
 
                 let target = !isNaN(Number(formTarget)) ? Number(formTarget) : dialogOptions.target;
                 if (dialogOptions.isAbility) target = dialogOptions.effSkillBase * multiplier;
@@ -569,7 +571,7 @@ export class DiceHM3 {
             sound: CONFIG.sounds.dice,
             speaker,
             style: CONST.CHAT_MESSAGE_STYLES.OTHER,
-            user: game.user.id
+            user: game.user?.id
         };
 
         const messageOptions = {rollMode};
@@ -663,11 +665,11 @@ export class DiceHM3 {
             sound: CONFIG.sounds.dice,
             speaker,
             style: CONST.CHAT_MESSAGE_STYLES.OTHER,
-            user: game.user.id
+            user: game.user?.id
         };
 
         // Create a chat message
-        ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+        ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
         await ChatMessage.create(messageData);
 
         return chatTemplateData;
@@ -704,7 +706,7 @@ export class DiceHM3 {
                 rollData.location ? rollData.location : 'Random',
                 rollData.impact,
                 rollData.aspect,
-                game.settings.get('hm3', 'addInjuryToActorSheet') !== 'disable',
+                game.settings?.get('hm3', 'addInjuryToActorSheet') !== 'disable',
                 rollData.aim,
                 rollData
             );
@@ -738,18 +740,18 @@ export class DiceHM3 {
         const messageData = {
             speaker: speaker,
             content: html.trim(),
-            user: game.user.id,
+            user: game.user?.id,
             type: CONST.CHAT_MESSAGE_STYLES.OTHER,
             sound: CONFIG.sounds.notify
         };
 
         const messageOptions = {
-            rollMode: game.settings.get('core', 'rollMode')
+            rollMode: game.settings?.get('core', 'rollMode')
         };
 
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions);
-        if (game.settings.get('hm3', 'combatAudio')) {
+        if (game.settings?.get('hm3', 'combatAudio')) {
             foundry.audio.AudioHelper.play(
                 {
                     src: 'systems/hm3/audio/grunt1.ogg',
@@ -793,9 +795,10 @@ export class DiceHM3 {
         }
 
         const from = result.atkToken?.name;
+        // @ts-expect-error
         const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
         let notes = '';
-        notes += from ? `From '${from}' in '${game.scenes.current.name}' ` : `In '${game.scenes.current.name}' `;
+        notes += from ? `From '${from}' in '${game.scenes?.current?.name}' ` : `In '${game.scenes?.current?.name}' `;
         notes += dateTime
             ? `${dateTime.date} ${dateTime.yearPostfix} (Aspect: ${result.aspect})`
             : `(Aspect: ${result.aspect})`;
@@ -847,7 +850,7 @@ export class DiceHM3 {
      * @param {*} dialogOptions
      */
     static async injuryDialog(dialogOptions) {
-        const recordInjury = game.settings.get('hm3', 'addInjuryToActorSheet');
+        const recordInjury = game.settings?.get('hm3', 'addInjuryToActorSheet');
 
         // Render modal dialog
         let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/injury-dialog.hbs';
@@ -869,16 +872,16 @@ export class DiceHM3 {
             label: 'Determine Injury',
             callback: async (html) => {
                 const form = html[0].querySelector('form');
-                const formAim = form.aim.value;
-                const formAspect = form.aspect.value;
-                const formDice = form.dice.value;
-                const formImpact = await game.hm3.macros.rollResultAsync(formDice + '+' + form.impact.value, {
+                const formAim = form?.aim.value;
+                const formAspect = form?.aspect.value;
+                const formDice = form?.dice.value;
+                const formImpact = await game.hm3.macros.rollResultAsync(formDice + '+' + form?.impact.value, {
                     name: dialogOptions.actor.name,
                     type: 'injuryRoll'
                 });
-                const formLocation = form.location.value;
+                const formLocation = form?.location.value;
                 const formAddToCharSheet = dialogData.askRecordInjury
-                    ? form.addToCharSheet.checked
+                    ? form?.addToCharSheet.checked
                     : recordInjury === 'enable';
                 return DiceHM3._calcInjury(
                     formLocation,
@@ -904,9 +907,9 @@ export class DiceHM3 {
      * @param {Object} dialogOptions
      */
     static _calcInjury(location, impact, aspect, addToCharSheet, aim, dialogOptions) {
-        const enableAmputate = game.settings.get('hm3', 'amputation');
-        const enableBloodloss = game.settings.get('hm3', 'bloodloss');
-        const enableLimbInjuries = game.settings.get('hm3', 'limbInjuries');
+        const enableAmputate = game.settings?.get('hm3', 'amputation');
+        const enableBloodloss = game.settings?.get('hm3', 'bloodloss');
+        const enableLimbInjuries = game.settings?.get('hm3', 'limbInjuries');
 
         const result = {
             addToCharSheet: addToCharSheet,
@@ -1072,8 +1075,8 @@ export class DiceHM3 {
             }
 
             if (totalWeight % 100) {
-                if (game.user.isGM)
-                    ui.notifications.warn(
+                if (game.user?.isGM)
+                    ui.notifications?.warn(
                         `Armor prob weight is NOT equal to 100, 1000 or 10000. ${location} ${aim} ${
                             items.contents.length ? items.contents[0].parent.name : 'Unknown'
                         } ${totalWeight}`,
@@ -1192,13 +1195,13 @@ export class DiceHM3 {
             sound: CONFIG.sounds.dice,
             speaker: speaker,
             style: CONST.CHAT_MESSAGE_STYLES.OTHER,
-            user: game.user.id
+            user: game.user?.id
         };
 
         const messageOptions = {};
 
         // Create a chat message
-        ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+        ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
         await ChatMessage.create(messageData, messageOptions);
 
         return chatTemplateData;
@@ -1280,9 +1283,9 @@ export class DiceHM3 {
             label: 'Roll',
             callback: async (html) => {
                 const form = html[0].querySelector('form');
-                const formAddlWeaponImpact = Number(form.addlWeaponImpact.value);
-                const formDamageDice = Number(form.damageDice.value);
-                const formWeaponAspect = form.weaponAspect.value;
+                const formAddlWeaponImpact = Number(form?.addlWeaponImpact.value);
+                const formDamageDice = Number(form?.damageDice.value);
+                const formWeaponAspect = form?.weaponAspect.value;
                 let roll = await DiceHM3.rollTest({
                     type: dialogOptions.type,
                     target: 0,
@@ -1296,123 +1299,6 @@ export class DiceHM3 {
                     chosenAspect: formWeaponAspect,
                     damageDice: formDamageDice,
                     addlWeaponImpact: formAddlWeaponImpact,
-                    rollObj: roll.rollObj
-                };
-                return result;
-            }
-        });
-    }
-
-    static async missileAttackDialog(dialogOptions) {
-        // Render modal dialog
-        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/attack-dialog.hbs';
-
-        let dialogData = {
-            aimLocations: ['High', 'Mid', 'Low'],
-            defaultAim: 'Mid',
-            target: dialogOptions.target
-        };
-
-        const shortDesc = `Short (${dialogOptions.rangeShort})`;
-        const mediumDesc = `Medium (${dialogOptions.rangeMedium})`;
-        const longDesc = `Long (${dialogOptions.rangeLong})`;
-        const extremeDesc = `Extreme (${dialogOptions.rangeExtreme})`;
-        dialogData.ranges = {};
-        dialogData.ranges[shortDesc] = 'Short';
-        dialogData.ranges[mediumDesc] = 'Medium';
-        dialogData.ranges[longDesc] = 'Long';
-        dialogData.ranges[extremeDesc] = 'Extreme';
-        dialogData.rangeExceedsExtreme = false;
-        dialogData.defaultRange = extremeDesc;
-
-        const html = await renderTemplate(dlgTemplate, dialogData);
-        const title = `${dialogOptions.name} Attack`;
-
-        // Create the dialog window
-        return Dialog.prompt({
-            title: dialogOptions.label,
-            content: html.trim(),
-            label: 'Roll',
-            callback: async (html) => {
-                const form = html[0].querySelector('form');
-                const formAddlModifier = Number(form.addlModifier.value);
-                let formRange = form.range.value;
-                let rangeModifier;
-                if (formRange === shortDesc) {
-                    rangeModifier = 0;
-                    formRange = 'Short';
-                } else if (formRange === mediumDesc) {
-                    rangeModifier = -20;
-                    formRange = 'Medium';
-                } else if (formRange === longDesc) {
-                    rangeModifier = -40;
-                    formRange = 'Long';
-                } else {
-                    rangeModifier = -80;
-                    formRange = 'Extreme';
-                }
-
-                let roll = await DiceHM3.rollTest({
-                    type: dialogOptions.type,
-                    target: dialogOptions.target,
-                    data: dialogOptions.data,
-                    diceSides: 100,
-                    diceNum: 1,
-                    modifier: formAddlModifier + rangeModifier
-                });
-
-                let result = {
-                    type: roll.type,
-                    origTarget: dialogOptions.target,
-                    range: formRange,
-                    rangeModifier: rangeModifier,
-                    addlModifier: formAddlModifier,
-                    modifiedTarget: Number(dialogOptions.target) + rangeModifier + formAddlModifier,
-                    isSuccess: roll.isSuccess,
-                    isCritical: roll.isCritical,
-                    description: roll.description,
-                    rollObj: roll.rollObj
-                };
-                return result;
-            }
-        });
-    }
-
-    static async missileDamageDialog(dialogOptions) {
-        // Render modal dialog
-        let dlgTemplate = dialogOptions.template || 'systems/hm3/templates/dialog/missile-damage-dialog.hbs';
-        let dialogData = {
-            name: dialogOptions.name,
-            ranges: dialogOptions.ranges,
-            defaultRange: dialogOptions.defaultRange
-        };
-        const html = await renderTemplate(dlgTemplate, dialogData);
-
-        const title = `${dialogOptions.name} Missile Damage`;
-
-        // Create the dialog window
-        return Dialog.prompt({
-            title: dialogOptions.label,
-            content: html.trim(),
-            label: 'Roll',
-            callback: async (html) => {
-                const form = html[0].querySelector('form');
-                const formAddlImpact = Number(form.addlImpact.value);
-                const formDamageDice = Number(form.damageDice.value);
-                const formRange = form.range.value;
-                let roll = await DiceHM3.rollTest({
-                    type: dialogOptions.type,
-                    target: 0,
-                    data: dialogOptions.data,
-                    diceSides: 6,
-                    diceNum: formDamageDice,
-                    modifier: 0
-                });
-                let result = {
-                    type: roll.type,
-                    range: formRange,
-                    damageDice: formDamageDice,
-                    addlImpact: formAddlImpact,
                     rollObj: roll.rollObj
                 };
                 return result;
@@ -1514,14 +1400,14 @@ export class DiceHM3 {
         // publicroll, gmroll, blindroll & selfroll (CONST.DICE_ROLL_MODES.BLIND)
         const blind =
             options.blind ||
-            game.settings.get('core', 'rollMode') === CONST.DICE_ROLL_MODES.BLIND ||
+            game.settings?.get('core', 'rollMode') === CONST.DICE_ROLL_MODES.BLIND ||
             ((HM3.blindRolls.includes(options.skill) || options.isAppraisal) &&
-                !!game.settings.get('hm3', 'blindGmMode'));
+                !!game.settings?.get('hm3', 'blindGmMode'));
         const rollMode = blind
             ? CONST.DICE_ROLL_MODES.BLIND
             : options.private
             ? CONST.DICE_ROLL_MODES.PRIVATE
-            : game.settings.get('core', 'rollMode');
+            : game.settings?.get('core', 'rollMode');
 
         return rollMode;
     }

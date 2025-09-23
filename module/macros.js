@@ -611,7 +611,7 @@ export async function testAbilityD100RollAlt(options) {
     return null;
 }
 
-export async function injuryRoll(myActor = null, rollData = {}) {
+export async function injuryRollv2(myActor = null, rollData = {}) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
         ui.notifications?.warn(`No actor for this action could be determined.`);

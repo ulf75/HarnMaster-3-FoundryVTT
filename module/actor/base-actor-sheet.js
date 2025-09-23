@@ -979,7 +979,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         });
 
         // Injury Roll
-        html.find('.injury-roll').click((ev) => macros.injuryRoll(this.actor));
+        html.find('.injury-roll').click((ev) => macros.injuryRollv2(this.actor));
 
         // Healing Roll
         html.find('.healing-roll').click((ev) => {

@@ -748,8 +748,9 @@ export class ActorHM3 extends Actor {
      * @override */
     prepareDerivedData() {
         super.prepareDerivedData();
-        return;
         const actorData = this.system;
+        this._generateArmorLocationMap(actorData);
+        return;
 
         const eph = actorData.eph;
 
@@ -1470,7 +1471,7 @@ export class ActorHM3 extends Actor {
 
         switch (action) {
             case 'injury':
-                macros.injuryRoll(token.actor, {
+                macros.injuryRollv2(token.actor, {
                     actor: token.actor,
                     aim: button.dataset.aim,
                     aspect: button.dataset.aspect,

@@ -816,7 +816,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
 
         // Injury Roll
-        html.on('click', '.injury-roll', (ev) => macros.injuryRoll(this.actor));
+        html.on('click', '.injury-roll', (ev) => macros.injuryRollv2(this.actor));
 
         // Healing Roll
         html.on('click', '.healing-roll', (ev) => {
