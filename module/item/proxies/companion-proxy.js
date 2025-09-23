@@ -1,4 +1,5 @@
 // @ts-check
+import {CompanionType} from '../../hm3-types';
 import {ItemProxy} from './item-proxy';
 
 export class CompanionProxy extends ItemProxy {
@@ -32,7 +33,7 @@ export class CompanionProxy extends ItemProxy {
      * @override
      */
     get img() {
-        return this.companion?.img;
+        return this.companion?.img ?? '';
     }
     /**
      * @type {string}
@@ -58,6 +59,13 @@ export class CompanionProxy extends ItemProxy {
      */
     get species() {
         return this.companion?.system.species ?? 'Unknown';
+    }
+    /**
+     * @type {CompanionType}
+     * @override
+     */
+    get subtype() {
+        return this.item.system.type ?? CompanionType.CONNECTION;
     }
 
     /**
