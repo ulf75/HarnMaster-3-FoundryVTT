@@ -1,4 +1,5 @@
 // @ts-check
+import {InjuryType} from '../../hm3-types';
 import {ItemProxy} from './item-proxy';
 
 export class InjuryProxy extends ItemProxy {
@@ -8,6 +9,12 @@ export class InjuryProxy extends ItemProxy {
      */
     get cls() {
         return super.cls + '-injury';
+    }
+    /**
+     * @type {string}
+     */
+    get aspect() {
+        return this.item.system.aspect;
     }
     /**
      * @type {number}
@@ -31,7 +38,15 @@ export class InjuryProxy extends ItemProxy {
      * @type {string}
      */
     get severity() {
+        this.item.system.severity = this.IL >= 4 ? 'G' : this.IL >= 2 ? 'S' : 'M';
         return `${this.item.system.severity}${this.IL}`;
+    }
+    /**
+     * @type {InjuryType}
+     * @override
+     */
+    get subtype() {
+        return this.item.system.type ?? InjuryType.HEALING;
     }
 
     /**

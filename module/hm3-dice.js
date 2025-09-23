@@ -42,7 +42,7 @@ export class DiceHM3 {
             name: speaker.alias,
             physicianSkills: rollData.physicianSkills || [],
             skill: rollData.skill,
-            subType: rollData.subType || InjuryType.HEALING,
+            subtype: rollData.subtype || InjuryType.HEALING,
             target: rollData.target,
             treatmentTable: rollData.treatmentTable,
             type: rollData.type
@@ -360,25 +360,25 @@ export class DiceHM3 {
 
         const isHealingRoll = dialogOptions.type === InjuryType.HEALING;
         if (isHealingRoll) {
-            if (dialogOptions.subType === InjuryType.HEALING || dialogOptions.subType === InjuryType.SHOCK) {
+            if (dialogOptions.subtype === InjuryType.HEALING || dialogOptions.subtype === InjuryType.SHOCK) {
                 dialogData.isPhysician = true;
                 dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
                     return {
-                        key: p.uuid, // Math.round(p.system.effectiveMasteryLevel / 2),
-                        label: `${p.actor.name} (EML/2 ${Math.round(p.system.effectiveMasteryLevel / 2)})`,
-                        value: Math.round(p.system.effectiveMasteryLevel / 2)
+                        key: p.uuid,
+                        label: `${p.actor.name} (EML/2 ${Math.round(p.EML / 2)})`,
+                        value: Math.round(p.EML / 2)
                     };
                 });
                 dialogData.physicianSkills.push({key: 0, label: '3rd Party Physician skill'});
                 dialogData.physicianEml = dialogData.physicianSkills[0].key;
                 dialogData.physicianMod = 'EML/2';
-            } else if (dialogOptions.subType === InjuryType.INFECTION) {
+            } else if (dialogOptions.subtype === InjuryType.INFECTION) {
                 dialogData.isPhysician = true;
                 dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
                     return {
-                        key: p.uuid, // Math.floor(p.system.masteryLevel / 10),
-                        label: `${p.actor.name} (SI ${Math.floor(p.system.masteryLevel / 10)})`,
-                        value: Math.floor(p.system.masteryLevel / 10)
+                        key: p.uuid,
+                        label: `${p.actor.name} (SI ${p.SI})`,
+                        value: p.SI
                     };
                 });
                 dialogData.physicianSkills.push({key: 0, label: '3rd Party Physician skill'});
@@ -391,9 +391,9 @@ export class DiceHM3 {
             dialogData.treatmentModifier = dialogOptions.treatmentTable.eml;
             dialogData.physicianSkills = dialogOptions.physicianSkills.map((p) => {
                 return {
-                    key: p.uuid, // p.system.effectiveMasteryLevel,
-                    label: `${p.actor.name} (EML ${p.system.effectiveMasteryLevel})`,
-                    value: p.system.effectiveMasteryLevel
+                    key: p.uuid,
+                    label: `${p.actor.name} (EML ${p.EML})`,
+                    value: p.EML
                 };
             });
             dialogData.physicianSkills.push(
@@ -415,16 +415,14 @@ export class DiceHM3 {
             callback: (html) => {
                 const form = html[0].querySelector('form');
                 const formModifier = form?.modifier.value;
-                const physician = fromUuidSync(form?.physicianEml?.value);
+                const physician = fromUuidSync(form?.physicianEml?.value)?.proxy;
                 let formPhysicianEml = 0;
                 let noTreatment = false;
                 let noSubstantial = false;
                 if (physician) {
-                    if (dialogData.physicianMod === 'EML') formPhysicianEml = physician.system.effectiveMasteryLevel;
-                    else if (dialogData.physicianMod === 'EML/2')
-                        formPhysicianEml = Math.round(physician.system.effectiveMasteryLevel / 2);
-                    else if (dialogData.physicianMod === 'SI')
-                        formPhysicianEml = Math.floor(physician.system.effectiveMasteryLevel / 10);
+                    if (dialogData.physicianMod === 'EML') formPhysicianEml = physician.EML;
+                    else if (dialogData.physicianMod === 'EML/2') formPhysicianEml = Math.round(physician.EML / 2);
+                    else if (dialogData.physicianMod === 'SI') formPhysicianEml = physician.SI;
                 } else {
                     if (form?.physicianEml?.value === 'NT') noTreatment = true;
                 }
@@ -813,7 +811,7 @@ export class DiceHM3 {
                     injuryLevel: result.injuryLevel,
                     notes,
                     severity: sev,
-                    subType: InjuryType.HEALING // bloodloss, disease, healing, infection, poison, shock, toxin (different healing rolls)
+                    type: InjuryType.HEALING // bloodloss, disease, healing, infection, poison, shock, toxin (different healing rolls)
                 }
             },
             {parent: actor}

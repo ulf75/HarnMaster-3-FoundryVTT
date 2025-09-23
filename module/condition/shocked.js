@@ -28,7 +28,7 @@ const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
 await game.hm3.macros.createInjury({
     token,
     name: 'Shock',
-    subType: 'shock',
+    subtype: 'shock',
     healRate: 4,
     notes: 'Started: ' + dateTime?.date + ' - ' + dateTime?.time
 });

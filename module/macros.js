@@ -22,6 +22,7 @@ import * as shocked from './condition/shocked.js';
 import * as unconscious from './condition/unconscious.js';
 import * as weakened from './condition/weakened.js';
 import {HM3} from './config.js';
+import {ActiveEffectHM3} from './hm3-active-effect.js';
 import {DiceHM3} from './hm3-dice.js';
 import {RollHM3} from './hm3-roll.js';
 import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
@@ -634,71 +635,87 @@ export async function injuryRollv2(myActor = null, rollData = {}) {
     return null;
 }
 
+/**
+ *
+ * @param {string} itemName
+ * @param {boolean} noDialog
+ * @param {ActorHM3 | null} myActor
+ * @returns
+ */
 export async function healingRoll(itemName, noDialog = false, myActor = null) {
-    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.INJURY);
-    const subType = item.system.subType || InjuryType.HEALING;
+    const actorInfo = await getItemAndActor(itemName, myActor, ItemType.INJURY);
 
-    if (
-        subType === InjuryType.HEALING &&
-        (isNaN(item.system.injuryLevel) || item.system?.injuryLevel < 1 || item.system?.injuryLevel > 5)
-    ) {
+    const aproxy = actorInfo?.actor?.proxy;
+    const iproxy = actorInfo?.item?.proxy;
+
+    const subtype = iproxy.subtype;
+    if (subtype === InjuryType.HEALING && (isNaN(iproxy.IL) || iproxy.IL < 1 || iproxy.IL > 5)) {
         ui.notifications?.warn(`No valid injury level specified.`);
         return null;
     }
 
-    if (isNaN(item.system.healRate) || item.system?.healRate < 1 || item.system?.healRate > 7) {
-        return treatmentRoll(actor, item, speaker);
+    if (isNaN(iproxy.HR) || iproxy.HR < 1 || iproxy.HR > 7) {
+        return treatmentRoll(aproxy, iproxy, actorInfo?.speaker);
     }
 
     // Negligible injury (EE) heals automatically
-    if (item.system?.healRate === 7) {
-        await item.delete();
+    if (iproxy.HR === 7) {
+        await iproxy.item.delete();
         return null;
     }
 
     const stdRollData = {
         fastforward: noDialog,
-        label: `${item.name} Healing Roll`,
-        notes: item.system.notes,
-        physicianSkills: actor.getPartySkills('Physician'),
-        speaker: speaker,
-        subType,
-        target: item.system.healRate * actor.system.endurance,
+        label: `${iproxy.name} Healing Roll`,
+        notes: iproxy.notes,
+        physicianSkills: aproxy.getPartySkills('Physician'),
+        speaker: actorInfo?.speaker,
+        subtype,
+        target: iproxy.HR * aproxy.END,
         type: 'healing',
         notesData: {
-            endurance: actor.system.endurance,
-            fatigue: actor.system.eph.fatigue,
-            healRate: item.system.healRate,
-            il: actor.system.eph.totalInjuryLevels || 0,
-            injuryName: item.name,
-            pp: actor.system.physicalPenalty,
-            up: actor.system.universalPenalty
+            endurance: aproxy.END,
+            fatigue: aproxy.FP,
+            healRate: iproxy.HR,
+            il: aproxy.IP,
+            injuryName: iproxy.name,
+            pp: aproxy.PP,
+            up: aproxy.UP
         }
     };
-    if (actor.isToken) {
-        stdRollData.token = actor.token.id;
+    if (aproxy.isToken) {
+        stdRollData.token = aproxy.token.id;
     } else {
-        stdRollData.actor = actor.id;
+        stdRollData.actor = aproxy.id;
     }
 
-    const hooksOk = Hooks.call('hm3.preHealingRoll', stdRollData, actor, item);
+    const hooksOk = Hooks.call('hm3.preHealingRoll', stdRollData, aproxy.actor, iproxy.item);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
-        item.runCustomMacro(result);
+        iproxy.item.runCustomMacro(result);
         if (result) {
-            await heal(item, result);
+            await heal(iproxy, result);
             if (result.roll.preData?.physician)
-                await utility.improveFlag(result.roll.preData.physician, {actor, success: result.isSuccess});
-            callOnHooks('hm3.onHealingRoll', actor, result, stdRollData, item);
+                await utility.improveFlag(result.roll.preData.physician.item, {
+                    actor: aproxy.actor,
+                    success: result.isSuccess
+                });
+            callOnHooks('hm3.onHealingRoll', aproxy.actor, result, stdRollData, iproxy.item);
         }
         return result;
     }
     return null;
 }
 
-async function treatmentRoll(actor, injury, speaker) {
-    const treatmentTable =
-        HM3.treatmentTable[injury.system.aspect || Aspect.BLUNT][Math.floor(injury.system.injuryLevel / 2)];
+/**
+ *
+ * @param {import('./actor/proxies/living-proxy.js').LivingProxy} aproxy
+ * @param {import('./item/proxies/injury-proxy.js').InjuryProxy} injury
+ * @param {*} speaker
+ * @returns
+ */
+async function treatmentRoll(aproxy, injury, speaker) {
+    const treatmentTable = HM3.treatmentTable[injury.aspect || Aspect.BLUNT][Math.floor(injury.IL / 2)];
 
     let fluff =
         `<p><b>Injury:</b> ${treatmentTable.injury}</p><p><b>Description:</b> ${treatmentTable.desc}</p><p><b>Treatment:</b> ${treatmentTable.treatment}</p>`.trim();
@@ -706,32 +723,32 @@ async function treatmentRoll(actor, injury, speaker) {
     if (treatmentTable.treatment.includes('Surgery')) {
         fluff += `<p><b>Surgery</b> takes some minutes. It requires sharp knives, and a needle and thread for sutures. Anesthetic is highly recommended (patients tend to struggle and whimper otherwise) and disinfectants are a good idea too. Such items may be purchased from good apothecaries and improve <b>Treatment EML 10-20</b>.</p>`;
         treatment += `<p><b>Surgery</b> took ${await rollResultAsync('10d6', {
-            name: actor.name,
+            name: aproxy.name,
             type: 'treatmentRoll Surgery'
         })} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Compress')) {
         fluff += `<p>Apply cold <b>compress</b> for some minutes. Herbal remedies and balms that reduce swelling add improve <b>Treatment EML 10-20</b>.</p>`;
         treatment += `<p>Cold <b>compress</b> took ${await rollResultAsync('5d6', {
-            name: actor.name,
+            name: aproxy.name,
             type: 'treatmentRoll Compress'
         })} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Splint')) {
         fluff += `<p>Setting bone and <b>splinting</b> takes some minutes.</p>`;
         treatment += `<p><b>Splinting</b> took ${await rollResultAsync('5d6', {
-            name: actor.name,
+            name: aproxy.name,
             type: 'treatmentRoll Splint'
         })} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Clean') || treatmentTable.treatment.includes('Surgery')) {
         fluff += `<p><b>Cleaning and dressing</b> takes some minutes and requires water and bandages.</p>`;
-        treatment += `<p><b>Cleaning and dressing</b> took ${5 * injury.system.injuryLevel} minutes.</p>`;
+        treatment += `<p><b>Cleaning and dressing</b> took ${5 * injury.IL} minutes.</p>`;
     }
     if (treatmentTable.treatment.includes('Warming')) {
         fluff += `<p>Gentle <b>warming</b> (blanket, healthy person's flesh, etc.) of the injury for a few hours.</p>`;
         treatment += `<p><b>Warming</b> took ${await rollResultAsync('1d3', {
-            name: actor.name,
+            name: aproxy.name,
             type: 'treatmentRoll Warming'
         })} hours.</p>`;
     }
@@ -752,58 +769,66 @@ async function treatmentRoll(actor, injury, speaker) {
             CF: treatment + `<p>Catastrophic work! H${treatmentTable.cf} is worse than without treatment.</p>`
         },
         label: `${injury.name} Treatment Roll`,
-        notes: injury.system.notes,
-        physicianSkills: actor.getPartySkills('Physician'),
-        speaker: speaker,
-        subType: injury.system.subType,
+        notes: injury.notes,
+        physicianSkills: aproxy.getPartySkills('Physician'),
+        speaker,
+        subtype: injury.subtype,
         target: 0,
         treatmentTable,
         type: 'treatment',
         notesData: {
-            endurance: actor.system.endurance,
-            fatigue: actor.system.eph.fatigue,
-            healRate: injury.system.healRate,
-            il: actor.system.eph.totalInjuryLevels || 0,
+            endurance: aproxy.END,
+            fatigue: aproxy.FP,
+            healRate: injury.HR,
+            il: aproxy.IP,
             injuryName: injury.name,
-            pp: actor.system.physicalPenalty,
-            up: actor.system.universalPenalty
+            pp: aproxy.PP,
+            up: aproxy.UP
         }
     };
-    if (actor.isToken) {
-        stdRollData.token = actor.token.id;
+    if (aproxy.isToken) {
+        stdRollData.token = aproxy.token?.id;
     } else {
-        stdRollData.actor = actor.id;
+        stdRollData.actor = aproxy.id;
     }
 
-    const hooksOk = Hooks.call('hm3.preTreatmentRoll', stdRollData, actor, injury);
+    const hooksOk = Hooks.call('hm3.preTreatmentRoll', stdRollData, aproxy.actor, injury.item);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
         if (result) {
             let success = result.isCritical ? 'c' : 'm';
             success += result.isSuccess ? 's' : 'f';
             const hr = treatmentTable[success];
-            await injury.update({'system.healRate': hr});
+            await injury.item.update({'system.healRate': hr});
             if (result.roll.preData?.physician)
-                await utility.improveFlag(result.roll.preData.physician, {actor, success: result.isSuccess});
-            callOnHooks('hm3.onTreatmentRoll', actor, result, stdRollData, injury);
+                await utility.improveFlag(result.roll.preData.physician.item, {
+                    actor: aproxy.actor,
+                    success: result.isSuccess
+                });
+            callOnHooks('hm3.onTreatmentRoll', aproxy, result, stdRollData, injury.item);
         }
         return result;
     }
     return null;
 }
 
+/**
+ *
+ * @param {import('./item/proxies/injury-proxy.js').InjuryProxy} injury
+ * @param {*} result
+ */
 async function heal(injury, result) {
-    const subType = injury.system.subType || InjuryType.HEALING;
-    switch (subType) {
+    const subtype = injury.subtype;
+    switch (subtype) {
         case InjuryType.BLOODLOSS:
             // TBD
             break;
 
         case InjuryType.HEALING:
             if (result.isSuccess) {
-                const il = injury.system.injuryLevel - (result.isCritical ? 2 : 1);
-                if (il <= 0) await injury.delete(); // fully healed
-                else await injury.update({'system.injuryLevel': il}); // partially healed
+                const il = injury.IL - (result.isCritical ? 2 : 1);
+                if (il <= 0) await injury.item.delete(); // fully healed
+                else await injury.item.update({'system.injuryLevel': il}); // partially healed
             }
             break;
 
@@ -812,12 +837,12 @@ async function heal(injury, result) {
         case InjuryType.TOXIN:
         case InjuryType.SHOCK:
             let hr;
-            if (result.isSuccess) hr = injury.system.healRate + (result.isCritical ? 2 : 1);
-            else hr = injury.system.healRate - (result.isCritical ? 2 : 1);
-            if (hr >= 6) await injury.delete(); // Fully recovered at HR6
+            if (result.isSuccess) hr = injury.HR + (result.isCritical ? 2 : 1);
+            else hr = injury.HR - (result.isCritical ? 2 : 1);
+            if (hr >= 6) await injury.item.delete(); // Fully recovered at HR6
             else if (hr <= 0) {
                 // Patient is dead at HR0
-            } else await injury.update({'system.healRate': hr}); // partially recovered
+            } else await injury.item.update({'system.healRate': hr}); // partially recovered
             break;
     }
 }
@@ -2547,7 +2572,7 @@ let createMutex = new Mutex();
  * @param {number} [effectData.startRound] -
  * @param {number} [effectData.startTime] -
  * @param {number} [effectData.startTurn] -
- * @param {number} [effectData.token] -
+ * @param {TokenHM3} [effectData.token] -
  * @param {number} [effectData.turns=0] -
  * @param {string} [effectData.type] -
  * @param {Object[]} [changes=[]] -
@@ -2555,7 +2580,7 @@ let createMutex = new Mutex();
  * @param {boolean} [options.hidden=false] - Non GMs will not see this effect
  * @param {boolean} [options.selfDestroy=false] - The effect deletes itself after completion
  * @param {boolean} [options.unique=false] - The effect is unique and cannot exist more than once
- * @returns {Promise<HarnMasterActiveEffect>}
+ * @returns {Promise<ActiveEffectHM3>}
  */
 export async function createActiveEffect(effectData, changes = [], options = {}) {
     return createMutex.runExclusive(async () => {
@@ -2590,7 +2615,7 @@ export async function createActiveEffect(effectData, changes = [], options = {})
                 {key: '', value: 0, mode: CONST.ACTIVE_EFFECT_MODES.ADD, priority: null},
                 change
             );
-            const keys = getObjectKeys(effectData.token.actor.system);
+            const keys = getObjectKeys(effectData.token?.actor?.system);
             change.key = 'system.' + keys.find((v) => v.includes(change.key));
             return change;
         });
@@ -2606,23 +2631,23 @@ export async function createActiveEffect(effectData, changes = [], options = {})
             flags: effectData.flags,
             icon: effectData.icon,
             label: effectData.label,
-            origin: effectData.token.actor.uuid
+            origin: effectData.token.actor?.uuid
         };
 
         if (effectData.type === 'GameTime') {
-            const postpone = effectData.postpone;
-            const startTime = effectData.startTime || game.time.worldTime + postpone;
+            const postpone = effectData.postpone ?? 0;
+            const startTime = effectData.startTime || (game.time?.worldTime ?? 0) + postpone;
             const seconds = effectData.seconds === null ? null : effectData.seconds || 1;
 
             aeData['duration.startTime'] = startTime;
             aeData['duration.seconds'] = seconds;
-        } else if (effectData.type === 'Combat' && !!game.combats.active?.current) {
-            const startRound = effectData.startRound || game.combats.active.current.round || 1;
-            const startTurn = effectData.startTurn || game.combats.active.current.turn || 0;
+        } else if (effectData.type === 'Combat' && !!game.combats?.active?.current) {
+            const startRound = effectData.startRound || game.combats?.active.current.round || 1;
+            const startTurn = effectData.startTurn || game.combats?.active.current.turn || 0;
             const rounds = effectData.rounds;
             const turns = effectData.turns;
 
-            aeData['duration.combat'] = game.combats.active.id;
+            aeData['duration.combat'] = game.combats?.active.id;
             aeData['duration.startRound'] = startRound;
             aeData['duration.startTurn'] = startTurn;
             aeData['duration.rounds'] = rounds;
@@ -2633,12 +2658,12 @@ export async function createActiveEffect(effectData, changes = [], options = {})
 
         const effect = await ActiveEffect.create(aeData, {parent: effectData.token.actor});
 
-        if (options.hidden) await effect.setFlag('hm3', 'hidden', true);
-        if (options.unique) await effect.setFlag('hm3', 'unique', true);
+        if (options.hidden) await effect?.setFlag('hm3', 'hidden', true);
+        if (options.unique) await effect?.setFlag('hm3', 'unique', true);
 
         if (options.selfDestroy) {
-            await effect.setFlag('hm3', 'selfDestroy', true);
-            await effect.setFlag(
+            await effect?.setFlag('hm3', 'selfDestroy', true);
+            await effect?.setFlag(
                 'effectmacro',
                 'onDisable.script',
                 `game.hm3.macros.deleteActiveEffect('${effectData.token.id}', '${effect.id}');`
@@ -2893,10 +2918,10 @@ export async function deleteCondition(token, condition) {
  * @param {number} [injuryData.injuryLevel=0]
  * @param {string} [injuryData.name]
  * @param {string} [injuryData.notes='']
- * @param {string} [injuryData.subType='healing']
+ * @param {string} [injuryData.subtype='healing']
  * @param {TokenHM3} [injuryData.token]
  * @param {Object} [options={}]
- * @returns {Promise<ItemHM3>}
+ * @returns {Promise<ItemHM3 | null>}
  */
 export async function createInjury(injuryData, options = {}) {
     injuryData = foundry.utils.mergeObject(
@@ -2908,7 +2933,7 @@ export async function createInjury(injuryData, options = {}) {
             injuryLevel: 0,
             name: null,
             notes: '',
-            subType: InjuryType.HEALING, // bloodloss, disease, healing, infection, poison, shock, toxin (different healing rolls)
+            subtype: InjuryType.HEALING, // bloodloss, disease, healing, infection, poison, shock, toxin (different healing rolls)
             token: null
         },
         injuryData
@@ -2923,7 +2948,7 @@ export async function createInjury(injuryData, options = {}) {
 
     let sev;
     if (injuryData.injuryLevel === 1) sev = 'M';
-    else if (injuryData.injuryLevel <= 3) sev = 'S';
+    else if (injuryData?.injuryLevel <= 3) sev = 'S';
     else sev = 'G';
 
     const injury = await Item.create(
@@ -2931,7 +2956,7 @@ export async function createInjury(injuryData, options = {}) {
             flags: injuryData.flags,
             icon: injuryData.icon,
             name: injuryData.name,
-            origin: injuryData.token.actor.uuid,
+            origin: injuryData.token.actor?.uuid,
             type: ItemType.INJURY,
             system: {
                 aspect: injuryData.aspect,
@@ -2939,12 +2964,12 @@ export async function createInjury(injuryData, options = {}) {
                 injuryLevel: injuryData.injuryLevel,
                 notes: injuryData.notes,
                 severity: sev,
-                subType: injuryData.subType
+                type: injuryData.subtype
             }
         },
         {parent: injuryData.token.actor}
     );
-    injuryData.injuryId = injury.id;
+    injuryData.injuryId = injury?.id;
 
     // await createInjuryHelper(injuryData);
 
@@ -2953,25 +2978,28 @@ export async function createInjury(injuryData, options = {}) {
 
 /**
  *
- * @param {TokenHM3} token
- * @param {string} injuryId
- * @param {string} injuryName
+ * @param {*} injuryData
  * @returns
  */
 export async function createInjuryHelper(injuryData) {
+    // @ts-expect-error
     const timestamp = SimpleCalendar.api.timestamp();
 
     let startTime, scDate;
-    switch (injuryData.subType) {
+    switch (injuryData.subtype) {
         case InjuryType.BLOODLOSS: // HR: always H6
         case InjuryType.HEALING: // HR: varies, plus half Physician EML
+            // @ts-expect-error
             startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {day: 5});
+            // @ts-expect-error
             scDate = SimpleCalendar.api.timestampToDate(startTime);
             break;
 
         case InjuryType.DISEASE: // HR: varies
         case InjuryType.INFECTION: // HR: varies (same as wound), plus Physician SI
+            // @ts-expect-error
             startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {day: 1});
+            // @ts-expect-error
             scDate = SimpleCalendar.api.timestampToDate(startTime);
             break;
 
@@ -2979,20 +3007,23 @@ export async function createInjuryHelper(injuryData) {
         case InjuryType.TOXIN: // HR: varies
             const minute = injuryData.minute || 5;
             const second = injuryData.second || 0;
+            // @ts-expect-error
             startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {minute, second});
             break;
 
         case InjuryType.SHOCK: // HR: always H5, plus half Physician EML
+            // @ts-expect-error
             startTime = SimpleCalendar.api.timestampPlusInterval(timestamp, {hour: 4});
             break;
 
         default:
-            console.error('HM3 | Wrong injury subType.');
+            console.error('HM3 | Wrong injury subtype.');
             break;
     }
 
     // Make the healing rolls at midnight (besides poison & shock rolls)
     if (scDate) {
+        // @ts-expect-error
         startTime = SimpleCalendar.api.dateToTimestamp({
             year: scDate.year,
             month: scDate.month,
@@ -3034,7 +3065,7 @@ if(token.hasInjury('${injuryData.injuryId}'))
  * @param {string} prefix
  * @returns
  */
-export function getObjectKeys(obj, prefix) {
+export function getObjectKeys(obj, prefix = '') {
     var isobject = function (x) {
         return Object.prototype.toString.call(x) === '[object Object]';
     };

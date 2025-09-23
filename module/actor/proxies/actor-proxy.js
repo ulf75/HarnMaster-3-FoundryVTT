@@ -1,16 +1,15 @@
 // @ts-check
 import {DiceHM3} from '../../hm3-dice';
-import {ItemType} from '../../hm3-types';
+import {CompanionType, ItemType} from '../../hm3-types';
 import {callOnHooks} from '../../macros';
 import {HM100Check, parseAEValue, truncate} from '../../utility';
-import {ActorHM3} from '../actor';
 
 /**
  * @class
  * @abstract
  */
 export class ActorProxy {
-    /** @type {ActorHM3} */
+    /** @type {import('../actor').ActorHM3} */
     #actor;
 
     constructor(actor) {
@@ -18,7 +17,7 @@ export class ActorProxy {
     }
 
     /**
-     * @type {ActorHM3}
+     * @type {import('../actor').ActorHM3}
      */
     get actor() {
         return this.#actor;
@@ -34,6 +33,12 @@ export class ActorProxy {
      */
     get img() {
         return this.actor.img ?? '';
+    }
+    /**
+     * @type {boolean}
+     */
+    get isToken() {
+        return this.actor.isToken;
     }
     get itemTypes() {
         // @ts-expect-error
@@ -86,6 +91,12 @@ export class ActorProxy {
      */
     get subtype() {
         return this.actor.subtype;
+    }
+    /**
+     * @type {import('../../hm3-token').TokenHM3 | null}
+     */
+    get token() {
+        return this.actor.token;
     }
     /**
      * @type {string}
@@ -204,6 +215,37 @@ export class ActorProxy {
         return this.proxies.find(
             (item) => item.type === ItemType.SKILL && item.name.toLowerCase().includes(name.toLowerCase())
         );
+    }
+
+    /**
+     *
+     * @returns {ActorProxy[]}
+     */
+    getParty() {
+        const party = this.proxies.filter(
+            (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.PARTY
+        );
+        return [
+            this,
+            ...party.map((party) => {
+                return fromUuidSync(party.actorUuid)?.proxy;
+            })
+        ];
+    }
+
+    /**
+     *
+     * @param {string} skill
+     * @returns {import('../../item/proxies/item-proxy').ItemProxy[]}
+     */
+    getPartySkills(skill) {
+        const party = this.getParty();
+        return party
+            .map((p) => {
+                return p.Skill(skill);
+            })
+            .filter((p) => !!p)
+            .sort((a, b) => b.ML - a.ML);
     }
 
     activateListeners(html) {
