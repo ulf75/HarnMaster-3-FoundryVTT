@@ -195,6 +195,11 @@ export class ActorProxy {
         return 0;
     }
 
+    /**
+     *
+     * @param {string} name
+     * @returns {import('../../item/proxies/skill-proxy').SkillProxy}
+     */
     Skill(name) {
         return this.proxies.find(
             (item) => item.type === ItemType.SKILL && item.name.toLowerCase().includes(name.toLowerCase())

@@ -887,7 +887,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         html.on('click', '.damage-roll', (ev) => macros.genericDamageRoll(this.actor));
 
         // Falling Roll
-        html.on('click', '.falling-roll', (ev) => macros.fallingRoll(false, this.actor));
+        html.on('click', '.falling-roll', (ev) => macros.fallingRollv2(false, this.actor));
 
         // Morale Roll
         html.on('click', '.morale-roll', (ev) => macros.moraleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));

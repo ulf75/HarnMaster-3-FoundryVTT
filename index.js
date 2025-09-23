@@ -3,11 +3,8 @@
 // Import Modules
 import {ActorHM3} from './module/actor/actor.js';
 import {CharacterSheetHM3v2} from './module/actor/character-sheet-v2.js';
-import {CharacterSheetHM3} from './module/actor/character-sheet.js';
 import {ContainerSheetHM3v2} from './module/actor/container-sheet-v2.js';
-import {ContainerSheetHM3} from './module/actor/container-sheet.js';
 import {CreatureSheetHM3v2} from './module/actor/creature-sheet-v2.js';
-import {CreatureSheetHM3} from './module/actor/creature-sheet.js';
 import * as combat from './module/combat.js';
 import {HM3} from './module/config.js';
 import * as effect from './module/effect.js';
@@ -16,7 +13,6 @@ import {ChatMessageHM3} from './module/hm3-chatmessage.js';
 import {CombatHM3} from './module/hm3-combat.js';
 import {CombatantHM3} from './module/hm3-combatant.js';
 import {MacroHM3} from './module/hm3-macro.js';
-import {RollHM3} from './module/hm3-roll.js';
 import {TokenDocumentHM3, TokenHM3} from './module/hm3-token.js';
 import {
     ActorType,
@@ -55,7 +51,10 @@ import {runner} from './tests/runner.js';
 
 // import './scss/hm3.scss';
 
+// globalThis.hm3 = {};
+
 Hooks.once('init', async function () {
+    // globalThis.hm3 = game.hm3 = Object.assign(game.system, globalThis.hm3);
     console.info(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
 
     CONFIG.ActiveEffect.legacyTransferral = false;
@@ -241,7 +240,7 @@ Hooks.once('init', async function () {
     CONFIG.AmbientSound.objectClass = AmbientSoundHM3;
     CONFIG.ChatMessage.documentClass = ChatMessageHM3;
     CONFIG.Combatant.documentClass = CombatantHM3;
-    CONFIG.Dice.rolls[0] = RollHM3;
+    // CONFIG.Dice.rolls[0] = RollHM3;
     CONFIG.Drawing.objectClass = DrawingHM3;
     CONFIG.Macro.documentClass = MacroHM3;
     CONFIG.Note.objectClass = NoteHM3;
@@ -253,28 +252,28 @@ Hooks.once('init', async function () {
 
     // Register sheet application classes
     Actors.unregisterSheet('core', ActorSheet);
-    Actors.registerSheet('hm3', CharacterSheetHM3, {
-        types: ['character'],
-        label: 'HM3 Character Sheet'
-    });
+    // Actors.registerSheet('hm3', CharacterSheetHM3, {
+    //     types: ['character'],
+    //     label: 'HM3 Character Sheet'
+    // });
     Actors.registerSheet('hm3', CharacterSheetHM3v2, {
         types: ['character'],
         makeDefault: true,
         label: 'HM3 Character Sheet v2'
     });
-    Actors.registerSheet('hm3', CreatureSheetHM3, {
-        types: ['creature'],
-        label: 'HM3 Creature Sheet'
-    });
+    // Actors.registerSheet('hm3', CreatureSheetHM3, {
+    //     types: ['creature'],
+    //     label: 'HM3 Creature Sheet'
+    // });
     Actors.registerSheet('hm3', CreatureSheetHM3v2, {
         types: ['creature'],
         makeDefault: true,
         label: 'HM3 Creature Sheet v2'
     });
-    Actors.registerSheet('hm3', ContainerSheetHM3, {
-        types: ['container'],
-        label: 'HM3 Container Sheet'
-    });
+    // Actors.registerSheet('hm3', ContainerSheetHM3, {
+    //     types: ['container'],
+    //     label: 'HM3 Container Sheet'
+    // });
     Actors.registerSheet('hm3', ContainerSheetHM3v2, {
         types: ['container'],
         makeDefault: true,
@@ -330,39 +329,73 @@ Hooks.once('init', async function () {
     const root_actor_v2 = `${root}actor-v2/partials/`;
     Handlebars.registerPartial({
         //character
-        char_esoteric_list_partial: await (await fetch(`${root}actor/partials/esoteric_list_partial.hbs`)).text(),
-        char_fff_list_partial: await (await fetch(`${root}actor/partials/fff_list_partial.hbs`)).text(),
-        char_layout_partial: await (await fetch(`${root}actor/partials/structure_partial.hbs`)).text(),
-        char_skill_list_partial: await (await fetch(`${root}actor/partials/skill_list_partial.hbs`)).text(),
+        char_esoteric_list_partial: Handlebars.compile(
+            await (await fetch(`${root}actor/partials/esoteric_list_partial.hbs`)).text()
+        ),
+        char_fff_list_partial: Handlebars.compile(
+            await (await fetch(`${root}actor/partials/fff_list_partial.hbs`)).text()
+        ),
+        char_layout_partial: Handlebars.compile(
+            await (await fetch(`${root}actor/partials/structure_partial.hbs`)).text()
+        ),
+        char_skill_list_partial: Handlebars.compile(
+            await (await fetch(`${root}actor/partials/skill_list_partial.hbs`)).text()
+        ),
         //character v2
-        char_v2_ability_partial: await (await fetch(`${root_actor_v2}ability_partial.hbs`)).text(),
-        char_v2_esoteric_list_partial: await (await fetch(`${root_actor_v2}esoteric_list_partial.hbs`)).text(),
-        char_v2_fff_list_partial: await (await fetch(`${root_actor_v2}fff_list_partial.hbs`)).text(),
-        char_v2_img_partial: await (await fetch(`${root_actor_v2}img_partial.hbs`)).text(),
-        char_v2_layout_partial: await (await fetch(`${root_actor_v2}structure_partial.hbs`)).text(),
-        char_v2_skill_list_partial: await (await fetch(`${root_actor_v2}skill_list_partial.hbs`)).text(),
+        char_v2_ability_partial: Handlebars.compile(await (await fetch(`${root_actor_v2}ability_partial.hbs`)).text()),
+        char_v2_esoteric_list_partial: Handlebars.compile(
+            await (await fetch(`${root_actor_v2}esoteric_list_partial.hbs`)).text()
+        ),
+        char_v2_fff_list_partial: Handlebars.compile(
+            await (await fetch(`${root_actor_v2}fff_list_partial.hbs`)).text()
+        ),
+        char_v2_img_partial: Handlebars.compile(await (await fetch(`${root_actor_v2}img_partial.hbs`)).text()),
+        char_v2_layout_partial: Handlebars.compile(await (await fetch(`${root_actor_v2}structure_partial.hbs`)).text()),
+        char_v2_skill_list_partial: Handlebars.compile(
+            await (await fetch(`${root_actor_v2}skill_list_partial.hbs`)).text()
+        ),
         // item
-        item_artifact_partial: await (await fetch(`${root}item/partials/artifact_partial.hbs`)).text(),
-        item_artifact_power_partial: await (await fetch(`${root}item/partials/artifact_power_partial.hbs`)).text(),
-        item_esoteric_combat_partial: await (await fetch(`${root}item/partials/esoteric_combat_partial.hbs`)).text(),
-        item_layout_partial: await (await fetch(`${root}item/partials/structure_partial.hbs`)).text(),
-        item_standard_partial: await (await fetch(`${root}item/partials/standard_partial.hbs`)).text(),
-        item_unknown_value_partial: await (await fetch(`${root}item/partials/unknown_value_partial.hbs`)).text(),
+        item_artifact_partial: Handlebars.compile(
+            await (await fetch(`${root}item/partials/artifact_partial.hbs`)).text()
+        ),
+        item_artifact_power_partial: Handlebars.compile(
+            await (await fetch(`${root}item/partials/artifact_power_partial.hbs`)).text()
+        ),
+        item_esoteric_combat_partial: Handlebars.compile(
+            await (await fetch(`${root}item/partials/esoteric_combat_partial.hbs`)).text()
+        ),
+        item_layout_partial: Handlebars.compile(
+            await (await fetch(`${root}item/partials/structure_partial.hbs`)).text()
+        ),
+        item_standard_partial: Handlebars.compile(
+            await (await fetch(`${root}item/partials/standard_partial.hbs`)).text()
+        ),
+        item_unknown_value_partial: Handlebars.compile(
+            await (await fetch(`${root}item/partials/unknown_value_partial.hbs`)).text()
+        ),
         // item v2
-        item_v2_artifact_partial: await (await fetch(`${root_item_v2}artifact_partial.hbs`)).text(),
-        item_v2_artifact_power_partial: await (await fetch(`${root_item_v2}artifact_power_partial.hbs`)).text(),
-        item_v2_esoteric_combat_partial: await (await fetch(`${root_item_v2}esoteric_combat_partial.hbs`)).text(),
-        item_v2_layout_partial: await (await fetch(`${root_item_v2}structure_partial.hbs`)).text(),
-        item_v2_quantity_partial: await (await fetch(`${root_item_v2}quantity_partial.hbs`)).text(),
-        item_v2_sb_partial: await (await fetch(`${root_item_v2}sb_partial.hbs`)).text(),
-        item_v2_standard_partial: await (await fetch(`${root_item_v2}standard_partial.hbs`)).text(),
-        item_v2_unknown_value_partial: await (await fetch(`${root_item_v2}unknown_value_partial.hbs`)).text(),
-        item_v2_value_partial: await (await fetch(`${root_item_v2}value_partial.hbs`)).text(),
-        item_v2_weight_partial: await (await fetch(`${root_item_v2}weight_partial.hbs`)).text(),
+        item_v2_artifact_partial: Handlebars.compile(await (await fetch(`${root_item_v2}artifact_partial.hbs`)).text()),
+        item_v2_artifact_power_partial: Handlebars.compile(
+            await (await fetch(`${root_item_v2}artifact_power_partial.hbs`)).text()
+        ),
+        item_v2_esoteric_combat_partial: Handlebars.compile(
+            await (await fetch(`${root_item_v2}esoteric_combat_partial.hbs`)).text()
+        ),
+        item_v2_layout_partial: Handlebars.compile(await (await fetch(`${root_item_v2}structure_partial.hbs`)).text()),
+        item_v2_quantity_partial: Handlebars.compile(await (await fetch(`${root_item_v2}quantity_partial.hbs`)).text()),
+        item_v2_sb_partial: Handlebars.compile(await (await fetch(`${root_item_v2}sb_partial.hbs`)).text()),
+        item_v2_standard_partial: Handlebars.compile(await (await fetch(`${root_item_v2}standard_partial.hbs`)).text()),
+        item_v2_unknown_value_partial: Handlebars.compile(
+            await (await fetch(`${root_item_v2}unknown_value_partial.hbs`)).text()
+        ),
+        item_v2_value_partial: Handlebars.compile(await (await fetch(`${root_item_v2}value_partial.hbs`)).text()),
+        item_v2_weight_partial: Handlebars.compile(await (await fetch(`${root_item_v2}weight_partial.hbs`)).text()),
         // global
-        effects_partial: await (await fetch(`${root}partials/effects_partial.hbs`)).text(),
-        legacy_macro_partial: await (await fetch(`${root}partials/legacy_macro_partial.hbs`)).text(),
-        macros_partial: await (await fetch(`${root}partials/macros_partial.hbs`)).text()
+        effects_partial: Handlebars.compile(await (await fetch(`${root}partials/effects_partial.hbs`)).text()),
+        legacy_macro_partial: Handlebars.compile(
+            await (await fetch(`${root}partials/legacy_macro_partial.hbs`)).text()
+        ),
+        macros_partial: Handlebars.compile(await (await fetch(`${root}partials/macros_partial.hbs`)).text())
     });
 
     // Add a font selector dropdown to the TineMCE editor
@@ -411,31 +444,31 @@ Hooks.once('init', async function () {
             }
         });
     });
-});
 
-Hooks.on('renderChatMessage', (app, html, data) => {
-    // Display action buttons
-    combat.displayChatActionButtons(app, html, data);
-});
+    Hooks.on('renderChatMessage', (app, html, data) => {
+        // Display action buttons
+        combat.displayChatActionButtons(app, html, data);
+    });
 
-Hooks.on('renderChatLog', (app, html, data) => ActorHM3.chatListeners(html));
+    Hooks.on('renderChatLog', (app, html, data) => ActorHM3.chatListeners(html));
 
-Hooks.on('renderChatPopout', (app, html, data) => ActorHM3.chatListeners(html));
+    Hooks.on('renderChatPopout', (app, html, data) => ActorHM3.chatListeners(html));
 
-/**
- * Active Effects need to expire at certain times, so keep track of that here
- */
-Hooks.on('updateWorldTime', async (currentTime, change) => {
-    await effect.checkStartedActiveEffects();
-    // Disable any expired active effects (WorldTime-based durations).
-    await effect.checkExpiredActiveEffects();
-});
+    /**
+     * Active Effects need to expire at certain times, so keep track of that here
+     */
+    Hooks.on('updateWorldTime', async (currentTime, change) => {
+        await effect.checkStartedActiveEffects();
+        // Disable any expired active effects (WorldTime-based durations).
+        await effect.checkExpiredActiveEffects();
+    });
 
-Hooks.on('updateCombat', async (combat, updateData) => {
-    await effect.checkStartedActiveEffects();
-    // Called when the combat object is updated.  Possibly because of a change in round
-    // or turn. updateData will have specifics of what changed.
-    await effect.checkExpiredActiveEffects();
+    Hooks.on('updateCombat', async (combat, updateData) => {
+        await effect.checkStartedActiveEffects();
+        // Called when the combat object is updated.  Possibly because of a change in round
+        // or turn. updateData will have specifics of what changed.
+        await effect.checkExpiredActiveEffects();
+    });
 });
 
 Hooks.on('hm3.onShockIndexReduced', async (actor, old, current) => {
@@ -448,20 +481,20 @@ Hooks.on('hm3.onShockIndexReduced', async (actor, old, current) => {
     }
 });
 
-Hooks.on('hm3.onTotalInjuryLevelsChanged', async (actor, oldValue, newValue) => {
-    const inanimate = actor.hasCondition(Condition.INANIMATE);
-    if (inanimate) {
-        actor.system.injuryLevels.max = actor.system.endurance;
-    }
+// Hooks.on('hm3.onTotalInjuryLevelsChanged', async (actor, oldValue, newValue) => {
+//     const inanimate = actor.hasCondition(Condition.INANIMATE);
+//     if (inanimate) {
+//         actor.system.injuryLevels.max = actor.system.endurance;
+//     }
 
-    actor.system.injuryLevels.value = newValue;
-    if (actor.testUserPermission(game.user, 'OWNER')) {
-        await actor.update({'system.injuryLevels': actor.system.injuryLevels});
-        if (inanimate && newValue >= actor.system.injuryLevels.max) {
-            await actor.token.addCondition(Condition.DYING);
-        }
-    }
-});
+//     actor.system.injuryLevels.value = newValue;
+//     if (actor.testUserPermission(game.user, 'OWNER')) {
+//         await actor.update({'system.injuryLevels': actor.system.injuryLevels});
+//         if (inanimate && newValue >= actor.system.injuryLevels.max) {
+//             await actor.token.addCondition(Condition.DYING);
+//         }
+//     }
+// });
 
 Hooks.on('updateCombat', async (combat, updateData) => {
     return updateOutnumbered({hook: 'updateCombat'});
@@ -1047,7 +1080,9 @@ async function cheating(check, name, type, formula, minimum, maximum, target) {
 let outMutex = new Mutex();
 /**
  * Update outnumbered status for combatants
- * @param {string} aeName - The name of the active effect
+ * @param {Object} options -
+ * @param {string} [options.aeName='true'] - The name of the active effect
+ * @param {string} [options.hook='nohook'] - The name of the active effect
  * @returns {Promise<void>}
  */
 async function updateOutnumbered({aeName = 'true', hook = 'nohook'} = {}) {

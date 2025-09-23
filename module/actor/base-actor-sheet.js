@@ -1016,7 +1016,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.damage-roll').click((ev) => macros.genericDamageRoll(this.actor));
 
         // Falling Roll
-        html.find('.falling-roll').click((ev) => macros.fallingRoll(false, this.actor));
+        html.find('.falling-roll').click((ev) => macros.fallingRollv2(false, this.actor));
 
         // Morale Roll
         html.find('.morale-roll').click((ev) => macros.moraleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));

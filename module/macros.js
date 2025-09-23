@@ -1575,8 +1575,8 @@ export async function throwDownRoll(atkTokenId, defTokenId, atkDice, defDice) {
             hasAttackHit: false,
             resultDesc,
             title: `Throw Down Roll`,
-            visibleAtkActorId: atkToken.actor.id,
-            visibleDefActorId: defToken.actor.id
+            visibleAtkActorId: atkToken.actor?.id,
+            visibleDefActorId: defToken.actor?.id
         };
 
         let chatTemplate = 'systems/hm3/templates/chat/attack-result-card.hbs';
@@ -1599,7 +1599,14 @@ export async function throwDownRoll(atkTokenId, defTokenId, atkDice, defDice) {
     return null;
 }
 
-export async function fallingRoll(noDialog = false, myActor = null, token = null) {
+/**
+ *
+ * @param {boolean} noDialog
+ * @param {ActorHM3 | null} myActor
+ * @param {TokenHM3 | null} token
+ * @returns
+ */
+export async function fallingRollv2(noDialog = false, myActor = null, token = null) {
     const actorInfo = getActor({actor: myActor, item: null, speaker: null});
     if (!actorInfo) {
         ui.notifications?.warn(`No actor for this action could be determined.`);
@@ -1614,10 +1621,10 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
         modifier: 0
     };
 
-    const dodgeSkill = actorInfo.actor.items.find((item) => item.type === ItemType.SKILL && item.name === 'Dodge');
-    const acrobaticsSkill = actorInfo.actor.items.find(
-        (item) => item.type === ItemType.SKILL && item.name === 'Acrobatics'
-    );
+    /** @type {import('./actor/proxies/living-proxy.js').LivingProxy} */
+    const aproxy = actorInfo.actor.proxy;
+    const dodgeSkill = aproxy.Skill('Dodge');
+    const acrobaticsSkill = aproxy.Skill('Acrobatics');
 
     dialogData.skill = 'Dodge';
     dialogData.skills = [{key: 'Dodge'}];
@@ -1646,18 +1653,18 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
         title: 'Falling Test',
         callback: async (html) => {
             const form = html[0].querySelector('form');
-            const formClear = form.clear.checked;
-            const formGrabbing = form.grabbing.checked;
-            const formHeight = Number(form.height.value);
-            const formModifier = Number(form.modifier.value);
-            const formSkill = form.skills.value;
-            const formSurface = Number(form.surfaces.value);
+            const formClear = form?.clear.checked;
+            const formGrabbing = form?.grabbing.checked;
+            const formHeight = Number(form?.height.value);
+            const formModifier = Number(form?.modifier.value);
+            const formSkill = form?.skills.value;
+            const formSurface = Number(form?.surfaces.value);
 
             let dice = Math.ceil(formHeight / 10 + Number.EPSILON); // 1d6 per 10 feet of fall
             dice += formSurface; // Add surface modifier
 
             if (formGrabbing) {
-                const effSkillBase = actorInfo.actor.system.abilities.dexterity.effective; // Use Dexterity for grabbing
+                const effSkillBase = aproxy.DEX; // Use Dexterity for grabbing
 
                 const stdRollData = {
                     actor: actorInfo.actor,
@@ -1667,8 +1674,6 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
                     label: `d100 Dexterity Roll`,
                     multiplier: 5,
                     name: `${actorInfo.token.name} tries to grab something while falling.`,
-                    notes: '',
-                    notesData: {},
                     numdice: 1,
                     skill: 'Dexterity',
                     speaker: actorInfo.speaker,
@@ -1703,7 +1708,7 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
                 };
 
                 const dex = await DiceHM3.d100StdRoll(stdRollData);
-                if (!dex.isSuccess && dex.isCritical) {
+                if (!dex?.isSuccess && dex?.isCritical) {
                     await DiceHM3.injuryRoll({
                         actor: actorInfo.actor,
                         aim: 'Mid',
@@ -1720,10 +1725,7 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
 
             let success = false;
             if (formClear && formHeight > 15) {
-                let target =
-                    formSkill === 'Acrobatics'
-                        ? acrobaticsSkill.system.effectiveMasteryLevel
-                        : dodgeSkill.system.effectiveMasteryLevel;
+                let target = formSkill === 'Acrobatics' ? acrobaticsSkill?.EML : dodgeSkill?.EML;
                 target = HM100Check(target + formModifier);
 
                 const stdRollData = {
@@ -1731,8 +1733,6 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
                     fastforward: true,
                     label: `${formSkill} Skill Test`,
                     name: `${actorInfo.token.name} tries to avoid falling damage.`,
-                    notes: '',
-                    notesData: {},
                     numdice: 1,
                     skill: formSkill,
                     speaker: actorInfo.speaker,
@@ -1773,7 +1773,7 @@ export async function fallingRoll(noDialog = false, myActor = null, token = null
                 };
 
                 const dodge = await DiceHM3.d100StdRoll(stdRollData);
-                success = dodge.isSuccess;
+                success = dodge?.isSuccess ?? false;
             }
 
             dice = Math.max(dice, 0);

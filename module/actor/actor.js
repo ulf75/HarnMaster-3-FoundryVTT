@@ -1599,7 +1599,7 @@ export class ActorHM3 extends Actor {
                 break;
 
             case 'falling':
-                macros.fallingRoll(false, actor, token);
+                macros.fallingRollv2(false, actor, token);
                 break;
 
             default:
