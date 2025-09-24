@@ -153,7 +153,7 @@ export class ItemHM3 extends Item {
             if (arcane)
                 return foundry.utils.mergeObject(
                     arcane,
-                    game.hm3.config.arcanePowers.find((p) => p.key === arcane.power)
+                    hm3.config.arcanePowers.find((p) => p.key === arcane.power)
                 );
         }
         return null;

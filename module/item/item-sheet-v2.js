@@ -87,10 +87,10 @@ export class ItemSheetHM3v2 extends ItemSheet {
                 choices: [{key: 'Minor'}, {key: 'Major'}],
                 durations: [{key: 'Indefinite'}, {key: 'Permanent'}],
                 powers: (context.iproxy.arcaneType === ArcaneType.MINOR
-                    ? JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter(
+                    ? JSON.parse(JSON.stringify(hm3.config.arcanePowers)).filter(
                           (p) => p.minor && p.validFor.includes(context.iproxy.type)
                       )
-                    : JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter(
+                    : JSON.parse(JSON.stringify(hm3.config.arcanePowers)).filter(
                           (p) => p.major >= 0 && p.validFor.includes(context.iproxy.type)
                       )
                 ).map((p) => {

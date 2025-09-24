@@ -12,7 +12,7 @@ export class ItemSheetHM3 extends ItemSheet {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ['hm3', 'sheet', 'item'],
             width: 605,
-            height: game.user.isGM ? 850 : 650,
+            height: game.user?.isGM ? 850 : 650,
             tabs: [{navSelector: '.sheet-tabs', contentSelector: '.sheet-body', initial: 'properties'}],
             resizable: true
         });
@@ -33,7 +33,7 @@ export class ItemSheetHM3 extends ItemSheet {
         data.hasDescription = 'description' in this.object.system;
         if (data.hasDescription) {
             data.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {
-                secrets: game.user.isGM,
+                secrets: game.user?.isGM,
                 relativeTo: this.object.system
             });
         }
@@ -47,15 +47,15 @@ export class ItemSheetHM3 extends ItemSheet {
         data.hasCombatSkills = false;
         data.hasRitualSkills = false;
         data.hasMagicSkills = false;
-        data.isGM = game.user.isGM;
-        data.strictMode = game.settings.get('hm3', 'strictGmMode');
+        data.isGM = game.user?.isGM;
+        data.strictMode = game.settings?.get('hm3', 'strictGmMode');
         data.hasRwPermission = data.isGM || !data.strictMode;
-        data.isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
+        data.isGridDistanceUnits = game.settings?.get('hm3', 'distanceUnits') === 'grid';
         data.idata.wqModifier = data.idata.wqModifier || 0;
 
         // if (data.itemType === ItemType.ARMORGEAR) {
         //     if (!data.idata.baseValue) data.idata.baseValue = data.idata.value;
-        //     data.idata.value = Math.ceil(data.idata.baseValue * 2 ** data.idata.armorQuality * game.hm3.config.sizes[data.idata.size]);
+        //     data.idata.value = Math.ceil(data.idata.baseValue * 2 ** data.idata.armorQuality * hm3.config.sizes[data.idata.size]);
         // }
 
         data.macroTypes = [
@@ -135,7 +135,7 @@ export class ItemSheetHM3 extends ItemSheet {
             if (data.idata.type === undefined) data.idata.type = 'Container';
         } else if (this.item.type === ItemType.SKILL) {
             if (this.item.name.includes('Riding')) {
-                const ridingImg = new Map(game.hm3.config.combatSkillIcons).get('riding');
+                const ridingImg = new Map(hm3.config.combatSkillIcons).get('riding');
                 const steeds = this.actor.getSteeds();
                 data.steeds = [
                     {key: '', label: `No Steed`},
@@ -166,10 +166,10 @@ export class ItemSheetHM3 extends ItemSheet {
 
         if (data.isGridDistanceUnits && !!data.idata.range) {
             data.rangeGrid = {
-                short: data.idata.range.short / canvas.dimensions.distance,
-                medium: data.idata.range.medium / canvas.dimensions.distance,
-                long: data.idata.range.long / canvas.dimensions.distance,
-                extreme: data.idata.range.extreme / canvas.dimensions.distance
+                short: data.idata.range.short / (canvas?.dimensions?.distance ?? 5),
+                medium: data.idata.range.medium / (canvas?.dimensions?.distance ?? 5),
+                long: data.idata.range.long / (canvas?.dimensions?.distance ?? 5),
+                extreme: data.idata.range.extreme / (canvas?.dimensions?.distance ?? 5)
             };
         }
 
@@ -187,8 +187,8 @@ export class ItemSheetHM3 extends ItemSheet {
         });
 
         if (
-            game.hm3.config.esotericCombatItems.attack.includes(this.item.name) ||
-            game.hm3.config.esotericCombatItems.defense.includes(this.item.name)
+            hm3.config.esotericCombatItems.attack.includes(this.item.name) ||
+            hm3.config.esotericCombatItems.defense.includes(this.item.name)
         ) {
             data.isEsotericCombat = true;
         }
@@ -249,13 +249,12 @@ export class ItemSheetHM3 extends ItemSheet {
                 choices: [{key: 'Minor'}, {key: 'Major'}],
                 durations: [{key: 'Indefinite'}, {key: 'Permanent'}],
                 description:
-                    game.hm3.config.arcanePowers.find((p) => p.key === data.idata.arcane.minor?.power)?.description ||
-                    '',
+                    hm3.config.arcanePowers.find((p) => p.key === data.idata.arcane.minor?.power)?.description || '',
                 powers: (data.idata.arcane.type === 'Minor'
-                    ? JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter(
+                    ? JSON.parse(JSON.stringify(hm3.config.arcanePowers)).filter(
                           (p) => p.minor && p.validFor.includes(data.data.type)
                       )
-                    : JSON.parse(JSON.stringify(game.hm3.config.arcanePowers)).filter(
+                    : JSON.parse(JSON.stringify(hm3.config.arcanePowers)).filter(
                           (p) => p.major >= 0 && p.validFor.includes(data.data.type)
                       )
                 ).map((p) => {
@@ -287,7 +286,7 @@ export class ItemSheetHM3 extends ItemSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
-        if (!game.user.isGM) {
+        if (!game.user?.isGM) {
             html.find('.profile-img').click(async (ev) => {
                 new ImagePopout(this.item.img, {
                     title: this.item.name,

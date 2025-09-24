@@ -4,8 +4,8 @@ export class WeaponItem {
 
         // Arcane powers
         this.powers = {
-            Swordbreaker: this._item.getArcanePower(game.hm3.ArcanePower.SWORDBREAKER),
-            WardAkana: this._item.getArcanePower(game.hm3.ArcanePower.WARD_AKANA)
+            Swordbreaker: this._item.getArcanePower(hm3.ArcanePower.SWORDBREAKER),
+            WardAkana: this._item.getArcanePower(hm3.ArcanePower.WARD_AKANA)
         };
     }
 
