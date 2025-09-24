@@ -35,6 +35,7 @@ export class RollHM3 extends Roll {
      * @type {boolean}
      */
     get debug() {
+        // @ts-expect-error
         return game.settings?.get('hm3', 'debugMode');
     }
 
@@ -42,6 +43,7 @@ export class RollHM3 extends Roll {
      * @type {boolean}
      */
     get cheating() {
+        // @ts-expect-error
         return game.settings?.get('hm3', 'cheatMode');
     }
 
@@ -85,6 +87,13 @@ export class RollHM3 extends Roll {
             return this.total <= this._effTarget;
         }
         return false;
+    }
+    /**
+     * @type {number}
+     * @override
+     */
+    get total() {
+        return super.total ?? -1;
     }
 
     /**
@@ -156,7 +165,7 @@ export class RollHM3 extends Roll {
             return this._cheatRoll({minimize, maximize, allowStrings, allowInteractive, options});
         }
 
-        return super.evaluate({minimize, maximize, allowStrings, allowInteractive, options});
+        return super.evaluate({minimize, maximize, allowStrings, allowInteractive, ...options});
     }
 
     /**
@@ -176,7 +185,7 @@ export class RollHM3 extends Roll {
         let obj = null;
         do {
             this._reset();
-            obj = await super.evaluate({minimize, maximize, allowStrings, allowInteractive, options});
+            obj = await super.evaluate({minimize, maximize, allowStrings, allowInteractive, ...options});
         } while (
             --cnt > 0 &&
             ((this._targetCritical !== null ? this._targetCritical !== this.isCritical : false) ||
@@ -194,10 +203,13 @@ export class RollHM3 extends Roll {
     _reset() {
         this._dice = [];
         this.terms.forEach((element) => {
+            // @ts-expect-error
             element._evaluated = false;
+            // @ts-expect-error
             element.results = [];
         });
         this._evaluated = false;
+        // @ts-expect-error
         this._resolver = undefined;
         this._root = undefined;
         this._total = undefined;

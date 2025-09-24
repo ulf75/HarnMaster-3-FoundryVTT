@@ -6,6 +6,8 @@
     "noEmit": true,
     "noImplicitAny": false,
     "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
     "paths": {},
     "strict": true,
     "target": "esnext",

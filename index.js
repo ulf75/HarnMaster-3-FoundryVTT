@@ -178,7 +178,6 @@ Hooks.once('init', async function () {
 
     /**
      * Set an initiative formula for the system
-     * @type {String}
      */
     CONFIG.Combat.initiative = {
         formula: '@initiative',
@@ -190,6 +189,7 @@ Hooks.once('init', async function () {
     CONFIG.time.turnTime = 0;
 
     // Set System Globals
+    // @ts-expect-error
     CONFIG.HM3 = HM3;
 
     CONFIG.canvasTextStyle = new PIXI.TextStyle({
@@ -466,13 +466,17 @@ Hooks.once('ready', async function () {
     HM3.ready = true;
 });
 
+/**
+ *
+ * @returns {boolean}
+ */
 function isFirstTA() {
     return !game.combats?.active?.getFlag('hm3', 'TA');
 }
 
 /**
  * Set the TA flag for the active combat proxy for socketlib
- * @returns {Promise<void>}
+ * @returns {Promise<*>}
  */
 async function setTAFlag() {
     return game.combats?.active?.setFlag('hm3', 'TA', true);
@@ -480,7 +484,7 @@ async function setTAFlag() {
 
 /**
  * Unset the TA flag for the active combat proxy for socketlib
- * @returns {Promise<void>}
+ * @returns {Promise<*>}
  */
 async function unsetTAFlag() {
     return game.combats?.active?.unsetFlag('hm3', 'TA');
@@ -493,6 +497,7 @@ async function unsetTAFlag() {
  * @returns {Promise<void>}
  */
 async function weaponBroke(itemUuid, diff) {
+    /** @type {ItemHM3} */
     const item = fromUuidSync(itemUuid);
     if (item) {
         await item.update({
@@ -504,7 +509,13 @@ async function weaponBroke(itemUuid, diff) {
     }
 }
 
+/**
+ *
+ * @param {string} itemUuid
+ * @param {boolean} success
+ */
 async function improveFlag(itemUuid, success) {
+    /** @type {ItemHM3} */
     const item = fromUuidSync(itemUuid);
     if (item) {
         const old = item.system.improveFlag;
@@ -517,7 +528,13 @@ async function improveFlag(itemUuid, success) {
     }
 }
 
+/**
+ *
+ * @param {string} actorUuid
+ * @param {number} fatigue
+ */
 async function fatigueReceived(actorUuid, fatigue) {
+    /** @type {ActorHM3} */
     const actor = fromUuidSync(actorUuid);
     if (actor) {
         await actor.update({
@@ -529,12 +546,15 @@ async function fatigueReceived(actorUuid, fatigue) {
 
 /**
  * Send a message to the GM as GM proxy for socketlib
- * @param {string} content - The message content
- * @param {string} source - The source of the message
- * @param {boolean} gmonly - If true, send the message only to the GM
- * @returns {Promise<ChatMessage>} - The created chat message
+ * @param {Object} options
+ * @param {boolean} [options.gmonly]
+ * @param {string} [options.sendingUserId='']
+ * @param {string} [options.source]
+ * @param {string} [options.text]
+ * @param {string} [options.tokenId='']
+ * @returns
  */
-async function gmSays({gmonly, sendingUserId, source, text, tokenId}) {
+async function gmSays({gmonly, sendingUserId = '', source, text, tokenId = ''}) {
     return hm3.GmSays({
         gmonly,
         sendingUser: game.users?.get(sendingUserId),
@@ -585,10 +605,26 @@ function gmConsole(user, level, msg, error) {
     }
 }
 
+/**
+ *
+ * @param {string} hook
+ * @param  {...any} args
+ */
 function callAllUsers(hook, ...args) {
     Hooks.callAll(hook, ...args);
 }
 
+/**
+ *
+ * @param {string} check
+ * @param {string} name
+ * @param {string} type
+ * @param {string} formula
+ * @param {number} minimum
+ * @param {number} maximum
+ * @param {string} target
+ * @returns
+ */
 async function cheating(check, name, type, formula, minimum, maximum, target) {
     let dlgTemplate = 'systems/hm3/templates/dialog/cheat-dialog.hbs';
     let dialogData = {check, name, type, formula, minimum, maximum, target};
