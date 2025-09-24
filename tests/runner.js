@@ -17,7 +17,7 @@ let isRunning = false;
 
 export async function runner() {
     if (isRunning) {
-        ui.notifications.warn('Test runner is already running. Please wait for it to finish.');
+        ui.notifications?.warn('Test runner is already running. Please wait for it to finish.');
         return;
     }
     isRunning = true;

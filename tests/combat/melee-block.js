@@ -11,11 +11,11 @@ export class MeleeBlockTestCase extends BaseTestHM3 {
 
         game.user.updateTokenTargets([alice.id]);
 
-        await game.hm3.macros.weaponAttack('Broadsword', true);
+        await hm3.macros.weaponAttack('Broadsword', true);
         const defButtons = this._defButtonsFromChatMsg();
         console.assert(defButtons.size === 4, 'Expected 4 attack button, found: %O', defButtons);
 
-        game.hm3.Roll.D100_RESULTS = [99, 1];
+        hm3.Roll.D100_RESULTS = [99, 1];
         await defButtons.get('Dodge')?.button.click();
 
         await this._wait(1000);

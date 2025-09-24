@@ -3,7 +3,7 @@ import {BaseTestHM3} from '../hm3-basetest';
 export class MoraleTestCase extends BaseTestHM3 {
     async _test() {
         const Center = {x: 7870, y: 14258};
-        const Condition = game.hm3.Condition;
+        const Condition = hm3.Condition;
         const token = await this._dropActor(this.actors.get('Alice'), Center);
 
         const berserk = await token.addCondition(Condition.BERSERK);

@@ -79,7 +79,7 @@ export class BaseTestHM3 {
     async start() {
         const pre = await this._prerequisites();
         if (pre !== true) {
-            ui.notifications.error('Prerequisites not met, skipping test: ' + pre);
+            ui.notifications?.error('Prerequisites not met, skipping test: ' + pre);
             return false;
         }
 
@@ -164,7 +164,7 @@ export class BaseTestHM3 {
 
         return Array.from(htmlDefButtons.children)
             .filter((button) => {
-                const actor = button.dataset.visibleActorId ? game.actors.get(button.dataset.visibleActorId) : null;
+                const actor = button.dataset.visibleActorId ? game.actors?.get(button.dataset.visibleActorId) : null;
                 if (!actor || !actor.isOwner) {
                     return false;
                 }
@@ -199,7 +199,7 @@ export class BaseTestHM3 {
      * @returns {Promise<Map<string, Object>>} A map of defend buttons with their associated data.
      */
     async _defButtonsFromChatMsg(userId = game.user.id, messageNr = game.messages.contents.length - 1) {
-        return game.hm3.socket.executeAsUser('defButtonsFromChatMsg', userId, messageNr);
+        return hm3.socket.executeAsUser('defButtonsFromChatMsg', userId, messageNr);
     }
 
     static async DefActionProxy(def, {messageNr, roll}) {
@@ -208,7 +208,7 @@ export class BaseTestHM3 {
         const button = new Map(defButtons).get(def)?.button;
         if (!button) return null;
 
-        game.hm3.Roll.D100_RESULTS.push(...roll);
+        hm3.Roll.D100_RESULTS.push(...roll);
 
         button.onclick = async (event) => {
             return CONFIG.Actor.documentClass._onChatCardAction({
@@ -232,8 +232,8 @@ export class BaseTestHM3 {
         def,
         {messageNr = game.messages.contents.length - 1, unsetTAFlag = false, userId = game.user.id, roll = []} = {}
     ) {
-        if (unsetTAFlag) await game.hm3.socket.executeAsGM('unsetTAFlag');
-        return game.hm3.socket.executeAsUser('defAction', userId, def, {messageNr, roll});
+        if (unsetTAFlag) await hm3.socket.executeAsGM('unsetTAFlag');
+        return hm3.socket.executeAsUser('defAction', userId, def, {messageNr, roll});
     }
 
     /**
@@ -260,7 +260,7 @@ export class BaseTestHM3 {
         data.uuid = actor.uuid;
         data.type = 'Actor';
 
-        const tokenDoc = await canvas.tokens._onDropActorData({altKey: false, shiftKey: false}, data);
+        const tokenDoc = await canvas?.tokens?._onDropActorData({altKey: false, shiftKey: false}, data);
         this.tokens.set(tokenDoc.name, tokenDoc);
 
         await this._move(tokenDoc.object, dir);
@@ -283,7 +283,7 @@ export class BaseTestHM3 {
      */
     async _resetAllConditions(token) {
         await Promise.all(
-            Object.values(game.hm3.Condition).map(async (condition) => {
+            Object.values(hm3.Condition).map(async (condition) => {
                 await token.deleteCondition(condition);
             })
         );

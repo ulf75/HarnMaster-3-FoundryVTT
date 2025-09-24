@@ -15,8 +15,8 @@ export class ShockTestCase extends BaseTestHM3 {
 
         await this._startCombat();
 
-        await t4.addCondition(game.hm3.Condition.DISTRACTED);
-        await t3.addCondition(game.hm3.Condition.SHOCKED);
+        await t4.addCondition(hm3.Condition.DISTRACTED);
+        await t3.addCondition(hm3.Condition.SHOCKED);
 
         console.assert(t3.combatant.isDefeated, 'Combatant is NOT defeated: %O', t3.combatant);
     }

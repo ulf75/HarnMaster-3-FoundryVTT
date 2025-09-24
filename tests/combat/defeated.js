@@ -15,11 +15,11 @@ export class DefeatedTestCase extends BaseTestHM3 {
         await this._startCombat();
 
         await alice.actor.update({'system.fatigue': 3});
-        await alice.addCondition(game.hm3.Condition.UNCONSCIOUS);
+        await alice.addCondition(hm3.Condition.UNCONSCIOUS);
 
         // not yet defeated
         console.assert(
-            alice.actor.system.shockIndex.value >= game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD &&
+            alice.actor.system.shockIndex.value >= hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD &&
                 !alice.combatant.isDefeated,
             `HM3 ASSERT | Combatant ${alice.name} IS defeated (Shock Index: ${alice.actor.system.shockIndex.value}).`,
             alice.combatant
@@ -28,13 +28,12 @@ export class DefeatedTestCase extends BaseTestHM3 {
         await this._resetAllConditions(alice);
 
         await alice.actor.update({'system.fatigue': 5});
-        await alice.addCondition(game.hm3.Condition.UNCONSCIOUS);
-        await alon.addCondition(game.hm3.Condition.SHOCKED);
-        await bob.addCondition(game.hm3.Condition.DYING);
+        await alice.addCondition(hm3.Condition.UNCONSCIOUS);
+        await alon.addCondition(hm3.Condition.SHOCKED);
+        await bob.addCondition(hm3.Condition.DYING);
 
         console.assert(
-            alice.actor.system.shockIndex.value < game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD &&
-                !alice.combatant.isDefeated,
+            alice.actor.system.shockIndex.value < hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && !alice.combatant.isDefeated,
             `HM3 ASSERT | Combatant ${alice.name} IS defeated (Shock Index: ${alice.actor.system.shockIndex.value}).`,
             alice.combatant
         );
@@ -48,10 +47,10 @@ export class DefeatedTestCase extends BaseTestHM3 {
         await this._resetAllConditions(bob);
 
         await bob.actor.update({'system.fatigue': 6});
-        await bob.addCondition(game.hm3.Condition.UNCONSCIOUS);
+        await bob.addCondition(hm3.Condition.UNCONSCIOUS);
 
         console.assert(
-            bob.actor.system.shockIndex.value < game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && bob.combatant.isDefeated,
+            bob.actor.system.shockIndex.value < hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && bob.combatant.isDefeated,
             `HM3 ASSERT | Combatant ${bob.name} is NOT defeated (Shock Index: ${bob.actor.system.shockIndex.value}).`,
             bob.combatant
         );
@@ -59,14 +58,14 @@ export class DefeatedTestCase extends BaseTestHM3 {
         await this._resetAllConditions(bob);
 
         await bob.actor.update({'system.fatigue': 3});
-        await bob.addCondition(game.hm3.Condition.UNCONSCIOUS);
+        await bob.addCondition(hm3.Condition.UNCONSCIOUS);
         await bob.actor.update({'system.fatigue': 6});
 
         // wait for all hooks settled
         await new Promise((resolve) => Hooks.once('hm3.onShockIndexReduced2', () => resolve()));
 
         console.assert(
-            bob.actor.system.shockIndex.value < game.hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && bob.combatant.isDefeated,
+            bob.actor.system.shockIndex.value < hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && bob.combatant.isDefeated,
             `HM3 ASSERT | Combatant ${bob.name} is NOT defeated (Shock Index: ${bob.actor.system.shockIndex.value}).`,
             bob.combatant
         );

@@ -8,7 +8,7 @@ export class OutnumberedTestCase extends BaseTestHM3 {
     }
 
     async _test() {
-        const Condition = game.hm3.Condition;
+        const Condition = hm3.Condition;
         const alice = await this._dropActor(this.actors.get('Alice'), CENTER);
         const alon = await this._dropActor(this.actors.get('Alon'), CENTER, this.NORTH);
         const bob = await this._dropActor(this.actors.get('Bob'), CENTER, this.SOUTH);

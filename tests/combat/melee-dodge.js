@@ -4,8 +4,8 @@ const CENTER = {x: 7870, y: 14258};
 
 export class MeleeDodgeTestCase extends BaseTestHM3 {
     async _prerequisites() {
-        if (!game.users.get(this.ALICE_USER_ID).active) return 'Alice user is not active';
-        if (!game.users.get(this.INEN_USER_ID).active) return 'Inen user is not active';
+        if (!game.users?.get(this.ALICE_USER_ID).active) return 'Alice user is not active';
+        if (!game.users?.get(this.INEN_USER_ID).active) return 'Inen user is not active';
         return true;
     }
 
@@ -17,7 +17,7 @@ export class MeleeDodgeTestCase extends BaseTestHM3 {
 
         game.user.updateTokenTargets([alice.id]);
 
-        await game.hm3.macros.weaponAttack('Broadsword', true);
+        await hm3.macros.weaponAttack('Broadsword', true);
         // await this._wait();
         const defButtonsGm = await this._defButtonsFromChatMsg(this.GM_USER_ID);
         const defButtonsAlice = await this._defButtonsFromChatMsg(this.ALICE_USER_ID);
