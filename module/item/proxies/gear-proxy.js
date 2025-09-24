@@ -248,7 +248,7 @@ export class GearProxy extends ItemProxy {
             if (arcane)
                 return foundry.utils.mergeObject(
                     arcane,
-                    game.hm3.config.arcanePowers.find((p) => p.key === arcane.power)
+                    hm3.config.arcanePowers.find((p) => p.key === arcane.power)
                 );
             else return {power: ArcanePower.NONE, duration: 'Permanent', isOwnerAware: false};
         }

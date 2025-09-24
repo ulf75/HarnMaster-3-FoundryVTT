@@ -1,4 +1,5 @@
 // @ts-check
+
 import {HM100Check} from '../../utility';
 import {GearProxy} from './gear-proxy';
 
@@ -47,7 +48,7 @@ export class MissileProxy extends GearProxy {
         return {
             range: this.isFeet
                 ? this.item.system.range.short
-                : this.item.system.range.short / canvas.dimensions.distance,
+                : this.item.system.range.short / (canvas?.dimensions?.distance ?? 5),
             impact: this.item.system.impact.short
         };
     }
@@ -58,7 +59,7 @@ export class MissileProxy extends GearProxy {
         return {
             range: this.isFeet
                 ? this.item.system.range.medium
-                : this.item.system.range.medium / canvas.dimensions.distance,
+                : this.item.system.range.medium / (canvas?.dimensions?.distance ?? 5),
             impact: this.item.system.impact.medium
         };
     }
@@ -67,7 +68,9 @@ export class MissileProxy extends GearProxy {
      */
     get long() {
         return {
-            range: this.isFeet ? this.item.system.range.long : this.item.system.range.long / canvas.dimensions.distance,
+            range: this.isFeet
+                ? this.item.system.range.long
+                : this.item.system.range.long / (canvas?.dimensions?.distance ?? 5),
             impact: this.item.system.impact.long
         };
     }
@@ -78,7 +81,7 @@ export class MissileProxy extends GearProxy {
         return {
             range: this.isFeet
                 ? this.item.system.range.extreme
-                : this.item.system.range.extreme / canvas.dimensions.distance,
+                : this.item.system.range.extreme / (canvas?.dimensions?.distance ?? 5),
             impact: this.item.system.impact.extreme
         };
     }

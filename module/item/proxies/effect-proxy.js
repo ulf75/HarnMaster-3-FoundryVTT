@@ -15,7 +15,7 @@ export class EffectProxy extends GearProxy {
      */
     get visible() {
         // @ts-expect-error
-        return game.user.isGM;
+        return game.user?.isGM;
     }
 
     /**
