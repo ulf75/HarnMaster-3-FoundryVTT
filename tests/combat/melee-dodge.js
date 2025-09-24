@@ -15,7 +15,7 @@ export class MeleeDodgeTestCase extends BaseTestHM3 {
 
         await this._startCombat();
 
-        game.user.updateTokenTargets([alice.id]);
+        game.user?.updateTokenTargets([alice.id]);
 
         await hm3.macros.weaponAttack('Broadsword', true);
         // await this._wait();

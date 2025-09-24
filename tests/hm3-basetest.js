@@ -1,3 +1,7 @@
+// @ts-check
+
+import {TokenHM3} from '../module/hm3-token';
+
 const MIN_MS = 50; // minimum wait time in milliseconds
 const SLOWMO = 1; // 1 = normal speed, 2 = half speed, etc.
 
@@ -48,7 +52,7 @@ export class BaseTestHM3 {
             console.debug = () => {};
             console.trace = () => {};
 
-            await ChatMessage.deleteDocuments(game.messages.contents.map((m) => m.id));
+            await ChatMessage.deleteDocuments(game.messages?.contents.map((m) => m.id));
             await game.combat?.delete();
 
             game.togglePause(false, true);
@@ -115,7 +119,6 @@ export class BaseTestHM3 {
 
     /**
      * Cleans up the test environment, deleting actors and tokens, and resetting combat.
-     * @private
      * @returns {Promise<boolean>} Returns true if teardown was successful, false otherwise.
      */
     async #teardown() {
@@ -159,7 +162,7 @@ export class BaseTestHM3 {
      */
     static DefButtonsFromChatMsgProxy(messageNr) {
         const html = document.createElement('div');
-        html.innerHTML = game.messages.contents[messageNr].content;
+        html.innerHTML = game.messages?.contents[messageNr].content;
         const htmlDefButtons = html.getElementsByClassName('card-buttons')[0].firstElementChild;
 
         return Array.from(htmlDefButtons.children)
@@ -198,7 +201,7 @@ export class BaseTestHM3 {
      * @param {number} messageNr - The index of the chat message to retrieve buttons from (default is the last message).
      * @returns {Promise<Map<string, Object>>} A map of defend buttons with their associated data.
      */
-    async _defButtonsFromChatMsg(userId = game.user.id, messageNr = game.messages.contents.length - 1) {
+    async _defButtonsFromChatMsg(userId = game.user?.id, messageNr = game.messages?.contents.length - 1) {
         return hm3.socket.executeAsUser('defButtonsFromChatMsg', userId, messageNr);
     }
 
@@ -230,7 +233,7 @@ export class BaseTestHM3 {
 
     async _defAction(
         def,
-        {messageNr = game.messages.contents.length - 1, unsetTAFlag = false, userId = game.user.id, roll = []} = {}
+        {messageNr = game.messages?.contents.length - 1, unsetTAFlag = false, userId = game.user?.id, roll = []} = {}
     ) {
         if (unsetTAFlag) await hm3.socket.executeAsGM('unsetTAFlag');
         return hm3.socket.executeAsUser('defAction', userId, def, {messageNr, roll});
@@ -241,7 +244,7 @@ export class BaseTestHM3 {
      * @param {string} actorUuid
      * @param {string} name
      * @param {Object} options
-     * @returns {TokenHM3}
+     * @returns {Promise<TokenHM3>}
      */
     async _createActor(actorUuid, name, options = {}) {
         const actor = fromUuidSync(actorUuid);
@@ -293,13 +296,13 @@ export class BaseTestHM3 {
 
     async _startCombat() {
         await TokenDocument.createCombatants(this.tokens.values());
-        await game.combat.startCombat();
+        await game.combat?.startCombat();
     }
 
     /**
      *
      * @param {number} ms
-     * @returns
+     * @returns {Promise<void>}
      */
     async _wait(ms = MIN_MS) {
         return new Promise((resolve, reject) => {

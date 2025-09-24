@@ -1,15 +1,18 @@
+// @ts-check
+
 import {BaseTestHM3} from '../hm3-basetest';
 
 const CENTER = {x: 7870, y: 14258};
 
 export class MeleeCSTestCase extends BaseTestHM3 {
+    /** @override */
     async _test() {
         const alice = await this._dropActor(this.actors.get('Alice'), CENTER);
         const bob = await this._dropActor(this.actors.get('Bob'), CENTER, this.SOUTH);
 
         await this._startCombat();
 
-        game.user.updateTokenTargets([alice.id]);
+        game.user?.updateTokenTargets([alice.id]);
 
         await hm3.macros.weaponAttack('Broadsword', true);
         const defButtons = this._defButtonsFromChatMsg();
