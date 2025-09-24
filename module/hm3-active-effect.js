@@ -1,14 +1,17 @@
+// @ts-check
+
 export class ActiveEffectHM3 extends ActiveEffect {
     /** @override */
     _prepareDuration() {
         const ret = super._prepareDuration();
 
-        if (ret.duration === game.hm3.CONST.TIME.INDEFINITE) ret.label = 'Indefinite';
-        else if (ret.duration === game.hm3.CONST.TIME.PERMANENT) ret.label = 'Permanent';
+        if (ret.duration === hm3.CONST.TIME.INDEFINITE) ret.label = 'Indefinite';
+        else if (ret.duration === hm3.CONST.TIME.PERMANENT) ret.label = 'Permanent';
 
         return ret;
     }
 
+    /** @override */
     async _preUpdate(changed, options, user) {
         if (changed.changes && changed.changes.length > 0) {
             for (const change of changed.changes) {
@@ -26,7 +29,7 @@ export class ActiveEffectHM3 extends ActiveEffect {
     }
 
     get started() {
-        return this.duration?.startTime <= game.time.worldTime;
+        return (this.duration?.startTime ?? 0) <= (game.time?.worldTime ?? 0);
     }
 
     /** @override */

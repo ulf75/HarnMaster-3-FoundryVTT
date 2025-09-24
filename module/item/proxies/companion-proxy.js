@@ -17,10 +17,10 @@ export class CompanionProxy extends ItemProxy {
         return this.item.system.actorUuid;
     }
     /**
-     * @type {Actor}
+     * @type {import('../../actor/actor').ActorHM3 | null}
      */
     get companion() {
-        return fromUuidSync(this.item.system.actorUuid);
+        return fromUuidSync(this.actorUuid);
     }
     /**
      * @type {string}
@@ -79,9 +79,11 @@ export class CompanionProxy extends ItemProxy {
         html.on('click', `.${this.cls}-open`, (ev) => {
             const el = ev.currentTarget.querySelector('#companion'); //.dataset; // .innerText;
             if (!el) return;
+            /** @type {string} */
             const uuid = el.dataset.itemActorUuid;
+            /** @type {import('../../actor/actor').ActorHM3 | null} */
             const actor = fromUuidSync(uuid);
-            actor.sheet.render(true);
+            actor?.sheet?.render(true);
         });
     }
 }

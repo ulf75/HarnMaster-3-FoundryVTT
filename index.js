@@ -52,111 +52,110 @@ import {runner} from './tests/runner.js';
 
 // import './scss/hm3.scss';
 
-// globalThis.hm3 = {};
+globalThis.hm3 = {
+    config: HM3,
+    macros,
+    migrations,
+
+    ActorHM3,
+
+    ActorType,
+    ArcanePower,
+    Aspect,
+    Condition,
+    Hook,
+    InjuryType,
+    ItemType,
+    Location,
+    MiscItemType,
+    Range,
+    SkillType,
+
+    CONST: {
+        COMBAT: {SHOCK_INDEX_THRESHOLD: 20},
+        TIME: {
+            SECOND: 1,
+            MINUTE: 60,
+            HOUR: 60 * 60, // 3600 sec
+            WATCH: 4 * 60 * 60,
+            DAY: 24 * 60 * 60,
+            TENDAY: 10 * 24 * 60 * 60,
+            MONTH: 30 * 24 * 60 * 60,
+            YEAR: 12 * 30 * 24 * 60 * 60,
+            PERMANENT: Number.MAX_SAFE_INTEGER - 1,
+            INDEFINITE: Number.MAX_SAFE_INTEGER
+        }
+    },
+    gmconsole: async (level, msg, error) => {
+        return hm3.socket.executeAsGM('gmConsole', game.user?.name, level, msg, error);
+    },
+    Gm2GmSays: async (text, source, token = null) => {
+        return hm3.socket.executeAsGM('GmSays', {
+            gmonly: true,
+            sendingUserId: game.user?.id,
+            source,
+            text,
+            tokenId: token ? token.id : null
+        });
+    },
+    GmSays: async ({gmonly = false, sendingUser = null, source = null, text = null, token = null}) => {
+        console.assert(text, 'Parameter text not set');
+        console.assert(game.user?.isGM ? true : token, 'Parameter token not set');
+        if (!text) return;
+
+        const gmUsers = game.users?.filter((user) => user.isGM).map((user) => user.id);
+        const content = !!source
+            ? `<div class="chat-card gmsays"><blockquote lang="en"><p>${text}</p><cite>&ndash; ${source}</cite></blockquote></div>`
+            : `<div class="chat-card gmsays"><blockquote lang="en"><p>${text}</p></blockquote></div>`;
+        const speaker = game.user?.isGM
+            ? ChatMessageHM3.getSpeaker({alias: 'Simon says...', user: game.user})
+            : ChatMessageHM3.getSpeaker({token});
+        const msg = {
+            content,
+            speaker,
+            type: CONST.CHAT_MESSAGE_STYLES.OTHER
+        };
+
+        // If the message is GM only, send it to the GM users
+        if (gmonly && game.user?.isGM) {
+            msg['whisper'] = gmUsers;
+            console.info(
+                `HM3 [GmSays] | GM only: ${text
+                    .replaceAll('<b>', '')
+                    .replaceAll('</b>', '')
+                    .replaceAll('<h4>', '')
+                    .replaceAll('</h4>', '')
+                    .replaceAll('<p>', '')
+                    .replaceAll('</p>', '')}`
+            );
+            return await ChatMessage.create(msg);
+        }
+
+        // If the message is not GM only, send it to all users
+        else if (!gmonly) {
+            console.info(
+                `HM3 [GmSays] | ${text
+                    .replaceAll('<b>', '')
+                    .replaceAll('</b>', '')
+                    .replaceAll('<h4>', '')
+                    .replaceAll('</h4>', '')
+                    .replaceAll('<p>', '')
+                    .replaceAll('</p>', '')}`
+            );
+            return await ChatMessage.create(msg);
+        }
+    }
+};
 
 Hooks.once('init', async function () {
-    // globalThis.hm3 = game.hm3 = Object.assign(game.system, globalThis.hm3);
+    // @ts-expect-error
+    globalThis.hm3 = game.hm3 = Object.assign(game.system, globalThis.hm3);
     console.info(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
 
     CONFIG.ActiveEffect.legacyTransferral = false;
 
+    // @ts-expect-error
     window.customElements.define('slide-toggle', SlideToggleElement);
-
-    game.hm3 = {
-        config: HM3,
-        macros,
-        migrations,
-
-        ActorHM3,
-
-        ActorType,
-        ArcanePower,
-        Aspect,
-        Condition,
-        Hook,
-        InjuryType,
-        ItemType,
-        Location,
-        MiscItemType,
-        Range,
-        SkillType,
-
-        CONST: {
-            COMBAT: {SHOCK_INDEX_THRESHOLD: 20},
-            TIME: {
-                SECOND: 1,
-                MINUTE: 60,
-                HOUR: 60 * 60, // 3600 sec
-                WATCH: 4 * 60 * 60,
-                DAY: 24 * 60 * 60,
-                TENDAY: 10 * 24 * 60 * 60,
-                MONTH: 30 * 24 * 60 * 60,
-                YEAR: 12 * 30 * 24 * 60 * 60,
-                PERMANENT: Number.MAX_SAFE_INTEGER - 1,
-                INDEFINITE: Number.MAX_SAFE_INTEGER
-            }
-        },
-
-        gmconsole: async (level, msg, error) => {
-            return game.hm3.socket.executeAsGM('gmConsole', game.user?.name, level, msg, error);
-        },
-        Gm2GmSays: async (text, source, token = null) => {
-            return game.hm3.socket.executeAsGM('GmSays', {
-                gmonly: true,
-                sendingUserId: game.user?.id,
-                source,
-                text,
-                tokenId: token ? token.id : null
-            });
-        },
-        GmSays: async ({gmonly = false, sendingUser = null, source = null, text = null, token = null}) => {
-            console.assert(text, 'Parameter text not set');
-            console.assert(game.user?.isGM ? true : token, 'Parameter token not set');
-            if (!text) return;
-
-            const gmUsers = game.users?.filter((user) => user.isGM).map((user) => user.id);
-            const content = !!source
-                ? `<div class="chat-card gmsays"><blockquote lang="en"><p>${text}</p><cite>&ndash; ${source}</cite></blockquote></div>`
-                : `<div class="chat-card gmsays"><blockquote lang="en"><p>${text}</p></blockquote></div>`;
-            const speaker = game.user?.isGM
-                ? ChatMessageHM3.getSpeaker({alias: 'Simon says...', user: game.user})
-                : ChatMessageHM3.getSpeaker({token});
-            const msg = {
-                content,
-                speaker,
-                type: CONST.CHAT_MESSAGE_STYLES.OTHER
-            };
-
-            // If the message is GM only, send it to the GM users
-            if (gmonly && game.user?.isGM) {
-                msg['whisper'] = gmUsers;
-                console.info(
-                    `HM3 [GmSays] | GM only: ${text
-                        .replaceAll('<b>', '')
-                        .replaceAll('</b>', '')
-                        .replaceAll('<h4>', '')
-                        .replaceAll('</h4>', '')
-                        .replaceAll('<p>', '')
-                        .replaceAll('</p>', '')}`
-                );
-                return await ChatMessage.create(msg);
-            }
-
-            // If the message is not GM only, send it to all users
-            else if (!gmonly) {
-                console.info(
-                    `HM3 [GmSays] | ${text
-                        .replaceAll('<b>', '')
-                        .replaceAll('</b>', '')
-                        .replaceAll('<h4>', '')
-                        .replaceAll('</h4>', '')
-                        .replaceAll('<p>', '')
-                        .replaceAll('</p>', '')}`
-                );
-                return await ChatMessage.create(msg);
-            }
-        }
-    };
 
     /**
      * Set an initiative formula for the system
@@ -433,14 +432,14 @@ Hooks.once('init', async function () {
             name: 'View Bio Artwork',
             icon: `<i class="fas fa-image"></i>`,
             callback: async (html) => {
-                const actor = game.actors.get(html.data('documentId'));
+                const actor = game.actors?.get(html.data('documentId'));
                 new ImagePopout(actor.system.bioImage, {
                     title: actor.name,
                     uuid: actor.uuid
                 }).render(true);
             },
             condition: (html) => {
-                const actor = game.actors.get(html.data('documentId'));
+                const actor = game.actors?.get(html.data('documentId'));
                 return game.user?.isGM && actor?.system?.bioImage;
             }
         });
@@ -470,51 +469,32 @@ Hooks.once('init', async function () {
         // or turn. updateData will have specifics of what changed.
         await effect.checkExpiredActiveEffects();
     });
-});
 
-Hooks.on('hm3.onShockIndexReduced', async (actor, old, current) => {
-    if (game.combat?.started && actor.parent instanceof TokenDocumentHM3 && !actor.parent.player) {
-        if (actor.parent.hasCondition(game.hm3.Condition.UNCONSCIOUS) && actor.testUserPermission(game.user, 'OWNER')) {
-            await actor.parent.deleteCondition(game.hm3.Condition.UNCONSCIOUS);
-            await actor.parent.addCondition(game.hm3.Condition.UNCONSCIOUS);
-            Hooks.call('hm3.onShockIndexReduced2', actor, old, current);
+    Hooks.on('hm3.onShockIndexReduced', async (actor, old, current) => {
+        if (game.combat?.started && actor.parent instanceof TokenDocumentHM3 && !actor.parent.player) {
+            if (actor.parent.hasCondition(Condition.UNCONSCIOUS) && actor.testUserPermission(game.user, 'OWNER')) {
+                await actor.parent.deleteCondition(Condition.UNCONSCIOUS);
+                await actor.parent.addCondition(Condition.UNCONSCIOUS);
+                Hooks.call('hm3.onShockIndexReduced2', actor, old, current);
+            }
         }
-    }
-});
+    });
 
-// Hooks.on('hm3.onTotalInjuryLevelsChanged', async (actor, oldValue, newValue) => {
-//     const inanimate = actor.hasCondition(Condition.INANIMATE);
-//     if (inanimate) {
-//         actor.system.injuryLevels.max = actor.system.endurance;
-//     }
+    Hooks.on('updateCombat', async (combat, updateData) => {
+        return updateOutnumbered({hook: 'updateCombat'});
+    });
 
-//     actor.system.injuryLevels.value = newValue;
-//     if (actor.testUserPermission(game.user, 'OWNER')) {
-//         await actor.update({'system.injuryLevels': actor.system.injuryLevels});
-//         if (inanimate && newValue >= actor.system.injuryLevels.max) {
-//             await actor.token.addCondition(Condition.DYING);
-//         }
-//     }
-// });
+    Hooks.on('updateCombatant', async (combatant, info, updateData, userId) => {
+        return updateOutnumbered({hook: 'updateCombatant'});
+    });
 
-Hooks.on('updateCombat', async (combat, updateData) => {
-    return updateOutnumbered({hook: 'updateCombat'});
-});
+    Hooks.on('createActiveEffect', async (activeEffect, info, userId) => {
+        return updateOutnumbered({aeName: activeEffect.name, hook: 'createActiveEffect'});
+    });
 
-Hooks.on('updateCombatant', async (combatant, info, updateData, userId) => {
-    return updateOutnumbered({hook: 'updateCombatant'});
-});
-
-Hooks.on('createActiveEffect', async (activeEffect, info, userId) => {
-    return updateOutnumbered({aeName: activeEffect.name, hook: 'createActiveEffect'});
-});
-
-// Hooks.on('updateActiveEffect', async (activeEffect, info, userId) => {
-//     return updateOutnumbered({aeName: activeEffect.name, hook: 'updateActiveEffect'});
-// });
-
-Hooks.on('deleteActiveEffect', async (activeEffect, info, userId) => {
-    return updateOutnumbered({aeName: activeEffect.name, hook: 'deleteActiveEffect'});
+    Hooks.on('deleteActiveEffect', async (activeEffect, info, userId) => {
+        return updateOutnumbered({aeName: activeEffect.name, hook: 'deleteActiveEffect'});
+    });
 });
 
 Hooks.on('createItem', async (item, info, userId) => {
@@ -759,12 +739,12 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
             const sprint = {range: 5 * Math.max(Math.round(3 * move + Number.EPSILON), 12), color: 'sprint'};
 
             // Conditions
-            const grappled = token.hasCondition(game.hm3.Condition.GRAPPLED);
-            const inanimate = token.hasCondition(game.hm3.Condition.INANIMATE);
-            const prone = token.hasCondition(game.hm3.Condition.PRONE);
-            const shocked = token.hasCondition(game.hm3.Condition.SHOCKED);
-            const stunned = token.hasCondition(game.hm3.Condition.STUNNED);
-            const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
+            const grappled = token.hasCondition(game.Condition.GRAPPLED);
+            const inanimate = token.hasCondition(game.Condition.INANIMATE);
+            const prone = token.hasCondition(game.Condition.PRONE);
+            const shocked = token.hasCondition(game.Condition.SHOCKED);
+            const stunned = token.hasCondition(game.Condition.STUNNED);
+            const unconscious = token.hasCondition(game.Condition.UNCONSCIOUS);
 
             if (inanimate) {
                 return [creep, walk, jog, run, sprint];
