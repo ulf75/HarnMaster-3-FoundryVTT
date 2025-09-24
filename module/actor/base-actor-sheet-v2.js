@@ -168,12 +168,12 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             // Check for esoteric attack options
             get esotericAtkOptions() {
                 return proxies.filter(
-                    (item) => game.hm3.config.esotericCombatItems.attack.includes(item.name) && item.isEquipped
+                    (item) => hm3.config.esotericCombatItems.attack.includes(item.name) && item.isEquipped
                 );
             },
             // Check for esoteric defense options
             get esotericDefOptions() {
-                return proxies.filter((item) => game.hm3.config.esotericCombatItems.defense.includes(item.name));
+                return proxies.filter((item) => hm3.config.esotericCombatItems.defense.includes(item.name));
             }
         };
     }
@@ -1240,7 +1240,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // Condition skill is maxed out (SKILLS 9)
         if (item.type === ItemType.SKILL && item.name === 'Condition') {
             if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
-                await game.hm3.GmSays({
+                await hm3.GmSays({
                     text:
                         `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n?.localize('hm3.SDR.ConditionSkillMax'),
                     source: 'SKILLS 9'
@@ -1281,7 +1281,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                 if (item.type === ItemType.SKILL && item.system.type === 'Combat') {
                                     // Once opened, Development Rolls are made only for Combat Experience (SKILLS 18)
                                     if (item.name === 'Initiative') {
-                                        await game.hm3.GmSays({
+                                        await hm3.GmSays({
                                             text:
                                                 `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                 game.i18n?.localize('hm3.SDR.InitiativeExperience'),
@@ -1292,7 +1292,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                     // Weapon Skills may be developed by practice/training as normal, but no weapon skill
                                     // can be increased beyond ML70 except by actual combat experience (SKILLS 18)
                                     else if (item.system.masteryLevel >= 70) {
-                                        await game.hm3.GmSays({
+                                        await hm3.GmSays({
                                             text:
                                                 `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                 game.i18n?.localize('hm3.SDR.CombatExperience'),
@@ -1319,7 +1319,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                                                 item.system.masteryLevel >=
                                                                 7 * item.system.skillBase.value
                                                             ) {
-                                                                await game.hm3.GmSays({
+                                                                await hm3.GmSays({
                                                                     text:
                                                                         `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                                         game.i18n?.localize(
@@ -1336,7 +1336,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                                             item.system.type === 'Combat'
                                                         ) {
                                                             if (item.system.masteryLevel >= 70) {
-                                                                await game.hm3.GmSays({
+                                                                await hm3.GmSays({
                                                                     text:
                                                                         `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                                         game.i18n?.localize(
@@ -1351,7 +1351,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
                                                         if (await this.actor.skillDevRoll(item, false)) success++;
                                                     }
-                                                    await game.hm3.GmSays({
+                                                    await hm3.GmSays({
                                                         text: `<h4>${this.actor.name}: ${item.name}</h4>${success}/${num} SDRs succeeded`
                                                     });
                                                     resolve(true);

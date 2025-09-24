@@ -34,16 +34,16 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.hasDescription = 'description' in this.object.system;
         if (data.hasDescription) {
             data.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {
-                secrets: game.user.isGM,
+                secrets: game.user?.isGM,
                 relativeTo: this.object.system
             });
         }
 
-        data.isGM = game.user.isGM;
-        data.strictMode = game.settings.get('hm3', 'strictGmMode');
+        data.isGM = game.user?.isGM;
+        data.strictMode = game.settings?.get('hm3', 'strictGmMode');
         data.hasRwPermission = data.isGM || !data.strictMode;
-        data.isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
-        data.customSunSign = game.settings.get('hm3', 'customSunSign');
+        data.isGridDistanceUnits = game.settings?.get('hm3', 'distanceUnits') === 'grid';
+        data.customSunSign = game.settings?.get('hm3', 'customSunSign');
         data.actor = foundry.utils.deepClone(this.actor);
 
         let totalWeightHigh = 0;
@@ -84,10 +84,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 // Dormant psionic talents may be invisible for players (ML20 or less (Psionics 3))
                 if (i.type === ItemType.PSIONIC) {
                     i.system.visible = String(
-                        !game.settings.get('hm3', 'dormantPsionicTalents') ||
+                        !game.settings?.get('hm3', 'dormantPsionicTalents') ||
                             i.system.masteryLevel > 20 ||
                             i.system.effectiveMasteryLevel > 20 ||
-                            game.user.isGM
+                            game.user?.isGM
                     );
                 }
                 //
@@ -115,10 +115,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 if (i.type === ItemType.MISSILEGEAR) {
                     if (data.isGridDistanceUnits) {
                         i.system.rangeGrid = {
-                            short: i.system.range.short / canvas.dimensions.distance,
-                            medium: i.system.range.medium / canvas.dimensions.distance,
-                            long: i.system.range.long / canvas.dimensions.distance,
-                            extreme: i.system.range.extreme / canvas.dimensions.distance
+                            short: i.system.range.short / (canvas?.dimensions?.distance ?? 5),
+                            medium: i.system.range.medium / (canvas?.dimensions?.distance ?? 5),
+                            long: i.system.range.long / (canvas?.dimensions?.distance ?? 5),
+                            extreme: i.system.range.extreme / (canvas?.dimensions?.distance ?? 5)
                         };
                     }
                 }
@@ -144,7 +144,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
                 return i;
             })
-            .filter((item) => item.type !== ItemType.EFFECT || game.user.isGM);
+            .filter((item) => item.type !== ItemType.EFFECT || game.user?.isGM);
         data.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
 
         data.physicalSkills = data.items.filter(
@@ -305,11 +305,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Check for esoteric attack options
         data.esotericAtkOptions = this.actor.items.filter(
-            (item) => game.hm3.config.esotericCombatItems.attack.includes(item.name) && item.system.isEquipped
+            (item) => hm3.config.esotericCombatItems.attack.includes(item.name) && item.system.isEquipped
         );
         // Check for esoteric defense options
         data.esotericDefOptions = this.actor.items.filter((item) =>
-            game.hm3.config.esotericCombatItems.defense.includes(item.name)
+            hm3.config.esotericCombatItems.defense.includes(item.name)
         );
 
         return data;
@@ -355,7 +355,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const companion = await Actor.fromDropData(data);
         if (!companion || companion?.type === 'container') return false;
         if (this.actor.id === companion.id) {
-            ui.notifications.warn('You cannot add yourself.');
+            ui.notifications?.warn('You cannot add yourself.');
             return false;
         }
 
@@ -451,7 +451,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // create new container
 
         if (!item.parent) {
-            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
+            ui.notifications?.warn(`Error accessing actor where container is coming from, move aborted`);
             throw Error(`Error accessing actor where container is coming from, move aborted`);
         }
 
@@ -459,7 +459,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         delete itData._id;
         const containerResult = await Item.create(itData, {parent: this.actor});
         if (!containerResult) {
-            ui.notifications.warn(`Error while moving container, move aborted`);
+            ui.notifications?.warn(`Error while moving container, move aborted`);
             return null;
         }
 
@@ -480,7 +480,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         if (failure) {
-            ui.notifications.error(
+            ui.notifications?.error(
                 `Error duing move of items from source to destination, container has been only partially moved!`
             );
             return null;
@@ -494,7 +494,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     async _moveQtyDialog(event, item) {
         // Get source actor
         if (!item.parent) {
-            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
+            ui.notifications?.warn(`Error accessing actor where container is coming from, move aborted`);
             throw Error(`Error accessing actor where container is coming from, move aborted`);
         }
 
@@ -536,7 +536,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const sourceQuantity = item.system.quantity;
 
         if (!item.parent) {
-            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
+            ui.notifications?.warn(`Error accessing actor where container is coming from, move aborted`);
             return null;
         }
 
@@ -575,7 +575,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         if (!itemData.type.endsWith('gear')) {
             if (actor.type === ActorType.CONTAINER) {
-                ui.notifications.warn(
+                ui.notifications?.warn(
                     `You may only place physical objects in a container; drop of ${itemData.name} refused.`
                 );
                 return false;
@@ -603,7 +603,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
-        if (!game.user.isGM) {
+        if (!game.user?.isGM) {
             html.find('.facade-image').click(async (ev) => {
                 new ImagePopout(this.actor.system.bioImage, {
                     title: this.actor.name,
@@ -656,7 +656,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.on('click', '.item-name, .spell-name', (ev) => {
             switch (ev.currentTarget.innerText) {
                 case 'Magic Spells':
-                    ui.notifications.info('Magic Spells sorted!');
+                    ui.notifications?.info('Magic Spells sorted!');
                     const convocations = new Map([
                         ['Fyvria', 1],
                         ['Jmorvi', 2],
@@ -684,7 +684,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     break;
 
                 case 'Ritual Invocations':
-                    ui.notifications.info('Ritual Invocations sorted!');
+                    ui.notifications?.info('Ritual Invocations sorted!');
                     this.object.items.forEach(async (i) => {
                         if (i.type === ItemType.INVOCATION) {
                             await i.update({
@@ -702,7 +702,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     break;
 
                 case 'Psionic Talents':
-                    ui.notifications.info('Psionic Talents sorted!');
+                    ui.notifications?.info('Psionic Talents sorted!');
                     this.object.items.forEach(async (i) => {
                         if (i.type === ItemType.PSIONIC) {
                             await i.update({
@@ -892,12 +892,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
                 const tokens = this.actor.getActiveTokens(true);
                 if (tokens.length == 0) {
-                    ui.notifications.warn(
+                    ui.notifications?.warn(
                         `There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`
                     );
                     return null;
                 } else if (tokens.length > 1) {
-                    ui.notifications.warn(
+                    ui.notifications?.warn(
                         `There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`
                     );
                     return null;
@@ -918,12 +918,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
                 const tokens = this.actor.getActiveTokens(true);
                 if (tokens.length == 0) {
-                    ui.notifications.warn(
+                    ui.notifications?.warn(
                         `There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`
                     );
                     return null;
                 } else if (tokens.length > 1) {
-                    ui.notifications.warn(
+                    ui.notifications?.warn(
                         `There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`
                     );
                     return null;
@@ -944,12 +944,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
                 const tokens = this.actor.getActiveTokens(true);
                 if (tokens.length == 0) {
-                    ui.notifications.warn(
+                    ui.notifications?.warn(
                         `There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`
                     );
                     return null;
                 } else if (tokens.length > 1) {
-                    ui.notifications.warn(
+                    ui.notifications?.warn(
                         `There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`
                     );
                     return null;
@@ -1394,7 +1394,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Condition skill is maxed out (SKILLS 9)
         if (item.type === 'skill' && item.name === 'Condition') {
             if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
-                await game.hm3.GmSays({
+                await hm3.GmSays({
                     text: `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.ConditionSkillMax'),
                     source: 'SKILLS 9'
                 });
@@ -1434,7 +1434,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                 if (item.type === 'skill' && item.system.type === 'Combat') {
                                     // Once opened, Development Rolls are made only for Combat Experience (SKILLS 18)
                                     if (item.name === 'Initiative') {
-                                        await game.hm3.GmSays({
+                                        await hm3.GmSays({
                                             text:
                                                 `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                 game.i18n.localize('hm3.SDR.InitiativeExperience'),
@@ -1445,7 +1445,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                     // Weapon Skills may be developed by practice/training as normal, but no weapon skill
                                     // can be increased beyond ML70 except by actual combat experience (SKILLS 18)
                                     else if (item.system.masteryLevel >= 70) {
-                                        await game.hm3.GmSays({
+                                        await hm3.GmSays({
                                             text:
                                                 `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                 game.i18n.localize('hm3.SDR.CombatExperience'),
@@ -1472,7 +1472,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                                                 item.system.masteryLevel >=
                                                                 7 * item.system.skillBase.value
                                                             ) {
-                                                                await game.hm3.GmSays({
+                                                                await hm3.GmSays({
                                                                     text:
                                                                         `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                                         game.i18n.localize(
@@ -1486,7 +1486,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                                         }
                                                         if (item.type === 'skill' && item.system.type === 'Combat') {
                                                             if (item.system.masteryLevel >= 70) {
-                                                                await game.hm3.GmSays({
+                                                                await hm3.GmSays({
                                                                     text:
                                                                         `<h4>${this.actor.name}: ${item.name}</h4>` +
                                                                         game.i18n.localize('hm3.SDR.CombatExperience') +
@@ -1499,7 +1499,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
                                                         if (await this.actor.skillDevRoll(item, false)) success++;
                                                     }
-                                                    await game.hm3.GmSays({
+                                                    await hm3.GmSays({
                                                         text: `<h4>${this.actor.name}: ${item.name}</h4>${success}/${num} SDRs succeeded`
                                                     });
                                                     resolve(true);
@@ -1565,7 +1565,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 const html = await renderTemplate(chatTemplate, chatData);
 
                 const messageData = {
-                    user: game.user.id,
+                    user: game.user?.id,
                     speaker: ChatMessage.getSpeaker({actor: this.object}),
                     content: html.trim(),
                     type: CONST.CHAT_MESSAGE_STYLES.OTHER

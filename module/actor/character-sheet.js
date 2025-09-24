@@ -21,7 +21,7 @@ export class CharacterSheetHM3 extends HarnMasterBaseActorSheet {
      * @type {String}
      */
     get template() {
-        if (!game.user.isGM && this.actor.limited) {
+        if (!game.user?.isGM && this.actor.limited) {
             return 'systems/hm3/templates/actor/character-limited.hbs';
         } else {
             return 'systems/hm3/templates/actor/character-sheet.hbs';

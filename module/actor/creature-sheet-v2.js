@@ -24,7 +24,7 @@ export class CreatureSheetHM3v2 extends BaseActorSheetHM3v2 {
      * @type {String}
      */
     get template() {
-        if (!game.user.isGM && this.actor.limited) {
+        if (!game.user?.isGM && this.actor.limited) {
             return 'systems/hm3/templates/actor-v2/creature-limited.hbs';
         } else {
             return 'systems/hm3/templates/actor-v2/creature-sheet.hbs';

@@ -57,14 +57,14 @@ export class ActorHM3 extends Actor {
      * @type {string | null}
      */
     get macrofolder() {
-        return game.folders.get(game.settings.get('hm3', 'actorMacrosFolderId')) || null;
+        return game.folders.get(game.settings?.get('hm3', 'actorMacrosFolderId')) || null;
     }
 
     /**
      * @type {User | null}
      */
     get player() {
-        return game.users.find((u) => !u.isGM && this.testUserPermission(u, 'OWNER')) || null;
+        return game.users?.find((u) => !u.isGM && this.testUserPermission(u, 'OWNER')) || null;
     }
 
     /**
@@ -146,14 +146,14 @@ export class ActorHM3 extends Actor {
      * @returns
      */
     allApplicableEffects(override = false) {
-        override ||= !game.settings.get('hm3', 'activeEffectPermissions');
+        override ||= !game.settings?.get('hm3', 'activeEffectPermissions');
 
         const effects = [];
         for (const effect of super.allApplicableEffects()) {
             if (override) {
                 effects.push(effect);
             } else {
-                const hidden = effect.hidden && !game.user.isGM;
+                const hidden = effect.hidden && !game.user?.isGM;
                 if (effect.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED) && !hidden) {
                     effects.push(effect);
                 }
@@ -394,8 +394,8 @@ export class ActorHM3 extends Actor {
             });
 
             if (totalWeightHigh % 100 || totalWeightMid % 100 || totalWeightLow % 100) {
-                if (game.user.isGM)
-                    ui.notifications.warn(
+                if (game.user?.isGM)
+                    ui.notifications?.warn(
                         `Armor prob weight is NOT equal to 100, 1000 or 10000. ${this.name}: ${totalWeightHigh} | ${totalWeightMid} | ${totalWeightLow}`,
                         {permanent: true}
                     );
@@ -423,7 +423,7 @@ export class ActorHM3 extends Actor {
                             clone.effects = clone.effects.contents;
                             // Set the created time for added items
                             if (clone.system?.hasOwnProperty('createdTime'))
-                                clone.system.createdTime = game.time.worldTime;
+                                clone.system.createdTime = game.time?.worldTime;
                             itemAry.push(clone);
                             // Ensure we don't continue looking for the itemName after we have found one
                             itNames = itNames.filter((i) => i !== item.name);
@@ -576,7 +576,7 @@ export class ActorHM3 extends Actor {
         // const eph = actorData.eph;
         this.system.v2 = {};
         this.items.forEach((i) => (i.system.v2 = {}));
-        // for (const key of Object.keys(game.hm3.config.activeEffectKeyV2)) {
+        // for (const key of Object.keys(hm3.config.activeEffectKeyV2)) {
         //     foundry.utils.setProperty(this, key, null);
         // }
         this.proxy.applyWeaponActiveEffects();
@@ -1361,10 +1361,10 @@ export class ActorHM3 extends Actor {
                 const rider = fromUuidSync(this.system.ownerUuid);
                 if (rider) {
                     const riding = rider.items.find(
-                        (item) => item.type === game.hm3.ItemType.SKILL && item.name.includes('Riding')
+                        (item) => item.type === hm3.ItemType.SKILL && item.name.includes('Riding')
                     );
                     if (item.system.masteryLevel >= riding.system.masteryLevel) {
-                        await game.hm3.GmSays({
+                        await hm3.GmSays({
                             text:
                                 `<h4>${this.name}: ${item.name}</h4>` +
                                 game.i18n.localize('hm3.SDR.SteedSkills') +
@@ -1386,7 +1386,7 @@ export class ActorHM3 extends Actor {
             // Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)
             if (item.type === ItemType.SKILL && result.sdrIncr === 2) {
                 if (item.system.masteryLevel < 40) {
-                    await game.hm3.GmSays({
+                    await hm3.GmSays({
                         text: `<h4>${this.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.SkillSpecialty'),
                         source: 'SKILLS 2'
                     });
@@ -1418,7 +1418,7 @@ export class ActorHM3 extends Actor {
 
         let actor = null;
         if (button.dataset.actorId) {
-            actor = game.actors.get(button.dataset.actorId);
+            actor = game.actors?.get(button.dataset.actorId);
             if (!actor) {
                 console.warn(`HM3 | Action=${action}; Cannot find actor ${button.dataset.actorId}`);
                 button.disabled = false;
@@ -1427,7 +1427,7 @@ export class ActorHM3 extends Actor {
         }
         let token = null;
         if (button.dataset.tokenId) {
-            token = canvas.tokens.get(button.dataset.tokenId);
+            token = canvas?.tokens?.get(button.dataset.tokenId);
             if (!token) {
                 console.warn(`HM3 | Action=${action}; Cannot find token ${button.dataset.tokenId}`);
                 button.disabled = false;
@@ -1441,7 +1441,7 @@ export class ActorHM3 extends Actor {
 
         let atkToken = null;
         if (button.dataset.atkTokenId) {
-            atkToken = canvas.tokens.get(button.dataset.atkTokenId);
+            atkToken = canvas?.tokens?.get(button.dataset.atkTokenId);
             if (!atkToken) {
                 console.warn(`HM3 | Action=${action}; Cannot find attack token ${button.dataset.atkTokenId}`);
                 button.disabled = false;
@@ -1451,7 +1451,7 @@ export class ActorHM3 extends Actor {
 
         let defToken = null;
         if (button.dataset.defTokenId) {
-            defToken = canvas.tokens.get(button.dataset.defTokenId);
+            defToken = canvas?.tokens?.get(button.dataset.defTokenId);
             if (!defToken) {
                 console.warn(`HM3 | Action=${action}; Cannot find defense token ${button.dataset.defTokenId}`);
                 button.disabled = false;
@@ -1461,7 +1461,7 @@ export class ActorHM3 extends Actor {
 
         let opponentToken = null;
         if (button.dataset.opponentTokenId) {
-            opponentToken = canvas.tokens.get(button.dataset.opponentTokenId);
+            opponentToken = canvas?.tokens?.get(button.dataset.opponentTokenId);
             if (!opponentToken) {
                 console.warn(`HM3 | Action=${action}; Cannot find opponent token ${button.dataset.opponentTokenId}`);
                 button.disabled = false;

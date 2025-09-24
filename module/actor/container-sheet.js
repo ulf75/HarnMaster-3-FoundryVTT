@@ -22,7 +22,7 @@ export class ContainerSheetHM3 extends HarnMasterBaseActorSheet {
      * @type {String}
      */
     get template() {
-        if (!game.user.isGM && this.actor.limited) {
+        if (!game.user?.isGM && this.actor.limited) {
             return 'systems/hm3/templates/actor/container-limited.hbs';
         } else {
             return 'systems/hm3/templates/actor/container-sheet.hbs';
