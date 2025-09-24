@@ -590,6 +590,8 @@ export class ActorHM3 extends Actor {
         // }
         this.proxy.applyWeaponActiveEffects();
 
+        if (this.type === ActorType.CONTAINER) return;
+
         // actorData.totalWeight = 0;
 
         // this.calcTotalGearWeight();
