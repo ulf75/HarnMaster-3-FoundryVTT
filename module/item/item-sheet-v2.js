@@ -1,3 +1,5 @@
+// @ts-check
+
 import {onManageActiveEffect} from '../effect.js';
 import {ArcaneType} from '../hm3-types.js';
 import {aeChanges, aeDuration} from '../utility.js';
@@ -31,7 +33,7 @@ export class ItemSheetHM3v2 extends ItemSheet {
      * @type {boolean}
      */
     // get isEditable() {
-    //     if (game.packs.get(this.item.pack)?.locked) return false;
+    //     if (game.packs?.get(this.item.pack)?.locked) return false;
     //     return this.item.testUserPermission(game.user, this.options.editPermission);
     // }
 

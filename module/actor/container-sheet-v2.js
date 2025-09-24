@@ -1,3 +1,5 @@
+// @ts-check
+
 import {BaseActorSheetHM3v2} from './base-actor-sheet-v2.js';
 
 /**
@@ -20,8 +22,7 @@ export class ContainerSheetHM3v2 extends BaseActorSheetHM3v2 {
     /* -------------------------------------------- */
 
     /**
-     * Get the correct HTML template path to use for rendering this particular sheet
-     * @type {String}
+     * @override
      */
     get template() {
         if (!game.user?.isGM && this.actor.limited) {

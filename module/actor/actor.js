@@ -1,7 +1,8 @@
+// @ts-check
+
 import {HM3} from '../config.js';
 import {DiceHM3} from '../hm3-dice.js';
 import {ActorType, CompanionType, Condition, ItemType, SkillType} from '../hm3-types.js';
-// import {ItemProxy} from '../item/proxies/item-proxy.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 import {CharacterProxy} from './proxies/character-proxy.js';
@@ -16,7 +17,7 @@ export class ActorHM3 extends Actor {
     static _proxyMap = new Map();
 
     /**
-     * @type {ActorProxy}
+     * @type {CharacterProxy|ContainerProxy|CreatureProxy}
      */
     get proxy() {
         if (!ActorHM3._proxyMap.has(this.uuid)) {
@@ -41,23 +42,24 @@ export class ActorHM3 extends Actor {
     }
 
     /**
-     * @type {ItemProxy[]}
+     * @type {import('../item/proxies/item-proxy.js').ItemProxy[]}
      */
     get proxies() {
         return this.items.contents.map((item) => {
+            // @ts-expect-error
             return item.proxy;
         });
     }
 
     get macrolist() {
-        return game.macros.contents.filter((m) => m.getFlag('hm3', 'ownerId') === this.id) || [];
+        return game.macros?.contents.filter((m) => m.getFlag('hm3', 'ownerId') === this.id) || [];
     }
 
     /**
      * @type {string | null}
      */
     get macrofolder() {
-        return game.folders.get(game.settings?.get('hm3', 'actorMacrosFolderId')) || null;
+        return game.folders?.get(game.settings?.get('hm3', 'actorMacrosFolderId')) || null;
     }
 
     /**
@@ -185,7 +187,7 @@ export class ActorHM3 extends Actor {
         const documentName = this.metadata.name;
         let collection;
         if (parent) collection = parent.getEmbeddedCollection(documentName);
-        else if (pack) collection = game.packs.get(pack);
+        else if (pack) collection = game.packs?.get(pack);
         else collection = game.collections.get(documentName);
         const takenNames = new Set();
         for (const document of collection) takenNames.add(document.name);
@@ -196,6 +198,13 @@ export class ActorHM3 extends Actor {
         return name;
     }
 
+    /**
+     *
+     * @param {*} data
+     * @param {*} param1
+     * @returns
+     * @override
+     */
     static async createDialog(data = {}, {parent = null, pack = null, types, ...options} = {}) {
         if (this.hasTypeData && types) {
             if (types.length === 0) throw new Error('The array of sub-types to restrict to must not be empty');
@@ -210,12 +219,12 @@ export class ActorHM3 extends Actor {
         const documentTypes = this.TYPES.filter((t) => t !== CONST.BASE_DOCUMENT_TYPE && types?.includes(t) !== false);
         let collection;
         if (!parent) {
-            if (pack) collection = game.packs.get(pack);
-            else collection = game.collections.get(this.documentName);
+            if (pack) collection = game.packs?.get(pack);
+            else collection = game.collections?.get(this.documentName);
         }
         const folders = collection?._formatFolderSelectOptions() ?? [];
-        const label = game.i18n.localize(this.metadata.label);
-        const title = game.i18n.format('DOCUMENT.Create', {type: label});
+        const label = game.i18n?.localize(this.metadata.label);
+        const title = game.i18n?.format('DOCUMENT.Create', {type: label});
         let defaultType = CONFIG[this.documentName]?.defaultType;
         if (!defaultType || types?.includes(defaultType) === false) defaultType = documentTypes[0];
         const type = data.type || defaultType;
@@ -232,9 +241,9 @@ export class ActorHM3 extends Actor {
                 documentTypes
                     .map((t) => {
                         const label = CONFIG[this.documentName]?.typeLabels?.[t] ?? t;
-                        return [t, game.i18n.has(label) ? game.i18n.localize(label) : t];
+                        return [t, game.i18n?.has(label) ? game.i18n?.localize(label) : t];
                     })
-                    .sort((a, b) => a[1].localeCompare(b[1], game.i18n.lang))
+                    .sort((a, b) => a[1].localeCompare(b[1], game.i18n?.lang))
             ),
             hasTypes: this.hasTypeData,
             content: `<div class="form-group">
@@ -413,7 +422,7 @@ export class ActorHM3 extends Actor {
         let itNames = foundry.utils.deepClone(itemNames);
         const itemAry = [];
         for (let packName of packNames) {
-            const pack = game.packs.get(packName);
+            const pack = game.packs?.get(packName);
             await pack.getDocuments().then((result) => {
                 let chain = Promise.resolve();
                 result.forEach(async (item, index) => {
@@ -1367,7 +1376,7 @@ export class ActorHM3 extends Actor {
                         await hm3.GmSays({
                             text:
                                 `<h4>${this.name}: ${item.name}</h4>` +
-                                game.i18n.localize('hm3.SDR.SteedSkills') +
+                                game.i18n?.localize('hm3.SDR.SteedSkills') +
                                 `<p style="font-size: smaller; font-variant: small-caps;">(${item.name} ML${item.system.masteryLevel} &ge; Riding ML${riding.system.masteryLevel})</p>`,
                             source: 'Combat 20'
                         });
@@ -1387,7 +1396,7 @@ export class ActorHM3 extends Actor {
             if (item.type === ItemType.SKILL && result.sdrIncr === 2) {
                 if (item.system.masteryLevel < 40) {
                     await hm3.GmSays({
-                        text: `<h4>${this.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.SkillSpecialty'),
+                        text: `<h4>${this.name}: ${item.name}</h4>` + game.i18n?.localize('hm3.SDR.SkillSpecialty'),
                         source: 'SKILLS 2'
                     });
                     return false;

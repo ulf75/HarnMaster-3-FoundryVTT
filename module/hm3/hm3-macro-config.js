@@ -31,7 +31,7 @@ export class MacroConfigHM3 extends MacroConfig {
 
         data.macroTypes = game.documentTypes.Macro.map((t) => ({
             value: t,
-            label: game.i18n.localize(CONFIG.Macro.typeLabels[t]),
+            label: game.i18n?.localize(CONFIG.Macro.typeLabels[t]),
             disabled: t === 'script' && !game.user?.can('MACRO_SCRIPT')
         }));
         data.macroScopes = CONST.MACRO_SCOPES.map((s) => ({value: s, label: s}));

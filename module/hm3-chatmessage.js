@@ -84,7 +84,7 @@ export class ChatMessageHM3 extends ChatMessage {
         // if (!game.user?.isGM) deleteButton?.remove();
         // else deleteButton?.querySelector('i').classList.add('fa-fw');
         // const anchor = document.createElement('a');
-        // // anchor.setAttribute('aria-label', game.i18n.localize('DND5E.AdditionalControls'));
+        // // anchor.setAttribute('aria-label', game.i18n?.localize('DND5E.AdditionalControls'));
         // anchor.classList.add('chat-control');
         // anchor.dataset.contextMenu = '';
         // anchor.innerHTML = '<i class="fas fa-ellipsis-vertical fa-fw"></i>';
@@ -106,11 +106,11 @@ export class ChatMessageHM3 extends ChatMessage {
         //       const subtitle =
         //           roll.type === 'damage'
         //               ? isCritical
-        //                   ? game.i18n.localize('DND5E.CriticalHit')
-        //                   : activity?.damageFlavor ?? game.i18n.localize('DND5E.DamageRoll')
+        //                   ? game.i18n?.localize('DND5E.CriticalHit')
+        //                   : activity?.damageFlavor ?? game.i18n?.localize('DND5E.DamageRoll')
         //               : roll.type === 'attack'
         //               ? activity?.getActionLabel(roll.attackMode) ?? ''
-        //               : item.system.type?.label ?? game.i18n.localize(CONFIG.Item.typeLabels[item.type]);
+        //               : item.system.type?.label ?? game.i18n?.localize(CONFIG.Item.typeLabels[item.type]);
         //       const flavor = document.createElement('div');
         //       flavor.classList.add('dnd5e2', 'chat-card');
         //       flavor.innerHTML = `

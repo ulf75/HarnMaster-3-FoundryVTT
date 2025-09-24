@@ -18,7 +18,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
      * @type {boolean}
      */
     // get isEditable() {
-    //     if (game.packs.get(this.item.pack)?.locked) return false;
+    //     if (game.packs?.get(this.item.pack)?.locked) return false;
     //     return this.item.testUserPermission(game.user, this.options.editPermission);
     // }
 
@@ -1225,7 +1225,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         event.preventDefault();
         const journalEntry = event.currentTarget.dataset.journalEntry;
 
-        const helpJournal = await game.packs.find((p) => p.collection === `hm3.system-help`).getDocuments();
+        const helpJournal = await game.packs?.find((p) => p.collection === `hm3.system-help`).getDocuments();
         const article = helpJournal.find((i) => i.name === journalEntry);
         //const article = game.journal.getName(journalEntry);
         if (!article) {

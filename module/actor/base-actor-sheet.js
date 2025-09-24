@@ -1379,7 +1379,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         event.preventDefault();
         const journalEntry = event.currentTarget.dataset.journalEntry;
 
-        const helpJournal = await game.packs.find((p) => p.collection === `hm3.system-help`).getDocuments();
+        const helpJournal = await game.packs?.find((p) => p.collection === `hm3.system-help`).getDocuments();
         const article = helpJournal.find((i) => i.name === journalEntry);
         //const article = game.journal.getName(journalEntry);
         if (!article) {
@@ -1395,23 +1395,24 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (item.type === 'skill' && item.name === 'Condition') {
             if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
                 await hm3.GmSays({
-                    text: `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n.localize('hm3.SDR.ConditionSkillMax'),
+                    text:
+                        `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n?.localize('hm3.SDR.ConditionSkillMax'),
                     source: 'SKILLS 9'
                 });
                 return;
             }
         }
 
-        let dlghtml = game.i18n.localize('hm3.SDR.MainDlgHtml');
+        let dlghtml = game.i18n?.localize('hm3.SDR.MainDlgHtml');
         // Create the dialog window
         return new Promise((resolve) => {
             new Dialog(
                 {
-                    title: game.i18n.localize('hm3.SDR.Toggle'),
+                    title: game.i18n?.localize('hm3.SDR.Toggle'),
                     content: dlghtml.trim(),
                     buttons: {
                         performSDR: {
-                            label: game.i18n.localize('hm3.SDR.Perform'),
+                            label: game.i18n?.localize('hm3.SDR.Perform'),
                             callback: async () => {
                                 let num = item.system.improveFlag;
 
@@ -1428,7 +1429,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                             }
                         },
                         performTrainingSDR: {
-                            label: game.i18n.localize('hm3.SDR.PerformTraining'),
+                            label: game.i18n?.localize('hm3.SDR.PerformTraining'),
                             callback: async (html) => {
                                 // Special rules for combat skills
                                 if (item.type === 'skill' && item.system.type === 'Combat') {
@@ -1437,7 +1438,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                         await hm3.GmSays({
                                             text:
                                                 `<h4>${this.actor.name}: ${item.name}</h4>` +
-                                                game.i18n.localize('hm3.SDR.InitiativeExperience'),
+                                                game.i18n?.localize('hm3.SDR.InitiativeExperience'),
                                             source: 'SKILLS 18'
                                         });
                                         return;
@@ -1448,20 +1449,20 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                         await hm3.GmSays({
                                             text:
                                                 `<h4>${this.actor.name}: ${item.name}</h4>` +
-                                                game.i18n.localize('hm3.SDR.CombatExperience'),
+                                                game.i18n?.localize('hm3.SDR.CombatExperience'),
                                             source: 'SKILLS 18'
                                         });
                                         return;
                                     }
                                 }
-                                dlghtml = game.i18n.localize('hm3.SDR.TrainingDlgHtml');
+                                dlghtml = game.i18n?.localize('hm3.SDR.TrainingDlgHtml');
                                 return new Promise((resolve) => {
                                     new Dialog({
-                                        title: game.i18n.localize('hm3.SDR.SDRs'),
+                                        title: game.i18n?.localize('hm3.SDR.SDRs'),
                                         content: dlghtml.trim(),
                                         buttons: {
                                             roll: {
-                                                label: game.i18n.localize('hm3.SDR.Roll'),
+                                                label: game.i18n?.localize('hm3.SDR.Roll'),
                                                 callback: async (html) => {
                                                     const num = Number(html.find('#sdr')[0].value);
                                                     let success = 0;
@@ -1475,7 +1476,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                                                 await hm3.GmSays({
                                                                     text:
                                                                         `<h4>${this.actor.name}: ${item.name}</h4>` +
-                                                                        game.i18n.localize(
+                                                                        game.i18n?.localize(
                                                                             'hm3.SDR.ConditionSkillMax'
                                                                         ) +
                                                                         `<p>(${num - i} SDRs left)</p>`,
@@ -1489,7 +1490,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                                                                 await hm3.GmSays({
                                                                     text:
                                                                         `<h4>${this.actor.name}: ${item.name}</h4>` +
-                                                                        game.i18n.localize('hm3.SDR.CombatExperience') +
+                                                                        game.i18n?.localize(
+                                                                            'hm3.SDR.CombatExperience'
+                                                                        ) +
                                                                         `<p>(${num - i} SDRs left)</p>`,
                                                                     source: 'SKILLS 18'
                                                                 });
@@ -1513,7 +1516,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                             }
                         },
                         disableFlag: {
-                            label: game.i18n.localize('hm3.SDR.DisableFlag'),
+                            label: game.i18n?.localize('hm3.SDR.DisableFlag'),
                             callback: async () => {
                                 return item.update({'system.improveFlag': 0});
                             }
