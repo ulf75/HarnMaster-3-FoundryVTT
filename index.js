@@ -5,13 +5,14 @@ import {ActorHM3} from './module/actor/actor.js';
 import {CharacterSheetHM3v2} from './module/actor/character-sheet-v2.js';
 import {ContainerSheetHM3v2} from './module/actor/container-sheet-v2.js';
 import {CreatureSheetHM3v2} from './module/actor/creature-sheet-v2.js';
-import * as combat from './module/combat.js';
 import {HM3} from './module/config.js';
-import * as effect from './module/effect.js';
+import {initializeFoundryHooks} from './module/foundry-hooks.js';
+import {initializeHandlebars} from './module/handlebars.js';
 import {ActiveEffectHM3} from './module/hm3-active-effect.js';
 import {ChatMessageHM3} from './module/hm3-chatmessage.js';
 import {CombatHM3} from './module/hm3-combat.js';
 import {CombatantHM3} from './module/hm3-combatant.js';
+import {initHM3Hooks} from './module/hm3-hooks.js';
 import {MacroHM3} from './module/hm3-macro.js';
 import {RollHM3} from './module/hm3-roll.js';
 import {TokenDocumentHM3, TokenHM3} from './module/hm3-token.js';
@@ -43,11 +44,11 @@ import {ItemHM3} from './module/item/item.js';
 import {registerHooks} from './module/macro.js';
 import * as macros from './module/macros.js';
 import * as migrations from './module/migrations.js';
-import {Mutex} from './module/mutex.js';
 import {registerSystemSettings} from './module/settings.js';
+import {initDragRuler} from './module/speed-provider.js';
 import {SlideToggleElement} from './module/toggle.js';
-import * as utility from './module/utility.js';
 import {Weather} from './module/weather.js';
+import {BaseTestHM3} from './tests/hm3-basetest.js';
 import {runner} from './tests/runner.js';
 
 // import './scss/hm3.scss';
@@ -89,6 +90,14 @@ globalThis.hm3 = {
     gmconsole: async (level, msg, error) => {
         return hm3.socket.executeAsGM('gmConsole', game.user?.name, level, msg, error);
     },
+    /**
+     *
+     * @param {Object} options
+     * @param {string} [options.source]
+     * @param {string} [options.text]
+     * @param {Token | null} [options.token=null]
+     * @returns
+     */
     Gm2GmSays: async (text, source, token = null) => {
         return hm3.socket.executeAsGM('GmSays', {
             gmonly: true,
@@ -98,6 +107,16 @@ globalThis.hm3 = {
             tokenId: token ? token.id : null
         });
     },
+    /**
+     *
+     * @param {Object} options
+     * @param {boolean} [options.gmonly=false]
+     * @param {User | null} [options.sendingUser=null]
+     * @param {string | null} [options.source=null]
+     * @param {string | null} [options.text=null]
+     * @param {Token | null} [options.token=null]
+     * @returns
+     */
     GmSays: async ({gmonly = false, sendingUser = null, source = null, text = null, token = null}) => {
         console.assert(text, 'Parameter text not set');
         console.assert(game.user?.isGM ? true : token, 'Parameter token not set');
@@ -296,108 +315,6 @@ Hooks.once('init', async function () {
     Items.registerSheet('hm3', ItemSheetHM3, {label: 'HM3 Item Sheet'});
     Items.registerSheet('hm3', ItemSheetHM3v2, {label: 'HM3 Item Sheet v2', makeDefault: true});
 
-    // If you need to add Handlebars helpers, here are a few useful examples:
-    Handlebars.registerHelper('concat', function () {
-        var outStr = '';
-        for (var arg in arguments) {
-            if (typeof arguments[arg] != 'object') {
-                outStr += arguments[arg];
-            }
-        }
-        return outStr;
-    });
-
-    Handlebars.registerHelper('toLowerCase', function (str) {
-        return str.toLowerCase();
-    });
-
-    Handlebars.registerHelper('capitalizeFirstLetter', function (str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    });
-
-    Handlebars.registerHelper('not', function (obj) {
-        return !obj;
-    });
-
-    Handlebars.registerHelper('getLabel', function (data, key) {
-        var val = data.find((d) => d.key === key);
-        return val.label;
-    });
-
-    const root = 'systems/hm3/templates/';
-    const root_item_v2 = `${root}item-v2/partials/`;
-    const root_actor_v2 = `${root}actor-v2/partials/`;
-    Handlebars.registerPartial({
-        //character
-        char_esoteric_list_partial: Handlebars.compile(
-            await (await fetch(`${root}actor/partials/esoteric_list_partial.hbs`)).text()
-        ),
-        char_fff_list_partial: Handlebars.compile(
-            await (await fetch(`${root}actor/partials/fff_list_partial.hbs`)).text()
-        ),
-        char_layout_partial: Handlebars.compile(
-            await (await fetch(`${root}actor/partials/structure_partial.hbs`)).text()
-        ),
-        char_skill_list_partial: Handlebars.compile(
-            await (await fetch(`${root}actor/partials/skill_list_partial.hbs`)).text()
-        ),
-        //character v2
-        char_v2_ability_partial: Handlebars.compile(await (await fetch(`${root_actor_v2}ability_partial.hbs`)).text()),
-        char_v2_esoteric_list_partial: Handlebars.compile(
-            await (await fetch(`${root_actor_v2}esoteric_list_partial.hbs`)).text()
-        ),
-        char_v2_fff_list_partial: Handlebars.compile(
-            await (await fetch(`${root_actor_v2}fff_list_partial.hbs`)).text()
-        ),
-        char_v2_img_partial: Handlebars.compile(await (await fetch(`${root_actor_v2}img_partial.hbs`)).text()),
-        char_v2_layout_partial: Handlebars.compile(await (await fetch(`${root_actor_v2}structure_partial.hbs`)).text()),
-        char_v2_skill_list_partial: Handlebars.compile(
-            await (await fetch(`${root_actor_v2}skill_list_partial.hbs`)).text()
-        ),
-        // item
-        item_artifact_partial: Handlebars.compile(
-            await (await fetch(`${root}item/partials/artifact_partial.hbs`)).text()
-        ),
-        item_artifact_power_partial: Handlebars.compile(
-            await (await fetch(`${root}item/partials/artifact_power_partial.hbs`)).text()
-        ),
-        item_esoteric_combat_partial: Handlebars.compile(
-            await (await fetch(`${root}item/partials/esoteric_combat_partial.hbs`)).text()
-        ),
-        item_layout_partial: Handlebars.compile(
-            await (await fetch(`${root}item/partials/structure_partial.hbs`)).text()
-        ),
-        item_standard_partial: Handlebars.compile(
-            await (await fetch(`${root}item/partials/standard_partial.hbs`)).text()
-        ),
-        item_unknown_value_partial: Handlebars.compile(
-            await (await fetch(`${root}item/partials/unknown_value_partial.hbs`)).text()
-        ),
-        // item v2
-        item_v2_artifact_partial: Handlebars.compile(await (await fetch(`${root_item_v2}artifact_partial.hbs`)).text()),
-        item_v2_artifact_power_partial: Handlebars.compile(
-            await (await fetch(`${root_item_v2}artifact_power_partial.hbs`)).text()
-        ),
-        item_v2_esoteric_combat_partial: Handlebars.compile(
-            await (await fetch(`${root_item_v2}esoteric_combat_partial.hbs`)).text()
-        ),
-        item_v2_layout_partial: Handlebars.compile(await (await fetch(`${root_item_v2}structure_partial.hbs`)).text()),
-        item_v2_quantity_partial: Handlebars.compile(await (await fetch(`${root_item_v2}quantity_partial.hbs`)).text()),
-        item_v2_sb_partial: Handlebars.compile(await (await fetch(`${root_item_v2}sb_partial.hbs`)).text()),
-        item_v2_standard_partial: Handlebars.compile(await (await fetch(`${root_item_v2}standard_partial.hbs`)).text()),
-        item_v2_unknown_value_partial: Handlebars.compile(
-            await (await fetch(`${root_item_v2}unknown_value_partial.hbs`)).text()
-        ),
-        item_v2_value_partial: Handlebars.compile(await (await fetch(`${root_item_v2}value_partial.hbs`)).text()),
-        item_v2_weight_partial: Handlebars.compile(await (await fetch(`${root_item_v2}weight_partial.hbs`)).text()),
-        // global
-        effects_partial: Handlebars.compile(await (await fetch(`${root}partials/effects_partial.hbs`)).text()),
-        legacy_macro_partial: Handlebars.compile(
-            await (await fetch(`${root}partials/legacy_macro_partial.hbs`)).text()
-        ),
-        macros_partial: Handlebars.compile(await (await fetch(`${root}partials/macros_partial.hbs`)).text())
-    });
-
     // Add a font selector dropdown to the TineMCE editor
     //CONFIG.TinyMCE.toolbar = "styleselect forecolor backcolor bullist numlist image table hr link removeformat code fontselect fontsizeselect save";
     //CONFIG.TinyMCE.toolbar = "styles bullist numlist image table hr link removeformat code fontselect save";
@@ -426,150 +343,10 @@ Hooks.once('init', async function () {
         }
     });
 
-    // Actors also have a Bio image
-    Hooks.on('getActorDirectoryEntryContext', (html, menuItems) => {
-        menuItems.unshift({
-            name: 'View Bio Artwork',
-            icon: `<i class="fas fa-image"></i>`,
-            callback: async (html) => {
-                const actor = game.actors?.get(html.data('documentId'));
-                new ImagePopout(actor.system.bioImage, {
-                    title: actor.name,
-                    uuid: actor.uuid
-                }).render(true);
-            },
-            condition: (html) => {
-                const actor = game.actors?.get(html.data('documentId'));
-                return game.user?.isGM && actor?.system?.bioImage;
-            }
-        });
-    });
-
-    Hooks.on('renderChatMessage', (app, html, data) => {
-        // Display action buttons
-        combat.displayChatActionButtons(app, html, data);
-    });
-
-    Hooks.on('renderChatLog', (app, html, data) => ActorHM3.chatListeners(html));
-
-    Hooks.on('renderChatPopout', (app, html, data) => ActorHM3.chatListeners(html));
-
-    /**
-     * Active Effects need to expire at certain times, so keep track of that here
-     */
-    Hooks.on('updateWorldTime', async (currentTime, change) => {
-        await effect.checkStartedActiveEffects();
-        // Disable any expired active effects (WorldTime-based durations).
-        await effect.checkExpiredActiveEffects();
-    });
-
-    Hooks.on('updateCombat', async (combat, updateData) => {
-        await effect.checkStartedActiveEffects();
-        // Called when the combat object is updated.  Possibly because of a change in round
-        // or turn. updateData will have specifics of what changed.
-        await effect.checkExpiredActiveEffects();
-    });
-
-    Hooks.on('hm3.onShockIndexReduced', async (actor, old, current) => {
-        if (game.combat?.started && actor.parent instanceof TokenDocumentHM3 && !actor.parent.player) {
-            if (actor.parent.hasCondition(Condition.UNCONSCIOUS) && actor.testUserPermission(game.user, 'OWNER')) {
-                await actor.parent.deleteCondition(Condition.UNCONSCIOUS);
-                await actor.parent.addCondition(Condition.UNCONSCIOUS);
-                Hooks.call('hm3.onShockIndexReduced2', actor, old, current);
-            }
-        }
-    });
-
-    Hooks.on('updateCombat', async (combat, updateData) => {
-        return updateOutnumbered({hook: 'updateCombat'});
-    });
-
-    Hooks.on('updateCombatant', async (combatant, info, updateData, userId) => {
-        return updateOutnumbered({hook: 'updateCombatant'});
-    });
-
-    Hooks.on('createActiveEffect', async (activeEffect, info, userId) => {
-        return updateOutnumbered({aeName: activeEffect.name, hook: 'createActiveEffect'});
-    });
-
-    Hooks.on('deleteActiveEffect', async (activeEffect, info, userId) => {
-        return updateOutnumbered({aeName: activeEffect.name, hook: 'deleteActiveEffect'});
-    });
-});
-
-Hooks.on('createItem', async (item, info, userId) => {
-    if (item.type === ItemType.EFFECT) {
-        if (item.system.selfDestroy && item.parent instanceof Actor) {
-            item.effects.forEach((effect) => {
-                if (!effect.getFlag('effectmacro', 'onDisable.script'))
-                    effect.setFlag(
-                        'effectmacro',
-                        'onDisable.script',
-                        utility.beautify(`
-                  const item = fromUuidSync('${item.uuid}');
-                  if (item) {
-                    if (item.effects.contents.filter((e)=>e.disabled).length === item.effects.size) {
-                      item.delete();
-                    }
-                  }`)
-                    );
-            });
-        }
-    }
-});
-
-Hooks.on('preUpdateMacro', async (macro, updateData, options, userId) => {
-    if (updateData.command) updateData.command = utility.beautify(updateData.command);
-});
-
-Hooks.on('hm3.onMount', async (actor, steed) => {
-    if (!actor.testUserPermission(game.user, 'OWNER') || !steed.testUserPermission(game.user, 'OWNER')) return;
-
-    await actor.update({'system.mounted': true});
-    actor.prepareData();
-    const riding = actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
-    riding.sheet.render();
-
-    const rider = steed.items.find((item) => item.type === ItemType.MISCGEAR && item.name.includes('Rider'));
-    await rider?.delete();
-    await Item.create(
-        {
-            img: actor.img,
-            name: 'Rider/' + actor.name,
-            system: {actorUuid: actor.uuid, type: 'Rider', weight: actor.proxy.weight + actor.proxy.totalGearWeight},
-            type: ItemType.MISCGEAR
-        },
-        {parent: steed}
-    );
-});
-
-Hooks.on('hm3.onUnmount', async (actor, steed) => {
-    if (!actor.testUserPermission(game.user, 'OWNER') || !steed.testUserPermission(game.user, 'OWNER')) return;
-
-    await actor.update({'system.mounted': false});
-    actor.prepareData();
-    const riding = actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
-    riding.sheet.render();
-
-    const rider = steed.items.find((item) => item.type === ItemType.MISCGEAR && item.name.includes('Rider'));
-    await rider?.delete();
-});
-
-Hooks.on('dropCanvasData', async (canvas, data) => {
-    if (data.type === 'Item') {
-        const targetToken = canvas?.tokens?.placeables.find((t) => t.bounds.contains(data.x, data.y));
-        if (!targetToken) return;
-
-        const actor = targetToken.actor;
-        if (!actor) return;
-
-        const item = await Item.fromDropData(data);
-        if (!item) return;
-
-        await actor.createEmbeddedDocuments('Item', [item.toObject()]);
-
-        ui.notifications?.info(`"${item.name}" was added to ${targetToken.name}.`);
-    }
+    initDragRuler();
+    initializeHandlebars();
+    initializeFoundryHooks();
+    initHM3Hooks();
 });
 
 /**
@@ -584,8 +361,8 @@ Hooks.once('ready', async function () {
         CONFIG.debug.hm3 = true;
         // CONFIG.debug.hooks = true;
         hm3.runner = runner;
-        hm3.socket.register('defButtonsFromChatMsg', hm3.BaseTest.DefButtonsFromChatMsgProxy);
-        hm3.socket.register('defAction', hm3.BaseTest.DefActionProxy);
+        hm3.socket.register('defButtonsFromChatMsg', BaseTestHM3.DefButtonsFromChatMsgProxy);
+        hm3.socket.register('defAction', BaseTestHM3.DefActionProxy);
         console.clear();
     } else {
         CONFIG.debug.hm3 = false;
@@ -610,8 +387,6 @@ Hooks.once('ready', async function () {
         game.settings?.set('hm3', 'systemMigrationVersion', game.system.version);
     }
 
-    Hooks.on('hotbarDrop', (bar, data, slot) => macros.createHM3Macro(data, slot));
-
     // if not exists, create and set
     if (
         !game.settings?.get('hm3', 'actorMacrosFolderId') ||
@@ -622,7 +397,7 @@ Hooks.once('ready', async function () {
             type: 'Macro',
             color: 0x999999
         });
-        await game.settings?.set('hm3', 'actorMacrosFolderId', folder.id);
+        await game.settings?.set('hm3', 'actorMacrosFolderId', folder?.id);
     }
 
     await registerHooks();
@@ -659,7 +434,22 @@ Hooks.once('ready', async function () {
         }
     });
 
-    HM3.ready = true;
+    const socket = hm3.socket;
+    socket.register('isFirstTA', isFirstTA);
+    socket.register('setTAFlag', setTAFlag);
+    socket.register('unsetTAFlag', unsetTAFlag);
+    socket.register('weaponBroke', weaponBroke);
+    socket.register('improveFlag', improveFlag);
+    socket.register('fatigueReceived', fatigueReceived);
+    socket.register('GmSays', gmSays);
+    socket.register('gmConsole', gmConsole);
+    socket.register('callAllUsers', callAllUsers);
+    socket.register('cheating', cheating);
+
+    // @ts-expect-error
+    Hooks.callAllUsers = (hook, ...args) => {
+        hm3.socket.executeForEveryone('callAllUsers', hook, ...args);
+    };
 
     if (game.settings?.get('hm3', 'showWelcomeDialog')) {
         welcomeDialog().then((showAgain) => {
@@ -672,152 +462,8 @@ Hooks.once('ready', async function () {
             'You do not have permission to run JavaScript macros, so all skill and esoterics macros have been disabled.'
         );
     }
-});
 
-Hooks.on('renderPause', (_app, html) => html.find('img').attr('src', 'systems/hm3/images/png/HMLogo.png'));
-
-// Since HM3 does not have the concept of rolling for initiative,
-// this hook simply prepopulates the initiative value. This ensures
-// that no die roll is needed.
-Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
-    if (!combatant.initiative) {
-        let token = canvas?.tokens?.get(combatant.tokenId);
-        combatant.initiative = token?.actor?.system.initiative;
-    }
-});
-
-// If the combatant is not already in combat, roll initiative
-Hooks.on('createCombatant', (combatant, options, id) => {
-    if (combatant.testUserPermission(game.user, 'OWNER')) combatant.rollInitiative();
-});
-
-Hooks.once('dragRuler.ready', (SpeedProvider) => {
-    class HarnMaster3SpeedProvider extends SpeedProvider {
-        get colors() {
-            return [
-                {
-                    id: 'creep',
-                    default: 0x000098, // dark blue
-                    name: 'hm3.speed-provider.creep'
-                },
-                {
-                    id: 'walk',
-                    default: 0x1e88e5, // blue
-                    name: 'hm3.speed-provider.walk'
-                },
-                {
-                    id: 'jog',
-                    default: 0x6aa84f, // green
-                    name: 'hm3.speed-provider.jog'
-                },
-                {
-                    id: 'run',
-                    default: 0xffc107, // yellow
-                    name: 'hm3.speed-provider.run'
-                },
-                {
-                    id: 'sprint',
-                    default: 0xf24d11, // orange
-                    // default: 0xd81b60, // red
-                    name: 'hm3.speed-provider.sprint'
-                }
-            ];
-        }
-
-        get defaultUnreachableColor() {
-            return 0x000000;
-        }
-
-        /**
-         * @param {TokenHM3} token - The token to check movement
-         * */
-        getRanges(token) {
-            const move = Math.max(token.actor?.system.move.effective, 1);
-            const creep = {range: 5 * Math.max(Math.round(move / 3 + Number.EPSILON), 1), color: 'creep'};
-            const walk = {range: 5 * Math.max(Math.round(move / 2 + Number.EPSILON), 2), color: 'walk'};
-            const jog = {range: 5 * Math.max(Math.round(move + Number.EPSILON), 4), color: 'jog'};
-            const run = {range: 5 * Math.max(Math.round(2 * move + Number.EPSILON), 8), color: 'run'};
-            const sprint = {range: 5 * Math.max(Math.round(3 * move + Number.EPSILON), 12), color: 'sprint'};
-
-            // Conditions
-            const grappled = token.hasCondition(Condition.GRAPPLED);
-            const inanimate = token.hasCondition(Condition.INANIMATE);
-            const prone = token.hasCondition(Condition.PRONE);
-            const shocked = token.hasCondition(Condition.SHOCKED);
-            const stunned = token.hasCondition(Condition.STUNNED);
-            const unconscious = token.hasCondition(Condition.UNCONSCIOUS);
-
-            if (inanimate) {
-                return [creep, walk, jog, run, sprint];
-            }
-
-            // No movement at all
-            if (grappled || stunned || unconscious) {
-                return [{range: -1, color: 'creep'}];
-            }
-
-            if (prone || shocked || token.actor?.system.shockIndex.value < 20) {
-                return [creep, walk];
-            }
-
-            if (token.hasGreviousLegInjuries()) {
-                return [creep, walk, jog, run];
-            }
-
-            return [creep, walk, jog, run, sprint];
-        }
-    }
-
-    // @ts-expect-error
-    dragRuler.registerSystem('hm3', HarnMaster3SpeedProvider);
-});
-
-async function welcomeDialog() {
-    const dlgTemplate = 'systems/hm3/templates/dialog/welcome.html';
-    const html = await renderTemplate(dlgTemplate, {});
-
-    // Create the dialog window
-    return Dialog.prompt({
-        title: 'Welcome!',
-        content: html,
-        label: 'OK',
-        callback: (html) => {
-            const form = html.querySelector('#welcome');
-            const fd = new FormDataExtended(form);
-            const data = fd.object;
-            return data.showOnStartup;
-        },
-        options: {jQuery: false}
-    });
-}
-
-/*-------------------------------------------------------*/
-/*            Handlebars FUNCTIONS                       */
-/*-------------------------------------------------------*/
-Handlebars.registerHelper('multiply', function (op1, op2) {
-    return op1 * op2;
-});
-
-Handlebars.registerHelper('endswith', function (op1, op2) {
-    return op1.endsWith(op2);
-});
-
-Hooks.once('ready', () => {
-    Hooks.callAllUsers = (hook, ...args) => {
-        hm3.socket.executeForEveryone('callAllUsers', hook, ...args);
-    };
-
-    const socket = hm3.socket;
-    socket.register('isFirstTA', isFirstTA);
-    socket.register('setTAFlag', setTAFlag);
-    socket.register('unsetTAFlag', unsetTAFlag);
-    socket.register('weaponBroke', weaponBroke);
-    socket.register('improveFlag', improveFlag);
-    socket.register('fatigueReceived', fatigueReceived);
-    socket.register('GmSays', gmSays);
-    socket.register('gmConsole', gmConsole);
-    socket.register('callAllUsers', callAllUsers);
-    socket.register('cheating', cheating);
+    HM3.ready = true;
 });
 
 function isFirstTA() {
@@ -1060,27 +706,21 @@ async function cheating(check, name, type, formula, minimum, maximum, target) {
         );
 }
 
-let outMutex = new Mutex();
-/**
- * Update outnumbered status for combatants
- * @param {Object} options -
- * @param {string} [options.aeName='true'] - The name of the active effect
- * @param {string} [options.hook='nohook'] - The name of the active effect
- * @returns {Promise<boolean>}
- */
-async function updateOutnumbered({aeName = 'true', hook = 'nohook'} = {}) {
-    if (game.combat?.started && game.user?.isGM) {
-        if (aeName === 'true' || combat.outnumberedConditions().includes(aeName)) {
-            return outMutex.runExclusive(async () => {
-                console.info(`HM3 | Run updateOutnumbered (aeName = ${aeName}, hook = ${hook})`);
-                const {changed, tokens} = await combat.updateOutnumbered();
-                if (changed) Hooks.call('hm3.onOutnumberedChanged', tokens, aeName, hook);
-                Hooks.call('hm3.onOutnumbered', aeName, hook);
-                return true;
-            });
-        }
-        Hooks.call('hm3.onOutnumbered', aeName, hook);
-    }
+async function welcomeDialog() {
+    const dlgTemplate = 'systems/hm3/templates/dialog/welcome.html';
+    const html = await renderTemplate(dlgTemplate, {});
 
-    return true;
+    // Create the dialog window
+    return Dialog.prompt({
+        title: 'Welcome!',
+        content: html,
+        label: 'OK',
+        callback: (html) => {
+            const form = html.querySelector('#welcome');
+            const fd = new FormDataExtended(form);
+            const data = fd.object;
+            return data.showOnStartup;
+        },
+        options: {jQuery: false}
+    });
 }
