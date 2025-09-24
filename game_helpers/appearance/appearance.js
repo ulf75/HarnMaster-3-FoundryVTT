@@ -192,7 +192,7 @@
                     const mental = mentalDraw.results[0].text;
 
                     ChatMessage.create({
-                        user: game.user._id,
+                        user: game.user?._id,
                         speaker: ChatMessage.getSpeaker({token: actor}),
                         content: `<h3>Appearance Attributes</h3><p>Species: ${species}</p><p>Gender: ${gender}</p><p>Frame: ${frame}</p><p>Height: ${height}" (avg ${avgHeight}) / ${heightF}'${
                             height - heightF * 12
