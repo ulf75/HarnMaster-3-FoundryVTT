@@ -577,14 +577,15 @@ Hooks.on('dropCanvasData', async (canvas, data) => {
  * we should perform a data migration.
  */
 Hooks.once('ready', async function () {
-    game.hm3['socket'] = socketlib.registerSystem('hm3');
+    // @ts-expect-error
+    hm3['socket'] = socketlib.registerSystem('hm3');
 
     if (game.settings?.get('hm3', 'debugMode')) {
         CONFIG.debug.hm3 = true;
         // CONFIG.debug.hooks = true;
-        game.hm3.runner = runner;
-        game.hm3.socket.register('defButtonsFromChatMsg', game.hm3.BaseTest.DefButtonsFromChatMsgProxy);
-        game.hm3.socket.register('defAction', game.hm3.BaseTest.DefActionProxy);
+        hm3.runner = runner;
+        hm3.socket.register('defButtonsFromChatMsg', hm3.BaseTest.DefButtonsFromChatMsgProxy);
+        hm3.socket.register('defAction', hm3.BaseTest.DefActionProxy);
         console.clear();
     } else {
         CONFIG.debug.hm3 = false;
@@ -592,7 +593,7 @@ Hooks.once('ready', async function () {
         console.log = () => {};
         console.debug = () => {};
         console.trace = () => {};
-        game.hm3.runner = () => ui.notifications?.info('Please turn on Debug Mode.');
+        hm3.runner = () => ui.notifications?.info('Please turn on Debug Mode.');
         console.clear();
     }
 
@@ -731,7 +732,7 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
          * @param {TokenHM3} token - The token to check movement
          * */
         getRanges(token) {
-            const move = Math.max(token.actor.system.move.effective, 1);
+            const move = Math.max(token.actor?.system.move.effective, 1);
             const creep = {range: 5 * Math.max(Math.round(move / 3 + Number.EPSILON), 1), color: 'creep'};
             const walk = {range: 5 * Math.max(Math.round(move / 2 + Number.EPSILON), 2), color: 'walk'};
             const jog = {range: 5 * Math.max(Math.round(move + Number.EPSILON), 4), color: 'jog'};
@@ -739,12 +740,12 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
             const sprint = {range: 5 * Math.max(Math.round(3 * move + Number.EPSILON), 12), color: 'sprint'};
 
             // Conditions
-            const grappled = token.hasCondition(game.Condition.GRAPPLED);
-            const inanimate = token.hasCondition(game.Condition.INANIMATE);
-            const prone = token.hasCondition(game.Condition.PRONE);
-            const shocked = token.hasCondition(game.Condition.SHOCKED);
-            const stunned = token.hasCondition(game.Condition.STUNNED);
-            const unconscious = token.hasCondition(game.Condition.UNCONSCIOUS);
+            const grappled = token.hasCondition(Condition.GRAPPLED);
+            const inanimate = token.hasCondition(Condition.INANIMATE);
+            const prone = token.hasCondition(Condition.PRONE);
+            const shocked = token.hasCondition(Condition.SHOCKED);
+            const stunned = token.hasCondition(Condition.STUNNED);
+            const unconscious = token.hasCondition(Condition.UNCONSCIOUS);
 
             if (inanimate) {
                 return [creep, walk, jog, run, sprint];
@@ -755,7 +756,7 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
                 return [{range: -1, color: 'creep'}];
             }
 
-            if (prone || shocked || token.actor.system.shockIndex.value < 20) {
+            if (prone || shocked || token.actor?.system.shockIndex.value < 20) {
                 return [creep, walk];
             }
 
@@ -767,6 +768,7 @@ Hooks.once('dragRuler.ready', (SpeedProvider) => {
         }
     }
 
+    // @ts-expect-error
     dragRuler.registerSystem('hm3', HarnMaster3SpeedProvider);
 });
 
@@ -802,10 +804,10 @@ Handlebars.registerHelper('endswith', function (op1, op2) {
 
 Hooks.once('ready', () => {
     Hooks.callAllUsers = (hook, ...args) => {
-        game.hm3.socket.executeForEveryone('callAllUsers', hook, ...args);
+        hm3.socket.executeForEveryone('callAllUsers', hook, ...args);
     };
 
-    const socket = game.hm3.socket;
+    const socket = hm3.socket;
     socket.register('isFirstTA', isFirstTA);
     socket.register('setTAFlag', setTAFlag);
     socket.register('unsetTAFlag', unsetTAFlag);
@@ -887,7 +889,7 @@ async function fatigueReceived(actorUuid, fatigue) {
  * @returns {Promise<ChatMessage>} - The created chat message
  */
 async function gmSays({gmonly, sendingUserId, source, text, tokenId}) {
-    return game.hm3.GmSays({
+    return hm3.GmSays({
         gmonly,
         sendingUser: game.users?.get(sendingUserId),
         source,
@@ -1064,7 +1066,7 @@ let outMutex = new Mutex();
  * @param {Object} options -
  * @param {string} [options.aeName='true'] - The name of the active effect
  * @param {string} [options.hook='nohook'] - The name of the active effect
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>}
  */
 async function updateOutnumbered({aeName = 'true', hook = 'nohook'} = {}) {
     if (game.combat?.started && game.user?.isGM) {
