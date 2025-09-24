@@ -1,3 +1,6 @@
+// @ts-check
+
+import {ActorHM3} from './actor/actor';
 import {getRelevantActors} from './utility';
 
 /**
@@ -20,12 +23,12 @@ export async function onManageActiveEffect(event, owner) {
         case 'create':
             const dlgTemplate = 'systems/hm3/templates/dialog/active-effect-start.hbs';
             const dialogData = {
-                gameTime: game.time.worldTime
+                gameTime: game.time?.worldTime
             };
             if (game.combat) {
-                dialogData.combatId = game.combat.id;
-                dialogData.combatRound = game.combat.round;
-                dialogData.combatTurn = game.combat.turn;
+                dialogData.combatId = game.combat?.id;
+                dialogData.combatRound = game.combat?.round;
+                dialogData.combatTurn = game.combat?.turn;
             }
             const html = await renderTemplate(dlgTemplate, dialogData);
 
@@ -61,11 +64,11 @@ export async function onManageActiveEffect(event, owner) {
             });
 
         case 'edit':
-            return effect.sheet.render(true);
+            return effect?.sheet?.render(true);
 
         case 'delete':
-            if (effect.parent instanceof Item && effect.parent?.parent instanceof Actor)
-                return ui.notifications.info(
+            if (effect?.parent instanceof Item && effect.parent?.parent instanceof Actor)
+                return ui.notifications?.info(
                     `This effect (${effect.name}) originates from an item (${effect.parent.name}) and cannot be deleted.`
                 );
             return new Dialog({
@@ -91,21 +94,21 @@ export async function onManageActiveEffect(event, owner) {
 
         case 'toggle':
             const updateData = {};
-            if (effect.disabled) {
+            if (effect?.disabled) {
                 // Enable the Active Effect
                 updateData['disabled'] = false;
 
                 // Also set the timer to start now
-                updateData['duration.startTime'] = game.time.worldTime;
+                updateData['duration.startTime'] = game.time?.worldTime;
                 if (game.combat) {
-                    updateData['duration.startRound'] = game.combat.round;
-                    updateData['duration.startTurn'] = game.combat.turn;
+                    updateData['duration.startRound'] = game.combat?.round;
+                    updateData['duration.startTurn'] = game.combat?.turn;
                 }
             } else {
                 // Disable the Active Effect
                 updateData['disabled'] = true;
             }
-            return effect.update(updateData);
+            return effect?.update(updateData);
 
         case 'void':
         default:
@@ -123,7 +126,7 @@ export async function checkStartedActiveEffects() {
     }
 
     // // Handle game actors first
-    // for (let actor of game.actors.values()) {
+    // for (let actor of game.actors?.values()) {
     //     if (actor.player?.active && actor.isOwner && actor.allApplicableEffects(true)?.length) {
     //         const aeStarted = await setAEStatus(actor);
     //         actor.sheet.conditionalRender({aeStarted});
@@ -131,7 +134,7 @@ export async function checkStartedActiveEffects() {
     // }
 
     // // Next, handle tokens (only unlinked tokens)
-    // for (let token of canvas.tokens.ownedTokens.values()) {
+    // for (let token of canvas?.tokens?.ownedTokens.values()) {
     //     if (!token.document.actorLink && token.actor?.allApplicableEffects(true)?.length) {
     //         const aeStarted = await setAEStatus(token.actor);
     //         token.actor.sheet.conditionalRender({aeStarted});
@@ -174,7 +177,7 @@ export async function checkExpiredActiveEffects() {
     }
 
     // // Handle game actors first
-    // for (let actor of game.actors.values()) {
+    // for (let actor of game.actors?.values()) {
     //     if (actor.player?.active && actor.isOwner && actor.allApplicableEffects(true)?.length) {
     //         const aeDisabled = await disableExpiredAE(actor);
     //         actor.sheet.conditionalRender({aeDisabled});
@@ -182,7 +185,7 @@ export async function checkExpiredActiveEffects() {
     // }
 
     // // Next, handle tokens (only unlinked tokens)
-    // for (let token of canvas.tokens.ownedTokens.values()) {
+    // for (let token of canvas?.tokens?.ownedTokens.values()) {
     //     if (!token.document.actorLink && token.actor?.allApplicableEffects(true)?.length) {
     //         const aeDisabled = await disableExpiredAE(token.actor);
     //         token.actor.sheet.conditionalRender({aeDisabled});

@@ -137,7 +137,7 @@ export class RollHM3 extends Roll {
         } else if (this.cheating && !this.isDeterministic) {
             await this._minMax();
 
-            const data = await game.hm3.socket.executeAsGM(
+            const data = await hm3.socket.executeAsGM(
                 'cheating',
                 this._check ?? 'roll',
                 this._name,

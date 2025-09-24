@@ -6,7 +6,7 @@ export class CombatantHM3 extends Combatant {
      * @override
      */
     getInitiativeRoll(formula) {
-        const mark = game.settings.get('hm3', 'autoMarkUsedSkills');
+        const mark = game.settings?.get('hm3', 'autoMarkUsedSkills');
         if (this.actor.system.mounted) {
             // For mounted combat, initiative is equal to Riding EML (COMBAT 20)
             const iniSkill = this.actor.items.find(
@@ -19,7 +19,7 @@ export class CombatantHM3 extends Combatant {
             const iniSkill = this.actor.items.find(
                 (item) => item.type === ItemType.SKILL && item.name === 'Initiative'
             );
-            this.actor.system.initiative = !this.token?.hasCondition(game.hm3.Condition.SHOCKED)
+            this.actor.system.initiative = !this.token?.hasCondition(hm3.Condition.SHOCKED)
                 ? iniSkill.system.effectiveMasteryLevel
                 : 0;
             this.actor.system.initiative += iniSkill.system.skillBase.value / 10;

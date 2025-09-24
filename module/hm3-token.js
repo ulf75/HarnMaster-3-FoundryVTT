@@ -1,3 +1,5 @@
+// @ts-check
+
 import {rangeToTarget} from './combat.js';
 import {Condition, ItemType} from './hm3-types.js';
 import * as macros from './macros.js';
@@ -42,7 +44,7 @@ export class TokenHM3 extends Token {
      * @returns
      */
     hasCondition(condition) {
-        return this.actor.hasCondition(condition);
+        return this.actor?.hasCondition(condition);
     }
 
     /**
@@ -51,15 +53,15 @@ export class TokenHM3 extends Token {
      * @returns
      */
     getCondition(condition) {
-        return this.actor.getCondition(condition);
+        return this.actor?.getCondition(condition);
     }
 
     getConditions() {
-        return Object.values(game.hm3.Condition).filter((c) => this.hasCondition(c));
+        return Object.values(Condition).filter((c) => this.hasCondition(c));
     }
 
     getConditionsWithMacro(macro) {
-        return Object.values(game.hm3.Condition).filter((c) => {
+        return Object.values(Condition).filter((c) => {
             const ae = this.getCondition(c);
             return ae?.flags?.effectMacro && ae.flags.effectmacro[macro]?.script;
         });
@@ -89,7 +91,7 @@ export class TokenHM3 extends Token {
     async deleteCondition(condition, postpone = 0) {
         return new Promise((resolve) =>
             setTimeout(async () => {
-                await game.hm3.macros.deleteCondition(this, this.getCondition(condition));
+                await hm3.macros.deleteCondition(this, this.getCondition(condition));
                 resolve();
             }, postpone)
         );
@@ -100,23 +102,23 @@ export class TokenHM3 extends Token {
      * @returns
      */
     async deleteAllMoraleConditions(except = null) {
-        if (except !== game.hm3.Condition.BERSERK) await this.deleteCondition(game.hm3.Condition.BERSERK);
-        if (except !== game.hm3.Condition.BROKEN) await this.deleteCondition(game.hm3.Condition.BROKEN);
-        if (except !== game.hm3.Condition.CAUTIOUS) await this.deleteCondition(game.hm3.Condition.CAUTIOUS);
-        if (except !== game.hm3.Condition.DESPERATE) await this.deleteCondition(game.hm3.Condition.DESPERATE);
-        if (except !== game.hm3.Condition.EMPOWERED) await this.deleteCondition(game.hm3.Condition.EMPOWERED);
-        if (except !== game.hm3.Condition.WEAKENED) await this.deleteCondition(game.hm3.Condition.WEAKENED);
+        if (except !== hm3.Condition.BERSERK) await this.deleteCondition(hm3.Condition.BERSERK);
+        if (except !== hm3.Condition.BROKEN) await this.deleteCondition(hm3.Condition.BROKEN);
+        if (except !== hm3.Condition.CAUTIOUS) await this.deleteCondition(hm3.Condition.CAUTIOUS);
+        if (except !== hm3.Condition.DESPERATE) await this.deleteCondition(hm3.Condition.DESPERATE);
+        if (except !== hm3.Condition.EMPOWERED) await this.deleteCondition(hm3.Condition.EMPOWERED);
+        if (except !== hm3.Condition.WEAKENED) await this.deleteCondition(hm3.Condition.WEAKENED);
     }
 
     /**
-     *
+     * @type {User}
      */
     get player() {
-        return game.users.find((u) => !u.isGM && this.actor.testUserPermission(u, 'OWNER')) || null;
+        return game.users?.find((user) => !user.isGM && this.actor?.testUserPermission(user, 'OWNER')) || null;
     }
 
     getInjuries() {
-        return this.actor.items.filter((item) => item.type === ItemType.INJURY);
+        return this.actor?.items.filter((item) => item.type === ItemType.INJURY);
     }
 
     isInjured() {
@@ -124,7 +126,7 @@ export class TokenHM3 extends Token {
     }
 
     hasInjury(id) {
-        return !!this.actor.items.find((i) => i.id === id);
+        return !!this.actor?.items.find((i) => i.id === id);
     }
 
     hasSeriousInjuries() {
@@ -176,7 +178,7 @@ export class TokenHM3 extends Token {
     getEngagedTokens(exclusively = false) {
         if (!game.combat?.started) return [];
 
-        const all = canvas.scene.tokens.contents;
+        const all = canvas?.scene?.tokens.contents;
         let opponents = [];
         if (this.document.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY)
             opponents = all.filter(
@@ -251,7 +253,7 @@ export class TokenHM3 extends Token {
             setTimeout(async () => {
                 if (!game.combat?.started) return;
                 console.info(`HM3 | Token ${this.name} started the end of the turn.`);
-                await game.combat.nextTurn(this.id);
+                await game.combat?.nextTurn(this.id);
                 console.info(`HM3 | Token ${this.name} has finished the turn.`);
                 resolve();
             }, postpone)
@@ -267,27 +269,36 @@ export class TokenHM3 extends Token {
 
     pronoun(capital = false) {
         const p = () => {
-            if (!this.actor.system.gender) return 'It';
-            return this.actor.system.gender === 'Male' ? 'His' : 'Her';
+            if (!this.actor?.system.gender) return 'It';
+            return this.actor?.system.gender === 'Male' ? 'His' : 'Her';
         };
         return capital ? p() : p().toLowerCase();
     }
 
+    /** @override */
     async toggleVisibility(options = {}) {
         let isHidden = options?.active !== undefined ? options.active : this.document.hidden;
-        const tokens = this.controlled ? canvas.tokens.controlled : [this];
-        const updates = tokens.map((t) => {
+        const tokens = this.controlled ? canvas?.tokens?.controlled : [this];
+        const updates = tokens?.map((t) => {
             return {_id: t.id, hidden: !isHidden};
         });
-        return canvas.scene.updateEmbeddedDocuments('Token', updates);
+        return canvas?.scene?.updateEmbeddedDocuments('Token', updates);
     }
 }
 
 export class TokenDocumentHM3 extends TokenDocument {
+    /**
+     * @type {TokenHM3 | null} */
+    get token() {
+        // @ts-expect-error
+        return this.object;
+    }
+
+    /** @override */
     _onCreate(data, options, userId) {
         super._onCreate(data, options, userId);
         if (this.testUserPermission(game.user, 'OWNER'))
-            this.setFlag('wall-height', 'tokenHeight', this.actor.system.height | 6);
+            this.setFlag('wall-height', 'tokenHeight', this.actor?.system.height | 6);
     }
     /**
      *
@@ -295,7 +306,7 @@ export class TokenDocumentHM3 extends TokenDocument {
      * @returns
      */
     async addCondition(condition, options = {}) {
-        return this.object.addCondition(condition, options);
+        return this.token?.addCondition(condition, options);
     }
 
     /**
@@ -304,7 +315,7 @@ export class TokenDocumentHM3 extends TokenDocument {
      * @returns
      */
     hasCondition(condition) {
-        return this.object?.hasCondition(condition) || false;
+        return this.token?.hasCondition(condition) || false;
     }
 
     /**
@@ -313,7 +324,7 @@ export class TokenDocumentHM3 extends TokenDocument {
      * @returns
      */
     getCondition(condition) {
-        return this.object.getCondition(condition);
+        return this.token?.getCondition(condition);
     }
 
     /**
@@ -323,7 +334,7 @@ export class TokenDocumentHM3 extends TokenDocument {
      * @returns
      */
     async disableCondition(condition, postpone = 0) {
-        return this.object.disableCondition(condition, postpone);
+        return this.token?.disableCondition(condition, postpone);
     }
 
     /**
@@ -333,7 +344,7 @@ export class TokenDocumentHM3 extends TokenDocument {
      * @returns
      */
     async deleteCondition(condition, postpone = 0) {
-        return this.object.deleteCondition(condition, postpone);
+        return this.token?.deleteCondition(condition, postpone);
     }
 
     /**
@@ -341,50 +352,50 @@ export class TokenDocumentHM3 extends TokenDocument {
      * @returns
      */
     async deleteAllMoraleConditions(except = null) {
-        return this.object.deleteAllMoraleConditions(except);
+        return this.token?.deleteAllMoraleConditions(except);
     }
 
     get player() {
-        return this.object?.player || false;
+        return this.token?.player || false;
     }
 
     isInjured() {
-        return this.object.isInjured();
+        return this.token?.isInjured();
     }
 
     hasInjury(id) {
-        return this.object.hasInjury(id);
+        return this.token?.hasInjury(id);
     }
 
     hasEngagementZone() {
-        return this.object.hasEngagementZone();
+        return this.token?.hasEngagementZone();
     }
 
     getEngagedTokens(exclusively = false) {
-        return this.object.getEngagedTokens(exclusively);
+        return this.token?.getEngagedTokens(exclusively);
     }
 
     isEngaged(exclusively = false) {
-        return this.object.isEngaged(exclusively);
+        return this.token?.isEngaged(exclusively);
     }
 
     hasReactionZone() {
-        return this.object.hasReactionZone();
+        return this.token?.hasReactionZone();
     }
 
     async turnEnds(postpone = 0) {
-        return this.object.turnEnds(postpone);
+        return this.token?.turnEnds(postpone);
     }
 
     get dying() {
-        return this.object.dying;
+        return this.token?.dying;
     }
 
     pronoun(capital = false) {
-        return this.object.pronoun(capital);
+        return this.token?.pronoun(capital);
     }
 
     async toggleVisibility(options = {}) {
-        return this.object.toggleVisibility(options);
+        return this.token?.toggleVisibility(options);
     }
 }

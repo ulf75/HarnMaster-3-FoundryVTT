@@ -18,7 +18,7 @@ export class ChatMessageHM3 extends ChatMessage {
 
         // this._displayChatActionButtons(html);
         // this._highlightCriticalSuccessFailure(html);
-        // if (game.settings.get('dnd5e', 'autoCollapseItemCards')) {
+        // if (game.settings?.get('dnd5e', 'autoCollapseItemCards')) {
         //     html.find('.description.collapsible').each((i, el) => el.classList.add('collapsed'));
         // }
 
@@ -81,7 +81,7 @@ export class ChatMessageHM3 extends ChatMessage {
         // Context menu
         // const metadata = html.querySelector('.message-metadata');
         // const deleteButton = metadata.querySelector('.message-delete');
-        // if (!game.user.isGM) deleteButton?.remove();
+        // if (!game.user?.isGM) deleteButton?.remove();
         // else deleteButton?.querySelector('i').classList.add('fa-fw');
         // const anchor = document.createElement('a');
         // // anchor.setAttribute('aria-label', game.i18n.localize('DND5E.AdditionalControls'));
@@ -168,7 +168,7 @@ export class ChatMessageHM3 extends ChatMessage {
             const token = scene?.tokens.get(this.speaker.token);
             if (token) return token.actor;
         }
-        return game.actors.get(this.speaker.actor);
+        return game.actors?.get(this.speaker.actor);
     }
 
     _activateActivityListeners(html) {

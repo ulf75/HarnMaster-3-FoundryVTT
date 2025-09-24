@@ -1,3 +1,5 @@
+// @ts-check
+
 import {Mutex} from './mutex';
 
 /**
@@ -21,7 +23,7 @@ export class CombatHM3 extends Combat {
                     });
                 }),
                 // Remove the Tactical Advantage flag
-                game.hm3.socket.executeAsGM('unsetTAFlag'),
+                hm3.socket.executeAsGM('unsetTAFlag'),
                 // Start the combat
                 super.startCombat()
             ])
@@ -39,7 +41,7 @@ export class CombatHM3 extends Combat {
         // aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike.
         // Further Initiative rolls are ignored until the battle ends. (COMBAT 16)
         const combatantIds = this.combatants
-            .filter((c) => !c.token?.hasCondition(game.hm3.Condition.BERSERK))
+            .filter((c) => !c.token?.hasCondition(hm3.Condition.BERSERK))
             .map((c) => c.id);
         await this.rollInitiative(combatantIds);
         return super.nextRound();
@@ -49,9 +51,9 @@ export class CombatHM3 extends Combat {
     async nextTurn(tokenId = 'true') {
         if (!game.combat?.started) return;
         return this._combatMutex.runExclusive(async () => {
-            if (game.combat?.started && (tokenId === 'true' || tokenId === game.combat.combatant?.token?.id)) {
+            if (game.combat?.started && (tokenId === 'true' || tokenId === game.combat?.combatant?.token?.id)) {
                 // Remove the Tactical Advantage flag
-                await game.hm3.socket.executeAsGM('unsetTAFlag');
+                await hm3.socket.executeAsGM('unsetTAFlag');
                 return super.nextTurn();
             }
         });

@@ -19,51 +19,51 @@ import * as utility from './utility.js';
  */
 export async function missileAttack(atkToken, defToken, missileItem) {
     if (!atkToken) {
-        ui.notifications.warn(`No attacker token identified.`);
+        ui.notifications?.warn(`No attacker token identified.`);
         return null;
     }
 
     if (!isValidToken(atkToken)) {
-        ui.notifications.error(`Attack token not valid.`);
+        ui.notifications?.error(`Attack token not valid.`);
         console.error(`HM3 | missileAttack atkToken=${atkToken} is not valid.`);
         return null;
     }
     console.assert(atkToken instanceof TokenHM3, `atkToken is NOT a TokenHM3 instance: ${atkToken}`);
 
     if (!defToken) {
-        ui.notifications.warn(`No defender token identified.`);
+        ui.notifications?.warn(`No defender token identified.`);
         return null;
     }
 
     if (!isValidToken(defToken)) {
-        ui.notifications.error(`Defender token not valid.`);
+        ui.notifications?.error(`Defender token not valid.`);
         console.error(`HM3 | missileAttack defToken=${defToken} is not valid.`);
         return null;
     }
     console.assert(defToken instanceof TokenHM3, `defToken is NOT a TokenHM3 instance: ${defToken}`);
 
     if (!atkToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
+        ui.notifications?.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
     if (atkToken.hasCondition(Condition.BROKEN)) {
-        ui.notifications.warn(`You cannot attack while you are '${Condition.BROKEN}'.`);
+        ui.notifications?.warn(`You cannot attack while you are '${Condition.BROKEN}'.`);
         return null;
     }
 
     if (atkToken.hasCondition(Condition.CAUTIOUS)) {
-        ui.notifications.warn(`You cannot attack while you are '${Condition.CAUTIOUS}'.`);
+        ui.notifications?.warn(`You cannot attack while you are '${Condition.CAUTIOUS}'.`);
         return null;
     }
 
     if (atkToken.hasCondition(Condition.SHOCKED)) {
-        ui.notifications.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
+        ui.notifications?.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
         return null;
     }
 
     if (atkToken.hasCondition(Condition.UNCONSCIOUS)) {
-        ui.notifications.warn(`You cannot attack while you are '${Condition.UNCONSCIOUS}'.`);
+        ui.notifications?.warn(`You cannot attack while you are '${Condition.UNCONSCIOUS}'.`);
         return null;
     }
 
@@ -82,11 +82,11 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         if (missileItem.system.isEquipped) {
             options['weapon'] = missileItem;
         } else {
-            ui.notifications.warn(`${missileItem.name} is not equipped.`);
+            ui.notifications?.warn(`${missileItem.name} is not equipped.`);
             return null;
         }
     } else {
-        ui.notifications.warn(`You must specify a missile weapon to use.`);
+        ui.notifications?.warn(`You must specify a missile weapon to use.`);
         return null;
     }
 
@@ -103,9 +103,9 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         missileItem = dialogResult.weapon;
     }
 
-    if (game.settings.get('hm3', 'missileTracking') && atkToken.actor) {
+    if (game.settings?.get('hm3', 'missileTracking') && atkToken.actor) {
         if (missileItem.system.quantity <= 0) {
-            ui.notifications.warn(`No more ${missileItem.name} left, attack denied.`);
+            ui.notifications?.warn(`No more ${missileItem.name} left, attack denied.`);
             return null;
         }
 
@@ -114,7 +114,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
     }
 
     dialogResult.addlModifier += dialogResult.aim === 'Mid' ? 0 : -10;
-    const effAML = game.hm3.macros.HM100Check(
+    const effAML = hm3.macros.HM100Check(
         dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod
     );
 
@@ -141,7 +141,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         aspect: dialogResult.aspect,
         atkTokenId: atkToken.id,
         attacker: atkToken.name,
-        debug: CONFIG.debug.hm3 && game.user.isGM,
+        debug: CONFIG.debug.hm3 && game.user?.isGM,
         defender: defToken.name,
         defTokenId: defToken.id,
         effAML,
@@ -176,14 +176,14 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         content: html.trim(),
         speaker,
         type: CONST.CHAT_MESSAGE_STYLES.OTHER,
-        user: game.user.id
+        user: game.user?.id
     };
 
     // Create a chat message
-    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
     await ChatMessage.create(messageData, {});
 
-    if (game.settings.get('hm3', 'combatAudio')) {
+    if (game.settings?.get('hm3', 'combatAudio')) {
         foundry.audio.AudioHelper.play({src: 'sounds/drums.wav', autoplay: true, loop: false}, true);
     }
 
@@ -192,51 +192,51 @@ export async function missileAttack(atkToken, defToken, missileItem) {
 
 export async function esotericAttack(atkToken, defToken, esotericItem) {
     if (!atkToken) {
-        ui.notifications.warn(`No attacker token identified.`);
+        ui.notifications?.warn(`No attacker token identified.`);
         return null;
     }
 
     if (!isValidToken(atkToken)) {
-        ui.notifications.error(`Attack token not valid.`);
+        ui.notifications?.error(`Attack token not valid.`);
         console.error(`HM3 | esotericAttack atkToken=${atkToken} is not valid.`);
         return null;
     }
     console.assert(atkToken instanceof TokenHM3, `atkToken is NOT a TokenHM3 instance: ${atkToken}`);
 
     if (!defToken) {
-        ui.notifications.warn(`No defender token identified.`);
+        ui.notifications?.warn(`No defender token identified.`);
         return null;
     }
 
     if (!isValidToken(defToken)) {
-        ui.notifications.error(`Defender token not valid.`);
+        ui.notifications?.error(`Defender token not valid.`);
         console.error(`HM3 | esotericAttack defToken=${defToken} is not valid.`);
         return null;
     }
     console.assert(defToken instanceof TokenHM3, `defToken is NOT a TokenHM3 instance: ${defToken}`);
 
     if (!atkToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
+        ui.notifications?.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
     if (atkToken.hasCondition(Condition.BROKEN)) {
-        ui.notifications.warn(`You cannot attack while you are '${Condition.BROKEN}'.`);
+        ui.notifications?.warn(`You cannot attack while you are '${Condition.BROKEN}'.`);
         return null;
     }
 
     if (atkToken.hasCondition(Condition.CAUTIOUS)) {
-        ui.notifications.warn(`You cannot attack while you are '${Condition.CAUTIOUS}'.`);
+        ui.notifications?.warn(`You cannot attack while you are '${Condition.CAUTIOUS}'.`);
         return null;
     }
 
     if (atkToken.hasCondition(Condition.SHOCKED)) {
-        ui.notifications.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
+        ui.notifications?.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
         return null;
     }
 
     if (atkToken.hasCondition(Condition.UNCONSCIOUS)) {
-        ui.notifications.warn(`You cannot attack while you are '${Condition.UNCONSCIOUS}'.`);
+        ui.notifications?.warn(`You cannot attack while you are '${Condition.UNCONSCIOUS}'.`);
         return null;
     }
 
@@ -254,7 +254,7 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
 
     if (options.distance > options.maxDistance) {
         const msg = `Target ${defToken.name} is outside of ${esotericItem.name} range for attacker ${atkToken.name}; range=${distance}/${options.maxDistance}.`;
-        ui.notifications.warn(msg);
+        ui.notifications?.warn(msg);
         return null;
     }
 
@@ -263,7 +263,7 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
     // If user cancelled the dialog, then return immediately
     if (!dialogResult) return null;
 
-    const effAML = game.hm3.macros.HM100Check(esotericItem.system.effectiveMasteryLevel + dialogResult.addlModifier);
+    const effAML = hm3.macros.HM100Check(esotericItem.system.effectiveMasteryLevel + dialogResult.addlModifier);
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.hbs';
@@ -274,7 +274,7 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
         addlModifierSign: dialogResult.addlModifier < 0 ? '-' : '+',
         atkTokenId: atkToken.id,
         attacker: atkToken.name,
-        debug: CONFIG.debug.hm3 && game.user.isGM,
+        debug: CONFIG.debug.hm3 && game.user?.isGM,
         defender: defToken.name,
         defTokenId: defToken.id,
         effAML,
@@ -303,16 +303,16 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
         content: html.trim(),
         speaker,
         type: CONST.CHAT_MESSAGE_STYLES.OTHER,
-        user: game.user.id
+        user: game.user?.id
     };
 
     const messageOptions = {};
 
     // Create a chat message
-    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
     await ChatMessage.create(messageData, messageOptions);
 
-    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+    if (game.settings?.get('hm3', 'autoMarkUsedSkills')) {
         const skill = esotericItem;
         atkToken.actor.items.forEach((item) => {
             if (item.name === skill && item.type === 'skill') {
@@ -339,7 +339,7 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
  */
 export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarmed = false, noDialog = false} = {}) {
     if (!atkToken) {
-        ui.notifications.warn(`No attacker token identified.`);
+        ui.notifications?.warn(`No attacker token identified.`);
         return null;
     }
 
@@ -350,7 +350,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
     console.assert(atkToken instanceof TokenHM3, `atkToken is NOT a TokenHM3 instance: ${atkToken}`);
 
     if (!defToken) {
-        ui.notifications.warn(`No defender token identified.`);
+        ui.notifications?.warn(`No defender token identified.`);
         return null;
     }
 
@@ -361,27 +361,27 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
     console.assert(defToken instanceof TokenHM3, `defToken is NOT a TokenHM3 instance: ${defToken}`);
 
     if (!atkToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
+        ui.notifications?.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
     if (atkToken.hasCondition(Condition.BROKEN)) {
-        ui.notifications.warn(`You cannot attack while you are '${Condition.BROKEN}'.`);
+        ui.notifications?.warn(`You cannot attack while you are '${Condition.BROKEN}'.`);
         return null;
     }
 
     if (atkToken.hasCondition(Condition.CAUTIOUS)) {
-        ui.notifications.warn(`You cannot attack while you are '${Condition.CAUTIOUS}'.`);
+        ui.notifications?.warn(`You cannot attack while you are '${Condition.CAUTIOUS}'.`);
         return null;
     }
 
     if (atkToken.hasCondition(Condition.SHOCKED)) {
-        ui.notifications.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
+        ui.notifications?.warn(`You cannot attack while you are '${Condition.SHOCKED}'.`);
         return null;
     }
 
     if (atkToken.hasCondition(Condition.UNCONSCIOUS)) {
-        ui.notifications.warn(`You cannot attack while you are '${Condition.UNCONSCIOUS}'.`);
+        ui.notifications?.warn(`You cannot attack while you are '${Condition.UNCONSCIOUS}'.`);
         return null;
     }
 
@@ -389,7 +389,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
     if (targetRange > 1) {
         const msg = `Target ${defToken.name} is outside of melee range for attacker ${atkToken.name}; range=${targetRange}.`;
         console.warn(msg);
-        ui.notifications.warn(msg);
+        ui.notifications?.warn(msg);
         return null;
     }
 
@@ -409,13 +409,13 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         if (weaponItem.system.isEquipped) {
             options['weapon'] = weaponItem;
         } else {
-            ui.notifications.warn(`For ${atkToken.name} ${weaponItem.name} is not equipped.`);
+            ui.notifications?.warn(`For ${atkToken.name} ${weaponItem.name} is not equipped.`);
             return null;
         }
     } else {
         const defWpns = defaultMeleeWeapon(atkToken);
         if (!defWpns.weapons || !defWpns.weapons.length) {
-            ui.notifications.warn(`${atkToken.name} does not have any equipped melee weapons.`);
+            ui.notifications?.warn(`${atkToken.name} does not have any equipped melee weapons.`);
             return null;
         }
         options['weapons'] = defWpns.weapons;
@@ -450,9 +450,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         (dialogResult.aspect === 'Blunt' || dialogResult.aspect === 'Edged');
     dialogResult.addlModifier += atkCloseMode ? -10 : 0;
 
-    const effAML = game.hm3.macros.HM100Check(
-        dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier
-    );
+    const effAML = hm3.macros.HM100Check(dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier);
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.hbs';
@@ -478,7 +476,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         atkProne: atkToken.hasCondition(Condition.PRONE),
         atkTokenId: atkToken.id,
         attacker: atkToken.name,
-        debug: CONFIG.debug.hm3 && game.user.isGM,
+        debug: CONFIG.debug.hm3 && game.user?.isGM,
         defBerserk,
         defender: defToken.name,
         defProne,
@@ -527,7 +525,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
     const html = await renderTemplate(chatTemplate, chatTemplateData);
 
     const messageData = {
-        user: game.user.id,
+        user: game.user?.id,
         speaker: speaker,
         content: html.trim(),
         type: CONST.CHAT_MESSAGE_STYLES.OTHER
@@ -536,10 +534,10 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
     const messageOptions = {};
 
     // Create a chat message
-    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
     await ChatMessage.create(messageData, messageOptions);
 
-    if (game.settings.get('hm3', 'combatAudio')) {
+    if (game.settings?.get('hm3', 'combatAudio')) {
         foundry.audio.AudioHelper.play({src: 'sounds/drums.wav', autoplay: true, loop: false}, true);
     }
 
@@ -639,7 +637,7 @@ async function attackDialog(options) {
     }
 
     if (!options.weapon) {
-        ui.notifications.warn(`${options.attackerName} has no equipped weapons available for attack.`);
+        ui.notifications?.warn(`${options.attackerName} has no equipped weapons available for attack.`);
         return null;
     }
 
@@ -673,8 +671,8 @@ async function attackDialog(options) {
         dialogOptions.aspects[weaponData.weaponAspect] = -1;
         dialogOptions.defaultAspect = weaponData.weaponAspect;
 
-        const isGridDistanceUnits = game.settings.get('hm3', 'distanceUnits') === 'grid';
-        const dist = canvas.dimensions.distance;
+        const isGridDistanceUnits = game.settings?.get('hm3', 'distanceUnits') === 'grid';
+        const dist = canvas?.dimensions?.distance ?? 5;
         const shortDesc = `Short (${
             isGridDistanceUnits ? weaponData.range.short / dist + ' hex' : weaponData.range.short + ' ft'
         }/+0)`;
@@ -794,7 +792,7 @@ async function attackDialog(options) {
 
 async function esotericAttackDialog(options) {
     if (!options.weapon) {
-        ui.notifications.warn(`${options.attackerName} has no esoteric weapons available for attack.`);
+        ui.notifications?.warn(`${options.attackerName} has no esoteric weapons available for attack.`);
         return null;
     }
 
@@ -855,19 +853,19 @@ async function esotericAttackDialog(options) {
  */
 function isValidToken(token) {
     if (!token) {
-        ui.notifications.warn('No token selected.');
+        ui.notifications?.warn('No token selected.');
         return false;
     }
 
     if (!token.actor) {
-        ui.notifications.warn(`Token ${token.name} is not a valid actor.`);
+        ui.notifications?.warn(`Token ${token.name} is not a valid actor.`);
         return false;
     }
 
     if (['character', 'creature'].includes(token.actor.type)) {
         return true;
     } else {
-        ui.notifications.warn(`Token ${token.name} is not a character or creature.`);
+        ui.notifications?.warn(`Token ${token.name} is not a character or creature.`);
         return false;
     }
 }
@@ -919,7 +917,7 @@ function defaultEsotericWeapon(token) {
     const mc = token.actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Mental Conflict'));
 
     if (!mc) {
-        ui.notifications.warn(`${token.name} has no equipped Esoteric weapons, attack refused.`);
+        ui.notifications?.warn(`${token.name} has no equipped Esoteric weapons, attack refused.`);
         return {weapons: [], defaultWeapon: null};
     }
 
@@ -961,7 +959,7 @@ export async function meleeCounterstrikeResume(
 ) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
+        ui.notifications?.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
@@ -969,7 +967,7 @@ export async function meleeCounterstrikeResume(
     const options = defaultMeleeWeapon(defToken);
 
     if (!options.weapons) {
-        ui.notifications.warn(`${defToken.name} has no equipped weapons, counterstrike defense refused.`);
+        ui.notifications?.warn(`${defToken.name} has no equipped weapons, counterstrike defense refused.`);
         return null;
     }
 
@@ -1021,7 +1019,7 @@ export async function meleeCounterstrikeResume(
         type: 'atkRoll'
     });
 
-    const csEffEML = game.hm3.macros.HM100Check(csDialogResult.weapon.system.attackMasteryLevel);
+    const csEffEML = hm3.macros.HM100Check(csDialogResult.weapon.system.attackMasteryLevel);
 
     // Roll Counterstrike Attack
     const csRoll = await DiceHM3.rollTest({
@@ -1072,7 +1070,7 @@ export async function meleeCounterstrikeResume(
     const defWeapon = csDialogResult.weapon;
 
     let weaponBroke = {attackWeaponBroke: false, defendWeaponBroke: false};
-    if (game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block) {
+    if (game.settings?.get('hm3', 'weaponDamage') && combatResult.outcome.block) {
         weaponBroke = await checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon);
 
         // If either of the weapons has broken, then mark the appropriate
@@ -1118,7 +1116,7 @@ export async function meleeCounterstrikeResume(
     // We now know the results of the attack, roll applicable damage
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.atkDice}d${atkDie}`, {
+        atkImpactRoll = await hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.atkDice}d${atkDie}`, {
             name: atkToken.name,
             type: 'atkImpactRoll'
         });
@@ -1126,7 +1124,7 @@ export async function meleeCounterstrikeResume(
 
     let csImpactRoll = null;
     if (combatResult.outcome.defDice) {
-        csImpactRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.defDice}d${csDie}`, {
+        csImpactRoll = await hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.defDice}d${csDie}`, {
             name: defToken.name,
             type: 'defImpactRoll'
         });
@@ -1152,7 +1150,7 @@ export async function meleeCounterstrikeResume(
         defRollResult: '',
         defTokenId: defToken.id,
         defWeaponBroke: weaponBroke.defendWeaponBroke,
-        effAML: game.hm3.macros.HM100Check(atkEffAML),
+        effAML: hm3.macros.HM100Check(atkEffAML),
         effDML: 0,
         hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.atkDice,
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
@@ -1192,9 +1190,9 @@ export async function meleeCounterstrikeResume(
         defRollResult: '',
         defTokenId: atkToken.id,
         dta: combatResult.outcome.dta,
-        effAML: game.hm3.macros.HM100Check(csEffEML + csDialogResult.addlModifier),
+        effAML: hm3.macros.HM100Check(csEffEML + csDialogResult.addlModifier),
         effDML: 0,
-        effEML: game.hm3.macros.HM100Check(csEffEML + csDialogResult.addlModifier),
+        effEML: hm3.macros.HM100Check(csEffEML + csDialogResult.addlModifier),
         hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.defDice,
         impactRoll: csImpactRoll ? csImpactRoll.dice[0].values.join(' + ') : null,
         isAtkFumbleRoll: combatResult.outcome.defFumble,
@@ -1223,7 +1221,7 @@ export async function meleeCounterstrikeResume(
         content: html.trim(),
         speaker: ChatMessage.getSpeaker({token: atkToken}),
         style: CONST.CHAT_MESSAGE_STYLES.OTHER,
-        user: game.user.id
+        user: game.user?.id
     };
     if (combatResult.outcome.atkDice) {
         messageData.roll = atkImpactRoll;
@@ -1231,7 +1229,7 @@ export async function meleeCounterstrikeResume(
     }
 
     // Create a chat message
-    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
     await ChatMessage.create(messageData, {});
 
     /*-----------------------------------------------------
@@ -1243,7 +1241,7 @@ export async function meleeCounterstrikeResume(
         content: html.trim(),
         speaker: ChatMessage.getSpeaker({token: defToken}),
         style: CONST.CHAT_MESSAGE_STYLES.OTHER,
-        user: game.user.id
+        user: game.user?.id
     };
     if (combatResult.outcome.defDice) {
         messageData.roll = csImpactRoll;
@@ -1251,7 +1249,7 @@ export async function meleeCounterstrikeResume(
     }
 
     // Create a chat message
-    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
     await ChatMessage.create(messageData, {});
 
     if (combatResult.outcome.atkHold) {
@@ -1287,13 +1285,13 @@ export async function meleeCounterstrikeResume(
 export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
+        ui.notifications?.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
     const speaker = ChatMessage.getSpeaker({token: atkToken});
 
-    const effDML = game.hm3.macros.HM100Check(defToken.actor.system.dodge);
+    const effDML = hm3.macros.HM100Check(defToken.actor.system.dodge);
 
     let defaultModifier = 0;
     if (defToken.actor?.system?.eph?.outnumbered > 1) {
@@ -1369,7 +1367,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.atkDice}d${atkDie}`, {
+        atkImpactRoll = await hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.atkDice}d${atkDie}`, {
             name: atkToken.name,
             type: 'atkImpact'
         });
@@ -1406,8 +1404,8 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         defTokenId: defToken.id,
         dta: combatResult.outcome.dta,
         effAML,
-        effDML: game.hm3.macros.HM100Check(effDML + defaultModifier),
-        effEML: game.hm3.macros.HM100Check(effDML + defaultModifier),
+        effDML: hm3.macros.HM100Check(effDML + defaultModifier),
+        effEML: hm3.macros.HM100Check(effDML + defaultModifier),
         hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.atkDice,
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
         isAtkFumbleRoll: combatResult.outcome.atkFumble,
@@ -1434,7 +1432,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     const html = await renderTemplate(chatTemplate, chatData);
 
     let messageData = {
-        user: game.user.id,
+        user: game.user?.id,
         speaker: speaker,
         content: html.trim()
     };
@@ -1449,10 +1447,10 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     const messageOptions = {};
 
     // Create a chat message
-    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
     await ChatMessage.create(messageData, messageOptions);
 
-    if (!combatResult.outcome.atkDice && game.settings.get('hm3', 'combatAudio')) {
+    if (!combatResult.outcome.atkDice && game.settings?.get('hm3', 'combatAudio')) {
         foundry.audio.AudioHelper.play({src: 'systems/hm3/audio/swoosh1.ogg', autoplay: true, loop: false}, true);
     }
 
@@ -1477,7 +1475,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 export async function esotericResume(atkToken, defToken, atkWeaponName, atkEffAML) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
+        ui.notifications?.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
@@ -1492,7 +1490,7 @@ export async function esotericResume(atkToken, defToken, atkWeaponName, atkEffAM
     });
 
     const esotericWpns = defaultEsotericWeapon(defToken);
-    const effDML = game.hm3.macros.HM100Check(esotericWpns.defaultWeapon.system.effectiveMasteryLevel);
+    const effDML = hm3.macros.HM100Check(esotericWpns.defaultWeapon.system.effectiveMasteryLevel);
 
     let defaultModifier = 0;
     // Living Entity (versus artifact): +10
@@ -1563,8 +1561,8 @@ export async function esotericResume(atkToken, defToken, atkWeaponName, atkEffAM
         defRollResult: defRoll.description.replace('Substantial', 'Marginal'),
         defTokenId: defToken.id,
         effAML: atkEffAML,
-        effDML: game.hm3.macros.HM100Check(effDML + defaultModifier),
-        effEML: game.hm3.macros.HM100Check(effDML + defaultModifier),
+        effDML: hm3.macros.HM100Check(effDML + defaultModifier),
+        effEML: hm3.macros.HM100Check(effDML + defaultModifier),
         hasAttackHit: false,
         impactRoll: 0,
         isAtkWillShockRoll: !!combatResult.outcome.atkFatigue && !atkToken.hasCondition(Condition.INANIMATE),
@@ -1585,14 +1583,14 @@ export async function esotericResume(atkToken, defToken, atkWeaponName, atkEffAM
         content: html.trim(),
         speaker: speaker,
         style: CONST.CHAT_MESSAGE_STYLES.OTHER,
-        user: game.user.id
+        user: game.user?.id
     };
 
     // Create a chat message
-    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
     await ChatMessage.create(messageData, {});
 
-    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+    if (game.settings?.get('hm3', 'autoMarkUsedSkills')) {
         esotericWpns.defaultWeapon.update({
             'system.improveFlag': (esotericWpns.defaultWeapon.system.improveFlag || 0) + (defRoll.isSuccess ? 1 : 2)
         });
@@ -1627,7 +1625,7 @@ export async function blockResume(
 ) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
+        ui.notifications?.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
@@ -1652,7 +1650,7 @@ export async function blockResume(
 
         if (highVelocityMissile) {
             if (!shields.length) {
-                ui.notifications.warn(
+                ui.notifications?.warn(
                     `${weaponName} is a high-velocity missile that can only be blocked with a shield, and you don't have a shield equipped. Block defense refused.`
                 );
                 return null;
@@ -1674,7 +1672,7 @@ export async function blockResume(
     let defaultWeapon = defAvailWeapons[0];
 
     if (weapons.length === 0) {
-        return ui.notifications.warn(
+        return ui.notifications?.warn(
             `${defToken.name} has no weapons that can be used for blocking, block defense refused.`
         );
     }
@@ -1706,7 +1704,7 @@ export async function blockResume(
     let effDML;
     const defWeapon = defToken.actor.itemTypes.weapongear.find((w) => w.name === dialogResult.weapon);
     if (defWeapon) {
-        effDML = game.hm3.macros.HM100Check(defWeapon.system.defenseMasteryLevel);
+        effDML = hm3.macros.HM100Check(defWeapon.system.defenseMasteryLevel);
     } else {
         effDML = 5;
     }
@@ -1715,7 +1713,7 @@ export async function blockResume(
     // a shield, then it will defend at 1/2 DML.
     if (type === 'missile') {
         if (!shields.some((s) => s.name === dialogResult.weapon.name)) {
-            effDML = game.hm3.macros.HM100Check(effDML / 2);
+            effDML = hm3.macros.HM100Check(effDML / 2);
         }
     }
 
@@ -1772,7 +1770,7 @@ export async function blockResume(
 
     // If there was a block, check whether a weapon broke
     let weaponBroke = {attackWeaponBroke: false, defendWeaponBroke: false};
-    if (game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block) {
+    if (game.settings?.get('hm3', 'weaponDamage') && combatResult.outcome.block) {
         weaponBroke = await checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon);
 
         // If either of the weapons has broken, then mark the appropriate
@@ -1817,7 +1815,7 @@ export async function blockResume(
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.atkDice}d${atkDie}`, {
+        atkImpactRoll = await hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.atkDice}d${atkDie}`, {
             name: atkToken.name,
             type: 'atkImpact'
         });
@@ -1858,8 +1856,8 @@ export async function blockResume(
         defWeaponBroke: weaponBroke.defendWeaponBroke,
         dta: combatResult.outcome.dta,
         effAML,
-        effDML: game.hm3.macros.HM100Check(effDML + dialogResult.addlModifier),
-        effEML: game.hm3.macros.HM100Check(effDML + dialogResult.addlModifier),
+        effDML: hm3.macros.HM100Check(effDML + dialogResult.addlModifier),
+        effEML: hm3.macros.HM100Check(effDML + dialogResult.addlModifier),
         hasAttackHit: isGrappleAtk ? false : !!combatResult.outcome.atkDice,
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(' + ') : null,
         isAtkFumbleRoll: combatResult.outcome.atkFumble,
@@ -1884,7 +1882,7 @@ export async function blockResume(
     const html = await renderTemplate(chatTemplate, chatData);
 
     let messageData = {
-        user: game.user.id,
+        user: game.user?.id,
         speaker: speaker,
         content: html.trim()
     };
@@ -1899,10 +1897,10 @@ export async function blockResume(
     const messageOptions = {};
 
     // Create a chat message
-    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
     await ChatMessage.create(messageData, messageOptions);
 
-    if (!combatResult.outcome.atkDice && game.settings.get('hm3', 'combatAudio')) {
+    if (!combatResult.outcome.atkDice && game.settings?.get('hm3', 'combatAudio')) {
         foundry.audio.AudioHelper.play({src: 'systems/hm3/audio/shield-bash.ogg', autoplay: true, loop: false}, true);
     }
 
@@ -1967,28 +1965,28 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     const defWeaponQuality = defWeapon.system.weaponQuality + (defWeapon.system.wqModifier || 0);
 
     // Separate break rolls for each weapon and Swordbreaker rolls if applicable
-    let atkBreakRoll = game.hm3.macros.rollObject(`3d6`, {
+    let atkBreakRoll = hm3.macros.rollObject(`3d6`, {
         check: 'd6',
         name: atkToken.name,
         target: atkWeaponQuality,
         type: 'atkBreakRoll'
     });
 
-    let defBreakRoll = game.hm3.macros.rollObject(`3d6`, {
+    let defBreakRoll = hm3.macros.rollObject(`3d6`, {
         check: 'd6',
         name: defToken.name,
         target: defWeaponQuality,
         type: 'defBreakRoll'
     });
 
-    let atkSwordbreakerRoll = game.hm3.macros.rollObject(`0`, {
+    let atkSwordbreakerRoll = hm3.macros.rollObject(`0`, {
         check: 'd6',
         name: atkToken.name,
         target: atkWeaponQuality,
         type: 'atkSwordbreakerRoll'
     });
 
-    let defSwordbreakerRoll = game.hm3.macros.rollObject(`0`, {
+    let defSwordbreakerRoll = hm3.macros.rollObject(`0`, {
         check: 'd6',
         name: defToken.name,
         target: defWeaponQuality,
@@ -1996,14 +1994,14 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     });
 
     if (atkSwordbreaker?.isOwnerAware) {
-        defBreakRoll = game.hm3.macros.rollObject(`3d6+1d${atkSwordbreaker.lvl}`, {
+        defBreakRoll = hm3.macros.rollObject(`3d6+1d${atkSwordbreaker.lvl}`, {
             check: 'd6',
             name: defToken.name,
             target: defWeaponQuality,
             type: 'defBreakRoll'
         });
     } else if (atkSwordbreaker) {
-        defSwordbreakerRoll = game.hm3.macros.rollObject(`1d${atkSwordbreaker.lvl}`, {
+        defSwordbreakerRoll = hm3.macros.rollObject(`1d${atkSwordbreaker.lvl}`, {
             check: 'd6',
             name: defToken.name,
             target: defWeaponQuality,
@@ -2011,14 +2009,14 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
         });
     }
     if (defSwordbreaker?.isOwnerAware) {
-        atkBreakRoll = game.hm3.macros.rollObject(`3d6+1d${defSwordbreaker.lvl}`, {
+        atkBreakRoll = hm3.macros.rollObject(`3d6+1d${defSwordbreaker.lvl}`, {
             check: 'd6',
             name: atkToken.name,
             target: atkWeaponQuality,
             type: 'atkBreakRoll'
         });
     } else if (defSwordbreaker) {
-        atkSwordbreakerRoll = game.hm3.macros.rollObject(`1d${defSwordbreaker.lvl}`, {
+        atkSwordbreakerRoll = hm3.macros.rollObject(`1d${defSwordbreaker.lvl}`, {
             check: 'd6',
             name: atkToken.name,
             target: atkWeaponQuality,
@@ -2112,7 +2110,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     const messageData = {
         sound: CONFIG.sounds.dice,
         style: CONST.CHAT_MESSAGE_STYLES.OTHER,
-        user: game.user.id
+        user: game.user?.id
     };
 
     const chatTemplate = 'systems/hm3/templates/chat/weapon-break-card.hbs';
@@ -2120,7 +2118,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     // Prepare and generate Attack Weapon Break chat message
     const chatData = {
         actorId: atkWeapon.parent,
-        debug: CONFIG.debug.hm3 && game.user.isGM,
+        debug: CONFIG.debug.hm3 && game.user?.isGM,
         rollFormula: atkBreakRoll.formula,
         rollResult: atkBreakRoll.result,
         rollValue: atkBreakTotal,
@@ -2139,7 +2137,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
 
     const messageOptions = {};
 
-    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
     if (!atkBreakCheckNotNeeded) await ChatMessage.create(messageData, messageOptions);
 
     // Prepare and generate Defend Weapon Break chat message
@@ -2159,7 +2157,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
     messageData.speaker = ChatMessage.getSpeaker({token: defToken});
     messageData.roll = defBreakRoll;
 
-    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
     if (!defBreakCheckNotNeeded) await ChatMessage.create(messageData, messageOptions);
 
     return {attackWeaponBroke: atkWeaponBroke, atkWeaponDiff, defendWeaponBroke: defWeaponBroke, defWeaponDiff};
@@ -2180,7 +2178,7 @@ export async function checkWeaponBreak(atkToken, atkWeapon, defToken, defWeapon)
 export async function ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod, isGrappleAtk) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
+        ui.notifications?.warn(`You do not have permissions to perform this operation on ${atkToken.name}`);
         return null;
     }
 
@@ -2222,7 +2220,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await game.hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.atkDice}d${atkDie}`, {
+        atkImpactRoll = await hm3.macros.rollObjectEvaluatedAsync(`${combatResult.outcome.atkDice}d${atkDie}`, {
             name: atkToken.name,
             type: 'atkImpact'
         });
@@ -2280,7 +2278,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
     const html = await renderTemplate(chatTemplate, chatData);
 
     let messageData = {
-        user: game.user.id,
+        user: game.user?.id,
         speaker: speaker,
         content: html.trim()
     };
@@ -2295,7 +2293,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
     const messageOptions = {};
 
     // Create a chat message
-    ChatMessage.applyRollMode(messageData, game.settings.get('core', 'rollMode'));
+    ChatMessage.applyRollMode(messageData, game.settings?.get('core', 'rollMode'));
     await ChatMessage.create(messageData, messageOptions);
 
     if (combatResult.outcome.atkHold) {
@@ -2574,7 +2572,7 @@ function calcWeaponAspect(weapon) {
  */
 export async function getItem(itemName, type, actor) {
     if (!itemName) {
-        ui.notifications.warn('No item name was specified. You must specify an item name.');
+        ui.notifications?.warn('No item name was specified. You must specify an item name.');
         return null;
     }
 
@@ -2582,25 +2580,25 @@ export async function getItem(itemName, type, actor) {
 
     if (!item) {
         if (!actor || typeof actor !== 'object') {
-            ui.notifications.warn('No actor was selected. You must select an actor.');
+            ui.notifications?.warn('No actor was selected. You must select an actor.');
             return null;
         }
 
         const lcItemName = itemName.toLowerCase();
         const items = actor ? actor.items.filter((i) => i.type === type && i.name.toLowerCase() === lcItemName) : [];
         if (items.length > 1) {
-            ui.notifications.warn(
+            ui.notifications?.warn(
                 `Your controlled Actor ${actor.name} has more than one ${type} with name ${itemName}. The first matched ${type} will be chosen.`
             );
         } else if (items.length === 0) {
-            ui.notifications.warn(`Your controlled Actor does not have a ${type} named ${itemName}`);
+            ui.notifications?.warn(`Your controlled Actor does not have a ${type} named ${itemName}`);
             return null;
         }
         item = items[0];
     }
 
     if (!item) {
-        ui.notifications.warn(`The item ${itemName} was not found`);
+        ui.notifications?.warn(`The item ${itemName} was not found`);
         return null;
     }
 
@@ -2615,11 +2613,11 @@ export async function getItem(itemName, type, actor) {
  * @param {Boolean} gridUnits If true, return in grid units, not "scene" units
  */
 export function rangeToTarget(sourceToken, targetToken, gridUnits = false) {
-    if (!sourceToken || !targetToken || !canvas.scene || !canvas.scene.grid) return 9999;
+    if (!sourceToken || !targetToken || !canvas?.scene || !canvas?.scene?.grid) return 9999;
 
-    const distance = game.hm3.macros.distanceBtwnTwoTokens(sourceToken.id, targetToken.id); // [ft]
+    const distance = hm3.macros.distanceBtwnTwoTokens(sourceToken.id, targetToken.id); // [ft]
     // console.info(`Distance = ${utility.truncate(distance, 0)}, gridUnits=${gridUnits}`);
-    if (gridUnits) return utility.truncate(distance / canvas.dimensions.distance, 0);
+    if (gridUnits) return utility.truncate(distance / (canvas?.dimensions?.distance ?? 5), 0);
     return utility.truncate(distance, 0);
 }
 
@@ -2630,12 +2628,12 @@ export const displayChatActionButtons = function (message, html, data) {
     const chatCard = html.find('.hm3.chat-card');
     if (chatCard.length > 0) {
         // If the user is the GM, proceed
-        if (game.user.isGM) return;
+        if (game.user?.isGM) return;
 
         // Otherwise conceal action buttons
         const buttons = chatCard.find('button[data-action]');
         buttons.each((i, btn) => {
-            const actor = btn.dataset.visibleActorId ? game.actors.get(btn.dataset.visibleActorId) : null;
+            const actor = btn.dataset.visibleActorId ? game.actors?.get(btn.dataset.visibleActorId) : null;
             if (!actor || !actor.isOwner) {
                 btn.style.display = 'none';
             }
@@ -2648,7 +2646,7 @@ export const displayChatActionButtons = function (message, html, data) {
  * @returns True, if no TA has been received so far in this turn.
  */
 async function isFirstTA() {
-    return game.hm3.socket.executeAsGM('isFirstTA');
+    return hm3.socket.executeAsGM('isFirstTA');
 }
 
 /**
@@ -2658,14 +2656,14 @@ async function isFirstTA() {
  */
 export async function setTA(autoend = false) {
     if ((await isFirstTA()) && !autoend) {
-        await game.hm3.socket.executeAsGM('setTAFlag');
+        await hm3.socket.executeAsGM('setTAFlag');
         return true;
     } else {
-        await game.hm3.GmSays({
+        await hm3.GmSays({
             text: 'No more than one <b>Tactical Advantage</b> may be earned per character turn. <b>Turn ends.</b>',
             source: 'Combat 12'
         });
-        await game.combat.combatant.token.turnEnds();
+        await game.combat?.combatant.token.turnEnds();
         return false;
     }
 }
@@ -2688,7 +2686,7 @@ export function outnumberedConditions() {
 }
 
 export async function updateOutnumbered() {
-    const all = canvas.scene.tokens.contents;
+    const all = canvas?.scene?.tokens.contents;
     const friendly = all.filter((t) => t.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY);
     const hostile = all.filter((t) => t.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE);
 

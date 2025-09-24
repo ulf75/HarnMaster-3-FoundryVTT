@@ -502,7 +502,7 @@ export class DiceHM3 {
             items: rollData.items,
             label: rollData.label,
             modifier: rollData.modifier || 0,
-            name: game.actors.get(rollData.actor)?.name ?? 'Unknown',
+            name: game.actors?.get(rollData.actor)?.name ?? 'Unknown',
             numdice: Number(rollData.numdice),
             target: Number(rollData.target),
             type: rollData.type
@@ -538,7 +538,7 @@ export class DiceHM3 {
         const isTAPossible =
             !rollData.noTA &&
             ['fumble', 'kill', 'shock', 'stumble'].includes(rollData.type) &&
-            (await game.hm3.macros.isTAPossible(canvas.tokens.get(rollData.token)));
+            (await hm3.macros.isTAPossible(canvas?.tokens?.get(rollData.token)));
         const addlInfo = !roll.isSuccess && isTAPossible ? '<p>Opponent gains a Tactical Advantage.</p>' : '';
 
         const chatTemplateData = {
@@ -624,7 +624,7 @@ export class DiceHM3 {
     static async sdrRoll(item, showChatMsg = true) {
         const speaker = ChatMessage.getSpeaker({actor: item.actor});
 
-        let roll = await game.hm3.macros.rollObjectEvaluatedAsync(`1d100 + ${item.system.skillBase.value}`, {
+        let roll = await hm3.macros.rollObjectEvaluatedAsync(`1d100 + ${item.system.skillBase.value}`, {
             name: item.actor.name,
             type: 'sdrRoll'
         });
@@ -873,7 +873,7 @@ export class DiceHM3 {
                 const formAim = form?.aim.value;
                 const formAspect = form?.aspect.value;
                 const formDice = form?.dice.value;
-                const formImpact = await game.hm3.macros.rollResultAsync(formDice + '+' + form?.impact.value, {
+                const formImpact = await hm3.macros.rollResultAsync(formDice + '+' + form?.impact.value, {
                     name: dialogOptions.actor.name,
                     type: 'injuryRoll'
                 });
@@ -1318,7 +1318,7 @@ export class DiceHM3 {
         // Ensure target num is between 9 and 95; always a 5% chance of success/failure
         const targetNum = diceType === 'd100' ? utility.HM100Check(baseTargetNum) : baseTargetNum;
 
-        const roll = await game.hm3.macros.rollObjectEvaluatedAsync(diceSpec, {
+        const roll = await hm3.macros.rollObjectEvaluatedAsync(diceSpec, {
             name: testData.name,
             target: targetNum,
             targetCritical: testData.isTreatment && testData.noTreatment ? false : null, // No Treatment should auto fail with MF
