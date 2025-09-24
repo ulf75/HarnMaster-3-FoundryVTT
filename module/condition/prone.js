@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 // const PRONE_ICON = 'systems/hm3/images/icons/svg/falling.svg';
 const CONDITION_ICON = 'icons/svg/falling.svg';
 
@@ -14,9 +19,9 @@ const CONDITION_ICON = 'icons/svg/falling.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return false;
 
-    if (token.hasCondition(game.hm3.Condition.NO_STUMBLE)) return false;
+    if (token.hasCondition(Condition.NO_STUMBLE)) return false;
 
-    const CONDITION = game.hm3.Condition.PRONE;
+    const CONDITION = Condition.PRONE;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
@@ -103,7 +108,7 @@ console.info('HM3 | Condition: ${CONDITION} deleted for token: ${token.name}');
         effectData: {
             icon: CONDITION_ICON,
             label: CONDITION,
-            seconds: game.hm3.CONST.TIME.INDEFINITE,
+            seconds: hm3.CONST.TIME.INDEFINITE,
             token,
             type: 'GameTime',
             flags: {
@@ -118,9 +123,9 @@ console.info('HM3 | Condition: ${CONDITION} deleted for token: ${token.name}');
         changes: [],
         options: {
             overlay: !(
-                token.hasCondition(game.hm3.Condition.DYING) ||
-                token.hasCondition(game.hm3.Condition.UNCONSCIOUS) ||
-                token.hasCondition(game.hm3.Condition.SHOCKED)
+                token.hasCondition(Condition.DYING) ||
+                token.hasCondition(Condition.UNCONSCIOUS) ||
+                token.hasCondition(Condition.SHOCKED)
             ),
             unique: true
         }

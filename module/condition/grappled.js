@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 // const GRAPPLED_ICON = 'systems/hm3/images/icons/svg/manacles.svg';
 const GRAPPLED_ICON = 'icons/svg/net.svg';
 
@@ -16,11 +21,11 @@ export async function createCondition(token, options = {}) {
 
     return {
         effectData: {
-            label: game.hm3.Condition.GRAPPLED,
+            label: Condition.GRAPPLED,
             token,
             icon: GRAPPLED_ICON,
             type: 'GameTime',
-            seconds: game.hm3.CONST.TIME.INDEFINITE
+            seconds: hm3.CONST.TIME.INDEFINITE
         },
         changes: [],
         options: {unique: true}

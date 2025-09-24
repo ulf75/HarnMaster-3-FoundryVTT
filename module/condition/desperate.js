@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 // Character tries to conclude the battle, one way or the other, as soon as possible. Until
 // the situation changes and a new Initiative Test is passed, the character selects the most
 // aggressive option available. (COMBAT 16)
@@ -17,9 +22,9 @@ export async function createCondition(token, options = {}) {
     if (!token) return false;
 
     // Inanimate creatures are immune to morale conditions
-    if (token.hasCondition(game.hm3.Condition.INANIMATE)) return false;
+    if (token.hasCondition(Condition.INANIMATE)) return false;
 
-    const CONDITION = game.hm3.Condition.DESPERATE;
+    const CONDITION = Condition.DESPERATE;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
@@ -43,7 +48,7 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is still <
         effectData: {
             icon: CONDITION_ICON,
             label: CONDITION,
-            seconds: game.hm3.CONST.TIME.INDEFINITE,
+            seconds: hm3.CONST.TIME.INDEFINITE,
             token,
             type: 'GameTime',
             flags: {

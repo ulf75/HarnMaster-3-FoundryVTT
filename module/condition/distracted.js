@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction-white.svg';
 
 /**
@@ -13,7 +18,7 @@ const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction-white.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
-    const CONDITION = game.hm3.Condition.DISTRACTED;
+    const CONDITION = Condition.DISTRACTED;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
@@ -39,7 +44,7 @@ if (!unconscious) {
 `;
 
     const type = options.oneRound || options.oneTurn ? 'Combat' : 'GameTime';
-    const seconds = type === 'GameTime' ? game.hm3.CONST.TIME.INDEFINITE : undefined;
+    const seconds = type === 'GameTime' ? hm3.CONST.TIME.INDEFINITE : undefined;
     const rounds = type === 'Combat' && options.oneRound ? 1 : undefined;
     const turns = type === 'Combat' && options.oneTurn ? 1 : undefined;
 

@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 // A cautious character will not Engage, must choose Pass if engaged, and cannot select the
 // Counterstrike defense. (COMBAT 16)
 const CONDITION_ICON = 'systems/hm3/images/icons/svg/distraction-white.svg';
@@ -16,9 +21,9 @@ export async function createCondition(token, options = {}) {
     if (!token) return false;
 
     // Inanimate creatures are immune to morale conditions
-    if (token.hasCondition(game.hm3.Condition.INANIMATE)) return false;
+    if (token.hasCondition(Condition.INANIMATE)) return false;
 
-    const CONDITION = game.hm3.Condition.CAUTIOUS;
+    const CONDITION = Condition.CAUTIOUS;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
@@ -81,7 +86,7 @@ if (!unconscious) {
 `;
 
     const type = options.oneRound || options.oneTurn ? 'Combat' : 'GameTime';
-    const seconds = type === 'GameTime' ? game.hm3.CONST.TIME.INDEFINITE : undefined;
+    const seconds = type === 'GameTime' ? hm3.CONST.TIME.INDEFINITE : undefined;
     const rounds = type === 'Combat' && options.oneRound ? 1 : undefined;
     const turns = type === 'Combat' && options.oneTurn ? 1 : undefined;
 

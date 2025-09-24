@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 const CONDITION_ICON = 'icons/svg/lightning.svg';
 
 /**
@@ -14,9 +19,9 @@ export async function createCondition(token, options = {}) {
     if (!token) return false;
 
     // Inanimate creatures cannot be shocked
-    if (token.hasCondition(game.hm3.Condition.INANIMATE)) return false;
+    if (token.hasCondition(Condition.INANIMATE)) return false;
 
-    const CONDITION = game.hm3.Condition.SHOCKED;
+    const CONDITION = Condition.SHOCKED;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
@@ -90,7 +95,7 @@ console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
         effectData: {
             icon: CONDITION_ICON,
             label: CONDITION,
-            seconds: game.hm3.CONST.TIME.INDEFINITE,
+            seconds: hm3.CONST.TIME.INDEFINITE,
             token,
             type: 'GameTime',
             flags: {
@@ -104,9 +109,7 @@ console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
         },
         changes: [],
         options: {
-            overlay: !(
-                token.hasCondition(game.hm3.Condition.DYING) || token.hasCondition(game.hm3.Condition.UNCONSCIOUS)
-            ),
+            overlay: !(token.hasCondition(Condition.DYING) || token.hasCondition(Condition.UNCONSCIOUS)),
             unique: true
         }
     };

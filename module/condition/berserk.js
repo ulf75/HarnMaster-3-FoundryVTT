@@ -1,4 +1,7 @@
+// @ts-check
+
 import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
 
 // This is a special state of battle frenzy. Any character who enters this mode must take the most
 // aggressive action available for Attack or Defense, adding 20 to EML to Attack or Counterstrike.
@@ -19,9 +22,9 @@ export async function createCondition(token, options = {}) {
     if (!token) return false;
 
     // Inanimate creatures are immune to morale conditions
-    if (token.hasCondition(game.hm3.Condition.INANIMATE)) return false;
+    if (token.hasCondition(Condition.INANIMATE)) return false;
 
-    const CONDITION = game.hm3.Condition.BERSERK;
+    const CONDITION = Condition.BERSERK;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
@@ -46,7 +49,7 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is in <b>B
         effectData: {
             icon: CONDITION_ICON,
             label: CONDITION,
-            seconds: game.hm3.CONST.TIME.INDEFINITE,
+            seconds: hm3.CONST.TIME.INDEFINITE,
             token,
             type: 'GameTime',
             flags: {

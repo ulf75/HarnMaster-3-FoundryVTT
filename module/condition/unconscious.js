@@ -1,4 +1,7 @@
-// const UNCONSCIOUS_ICON = 'systems/hm3/images/icons/svg/shock.svg';
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
 
 /**
  *
@@ -14,9 +17,9 @@ export async function createCondition(token, options = {}) {
     if (!token) return false;
 
     // Inanimate creatures cannot get unconscious
-    if (token.hasCondition(game.hm3.Condition.INANIMATE)) return false;
+    if (token.hasCondition(Condition.INANIMATE)) return false;
 
-    const CONDITION = game.hm3.Condition.UNCONSCIOUS;
+    const CONDITION = Condition.UNCONSCIOUS;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
@@ -111,9 +114,9 @@ console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
         effectData: {
             label: CONDITION,
             token,
-            icon: CONFIG.statusEffects.find((e) => e.id === 'unconscious').img, // UNCONSCIOUS_ICON
+            icon: CONFIG.statusEffects.find((e) => e.id === 'unconscious')?.img, // UNCONSCIOUS_ICON
             type: 'GameTime',
-            seconds: await game.hm3.macros.rollResultAsync(`2d6 * ${game.hm3.CONST.TIME.MINUTE}`), // 2d6 minutes
+            seconds: await hm3.macros.rollResultAsync(`2d6 * ${hm3.CONST.TIME.MINUTE}`), // 2d6 minutes
             flags: {
                 effectmacro: {
                     onCreate: {script: ON_CREATE_MACRO},
@@ -125,6 +128,6 @@ console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
             }
         },
         changes: [],
-        options: {overlay: !token.hasCondition(game.hm3.Condition.DYING), unique: true}
+        options: {overlay: !token.hasCondition(Condition.DYING), unique: true}
     };
 }

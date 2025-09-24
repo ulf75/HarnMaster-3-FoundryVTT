@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 const CONDITION_ICON = 'icons/svg/skull.svg';
 
 /**
@@ -13,7 +18,7 @@ const CONDITION_ICON = 'icons/svg/skull.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
-    const CONDITION = game.hm3.Condition.DYING;
+    const CONDITION = Condition.DYING;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
@@ -66,7 +71,7 @@ console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
             label: CONDITION,
             token,
             type: 'GameTime',
-            seconds: game.hm3.CONST.TIME.INDEFINITE,
+            seconds: hm3.CONST.TIME.INDEFINITE,
             flags: {
                 effectmacro: {
                     onCreate: {script: ON_CREATE_MACRO},

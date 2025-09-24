@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 // The character is unable to fight in any useful way. The only available options are flight or
 // surrender. Flight is normally preferable; surrender is a last resort. If neither is feasible,
 // the character makes a Rest or Pass action option, but can defend if attacked except that
@@ -18,9 +23,9 @@ export async function createCondition(token, options = {}) {
     if (!token) return false;
 
     // Inanimate creatures are immune to morale conditions
-    if (token.hasCondition(game.hm3.Condition.INANIMATE)) return false;
+    if (token.hasCondition(Condition.INANIMATE)) return false;
 
-    const CONDITION = game.hm3.Condition.BROKEN;
+    const CONDITION = Condition.BROKEN;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
@@ -44,7 +49,7 @@ if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is still <
         effectData: {
             icon: CONDITION_ICON,
             label: CONDITION,
-            seconds: game.hm3.CONST.TIME.INDEFINITE,
+            seconds: hm3.CONST.TIME.INDEFINITE,
             token,
             type: 'GameTime',
             flags: {

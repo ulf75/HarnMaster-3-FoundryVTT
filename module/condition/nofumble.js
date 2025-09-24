@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 const CONDITION_ICON = 'systems/hm3/images/icons/svg/no-fumble.svg';
 
 /**
@@ -13,7 +18,7 @@ const CONDITION_ICON = 'systems/hm3/images/icons/svg/no-fumble.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
-    const CONDITION = game.hm3.Condition.NO_FUMBLE;
+    const CONDITION = Condition.NO_FUMBLE;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
@@ -22,7 +27,7 @@ export async function createCondition(token, options = {}) {
         effectData: {
             icon: CONDITION_ICON,
             label: CONDITION,
-            seconds: game.hm3.CONST.TIME.INDEFINITE,
+            seconds: hm3.CONST.TIME.INDEFINITE,
             token,
             type: 'GameTime',
             flags: {

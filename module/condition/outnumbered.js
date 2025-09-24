@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 // A character is outnumbered if exclusively engaged by two or more opponents. When counting
 // opponents for this purpose, prone enemies are excluded, as are enemies who are themselves
 // engaged by other friendly characters. (COMBAT 11)
@@ -16,9 +21,9 @@ const CONDITION_ICON = 'systems/hm3/images/icons/svg/backup-white.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
     if ((options?.outnumbered || 1) < 2) return;
-    if (token.hasCondition(game.hm3.Condition.NO_OUTNUMBERED)) return false;
+    if (token.hasCondition(Condition.NO_OUTNUMBERED)) return false;
 
-    const CONDITION = game.hm3.Condition.OUTNUMBERED;
+    const CONDITION = Condition.OUTNUMBERED;
     const label = `${CONDITION} ${options.outnumbered}:1`;
     console.info(`HM3 | Creating condition: ${label} for token: ${token.name}`, options);
 
@@ -47,7 +52,7 @@ if (!unconscious)
         effectData: {
             icon: CONDITION_ICON,
             label,
-            seconds: game.hm3.CONST.TIME.INDEFINITE,
+            seconds: hm3.CONST.TIME.INDEFINITE,
             token,
             type: 'GameTime',
             flags: {

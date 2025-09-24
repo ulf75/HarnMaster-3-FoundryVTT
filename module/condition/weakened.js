@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 // Character selects and executes any Action Option, with a -10 bonus to EML. If the character’s
 // current morale state is non-normal, it returns to normal. (COMBAT 16)
 const CONDITION_ICON = 'icons/svg/downgrade.svg';
@@ -16,9 +21,9 @@ export async function createCondition(token, options = {}) {
     if (!token) return false;
 
     // Inanimate creatures are immune to morale conditions
-    if (token.hasCondition(game.hm3.Condition.INANIMATE)) return false;
+    if (token.hasCondition(Condition.INANIMATE)) return false;
 
-    const CONDITION = game.hm3.Condition.WEAKENED;
+    const CONDITION = Condition.WEAKENED;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
@@ -35,7 +40,7 @@ console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
     const ON_TURN_START_MACRO = ``;
 
     const type = options.oneRound || options.oneTurn ? 'Combat' : 'GameTime';
-    const seconds = type === 'GameTime' ? game.hm3.CONST.TIME.INDEFINITE : undefined;
+    const seconds = type === 'GameTime' ? hm3.CONST.TIME.INDEFINITE : undefined;
     const rounds = type === 'Combat' && options.oneRound ? 1 : undefined;
     const turns = type === 'Combat' && options.oneTurn ? 1 : undefined;
 

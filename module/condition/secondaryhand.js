@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 const CONDITION_ICON = 'systems/hm3/images/icons/svg/arm-sling.svg';
 
 /**
@@ -13,7 +18,7 @@ const CONDITION_ICON = 'systems/hm3/images/icons/svg/arm-sling.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
-    const CONDITION = game.hm3.Condition.SECONDARY_HAND;
+    const CONDITION = Condition.SECONDARY_HAND;
     console.info(`HM3 | Creating condition: ${CONDITION} for token: ${token.name}`, options);
 
     const uuid = foundry.utils.randomID();
@@ -37,7 +42,7 @@ if (!unconscious)
             token,
             icon: CONDITION_ICON,
             type: 'GameTime',
-            seconds: game.hm3.CONST.TIME.INDEFINITE,
+            seconds: hm3.CONST.TIME.INDEFINITE,
             flags: {
                 effectmacro: {onTurnStart: {script: ON_TURN_START_MACRO}},
                 hm3: {uuid}

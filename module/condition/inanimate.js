@@ -1,3 +1,8 @@
+// @ts-check
+
+import {TokenHM3} from '../hm3-token';
+import {Condition} from '../hm3-types';
+
 const CONDITION_ICON = 'systems/hm3/images/icons/svg/skeleton-white.svg';
 
 /**
@@ -13,13 +18,13 @@ const CONDITION_ICON = 'systems/hm3/images/icons/svg/skeleton-white.svg';
 export async function createCondition(token, options = {}) {
     if (!token) return;
 
-    const CONDITION = game.hm3.Condition.INANIMATE;
+    const CONDITION = Condition.INANIMATE;
 
     return {
         effectData: {
             icon: CONDITION_ICON,
             label: CONDITION,
-            seconds: game.hm3.CONST.TIME.INDEFINITE,
+            seconds: hm3.CONST.TIME.INDEFINITE,
             token,
             type: 'GameTime'
         },
