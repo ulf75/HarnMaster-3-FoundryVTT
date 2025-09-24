@@ -5,12 +5,12 @@ const OUTNUMBERED51 = 'Outnumbered 5:1';
 const OUTNUMBERED61 = 'Outnumbered 6:1';
 const OUTNUMBERED_IMG = 'systems/hm3/images/icons/svg/backup.svg';
 
-if (canvas.tokens.controlled.length !== 1) {
-    ui.notifications.error('Please select ONE token!');
+if (canvas?.tokens?.controlled.length !== 1) {
+    ui.notifications?.error('Please select ONE token!');
     return null;
 }
 
-const token = canvas.tokens.controlled[0];
+const token = canvas?.tokens?.controlled[0];
 
 let dialogEditor = new Dialog({
     title: 'Outnumbered',
@@ -18,7 +18,7 @@ let dialogEditor = new Dialog({
         none: {
             label: `None`,
             callback: async () => {
-                await token.deleteCondition(game.hm3.Condition.OUTNUMBERED);
+                await token.deleteCondition(hm3.Condition.OUTNUMBERED);
                 dialogEditor.render(true);
             }
         },
@@ -27,10 +27,10 @@ let dialogEditor = new Dialog({
             label: OUTNUMBERED21,
             callback: async () => {
                 const outnumbered = 2;
-                const label = `${game.hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
+                const label = `${hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
                 if (!token.hasCondition(label)) {
-                    await token.deleteCondition(game.hm3.Condition.OUTNUMBERED);
-                    await token.addCondition(game.hm3.Condition.OUTNUMBERED, {outnumbered});
+                    await token.deleteCondition(hm3.Condition.OUTNUMBERED);
+                    await token.addCondition(hm3.Condition.OUTNUMBERED, {outnumbered});
                 }
                 dialogEditor.render(true);
             }
@@ -40,10 +40,10 @@ let dialogEditor = new Dialog({
             label: OUTNUMBERED31,
             callback: async () => {
                 const outnumbered = 3;
-                const label = `${game.hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
+                const label = `${hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
                 if (!token.hasCondition(label)) {
-                    await token.deleteCondition(game.hm3.Condition.OUTNUMBERED);
-                    await token.addCondition(game.hm3.Condition.OUTNUMBERED, {outnumbered});
+                    await token.deleteCondition(hm3.Condition.OUTNUMBERED);
+                    await token.addCondition(hm3.Condition.OUTNUMBERED, {outnumbered});
                 }
                 dialogEditor.render(true);
             }
@@ -53,10 +53,10 @@ let dialogEditor = new Dialog({
             label: OUTNUMBERED41,
             callback: async () => {
                 const outnumbered = 4;
-                const label = `${game.hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
+                const label = `${hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
                 if (!token.hasCondition(label)) {
-                    await token.deleteCondition(game.hm3.Condition.OUTNUMBERED);
-                    await token.addCondition(game.hm3.Condition.OUTNUMBERED, {outnumbered});
+                    await token.deleteCondition(hm3.Condition.OUTNUMBERED);
+                    await token.addCondition(hm3.Condition.OUTNUMBERED, {outnumbered});
                 }
                 dialogEditor.render(true);
             }
@@ -66,10 +66,10 @@ let dialogEditor = new Dialog({
             label: OUTNUMBERED51,
             callback: async () => {
                 const outnumbered = 5;
-                const label = `${game.hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
+                const label = `${hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
                 if (!token.hasCondition(label)) {
-                    await token.deleteCondition(game.hm3.Condition.OUTNUMBERED);
-                    await token.addCondition(game.hm3.Condition.OUTNUMBERED, {outnumbered});
+                    await token.deleteCondition(hm3.Condition.OUTNUMBERED);
+                    await token.addCondition(hm3.Condition.OUTNUMBERED, {outnumbered});
                 }
                 dialogEditor.render(true);
             }
@@ -79,10 +79,10 @@ let dialogEditor = new Dialog({
             label: OUTNUMBERED61,
             callback: async () => {
                 const outnumbered = 6;
-                const label = `${game.hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
+                const label = `${hm3.Condition.OUTNUMBERED} ${outnumbered}:1`;
                 if (!token.hasCondition(label)) {
-                    await token.deleteCondition(game.hm3.Condition.OUTNUMBERED);
-                    await token.addCondition(game.hm3.Condition.OUTNUMBERED, {outnumbered});
+                    await token.deleteCondition(hm3.Condition.OUTNUMBERED);
+                    await token.addCondition(hm3.Condition.OUTNUMBERED, {outnumbered});
                 }
                 dialogEditor.render(true);
             }

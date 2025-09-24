@@ -1,7 +1,7 @@
 const sizeTable = game.tables.getName('Random Size Factor');
 
-for (let t of canvas.tokens.controlled) {
-    const sizeRoll = game.hm3.macros.rollObject('1d100');
+for (let t of canvas?.tokens?.controlled) {
+    const sizeRoll = hm3.macros.rollObject('1d100');
     const sizeDraw = await sizeTable.draw({roll: sizeRoll, recursive: true, displayChat: false});
     const size = Number(sizeDraw.results[0].text);
     const ini = t.actor.items.find((x) => x.name === 'Initiative');
@@ -9,5 +9,5 @@ for (let t of canvas.tokens.controlled) {
 
     await ini.update({'system.masteryLevel': Math.round(from * size)});
 
-    ui.notifications.info(`${t.name}'s Initiative: ${from} to ${from * size}`);
+    ui.notifications?.info(`${t.name}'s Initiative: ${from} to ${from * size}`);
 }

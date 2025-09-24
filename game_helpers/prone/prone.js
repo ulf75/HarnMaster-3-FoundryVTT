@@ -1,11 +1,11 @@
 let dialogEditor = new Dialog({
-    title: game.hm3.Condition.PRONE,
+    title: hm3.Condition.PRONE,
     buttons: {
         prone: {
-            label: game.hm3.Condition.PRONE,
+            label: hm3.Condition.PRONE,
             callback: async () => {
-                canvas.tokens.controlled.forEach((token) => {
-                    token.addCondition(game.hm3.Condition.PRONE);
+                canvas?.tokens?.controlled.forEach((token) => {
+                    token.addCondition(hm3.Condition.PRONE);
                 });
                 dialogEditor.render(true);
             }
@@ -14,8 +14,8 @@ let dialogEditor = new Dialog({
         rise: {
             label: `Rise`,
             callback: async () => {
-                canvas.tokens.controlled.forEach((token) => {
-                    token.deleteCondition(game.hm3.Condition.PRONE);
+                canvas?.tokens?.controlled.forEach((token) => {
+                    token.deleteCondition(hm3.Condition.PRONE);
                 });
                 dialogEditor.render(true);
             }

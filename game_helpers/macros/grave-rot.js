@@ -7,7 +7,7 @@
 // macroTokens    :
 // allOtherTokens :
 // triggerArgs    : The original arguments from the hook
-// macros         : Short for game.hm3.macros
+// macros         : Short for hm3.macros
 
 const GRAVE_ROT = 'Grave Rot';
 const GRAVE_ROT_ICON = 'systems/hm3/images/icons/svg/arm-bandage.svg';
@@ -30,7 +30,7 @@ if (triggerArgs[3].effectiveImpact > 0) {
                 owner: victimActor,
                 label: GRAVE_ROT,
                 type: 'GameTime',
-                postpone: await macros.rollAsync(`2d6 * ${game.hm3.CONST.TIME.HOUR}`),
+                postpone: await macros.rollAsync(`2d6 * ${hm3.CONST.TIME.HOUR}`),
                 seconds: 1,
                 icon: GRAVE_ROT_ICON
             },

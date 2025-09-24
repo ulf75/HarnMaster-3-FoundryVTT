@@ -50,8 +50,8 @@
     The background should resemble old parchment with decorative borders or faded architecture, keeping the style consistent with antique book illustrations.
     `;
 
-    if (canvas.tokens.controlled.length === 1) {
-        const token = canvas.tokens.controlled[0];
+    if (canvas?.tokens?.controlled.length === 1) {
+        const token = canvas?.tokens?.controlled[0];
         let description = (' ' + token.actor.system.description).slice(1);
         const gender = token.actor.system.gender;
         const name = token.actor.name;
@@ -78,6 +78,6 @@
 
         const prompt = `${DALLE} ${name} in portrait format: a human ${gender} ${description}.`;
         navigator.clipboard.writeText(prompt);
-        ui.notifications.info('LLM prompt copied to clipboard.');
+        ui.notifications?.info('LLM prompt copied to clipboard.');
     }
 })();

@@ -75,7 +75,7 @@
                     if (species === 'Khuzdul') frameFormula += '+3';
 
                     const frameTable = game.tables.getName('Frame');
-                    const frameRoll = game.hm3.macros.rollObject(frameFormula);
+                    const frameRoll = hm3.macros.rollObject(frameFormula);
                     const frameDraw = await frameTable.draw({roll: frameRoll, recursive: true, displayChat: false});
                     const frame = frameDraw.results[0].text;
 
@@ -101,7 +101,7 @@
                     }
 
                     const weightTable = game.tables.getName('Weight');
-                    const weightRoll = game.hm3.macros.rollObject(heightFormula);
+                    const weightRoll = hm3.macros.rollObject(heightFormula);
                     const weightDraw = await weightTable.draw({roll: weightRoll, recursive: true, displayChat: false});
                     const height = Number(weightDraw.roll.total);
                     const heightF = Math.floor(height / 12);
@@ -109,12 +109,12 @@
                     weight = Math.round(weight * weightMultiplier);
 
                     const sizeTable = game.tables.getName('Size');
-                    const sizeRoll = game.hm3.macros.rollObject(`${weight}`);
+                    const sizeRoll = hm3.macros.rollObject(`${weight}`);
                     const sizeDraw = await sizeTable.draw({roll: sizeRoll, recursive: true, displayChat: false});
                     const size = Number(sizeDraw.results[0].text);
 
                     const strTable = game.tables.getName('Strength Modifier');
-                    const strRoll = game.hm3.macros.rollObject(`${weight}`);
+                    const strRoll = hm3.macros.rollObject(`${weight}`);
                     const strDraw = await strTable.draw({roll: strRoll, recursive: true, displayChat: false});
                     const strMod = strDraw.results[0].text;
 
@@ -122,7 +122,7 @@
                     if (!!token.actor.system.abilities.comeliness.base) {
                         comeliness = token.actor.system.abilities.comeliness.base;
                     } else {
-                        comeliness = await game.hm3.macros.rollResultAsync('3d6', {
+                        comeliness = await hm3.macros.rollResultAsync('3d6', {
                             name: 'appearance',
                             type: 'comeliness'
                         });
@@ -137,7 +137,7 @@
                     const compTable = game.tables.getName(
                         `08a ${species === 'Human' && isIvinian ? 'Khuzdul' : species} Complexion`
                     );
-                    const compRoll = game.hm3.macros.rollObject('1d100');
+                    const compRoll = hm3.macros.rollObject('1d100');
                     const compDraw = await compTable.draw({roll: compRoll, recursive: true, displayChat: false});
                     const complexion = compDraw.results[0].text;
 
@@ -154,12 +154,12 @@
                     }
 
                     const eyeTable = game.tables.getName(`08b ${species} Eye Color`);
-                    const eyeRoll = game.hm3.macros.rollObject('1d100' + complexionMod);
+                    const eyeRoll = hm3.macros.rollObject('1d100' + complexionMod);
                     const eyeDraw = await eyeTable.draw({roll: eyeRoll, recursive: true, displayChat: false});
                     const eye = eyeDraw.results[0].text;
 
                     const hairTable = game.tables.getName(`08b ${species} Hair Color`);
-                    const hairRoll = game.hm3.macros.rollObject('1d100' + complexionMod);
+                    const hairRoll = hm3.macros.rollObject('1d100' + complexionMod);
                     const hairDraw = await hairTable.draw({roll: hairRoll, recursive: true, displayChat: false});
                     const hair = hairDraw.results[0].text;
 
@@ -167,7 +167,7 @@
                     if (!!token.actor.system.abilities.voice.base) {
                         voice = token.actor.system.abilities.voice.base;
                     } else {
-                        voice = await game.hm3.macros.rollResultAsync('3d6', {name: 'appearance', type: 'voice'});
+                        voice = await hm3.macros.rollResultAsync('3d6', {name: 'appearance', type: 'voice'});
                         if (species === 'Sindarin') voice += 2;
                     }
                     let voiceStr = 'Average';
@@ -178,7 +178,7 @@
                     else if (voice >= 13) voiceStr = 'Pleasant';
 
                     const medicalTable = game.tables.getName(`09 ${gender} Medical`);
-                    const medicalRoll = game.hm3.macros.rollObject('1d100');
+                    const medicalRoll = hm3.macros.rollObject('1d100');
                     const medicalDraw = await medicalTable.draw({
                         roll: medicalRoll,
                         recursive: true,
@@ -187,7 +187,7 @@
                     const medical = medicalDraw.results[0].text;
 
                     const mentalTable = game.tables.getName(`10 Mental Disorder`);
-                    const mentalRoll = game.hm3.macros.rollObject('1d100');
+                    const mentalRoll = hm3.macros.rollObject('1d100');
                     const mentalDraw = await mentalTable.draw({roll: mentalRoll, recursive: true, displayChat: false});
                     const mental = mentalDraw.results[0].text;
 
@@ -201,8 +201,8 @@
                         )} kg)</p><p>Size: ${size}</p><p>Comeliness: ${comeliness} (${comelinessStr})</p><p>Complexion: ${complexion}</p><p>Eye Color: ${eye}</p><p>Hair Color: ${hair}</p><p>Modifiers: STR: ${strMod}, AGL: ${aglMod}</p>`
                     });
 
-                    if (canvas.tokens.controlled.length === 1) {
-                        const token = canvas.tokens.controlled[0];
+                    if (canvas?.tokens?.controlled.length === 1) {
+                        const token = canvas?.tokens?.controlled[0];
                         let description = (' ' + token.actor.system.description).slice(1).trim();
                         let myArray = description.split('\n');
 

@@ -3,7 +3,7 @@
     const now = effect.duration.startTime;
     const end = actor.system.endurance;
     const dur = Math.round((end / 4) * 60 * 60);
-    const bonus = await game.hm3.macros.rollResultAsync('1d4', {name: 'Hrus Might', type: 'bonus'});
+    const bonus = await hm3.macros.rollResultAsync('1d4', {name: 'Hrus Might', type: 'bonus'});
     const postpone = 30;
     effect.changes[0].value = bonus.toString();
     effect.changes[1].value = bonus.toString();

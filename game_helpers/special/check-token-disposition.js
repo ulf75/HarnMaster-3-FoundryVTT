@@ -3,7 +3,7 @@
 const combatant = triggerArgs[0].combatant;
 if (!combatant?.tokenId || combatant.hidden) return;
 
-const token = canvas.tokens.get(combatant.tokenId);
+const token = canvas?.tokens?.get(combatant.tokenId);
 if (!token || !token.document) return;
 
 console.debug('HM3 | Check Token Disposition: ' + combatant.name);

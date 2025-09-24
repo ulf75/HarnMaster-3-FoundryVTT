@@ -1,9 +1,9 @@
-if (canvas.tokens.controlled.length !== 1) {
-    ui.notifications.error('Please select ONE token!');
+if (canvas?.tokens?.controlled.length !== 1) {
+    ui.notifications?.error('Please select ONE token!');
     return null;
 }
 
-const T = canvas.tokens.controlled[0];
+const T = canvas?.tokens?.controlled[0];
 const A = T.actor;
 
 let dialogEditor = new Dialog({

@@ -1,11 +1,11 @@
 let dialogEditor = new Dialog({
-    title: game.hm3.Condition.SECONDARY_HAND,
+    title: hm3.Condition.SECONDARY_HAND,
     buttons: {
         second: {
-            label: game.hm3.Condition.SECONDARY_HAND,
+            label: hm3.Condition.SECONDARY_HAND,
             callback: async () => {
-                canvas.tokens.controlled.forEach((token) => {
-                    token.addCondition(game.hm3.Condition.SECONDARY_HAND);
+                canvas?.tokens?.controlled.forEach((token) => {
+                    token.addCondition(hm3.Condition.SECONDARY_HAND);
                 });
                 dialogEditor.render(true);
             }
@@ -14,8 +14,8 @@ let dialogEditor = new Dialog({
         none: {
             label: `None`,
             callback: async () => {
-                canvas.tokens.controlled.forEach((token) => {
-                    token.deleteCondition(game.hm3.Condition.SECONDARY_HAND);
+                canvas?.tokens?.controlled.forEach((token) => {
+                    token.deleteCondition(hm3.Condition.SECONDARY_HAND);
                 });
                 dialogEditor.render(true);
             }

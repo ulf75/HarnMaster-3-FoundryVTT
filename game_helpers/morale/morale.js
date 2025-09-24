@@ -1,9 +1,9 @@
-const BERSERK = game.hm3.Condition.BERSERK;
-const BROKEN = game.hm3.Condition.BROKEN;
-const CAUTIOUS = game.hm3.Condition.CAUTIOUS;
-const DESPERATE = game.hm3.Condition.DESPERATE;
-const EMPOWERED = game.hm3.Condition.EMPOWERED;
-const WEAKENED = game.hm3.Condition.WEAKENED;
+const BERSERK = hm3.Condition.BERSERK;
+const BROKEN = hm3.Condition.BROKEN;
+const CAUTIOUS = hm3.Condition.CAUTIOUS;
+const DESPERATE = hm3.Condition.DESPERATE;
+const EMPOWERED = hm3.Condition.EMPOWERED;
+const WEAKENED = hm3.Condition.WEAKENED;
 
 let dialogEditor = new Dialog(
     {
@@ -12,10 +12,10 @@ let dialogEditor = new Dialog(
             normal: {
                 label: `Normal`,
                 callback: async () => {
-                    if (canvas.tokens.controlled.length !== 1) {
-                        ui.notifications.error('Please select ONE token!');
+                    if (canvas?.tokens?.controlled.length !== 1) {
+                        ui.notifications?.error('Please select ONE token!');
                     } else {
-                        const token = canvas.tokens.controlled[0];
+                        const token = canvas?.tokens?.controlled[0];
                         token.deleteAllMoraleConditions();
                     }
                     dialogEditor.render(true);
@@ -25,10 +25,10 @@ let dialogEditor = new Dialog(
             berserk: {
                 label: BERSERK,
                 callback: async () => {
-                    if (canvas.tokens.controlled.length !== 1) {
-                        ui.notifications.error('Please select ONE token!');
+                    if (canvas?.tokens?.controlled.length !== 1) {
+                        ui.notifications?.error('Please select ONE token!');
                     } else {
-                        const token = canvas.tokens.controlled[0];
+                        const token = canvas?.tokens?.controlled[0];
                         await token.addCondition(BERSERK);
                     }
                     dialogEditor.render(true);
@@ -38,10 +38,10 @@ let dialogEditor = new Dialog(
             broken: {
                 label: BROKEN,
                 callback: async () => {
-                    if (canvas.tokens.controlled.length !== 1) {
-                        ui.notifications.error('Please select ONE token!');
+                    if (canvas?.tokens?.controlled.length !== 1) {
+                        ui.notifications?.error('Please select ONE token!');
                     } else {
-                        const token = canvas.tokens.controlled[0];
+                        const token = canvas?.tokens?.controlled[0];
                         await token.addCondition(BROKEN);
                     }
                     dialogEditor.render(true);
@@ -51,10 +51,10 @@ let dialogEditor = new Dialog(
             cautious: {
                 label: CAUTIOUS,
                 callback: async () => {
-                    if (canvas.tokens.controlled.length !== 1) {
-                        ui.notifications.error('Please select ONE token!');
+                    if (canvas?.tokens?.controlled.length !== 1) {
+                        ui.notifications?.error('Please select ONE token!');
                     } else {
-                        const token = canvas.tokens.controlled[0];
+                        const token = canvas?.tokens?.controlled[0];
                         await token.addCondition(CAUTIOUS);
                     }
                     dialogEditor.render(true);
@@ -64,10 +64,10 @@ let dialogEditor = new Dialog(
             desperate: {
                 label: DESPERATE,
                 callback: async () => {
-                    if (canvas.tokens.controlled.length !== 1) {
-                        ui.notifications.error('Please select ONE token!');
+                    if (canvas?.tokens?.controlled.length !== 1) {
+                        ui.notifications?.error('Please select ONE token!');
                     } else {
-                        const token = canvas.tokens.controlled[0];
+                        const token = canvas?.tokens?.controlled[0];
                         await token.addCondition(DESPERATE);
                     }
                     dialogEditor.render(true);
@@ -77,10 +77,10 @@ let dialogEditor = new Dialog(
             empowered: {
                 label: EMPOWERED,
                 callback: async () => {
-                    if (canvas.tokens.controlled.length !== 1) {
-                        ui.notifications.error('Please select ONE token!');
+                    if (canvas?.tokens?.controlled.length !== 1) {
+                        ui.notifications?.error('Please select ONE token!');
                     } else {
-                        const token = canvas.tokens.controlled[0];
+                        const token = canvas?.tokens?.controlled[0];
                         await token.addCondition(EMPOWERED);
                     }
                     dialogEditor.render(true);
@@ -90,10 +90,10 @@ let dialogEditor = new Dialog(
             weakened: {
                 label: WEAKENED,
                 callback: async () => {
-                    if (canvas.tokens.controlled.length !== 1) {
-                        ui.notifications.error('Please select ONE token!');
+                    if (canvas?.tokens?.controlled.length !== 1) {
+                        ui.notifications?.error('Please select ONE token!');
                     } else {
-                        const token = canvas.tokens.controlled[0];
+                        const token = canvas?.tokens?.controlled[0];
                         await token.addCondition(WEAKENED);
                     }
                     dialogEditor.render(true);

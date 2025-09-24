@@ -10,7 +10,7 @@ ${html}
 let dialogEditor = new Dialog({
     title: 'Set Condition',
     content: content(
-        Object.values(game.hm3.Condition)
+        Object.values(hm3.Condition)
             .map((value) => `<option value="${value}">${value}</option>`)
             .join('\n')
     ),
@@ -18,7 +18,7 @@ let dialogEditor = new Dialog({
         set: {
             label: 'Set',
             callback: async (html) => {
-                canvas.tokens.controlled.forEach((token) => {
+                canvas?.tokens?.controlled.forEach((token) => {
                     const cond = html.find('#condition')[0];
                     const condition = cond.options[cond.selectedIndex].text;
                     token.addCondition(condition);
@@ -29,7 +29,7 @@ let dialogEditor = new Dialog({
         reset: {
             label: 'Reset',
             callback: (html) => {
-                canvas.tokens.controlled.forEach((token) => {
+                canvas?.tokens?.controlled.forEach((token) => {
                     const cond = html.find('#condition')[0];
                     const condition = cond.options[cond.selectedIndex].text;
                     token.deleteCondition(condition);
@@ -40,9 +40,9 @@ let dialogEditor = new Dialog({
         resetAll: {
             label: 'Reset All',
             callback: () => {
-                canvas.tokens.controlled.forEach(async (token) => {
+                canvas?.tokens?.controlled.forEach(async (token) => {
                     await Promise.all(
-                        Object.values(game.hm3.Condition).map(async (condition) => {
+                        Object.values(hm3.Condition).map(async (condition) => {
                             await token.deleteCondition(condition);
                         })
                     );

@@ -18,8 +18,8 @@ const LANTERN = [4, 8];
 const BRAZIER = [5, 10];
 const CAMP_FIRE = [6, 12];
 
-if (canvas.tokens.controlled.length !== 1 && canvas.lighting.controlled.length !== 1) {
-    ui.notifications.error('Please select ONE token or light source!');
+if (canvas?.tokens?.controlled.length !== 1 && canvas.lighting.controlled.length !== 1) {
+    ui.notifications?.error('Please select ONE token or light source!');
     return null;
 }
 

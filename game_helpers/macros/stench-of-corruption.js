@@ -7,15 +7,15 @@
 // macroTokens    :
 // allOtherTokens :
 // triggerArgs    : The original arguments from the hook
-// macros         : Short for game.hm3.macros
+// macros         : Short for hm3.macros
 
 const STENCH_OF_CORRUPTION = 'Stench of Corruption';
 const STENCH_OF_CORRUPTION_ICON = 'systems/hm3/images/icons/svg/distraction.svg';
 const RADIUS = 11; // [ft]
 
-const p1 = canvas.tokens.get(triggerArgs[0].id).center;
-const p2a = canvas.grid.getCenterPoint(triggerArgs[1]);
-const p2 = canvas.grid.getSnappedPoint(triggerArgs[1], {mode: CONST.GRID_SNAPPING_MODES.CENTER});
+const p1 = canvas?.tokens?.get(triggerArgs[0].id).center;
+const p2a = canvas?.grid?.getCenterPoint(triggerArgs[1]);
+const p2 = canvas?.grid?.getSnappedPoint(triggerArgs[1], {mode: CONST.GRID_SNAPPING_MODES.CENTER});
 const p2b = triggerArgs[1];
 
 // only movement is interesting
@@ -35,7 +35,7 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
         console.info('to: ' + token.name);
         victimToken = token;
         const stop = macros.pathIntersectsCircle(
-            {center: canvas.tokens.get(token.id).center, radius: RADIUS},
+            {center: canvas?.tokens?.get(token.id).center, radius: RADIUS},
             {p1, p2},
             true
         );
@@ -44,7 +44,7 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
         friendlyTokens.forEach((t) => {
             console.info('to: ' + t.name);
             const stop = macros.pathIntersectsCircle(
-                {center: canvas.tokens.get(t.id).center, radius: RADIUS},
+                {center: canvas?.tokens?.get(t.id).center, radius: RADIUS},
                 {p1, p2},
                 true
             );
@@ -59,7 +59,7 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
                 (a, b) =>
                     (p1.x - a.stop.x) ** 2 + (p1.y - a.stop.y) ** 2 - ((p1.x - b.stop.x) ** 2 + (p1.y - b.stop.y) ** 2)
             );
-            const tl = canvas.grid.getTopLeftPoint(stops[0].stop);
+            const tl = canvas?.grid?.getTopLeftPoint(stops[0].stop);
             const pos = token.getSnappedPosition(stops[0].stop, {mode: CONST.GRID_SNAPPING_MODES.CENTER});
             await token.document.update(pos);
         }
@@ -84,26 +84,26 @@ if (p2.x && p2.y && p1.x !== p2.x && p1.y !== p2.y) {
         let seconds, value;
         if (result.isSuccess && result.isCritical) {
             // critical success - all good!
-            seconds = 10 * game.hm3.CONST.TIME.MINUTE;
+            seconds = 10 * hm3.CONST.TIME.MINUTE;
             value = 0;
         } else if (result.isSuccess && !result.isCritical) {
             // marginal success
-            seconds = await macros.rollResultAsync(`4d6 * ${game.hm3.CONST.TIME.MINUTE}`);
+            seconds = await macros.rollResultAsync(`4d6 * ${hm3.CONST.TIME.MINUTE}`);
             value = -2;
         } else if (!result.isSuccess && !result.isCritical) {
             // marginal failure
-            seconds = await macros.rollResultAsync(`8d6 * ${game.hm3.CONST.TIME.MINUTE}`);
+            seconds = await macros.rollResultAsync(`8d6 * ${hm3.CONST.TIME.MINUTE}`);
             value = -3;
         } else {
             // critical failure
-            seconds = await macros.rollResultAsync(`16d6 * ${game.hm3.CONST.TIME.MINUTE}`);
+            seconds = await macros.rollResultAsync(`16d6 * ${hm3.CONST.TIME.MINUTE}`);
             value = -3;
             await macros.createActiveEffect(
                 {
                     token: victimToken,
                     label: 'Violent Retching',
                     type: 'GameTime',
-                    seconds: 20 * game.hm3.CONST.TIME.SECOND,
+                    seconds: 20 * hm3.CONST.TIME.SECOND,
                     icon: STENCH_OF_CORRUPTION_ICON
                 },
                 [{key: 'universalPenalty', value: 4}],

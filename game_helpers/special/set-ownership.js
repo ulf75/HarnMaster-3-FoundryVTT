@@ -62,7 +62,7 @@
                     let ownership = html.find('#ownership')[0];
                     ownership = ownership.options[ownership.selectedIndex].value;
 
-                    // console.info(game.users.get(groups[group][0]), group, ownership, ownerships[ownership], d_ownership, ownerships[d_ownership]);
+                    // console.info(game.users?.get(groups[group][0]), group, ownership, ownerships[ownership], d_ownership, ownerships[d_ownership]);
 
                     for (let n of canvas.notes.controlled) {
                         const doc = n.document;
@@ -96,9 +96,9 @@
                         }
                     }
 
-                    for (let t of canvas.tokens.controlled) {
+                    for (let t of canvas?.tokens?.controlled) {
                         const doc = t.document;
-                        const A = doc.baseActor; // game.actors.get(doc.actorId);
+                        const A = doc.baseActor; // game.actors?.get(doc.actorId);
 
                         const os = {'default': ownerships[d_ownership], 'VumzzG6Cu3SwNvru': 3};
                         for (let u of groups[group]) {
