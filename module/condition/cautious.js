@@ -29,19 +29,19 @@ export async function createCondition(token, options = {}) {
     const uuid = foundry.utils.randomID();
 
     const ON_CREATE_MACRO = `
-const token = canvas.tokens.get('${token.id}');
+const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
 await token.deleteAllMoraleConditions('${CONDITION}');
-const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
+const unconscious = token.hasCondition(hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
-    await game.hm3.Gm2GmSays(
+    await hm3.Gm2GmSays(
         '<b>' +
             token.name +
             '</b> is now <b>Cautious</b>, and will not Engage, must choose <b>Pass</b> if engaged, and cannot select the Counterstrike defense.',
         'Combat 16'
     );
     if (token.isEngaged()) {
-        await game.hm3.GmSays({
+        await hm3.GmSays({
             text:
                 '<b>' +
                 token.name +
@@ -58,11 +58,11 @@ if (!unconscious) {
     const ON_TURN_START_MACRO = options.oneRound
         ? ''
         : `
-const token = canvas.tokens.get('${token.id}');
+const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
-const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
+const unconscious = token.hasCondition(hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
-    await game.hm3.Gm2GmSays({
+    await hm3.Gm2GmSays({
         text:
             '<b>' +
             token.name +
@@ -72,7 +72,7 @@ if (!unconscious) {
     });
     if (token.isEngaged()) {
         await token.turnEnds();
-        await game.hm3.GmSays({
+        await hm3.GmSays({
             text:
                 '<b>' +
                 token.name +

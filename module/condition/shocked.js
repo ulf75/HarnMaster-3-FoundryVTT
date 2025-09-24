@@ -27,22 +27,22 @@ export async function createCondition(token, options = {}) {
     const uuid = foundry.utils.randomID();
 
     const ON_CREATE_MACRO = `
-const token = canvas.tokens.get('${token.id}');
+const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
 const dateTime = SimpleCalendar?.api?.currentDateTimeDisplay();
-await game.hm3.macros.createInjury({
+await hm3.macros.createInjury({
     token,
     name: 'Shock',
     subtype: 'shock',
     healRate: 4,
     notes: 'Started: ' + dateTime?.date + ' - ' + dateTime?.time
 });
-const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
+const unconscious = token.hasCondition(hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
     if (game.combat?.started && !token.player) await token.combatant.update({defeated: true});
     const turnEnds = game.combat?.started && game.combat.combatant.id === token.combatant.id;
     if (turnEnds) {
-        await game.hm3.GmSays({
+        await hm3.GmSays({
             text:
                 '<b>' +
                 token.name +
@@ -54,7 +54,7 @@ if (!unconscious) {
         });
         await token.turnEnds();
     } else {
-        await game.hm3.GmSays({
+        await hm3.GmSays({
             text:
                 '<b>' +
                 token.name +
@@ -70,11 +70,11 @@ console.info('HM3 | Condition: ${CONDITION} created for token: ${token.name}');
 `;
 
     const ON_TURN_START_MACRO = `
-const token = canvas.tokens.get('${token.id}');
+const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
-const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
+const unconscious = token.hasCondition(hm3.Condition.UNCONSCIOUS);
 if (!unconscious)
-    await game.hm3.GmSays({
+    await hm3.GmSays({
         text:
             '<b>' +
             token.name +
@@ -85,9 +85,9 @@ if (!unconscious)
 `;
 
     const ON_DELETE_MACRO = `
-const token = canvas.tokens.get('${token.id}');
+const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
-game.hm3.macros.updateOverlay(token);
+hm3.macros.updateOverlay(token);
 console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
 `;
 

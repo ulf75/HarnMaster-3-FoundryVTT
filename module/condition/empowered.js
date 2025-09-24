@@ -29,11 +29,11 @@ export async function createCondition(token, options = {}) {
     const uuid = foundry.utils.randomID();
 
     const ON_CREATE_MACRO = `
-const token = canvas.tokens.get('${token.id}');
+const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
-await token.deleteAllMoraleConditions(game.hm3.Condition.EMPOWERED);
-const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
-if (!unconscious) await game.hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Empowered</b>, and adds 10 to any EML this turn.", "Combat 16");
+await token.deleteAllMoraleConditions(hm3.Condition.EMPOWERED);
+const unconscious = token.hasCondition(hm3.Condition.UNCONSCIOUS);
+if (!unconscious) await hm3.Gm2GmSays("<b>" + token.name + "</b> is now <b>Empowered</b>, and adds 10 to any EML this turn.", "Combat 16");
 console.info("HM3 | Condition: ${CONDITION} created for token: ${token.name}");
 `;
 

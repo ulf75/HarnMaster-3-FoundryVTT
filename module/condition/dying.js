@@ -24,13 +24,13 @@ export async function createCondition(token, options = {}) {
     const uuid = foundry.utils.randomID();
 
     const ON_CREATE_MACRO = `
-const token = canvas.tokens.get('${token.id}');
+const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
 await token.deleteAllMoraleConditions();
 await token.combatant?.update({defeated: true});
-await token.addCondition(game.hm3.Condition.UNCONSCIOUS);
+await token.addCondition(hm3.Condition.UNCONSCIOUS);
 if (!!token.actor.player) {
-    await game.hm3.GmSays({
+    await hm3.GmSays({
         text:
             '<b>' +
             token.name +
@@ -38,7 +38,7 @@ if (!!token.actor.player) {
         source: 'Combat 14'
     });
 } else {
-    await game.hm3.GmSays({
+    await hm3.GmSays({
         text: '<b>' + token.name + '</b> is <b>Dead</b> due to a <b>Mortal Wound</b>.',
         source: 'Combat 14'
     });
@@ -47,9 +47,9 @@ console.info('HM3 | Condition: ${CONDITION} created for token: ${token.name}');
 `;
 
     const ON_TURN_START_MACRO = `
-const token = canvas.tokens.get('${token.id}');
+const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
-await game.hm3.GmSays({
+await hm3.GmSays({
     text: '<b>' + token.name + '</b> stays unconscious due to a <b>Mortal Wound</b>. <b>Turn ends.</b>',
     source: 'Combat 14',
     token
@@ -58,10 +58,10 @@ await token.turnEnds();
 `;
 
     const ON_DELETE_MACRO = `
-const token = canvas.tokens.get('${token.id}');
+const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
 await token.combatant?.update({defeated: false});
-game.hm3.macros.updateOverlay(token);
+hm3.macros.updateOverlay(token);
 console.info("HM3 | Condition: ${CONDITION} deleted for token: ${token.name}");
 `;
 

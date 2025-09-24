@@ -27,12 +27,12 @@ export async function createCondition(token, options = {}) {
     const uuid = foundry.utils.randomID();
 
     const ON_CREATE_MACRO = `
-const token = canvas.tokens.get('${token.id}');
+const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
 await token.document.setFlag('wall-height', 'tokenHeight', 2);
-const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
+const unconscious = token.hasCondition(hm3.Condition.UNCONSCIOUS);
 if (!unconscious)
-    await game.hm3.GmSays({
+    await hm3.GmSays({
         text:
             '<b>' +
             token.name +
@@ -43,20 +43,20 @@ console.info('HM3 | Condition: ${CONDITION} created for token: ${token.name}');
 `;
 
     const ON_TURN_START_MACRO = `
-const token = canvas.tokens.get('${token.id}');
+const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
-const distracted = token.hasCondition(game.hm3.Condition.DISTRACTED);
-const unconscious = token.hasCondition(game.hm3.Condition.UNCONSCIOUS);
+const distracted = token.hasCondition(hm3.Condition.DISTRACTED);
+const unconscious = token.hasCondition(hm3.Condition.UNCONSCIOUS);
 if (distracted || unconscious) return;
 const PRONE_IMG = '${CONDITION_ICON}';
-await game.hm3.GmSays({
+await hm3.GmSays({
     text:
         '<b>' + token.name + '</b> is prone, and <b>All</b> opponents gain +20 on <b>All</b> attack and defense rolls.',
     source: 'Combat 11',
     gmonly: !token.player
 });
 await Requestor.request({
-    title: game.hm3.Condition.PRONE,
+    title: hm3.Condition.PRONE,
     description: '<div class="chat-card fluff"><p>Getting up takes <b>ONE Action</b>.</p></div>',
     img: PRONE_IMG,
     limit: Requestor.LIMIT.OPTION,
@@ -65,15 +65,15 @@ await Requestor.request({
         {
             label: 'Rise',
             command: async function () {
-                const token = canvas.tokens.get('${token.id}');
-                await token.deleteCondition(game.hm3.Condition.PRONE);
+                const token = canvas?.tokens?.get('${token.id}');
+                await token.deleteCondition(hm3.Condition.PRONE);
             }
         },
         {
             label: 'Ignore',
             command: async function () {
-                const token = canvas.tokens.get('${token.id}');
-                await game.hm3.GmSays({
+                const token = canvas?.tokens?.get('${token.id}');
+                await hm3.GmSays({
                     text: 'Ok, ' + token.name + ' remains lying on the floor.',
                     source: 'Combat 11',
                     gmonly: !token.player
@@ -85,22 +85,22 @@ await Requestor.request({
 `;
 
     const ON_DELETE_MACRO = `
-const token = canvas.tokens.get('${token.id}');
+const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
 await token.document.setFlag('wall-height', 'tokenHeight', token.actor.system.height || 6);
 if (game.combat?.started && game.combat.combatant) {
     if (game.combat.combatant.id === token.combatant?.id) {
-        await game.hm3.GmSays({
+        await hm3.GmSays({
             text: '<b>' + token.name + '</b> rises successfully. <b>Turn ends.</b>',
             source: 'Combat 11',
             token
         });
         await token.turnEnds();
     } else {
-        await game.hm3.GmSays({text: '<b>' + token.name + '</b> rises successfully.', source: 'Combat 11', token});
+        await hm3.GmSays({text: '<b>' + token.name + '</b> rises successfully.', source: 'Combat 11', token});
     }
 }
-game.hm3.macros.updateOverlay(token);
+hm3.macros.updateOverlay(token);
 console.info('HM3 | Condition: ${CONDITION} deleted for token: ${token.name}');
 `;
 
