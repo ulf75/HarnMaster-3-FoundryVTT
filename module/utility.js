@@ -1,3 +1,5 @@
+// @ts-check
+
 import {ActorHM3} from './actor/actor.js';
 import {HM3} from './config.js';
 import {ItemType} from './hm3-types.js';
@@ -382,8 +384,8 @@ export function aeDuration(effect) {
     if (Number.isNumeric(d.seconds)) {
         const isIndefinite = d.label === 'Indefinite';
         const isPermanent = d.label === 'Permanent';
-        const start = d.startTime || game.time.worldTime;
-        const elapsed = game.time.worldTime - start;
+        const start = d.startTime || (game.time?.worldTime ?? 0);
+        const elapsed = (game.time?.worldTime ?? 0) - start;
         const remaining = elapsed < 0 ? d.seconds : Math.max(d.seconds - elapsed, 0);
         //const normDuration = toNormTime(d.seconds);
         const normRemaining = isIndefinite ? 'Indefinite' : toNormTime(remaining);
@@ -540,7 +542,7 @@ export function executeMacroScript(macro, {actor, token, rollResult, rollData, i
     if (!actor) {
         if (!token) {
             speaker = ChatMessage.getSpeaker();
-            actor = game.actors.get(speaker.actor);
+            actor = game.actors?.get(speaker.actor);
             token = actor.isToken ? actor.token : null;
         } else {
             actor = token.actor;
@@ -551,15 +553,15 @@ export function executeMacroScript(macro, {actor, token, rollResult, rollData, i
     speaker = speaker || ChatMessage.getSpeaker({actor: actor});
 
     token = actor.isToken && !token ? actor.token : token;
-    token = token || (canvas.ready ? canvas.tokens.get(speaker.token) : null);
+    token = token || (canvas?.ready ? canvas?.tokens?.get(speaker.token) : null);
 
     const context = {
         speaker: speaker,
         actor: actor,
         token: token,
-        character: game.user.character,
+        character: game.user?.character,
         rollResult: rollResult,
-        scene: canvas.scene
+        scene: canvas?.scene
     };
 
     if (rollData) context.rollData = rollData;
@@ -576,7 +578,7 @@ export function executeMacroScript(macro, {actor, token, rollResult, rollData, i
                 ${macro.command}
                 });`)().call(macro, context);
     } catch (err) {
-        ui.notifications.error(`There was an error in your macro syntax. See the console (F12) for details`);
+        ui.notifications?.error(`There was an error in your macro syntax. See the console (F12) for details`);
         console.error(err);
     }
 
@@ -608,7 +610,7 @@ export function truncate(value, digits = 2) {
  */
 export function getActorFromMacro(macro) {
     // @ts-expect-error
-    return game.actors.contents.find((a) => macro.getFlag('hm3', 'ownerId') === a.id);
+    return game.actors?.contents.find((a) => macro.getFlag('hm3', 'ownerId') === a.id);
 }
 
 /**
@@ -624,7 +626,7 @@ export function getActorFromMacro(macro) {
  */
 export function truncatedOML(value) {
     // @ts-expect-error
-    if (!game.settings.get('hm3', 'truncateHighValueSkills')) return value;
+    if (!game.settings?.get('hm3', 'truncateHighValueSkills')) return value;
     if (value <= 70) return value;
     else if (value <= 72) return 71;
     else if (value <= 74) return 72;
@@ -691,7 +693,7 @@ export function beautify(text) {
  */
 export async function improveFlag(skill, {actor = null, success = true} = {}) {
     // @ts-expect-error
-    if (game.settings.get('hm3', 'autoMarkUsedSkills')) {
+    if (game.settings?.get('hm3', 'autoMarkUsedSkills')) {
         const types = [ItemType.SKILL, ItemType.PSIONIC, ItemType.WEAPONGEAR, ItemType.MISSILEGEAR];
 
         if ((typeof skill === 'string' || skill instanceof String) && actor) {
@@ -705,19 +707,19 @@ export async function improveFlag(skill, {actor = null, success = true} = {}) {
             skill.parent.skillImprovement
         ) {
             // @ts-expect-error
-            await game.hm3.socket.executeAsGM('improveFlag', skill.uuid, success);
+            await hm3.socket.executeAsGM('improveFlag', skill.uuid, success);
         }
     }
 }
 
 export async function weaponBroke(weapon, diff) {
     // @ts-expect-error
-    await game.hm3.socket.executeAsGM('weaponBroke', weapon.uuid, diff);
+    await hm3.socket.executeAsGM('weaponBroke', weapon.uuid, diff);
 }
 
 export async function fatigueReceived(actor, fatigue) {
     // @ts-expect-error
-    await game.hm3.socket.executeAsGM('fatigueReceived', actor.uuid, fatigue);
+    await hm3.socket.executeAsGM('fatigueReceived', actor.uuid, fatigue);
 }
 
 export function getRelevantActors() {
@@ -730,7 +732,7 @@ export function getRelevantActors() {
                     (actor.player ? actor.player.active : true) && actor.prototypeToken.actorLink && actor.isOwner
             ),
         // Next, handle tokens (only unlinked tokens)
-        ...canvas.tokens.ownedTokens
+        ...canvas?.tokens?.ownedTokens
             .values()
             .filter((token) => !token.document.actorLink && token.actor.isOwner)
             .map((token) => {

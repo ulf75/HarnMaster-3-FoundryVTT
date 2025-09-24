@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * A lock for synchronizing async operations.
  * Use this to protect a critical section

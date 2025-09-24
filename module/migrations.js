@@ -3,14 +3,14 @@
  * @return {Promise}      A Promise which resolves once the migration is completed
  */
 export async function migrateWorld() {
-    ui.notifications.info(
+    ui.notifications?.info(
         `Applying HM3 System Migration for version ${game.system.version}. Please be patient and do not close your game or shut down your server.`,
         {permanent: true}
     );
     console.info(`HM3 | Starting Migration`);
 
     // Migrate World Actors
-    for (let a of game.actors.contents) {
+    for (let a of game.actors?.contents) {
         try {
             const updateData = await migrateActorData(a);
             if (!foundry.utils.isEmpty(updateData)) {
@@ -20,7 +20,7 @@ export async function migrateWorld() {
             }
         } catch (err) {
             err.message = `Failed HM3 system migration for Actor ${a.name}: ${err.message}`;
-            ui.notifications.error(err.message, {permanent: true});
+            ui.notifications?.error(err.message, {permanent: true});
             console.error(err);
         }
     }
@@ -36,7 +36,7 @@ export async function migrateWorld() {
             }
         } catch (err) {
             err.message = `Failed HM3 system migration for Item ${i.name}: ${err.message}`;
-            ui.notifications.error(err.message, {permanent: true});
+            ui.notifications?.error(err.message, {permanent: true});
             console.error(err);
         }
     }
@@ -52,7 +52,7 @@ export async function migrateWorld() {
             }
         } catch (err) {
             err.message = `Failed HM3 system migration for Scene ${s.name}: ${err.message}`;
-            ui.notifications.error(err.message, {permanent: true});
+            ui.notifications?.error(err.message, {permanent: true});
             console.error(err);
         }
     }
@@ -67,9 +67,9 @@ export async function migrateWorld() {
     }
 
     // Set the migration as complete
-    game.settings.set('hm3', 'systemMigrationVersion', game.system.version);
+    game.settings?.set('hm3', 'systemMigrationVersion', game.system.version);
     console.info(`HM3 | Migration Complete`);
-    ui.notifications.info(`HM3 System Migration to version ${game.system.version} completed!`, {permanent: true});
+    ui.notifications?.info(`HM3 System Migration to version ${game.system.version} completed!`, {permanent: true});
 }
 
 /* -------------------------------------------- */
@@ -381,7 +381,7 @@ export async function migrateSceneData(scene) {
             const t = token.toJSON();
             if (!t.actorId || t.actorLink) {
                 t.actorData = {};
-            } else if (!game.actors.has(t.actorId)) {
+            } else if (!game.actors?.has(t.actorId)) {
                 t.actorId = null;
                 t.actorData = {};
             } else if (!t.actorLink) {

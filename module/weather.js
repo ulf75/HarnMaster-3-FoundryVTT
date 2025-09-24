@@ -1,3 +1,5 @@
+// @ts-check
+
 const WATCHES_PER_DAY = 6;
 const WATCHES_PER_MONTH = 30 * WATCHES_PER_DAY;
 
@@ -11,8 +13,8 @@ export class Weather {
     static weather = [];
 
     static async Render() {
-        if (!game.settings.get('hm3', 'showWeather')) return;
-        if (!game.user.isGM) return;
+        if (!game.settings?.get('hm3', 'showWeather')) return;
+        if (!game.user?.isGM) return;
         if (!this.dateTimeApi) return;
         if (this.lastWatch === this.Watch()) return;
 
@@ -21,7 +23,7 @@ export class Weather {
 
         await this.InitializeNextMonth();
 
-        const data = game.settings.get('hm3', 'weather');
+        const data = game.settings?.get('hm3', 'weather');
         const frc = data.weather[this.lastWatch].force;
         const weather = this.Data(data.weather[this.lastWatch].idx);
         const preArray = data.weather[this.lastWatch].precipitation || weather.precipitation;
@@ -47,19 +49,20 @@ export class Weather {
         const html = await renderTemplate(chatTemplate, chatData);
         const messageData = {
             content: html.trim(),
-            user: game.user.id
+            user: game.user?.id
         };
 
         return ChatMessage.create(messageData, {});
     }
 
     static async Initialize() {
+        // @ts-expect-error
         this.dateTimeApi = SimpleCalendar?.api;
 
-        if (!game.settings.get('hm3', 'showWeather')) return false;
+        if (!game.settings?.get('hm3', 'showWeather')) return false;
         if (!this.dateTimeApi) return false;
 
-        const data = game.settings.get('hm3', 'weather');
+        const data = game.settings?.get('hm3', 'weather');
         if (data.weather.length === 1) {
             // 1st initialization
             this.start = this.dateTimeApi.dateToTimestamp({
@@ -79,7 +82,7 @@ export class Weather {
                 else weather.push({idx, force});
                 idx = next(idx);
             }
-            await game.settings.set('hm3', 'weather', {start: this.start, weather});
+            await game.settings?.set('hm3', 'weather', {start: this.start, weather});
         } else {
             // load data
             this.start = data.start;
@@ -87,13 +90,13 @@ export class Weather {
 
             await this.InitializeNextMonth();
 
-            // await game.settings.set('hm3', 'weather', undefined);
+            // await game.settings?.set('hm3', 'weather', undefined);
         }
         return true;
     }
 
     static async InitializeNextMonth() {
-        const data = game.settings.get('hm3', 'weather');
+        const data = game.settings?.get('hm3', 'weather');
         let weather = data.weather;
         // if (data.weather.length - this.Watch() > WATCHES_PER_MONTH) return;
 
@@ -108,7 +111,7 @@ export class Weather {
                 else newWeather.push({idx, force});
             }
             weather = [...weather, ...newWeather];
-            await game.settings.set('hm3', 'weather', {start: this.start, weather});
+            await game.settings?.set('hm3', 'weather', {start: this.start, weather});
         }
     }
 
@@ -118,7 +121,7 @@ export class Weather {
 
     static Watch() {
         const current = this.dateTimeApi.dateToTimestamp({});
-        return Math.floor((current - this.start) / game.hm3.CONST.TIME.WATCH);
+        return Math.floor((current - this.start) / hm3.CONST.TIME.WATCH);
     }
 
     static Temp(weather) {

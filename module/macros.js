@@ -88,7 +88,7 @@ async function handleItemMacro(data, slot) {
             return null; // Unhandled item, so ignore
     }
 
-    return applyMacro(title, `await game.hm3.macros.${cmdSuffix}`, slot, item.img, {'hm3.itemMacro': false});
+    return applyMacro(title, `await hm3.macros.${cmdSuffix}`, slot, item.img, {'hm3.itemMacro': false});
 }
 
 async function applyMacro(name, command, slot, img, flags) {
@@ -131,7 +131,7 @@ function askWeaponMacro(weaponUuid, slot, img) {
                     callback: async (html) => {
                         return applyMacro(
                             `${item.name} Automated Combat`,
-                            `await game.hm3.macros.weaponAttack("${weaponUuid}");`,
+                            `await hm3.macros.weaponAttack("${weaponUuid}");`,
                             slot,
                             img,
                             {
@@ -145,7 +145,7 @@ function askWeaponMacro(weaponUuid, slot, img) {
                     callback: async (html) => {
                         return applyMacro(
                             `${actorName}${item.name} Attack Roll`,
-                            `await game.hm3.macros.weaponAttackRoll("${weaponUuid}");`,
+                            `await hm3.macros.weaponAttackRoll("${weaponUuid}");`,
                             slot,
                             img,
                             {'hm3.itemMacro': false}
@@ -157,7 +157,7 @@ function askWeaponMacro(weaponUuid, slot, img) {
                     callback: async (html) => {
                         return applyMacro(
                             `${actorName}${item.name} Defend Roll`,
-                            `await game.hm3.macros.weaponDefendRoll("${weaponUuid}");`,
+                            `await hm3.macros.weaponDefendRoll("${weaponUuid}");`,
                             slot,
                             img,
                             {'hm3.itemMacro': false}
@@ -169,7 +169,7 @@ function askWeaponMacro(weaponUuid, slot, img) {
                     callback: async (html) => {
                         return applyMacro(
                             `${actorName}${item.name} Damage Roll`,
-                            `await game.hm3.macros.weaponDamageRoll("${weaponUuid}");`,
+                            `await hm3.macros.weaponDamageRoll("${weaponUuid}");`,
                             slot,
                             img,
                             {'hm3.itemMacro': false}
@@ -197,7 +197,7 @@ function askMissileMacro(name, slot, img, actorSuffix) {
                     callback: async (html) => {
                         return applyMacro(
                             `${name} Automated Combat`,
-                            `game.hm3.macros.missileAttack("${name}");`,
+                            `hm3.macros.missileAttack("${name}");`,
                             slot,
                             img,
                             {
@@ -211,7 +211,7 @@ function askMissileMacro(name, slot, img, actorSuffix) {
                     callback: async (html) => {
                         return applyMacro(
                             `${actorName}'s ${name} Attack Roll`,
-                            `game.hm3.macros.missileAttackRoll("${name}"${actorSuffix});`,
+                            `hm3.macros.missileAttackRoll("${name}"${actorSuffix});`,
                             slot,
                             img,
                             {'hm3.itemMacro': false}
@@ -223,7 +223,7 @@ function askMissileMacro(name, slot, img, actorSuffix) {
                     callback: async (html) => {
                         return applyMacro(
                             `${actorName}'s ${name} Damage Roll`,
-                            `game.hm3.macros.missileDamageRoll("${name}"${actorSuffix});`,
+                            `hm3.macros.missileDamageRoll("${name}"${actorSuffix});`,
                             slot,
                             img,
                             {'hm3.itemMacro': false}
@@ -936,7 +936,7 @@ async function killRollAlt({noDialog = false, actor = null, token = null, injury
                 // DYING!!!
                 await options.token?.addCondition(Condition.DYING);
             } else {
-                await game.hm3.GmSays({
+                await hm3.GmSays({
                     text: `<b>${options.token.name}</b> just survives this <b>Fatal</b> wound, and makes a normal <b>Shock</b> roll.`,
                     source: 'Combat 14'
                 });
@@ -1561,7 +1561,7 @@ export async function fallingRollv2(noDialog = false, myActor = null, token = nu
                 actor: actorInfo.actor,
                 aim: success ? 'Low' : 'Mid',
                 aspect: Aspect.BLUNT,
-                impact: await game.hm3.macros.rollResultAsync(dice + 'd6', {
+                impact: await hm3.macros.rollResultAsync(dice + 'd6', {
                     name: actorInfo.actor.name,
                     type: 'fallingRoll'
                 }),
@@ -1639,7 +1639,7 @@ export async function moraleRollv2(noDialog = false, myActor = null) {
                 await token?.addCondition(Condition.CAUTIOUS, {oneRound: true});
             } else if (!result.isSuccess && result.isCritical) {
                 // CF
-                const total = await game.hm3.macros.rollResultAsync('1d100', {
+                const total = await hm3.macros.rollResultAsync('1d100', {
                     name: actorInfo.actor?.name,
                     type: 'CF moraleRoll'
                 });
@@ -1774,13 +1774,13 @@ export async function unhorsingRoll(noDialog = false, myActor = null, autofail =
             actorInfo.actor.runCustomMacro(result);
             if (result.isSuccess) {
                 // CS/MS - rider stays in saddle (COMBAT 24)
-                await game.hm3.GmSays({text: `<b>${token.name}</b> stays in the saddle.`, source: 'Combat 24'});
+                await hm3.GmSays({text: `<b>${token.name}</b> stays in the saddle.`, source: 'Combat 24'});
                 if (result.isCritical) {
                     // CS - rider gains TA (COMBAT 24)
                 }
             } else {
                 // CF/MF - rider is thrown (COMBAT 24)
-                await game.hm3.GmSays({text: `<b>${token.name}</b> is thrown.`, source: 'Combat 24'});
+                await hm3.GmSays({text: `<b>${token.name}</b> is thrown.`, source: 'Combat 24'});
             }
             callOnHooks('hm3.onUnhorsingRoll', actorInfo.actor, result, stdRollData);
 
@@ -2304,12 +2304,12 @@ function getTokenInCombat(token = null, forceAllow = false) {
         return result;
     }
 
-    if (!game.combat || game.combat.combatants.length === 0) {
+    if (!game.combat || game.combat?.combatants.length === 0) {
         ui.notifications?.warn(`No active combatant.`);
         return null;
     }
 
-    const combatant = game.combat.combatant;
+    const combatant = game.combat?.combatant;
 
     if (token && token.id !== combatant.token.id) {
         ui.notifications?.warn(`${token.name} cannot perform that action at this time.`);
@@ -2459,16 +2459,16 @@ export function distanceBtwnTwoTokens(sourceTokenId, targetTokenId, gridUnits = 
     const source = canvas?.tokens?.get(sourceTokenId);
     const target = canvas?.tokens?.get(targetTokenId);
 
-    if (!source || !target || !canvas.scene || !canvas.scene.grid) return 9999;
+    if (!source || !target || !canvas?.scene || !canvas?.scene?.grid) return 9999;
 
     const sourceElevation = source.document?.elevation || 0;
     const targetElevation = target.document?.elevation || 0;
 
-    let distance = utility.truncate(canvas.grid.measurePath([source.center, target.center]).distance, 0);
+    let distance = utility.truncate(canvas?.grid?.measurePath([source.center, target.center]).distance, 0);
     distance = Math.sqrt(distance ** 2 + (sourceElevation - targetElevation) ** 2);
-    distance = Math.ceil(distance / canvas.dimensions.distance) * canvas.dimensions.distance;
+    distance = Math.ceil(distance / (canvas?.dimensions?.distance ?? 5)) * (canvas?.dimensions?.distance ?? 5);
 
-    if (gridUnits) return distance / canvas.dimensions.distance;
+    if (gridUnits) return distance / (canvas?.dimensions?.distance ?? 5);
 
     return distance;
 }
@@ -2480,7 +2480,7 @@ export function distanceBtwnTwoTokens(sourceTokenId, targetTokenId, gridUnits = 
  */
 export function getAllTokens(options) {
     options = foundry.utils.mergeObject({friendly: true, neutral: true, secret: true, hostile: true}, options);
-    return canvas.scene.tokens.contents.filter(
+    return canvas?.scene?.tokens.contents.filter(
         (t) =>
             (t.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY && options.friendly) ||
             (t.disposition === CONST.TOKEN_DISPOSITIONS.NEUTRAL && options.neutral) ||
@@ -2508,8 +2508,8 @@ export function getSpecificTokens(options) {
  * @returns
  */
 export function pathIntersectsCircle(circle, line, centerToCenter = true) {
-    const size = canvas.grid.size / canvas.grid.distance;
-    const radius = (centerToCenter ? circle.radius : circle.radius + canvas.grid.distance) * size;
+    const size = (canvas?.grid?.size ?? 0) / (canvas?.grid?.distance ?? 1);
+    const radius = (centerToCenter ? circle.radius : circle.radius + canvas?.grid?.distance) * size;
     const c = new PIXI.Circle(circle.center.x, circle.center.y, radius);
     const ixs = c.segmentIntersections(line.p1, line.p2);
     if (ixs.length === 0) return null;
@@ -2666,7 +2666,7 @@ export async function createActiveEffect(effectData, changes = [], options = {})
             await effect?.setFlag(
                 'effectmacro',
                 'onDisable.script',
-                `game.hm3.macros.deleteActiveEffect('${effectData.token.id}', '${effect.id}');`
+                `hm3.macros.deleteActiveEffect('${effectData.token.id}', '${effect.id}');`
             );
         }
 
@@ -2845,7 +2845,7 @@ export async function createCondition(token, condition, conditionOptions = {}) {
         condMacro.script =
             'let success=true;try{' +
             condMacro.script.trim() +
-            `}catch(error){success=false;game.hm3.gmconsole('error','Error in Condition "${condition}" - Effect Macro "${v}"',error);} 
+            `}catch(error){success=false;hm3.gmconsole('error','Error in Condition "${condition}" - Effect Macro "${v}"',error);} 
             finally{Hooks.callAllUsers('hm3.${condData.effectData.flags.hm3.uuid}', success);}`;
         condMacro.script = utility.beautify(condMacro.script);
     });
@@ -3046,7 +3046,7 @@ export async function createInjuryHelper(injuryData) {
                     onDelete: {
                         script: `const token = canvas?.tokens?.get('${injuryData.token.id}');
 if(token.hasInjury('${injuryData.injuryId}'))
-    await game.hm3.macros.createInjuryHelper(${injuryData});`
+    await hm3.macros.createInjuryHelper(${injuryData});`
                     }
                 }
             }
@@ -3132,7 +3132,7 @@ export async function isTAPossible(token) {
     const distracted = token.hasCondition(Condition.DISTRACTED);
     const unconscious = token.hasCondition(Condition.UNCONSCIOUS);
 
-    return !cautious && !distracted && !unconscious && (await game.hm3.socket.executeAsGM('isFirstTA'));
+    return !cautious && !distracted && !unconscious && (await hm3.socket.executeAsGM('isFirstTA'));
 }
 
 export async function updateOverlay(token) {

@@ -1,3 +1,5 @@
+// @ts-check
+
 import {Hook} from './hm3-types.js';
 import {getActorFromMacro} from './utility.js';
 
@@ -39,17 +41,17 @@ export async function onManageMacro(event, owner) {
         a.dataset.action !== 'delete'
     );
     const action = clickOnName ? 'edit' : a.dataset.action;
-    let macro = li.dataset.macroId ? game.macros.get(li.dataset.macroId) : null;
+    let macro = li.dataset.macroId ? game.macros?.get(li.dataset.macroId) : null;
     switch (action) {
         case 'create':
             macro = await Macro.create({name: `New macro`, type: 'script', scope: 'global', folder: owner.macrofolder});
-            await macro.setFlag('hm3', 'trigger', 'manual');
-            await macro.setFlag('hm3', 'ownerId', owner.id);
+            await macro?.setFlag('hm3', 'trigger', 'manual');
+            await macro?.setFlag('hm3', 'ownerId', owner.id);
 
-            return macro.sheet.render(true);
+            return macro?.sheet?.render(true);
 
         case 'edit':
-            return macro.sheet.render(true);
+            return macro?.sheet?.render(true);
 
         case 'delete':
             return new Dialog({
@@ -60,7 +62,7 @@ export async function onManageMacro(event, owner) {
                         icon: '<i class="fas fa-check"></i>',
                         label: 'Yes',
                         callback: async (html) => {
-                            await macro.delete();
+                            await macro?.delete();
                             getActorFromMacro(macro)?.sheet.render();
                         }
                     },
@@ -99,19 +101,19 @@ async function executeHook(...args) {
                     const actorId = macro.getFlag('hm3', 'ownerId') || null;
                     try {
                         await macro.execute({
-                            macroActor: game.actors.get(actorId) || null,
+                            macroActor: game.actors?.get(actorId) || null,
                             macroTokens: actorId
-                                ? canvas.scene.tokens.contents.filter((t) => t.actor.id === actorId)
+                                ? canvas?.scene?.tokens.contents.filter((t) => t.actor.id === actorId)
                                 : null,
                             allOtherTokens: actorId
-                                ? canvas.scene.tokens.contents.filter((t) => t.actor.id !== actorId)
+                                ? canvas?.scene?.tokens.contents.filter((t) => t.actor.id !== actorId)
                                 : null,
                             triggerArgs: args, // original args from the hook
-                            macros: game.hm3.macros // convenience
+                            macros: hm3.macros // convenience
                         });
                     } catch (err) {
-                        if (game.user.isGM)
-                            ui.notifications.error(
+                        if (game.user?.isGM)
+                            ui.notifications?.error(
                                 `Error executing macro ${macro.name} (${macro.id}) for hook ${hook}:`
                             );
                     }
