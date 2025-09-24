@@ -88,8 +88,8 @@ await Requestor.request({
 const token = canvas?.tokens?.get('${token.id}');
 if (!token) return;
 await token.document.setFlag('wall-height', 'tokenHeight', token.actor.system.height || 6);
-if (game.combat?.started && game.combat.combatant) {
-    if (game.combat.combatant.id === token.combatant?.id) {
+if (game.combat?.started && game.combat?.combatant) {
+    if (game.combat?.combatant.id === token.combatant?.id) {
         await hm3.GmSays({
             text: '<b>' + token.name + '</b> rises successfully. <b>Turn ends.</b>',
             source: 'Combat 11',

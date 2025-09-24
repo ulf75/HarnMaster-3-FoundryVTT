@@ -40,7 +40,7 @@ await hm3.macros.createInjury({
 const unconscious = token.hasCondition(hm3.Condition.UNCONSCIOUS);
 if (!unconscious) {
     if (game.combat?.started && !token.player) await token.combatant.update({defeated: true});
-    const turnEnds = game.combat?.started && game.combat.combatant.id === token.combatant.id;
+    const turnEnds = game.combat?.started && game.combat?.combatant.id === token.combatant.id;
     if (turnEnds) {
         await hm3.GmSays({
             text:
