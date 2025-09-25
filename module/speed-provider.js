@@ -46,7 +46,7 @@ export async function registerDragRulerHook() {
              * @param {TokenHM3} token - The token to check movement
              * */
             getRanges(token) {
-                const move = Math.max(token.actor?.system.move.effective, 1);
+                const move = Math.max(token.actor?.proxy.MOV, 1);
                 const creep = {range: 5 * Math.max(Math.round(move / 3 + Number.EPSILON), 1), color: 'creep'};
                 const walk = {range: 5 * Math.max(Math.round(move / 2 + Number.EPSILON), 2), color: 'walk'};
                 const jog = {range: 5 * Math.max(Math.round(move + Number.EPSILON), 4), color: 'jog'};
@@ -70,7 +70,7 @@ export async function registerDragRulerHook() {
                     return [{range: -1, color: 'creep'}];
                 }
 
-                if (prone || shocked || token.actor?.system.shockIndex.value < 20) {
+                if (prone || shocked || token.actor?.proxy.shockIndex.value < 20) {
                     return [creep, walk];
                 }
 

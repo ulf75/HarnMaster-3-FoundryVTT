@@ -343,15 +343,15 @@ Hooks.once('init', async function () {
         }
     });
 
-    await registerDragRulerHook();
-    await registerHandlebars();
-    await registerFoundryHooks();
-    await registerHM3Hooks();
+    registerDragRulerHook();
+    registerHandlebars();
+    registerFoundryHooks();
+    registerHM3Hooks();
 });
 
 Hooks.once('setup', async function () {
-    await registerFoundryGMHooks();
-    await registerHM3GMHooks();
+    registerFoundryGMHooks();
+    registerHM3GMHooks();
 });
 
 /**
