@@ -851,7 +851,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const li = $(ev.currentTarget).parents('.item');
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
-            macros.usePsionicRoll(item?.uuid, fastforward, this.actor);
+            macros.usePsionicRollv2(item?.uuid, fastforward, this.actor);
         });
 
         // d6 Ability Score Roll

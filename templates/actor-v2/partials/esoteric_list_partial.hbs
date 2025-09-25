@@ -64,13 +64,13 @@
             <div class="item-detail spell-eml">{{ EML }}</div>
             <div class="item-detail spell-notes">{{ notes }}</div>
             <div class="item-controls-wide">
-                {{#if item.isSkillImprovement}}
+                {{#if isSkillImprovement}}
                 <a
                     class="item-control item-improve"
                     aria-label="Improve Skill"
                     data-tooltip="Improve Skill"
                     data-tooltip-direction="UP">
-                    {{#if system.improveFlag}}
+                    {{#if improveFlag}}
                     <i class="active fas fa-star"></i>
                     {{else}}
                     <i class="far fa-star"></i>

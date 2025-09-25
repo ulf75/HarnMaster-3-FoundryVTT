@@ -429,29 +429,30 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
     return null;
 }
 
-export async function usePsionicRoll(itemName, noDialog = false, myActor = null) {
+export async function usePsionicRollv2(itemName, noDialog = false, myActor = null) {
     const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.PSIONIC);
-
+    const aproxy = actor.proxy;
+    const iproxy = item.proxy;
     const stdRollData = {
         type: `psionic-${item.name}`,
         skill: `${item.name}`,
         label: `Using ${item.name} Talent`,
-        target: item.system.effectiveMasteryLevel,
+        target: iproxy.EML,
         notesData: {
-            up: actor.system.universalPenalty,
-            pp: actor.system.physicalPenalty,
-            il: actor.system.eph.totalInjuryLevels || 0,
-            fatigue: actor.system.eph.fatigue,
-            eml: item.system.effectiveMasteryLevel,
-            ml: item.system.masteryLevel,
-            sb: item.system.skillBase.value,
-            si: item.system.skillIndex,
-            psionicName: item.name,
-            fatigueCost: item.system.fatigue
+            up: aproxy.UP,
+            pp: aproxy.PP,
+            il: aproxy.IP,
+            fatigue: aproxy.FP,
+            eml: iproxy.EML,
+            ml: iproxy.ML,
+            sb: iproxy.SB.value,
+            si: iproxy.SI,
+            psionicName: iproxy.name,
+            fatigueCost: iproxy.fatigue
         },
         speaker: speaker,
         fastforward: noDialog,
-        notes: item.system.notes
+        notes: iproxy.notes
     };
     if (actor.isToken) {
         stdRollData.token = actor.token.id;
@@ -466,7 +467,7 @@ export async function usePsionicRoll(itemName, noDialog = false, myActor = null)
             item.runCustomMacro(result);
             callOnHooks('hm3.onPsionicsRoll', actor, result, stdRollData, item);
 
-            utility.fatigueReceived(actor, item.system.fatigue);
+            utility.fatigueReceived(actor, iproxy.fatigue);
             utility.improveFlag(item, {success: result.roll.isSuccess});
         }
         return result;
