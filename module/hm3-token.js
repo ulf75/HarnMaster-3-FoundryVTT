@@ -17,6 +17,14 @@ export class TokenHM3 extends Token {
         if (!tokenMutex) tokenMutex = new Mutex();
     }
 
+    /**
+     * @type {import('./actor/actor.js').ActorHM3 | null}
+     * @override
+     */
+    get actor() {
+        return super.actor;
+    }
+
     /** @override */
     _onClickLeft(event) {
         if (event.shiftKey && event.ctrlKey) super._onClickLeft2(event);
