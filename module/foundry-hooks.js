@@ -6,43 +6,15 @@ import {checkExpiredActiveEffects, checkStartedActiveEffects} from './effect';
 import {ItemType} from './hm3-types';
 import {createHM3Macro} from './macros';
 import {Mutex} from './mutex';
-import {beautify} from './utility';
+import {beautify, truncate} from './utility';
 
-export function initializeFoundryHooks() {
+/**
+ *
+ */
+export async function registerFoundryHooks() {
     Hooks.on('hotbarDrop', (bar, data, slot) => createHM3Macro(data, slot));
 
     Hooks.on('renderPause', (_app, html) => html.find('img').attr('src', 'systems/hm3/images/png/HMLogo.png'));
-
-    // Since HM3 does not have the concept of rolling for initiative,
-    // this hook simply prepopulates the initiative value. This ensures
-    // that no die roll is needed.
-    Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
-        if (!combatant.initiative) {
-            let token = canvas?.tokens?.get(combatant.tokenId);
-            combatant.initiative = token?.actor?.system.initiative;
-        }
-    });
-
-    // If the combatant is not already in combat, roll initiative
-    Hooks.on('createCombatant', (combatant, options, id) => {
-        if (combatant.testUserPermission(game.user, 'OWNER')) combatant.rollInitiative();
-    });
-
-    Hooks.on('updateCombat', async (combat, updateData) => {
-        return updateOutnumbered({hook: 'updateCombat'});
-    });
-
-    Hooks.on('updateCombatant', async (combatant, info, updateData, userId) => {
-        return updateOutnumbered({hook: 'updateCombatant'});
-    });
-
-    Hooks.on('createActiveEffect', async (activeEffect, info, userId) => {
-        return updateOutnumbered({aeName: activeEffect.name, hook: 'createActiveEffect'});
-    });
-
-    Hooks.on('deleteActiveEffect', async (activeEffect, info, userId) => {
-        return updateOutnumbered({aeName: activeEffect.name, hook: 'deleteActiveEffect'});
-    });
 
     Hooks.on('dropCanvasData', async (canvas, data) => {
         if (data.type === 'Item') {
@@ -131,6 +103,34 @@ export function initializeFoundryHooks() {
     });
 }
 
+/**
+ *
+ */
+export async function registerFoundryGMHooks() {
+    if (!game.user?.isGM) return;
+
+    // If the combatant is not already in combat, roll initiative
+    Hooks.on('createCombatant', (combatant, options, id) => {
+        combatant.rollInitiative();
+    });
+
+    Hooks.on('updateCombat', async (combat, updateData) => {
+        return updateOutnumbered({hook: 'updateCombat'});
+    });
+
+    Hooks.on('updateCombatant', async (combatant, info, updateData, userId) => {
+        return updateOutnumbered({hook: 'updateCombatant'});
+    });
+
+    Hooks.on('createActiveEffect', async (activeEffect, info, userId) => {
+        return updateOutnumbered({aeName: activeEffect.name, hook: 'createActiveEffect'});
+    });
+
+    Hooks.on('deleteActiveEffect', async (activeEffect, info, userId) => {
+        return updateOutnumbered({aeName: activeEffect.name, hook: 'deleteActiveEffect'});
+    });
+}
+
 let outMutex = new Mutex();
 /**
  * Update outnumbered status for combatants
@@ -141,6 +141,7 @@ let outMutex = new Mutex();
  */
 async function updateOutnumbered({aeName = 'true', hook = 'nohook'} = {}) {
     if (game.combat?.started && game.user?.isGM) {
+        const start = performance.now();
         if (aeName === 'true' || outnumberedConditions().includes(aeName)) {
             return outMutex.runExclusive(async () => {
                 console.info(`HM3 | Run updateOutnumbered (aeName = ${aeName}, hook = ${hook})`);
@@ -151,6 +152,8 @@ async function updateOutnumbered({aeName = 'true', hook = 'nohook'} = {}) {
             });
         }
         Hooks.call('hm3.onOutnumbered', aeName, hook);
+
+        console.info(`HM3 | CombatantHM3.getInitiativeRoll: ${truncate(performance.now() - start)} ms`);
     }
 
     return true;

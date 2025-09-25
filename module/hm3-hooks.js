@@ -3,7 +3,10 @@
 import {TokenDocumentHM3} from './hm3-token';
 import {Condition, ItemType} from './hm3-types';
 
-export function initHM3Hooks() {
+/**
+ *
+ */
+export async function registerHM3Hooks() {
     Hooks.on('hm3.onMount', async (actor, steed) => {
         if (!actor.testUserPermission(game.user, 'OWNER') || !steed.testUserPermission(game.user, 'OWNER')) return;
 
@@ -50,4 +53,11 @@ export function initHM3Hooks() {
             }
         }
     });
+}
+
+/**
+ *
+ */
+export async function registerHM3GMHooks() {
+    if (!game.user?.isGM) return;
 }

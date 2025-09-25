@@ -3,7 +3,7 @@
 import {TokenHM3} from './hm3-token';
 import {Condition} from './hm3-types';
 
-export function initDragRuler() {
+export async function registerDragRulerHook() {
     // @ts-expect-error
     Hooks.once('dragRuler.ready', (SpeedProvider) => {
         class HarnMaster3SpeedProvider extends SpeedProvider {

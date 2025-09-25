@@ -1,6 +1,6 @@
 // @ts-check
 
-export async function initializeHandlebars() {
+export async function registerHandlebars() {
     // If you need to add Handlebars helpers, here are a few useful examples:
     Handlebars.registerHelper('concat', function () {
         var outStr = '';

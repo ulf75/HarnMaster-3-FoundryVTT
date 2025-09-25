@@ -6,13 +6,13 @@ import {CharacterSheetHM3v2} from './module/actor/character-sheet-v2.js';
 import {ContainerSheetHM3v2} from './module/actor/container-sheet-v2.js';
 import {CreatureSheetHM3v2} from './module/actor/creature-sheet-v2.js';
 import {HM3} from './module/config.js';
-import {initializeFoundryHooks} from './module/foundry-hooks.js';
-import {initializeHandlebars} from './module/handlebars.js';
+import {registerFoundryGMHooks, registerFoundryHooks} from './module/foundry-hooks.js';
+import {registerHandlebars} from './module/handlebars.js';
 import {ActiveEffectHM3} from './module/hm3-active-effect.js';
 import {ChatMessageHM3} from './module/hm3-chatmessage.js';
 import {CombatHM3} from './module/hm3-combat.js';
 import {CombatantHM3} from './module/hm3-combatant.js';
-import {initHM3Hooks} from './module/hm3-hooks.js';
+import {registerHM3GMHooks, registerHM3Hooks} from './module/hm3-hooks.js';
 import {MacroHM3} from './module/hm3-macro.js';
 import {RollHM3} from './module/hm3-roll.js';
 import {TokenDocumentHM3, TokenHM3} from './module/hm3-token.js';
@@ -45,7 +45,7 @@ import {registerHooks} from './module/macro.js';
 import * as macros from './module/macros.js';
 import * as migrations from './module/migrations.js';
 import {registerSystemSettings} from './module/settings.js';
-import {initDragRuler} from './module/speed-provider.js';
+import {registerDragRulerHook} from './module/speed-provider.js';
 import {SlideToggleElement} from './module/toggle.js';
 import {Weather} from './module/weather.js';
 import {BaseTestHM3} from './tests/hm3-basetest.js';
@@ -343,10 +343,15 @@ Hooks.once('init', async function () {
         }
     });
 
-    initDragRuler();
-    initializeHandlebars();
-    initializeFoundryHooks();
-    initHM3Hooks();
+    await registerDragRulerHook();
+    await registerHandlebars();
+    await registerFoundryHooks();
+    await registerHM3Hooks();
+});
+
+Hooks.once('setup', async function () {
+    await registerFoundryGMHooks();
+    await registerHM3GMHooks();
 });
 
 /**
