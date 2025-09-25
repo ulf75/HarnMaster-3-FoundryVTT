@@ -429,6 +429,13 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
     return null;
 }
 
+/**
+ *
+ * @param {string} itemName
+ * @param {boolean} noDialog
+ * @param {ActorHM3 | null} myActor
+ * @returns
+ */
 export async function usePsionicRollv2(itemName, noDialog = false, myActor = null) {
     const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.PSIONIC);
     const aproxy = actor.proxy;
