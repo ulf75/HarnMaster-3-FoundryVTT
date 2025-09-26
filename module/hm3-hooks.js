@@ -49,7 +49,7 @@ export async function registerHM3Hooks() {
     );
 
     Hooks.on(
-        'hm3.onUnmount',
+        'hm3.onDismount',
 
         /**
          *

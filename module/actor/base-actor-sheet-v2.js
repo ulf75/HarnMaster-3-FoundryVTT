@@ -1140,7 +1140,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             if (!aproxy.mounted) {
                 Hooks.call('hm3.onMount', aproxy);
             } else {
-                Hooks.call('hm3.onUnmount', aproxy);
+                Hooks.call('hm3.onDismount', aproxy);
             }
         }
     }

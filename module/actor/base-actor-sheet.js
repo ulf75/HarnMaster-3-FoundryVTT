@@ -1298,7 +1298,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             if (!this.actor.system.mounted) {
                 Hooks.call('hm3.onMount', this.actor, steed);
             } else {
-                Hooks.call('hm3.onUnmount', this.actor, steed);
+                Hooks.call('hm3.onDismount', this.actor, steed);
             }
         }
     }
