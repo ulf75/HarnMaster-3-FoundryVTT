@@ -6,6 +6,7 @@ import {ItemHM3} from '../item/item.js';
 import {onManageMacro} from '../macro.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
+import {ActorHM3} from './actor.js';
 
 /**
  * Extend the basic ActorSheet with some common capabilities
@@ -57,7 +58,6 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             }),
             filters: this._filters,
             hasRwPermission: game.user?.isGM || !game.settings?.get('hm3', 'strictGmMode'),
-            hasSteed: this.actor.hasLinkedSteed,
             isCharacter: this.document.type === ActorType.CHARACTER,
             isCharacterMancer: this.actor.getFlag('hm3', 'CharacterMancer') || false,
             isContainer: this.document.type === ActorType.CONTAINER,
@@ -74,6 +74,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
         context = foundry.utils.mergeObject(context, {
             cssClass: context.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked',
+            hasSteed: !!context.aproxy.steed,
             ...this._itemLists(context.items)
         });
 
@@ -821,11 +822,8 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // Healing Roll
         html.on('click', '.healing-roll', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
-            const noDialog = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
-            macros.healingRoll(item?.uuid, noDialog, this.actor);
-            //const ifff = new ImportFFF();
-            //ifff.importFromJSON('test.json');
+            macros.healingRollv2(item?.uuid ?? '', ev.shiftKey || ev.altKey || ev.ctrlKey);
         });
 
         // Shock Roll
@@ -1135,14 +1133,14 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
     async _onToggleMount(event) {
         event.preventDefault();
 
-        const riding = this.actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
+        const aproxy = ActorHM3.LivingProxy(this.actor.uuid);
+        const riding = aproxy.Skill('Riding');
 
-        const steed = fromUuidSync(riding?.system.actorUuid);
-        if (steed) {
-            if (!this.actor.system.mounted) {
-                Hooks.call('hm3.onMount', this.actor, steed);
+        if (aproxy.steed) {
+            if (!aproxy.mounted) {
+                Hooks.call('hm3.onMount', aproxy);
             } else {
-                Hooks.call('hm3.onUnmount', this.actor, steed);
+                Hooks.call('hm3.onUnmount', aproxy);
             }
         }
     }

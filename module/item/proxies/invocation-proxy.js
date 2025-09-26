@@ -47,17 +47,17 @@ export class InvocationProxy extends ItemProxy {
     }
     /**
      * Ritual Skill Base (SB)
-     * @type {{value: number, formula: string, isFormulaValid: boolean, delta: number}}
+     * @type {{value: number, formula: string, isFormulaValid: boolean, delta: number} | null}
      */
     get SB() {
-        return this.Skill(this.diety)?.SB;
+        return this.Skill(this.diety)?.SB ?? null;
     }
     /**
      * Ritual Skill Index (RSI)
      * @type {number}
      */
     get SI() {
-        return this.Skill(this.diety)?.SI;
+        return this.Skill(this.diety)?.SI ?? -1;
     }
 
     /**
@@ -65,8 +65,9 @@ export class InvocationProxy extends ItemProxy {
      */
     get dieties() {
         const dieties = [];
-        if (this.actor) {
-            this.actorProxy.itemTypes.skill.forEach((item) => {
+        if (this.aproxy) {
+            this.aproxy.itemTypes.skill.forEach((item) => {
+                // @ts-expect-error
                 if (item.subtype === SkillType.RITUAL) dieties.push(item.name);
             });
         }

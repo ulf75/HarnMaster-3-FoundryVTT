@@ -53,17 +53,17 @@ export class SpellProxy extends ItemProxy {
     }
     /**
      * Convocation Skill Base (SB)
-     * @type {{value: number, formula: string, isFormulaValid: boolean, delta: number}}
+     * @type {{value: number, formula: string, isFormulaValid: boolean, delta: number} | null}
      */
     get SB() {
-        return this.Skill(this.convocation)?.SB;
+        return this.Skill(this.convocation)?.SB ?? null;
     }
     /**
      * Convocation Skill Index (CSI)
      * @type {number}
      */
     get SI() {
-        return this.Skill(this.convocation)?.SI;
+        return this.Skill(this.convocation)?.SI ?? -1;
     }
 
     /**
@@ -71,8 +71,8 @@ export class SpellProxy extends ItemProxy {
      */
     get convocations() {
         const convocations = [];
-        if (this.actor) {
-            this.actorProxy.itemTypes.skill.forEach((item) => {
+        if (this.aproxy) {
+            this.aproxy.itemTypes.skill.forEach((item) => {
                 if (item.subtype === SkillType.MAGIC) convocations.push(item.name);
             });
         }
@@ -89,7 +89,7 @@ export class SpellProxy extends ItemProxy {
         html.off('click', '.spell-roll');
         html.on('click', '.spell-roll', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
-            const item = this.actor.items.get(li.data('itemId'));
+            const item = this.actor?.items.get(li.data('itemId'));
             castSpellRollv2(item?.uuid, ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor);
         });
     }

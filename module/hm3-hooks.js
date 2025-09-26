@@ -1,5 +1,6 @@
 // @ts-check
 
+import {LivingProxy} from './actor/proxies/living-proxy';
 import {TokenDocumentHM3} from './hm3-token';
 import {Condition, ItemType} from './hm3-types';
 
@@ -7,42 +8,73 @@ import {Condition, ItemType} from './hm3-types';
  *
  */
 export async function registerHM3Hooks() {
-    Hooks.on('hm3.onMount', async (actor, steed) => {
-        if (!actor.testUserPermission(game.user, 'OWNER') || !steed.testUserPermission(game.user, 'OWNER')) return;
+    Hooks.on(
+        'hm3.onMount',
+        /**
+         *
+         * @param {LivingProxy} aproxy
+         * @returns
+         */
+        async (aproxy) => {
+            if (
+                !game.user ||
+                !aproxy.actor.testUserPermission(game.user, 'OWNER') ||
+                !aproxy.steed?.actor.testUserPermission(game.user, 'OWNER')
+            )
+                return;
 
-        await actor.update({'system.mounted': true});
-        actor.prepareData();
-        const riding = actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
-        riding.sheet.render();
+            await aproxy.actor.update({'system.mounted': true});
+            // aproxy.actor.prepareData();
+            const riding = aproxy.Skill('Riding');
+            riding.item.sheet?.render();
 
-        const rider = steed.items.find((item) => item.type === ItemType.MISCGEAR && item.name.includes('Rider'));
-        await rider?.delete();
-        await Item.create(
-            {
-                img: actor.img,
-                name: 'Rider/' + actor.name,
-                system: {
-                    actorUuid: actor.uuid,
-                    type: 'Rider',
-                    weight: actor.proxy.weight + actor.proxy.totalGearWeight
+            const rider = aproxy.steed.proxies.find(
+                (item) => item.type === ItemType.MISCGEAR && item.name.includes('Rider')
+            );
+            await rider?.item.delete();
+            await Item.create(
+                {
+                    img: aproxy.img,
+                    name: 'Rider/' + aproxy.name,
+                    system: {
+                        actorUuid: aproxy.uuid,
+                        type: 'Rider',
+                        weight: aproxy.weight + aproxy.totalGearWeight
+                    },
+                    type: ItemType.MISCGEAR
                 },
-                type: ItemType.MISCGEAR
-            },
-            {parent: steed}
-        );
-    });
+                {parent: aproxy.steed.actor}
+            );
+        }
+    );
 
-    Hooks.on('hm3.onUnmount', async (actor, steed) => {
-        if (!actor.testUserPermission(game.user, 'OWNER') || !steed.testUserPermission(game.user, 'OWNER')) return;
+    Hooks.on(
+        'hm3.onUnmount',
 
-        await actor.update({'system.mounted': false});
-        actor.prepareData();
-        const riding = actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
-        riding.sheet.render();
+        /**
+         *
+         * @param {LivingProxy} aproxy
+         * @returns
+         */
+        async (aproxy) => {
+            if (
+                !game.user ||
+                !aproxy.actor.testUserPermission(game.user, 'OWNER') ||
+                !aproxy.steed?.actor.testUserPermission(game.user, 'OWNER')
+            )
+                return;
 
-        const rider = steed.items.find((item) => item.type === ItemType.MISCGEAR && item.name.includes('Rider'));
-        await rider?.delete();
-    });
+            await aproxy.actor.update({'system.mounted': false});
+            // aproxy.actor.prepareData();
+            const riding = aproxy.Skill('Riding');
+            riding.item.sheet?.render();
+
+            const rider = aproxy.steed.proxies.find(
+                (item) => item.type === ItemType.MISCGEAR && item.name.includes('Rider')
+            );
+            await rider?.item.delete();
+        }
+    );
 
     Hooks.on('hm3.onShockIndexReduced', async (actor, old, current) => {
         if (game.combat?.started && actor.parent instanceof TokenDocumentHM3 && !actor.parent.player) {

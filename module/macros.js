@@ -648,10 +648,8 @@ export async function injuryRollv2(myActor = null, rollData = {}) {
         return null;
     }
 
-    rollData.notesData = {};
     rollData.actor = actorInfo.actor;
     rollData.speaker = actorInfo.speaker;
-    rollData.notes = '';
 
     const hooksOk = Hooks.call('hm3.preInjuryRoll', rollData, actorInfo.actor);
     if (hooksOk) {
@@ -666,17 +664,16 @@ export async function injuryRollv2(myActor = null, rollData = {}) {
 
 /**
  *
- * @param {string} itemName
+ * @param {string} uuid
  * @param {boolean} noDialog
- * @param {ActorHM3 | null} myActor
  * @returns
  */
-export async function healingRoll(itemName, noDialog = false, myActor = null) {
-    const actorInfo = await getItemAndActor(itemName, myActor, ItemType.INJURY);
+export async function healingRollv2(uuid, noDialog = false) {
+    const iproxy = ItemHM3.InjuryProxy(uuid);
 
     /** @type {import('./actor/proxies/living-proxy.js').LivingProxy} */
-    const aproxy = actorInfo?.actor?.proxy;
-    const iproxy = actorInfo?.item?.proxy;
+    // @ts-expect-error
+    const aproxy = iproxy.aproxy;
 
     const subtype = iproxy.subtype;
     if (subtype === InjuryType.HEALING && (isNaN(iproxy.IL) || iproxy.IL < 1 || iproxy.IL > 5)) {
@@ -685,7 +682,7 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
     }
 
     if (isNaN(iproxy.HR) || iproxy.HR < 1 || iproxy.HR > 7) {
-        return treatmentRoll(aproxy, iproxy, actorInfo?.speaker);
+        return treatmentRoll(aproxy, iproxy, aproxy.speaker);
     }
 
     // Negligible injury (EE) heals automatically
@@ -699,7 +696,7 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
         label: `${iproxy.name} Healing Roll`,
         notes: iproxy.notes,
         physicianSkills: aproxy.getPartySkills('Physician'),
-        speaker: actorInfo?.speaker,
+        speaker: aproxy.speaker,
         subtype,
         target: iproxy.HR * aproxy.END,
         type: 'healing',

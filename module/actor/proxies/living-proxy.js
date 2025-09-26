@@ -373,11 +373,14 @@ export class LivingProxy extends ActorProxy {
      * @type {boolean}
      */
     get hasSteed() {
-        return !!this.Skill('Riding')?.actorUuid;
+        return !!this.Skill('Riding')?.steedUuid;
     }
 
+    /**
+     * @type {LivingProxy | null}
+     */
     get steed() {
-        return this.hasSteed ? fromUuidSync(this.Skill('Riding').actorUuid) : null;
+        return ActorHM3.LivingProxy(this.Skill('Riding')?.steedUuid) ?? null;
     }
 
     get containers() {

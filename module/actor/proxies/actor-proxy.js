@@ -77,8 +77,18 @@ export class ActorProxy {
     get name() {
         return this.actor.name;
     }
+    /**
+     * @type {import('../../item/proxies/item-proxy').ItemProxy[]}
+     */
     get proxies() {
         return this.actor.proxies;
+    }
+    /**
+     * @type {ChatMessage.SpeakerData}
+     */
+    get speaker() {
+        // @ts-expect-error
+        return ChatMessage.getSpeaker({actor: this.actor});
     }
     /**
      * @type {string}
@@ -246,6 +256,19 @@ export class ActorProxy {
             })
             .filter((p) => !!p)
             .sort((a, b) => b.ML - a.ML);
+    }
+
+    /**
+     *
+     * @returns {ActorProxy[]}
+     */
+    getSteeds() {
+        const steeds = this.proxies.filter(
+            (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.STEED
+        );
+        return steeds.map((steed) => {
+            return fromUuidSync(steed.actorUuid);
+        });
     }
 
     activateListeners(html) {

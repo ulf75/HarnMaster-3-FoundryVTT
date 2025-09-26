@@ -46,7 +46,7 @@ export class SkillProxy extends ItemProxy {
      * @type {number}
      */
     get penalty() {
-        return [SkillType.COMBAT, SkillType.PHYSICAL].includes(this.subtype) ? this.actorProxy.PP : this.actorProxy.UP;
+        return [SkillType.COMBAT, SkillType.PHYSICAL].includes(this.subtype) ? this.aproxy.PP : this.aproxy.UP;
     }
     /**
      * @type {{value: number, formula: string, isFormulaValid: boolean, delta: number}}

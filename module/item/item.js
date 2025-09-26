@@ -26,7 +26,34 @@ import {WeaponProxy} from './proxies/weapon-proxy.js';
  */
 export class ItemHM3 extends Item {
     _impactTypeChanged = false;
-    static _proxyMap = new Map();
+
+    /**
+     *
+     * @param {string} uuid
+     * @returns {SkillProxy}
+     */
+    static SkillProxy(uuid) {
+        const item = fromUuidSync(uuid);
+        console.assert(item, '');
+        // @ts-expect-error
+        console.assert(item?.type === ItemType.SKILL, '');
+        // @ts-expect-error
+        return item?.proxy;
+    }
+
+    /**
+     *
+     * @param {string} uuid
+     * @returns {InjuryProxy}
+     */
+    static InjuryProxy(uuid) {
+        const item = fromUuidSync(uuid);
+        console.assert(item, '');
+        // @ts-expect-error
+        console.assert(item?.type === ItemType.INJURY, '');
+        // @ts-expect-error
+        return item?.proxy;
+    }
 
     /**
      * @type {ActorHM3 | null}
@@ -38,7 +65,7 @@ export class ItemHM3 extends Item {
     }
 
     get proxy() {
-        if (!ItemHM3._proxyMap.has(this.uuid)) {
+        if (!hm3.proxyCache.has(this.uuid)) {
             let iproxy = null;
             switch (this.type) {
                 case ItemType.ARMORGEAR:
@@ -85,10 +112,10 @@ export class ItemHM3 extends Item {
                     iproxy = new WeaponProxy(this);
                     break;
             }
-            ItemHM3._proxyMap.set(this.uuid, iproxy);
+            hm3.proxyCache.set(this.uuid, iproxy);
         }
 
-        return ItemHM3._proxyMap.get(this.uuid);
+        return hm3.proxyCache.get(this.uuid);
     }
 
     /**

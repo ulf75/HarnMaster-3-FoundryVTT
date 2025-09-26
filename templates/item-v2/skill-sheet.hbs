@@ -53,14 +53,14 @@
             class="value system-actor-uuid"
             id="system.actorUuid"
             name="system.actorUuid">
-            {{selectOptions iproxy.steeds selected=iproxy.actorUuid valueAttr="key" labelAttr="label"}}
+            {{selectOptions iproxy.steeds selected=iproxy.steedUuid valueAttr="key" labelAttr="label"}}
         </select>
         {{else}}
         <input
             class="value"
             type="text"
             id="system.actorUuid"
-            value="{{ iproxy.actorName }}"
+            value="{{ iproxy.steedName }}"
             data-dtype="String"
             disabled />
         {{/if}}

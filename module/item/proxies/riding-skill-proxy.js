@@ -13,13 +13,13 @@ export class RidingSkillProxy extends SkillProxy {
     /**
      * @type {string}
      */
-    get actorName() {
+    get steedName() {
         return fromUuidSync(this.item.system.actorUuid)?.name ?? 'Unknown';
     }
     /**
      * @type {string}
      */
-    get actorUuid() {
+    get steedUuid() {
         return this.item.system.actorUuid;
     }
     /**
@@ -38,13 +38,13 @@ export class RidingSkillProxy extends SkillProxy {
      * @type {boolean}
      */
     get mounted() {
-        return this.actorProxy.mounted;
+        return this.aproxy?.mounted ?? false;
     }
     /**
      * @type {{key: string, label: string}[]}
      */
     get steeds() {
-        const steeds = this.actor.getSteeds();
+        const steeds = this.aproxy?.getSteeds() ?? [];
         return [
             {key: '', label: `No Steed`},
             ...steeds.map((steed) => {
@@ -75,7 +75,7 @@ export class RidingSkillProxy extends SkillProxy {
             // Steed linked to Riding skill according to COMBAT 20
             if (!!result['system.actorUuid'] && result.img === ridingImg) {
                 /** @type {Actor | null} */
-                const steed = fromUuidSync(this.actorUuid);
+                const steed = fromUuidSync(this.steedUuid);
                 if (steed) {
                     this.item.img = steed.img;
                     this.item.name += '/' + steed.name;

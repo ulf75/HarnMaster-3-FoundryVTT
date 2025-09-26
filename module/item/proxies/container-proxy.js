@@ -31,7 +31,7 @@ export class ContainerProxy extends GearProxy {
      * @type {ItemProxy[]}
      */
     get content() {
-        return this.actorProxy.proxies.filter((item) => item.container === this.id);
+        return this.aproxy?.proxies.filter((item) => item.container === this.id) ?? [];
     }
     /**
      * @type {boolean}

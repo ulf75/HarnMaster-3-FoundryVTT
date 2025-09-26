@@ -27,16 +27,16 @@ export class ItemProxy {
         return 'itemv2';
     }
     /**
-     * @type {ActorHM3}
+     * @type {ActorHM3 | null}
      */
     get actor() {
         return this.item.actor;
     }
     /**
-     * @type {ActorProxy}
+     * @type {ActorProxy | null}
      */
-    get actorProxy() {
-        return this.actor.proxy;
+    get aproxy() {
+        return this.actor?.proxy ?? null;
     }
     /**
      * @type {string | null}
@@ -68,8 +68,18 @@ export class ItemProxy {
     get type() {
         return this.item.type;
     }
+    /**
+     * @type {number}
+     */
     get sort() {
         return this.item.sort || 0;
+    }
+    /**
+     * @type {ChatMessage.SpeakerData}
+     */
+    get speaker() {
+        // @ts-expect-error
+        return ChatMessage.getSpeaker({actor: this.actor});
     }
     /**
      * @type {string}
@@ -84,11 +94,8 @@ export class ItemProxy {
         return true;
     }
 
-    /**
-     * @type {{combatSkillIcons}}
-     */
     get config() {
-        return CONFIG.HM3;
+        return hm3.config;
     }
     /**
      * @type {string}
@@ -149,9 +156,17 @@ export class ItemProxy {
         );
     }
 
+    /**
+     *
+     * @param {string} name
+     * @returns {import('./skill-proxy').SkillProxy | null}
+     */
     Skill(name) {
-        return this.actor.proxies.find(
-            (item) => item.type === ItemType.SKILL && item.name.toLowerCase().includes(name.toLowerCase())
+        // @ts-expect-error
+        return (
+            this.actor?.proxies.find(
+                (item) => item.type === ItemType.SKILL && item.name.toLowerCase().includes(name.toLowerCase())
+            ) ?? null
         );
     }
 

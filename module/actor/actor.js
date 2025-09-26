@@ -2,25 +2,57 @@
 
 import {HM3} from '../config.js';
 import {DiceHM3} from '../hm3-dice.js';
-import {ActorType, CompanionType, Condition, ItemType, SkillType} from '../hm3-types.js';
+import {ActorType, Condition, ItemType, SkillType} from '../hm3-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
+import {ActorProxy} from './proxies/actor-proxy.js';
 import {CharacterProxy} from './proxies/character-proxy.js';
 import {ContainerProxy} from './proxies/container-proxy.js';
 import {CreatureProxy} from './proxies/creature-proxy.js';
+import {LivingProxy} from './proxies/living-proxy.js';
 
 /**
  * Extend the base Actor by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
 export class ActorHM3 extends Actor {
-    static _proxyMap = new Map();
+    /**
+     *
+     * @param {string} uuid
+     * @returns {LivingProxy | null}
+     */
+    static LivingProxy(uuid) {
+        if (!uuid) return null;
+        const actor = fromUuidSync(uuid);
+        console.assert(actor, 'HM3 | Actor is undefined.');
+        console.assert(
+            // @ts-expect-error
+            actor?.type === ActorType.CHARACTER || actor?.type === ActorType.CREATURE,
+            'HM3 | Actor is NOT a Character or Creature.'
+        );
+        // @ts-expect-error
+        return actor?.proxy;
+    }
+    /**
+     *
+     * @param {string} uuid
+     * @returns {ContainerProxy | null}
+     */
+    static ContainerProxy(uuid) {
+        if (!uuid) return null;
+        const actor = fromUuidSync(uuid);
+        console.assert(actor, 'HM3 | Actor is undefined.');
+        // @ts-expect-error
+        console.assert(actor?.type === ActorType.CONTAINER, 'HM3 | Actor is NOT a Container.');
+        // @ts-expect-error
+        return actor?.proxy;
+    }
 
     /**
-     * @type {CharacterProxy|ContainerProxy|CreatureProxy}
+     * @type {ActorProxy}
      */
     get proxy() {
-        if (!ActorHM3._proxyMap.has(this.uuid)) {
+        if (!hm3.proxyCache.has(this.uuid)) {
             let aproxy = null;
             switch (this.type) {
                 case ActorType.CHARACTER:
@@ -34,11 +66,10 @@ export class ActorHM3 extends Actor {
                     break;
             }
 
-            // aproxy = createCachingHandler(aproxy, this.name);
-            ActorHM3._proxyMap.set(this.uuid, aproxy);
+            hm3.proxyCache.set(this.uuid, aproxy);
         }
 
-        return ActorHM3._proxyMap.get(this.uuid);
+        return hm3.proxyCache.get(this.uuid);
     }
 
     /**
@@ -94,53 +125,6 @@ export class ActorHM3 extends Actor {
     }
 
     /**
-     * @type {boolean}
-     */
-    get hasLinkedSteed() {
-        const riding = this.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
-        return !!riding && !!riding.system.actorUuid;
-    }
-
-    /**
-     *
-     * @returns {ActorHM3[]}
-     */
-    getSteeds() {
-        const steeds = this.items.contents.filter(
-            (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.STEED
-        );
-        return steeds.map((steed) => {
-            return fromUuidSync(steed.system.actorUuid);
-        });
-    }
-
-    /**
-     *
-     * @returns {ActorHM3[]}
-     */
-    getParty() {
-        const party = this.items.contents.filter(
-            (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.PARTY
-        );
-        return [
-            this,
-            ...party.map((party) => {
-                return fromUuidSync(party.system.actorUuid);
-            })
-        ];
-    }
-
-    getPartySkills(skill) {
-        const party = this.getParty();
-        return party
-            .map((p) => {
-                return p.items.getName(skill);
-            })
-            .filter((p) => !!p)
-            .sort((a, b) => b.system.effectiveMasteryLevel - a.system.effectiveMasteryLevel);
-    }
-
-    /**
      * The original FVTT return of the applicable effects does not take the permissions into account.
      * With this implementation, a player must have at least LIMITED permission to see the active effect.
      * @override
@@ -156,7 +140,11 @@ export class ActorHM3 extends Actor {
                 effects.push(effect);
             } else {
                 const hidden = effect.hidden && !game.user?.isGM;
-                if (effect.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED) && !hidden) {
+                if (
+                    game.user &&
+                    effect.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED) &&
+                    !hidden
+                ) {
                     effects.push(effect);
                 }
             }
@@ -183,12 +171,15 @@ export class ActorHM3 extends Actor {
         return macros.getActiveEffect(this, condition, condition === Condition.OUTNUMBERED ? false : true);
     }
 
+    /**
+     * @override
+     */
     static defaultName({type, parent, pack} = {}) {
         const documentName = this.metadata.name;
         let collection;
         if (parent) collection = parent.getEmbeddedCollection(documentName);
         else if (pack) collection = game.packs?.get(pack);
-        else collection = game.collections.get(documentName);
+        else collection = game.collections?.get(documentName);
         const takenNames = new Set();
         for (const document of collection) takenNames.add(document.name);
         const baseName = CONFIG.Actor.typeLabels[type] ? CONFIG.Actor.typeLabels[type] : type;

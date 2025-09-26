@@ -72,6 +72,8 @@ globalThis.hm3 = {
     Range,
     SkillType,
 
+    proxyCache: new Map(),
+
     CONST: {
         COMBAT: {SHOCK_INDEX_THRESHOLD: 20},
         TIME: {

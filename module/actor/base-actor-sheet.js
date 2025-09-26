@@ -986,7 +986,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const li = $(ev.currentTarget).parents('.item');
             const noDialog = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
-            macros.healingRoll(item?.uuid, noDialog, this.actor);
+            macros.healingRollv2(item?.uuid, noDialog, this.actor);
             //const ifff = new ImportFFF();
             //ifff.importFromJSON('test.json');
         });
