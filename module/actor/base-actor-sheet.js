@@ -835,7 +835,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const li = $(ev.currentTarget).parents('.item');
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
-            macros.castSpellRoll(item?.uuid, fastforward, this.actor);
+            macros.castSpellRollv2(item?.uuid, fastforward, this.actor);
         });
 
         // Standard 1d100 Ritual Invocation Roll
@@ -843,7 +843,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const li = $(ev.currentTarget).parents('.item');
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
-            macros.invokeRitualRoll(item?.uuid, fastforward, this.actor);
+            macros.invokeRitualRollv2(item?.uuid, fastforward, this.actor);
         });
 
         // Standard 1d100 Psionic Talent Roll

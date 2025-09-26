@@ -1,6 +1,6 @@
 // @ts-check
 import {SkillType} from '../../hm3-types';
-import {invokeRitualRoll} from '../../macros';
+import {invokeRitualRollv2} from '../../macros';
 import {HM100Check} from '../../utility';
 import {ItemProxy} from './item-proxy';
 
@@ -25,11 +25,41 @@ export class InvocationProxy extends ItemProxy {
         return this.item.system.diety;
     }
     /**
+     * Effective Ritual Mastery Level (EML)
      * @type {number}
      */
     get EML() {
         return HM100Check((this.Skill(this.diety)?.EML ?? 0) - 5 * this.circle);
     }
+    /**
+     * Ritual Mastery Level (ML)
+     * @type {number}
+     */
+    get ML() {
+        return HM100Check(this.Skill(this.diety)?.ML ?? 0);
+    }
+    /**
+     * Ritual Skill Index (RSI)
+     * @type {number}
+     */
+    get RSI() {
+        return this.SI;
+    }
+    /**
+     * Ritual Skill Base (SB)
+     * @type {{value: number, formula: string, isFormulaValid: boolean, delta: number}}
+     */
+    get SB() {
+        return this.Skill(this.diety)?.SB;
+    }
+    /**
+     * Ritual Skill Index (RSI)
+     * @type {number}
+     */
+    get SI() {
+        return this.Skill(this.diety)?.SI;
+    }
+
     /**
      * @type {string[]}
      */
@@ -42,6 +72,7 @@ export class InvocationProxy extends ItemProxy {
         }
         return dieties;
     }
+
     /**
      * @param {JQuery} html
      * @override
@@ -54,7 +85,7 @@ export class InvocationProxy extends ItemProxy {
             const li = $(ev.currentTarget).parents('.item');
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
-            invokeRitualRoll(item?.uuid, fastforward, this.actor);
+            invokeRitualRollv2(item?.uuid, fastforward, this.actor);
         });
     }
 }

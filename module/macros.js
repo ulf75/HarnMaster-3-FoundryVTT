@@ -298,24 +298,25 @@ export async function skillRollAlt({itemUuid = null, noDialog = false}) {
     if (!item) return;
     const actor = item.actor;
     console.assert(actor, 'This parameter MUST NOT be null.');
+    /** @type {import('./actor/proxies/living-proxy.js').LivingProxy} */
     const aproxy = actor?.proxy;
     const iproxy = item.proxy;
     const speaker = ChatMessage.getSpeaker({actor});
 
     const stdRollData = {
-        type: `skill-${item.name}`,
-        skill: `${item.name}`,
-        label: `${item.name} Skill Test`,
+        type: `skill-${iproxy.name}`,
+        skill: `${iproxy.name}`,
+        label: `${iproxy.name} Skill Test`,
         target: iproxy.EML,
         notesData: {
-            up: aproxy.UP,
-            pp: aproxy.PP,
-            il: aproxy.IP,
-            fatigue: aproxy.FP,
             eml: iproxy.EML,
+            fatigue: aproxy.FP,
+            il: aproxy.IP,
             ml: iproxy.ML,
+            pp: aproxy.PP,
             sb: iproxy.SB.value,
-            si: iproxy.SI
+            si: iproxy.SI,
+            up: aproxy.UP
         },
         speaker,
         fastforward: noDialog,
@@ -343,30 +344,39 @@ export async function skillRollAlt({itemUuid = null, noDialog = false}) {
     return null;
 }
 
-export async function castSpellRoll(itemName, noDialog = false, myActor = null) {
+/**
+ *
+ * @param {string} itemName
+ * @param {boolean} noDialog
+ * @param {ActorHM3 | null} myActor
+ * @returns
+ */
+export async function castSpellRollv2(itemName, noDialog = false, myActor = null) {
     const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.SPELL);
-
+    /** @type {import('./actor/proxies/living-proxy.js').LivingProxy} */
+    const aproxy = actor.proxy;
+    const iproxy = item.proxy;
     const stdRollData = {
-        type: `spell-${item.name}`,
-        skill: `${item.name}`,
-        label: `Casting ${item.name}`,
-        target: item.system.effectiveMasteryLevel,
+        type: `spell-${iproxy.name}`,
+        skill: `${iproxy.name}`,
+        label: `Casting ${iproxy.name}`,
+        target: iproxy.EML,
         notesData: {
-            up: actor.system.universalPenalty,
-            pp: actor.system.physicalPenalty,
-            il: actor.system.eph.totalInjuryLevels || 0,
-            fatigue: actor.system.eph.fatigue,
-            eml: item.system.effectiveMasteryLevel,
-            ml: item.system.masteryLevel,
-            sb: item.system.skillBase,
-            si: item.system.skillIndex,
-            spellName: item.name,
-            convocation: item.system.convocation,
-            level: item.system.level
+            convocation: iproxy.convocation,
+            eml: iproxy.EML,
+            fatigue: aproxy.FP,
+            il: aproxy.IP,
+            level: iproxy.level,
+            ml: iproxy.ML,
+            pp: aproxy.PP,
+            sb: iproxy.SB.value,
+            si: iproxy.SI,
+            spellName: iproxy.name,
+            up: aproxy.UP
         },
-        speaker: speaker,
+        speaker,
         fastforward: noDialog,
-        notes: item.system.notes
+        notes: iproxy.notes
     };
     if (actor.isToken) {
         stdRollData.token = actor.token.id;
@@ -386,30 +396,40 @@ export async function castSpellRoll(itemName, noDialog = false, myActor = null) 
     return null;
 }
 
-export async function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
+/**
+ *
+ * @param {string} itemName
+ * @param {boolean} noDialog
+ * @param {ActorHM3 | null} myActor
+ * @returns
+ */
+export async function invokeRitualRollv2(itemName, noDialog = false, myActor = null) {
     const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.INVOCATION);
-
+    /** @type {import('./actor/proxies/living-proxy.js').LivingProxy} */
+    const aproxy = actor.proxy;
+    /** @type {import('./item/proxies/invocation-proxy.js').InvocationProxy} */
+    const iproxy = item.proxy;
     const stdRollData = {
-        type: `invocation-${item.name}`,
-        skill: `${item.name}`,
-        label: `Invoking ${item.name} Ritual`,
-        target: item.system.effectiveMasteryLevel,
+        type: `invocation-${iproxy.name}`,
+        skill: `${iproxy.name}`,
+        label: `Invoking ${iproxy.name} Ritual`,
+        target: iproxy.EML,
         notesData: {
-            up: actor.system.universalPenalty,
-            pp: actor.system.physicalPenalty,
-            il: actor.system.eph.totalInjuryLevels || 0,
-            fatigue: actor.system.eph.fatigue,
-            eml: item.system.effectiveMasteryLevel,
-            ml: item.system.masteryLevel,
-            sb: item.system.skillBase,
-            si: item.system.skillIndex,
-            invocationName: item.name,
-            diety: item.system.diety,
-            circle: item.system.circle
+            circle: iproxy.circle,
+            diety: iproxy.diety,
+            eml: iproxy.EML,
+            fatigue: aproxy.FP,
+            il: aproxy.IP,
+            invocationName: iproxy.name,
+            ml: iproxy.ML,
+            pp: aproxy.PP,
+            sb: iproxy.SB.value,
+            si: iproxy.SI,
+            up: aproxy.UP
         },
-        speaker: speaker,
+        speaker,
         fastforward: noDialog,
-        notes: item.system.notes
+        notes: iproxy.notes
     };
     if (actor.isToken) {
         stdRollData.token = actor.token.id;
@@ -438,6 +458,7 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
  */
 export async function usePsionicRollv2(itemName, noDialog = false, myActor = null) {
     const {actor, item, speaker} = await getItemAndActor(itemName, myActor, ItemType.PSIONIC);
+    /** @type {import('./actor/proxies/living-proxy.js').LivingProxy} */
     const aproxy = actor.proxy;
     const iproxy = item.proxy;
     const stdRollData = {
@@ -446,16 +467,16 @@ export async function usePsionicRollv2(itemName, noDialog = false, myActor = nul
         label: `Using ${item.name} Talent`,
         target: iproxy.EML,
         notesData: {
-            up: aproxy.UP,
-            pp: aproxy.PP,
-            il: aproxy.IP,
-            fatigue: aproxy.FP,
             eml: iproxy.EML,
+            fatigue: aproxy.FP,
+            fatigueCost: iproxy.fatigue,
+            il: aproxy.IP,
             ml: iproxy.ML,
+            pp: aproxy.PP,
+            psionicName: iproxy.name,
             sb: iproxy.SB.value,
             si: iproxy.SI,
-            psionicName: iproxy.name,
-            fatigueCost: iproxy.fatigue
+            up: aproxy.UP
         },
         speaker: speaker,
         fastforward: noDialog,
@@ -500,16 +521,16 @@ export async function testAbilityD6RollAlt(options) {
         return null;
     }
 
-    let abilities;
-    if (actorInfo.actor.type === 'character') {
-        abilities = Object.keys(game.model.Actor.character.abilities);
-    } else if (actorInfo.actor.type === 'creature') {
-        abilities = Object.keys(game.model.Actor.creature.abilities);
-    } else {
-        ui.notifications?.warn(`${actorInfo.name} does not have ability scores.`);
-        return null;
-    }
-    if (!options.ability || !abilities.includes(options.ability)) return null;
+    // let abilities;
+    // if (actorInfo.actor.type === 'character') {
+    //     abilities = Object.keys(game.model.Actor.character.abilities);
+    // } else if (actorInfo.actor.type === 'creature') {
+    //     abilities = Object.keys(game.model.Actor.creature.abilities);
+    // } else {
+    //     ui.notifications?.warn(`${actorInfo.name} does not have ability scores.`);
+    //     return null;
+    // }
+    // if (!options.ability || !abilities.includes(options.ability)) return null;
 
     const stdRollData = {
         type: `${options.ability}-d6`,
@@ -574,16 +595,16 @@ export async function testAbilityD100RollAlt(options) {
         return null;
     }
 
-    let abilities;
-    if (actorInfo.actor.type === 'character') {
-        abilities = Object.keys(game.model.Actor.character.abilities);
-    } else if (actorInfo.actor.type === 'creature') {
-        abilities = Object.keys(game.model.Actor.creature.abilities);
-    } else {
-        ui.notifications?.warn(`${actorInfo.actor.name} does not have ability scores.`);
-        return null;
-    }
-    if (!options.ability || !abilities.includes(options.ability)) return null;
+    // let abilities;
+    // if (actorInfo.actor.type === 'character') {
+    //     abilities = Object.keys(game.model.Actor.character.abilities);
+    // } else if (actorInfo.actor.type === 'creature') {
+    //     abilities = Object.keys(game.model.Actor.creature.abilities);
+    // } else {
+    //     ui.notifications?.warn(`${actorInfo.actor.name} does not have ability scores.`);
+    //     return null;
+    // }
+    // if (!options.ability || !abilities.includes(options.ability)) return null;
 
     const stdRollData = {
         type: `${options.ability}-d100`,
@@ -653,6 +674,7 @@ export async function injuryRollv2(myActor = null, rollData = {}) {
 export async function healingRoll(itemName, noDialog = false, myActor = null) {
     const actorInfo = await getItemAndActor(itemName, myActor, ItemType.INJURY);
 
+    /** @type {import('./actor/proxies/living-proxy.js').LivingProxy} */
     const aproxy = actorInfo?.actor?.proxy;
     const iproxy = actorInfo?.item?.proxy;
 
