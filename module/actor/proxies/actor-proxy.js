@@ -261,11 +261,11 @@ export class ActorProxy {
         html.off('click', '.ability-d6-roll');
         html.on('click', '.ability-d6-roll', async (ev) => {
             const ability = ev.currentTarget.dataset.ability;
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            const noDialog = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const target = this[ability].effective;
 
             const stdRollData = {
-                fastforward,
+                noDialog,
                 label: `3d6 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
                 numdice: 3,
                 skill: `${ability[0].toUpperCase()}${ability.slice(1)}`,
@@ -289,12 +289,12 @@ export class ActorProxy {
         html.off('click', '.ability-d100-roll');
         html.on('click', '.ability-d100-roll', async (ev) => {
             const ability = ev.currentTarget.dataset.ability;
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            const noDialog = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const effSkillBase = this[ability].effective;
 
             const stdRollData = {
                 effSkillBase,
-                fastforward,
+                noDialog,
                 isAbility: true,
                 label: `1d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
                 multiplier: 5,

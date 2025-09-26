@@ -694,47 +694,47 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // Standard 1d100 Skill Roll
         // html.find('.skill-roll').click((ev) => {
         //     const li = $(ev.currentTarget).parents('.item');
-        //     const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+        //     const noDialog = ev.shiftKey || ev.altKey || ev.ctrlKey;
         //     const item = this.actor.items.get(li.data('itemId'));
-        //     macros.skillRoll(item?.uuid, fastforward, this.actor);
+        //     macros.skillRoll(item?.uuid, noDialog, this.actor);
         // });
 
         // Standard 1d100 Spell Casting Roll
         // html.find('.spell-roll').click((ev) => {
         //     const li = $(ev.currentTarget).parents('.item');
-        //     const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+        //     const noDialog = ev.shiftKey || ev.altKey || ev.ctrlKey;
         //     const item = this.actor.items.get(li.data('itemId'));
-        //     macros.castSpellRoll(item?.uuid, fastforward, this.actor);
+        //     macros.castSpellRoll(item?.uuid, noDialog, this.actor);
         // });
 
         // Standard 1d100 Ritual Invocation Roll
         // html.find('.invocation-roll').click((ev) => {
         //     const li = $(ev.currentTarget).parents('.item');
-        //     const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+        //     const noDialog = ev.shiftKey || ev.altKey || ev.ctrlKey;
         //     const item = this.actor.items.get(li.data('itemId'));
-        //     macros.invokeRitualRoll(item?.uuid, fastforward, this.actor);
+        //     macros.invokeRitualRoll(item?.uuid, noDialog, this.actor);
         // });
 
         // Standard 1d100 Psionic Talent Roll
         // html.find('.psionic-roll').click((ev) => {
         //     const li = $(ev.currentTarget).parents('.item');
-        //     const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+        //     const noDialog = ev.shiftKey || ev.altKey || ev.ctrlKey;
         //     const item = this.actor.items.get(li.data('itemId'));
-        //     macros.usePsionicRoll(item?.uuid, fastforward, this.actor);
+        //     macros.usePsionicRoll(item?.uuid, noDialog, this.actor);
         // });
 
         // d6 Ability Score Roll
         // html.find('.ability-d6-roll').click((ev) => {
         //     const ability = ev.currentTarget.dataset.ability;
-        //     const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-        //     macros.testAbilityD6Roll(ability, fastforward, this.actor);
+        //     const noDialog = ev.shiftKey || ev.altKey || ev.ctrlKey;
+        //     macros.testAbilityD6Roll(ability, noDialog, this.actor);
         // });
 
         // d100 Ability Score Roll
         // html.find('.ability-d100-roll').click((ev) => {
         //     const ability = ev.currentTarget.dataset.ability;
-        //     const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-        //     macros.testAbilityD100Roll(ability, fastforward, this.actor);
+        //     const noDialog = ev.shiftKey || ev.altKey || ev.ctrlKey;
+        //     macros.testAbilityD100Roll(ability, noDialog, this.actor);
         // });
 
         // Melee Weapon Attack
@@ -821,9 +821,9 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // Healing Roll
         html.on('click', '.healing-roll', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            const noDialog = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
-            macros.healingRoll(item?.uuid, fastforward, this.actor);
+            macros.healingRoll(item?.uuid, noDialog, this.actor);
             //const ifff = new ImportFFF();
             //ifff.importFromJSON('test.json');
         });

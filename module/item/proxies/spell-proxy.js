@@ -89,9 +89,8 @@ export class SpellProxy extends ItemProxy {
         html.off('click', '.spell-roll');
         html.on('click', '.spell-roll', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
-            castSpellRollv2(item?.uuid, fastforward, this.actor);
+            castSpellRollv2(item?.uuid, ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor);
         });
     }
 }

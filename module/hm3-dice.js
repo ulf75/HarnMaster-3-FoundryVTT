@@ -50,7 +50,7 @@ export class DiceHM3 {
 
         // Create the Roll instance
         let roll;
-        if (rollData.fastforward)
+        if (rollData.noDialog)
             roll = await DiceHM3.rollTest({
                 diceNum: 1,
                 diceSides: 100,
@@ -509,7 +509,7 @@ export class DiceHM3 {
         };
 
         // Create the Roll instance
-        const roll = rollData.fastforward
+        const roll = rollData.noDialog
             ? await DiceHM3.rollTest({
                   diceNum: Number(rollData.numdice),
                   diceSides: 6,

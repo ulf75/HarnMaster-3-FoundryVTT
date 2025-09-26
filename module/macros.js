@@ -319,7 +319,7 @@ export async function skillRollAlt({itemUuid = null, noDialog = false}) {
             up: aproxy.UP
         },
         speaker,
-        fastforward: noDialog,
+        noDialog,
         notes: iproxy.notes,
         effSkillBase: iproxy.SB.value,
         isCraftOrLore: [SkillType.CRAFT, 'Lore'].includes(iproxy.subtype)
@@ -375,7 +375,7 @@ export async function castSpellRollv2(itemName, noDialog = false, myActor = null
             up: aproxy.UP
         },
         speaker,
-        fastforward: noDialog,
+        noDialog,
         notes: iproxy.notes
     };
     if (actor.isToken) {
@@ -428,7 +428,7 @@ export async function invokeRitualRollv2(itemName, noDialog = false, myActor = n
             up: aproxy.UP
         },
         speaker,
-        fastforward: noDialog,
+        noDialog,
         notes: iproxy.notes
     };
     if (actor.isToken) {
@@ -479,7 +479,7 @@ export async function usePsionicRollv2(itemName, noDialog = false, myActor = nul
             up: aproxy.UP
         },
         speaker: speaker,
-        fastforward: noDialog,
+        noDialog,
         notes: iproxy.notes
     };
     if (actor.isToken) {
@@ -540,7 +540,7 @@ export async function testAbilityD6RollAlt(options) {
         numdice: 3,
         notesData: {},
         speaker: actorInfo.speaker,
-        fastforward: options.noDialog,
+        noDialog: options.noDialog,
         notes: ''
     };
     if (actorInfo.actor.isToken) {
@@ -614,7 +614,7 @@ export async function testAbilityD100RollAlt(options) {
         target: Math.max(5, actorInfo.actor.system.abilities[options.ability].effective * options.multiplier),
         notesData: {},
         speaker: actorInfo.speaker,
-        fastforward: options.noDialog,
+        noDialog: options.noDialog,
         notes: '',
         isAbility: true,
         multiplier: options.multiplier,
@@ -695,7 +695,7 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
     }
 
     const stdRollData = {
-        fastforward: noDialog,
+        noDialog,
         label: `${iproxy.name} Healing Roll`,
         notes: iproxy.notes,
         physicianSkills: aproxy.getPartySkills('Physician'),
@@ -784,7 +784,7 @@ async function treatmentRoll(aproxy, injury, speaker) {
     }
 
     const stdRollData = {
-        fastforward: false,
+        noDialog: false,
         fluff,
         fluffResult: {
             CS:
@@ -941,7 +941,7 @@ async function killRollAlt({noDialog = false, actor = null, token = null, injury
 
     let hooksOk = false;
     const stdRollData = {
-        fastforward: noDialog,
+        noDialog,
         label: `Kill Roll`,
         numdice: injuryLevel,
         speaker: ChatMessage.getSpeaker({actor}),
@@ -1036,7 +1036,7 @@ async function shockRollAlt({actor = null, mode = 0, noDialog = false, target = 
 
     let hooksOk = false;
     const stdRollData = {
-        fastforward: noDialog,
+        noDialog,
         label: `Shock Roll`,
         numdice: up,
         speaker: ChatMessage.getSpeaker({actor}),
@@ -1092,7 +1092,7 @@ export async function willShockRollv2({myActor = null, noDialog = false, token =
 
     let hooksOk = false;
     const stdRollData = {
-        fastforward: noDialog,
+        noDialog,
         label: `Mental Shock Roll`,
         notes: '',
         notesData: {},
@@ -1186,7 +1186,7 @@ async function stumbleRollAlt({actor = null, noDialog = false, opponentToken = n
     }
 
     const stdRollData = {
-        fastforward: noDialog,
+        noDialog,
         label: `${actor.isToken ? actor.token?.name : actor.name} Stumble Roll`,
         numdice: 3,
         opponentToken,
@@ -1284,7 +1284,7 @@ async function fumbleRollAlt({actor = null, noDialog = false, opponentToken = nu
 
     const stdRollData = {
         actor,
-        fastforward: noDialog,
+        noDialog,
         label: `${actor.isToken ? actor.token.name : actor.name} Fumble Roll`,
         numdice: 3,
         opponentToken,
@@ -1479,7 +1479,7 @@ export async function fallingRollv2(noDialog = false, myActor = null, token = nu
                 const stdRollData = {
                     actor: actorInfo.actor,
                     effSkillBase,
-                    fastforward: true,
+                    noDialog: true,
                     isAbility: true,
                     label: `d100 Dexterity Roll`,
                     multiplier: 5,
@@ -1540,7 +1540,7 @@ export async function fallingRollv2(noDialog = false, myActor = null, token = nu
 
                 const stdRollData = {
                     actor: actorInfo.actor,
-                    fastforward: true,
+                    noDialog: true,
                     label: `${formSkill} Skill Test`,
                     name: `${actorInfo.token.name} tries to avoid falling damage.`,
                     numdice: 1,
@@ -1639,7 +1639,7 @@ export async function moraleRollv2(noDialog = false, myActor = null) {
 
     const stdRollData = {
         actor: actorInfo.actor,
-        fastforward: noDialog,
+        noDialog,
         label: `${actorInfo.actor?.isToken ? actorInfo.actor?.token?.name : actorInfo.actor?.name} Morale Roll`,
         private: true, // hidden to players
         speaker: actorInfo.speaker,
@@ -1712,7 +1712,7 @@ export async function steedCommandRoll(noDialog = false, myActor = null) {
 
     const stdRollData = {
         actor: actorInfo.actor,
-        fastforward: noDialog || !actorInfo.actor.hasPlayerOwner,
+        noDialog: noDialog || !actorInfo.actor.hasPlayerOwner,
         label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Steed Command Check`,
         notes: '',
         notesData: {},
@@ -1777,7 +1777,7 @@ export async function unhorsingRoll(noDialog = false, myActor = null, autofail =
 
     const stdRollData = {
         actor: actorInfo.actor,
-        fastforward: noDialog,
+        noDialog,
         label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Unhorsing Roll`,
         modifier: actorInfo.actor.system.eph.unhorsing || 0,
         notes: '',

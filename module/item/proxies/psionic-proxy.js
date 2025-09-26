@@ -35,9 +35,8 @@ export class PsionicProxy extends SkillProxy {
         html.off('click', '.psionic-roll');
         html.on('click', '.psionic-roll', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const item = this.actor.items.get(li.data('itemId'));
-            usePsionicRollv2(item?.uuid ?? '', fastforward, this.actor);
+            usePsionicRollv2(item?.uuid ?? '', ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor);
         });
     }
 }

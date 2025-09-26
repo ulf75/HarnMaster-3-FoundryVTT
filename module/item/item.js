@@ -1,3 +1,5 @@
+// @ts-check
+
 import {ActorHM3} from '../actor/actor.js';
 import {HM3} from '../config.js';
 import {ItemType, SkillType} from '../hm3-types.js';
@@ -27,9 +29,11 @@ export class ItemHM3 extends Item {
     static _proxyMap = new Map();
 
     /**
-     * @type {ActorHM3}
+     * @type {ActorHM3 | null}
+     * @override
      */
     get actor() {
+        // @ts-expect-error
         return super.actor;
     }
 
