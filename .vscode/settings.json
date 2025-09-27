@@ -21,5 +21,66 @@
   "i18n-ally.keystyle": "nested",
   "[xml]": {
     "editor.defaultFormatter": "PrateekMahendrakar.prettyxml"
-  }
+  },
+  "todo-tree.highlights.defaultHighlight": {
+    "icon": "alert",
+    "type": "text-and-comment",
+    "foreground": "black",
+    "background": "white",
+    "opacity": 50,
+    "iconColour": "blue",
+    "gutterIcon": true
+  },
+  "todo-tree.highlights.customHighlight": {
+    "TODO": {
+      "icon": "check",
+      "foreground": "black",
+      "background": "white",
+      "iconColour": "white"
+    },
+    "NOTE": {
+      "icon": "note",
+      "foreground": "white",
+      "background": "gray",
+      "iconColour": "gray"
+    },
+    "BUG": {
+      "foreground": "black",
+      "background": "red",
+      "iconColour": "red"
+    },
+    "[ ]": {
+      "icon": "check",
+      "foreground": "black",
+      "background": "white",
+      "iconColour": "yellow"
+    },
+    "[x]": {
+      "icon": "check",
+      "foreground": "white",
+      "background": "green",
+      "iconColour": "green"
+    }
+  },
+  "todo-tree.general.tags": ["BUG", "HACK", "FIXME", "FIX", "TODO", "@todo", "NOTE", "COMMENT", "[ ]", "[x]"],
+  "todo-tree.general.tagGroups": {
+    "BUG": ["FIXME", "BUG", "HACK", "FIX"],
+    "TODO": ["TODO", "@todo"],
+    "NOTE": ["NOTE", "COMMENT"]
+  },
+  "todo-tree.regex.regex": "(//|#|<!--|/\\*|^\\s*\\*)\\s*($TAGS)",
+  "todo-tree.filtering.excludeGlobs": [
+    "**/vendor/**",
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/bower_components/**",
+    "**/build/**",
+    "**/.vscode/**",
+    "**/.github/**",
+    "**/_output/**",
+    "**/*.min.*",
+    "**/*.map"
+  ],
+  "todo-tree.tree.tagsOnly": true,
+  "todo-tree.tree.showCountsInTree": true
 }

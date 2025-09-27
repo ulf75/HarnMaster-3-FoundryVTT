@@ -721,7 +721,6 @@ export class ActorHM3 extends Actor {
         //     Hooks.call('hm3.onTotalInjuryLevelsChanged', this, oldTotalInjuryLevels, actorData.totalInjuryLevels);
         // }
 
-        // TODO
         // const ability = actorData.abilities;
         // actorData.abilities.strength.modified = ability.strength.base;
         // actorData.abilities.stamina.modified = ability.stamina.base;

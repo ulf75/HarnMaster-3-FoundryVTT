@@ -78,7 +78,7 @@ export async function onManageMacro(event, owner) {
 }
 
 /**
- * TODO
+ * TODO: Doc
  */
 export async function registerHooks() {
     [...supportedFoundryHooks, ...supportedHMHooks].forEach((hook) => {
@@ -87,7 +87,7 @@ export async function registerHooks() {
 }
 
 /**
- * TODO
+ * TODO: Doc
  * @param  {...any} args
  */
 async function executeHook(...args) {

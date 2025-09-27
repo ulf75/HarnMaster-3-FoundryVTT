@@ -2527,12 +2527,13 @@ export function getSpecificTokens(options) {
 }
 
 /**
- * TODO
+ * TODO: Doc
  * Kudos: https://stackoverflow.com/questions/37224912/circle-line-segment-collision
  * @param {*} circle
  * @param {*} line
  * @param {*} centerToCenter
  * @returns
+ * @todo Needs checking
  */
 export function pathIntersectsCircle(circle, line, centerToCenter = true) {
     const size = (canvas?.grid?.size ?? 0) / (canvas?.grid?.distance ?? 1);
@@ -2549,7 +2550,7 @@ export function pathIntersectsCircle(circle, line, centerToCenter = true) {
 }
 
 /**
- * TODO
+ * TODO: Doc
  * @param {ActorHM3|TokenHM3|TokenDocumentHM3} actorOrToken
  * @param {string} aeName
  * @returns
@@ -2560,7 +2561,7 @@ export function hasActiveEffect(actorOrToken, aeName, strict = false) {
 }
 
 /**
- * TODO
+ * TODO: Doc
  * @param {ActorHM3|TokenHM3|TokenDocumentHM3} actorOrToken
  * @param {string} aeName
  * @returns
@@ -2588,7 +2589,7 @@ export function getActiveEffect(actorOrToken, aeName, strict = false) {
 let createMutex = new Mutex();
 
 /**
- * TODO
+ * TODO: Doc
  * @param {Object} effectData - Data to create the effect
  * @param {Object[]} [effectData.flags=[]] -
  * @param {string} [effectData.icon='icons/svg/aura.svg'] -

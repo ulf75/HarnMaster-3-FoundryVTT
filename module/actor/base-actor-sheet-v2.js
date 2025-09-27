@@ -181,7 +181,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
     /** @override */
     _onSortItem(event, itemData) {
-        // TODO - for now, don't allow sorting for Synthetic Actors
+        // NOTE: for now, don't allow sorting for Synthetic Actors
         if (this.actor.isToken) return;
 
         if (!itemData.type.endsWith('gear')) return super._onSortItem(event, itemData);
