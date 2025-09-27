@@ -1,9 +1,11 @@
 // @ts-check
 
 import {ActorHM3} from './actor/actor.js';
+import {LivingProxy} from './actor/proxies/living-proxy.js';
 import {HM3} from './config.js';
-import {ItemType} from './hm3-types.js';
+import {ActorType, ItemType} from './hm3-types.js';
 import {ItemHM3} from './item/item.js';
+import {SkillProxy} from './item/proxies/skill-proxy.js';
 
 /**
  * Determines whether the Skill Base Formula is valid. We perform that
@@ -24,23 +26,24 @@ import {ItemHM3} from './item/item.js';
  *
  * The result of this function is to set the "isFormulaValid" value appropriately.
  *
- * @param {Object} item
+ * @param {SkillProxy} iproxy
+ * @param {{value: number, formula: string, isFormulaValid: boolean, delta: number, OP: number, SBx: number}} sb
+ * @returns {{value: number, formula: string, isFormulaValid: boolean, delta: number, OP: number, SBx: number}}
  */
-export function calcSkillBase(item) {
-    const sb = item.system.skillBase;
-
+export function calcSkillBase(iproxy, sb) {
     sb.delta = 0;
     sb.isFormulaValid = true;
-    if (sb.formula === '') {
+    if (!sb.formula || sb.formula === '') {
         // If the formula is blank, its valid,
         // don't touch the existing value.
-        return;
+        sb.isFormulaValid = false;
+        return sb;
     }
 
-    let actorData = null;
-    if (item.actor?.system) {
-        actorData = item.actor.system;
-    }
+    /** @type {LivingProxy} */
+    // @ts-expect-error
+    const aproxy = iproxy.aproxy;
+    if (!aproxy) return sb;
 
     let numAbilities = 0;
     let sumBaseAbilities = 0;
@@ -79,88 +82,76 @@ export function calcSkillBase(item) {
                         break;
                     }
 
-                    if (actorData) {
-                        const paramName = param.slice(1);
-                        switch (paramName) {
-                            case 'str':
-                                sumBaseAbilities += actorData.abilities.strength.base;
-                                sumModifiedAbilities += actorData.abilities.strength.modified;
-                                break;
+                    const paramName = param.slice(1);
+                    switch (paramName) {
+                        case 'str':
+                            sumBaseAbilities += aproxy.strength.base;
+                            sumModifiedAbilities += aproxy.strength.modified;
+                            break;
 
-                            case 'sta':
-                                sumBaseAbilities += actorData.abilities.stamina.base;
-                                sumModifiedAbilities += actorData.abilities.stamina.modified;
-                                break;
+                        case 'sta':
+                            sumBaseAbilities += aproxy.stamina.base;
+                            sumModifiedAbilities += aproxy.stamina.modified;
+                            break;
 
-                            case 'dex':
-                                sumBaseAbilities += actorData.abilities.dexterity.base;
-                                sumModifiedAbilities += actorData.abilities.dexterity.modified;
-                                break;
+                        case 'dex':
+                            sumBaseAbilities += aproxy.dexterity.base;
+                            sumModifiedAbilities += aproxy.dexterity.modified;
+                            break;
 
-                            case 'agl':
-                                sumBaseAbilities += actorData.abilities.agility.base;
-                                sumModifiedAbilities += actorData.abilities.agility.modified;
-                                break;
+                        case 'agl':
+                            sumBaseAbilities += aproxy.agility.base;
+                            sumModifiedAbilities += aproxy.agility.modified;
+                            break;
 
-                            case 'int':
-                                sumBaseAbilities += actorData.abilities.intelligence.base;
-                                sumModifiedAbilities += actorData.abilities.intelligence.modified;
-                                break;
+                        case 'int':
+                            sumBaseAbilities += aproxy.intelligence.base;
+                            sumModifiedAbilities += aproxy.intelligence.modified;
+                            break;
 
-                            case 'aur':
-                                sumBaseAbilities += actorData.abilities.aura.base;
-                                sumModifiedAbilities += actorData.abilities.aura.modified;
-                                break;
+                        case 'aur':
+                            sumBaseAbilities += aproxy.aura.base;
+                            sumModifiedAbilities += aproxy.aura.modified;
+                            break;
 
-                            case 'wil':
-                                sumBaseAbilities += actorData.abilities.will.base;
-                                sumModifiedAbilities += actorData.abilities.will.modified;
-                                break;
+                        case 'wil':
+                            sumBaseAbilities += aproxy.will.base;
+                            sumModifiedAbilities += aproxy.will.modified;
+                            break;
 
-                            case 'eye':
-                                sumBaseAbilities += actorData.abilities.eyesight.base;
-                                sumModifiedAbilities += actorData.abilities.eyesight.modified;
-                                break;
+                        case 'eye':
+                            sumBaseAbilities += aproxy.eyesight.base;
+                            sumModifiedAbilities += aproxy.eyesight.modified;
+                            break;
 
-                            case 'hrg':
-                                sumBaseAbilities += actorData.abilities.hearing.base;
-                                sumModifiedAbilities += actorData.abilities.hearing.modified;
-                                break;
+                        case 'hrg':
+                            sumBaseAbilities += aproxy.hearing.base;
+                            sumModifiedAbilities += aproxy.hearing.modified;
+                            break;
 
-                            case 'sml':
-                                sumBaseAbilities += actorData.abilities.smell.base;
-                                sumModifiedAbilities += actorData.abilities.smell.modified;
-                                break;
+                        case 'sml':
+                            sumBaseAbilities += aproxy.smell.base;
+                            sumModifiedAbilities += aproxy.smell.modified;
+                            break;
 
-                            case 'voi':
-                                sumBaseAbilities += actorData.abilities.voice.base;
-                                sumModifiedAbilities += actorData.abilities.voice.modified;
-                                break;
+                        case 'voi':
+                            sumBaseAbilities += aproxy.voice.base;
+                            sumModifiedAbilities += aproxy.voice.modified;
+                            break;
 
-                            case 'cml':
-                                sumBaseAbilities += actorData.abilities.comeliness.base;
-                                sumModifiedAbilities += actorData.abilities.comeliness.modified;
-                                break;
+                        case 'cml':
+                            sumBaseAbilities += aproxy.comeliness.base;
+                            sumModifiedAbilities += aproxy.comeliness.modified;
+                            break;
 
-                            case 'mor':
-                                sumBaseAbilities += actorData.abilities.morality.base;
-                                sumModifiedAbilities += actorData.abilities.morality.modified;
-                                break;
+                        case 'mor':
+                            sumBaseAbilities += aproxy.morality.base;
+                            sumModifiedAbilities += aproxy.morality.modified;
+                            break;
 
-                            case 'end':
-                                sumBaseAbilities += actorData.abilities.endurance.base;
-                                sumModifiedAbilities += actorData.abilities.endurance.modified;
-                                break;
-
-                            case 'spd':
-                                sumBaseAbilities += actorData.abilities.speed.base;
-                                sumModifiedAbilities += actorData.abilities.speed.modified;
-                                break;
-
-                            default:
-                                sb.isFormulaValid = false;
-                                return;
-                        }
+                        default:
+                            sb.isFormulaValid = false;
+                            return sb;
                     }
 
                     numAbilities++;
@@ -184,11 +175,18 @@ export function calcSkillBase(item) {
                         break;
                     }
 
-                    if (actorData) {
+                    // the sunsign must exist
+                    if (!hm3.config.sunsigns.find((sunsign) => sunsign.key.toLowerCase() === ssParts[0])) {
+                        sb.isFormulaValid = false;
+                        break;
+                    }
+
+                    if (aproxy.type === ActorType.CHARACTER) {
                         // we must get the actor's sunsign to see if it matches. Actors may
                         // specify the sunsign as a dual sunsign, in which case the two parts
                         // must be separated either by a dash or a forward slash
-                        let actorSS = actorData.sunsign.trim().toLowerCase().split(/[-\/]/);
+                        // @ts-expect-error
+                        let actorSS = aproxy.sunsign.trim().toLowerCase().split(/[-\/]/);
 
                         // Call 'trim' function on all strings in actorSS
                         actorSS.map(Function.prototype.call, String.prototype.trim);
@@ -220,17 +218,18 @@ export function calcSkillBase(item) {
         sb.isFormulaValid = false;
     }
 
-    if (actorData) {
-        if (sb.isFormulaValid) {
-            ssBonus = ssBonus > Number.MIN_SAFE_INTEGER ? ssBonus : 0;
-            sb.value = Math.round(sumModifiedAbilities / 3 + Number.EPSILON) + ssBonus + modifier;
-            if (sumBaseAbilities !== sumModifiedAbilities) {
-                // typically the effective master level is increased/reduced by 5 for one attribute change
-                // sb.delta = sumModifiedAbilities / 3 - sumBaseAbilities / 3;
-                sb.delta = sumModifiedAbilities - sumBaseAbilities;
-            }
+    if (sb.isFormulaValid) {
+        ssBonus = ssBonus > Number.MIN_SAFE_INTEGER ? ssBonus : 0;
+        sb.value = Math.round(sumModifiedAbilities / 3 + Number.EPSILON) + ssBonus + modifier;
+        if (sumBaseAbilities !== sumModifiedAbilities) {
+            // typically the effective master level is increased/reduced by 5 for one attribute change
+            // sb.delta = sumModifiedAbilities / 3 - sumBaseAbilities / 3;
+            sb.delta = sumModifiedAbilities - sumBaseAbilities;
         }
+        return sb;
     }
+
+    return sb;
 }
 
 export function createUniqueName(prefix, itemTypes) {
