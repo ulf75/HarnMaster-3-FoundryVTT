@@ -1,5 +1,6 @@
 // @ts-check
 
+import {Mutex} from 'async-mutex';
 import {ActorHM3} from './actor/actor.js';
 import * as combat from './combat.js';
 import * as berserk from './condition/berserk.js';
@@ -28,7 +29,6 @@ import {RollHM3} from './hm3-roll.js';
 import {TokenDocumentHM3, TokenHM3} from './hm3-token.js';
 import {Aspect, Condition, InjuryType, ItemType, SkillType} from './hm3-types.js';
 import {ItemHM3} from './item/item.js';
-import {Mutex} from './mutex.js';
 import * as utility from './utility.js';
 
 /**

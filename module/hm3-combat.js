@@ -1,6 +1,6 @@
 // @ts-check
 
-import {Mutex} from './mutex';
+import {Mutex} from 'async-mutex';
 
 /**
  * @extends Combat

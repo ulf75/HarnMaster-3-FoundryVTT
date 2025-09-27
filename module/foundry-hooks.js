@@ -1,11 +1,11 @@
 // @ts-check
 
+import {Mutex} from 'async-mutex';
 import {ActorHM3} from './actor/actor';
 import {displayChatActionButtons, outnumberedConditions} from './combat';
 import {checkExpiredActiveEffects, checkStartedActiveEffects} from './effect';
 import {ItemType} from './hm3-types';
 import {createHM3Macro} from './macros';
-import {Mutex} from './mutex';
 import {beautify, truncate} from './utility';
 
 /**

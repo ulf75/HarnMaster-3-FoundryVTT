@@ -1,9 +1,9 @@
 // @ts-check
 
+import {Mutex} from 'async-mutex';
 import {rangeToTarget} from './combat.js';
 import {Condition, ItemType} from './hm3-types.js';
 import * as macros from './macros.js';
-import {Mutex} from './mutex.js';
 
 let tokenMutex;
 
