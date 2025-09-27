@@ -722,20 +722,20 @@ export class ActorHM3 extends Actor {
         // }
 
         // TODO
-        const ability = actorData.abilities;
-        actorData.abilities.strength.modified = ability.strength.base;
-        actorData.abilities.stamina.modified = ability.stamina.base;
-        actorData.abilities.dexterity.modified = ability.dexterity.base;
-        actorData.abilities.agility.modified = ability.agility.base;
-        actorData.abilities.eyesight.modified = ability.eyesight.base;
-        actorData.abilities.hearing.modified = ability.hearing.base;
-        actorData.abilities.smell.modified = ability.smell.base;
-        actorData.abilities.voice.modified = ability.voice.base;
-        actorData.abilities.intelligence.modified = ability.intelligence.base;
-        actorData.abilities.will.modified = ability.will.base;
-        actorData.abilities.aura.modified = ability.aura.base;
-        actorData.abilities.morality.modified = ability.morality.base;
-        actorData.abilities.comeliness.modified = ability.comeliness.base;
+        // const ability = actorData.abilities;
+        // actorData.abilities.strength.modified = ability.strength.base;
+        // actorData.abilities.stamina.modified = ability.stamina.base;
+        // actorData.abilities.dexterity.modified = ability.dexterity.base;
+        // actorData.abilities.agility.modified = ability.agility.base;
+        // actorData.abilities.eyesight.modified = ability.eyesight.base;
+        // actorData.abilities.hearing.modified = ability.hearing.base;
+        // actorData.abilities.smell.modified = ability.smell.base;
+        // actorData.abilities.voice.modified = ability.voice.base;
+        // actorData.abilities.intelligence.modified = ability.intelligence.base;
+        // actorData.abilities.will.modified = ability.will.base;
+        // actorData.abilities.aura.modified = ability.aura.base;
+        // actorData.abilities.morality.modified = ability.morality.base;
+        // actorData.abilities.comeliness.modified = ability.comeliness.base;
 
         Hooks.call('hm3.onActorPrepareBaseData', this);
     }
@@ -1365,12 +1365,12 @@ export class ActorHM3 extends Actor {
                     const riding = rider.items.find(
                         (item) => item.type === hm3.ItemType.SKILL && item.name.includes('Riding')
                     );
-                    if (item.system.masteryLevel >= riding.system.masteryLevel) {
+                    if (item.proxy.ML >= riding.proxy.ML) {
                         await hm3.GmSays({
                             text:
                                 `<h4>${this.name}: ${item.name}</h4>` +
                                 game.i18n?.localize('hm3.SDR.SteedSkills') +
-                                `<p style="font-size: smaller; font-variant: small-caps;">(${item.name} ML${item.system.masteryLevel} &ge; Riding ML${riding.system.masteryLevel})</p>`,
+                                `<p style="font-size: smaller; font-variant: small-caps;">(${item.name} ML${item.proxy.ML} &ge; Riding ML${riding.proxy.ML})</p>`,
                             source: 'Combat 20'
                         });
                         await item.update({
@@ -1387,7 +1387,7 @@ export class ActorHM3 extends Actor {
         if (result?.sdrIncr) {
             // Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)
             if (item.type === ItemType.SKILL && result.sdrIncr === 2) {
-                if (item.system.masteryLevel < 40) {
+                if (item.proxy.ML < 40) {
                     await hm3.GmSays({
                         text: `<h4>${this.name}: ${item.name}</h4>` + game.i18n?.localize('hm3.SDR.SkillSpecialty'),
                         source: 'SKILLS 2'
@@ -1398,7 +1398,7 @@ export class ActorHM3 extends Actor {
 
             await item.update({
                 'system.improveFlag': 0,
-                'system.masteryLevel': +item.system.masteryLevel + (result.sdrIncr === 2 ? 2 : 1)
+                'system.masteryLevel': +item.proxy.ML + (result.sdrIncr === 2 ? 2 : 1)
             });
             return true;
         } else {
