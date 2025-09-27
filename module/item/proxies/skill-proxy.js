@@ -22,25 +22,25 @@ export class SkillProxy extends ItemProxy {
      * @type {number}
      */
     get improveFlag() {
-        return this.item.system.improveFlag;
+        return this.item.system.improveFlag ?? 0;
     }
     /**
      * @type {number}
      */
     get ML() {
-        return this.item.system.masteryLevel;
+        return this.item.system.masteryLevel || this.OML;
     }
     /**
      * @type {number}
      */
     get OML() {
-        return truncatedOML(this.SBx * this.SB.value);
+        return truncatedOML((this.SBx + Math.round(this.OP / 2)) * this.SB.value);
     }
     /**
      * @type {number}
      */
     get OP() {
-        return this.item.system.skillBase.OP;
+        return this.SB.OP ?? 0;
     }
     /**
      * @type {number}
@@ -49,17 +49,16 @@ export class SkillProxy extends ItemProxy {
         return [SkillType.COMBAT, SkillType.PHYSICAL].includes(this.subtype) ? this.aproxy.PP : this.aproxy.UP;
     }
     /**
-     * @type {{value: number, formula: string, isFormulaValid: boolean, delta: number}}
+     * @type {{value: number, formula: string, isFormulaValid: boolean, delta: number, OP: number, SBx: number}}
      */
     get SB() {
-        calcSkillBase(this.item);
-        return this.item.system.skillBase;
+        return calcSkillBase(this, this.item.system.skillBase);
     }
     /**
      * @type {number}
      */
     get SBx() {
-        return this.item.system.skillBase.SBx;
+        return this.SB.SBx ?? 1;
     }
     /**
      * @type {number}
