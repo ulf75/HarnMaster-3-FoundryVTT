@@ -8,7 +8,7 @@
             Skill Base (SB)
         </label>
         <input class="value" type="text" id="system.skillBase.value" name="system.skillBase.value" value="{{ iproxy.SB.value }}"
-        data-dtype="Number" {{#if iproxy.SB.formula}}readonly{{/if}} {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
+        data-dtype="Number" {{#if iproxy.SB.isFormulaValid}}readonly{{/if}} {{#unless (and hasRwPermission editable)}}disabled{{/unless}} />
     </div>
     <div class="resource">
         <label
