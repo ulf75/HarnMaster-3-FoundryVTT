@@ -1,5 +1,6 @@
 // @ts-check
 
+import js_beautify from 'js-beautify/js/src/javascript/index.js';
 import {ActorHM3} from './actor/actor.js';
 import {LivingProxy} from './actor/proxies/living-proxy.js';
 import {HM3} from './config.js';
@@ -620,65 +621,66 @@ export function getActorFromMacro(macro) {
  * OML truncation only applies to starting characters. It does not affect in-game skill
  * development.
  * @link https://www.lythia.com/warflail/downloads/HMA_Rulebook_v1.4.pdf
- * @param {number} value - Opening Mastery Level (OML)
+ * @param {number} oml - Opening Mastery Level (OML)
  * @returns {number} truncated OML
  */
-export function truncatedOML(value) {
+export function truncatedOML(oml) {
     // @ts-expect-error
-    if (!game.settings?.get('hm3', 'truncateHighValueSkills')) return value;
-    if (value <= 70) return value;
-    else if (value <= 72) return 71;
-    else if (value <= 74) return 72;
-    else if (value <= 76) return 73;
-    else if (value <= 78) return 74;
-    else if (value <= 80) return 75;
-    else if (value <= 82) return 76;
-    else if (value <= 84) return 77;
-    else if (value <= 86) return 78;
-    else if (value <= 88) return 79;
-    else if (value <= 90) return 80;
-    else if (value <= 94) return 81;
-    else if (value <= 98) return 82;
-    else if (value <= 102) return 83;
-    else if (value <= 106) return 84;
-    else if (value <= 110) return 85;
-    else if (value <= 114) return 86;
-    else if (value <= 118) return 87;
+    if (!game.settings?.get('hm3', 'truncateHighValueSkills')) return oml;
+    if (oml <= 70) return oml;
+    else if (oml <= 72) return 71;
+    else if (oml <= 74) return 72;
+    else if (oml <= 76) return 73;
+    else if (oml <= 78) return 74;
+    else if (oml <= 80) return 75;
+    else if (oml <= 82) return 76;
+    else if (oml <= 84) return 77;
+    else if (oml <= 86) return 78;
+    else if (oml <= 88) return 79;
+    else if (oml <= 90) return 80;
+    else if (oml <= 94) return 81;
+    else if (oml <= 98) return 82;
+    else if (oml <= 102) return 83;
+    else if (oml <= 106) return 84;
+    else if (oml <= 110) return 85;
+    else if (oml <= 114) return 86;
+    else if (oml <= 118) return 87;
     else return 88;
 }
 
+/**
+ *
+ * @param {string} text
+ * @returns {string}
+ */
 export function beautify(text) {
-    if (typeof js_beautify === 'function') {
-        return js_beautify(text, {
-            'indent_size': 4,
-            'indent_char': ' ',
-            'indent_with_tabs': false,
-            'editorconfig': false,
-            'eol': '\n',
-            'end_with_newline': false,
-            'indent_level': 0,
-            'preserve_newlines': true,
-            'max_preserve_newlines': 10,
-            'space_in_paren': false,
-            'space_in_empty_paren': false,
-            'jslint_happy': false,
-            'space_after_anon_function': false,
-            'space_after_named_function': false,
-            'brace_style': 'collapse',
-            'unindent_chained_methods': false,
-            'break_chained_methods': false,
-            'keep_array_indentation': false,
-            'unescape_strings': false,
-            'wrap_line_length': 0,
-            'e4x': false,
-            'comma_first': false,
-            'operator_position': 'before-newline',
-            'indent_empty_lines': false,
-            'templating': ['auto']
-        });
-    } else {
-        return text.trim();
-    }
+    return js_beautify(text, {
+        'indent_size': 4,
+        'indent_char': ' ',
+        'indent_with_tabs': false,
+        'editorconfig': false,
+        'eol': '\n',
+        'end_with_newline': false,
+        'indent_level': 0,
+        'preserve_newlines': true,
+        'max_preserve_newlines': 10,
+        'space_in_paren': false,
+        'space_in_empty_paren': false,
+        'jslint_happy': false,
+        'space_after_anon_function': false,
+        'space_after_named_function': false,
+        'brace_style': 'collapse',
+        'unindent_chained_methods': false,
+        'break_chained_methods': false,
+        'keep_array_indentation': false,
+        'unescape_strings': false,
+        'wrap_line_length': 0,
+        'e4x': false,
+        'comma_first': false,
+        'operator_position': 'before-newline',
+        'indent_empty_lines': false,
+        'templating': ['auto']
+    });
 }
 
 /**

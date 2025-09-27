@@ -25,7 +25,7 @@
     "minimum": "12",
     "verified": "12.343"
   },
-  "scripts": ["https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.3/beautify.js"],
+  "scripts": [],
   "esmodules": ["dist/hm3.js"],
   "styles": ["css/hm3.css", "css/addl.css"],
   "languages": [
