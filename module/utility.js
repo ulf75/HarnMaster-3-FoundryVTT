@@ -620,8 +620,8 @@ export function getActorFromMacro(macro) {
  * OML truncation only applies to starting characters. It does not affect in-game skill
  * development.
  * @link https://www.lythia.com/warflail/downloads/HMA_Rulebook_v1.4.pdf
- * @param {number} value
- * @returns {number} truncated number
+ * @param {number} value - Opening Mastery Level (OML)
+ * @returns {number} truncated OML
  */
 export function truncatedOML(value) {
     // @ts-expect-error
