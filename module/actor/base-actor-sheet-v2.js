@@ -1130,14 +1130,18 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         });
     }
 
+    /**
+     *
+     * @param {Event} event
+     * @private
+     */
     async _onToggleMount(event) {
         event.preventDefault();
 
         const aproxy = ActorHM3.LivingProxy(this.actor.uuid);
-        const riding = aproxy.Skill('Riding');
 
-        if (aproxy.steed) {
-            if (!aproxy.mounted) {
+        if (aproxy?.steed) {
+            if (!aproxy?.mounted) {
                 Hooks.call('hm3.onMount', aproxy);
             } else {
                 Hooks.call('hm3.onDismount', aproxy);
@@ -1161,7 +1165,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             const ret = await item.update({[attr]: !foundry.utils.getProperty(item, attr)});
 
             for (const effect of item.effects.contents) {
-                await effect.update({disabled: !item.system.isEquipped || !item.system.isCarried});
+                await effect.update({disabled: !item.proxy.isEquipped || !item.proxy.isCarried});
             }
 
             return ret;
@@ -1186,7 +1190,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             const ret = await item.update({[attr]: !foundry.utils.getProperty(item, attr)});
 
             for (const effect of item.effects.contents) {
-                await effect.update({disabled: !item.system.isEquipped || !item.system.isCarried});
+                await effect.update({disabled: !item.proxy.isEquipped || !item.proxy.isCarried});
             }
 
             return ret;
@@ -1208,7 +1212,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // Only process skills and psionics, otherwise ignore
         if (item) {
             if (item.type === ItemType.SKILL || item.type === ItemType.PSIONIC) {
-                if (!item.system.improveFlag) {
+                if (!item.proxy.improveFlag) {
                     return item.update({'system.improveFlag': 1});
                 } else {
                     return this._improveToggleDialog(item);
@@ -1237,7 +1241,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
     async _improveToggleDialog(item) {
         // Condition skill is maxed out (SKILLS 9)
         if (item.type === ItemType.SKILL && item.name === 'Condition') {
-            if (item.system.masteryLevel >= 7 * item.system.skillBase.value) {
+            if (item.proxy.ML >= 7 * item.proxy.SB.value) {
                 await hm3.GmSays({
                     text:
                         `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n?.localize('hm3.SDR.ConditionSkillMax'),
@@ -1289,7 +1293,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                     }
                                     // Weapon Skills may be developed by practice/training as normal, but no weapon skill
                                     // can be increased beyond ML70 except by actual combat experience (SKILLS 18)
-                                    else if (item.system.masteryLevel >= 70) {
+                                    else if (item.proxy.ML >= 70) {
                                         await hm3.GmSays({
                                             text:
                                                 `<h4>${this.actor.name}: ${item.name}</h4>` +
@@ -1313,10 +1317,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                                     for (let i = 0; i < num; i++) {
                                                         // Condition skill is maxed out (SKILLS 9)
                                                         if (item.type === ItemType.SKILL && item.name === 'Condition') {
-                                                            if (
-                                                                item.system.masteryLevel >=
-                                                                7 * item.system.skillBase.value
-                                                            ) {
+                                                            if (item.proxy.ML >= 7 * item.proxy.SB.value) {
                                                                 await hm3.GmSays({
                                                                     text:
                                                                         `<h4>${this.actor.name}: ${item.name}</h4>` +
@@ -1333,7 +1334,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                                             item.type === ItemType.SKILL &&
                                                             item.system.type === 'Combat'
                                                         ) {
-                                                            if (item.system.masteryLevel >= 70) {
+                                                            if (item.proxy.ML >= 70) {
                                                                 await hm3.GmSays({
                                                                     text:
                                                                         `<h4>${this.actor.name}: ${item.name}</h4>` +

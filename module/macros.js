@@ -1715,7 +1715,7 @@ export async function steedCommandRoll(noDialog = false, myActor = null) {
         notesData: {},
         private: !actorInfo.actor.hasPlayerOwner,
         speaker: actorInfo.speaker,
-        target: riding.system.effectiveMasteryLevel,
+        target: riding.proxy.EML,
         type: 'SteedCommand-d100'
     };
 
@@ -1781,7 +1781,7 @@ export async function unhorsingRoll(noDialog = false, myActor = null, autofail =
         notesData: {},
         private: !actorInfo.actor.hasPlayerOwner,
         speaker: actorInfo.speaker,
-        target: riding.system.effectiveMasteryLevel,
+        target: riding.proxy.EML,
         type: 'SteedCommand-d100'
     };
 

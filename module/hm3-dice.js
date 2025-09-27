@@ -624,12 +624,12 @@ export class DiceHM3 {
     static async sdrRoll(item, showChatMsg = true) {
         const speaker = ChatMessage.getSpeaker({actor: item.actor});
 
-        let roll = await hm3.macros.rollObjectEvaluatedAsync(`1d100 + ${item.system.skillBase.value}`, {
+        let roll = await hm3.macros.rollObjectEvaluatedAsync(`1d100 + ${item.proxy.SB.value}`, {
             name: item.actor.name,
             type: 'sdrRoll'
         });
 
-        const isSuccess = roll.total > item.system.masteryLevel;
+        const isSuccess = roll.total > item.proxy.ML;
 
         const re = RegExp('(([^)]+))');
         const specMatch = item.name.match(/\(([^\)]+)\)/);
@@ -638,10 +638,10 @@ export class DiceHM3 {
         const chatTemplateData = {
             description: isSuccess ? 'Success' : 'Failure',
             isSuccess: isSuccess,
-            modifiedTarget: item.system.masteryLevel,
+            modifiedTarget: item.proxy.ML,
             modifier: 0,
             notes: '',
-            origTarget: item.system.masteryLevel,
+            origTarget: item.proxy.ML,
             rollResult: roll.result,
             rollValue: roll.total,
             sdrIncr: isSuccess ? (specMatch ? 2 : 1) : 0,
