@@ -3064,6 +3064,11 @@ slide-toggle[checked] .slide-toggle-thumb::before {
     font-size: 14px;
 }
 
+.hm3.item .error {
+    color: #b30000;
+    font-size: larger;
+}
+
 .hm3 .esoteric h2 {
     -webkit-box-flex: 1;
     -ms-flex: 1;
