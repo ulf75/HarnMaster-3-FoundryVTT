@@ -7,6 +7,7 @@ import * as utility from '../utility.js';
 import {ArmorProxy} from './proxies/armor-proxy.js';
 import {ArmorlocationProxy} from './proxies/armorlocation-proxy.js';
 import {CompanionProxy} from './proxies/companion-proxy.js';
+import {ConditionSkillProxy} from './proxies/condition-skill-proxy.js';
 import {ContainerProxy} from './proxies/container-proxy.js';
 import {EffectProxy} from './proxies/effect-proxy.js';
 import {InjuryProxy} from './proxies/injury-proxy.js';
@@ -99,7 +100,8 @@ export class ItemHM3 extends Item {
                     iproxy = new PsionicProxy(this);
                     break;
                 case ItemType.SKILL:
-                    if (this.name.includes('Riding')) iproxy = new RidingSkillProxy(this);
+                    if (this.name.includes('Condition')) iproxy = new ConditionSkillProxy(this);
+                    else if (this.name.includes('Riding')) iproxy = new RidingSkillProxy(this);
                     else iproxy = new SkillProxy(this);
                     break;
                 case ItemType.SPELL:
