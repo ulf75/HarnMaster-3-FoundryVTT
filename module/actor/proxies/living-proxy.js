@@ -80,12 +80,15 @@ export class LivingProxy extends ActorProxy {
      * @type {{value: number, max: number}}
      */
     get shockIndex() {
-        return {
-            value: this.isInanimate
-                ? Math.max(100 - Math.round(100 * (this.IP / this.endurance)), 0)
-                : ActorHM3.normProb(this.endurance, this.UP * 3.5, this.UP),
-            max: 100
-        };
+        if (!this._cache['shockIndex']) {
+            this._cache['shockIndex'] = {
+                value: this.isInanimate
+                    ? Math.max(100 - Math.round(100 * (this.IP / this.endurance)), 0)
+                    : ActorHM3.normProb(this.endurance, this.UP * 3.5, this.UP),
+                max: 100
+            };
+        }
+        return this._cache['shockIndex'];
     }
     /**
      * @type {number}

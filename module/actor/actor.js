@@ -567,21 +567,22 @@ export class ActorHM3 extends Actor {
      * @override */
     prepareBaseData() {
         super.prepareBaseData();
-        const actorData = this.system;
+        this.proxy.prepareBaseData();
+        // const actorData = this.system;
         // const actorItems = this.items;
 
         // Ephemeral data is kept together with other actor data,
         // but it is not in the data model so it will not be saved.
         // if (!actorData.eph) actorData.eph = {};
         // const eph = actorData.eph;
-        this.system.v2 = {};
-        this.items.forEach((i) => (i.system.v2 = {}));
+        // this.system.v2 = {};
+        // this.items.forEach((i) => (i.system.v2 = {}));
         // for (const key of Object.keys(hm3.config.activeEffectKeyV2)) {
         //     foundry.utils.setProperty(this, key, null);
         // }
-        this.proxy.applyWeaponActiveEffects();
+        // this.proxy.applyWeaponActiveEffects();
 
-        if (this.type === ActorType.CONTAINER) return;
+        // if (this.type === ActorType.CONTAINER) return;
 
         // actorData.totalWeight = 0;
 

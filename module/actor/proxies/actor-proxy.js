@@ -9,11 +9,19 @@ import {HM100Check, parseAEValue, truncate} from '../../utility';
  * @abstract
  */
 export class ActorProxy {
-    /** @type {import('../actor').ActorHM3} */
+    /**
+     * @type {import('../actor').ActorHM3}
+     */
     #actor;
+    /**
+     * @type {Object}
+     * @protected
+     */
+    _cache;
 
     constructor(actor) {
         this.#actor = actor;
+        this._cache = {};
     }
 
     /**
@@ -195,9 +203,12 @@ export class ActorProxy {
      * @type {number}
      */
     get totalGearWeight() {
-        return truncate(
-            this.totalArmorWeight + this.totalMiscGearWeight + this.totalMissileWeight + this.totalWeaponWeight
-        );
+        if (!this._cache['totalGearWeight']) {
+            this._cache['totalGearWeight'] = truncate(
+                this.totalArmorWeight + this.totalMiscGearWeight + this.totalMissileWeight + this.totalWeaponWeight
+            );
+        }
+        return this._cache['totalGearWeight'];
     }
     /**
      *  Universal Penalty
@@ -271,6 +282,20 @@ export class ActorProxy {
         });
     }
 
+    prepareBaseData() {
+        this._cache = {};
+        // @ts-expect-error
+        this.actor.system.v2 = {};
+        // @ts-expect-error
+        this.proxies.forEach((iproxy) => (iproxy.item.system.v2 = {}));
+        this.applyWeaponActiveEffects();
+    }
+
+    /**
+     * After rendering, activate event listeners which provide interactivity for the Application.
+     * This is where user-defined Application subclasses should attach their event-handling logic.
+     * @param {JQuery} html
+     */
     activateListeners(html) {
         let visited = {};
         this.proxies.forEach((element) => {
