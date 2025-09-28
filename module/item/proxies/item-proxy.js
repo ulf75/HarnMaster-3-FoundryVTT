@@ -171,6 +171,17 @@ export class ItemProxy {
     }
 
     /**
+     * Prepare data for the Document. This method is called automatically by the DataModel#_initialize workflow.
+     * This method provides an opportunity for Document classes to define special data preparation logic.
+     * The work done by this method should be idempotent. There are situations in which prepareData may be called more
+     * than once.
+     */
+    prepareData() {
+        // @ts-expect-error
+        this.item.system.v2 = {};
+    }
+
+    /**
      * After rendering, activate event listeners which provide interactivity for the Application.
      * This is where user-defined Application subclasses should attach their event-handling logic.
      * @param {JQuery} html

@@ -194,9 +194,12 @@ export class ItemHM3 extends Item {
 
     /**
      * Augment the basic Item data model with additional dynamic data.
+     * @override
      */
     prepareData() {
         super.prepareData();
+        this.proxy.prepareData();
+        return;
 
         // Get the Item's data
         const itemData = this.system;
@@ -229,6 +232,7 @@ export class ItemHM3 extends Item {
     }
 
     postProcessItems() {
+        return;
         const itemData = this.system;
 
         let pctUnivPen = ItemHM3.calcPenaltyPct(this.actor?.system?.universalPenalty);
@@ -520,6 +524,10 @@ export class ItemHM3 extends Item {
         });
     }
 
+    /**
+     *
+     * @param {ItemHM3} injury
+     */
     static calcInjurySeverity(injury) {
         const data = injury.system;
 
@@ -538,8 +546,8 @@ export class ItemHM3 extends Item {
      * In HM3, PP and UP are low integer values, so we must multiply them by 5 in order to use them for
      * EML calculations.  This function does that.
      *
-     * @param {*} value
-     * @returns
+     * @param {number} value
+     * @returns {number}
      */
     static calcPenaltyPct(value) {
         return (value || 0) * 5;

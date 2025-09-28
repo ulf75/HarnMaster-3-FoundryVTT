@@ -25,6 +25,35 @@ export class ActorProxy {
     }
 
     /**
+     * @type {import('./character-proxy').CharacterProxy}
+     */
+    get asCharacter() {
+        // @ts-expect-error
+        return this;
+    }
+    /**
+     * @type {import('./creature-proxy').CreatureProxy}
+     */
+    get asCreature() {
+        // @ts-expect-error
+        return this;
+    }
+    /**
+     * @type {import('./container-proxy').ContainerProxy}
+     */
+    get asContainer() {
+        // @ts-expect-error
+        return this;
+    }
+    /**
+     * @type {import('./living-proxy').LivingProxy}
+     */
+    get asLiving() {
+        // @ts-expect-error
+        return this;
+    }
+
+    /**
      * @type {import('../actor').ActorHM3}
      */
     get actor() {
@@ -230,11 +259,14 @@ export class ActorProxy {
     /**
      *
      * @param {string} name
-     * @returns {import('../../item/proxies/skill-proxy').SkillProxy}
+     * @returns {import('../../item/proxies/skill-proxy').SkillProxy | null}
      */
     Skill(name) {
-        return this.proxies.find(
-            (item) => item.type === ItemType.SKILL && item.name.toLowerCase().includes(name.toLowerCase())
+        // @ts-expect-error
+        return (
+            this.proxies.find(
+                (item) => item.type === ItemType.SKILL && item.name.toLowerCase().includes(name.toLowerCase())
+            ) ?? null
         );
     }
 
