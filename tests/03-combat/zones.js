@@ -1,10 +1,14 @@
+// @ts-check
+import {Condition} from '../../module/hm3-types';
 import {BaseTestHM3} from '../hm3-basetest';
 
 export class ZonesTestCase extends BaseTestHM3 {
+    /** @override */
     async _postSetup() {
         await this._createActor('Actor.XCCoFJojZ90dmPkL', 'Alon');
     }
 
+    /** @override */
     async _test() {
         const CENTER = {x: 7870, y: 14258};
         const alice = await this._dropActor(this.actors.get('Alice'), CENTER);
@@ -55,7 +59,7 @@ export class ZonesTestCase extends BaseTestHM3 {
         console.assert(alice.isEngaged(true), 'Token is NOT exclusively engaged: %O', alice);
 
         // Bob rises
-        await bob.deleteCondition(hm3.Condition.PRONE);
+        await bob.deleteCondition(Condition.PRONE);
         console.assert(alice.hasEngagementZone(), 'Token has NO Engagement Zone: %O', alice);
         console.assert(!alice.hasReactionZone(), 'Token HAS a Reaction Zone: %O', alice);
         console.assert(alice.isEngaged(), 'Token is NOT engaged: %O', alice);
@@ -65,7 +69,7 @@ export class ZonesTestCase extends BaseTestHM3 {
         console.assert(bob.isEngaged(), 'Token is NOT engaged: %O', bob);
         console.assert(alon.isEngaged(), 'Token is NOT engaged: %O', alon);
         console.assert(
-            alice.hasCondition(hm3.Condition.OUTNUMBERED + ' 2:1'),
+            alice.hasCondition(Condition.OUTNUMBERED + ' 2:1'),
             'Token has NO Outnumbered condition: %O',
             alice
         );

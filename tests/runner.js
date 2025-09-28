@@ -1,9 +1,12 @@
-import {MoraleTestCase} from './infrastructure/morale';
+// @ts-check
+import {ConditionTestCase} from './00-infrastructure/condition';
+import {MoraleTestCase} from './00-infrastructure/morale';
+import {DefeatedTestCase} from './03-combat/defeated';
 
 const tests = new Map([
-    // ['(i01) - condition', new ConditionTestCase()],
-    ['(i02) - morale', new MoraleTestCase()]
-    // ['(c01) - defeated', new DefeatedTestCase()],
+    ['(i01) - condition', new ConditionTestCase()],
+    ['(i02) - morale', new MoraleTestCase()],
+    ['(c01) - defeated', new DefeatedTestCase()]
     // ['(c02) - shock', new ShockTestCase()],
     // ['(c03) - zones', new ZonesTestCase()],
     // ['(c04) - Melee Block', new MeleeBlockTestCase()],
@@ -28,7 +31,7 @@ export async function runner() {
         console.info(`%cRunning test: ${test}`, 'color: #b6b4a5');
 
         var t = tests.get(test);
-        const success = await t.start();
+        const success = await t?.start();
         if (success) {
             console.info(`%cTest "${test}" completed successfully.`, 'color: #00990d');
         } else {

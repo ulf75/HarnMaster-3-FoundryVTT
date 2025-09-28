@@ -1,14 +1,17 @@
+// @ts-check
+import {Condition} from '../../module/hm3-types';
 import {BaseTestHM3} from '../hm3-basetest';
 
 const CENTER = {x: 7870, y: 14258};
 
 export class OutnumberedTestCase extends BaseTestHM3 {
+    /** @override */
     async _postSetup() {
         await this._createActor('Actor.XCCoFJojZ90dmPkL', 'Alon');
     }
 
+    /** @override */
     async _test() {
-        const Condition = hm3.Condition;
         const alice = await this._dropActor(this.actors.get('Alice'), CENTER);
         const alon = await this._dropActor(this.actors.get('Alon'), CENTER, this.NORTH);
         const bob = await this._dropActor(this.actors.get('Bob'), CENTER, this.SOUTH);

@@ -1,12 +1,20 @@
 // @ts-check
-
 import {BaseTestHM3} from '../hm3-basetest';
 
 const CENTER = {x: 7870, y: 14258};
 
-export class MeleeCSTestCase extends BaseTestHM3 {
+export class MeleeBlockTestCase extends BaseTestHM3 {
+    /** @override */
+    async _prerequisites() {
+        if (!game.users?.get(this.ALICE_USER_ID)?.active) throw new Error('Alice user is not active');
+        if (!game.users?.get(this.INEN_USER_ID)?.active) throw new Error('Inen user is not active');
+        return true;
+    }
+
     /** @override */
     async _test() {
+        let success = true;
+
         const alice = await this._dropActor(this.actors.get('Alice'), CENTER);
         const bob = await this._dropActor(this.actors.get('Bob'), CENTER, this.SOUTH);
 
@@ -22,5 +30,7 @@ export class MeleeCSTestCase extends BaseTestHM3 {
         await defButtons.get('Dodge')?.button.click();
 
         await this._wait(1000);
+
+        return success;
     }
 }

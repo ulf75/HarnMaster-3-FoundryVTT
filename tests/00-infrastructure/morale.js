@@ -1,9 +1,13 @@
+// @ts-check
+import {Condition} from '../../module/hm3-types';
 import {BaseTestHM3} from '../hm3-basetest';
 
 export class MoraleTestCase extends BaseTestHM3 {
+    /** @override */
     async _test() {
+        let success = true;
+
         const Center = {x: 7870, y: 14258};
-        const Condition = hm3.Condition;
         const token = await this._dropActor(this.actors.get('Alice'), Center);
 
         const berserk = await token.addCondition(Condition.BERSERK);
@@ -42,5 +46,7 @@ export class MoraleTestCase extends BaseTestHM3 {
         console.info('Adding condition: %s to token: %s', Condition.WEAKENED, token.name);
         console.assert(weakened && weakened instanceof ActiveEffect, 'Condition is NOT an ActiveEffect: %O', weakened);
         console.assert(!token.hasCondition(Condition.EMPOWERED), 'Token DOES have condition: %s', Condition.EMPOWERED);
+
+        return success;
     }
 }

@@ -20,23 +20,36 @@ export class BaseTestHM3 {
     actors = new Map();
     tokens = new Map();
 
+    /**
+     *
+     * @returns {Promise<boolean>}
+     * @throws {Error} When prerequisites are not met
+     */
     async _prerequisites() {
         return true;
     }
 
+    /** @virtual */
     async _preSetup() {}
+    /** @virtual */
     async _postSetup() {}
 
+    /** @virtual */
     async _preTest() {}
-    async _test() {}
+    /** @virtual */
+    async _test() {
+        return true;
+    }
+    /** @virtual */
     async _postTest() {}
 
+    /** @virtual */
     async _preTeardown() {}
+    /** @virtual */
     async _postTeardown() {}
 
     /**
      * Sets up the test environment, including deleting existing messages and combat, creating default actors, and preparing the console.
-     * @private
      * @returns {Promise<boolean>} Returns true if setup was successful, false otherwise.
      */
     async #setup() {
@@ -55,6 +68,7 @@ export class BaseTestHM3 {
             await ChatMessage.deleteDocuments(game.messages?.contents.map((m) => m.id));
             await game.combat?.delete();
 
+            // @ts-expect-error
             game.togglePause(false, true);
 
             // some default actors
@@ -81,7 +95,12 @@ export class BaseTestHM3 {
      * @returns {Promise<boolean>} Returns true if the test was successful, false otherwise.
      */
     async start() {
-        const pre = await this._prerequisites();
+        let pre;
+        try {
+            pre = await this._prerequisites();
+        } catch (error) {
+            pre = false;
+        }
         if (pre !== true) {
             ui.notifications?.error('Prerequisites not met, skipping test: ' + pre);
             return false;
@@ -98,7 +117,7 @@ export class BaseTestHM3 {
             }
             try {
                 await this._wait();
-                if (success) await this._test();
+                if (success) success &&= await this._test();
                 await this._wait();
             } catch (error) {
                 success = false;
@@ -112,7 +131,7 @@ export class BaseTestHM3 {
         }
 
         await this._wait();
-        success = (await this.#teardown()) && success;
+        success &&= await this.#teardown();
 
         return success;
     }
@@ -139,6 +158,7 @@ export class BaseTestHM3 {
             this.actors.clear();
             this.tokens.clear();
 
+            // @ts-expect-error
             game.togglePause(true, true);
         } catch (error) {
             success = false;
@@ -263,18 +283,19 @@ export class BaseTestHM3 {
         data.uuid = actor.uuid;
         data.type = 'Actor';
 
+        // @ts-expect-error
         const tokenDoc = await canvas?.tokens?._onDropActorData({altKey: false, shiftKey: false}, data);
-        this.tokens.set(tokenDoc.name, tokenDoc);
+        this.tokens.set(tokenDoc?.name, tokenDoc);
 
-        await this._move(tokenDoc.object, dir);
+        await this._move(tokenDoc?.object, dir);
 
-        return tokenDoc.object;
+        return tokenDoc?.object;
     }
 
     async _move(token, dir = {dx: 0, dy: 0}) {
         token.control({releaseOthers: true});
         await Promise.allSettled([
-            game.canvas.activeLayer.moveMany(dir),
+            game.canvas?.activeLayer?.moveMany(dir),
             this._wait(Math.max(SLOWMO * MIN_MS, 300) / SLOWMO)
         ]);
     }

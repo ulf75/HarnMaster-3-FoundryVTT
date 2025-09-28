@@ -1,9 +1,13 @@
+// @ts-check
 import {BaseTestHM3} from '../hm3-basetest';
 
 export class ConditionTestCase extends BaseTestHM3 {
     CENTER = {x: 7870, y: 14258};
 
+    /** @override */
     async _test() {
+        let success = true;
+
         const t = await this._dropActor(this.actors.get('Alice'), this.CENTER);
 
         const d = await t.addCondition(hm3.Condition.DISTRACTED);
@@ -21,5 +25,7 @@ export class ConditionTestCase extends BaseTestHM3 {
         console.assert(s && s instanceof ActiveEffect, 'Condition is NOT an ActiveEffect: %O', s);
 
         await t.deleteCondition(hm3.Condition.PRONE);
+
+        return success;
     }
 }
