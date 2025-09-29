@@ -7,7 +7,7 @@
             class="resource-label">
             Deity
         </label>
-        {{#if iproxy.dieties}}
+        {{#if iproxy.deities}}
         <span class="resource-span">
             {{#if (and hasRwPermission editable)}}
             <select
@@ -16,7 +16,7 @@
                 name="system.diety"
                 data-dtype="String">
                 {{#select iproxy.diety}}
-                {{#each iproxy.dieties}}
+                {{#each iproxy.deities}}
                 <option value="{{ this }}">{{ this }}</option>
                 {{/each}}
                 {{/select}}
@@ -29,7 +29,7 @@
                 data-dtype="String"
                 disabled>
                 {{#select iproxy.diety}}
-                {{#each iproxy.dieties}}
+                {{#each iproxy.deities}}
                 <option value="{{ this }}">{{ this }}</option>
                 {{/each}}
                 {{/select}}

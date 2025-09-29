@@ -88,12 +88,12 @@ export class ItemSheetHM3 extends ItemSheet {
                 });
             }
         } else if (this.item.type === ItemType.INVOCATION) {
-            // Invocations need a list of dieties
-            data.dieties = [];
+            // Invocations need a list of deities
+            data.deities = [];
             if (this.actor) {
                 this.actor.itemTypes.skill.forEach((it) => {
                     if (it.system.type === 'Ritual') {
-                        data.dieties.push(it.name);
+                        data.deities.push(it.name);
                         data.hasRitualSkills = true;
                     }
                 });

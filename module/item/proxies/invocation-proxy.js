@@ -22,6 +22,7 @@ export class InvocationProxy extends ItemProxy {
      * @type {string}
      */
     get diety() {
+        // @ts-expect-error
         return this.item.system.diety;
     }
     /**
@@ -63,15 +64,15 @@ export class InvocationProxy extends ItemProxy {
     /**
      * @type {string[]}
      */
-    get dieties() {
-        const dieties = [];
+    get deities() {
+        const deities = [];
         if (this.aproxy) {
             this.aproxy.itemTypes.skill.forEach((item) => {
                 // @ts-expect-error
-                if (item.subtype === SkillType.RITUAL) dieties.push(item.name);
+                if (item.subtype === SkillType.RITUAL) deities.push(item.name);
             });
         }
-        return dieties;
+        return deities;
     }
 
     /**
