@@ -41,6 +41,20 @@ import {WallHM3} from './module/hm3/hm3-wall.js';
 import {ItemSheetHM3v2} from './module/item/item-sheet-v2.js';
 import {ItemSheetHM3} from './module/item/item-sheet.js';
 import {ItemHM3} from './module/item/item.js';
+import {ArmorDataModel} from './module/item/models/armor-data-model.js';
+import {ArmorlocationDataModel} from './module/item/models/armorlocation-data-model.js';
+import {CompanionDataModel} from './module/item/models/companion-data-model.js';
+import {ContainerDataModel} from './module/item/models/container-data-model.js';
+import {EffectDataModel} from './module/item/models/effect-data-model.js';
+import {InjuryDataModel} from './module/item/models/injury-data-model.js';
+import {InvocationDataModel} from './module/item/models/invocation-data-model.js';
+import {MiscgearDataModel} from './module/item/models/miscgear-data-model.js';
+import {MissileDataModel} from './module/item/models/missile-data-model.js';
+import {PsionicDataModel} from './module/item/models/psionic-data-model.js';
+import {SkillDataModel} from './module/item/models/skill-data-model.js';
+import {SpellDataModel} from './module/item/models/spell-data-model.js';
+import {TraitDataModel} from './module/item/models/trait-data-model.js';
+import {WeaponDataModel} from './module/item/models/weapon-data-model.js';
 import {registerHooks} from './module/macro.js';
 import * as macros from './module/macros.js';
 import * as migrations from './module/migrations.js';
@@ -248,6 +262,23 @@ Hooks.once('init', async function () {
         trait: 'Trait',
         weapongear: 'Melee Weapon'
     };
+    CONFIG.Item.dataModels = {
+        armorgear: ArmorDataModel,
+        armorlocation: ArmorlocationDataModel,
+        companion: CompanionDataModel,
+        containergear: ContainerDataModel,
+        effectgear: EffectDataModel,
+        injury: InjuryDataModel,
+        invocation: InvocationDataModel,
+        miscgear: MiscgearDataModel,
+        missilegear: MissileDataModel,
+        psionic: PsionicDataModel,
+        skill: SkillDataModel,
+        spell: SpellDataModel,
+        trait: TraitDataModel,
+        weapongear: WeaponDataModel
+    };
+
     CONFIG.Combat.documentClass = CombatHM3;
     CONFIG.TinyMCE.style_formats[0].items.push({
         title: 'Highlight',

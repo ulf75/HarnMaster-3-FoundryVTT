@@ -40,6 +40,25 @@
       "path": "lang/de.json"
     }
   ],
+  "documentTypes": {
+    "Actor": {"character": {}, "creature": {}, "container": {}},
+    "Item": {
+      "armorgear": {},
+      "armorlocation": {},
+      "companion": {},
+      "containergear": {},
+      "effectgear": {},
+      "injury": {},
+      "invocation": {},
+      "miscgear": {},
+      "missilegear": {},
+      "psionic": {},
+      "skill": {},
+      "spell": {},
+      "trait": {},
+      "weapongear": {}
+    }
+  },
   "packFolders": [
     {
       "name": "HârnMaster 3 System",
