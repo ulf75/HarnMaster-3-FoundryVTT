@@ -10,6 +10,8 @@ export class ZonesTestCase extends BaseTestHM3 {
 
     /** @override */
     async _test() {
+        let success = true;
+
         const CENTER = {x: 7870, y: 14258};
         const alice = await this._dropActor(this.actors.get('Alice'), CENTER);
         const alon = await this._dropActor(this.actors.get('Alon'), CENTER, this.SOUTH);
@@ -73,5 +75,7 @@ export class ZonesTestCase extends BaseTestHM3 {
             'Token has NO Outnumbered condition: %O',
             alice
         );
+
+        return success;
     }
 }

@@ -12,6 +12,8 @@ export class OutnumberedTestCase extends BaseTestHM3 {
 
     /** @override */
     async _test() {
+        let success = true;
+
         const alice = await this._dropActor(this.actors.get('Alice'), CENTER);
         const alon = await this._dropActor(this.actors.get('Alon'), CENTER, this.NORTH);
         const bob = await this._dropActor(this.actors.get('Bob'), CENTER, this.SOUTH);
@@ -51,5 +53,7 @@ export class OutnumberedTestCase extends BaseTestHM3 {
             `HM3 ASSERT | Combatant ${bob.name} IS outnumbered.`,
             bob
         );
+
+        return success;
     }
 }

@@ -2,18 +2,22 @@
 import {ConditionTestCase} from './00-infrastructure/condition';
 import {MoraleTestCase} from './00-infrastructure/morale';
 import {DefeatedTestCase} from './03-combat/defeated';
+import {MeleeBlockTestCase} from './03-combat/melee-block';
+import {OutnumberedTestCase} from './03-combat/outnumbered';
+import {ShockTestCase} from './03-combat/shock';
+import {ZonesTestCase} from './03-combat/zones';
 
 const tests = new Map([
     ['(i01) - condition', new ConditionTestCase()],
     ['(i02) - morale', new MoraleTestCase()],
-    ['(c01) - defeated', new DefeatedTestCase()]
-    // ['(c02) - shock', new ShockTestCase()],
-    // ['(c03) - zones', new ZonesTestCase()],
-    // ['(c04) - Melee Block', new MeleeBlockTestCase()],
+    ['(c01) - defeated', new DefeatedTestCase()],
+    ['(c02) - shock', new ShockTestCase()],
+    ['(c03) - zones', new ZonesTestCase()],
+    ['(c04) - Melee Block', new MeleeBlockTestCase()],
     // ['(c05) - Melee Counterstrike', new MeleeCSTestCase()],
     // ['(c06) - Melee Dodge', new MeleeDodgeTestCase()],
     // ['(c07) - Melee Ignore', new MeleeIgnoreTestCase()],
-    // ['(c08) - Outnumbered', new OutnumberedTestCase()]
+    ['(c08) - Outnumbered', new OutnumberedTestCase()]
 ]);
 
 let isRunning = false;
