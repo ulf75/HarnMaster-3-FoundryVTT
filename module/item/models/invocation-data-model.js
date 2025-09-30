@@ -14,6 +14,7 @@ export class InvocationDataModel extends ItemDataModel {
     }
 
     /**
+     * Deity
      * @type {string}
      */
     get deity() {

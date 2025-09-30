@@ -1,14 +1,65 @@
 import {ItemType} from '../../hm3-types';
 
+// BooleanField
+// gmOnly = false
+// hint = ''
+// initial = false
+// label = ''
+// nullable = false
+// readonly = false
+// required = true
+
+// NumberField
+// choices = undefined
+// gmOnly = false
+// hint = ''
+// initial = null
+// integer = false
+// label = ''
+// max = undefined
+// min = undefined
+// nullable = true
+// positive = false
+// readonly = false
+// required = false
+// step = undefined
+
+// HTMLField
+// blank = true
+// choices = undefined
+// gmOnly = false
+// hint = ''
+// initial = ƒ initial() The initial value depends on the field configuration
+// label = ''
+// nullable = false
+// readonly = false
+// required = true
+// textSearch = false
+// trim = true
+
+// StringField
+// blank = true
+// choices = undefined
+// gmOnly = false
+// hint = ''
+// initial = ƒ initial() The initial value depends on the field configuration
+// label = ''
+// nullable = false
+// readonly = false
+// required = false
+// textSearch = false
+// trim = true
+
 // @ts-check
 const {BooleanField, HTMLField, NumberField, SchemaField, StringField} = foundry.data.fields;
 export class ItemDataModel extends foundry.abstract.TypeDataModel {
     /** @override */
     static defineSchema() {
         return {
-            description: new StringField({initial: ''}),
-            notes: new StringField({initial: ''}),
-            source: new StringField({initial: ''}),
+            description: new HTMLField({initial: '', label: 'Description'}),
+            notes: new HTMLField({initial: ''}),
+            sort: new NumberField({initial: 0}),
+            source: new HTMLField({initial: ''}),
             type: new StringField()
         };
     }
@@ -39,6 +90,40 @@ export class ItemDataModel extends foundry.abstract.TypeDataModel {
      */
     get visible() {
         return true;
+    }
+
+    /**
+     * @type {boolean}
+     */
+    get canBeArtifact() {
+        return [
+            ItemType.ARMORGEAR,
+            ItemType.CONTAINERGEAR,
+            ItemType.MISCGEAR,
+            ItemType.MISSILEGEAR,
+            ItemType.WEAPONGEAR
+        ].includes(this.type);
+    }
+    /**
+     * @type {boolean}
+     */
+    get canBeEsotericCombat() {
+        return [ItemType.INVOCATION, ItemType.PSIONIC, ItemType.SKILL, ItemType.SPELL].includes(this.type);
+    }
+    /**
+     * @type {boolean}
+     */
+    get isEsotericCombat() {
+        return (
+            hm3.config.esotericCombatItems.attack.includes(this.name) ||
+            hm3.config.esotericCombatItems.defense.includes(this.name)
+        );
+    }
+    /**
+     * @type {boolean}
+     */
+    get hasValue() {
+        return false;
     }
 
     /**
