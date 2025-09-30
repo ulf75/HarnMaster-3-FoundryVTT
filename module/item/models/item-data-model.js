@@ -1,3 +1,4 @@
+// @ts-check
 import {ItemType} from '../../hm3-types';
 
 // BooleanField
@@ -50,15 +51,17 @@ import {ItemType} from '../../hm3-types';
 // textSearch = false
 // trim = true
 
-// @ts-check
-const {BooleanField, HTMLField, NumberField, SchemaField, StringField} = foundry.data.fields;
+const {ArrayField, BooleanField, HTMLField, NumberField, SchemaField, StringField} = foundry.data.fields;
+/**
+ * @abstract
+ */
 export class ItemDataModel extends foundry.abstract.TypeDataModel {
     /** @override */
     static defineSchema() {
         return {
             description: new HTMLField({initial: '', label: 'Description'}),
             notes: new HTMLField({initial: ''}),
-            sort: new NumberField({initial: 0}),
+            sort: new NumberField({initial: 0, integer: true, min: 0}),
             source: new HTMLField({initial: ''}),
             type: new StringField()
         };
@@ -82,7 +85,8 @@ export class ItemDataModel extends foundry.abstract.TypeDataModel {
      * @type {string}
      */
     get subtype() {
-        return this.type ?? this.parent.type;
+        // @ts-expect-error
+        return this.type ?? this.item.type;
     }
 
     /**
@@ -102,21 +106,21 @@ export class ItemDataModel extends foundry.abstract.TypeDataModel {
             ItemType.MISCGEAR,
             ItemType.MISSILEGEAR,
             ItemType.WEAPONGEAR
-        ].includes(this.type);
+        ].includes(this.item.type);
     }
     /**
      * @type {boolean}
      */
     get canBeEsotericCombat() {
-        return [ItemType.INVOCATION, ItemType.PSIONIC, ItemType.SKILL, ItemType.SPELL].includes(this.type);
+        return [ItemType.INVOCATION, ItemType.PSIONIC, ItemType.SKILL, ItemType.SPELL].includes(this.item.type);
     }
     /**
      * @type {boolean}
      */
     get isEsotericCombat() {
         return (
-            hm3.config.esotericCombatItems.attack.includes(this.name) ||
-            hm3.config.esotericCombatItems.defense.includes(this.name)
+            hm3.config.esotericCombatItems.attack.includes(this.item.name) ||
+            hm3.config.esotericCombatItems.defense.includes(this.item.name)
         );
     }
     /**
@@ -132,12 +136,21 @@ export class ItemDataModel extends foundry.abstract.TypeDataModel {
      * @returns {Item | null}
      */
     Skill(name) {
-        // @ts-expect-error
         return (
             this.actor?.items.find(
                 (item) => item.type === ItemType.SKILL && item.name.toLowerCase().includes(name.toLowerCase())
             ) ?? null
         );
+    }
+
+    /** @override */
+    prepareBaseData() {
+        super.prepareBaseData();
+    }
+
+    /** @override */
+    prepareDerivedData() {
+        super.prepareDerivedData();
     }
 
     /**

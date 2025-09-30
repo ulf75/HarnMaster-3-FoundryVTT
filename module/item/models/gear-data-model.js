@@ -3,7 +3,7 @@ import {ArcaneType} from '../../hm3-types';
 import {truncate} from '../../utility';
 import {ItemDataModel} from './item-data-model';
 
-const {BooleanField, HTMLField, NumberField, SchemaField, StringField} = foundry.data.fields;
+const {ArrayField, BooleanField, HTMLField, NumberField, SchemaField, StringField} = foundry.data.fields;
 /**
  * @abstract
  */
@@ -47,10 +47,21 @@ export class GearDataModel extends ItemDataModel {
     }
 
     /**
+     * Truncated weight
      * @type {number}
      */
     get weightT() {
         // @ts-expect-error
         return truncate(this.weight, 3);
+    }
+
+    /** @override */
+    prepareBaseData() {
+        super.prepareBaseData();
+    }
+
+    /** @override */
+    prepareDerivedData() {
+        super.prepareDerivedData();
     }
 }
