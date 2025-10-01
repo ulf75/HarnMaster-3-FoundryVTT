@@ -5,6 +5,8 @@ import {ActorHM3} from './module/actor/actor.js';
 import {CharacterSheetHM3v2} from './module/actor/character-sheet-v2.js';
 import {ContainerSheetHM3v2} from './module/actor/container-sheet-v2.js';
 import {CreatureSheetHM3v2} from './module/actor/creature-sheet-v2.js';
+import {CharacterDataModel} from './module/actor/models/character-data-model.js';
+import {CreatureDataModel} from './module/actor/models/creature-data-model.js';
 import {HM3} from './module/config.js';
 import {registerFoundryGMHooks, registerFoundryHooks} from './module/foundry-hooks.js';
 import {registerHandlebars} from './module/handlebars.js';
@@ -238,11 +240,14 @@ Hooks.once('init', async function () {
         creature: 'Creature',
         container: 'Container'
     };
-    // CONFIG.Actor.dataModels = {
-    //     character: ActorDataModel,
-    //     creature: ActorDataModel,
-    //     container: ActorDataModel
-    // };
+
+    Object.assign(
+        (CONFIG.Actor.dataModels = {
+            'character': CharacterDataModel,
+            'creature': CreatureDataModel,
+            'container': ContainerDataModel
+        })
+    );
 
     CONFIG.Item.documentClass = ItemHM3;
     CONFIG.Item.typeLabels = {
