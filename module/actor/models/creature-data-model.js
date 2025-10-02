@@ -16,7 +16,8 @@ export class CreatureDataModel extends LivingDataModel {
      * @override
      */
     get damageDie() {
-        return this.actor.system.size;
+        // @ts-expect-error
+        return this.size;
     }
 
     /** @override */

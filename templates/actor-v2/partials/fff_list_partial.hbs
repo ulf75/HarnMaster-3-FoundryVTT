@@ -27,17 +27,17 @@
                         id="companion"
                         class="item-image"
                         style="background-image: url('{{ img }}')"
-                        data-item-actor-uuid="{{ actorUuid }}"></div>
+                        data-item-actor-uuid="{{ system.actorUuid }}"></div>
                     <h4>{{ name }}</h4>
                 </a>
             </div>
-            <div class="item-detail fff-gender">{{ gender }}</div>
+            <div class="item-detail fff-gender">{{ system.gender }}</div>
             {{#if character}}
-            <div class="item-detail fff-occupation">{{ occupation }}</div>
+            <div class="item-detail fff-occupation">{{ system.occupation }}</div>
             {{else}}
-            <div class="item-detail fff-species">{{ species }}</div>
+            <div class="item-detail fff-species">{{ system.species }}</div>
             {{/if}}
-            <div class="item-detail fff-notes">{{ notes }}</div>
+            <div class="item-detail fff-notes">{{ system.notes }}</div>
             <div class="item-controls-wide">
                 <a
                     class="item-control item-edit"

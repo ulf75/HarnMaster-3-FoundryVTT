@@ -1,6 +1,6 @@
 // @ts-check
 
-import {LivingProxy} from './actor/proxies/living-proxy';
+import {ActorHM3} from './actor/actor';
 import {TokenDocumentHM3} from './hm3-token';
 import {Condition, ItemType} from './hm3-types';
 
@@ -12,38 +12,36 @@ export async function registerHM3Hooks() {
         'hm3.onMount',
         /**
          *
-         * @param {LivingProxy} aproxy
+         * @param {ActorHM3} actor
+         * @param {ActorHM3} steed
          * @returns
          */
-        async (aproxy) => {
+        async (actor, steed) => {
             if (
                 !game.user ||
-                !aproxy.actor.testUserPermission(game.user, 'OWNER') ||
-                !aproxy.steed?.actor.testUserPermission(game.user, 'OWNER')
+                !actor.testUserPermission(game.user, 'OWNER') ||
+                !steed.testUserPermission(game.user, 'OWNER')
             )
                 return;
 
-            await aproxy.actor.update({'system.mounted': true});
-            // aproxy.actor.prepareData();
-            const riding = aproxy.Skill('Riding');
-            riding.item.sheet?.render();
+            await actor.update({'system.mounted': true});
+            const riding = actor.system.Skill('Riding');
+            riding.sheet?.render();
 
-            const rider = aproxy.steed.proxies.find(
-                (item) => item.type === ItemType.MISCGEAR && item.name.includes('Rider')
-            );
-            await rider?.item.delete();
+            const rider = steed.items.find((item) => item.type === ItemType.MISCGEAR && item.name.includes('Rider'));
+            await rider?.delete();
             await Item.create(
                 {
-                    img: aproxy.img,
-                    name: 'Rider/' + aproxy.name,
+                    img: actor.img,
+                    name: 'Rider/' + actor.name,
                     system: {
-                        actorUuid: aproxy.uuid,
+                        actorUuid: actor.uuid,
                         type: 'Rider',
-                        weight: aproxy.weight + aproxy.totalGearWeight
+                        weight: actor.system.weight + actor.system.totalGearWeight
                     },
                     type: ItemType.MISCGEAR
                 },
-                {parent: aproxy.steed.actor}
+                {parent: steed}
             );
         }
     );
@@ -53,26 +51,24 @@ export async function registerHM3Hooks() {
 
         /**
          *
-         * @param {LivingProxy} aproxy
+         * @param {ActorHM3} actor
+         * @param {ActorHM3} steed
          * @returns
          */
-        async (aproxy) => {
+        async (actor, steed) => {
             if (
                 !game.user ||
-                !aproxy.actor.testUserPermission(game.user, 'OWNER') ||
-                !aproxy.steed?.actor.testUserPermission(game.user, 'OWNER')
+                !actor.testUserPermission(game.user, 'OWNER') ||
+                !steed.testUserPermission(game.user, 'OWNER')
             )
                 return;
 
-            await aproxy.actor.update({'system.mounted': false});
-            // aproxy.actor.prepareData();
-            const riding = aproxy.Skill('Riding');
-            riding.item.sheet?.render();
+            await actor.update({'system.mounted': false});
+            const riding = actor.system.Skill('Riding');
+            riding.sheet?.render();
 
-            const rider = aproxy.steed.proxies.find(
-                (item) => item.type === ItemType.MISCGEAR && item.name.includes('Rider')
-            );
-            await rider?.item.delete();
+            const rider = steed.items.find((item) => item.type === ItemType.MISCGEAR && item.name.includes('Rider'));
+            await rider?.delete();
         }
     );
 

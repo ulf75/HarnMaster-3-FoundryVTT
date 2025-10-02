@@ -1,5 +1,5 @@
 // @ts-check
-import {ArcaneType} from '../../hm3-types';
+import {ArcaneType, ItemType} from '../../hm3-types';
 import {truncate} from '../../utility';
 import {ItemDataModel} from './item-data-model';
 
@@ -53,6 +53,52 @@ export class GearDataModel extends ItemDataModel {
     get weightT() {
         // @ts-expect-error
         return truncate(this.weight, 3);
+    }
+    /**
+     * @type {string}
+     */
+    get label() {
+        const gearTypes = {
+            'armorgear': 'Armour',
+            'containergear': 'Container',
+            'effectgear': 'Effect',
+            'miscgear': 'Misc. Gear',
+            'missilegear': 'Missile Wpn',
+            'weapongear': 'Melee Wpn'
+        };
+        const t = this.type || gearTypes[this.item.type];
+        return t === 'Misc' ? 'Misc. Gear' : t;
+    }
+    /**
+     * @type {string}
+     */
+    get ariaLabelEquip() {
+        if (this.item.type === ItemType.ARMORGEAR)
+            return this.isEquipped ? `Doff ${this.item.name}` : `Don ${this.item.name}`;
+        return this.isEquipped ? `Unequip ${this.item.name}` : `Equip ${this.item.name}`;
+    }
+    /**
+     * @type {string}
+     */
+    get ariaLabelCarry() {
+        return this.isCarried ? `Drop ${this.item.name}` : `Carry ${this.item.name}`;
+    }
+    /**
+     * @type {{label: string, key: string}[]}
+     */
+    get containers() {
+        const containers = [{label: 'On Person', key: 'on-person'}];
+
+        // NOTE: Containers are not allowed in other containers.
+        // So if this item is a container, don't show any other containers.
+        if (this.actor && this.item.type !== ItemType.CONTAINERGEAR) {
+            this.actor.items.forEach((item) => {
+                if (item.type === ItemType.CONTAINERGEAR) {
+                    containers.push({label: item.name, key: item.id ?? ''});
+                }
+            });
+        }
+        return containers;
     }
 
     /** @override */

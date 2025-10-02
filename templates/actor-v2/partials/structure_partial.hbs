@@ -4,29 +4,29 @@
     {{!-- Sheet Header --}}
     <header class="sheet-header sheet-header-character">
         <div class="flexrow">
-            {{> char_v2_img_partial cls='profile-img' src=aproxy.img edit='img' h=100 w=100}}
+            {{> char_v2_img_partial cls='profile-img' src=actor.img edit='img' h=100 w=100}}
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
                     <h1 class="charname">
                         <input
                             name="name"
                             type="text"
-                            value="{{ aproxy.name }}"
+                            value="{{ actor.name }}"
                             placeholder="Name"
                             autocomplete="off" />
                     </h1>
                     <div class="header-stat-block">
                         <div class="penalties flexrow">
-                            <div class="stat">UP: {{ aproxy.UP }}</div>
-                            <div class="statend">PP: {{ aproxy.PP }}</div>
+                            <div class="stat">UP: {{ adata.UP }}</div>
+                            <div class="statend">PP: {{ adata.PP }}</div>
                         </div>
                         <div class="endurance flexrow">
-                            <span class="label">Shock Index: {{ aproxy.shockIndex.value }}</span>
+                            <span class="label">Shock Index: {{ adata.shockIndex.value }}</span>
                         </div>
                         <div class="endbar">
                             <span
                                 class="bar"
-                                style="width: {{ aproxy.shockIndex.value }}%"></span>
+                                style="width: {{ adata.shockIndex.value }}%"></span>
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                                 type="text"
                                 id="system.occupation"
                                 name="system.occupation"
-                                value="{{ aproxy.occupation }}"
+                                value="{{ adata.occupation }}"
                                 data-dtype="String" />
                         </li>
                         {{/if}}
@@ -60,7 +60,7 @@
                                 type="text"
                                 id="system.species"
                                 name="system.species"
-                                value="{{ aproxy.species }}"
+                                value="{{ adata.species }}"
                                 data-dtype="String" />
                         </li>
                         <li class="attribute creature-size flexcol">
@@ -74,7 +74,7 @@
                                 class="value"
                                 id="system.size"
                                 name="system.size">
-                                {{selectOptions config.creatureSizes selected=aproxy.size valueAttr="key" labelAttr="label"}}
+                                {{selectOptions config.creatureSizes selected=adata.size valueAttr="key" labelAttr="label"}}
                             </select>
                             {{else}}
                             <select
@@ -82,7 +82,7 @@
                                 id="system.size"
                                 name="system.size"
                                 disabled>
-                                {{selectOptions config.creatureSizes selected=aproxy.size valueAttr="key" labelAttr="label"}}
+                                {{selectOptions config.creatureSizes selected=adata.size valueAttr="key" labelAttr="label"}}
                             </select>
                             {{/if}}
                         </li>
@@ -95,14 +95,14 @@
                                 Move
                             </label>
                             <div class="flexrow move-values">
-                                <span class="move-eff">{{ aproxy.MOV }}</span>
+                                <span class="move-eff">{{ adata.MOV }}</span>
                                 <span class="sep">/</span>
                                 <input
                                     class="move-base"
                                     type="number"
                                     id="system.move.base"
                                     name="system.move.base"
-                                    value="{{ aproxy.move.base }}"
+                                    value="{{ adata.move.base }}"
                                     data-dtype="Number" />
                             </div>
                         </li>
@@ -191,7 +191,7 @@
             data-group="primary"
             data-tab="facade">
             <div class="flexrow">
-                {{> char_v2_img_partial cls='facade-image' src=aproxy.bioImage edit='system.bioImage' h=300 w=200}}
+                {{> char_v2_img_partial cls='facade-image' src=adata.bioImage edit='system.bioImage' h=300 w=200}}
                 <div class="facade-description">
                     {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
                 </div>
@@ -254,7 +254,7 @@
                         min="0"
                         id="system.fatigue"
                         name="system.fatigue"
-                        value="{{ aproxy.fatigue }}"
+                        value="{{ adata.fatigue }}"
                         data-dtype="Number" />
                 </div>
                 <div
@@ -269,7 +269,7 @@
                             Init
                         </div>
                     </label>
-                    <div class="combat-stat-value">{{ aproxy.initiative }}</div>
+                    <div class="combat-stat-value">{{ adata.initiative }}</div>
                 </div>
                 <div
                     class="combat-stat flexrow"
@@ -282,7 +282,7 @@
                             Dodge
                         </div>
                     </label>
-                    <div class="combat-stat-value">{{ aproxy.dodge }}</div>
+                    <div class="combat-stat-value">{{ adata.dodge }}</div>
                 </div>
                 <div
                     class="combat-stat flexrow"
@@ -296,7 +296,7 @@
                             Load
                         </div>
                     </label>
-                    <div class="combat-stat-value">{{ aproxy.load }}</div>
+                    <div class="combat-stat-value">{{ adata.load }}</div>
                 </div>
                 <div
                     class="combat-stat flexrow"
@@ -310,7 +310,7 @@
                             End
                         </div>
                     </label>
-                    <div class="combat-stat-value">{{ aproxy.END }}</div>
+                    <div class="combat-stat-value">{{ adata.END }}</div>
                 </div>
                 <div
                     class="combat-stat flexrow"
@@ -324,7 +324,7 @@
                             Encumb.
                         </div>
                     </label>
-                    <div class="combat-stat-value">{{ aproxy.encumbrance }}</div>
+                    <div class="combat-stat-value">{{ adata.encumbrance }}</div>
                 </div>
             </div>
             <div class="items-list combat-stats grid grid-fixed-row-s {{#if isGM}}grid-6col{{else}}grid-5col{{/if}}">
@@ -428,9 +428,9 @@
                 </div>
                 {{/if}}
             </div>
-            {{#if hasSteed}}
+            {{#if adata.hasSteed}}
             <div class="items-list combat-stats grid grid-fixed-row-s grid-5col">
-                {{#if (not aproxy.mounted)}}
+                {{#if (not adata.mounted)}}
                 <div
                     class="combat-stat flexrow"
                     id="combat-mount">
@@ -438,8 +438,8 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="mount-action"
-                            aria-label="Mount {{ aproxy.steed.name }}"
-                            data-tooltip="Mount {{ aproxy.steed.name }}"
+                            aria-label="Mount {{ adata.steed.name }}"
+                            data-tooltip="Mount {{ adata.steed.name }}"
                             data-tooltip-direction="UP">
                             Mount
                         </a>
@@ -453,8 +453,8 @@
                     <label class="combat-stat-label tooltip">
                         <a
                             class="mount-action"
-                            aria-label="Dismount {{ aproxy.steed.name }}"
-                            data-tooltip="Dismount {{ aproxy.steed.name }}"
+                            aria-label="Dismount {{ adata.steed.name }}"
+                            data-tooltip="Dismount {{ adata.steed.name }}"
                             data-tooltip-direction="UP">
                             Dismount
                         </a>
@@ -469,7 +469,7 @@
                     </div>
                     <label class="combat-stat-label tooltip">
                         <a
-                            class="steedcommand-roll{{#unless aproxy.mounted}} disabled{{/unless}}"
+                            class="steedcommand-roll{{#unless adata.mounted}} disabled{{/unless}}"
                             aria-label="Steed Command Check"
                             data-tooltip="Steed Command Check"
                             data-tooltip-direction="UP">
@@ -485,7 +485,7 @@
                     </div>
                     <label class="combat-stat-label tooltip">
                         <a
-                            class="unhorsing-roll{{#unless aproxy.mounted}} disabled{{/unless}}"
+                            class="unhorsing-roll{{#unless adata.mounted}} disabled{{/unless}}"
                             aria-label="Unhorsing Roll"
                             data-tooltip="Unhorsing Roll"
                             data-tooltip-direction="UP">
@@ -887,11 +887,11 @@
                     </li>
                     <li class="weight-line flexrow">
                         <div class="weight-detail title">Weight</div>
-                        <div class="weight-detail weapon">{{ aproxy.totalWeaponWeight }}</div>
-                        <div class="weight-detail missile">{{ aproxy.totalMissileWeight }}</div>
-                        <div class="weight-detail armor">{{ aproxy.totalArmorWeight }}</div>
-                        <div class="weight-detail misc-gear">{{ aproxy.totalMiscGearWeight }}</div>
-                        <div class="total">{{ aproxy.totalGearWeight }}</div>
+                        <div class="weight-detail weapon">{{ adata.totalWeaponWeight }}</div>
+                        <div class="weight-detail missile">{{ adata.totalMissileWeight }}</div>
+                        <div class="weight-detail armor">{{ adata.totalArmorWeight }}</div>
+                        <div class="weight-detail misc-gear">{{ adata.totalMiscGearWeight }}</div>
+                        <div class="total">{{ adata.totalGearWeight }}</div>
                     </li>
                 </ol>
                 <div class="buf"></div>
@@ -906,7 +906,7 @@
                     placeholder="Filter gear by name..."
                     data-dtype="String" />
             </div>
-            {{#each aproxy.containers as |citem cid|}}
+            {{#each adata.containers as |citem cid|}}
             <ol class="items-list gear-list">
                 <li
                     class="items-header gear flexrow"
@@ -988,10 +988,10 @@
                 </li>
                 <ol class="item-list gear-list">
                     {{#each ../items as | item |}}
-                    {{#if (and (endswith item.type "gear") (eq item.container cid))}}
+                    {{#if (and (endswith item.type "gear") (eq item.system.container cid))}}
                     {{#unless citem.collapsed}}
                     <li
-                        class="item gear-item {{#unless item.isCarried}}nocarry{{/unless}} flexrow"
+                        class="item gear-item {{#unless item.system.isCarried}}nocarry{{/unless}} flexrow"
                         data-item-id="{{ item.id }}"
                         data-item-name="{{ item.name }}"
                         data-container-id="{{ cid }}"
@@ -1003,31 +1003,30 @@
                                 style="background-image: url('{{ item.img }}')"></div>
                             <h4>{{ item.name }}</h4>
                         </div>
-                        <div class="item-detail gear-type">{{ item.label }}</div>
+                        <div class="item-detail gear-type">{{ item.system.label }}</div>
                         <div class="item-detail gear-qty">
-                            <input type="text" {{#unless item.isCarried}}class="nocarry"{{/unless}} name="item-quantity-special" id="{{
-                                item.id
-                            }}" value="{{ item.quantity }}" data-dtype="Number"/>
+                            <input type="text" {{#unless item.system.isCarried}}class="nocarry"{{/unless}} name="item-quantity-special"
+                            id="{{ item.id }}" value="{{ item.system.quantity }}" data-dtype="Number"/>
                         </div>
-                        <div class="item-detail gear-weight">{{ item.weightT }}</div>
-                        <div class="item-detail gear-notes">{{ item.notes }}</div>
+                        <div class="item-detail gear-weight">{{ item.system.weightT }}</div>
+                        <div class="item-detail gear-notes">{{ item.system.notes }}</div>
                         <div class="item-controls-wide">
-                            {{#if (or (eq cid "on-person") (eq citem.subtype "Group"))}}
+                            {{#if (or (eq cid "on-person") (eq citem.system.type "Group"))}}
                             {{#unless (or (eq item.type "containergear") (eq item.type "miscgear"))}}
                             <a
                                 class="item-control item-equip"
-                                aria-label="{{ item.ariaLabelEquip }}"
-                                data-tooltip="{{ item.ariaLabelEquip }}"
+                                aria-label="{{ item.system.ariaLabelEquip }}"
+                                data-tooltip="{{ item.system.ariaLabelEquip }}"
                                 data-tooltip-direction="UP">
-                                <i class="{{#if item.isEquipped}}active{{/if}} fas fa-shield-alt"></i>
+                                <i class="{{#if item.system.isEquipped}}active{{/if}} fas fa-shield-alt"></i>
                             </a>
                             {{/unless}}
                             <a
                                 class="item-control item-carry"
-                                aria-label="{{ ariaLabelCarry }}"
-                                data-tooltip="{{ ariaLabelCarry }}"
+                                aria-label="{{ system.ariaLabelCarry }}"
+                                data-tooltip="{{ system.ariaLabelCarry }}"
                                 data-tooltip-direction="UP">
-                                <i class="{{#if item.isCarried}}active{{/if}} fas fa-suitcase"></i>
+                                <i class="{{#if item.system.isCarried}}active{{/if}} fas fa-suitcase"></i>
                             </a>
                             {{/if}}
                             <a
@@ -1042,7 +1041,7 @@
                                 aria-label="Delete {{ name }}"
                                 data-tooltip="Delete {{ name }}"
                                 data-tooltip-direction="UP"
-                                data-label="{{ item.name }} ({{ item.label }})">
+                                data-label="{{ item.name }} ({{ item.system.label }})">
                                 <i class="active fas fa-trash"></i>
                             </a>
                         </div>

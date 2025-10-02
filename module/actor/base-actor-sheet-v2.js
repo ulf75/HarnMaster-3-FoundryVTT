@@ -6,7 +6,6 @@ import {ItemHM3} from '../item/item.js';
 import {onManageMacro} from '../macro.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
-import {ActorHM3} from './actor.js';
 
 /**
  * Extend the basic ActorSheet with some common capabilities
@@ -37,9 +36,9 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
     async getData(options = {}) {
         const start = performance.now();
 
-        let context = foundry.utils.mergeObject(super.getData(options), {actor: null, items: null});
+        let context = foundry.utils.mergeObject(super.getData(options), {items: null});
         context = foundry.utils.mergeObject(context, {
-            aproxy: this.actor.proxy,
+            adata: this.actor.system,
             config: CONFIG.HM3,
             customSunSign: game.settings?.get('hm3', 'customSunSign'),
             dtypes: ['String', 'Number', 'Boolean'],
@@ -64,7 +63,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             isCreature: this.document.type === ActorType.CREATURE,
             isGM: game.user?.isGM,
             isSkillImprovement: this.actor.skillImprovement,
-            items: this.actor.proxies.filter((item) => item.visible).sort((a, b) => a.sort - b.sort),
+            items: this.actor.items.contents,
             labels: this.actor.labels || {},
             macroTypes: [
                 {key: 'chat', label: 'Chat'},
@@ -72,13 +71,13 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             ],
             strictMode: game.settings?.get('hm3', 'strictGmMode')
         });
+        context.items.filter((item) => item.system.visible).sort((a, b) => a.system.sort - b.system.sort);
         context = foundry.utils.mergeObject(context, {
             cssClass: context.editable ? 'editable' : this.isEditable ? 'interactable' : 'locked',
-            hasSteed: !!context.aproxy.steed,
+            hasSteed: !!this.actor.steed,
             ...this._itemLists(context.items)
         });
-
-        context.descriptionHTML = await TextEditor.enrichHTML(this.object.system.description, {
+        context.descriptionHTML = await TextEditor.enrichHTML(this.actor.system.description, {
             secrets: game.user?.isGM,
             relativeTo: this.object.system
         });
@@ -88,93 +87,95 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         return context;
     }
 
-    _itemLists(proxies) {
+    _itemLists(items) {
         return {
             get physicalSkills() {
-                return proxies.filter((item) => item.type === ItemType.SKILL && item.subtype === SkillType.PHYSICAL);
+                return items.filter((item) => item.type === ItemType.SKILL && item.system.type === SkillType.PHYSICAL);
             },
             get communicationSkills() {
-                return proxies.filter(
-                    (item) => item.type === ItemType.SKILL && item.subtype === SkillType.COMMUNICATION
+                return items.filter(
+                    (item) => item.type === ItemType.SKILL && item.system.type === SkillType.COMMUNICATION
                 );
             },
             get combatSkills() {
-                return proxies.filter((item) => item.type === ItemType.SKILL && item.subtype === SkillType.COMBAT);
+                return items.filter((item) => item.type === ItemType.SKILL && item.system.type === SkillType.COMBAT);
             },
             get craftSkills() {
-                return proxies.filter((item) => item.type === ItemType.SKILL && item.subtype === SkillType.CRAFT);
+                return items.filter((item) => item.type === ItemType.SKILL && item.system.type === SkillType.CRAFT);
             },
             get magicSkills() {
-                return proxies.filter((item) => item.type === ItemType.SKILL && item.subtype === SkillType.MAGIC);
+                return items.filter((item) => item.type === ItemType.SKILL && item.system.type === SkillType.MAGIC);
             },
             get ritualSkills() {
-                return proxies.filter((item) => item.type === ItemType.SKILL && item.subtype === SkillType.RITUAL);
+                return items.filter((item) => item.type === ItemType.SKILL && item.system.type === SkillType.RITUAL);
             },
             get companions() {
-                return proxies.filter((item) => item.type === ItemType.COMPANION);
+                return items.filter((item) => item.type === ItemType.COMPANION);
             },
             get injuries() {
-                return proxies.filter((item) => item.type === ItemType.INJURY);
+                return items.filter((item) => item.type === ItemType.INJURY);
             },
             get invocations() {
-                return proxies.filter((item) => item.type === ItemType.INVOCATION);
+                return items.filter((item) => item.type === ItemType.INVOCATION);
             },
             get missiles() {
-                return proxies.filter((item) => item.type === ItemType.MISSILEGEAR);
+                return items.filter((item) => item.type === ItemType.MISSILEGEAR);
             },
             get psionics() {
-                return proxies.filter((item) => item.type === ItemType.PSIONIC);
+                return items.filter((item) => item.type === ItemType.PSIONIC);
             },
             get spells() {
-                return proxies.filter((item) => item.type === ItemType.SPELL);
+                return items.filter((item) => item.type === ItemType.SPELL);
             },
             get esoterics() {
-                return proxies.filter((item) =>
+                return items.filter((item) =>
                     [ItemType.INVOCATION, ItemType.PSIONIC, ItemType.SPELL].includes(item.type)
                 );
             },
             get companionParty() {
-                return proxies.filter(
-                    (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.PARTY
+                return items.filter(
+                    (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.PARTY
                 );
             },
             get companionAnimal() {
-                return proxies.filter(
-                    (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.ANIMAL
+                return items.filter(
+                    (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.ANIMAL
                 );
             },
             get companionSteed() {
-                return proxies.filter(
-                    (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.STEED
+                return items.filter(
+                    (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.STEED
                 );
             },
             get companionFollower() {
-                return proxies.filter(
-                    (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.FOLLOWER
+                return items.filter(
+                    (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.FOLLOWER
                 );
             },
             get companionConnection() {
-                return proxies.filter(
-                    (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.CONNECTION
+                return items.filter(
+                    (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.CONNECTION
                 );
             },
             get companionFriend() {
-                return proxies.filter(
-                    (item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.FRIEND
+                return items.filter(
+                    (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.FRIEND
                 );
             },
             get companionFoe() {
-                return proxies.filter((item) => item.type === ItemType.COMPANION && item.subtype === CompanionType.FOE);
+                return items.filter(
+                    (item) => item.type === ItemType.COMPANION && item.system.type === CompanionType.FOE
+                );
             },
             // Check for esoteric attack options
             get esotericAtkOptions() {
-                return proxies.filter(
+                return items.filter(
                     (item) => hm3.config.esotericCombatItems.attack.includes(item.name) && item.isEquipped
                 );
             },
             // Check for esoteric defense options
             get esotericDefOptions() {
-                return proxies.filter((item) => hm3.config.esotericCombatItems.defense.includes(item.name));
+                return items.filter((item) => hm3.config.esotericCombatItems.defense.includes(item.name));
             }
         };
     }
@@ -490,7 +491,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // Everything below here is only needed if the sheet is editable
         if (!this.options.editable) return;
 
-        this.actor.proxy.activateListeners(html);
+        // this.actor.proxy.activateListeners(html);
 
         html.on('click', '.character-mancer', async (ev) => {
             await this.actor.unsetFlag('hm3', 'CharacterMancer');
@@ -515,13 +516,13 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
 
         html.on('click', '.item-minimize, .item-maximize', this._onContainerCollapse.bind(this));
 
-        // html.on('click', '.fff-name', (ev) => {
-        //     const el = ev.currentTarget.querySelector('#companion'); //.dataset; // .innerText;
-        //     if (!el) return;
-        //     const uuid = el.dataset.itemActorUuid;
-        //     const actor = fromUuidSync(uuid);
-        //     actor.sheet.render(true);
-        // });
+        html.on('click', '.fff-name', (ev) => {
+            const el = ev.currentTarget.querySelector('#companion'); //.dataset; // .innerText;
+            if (!el) return;
+            const uuid = el.dataset.itemActorUuid;
+            const actor = fromUuidSync(uuid);
+            actor.sheet.render(true);
+        });
 
         html.on('click', '.item-name, .spell-name', (ev) => {
             switch (ev.currentTarget.innerText) {
@@ -1138,13 +1139,13 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
     async _onToggleMount(event) {
         event.preventDefault();
 
-        const aproxy = ActorHM3.LivingProxy(this.actor.uuid);
-
-        if (aproxy?.steed) {
-            if (!aproxy?.mounted) {
-                Hooks.call('hm3.onMount', aproxy);
+        const riding = this.actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
+        const steed = fromUuidSync(riding.system.actorUuid);
+        if (steed) {
+            if (!this.actor.system.mounted) {
+                Hooks.call('hm3.onMount', this.actor, steed);
             } else {
-                Hooks.call('hm3.onDismount', aproxy);
+                Hooks.call('hm3.onDismount', this.actor, steed);
             }
         }
     }
@@ -1165,7 +1166,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             const ret = await item.update({[attr]: !foundry.utils.getProperty(item, attr)});
 
             for (const effect of item.effects.contents) {
-                await effect.update({disabled: !item.proxy.isEquipped || !item.proxy.isCarried});
+                await effect.update({disabled: !item.system.isEquipped || !item.system.isCarried});
             }
 
             return ret;
@@ -1190,7 +1191,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
             const ret = await item.update({[attr]: !foundry.utils.getProperty(item, attr)});
 
             for (const effect of item.effects.contents) {
-                await effect.update({disabled: !item.proxy.isEquipped || !item.proxy.isCarried});
+                await effect.update({disabled: !item.system.isEquipped || !item.system.isCarried});
             }
 
             return ret;
@@ -1212,7 +1213,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // Only process skills and psionics, otherwise ignore
         if (item) {
             if (item.type === ItemType.SKILL || item.type === ItemType.PSIONIC) {
-                if (!item.proxy.improveFlag) {
+                if (!item.system.improveFlag) {
                     return item.update({'system.improveFlag': 1});
                 } else {
                     return this._improveToggleDialog(item);
@@ -1241,7 +1242,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
     async _improveToggleDialog(item) {
         // Condition skill is maxed out (SKILLS 9)
         if (item.type === ItemType.SKILL && item.name === 'Condition') {
-            if (item.proxy.ML >= 7 * item.proxy.SB.value) {
+            if (item.system.ML >= 7 * item.system.SB) {
                 await hm3.GmSays({
                     text:
                         `<h4>${this.actor.name}: ${item.name}</h4>` + game.i18n?.localize('hm3.SDR.ConditionSkillMax'),
@@ -1293,7 +1294,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                     }
                                     // Weapon Skills may be developed by practice/training as normal, but no weapon skill
                                     // can be increased beyond ML70 except by actual combat experience (SKILLS 18)
-                                    else if (item.proxy.ML >= 70) {
+                                    else if (item.system.ML >= 70) {
                                         await hm3.GmSays({
                                             text:
                                                 `<h4>${this.actor.name}: ${item.name}</h4>` +
@@ -1317,7 +1318,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                                     for (let i = 0; i < num; i++) {
                                                         // Condition skill is maxed out (SKILLS 9)
                                                         if (item.type === ItemType.SKILL && item.name === 'Condition') {
-                                                            if (item.proxy.ML >= 7 * item.proxy.SB.value) {
+                                                            if (item.system.ML >= 7 * item.system.SB) {
                                                                 await hm3.GmSays({
                                                                     text:
                                                                         `<h4>${this.actor.name}: ${item.name}</h4>` +
@@ -1334,7 +1335,7 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
                                                             item.type === ItemType.SKILL &&
                                                             item.system.type === 'Combat'
                                                         ) {
-                                                            if (item.proxy.ML >= 70) {
+                                                            if (item.system.ML >= 70) {
                                                                 await hm3.GmSays({
                                                                     text:
                                                                         `<h4>${this.actor.name}: ${item.name}</h4>` +

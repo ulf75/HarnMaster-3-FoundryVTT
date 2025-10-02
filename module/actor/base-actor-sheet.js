@@ -1,6 +1,6 @@
-import {onManageActiveEffect} from '../effect.js';
-import {ActorType, CompanionType, ItemType, SkillType} from '../hm3-types.js';
-import {onManageMacro} from '../macro.js';
+import { onManageActiveEffect } from '../effect.js';
+import { ActorType, CompanionType, ItemType, SkillType } from '../hm3-types.js';
+import { onManageMacro } from '../macro.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 
@@ -1292,7 +1292,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         event.preventDefault();
 
         const riding = this.actor.items.find((item) => item.type === ItemType.SKILL && item.name.includes('Riding'));
-
         const steed = fromUuidSync(riding.system.actorUuid);
         if (steed) {
             if (!this.actor.system.mounted) {

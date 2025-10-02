@@ -48,14 +48,14 @@
                     <h4>{{ name }}</h4>
                 </a>
             </div>
-            <div class="skill-ele item-detail">{{ SB.value }}</div>
+            <div class="skill-ele item-detail">{{ system.SB }}</div>
             {{#if ../isCharacterMancer}}
             <div class="skill-ele item-detail">
                 <input
                     type="text"
                     name="item-sbx-special"
                     id="{{ id }}-SBx"
-                    value="{{ SBx }}"
+                    value="{{ system.SBx }}"
                     data-dtype="Number" />
             </div>
             <div class="skill-ele item-detail">
@@ -63,13 +63,13 @@
                     type="text"
                     name="item-op-special"
                     id="{{ id }}-OP"
-                    value="{{ OP }}"
+                    value="{{ system.OP }}"
                     data-dtype="Number" />
             </div>
             {{/if}}
-            <div class="skill-ele item-detail">{{ ML }}</div>
-            <div class="skill-ele item-detail">{{ EML }}</div>
-            <div class="skill-notes">{{ notes }}</div>
+            <div class="skill-ele item-detail">{{ system.ML }}</div>
+            <div class="skill-ele item-detail">{{ system.EML }}</div>
+            <div class="skill-notes">{{ system.notes }}</div>
             <div class="item-controls{{#if ../isSkillImprovement}}-wide{{/if}}">
                 {{#if isSkillImprovement}}
                 <a
@@ -77,7 +77,7 @@
                     aria-label="Improve Skill"
                     data-tooltip="Improve Skill"
                     data-tooltip-direction="UP">
-                    {{#if improveFlag}}
+                    {{#if system.improveFlag}}
                     <i class="active fas fa-star"></i>
                     {{else}}
                     <i class="far fa-star"></i>

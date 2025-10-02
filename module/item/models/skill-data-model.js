@@ -8,6 +8,7 @@ export class SkillDataModel extends ItemDataModel {
     /** @override */
     static defineSchema() {
         return this.mergeSchema(super.defineSchema(), {
+            actorUuid: new StringField({required: false}),
             improveFlag: new NumberField({initial: 0}),
             masteryLevel: new NumberField({initial: 0}),
             skillBase: new SchemaField({
@@ -74,5 +75,12 @@ export class SkillDataModel extends ItemDataModel {
      */
     get SI() {
         return Math.floor(this.ML / 10);
+    }
+    /**
+     * @type {string | null}
+     */
+    get steedUuid() {
+        // @ts-expect-error
+        return this.item.name.includes('Riding') ? this.actorUuid ?? null : null;
     }
 }

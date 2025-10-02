@@ -1,5 +1,6 @@
 // @ts-check
 import {ItemType} from '../../hm3-types';
+import {ActorHM3} from '../actor';
 import {ActorDataModel} from './actor-data-model';
 
 const {ArrayField, BooleanField, HTMLField, NumberField, SchemaField, StringField} = foundry.data.fields;
@@ -81,7 +82,7 @@ export class LivingDataModel extends ActorDataModel {
             condition: new NumberField({initial: 0, integer: true, min: 0}),
             dodge: new NumberField({initial: 0, integer: true, min: 0}),
             encumbrance: new NumberField({initial: 0, integer: true, min: 0}),
-            endurance: new NumberField({initial: 0, integer: true, min: 0}),
+            // endurance: new NumberField({initial: 0, integer: true, min: 0}),
             fatigue: new NumberField({initial: 0, integer: true, min: 0}),
             gender: new StringField({initial: 'Male', choices: ['Male', 'Female']}),
             initiative: new NumberField({initial: 0, integer: true, min: 0}),
@@ -93,12 +94,13 @@ export class LivingDataModel extends ActorDataModel {
                 modified: new NumberField({initial: 0, integer: true, min: 0})
             }),
             physicalPenalty: new NumberField({initial: 0, integer: true, min: 0}),
-            totalInjuryLevels: new NumberField({initial: 0, integer: true, min: 0}),
+            // totalInjuryLevels: new NumberField({initial: 0, integer: true, min: 0}),
             universalPenalty: new NumberField({initial: 0, integer: true, min: 0}),
             shockIndex: new SchemaField({
                 max: new NumberField({initial: 100, readonly: true}),
                 value: new NumberField({initial: 100, integer: true, min: 0, max: 100})
             }),
+            size: new NumberField({initial: 6, integer: true, positive: true, min: 1, max: 20}),
             species: new StringField({initial: ''})
         });
     }
@@ -210,7 +212,7 @@ export class LivingDataModel extends ActorDataModel {
      * @type {number}
      */
     get END() {
-        return this.Endurance;
+        return this.endurance;
     }
     /**
      * **Effective** Move
@@ -228,26 +230,6 @@ export class LivingDataModel extends ActorDataModel {
     get capacity() {
         // @ts-expect-error
         return {max: this.loadRating + this.END * 10, value: this.totalGearWeight};
-    }
-    /**
-     * Endurance
-     * @type {number}
-     */
-    get Endurance() {
-        // @ts-expect-error
-        const ML = this.Skill('Condition')?.ML;
-        return Math.round(
-            // @ts-expect-error
-            ML ? ML / 5 : (this.abilities.strength.base + this.abilities.stamina.base + this.abilities.will.base) / 3
-        );
-    }
-    /**
-     * Encumbrance
-     * @type {number}
-     */
-    get Encumbrance() {
-        // @ts-expect-error
-        return Math.floor(Math.max(this.totalGearWeight - this.loadRating, 0) / this.END);
     }
     /**
      * Load
@@ -278,21 +260,73 @@ export class LivingDataModel extends ActorDataModel {
      */
     get EP() {
         // @ts-expect-error
-        return this.mounted ? Math.round(this.Encumbrance / 2) : this.Encumbrance;
+        return this.encumbrance;
     }
     /**
      * Fatigue Penalty
      * @type {number}
      */
     get FP() {
-        // @ts-expect-error
-        return this.mounted ? Math.round(this.fatigue / 2) : this.fatigue;
+        return this.eph.fatigue;
     }
     /**
      * Injury Penalty
      * @type {number}
      */
     get IP() {
+        return this.eph.totalInjuryLevels;
+    }
+    /**
+     * Universal Penalty
+     * @type {number}
+     */
+    get UP() {
+        return this.universalPenalty;
+    }
+    /**
+     * Physical Penalty
+     * @type {number}
+     */
+    get PP() {
+        // @ts-expect-error
+        return this.physicalPenalty;
+    }
+
+    /**
+     * Endurance Calculation
+     * @type {number}
+     */
+    get _endurance() {
+        // @ts-expect-error
+        const ML = this.Skill('Condition')?.ML;
+        return Math.round(
+            // @ts-expect-error
+            ML ? ML / 5 : (this.abilities.strength.base + this.abilities.stamina.base + this.abilities.will.base) / 3
+        );
+    }
+    /**
+     * Encumbrance Penalty (EP) Calculation
+     * @type {number}
+     */
+    get _encumbrance() {
+        // @ts-expect-error
+        const enc = Math.floor(Math.max(this.totalGearWeight - this.loadRating, 0) / this.END);
+        // @ts-expect-error
+        return this.mounted ? Math.round(enc / 2) : enc;
+    }
+    /**
+     * Fatigue Penalty (FP) Calculation
+     * @type {number}
+     */
+    get _fatigue() {
+        // @ts-expect-error
+        return this.mounted ? Math.round(this.fatigue / 2) : this.fatigue;
+    }
+    /**
+     * Injury Penalty (IP) Calculation
+     * @type {number}
+     */
+    get _totalInjuryLevels() {
         return (
             this.actor.items
                 .filter((item) => item.type === ItemType.INJURY)
@@ -301,23 +335,83 @@ export class LivingDataModel extends ActorDataModel {
         );
     }
     /**
-     * Universal Penalty
+     * Universal Penalty (UP) Calculation
      * @type {number}
      */
-    get UP() {
+    get _universalPenalty() {
         return this.IP + this.FP;
     }
     /**
-     * Physical Penalty
+     * Physical Penalty (PP) Calculation
      * @type {number}
      */
-    get PP() {
+    get _physicalPenalty() {
         return this.UP + this.EP;
+    }
+
+    /**
+     * @type {boolean}
+     */
+    get hasSteed() {
+        return !!this.Skill('Riding')?.system.steedUuid;
+    }
+
+    /**
+     * @type {ActorHM3 | null}
+     */
+    get steed() {
+        return fromUuidSync(this.Skill('Riding')?.system.steedUuid) ?? null;
+    }
+
+    get containers() {
+        // Setup the fake container entry for "On Person" container
+        const containers = {
+            'on-person': {
+                'name': 'On Person',
+                'type': ItemType.CONTAINERGEAR,
+
+                'container': 'on-person',
+                'collapsed': this.actor.getFlag('hm3', 'onPersonContainerCollapsed') || false,
+                'capacity': {
+                    'max': this.capacity.max,
+                    'value': this.capacity.value
+                }
+            }
+        };
+
+        this.actor.items.forEach((item) => {
+            if (item.type === ItemType.CONTAINERGEAR) {
+                containers[item.id] = item;
+            }
+        });
+
+        return containers;
     }
 
     /** @override */
     prepareBaseData() {
         super.prepareBaseData();
+
+        // Setup temporary work values masking the base values
+        const eph = (this.actor.system.eph = {});
+
+        this.condition = this.Condition;
+        this.endurance = this._endurance;
+        this.actor.applySpecificActiveEffect('system.endurance');
+        eph.fatigue = this._fatigue;
+        this.actor.applySpecificActiveEffect('system.eph.fatigue');
+        eph.totalInjuryLevels = this._totalInjuryLevels;
+        this.actor.applySpecificActiveEffect('system.eph.totalInjuryLevels');
+        this.encumbrance = this._encumbrance;
+        this.actor.applySpecificActiveEffect('system.encumbrance');
+
+        this.universalPenalty = this._universalPenalty;
+        this.actor.applySpecificActiveEffect('system.universalPenalty');
+        this.physicalPenalty = this._physicalPenalty;
+        this.actor.applySpecificActiveEffect('system.physicalPenalty');
+
+        this.dodge = this.Dodge;
+        this.initiative = 0;
 
         // Initialize derived attributes
         this.abilities.strength.effective = 0;
@@ -346,20 +440,9 @@ export class LivingDataModel extends ActorDataModel {
         this.abilities.voice.modified = 0;
         this.abilities.comeliness.modified = 0;
         this.abilities.morality.modified = 0;
-        this.condition = this.Condition;
-        this.dodge = this.Dodge;
-        this.encumbrance = this.Encumbrance;
-        this.endurance = this.Endurance;
-        this.initiative = 0;
         this.move.effective = 0;
-        this.physicalPenalty = this.PP;
-        this.totalInjuryLevels = this.IP;
-        this.universalPenalty = this.UP;
 
-        // Setup temporary work values masking the base values
-        const eph = (this.actor.system.eph = {});
         eph.move = this.move.base;
-        eph.fatigue = this.fatigue;
         eph.strength = this.abilities.strength.base;
         eph.stamina = this.abilities.stamina.base;
         eph.dexterity = this.abilities.dexterity.base;
@@ -373,7 +456,6 @@ export class LivingDataModel extends ActorDataModel {
         eph.aura = this.abilities.aura.base;
         eph.morality = this.abilities.morality.base;
         eph.comeliness = this.abilities.comeliness.base;
-        eph.endurance = this.endurance;
 
         eph.meleeAMLMod = 0;
         eph.meleeDMLMod = 0;

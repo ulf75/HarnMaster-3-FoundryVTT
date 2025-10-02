@@ -1090,13 +1090,13 @@ HM3.stdSkills = {
 HM3.injuryLevels = ['NA', 'M1', 'S2', 'S3', 'G4', 'G5', 'K4', 'K5'];
 
 HM3.activeEffectKey = {
+    // Attacks & Defenses
+    'system.eph.itemAMLMod': 'Weapon Attack ML',
+    'system.eph.itemDMLMod': 'Weapon Defense ML',
     'system.eph.meleeAMLMod': 'Melee Attacks',
     'system.eph.meleeDMLMod': 'Melee Defenses',
     'system.eph.missileAMLMod': 'Missile Attacks',
-    'system.eph.outnumbered': 'Outnumbered',
-    'system.eph.itemAMLMod': 'Weapon Attack ML',
-    'system.eph.itemDMLMod': 'Weapon Defense ML',
-    'system.eph.itemEMLMod': 'Skill EML',
+    // Skill Checks
     'system.eph.commSkillsMod': 'Communication Skills EML',
     'system.eph.physicalSkillsMod': 'Physical Skills EML',
     'system.eph.combatSkillsMod': 'Combat Skills EML',
@@ -1104,13 +1104,17 @@ HM3.activeEffectKey = {
     'system.eph.ritualSkillsMod': 'Ritual Skills EML',
     'system.eph.magicSkillsMod': 'Magic Skills EML',
     'system.eph.psionicTalentsMod': 'Psionic Talents EML',
+    'system.eph.itemEMLMod': 'Skill EML',
+    // Penalties
+    'system.encumbrance': 'Encumbrance',
     'system.eph.fatigue': 'Fatigue',
+    'system.eph.totalInjuryLevels': 'Injury Level',
     'system.physicalPenalty': 'Physical Penalty',
     'system.universalPenalty': 'Universal Penalty',
-    'system.encumbrance': 'Encumbrance',
+    // Combat
     'system.endurance': 'Endurance',
-    'system.eph.totalInjuryLevels': 'Injury Level',
     'system.eph.move': 'Move',
+    // Abilities
     'system.eph.strength': 'Strength',
     'system.eph.stamina': 'Stamina',
     'system.eph.dexterity': 'Dexterity',
@@ -1124,6 +1128,8 @@ HM3.activeEffectKey = {
     'system.eph.aura': 'Aura',
     'system.eph.morality': 'Morality',
     'system.eph.comeliness': 'Comeliness',
+    // Misc
+    'system.eph.outnumbered': 'Outnumbered',
     'system.eph.unhorsing': 'Unhorsing'
 };
 

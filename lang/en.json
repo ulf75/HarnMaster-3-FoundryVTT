@@ -1,4 +1,11 @@
 {
+  "TYPES": {
+    "Actor": {
+      "character": "Character",
+      "creature": "Creature",
+      "container": "Container"
+    }
+  },
   "hm3": {
     "SDR": {
       "CombatExperience": "Weapon Skills may be developed by practice/training as normal, but no weapon skill can be increased beyond ML70 except by actual combat experience.",

@@ -234,12 +234,12 @@ Hooks.once('init', async function () {
 
     // Define custom Document classes
     CONFIG.Actor.documentClass = ActorHM3;
-    CONFIG.Actor.typeLabels = {
-        base: 'Base',
-        character: 'Character',
-        creature: 'Creature',
-        container: 'Container'
-    };
+    // CONFIG.Actor.typeLabels = {
+    //     base: 'Base',
+    //     character: 'Character',
+    //     creature: 'Creature',
+    //     container: 'Container'
+    // };
 
     Object.assign(
         (CONFIG.Actor.dataModels = {

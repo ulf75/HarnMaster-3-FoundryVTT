@@ -7,21 +7,21 @@
     data-tab="profile">
     <div class="flexcol">
         <ul class="flexrow ability-scores">
-            {{> char_v2_ability_partial name='strength' base=aproxy.strength.base eff=aproxy.STR}}
-            {{> char_v2_ability_partial name='stamina' base=aproxy.stamina.base eff=aproxy.STA}}
-            {{> char_v2_ability_partial name='dexterity' base=aproxy.dexterity.base eff=aproxy.DEX}}
-            {{> char_v2_ability_partial name='agility' base=aproxy.agility.base eff=aproxy.AGL}}
-            {{> char_v2_ability_partial name='intelligence' base=aproxy.intelligence.base eff=aproxy.INT}}
-            {{> char_v2_ability_partial name='aura' base=aproxy.aura.base eff=aproxy.AUR}}
-            {{> char_v2_ability_partial name='will' base=aproxy.will.base eff=aproxy.WIL}}
+            {{> char_v2_ability_partial name='strength' base=adata.abilities.strength.base eff=adata.STR}}
+            {{> char_v2_ability_partial name='stamina' base=adata.abilities.stamina.base eff=adata.STA}}
+            {{> char_v2_ability_partial name='dexterity' base=adata.abilities.dexterity.base eff=adata.DEX}}
+            {{> char_v2_ability_partial name='agility' base=adata.abilities.agility.base eff=adata.AGL}}
+            {{> char_v2_ability_partial name='intelligence' base=adata.abilities.intelligence.base eff=adata.INT}}
+            {{> char_v2_ability_partial name='aura' base=adata.abilities.aura.base eff=adata.AUR}}
+            {{> char_v2_ability_partial name='will' base=adata.abilities.will.base eff=adata.WIL}}
         </ul>
         <ul class="flexrow ability-scores">
-            {{> char_v2_ability_partial name='eyesight' base=aproxy.eyesight.base eff=aproxy.EYE}}
-            {{> char_v2_ability_partial name='hearing' base=aproxy.hearing.base eff=aproxy.HRG}}
-            {{> char_v2_ability_partial name='smell' base=aproxy.smell.base eff=aproxy.SML}}
-            {{> char_v2_ability_partial name='voice' base=aproxy.voice.base eff=aproxy.VOI}}
-            {{> char_v2_ability_partial name='comeliness' base=aproxy.comeliness.base eff=aproxy.CML}}
-            {{> char_v2_ability_partial name='morality' base=aproxy.morality.base eff=aproxy.MOR}}
+            {{> char_v2_ability_partial name='eyesight' base=adata.abilities.eyesight.base eff=adata.EYE}}
+            {{> char_v2_ability_partial name='hearing' base=adata.abilities.hearing.base eff=adata.HRG}}
+            {{> char_v2_ability_partial name='smell' base=adata.abilities.smell.base eff=adata.SML}}
+            {{> char_v2_ability_partial name='voice' base=adata.abilities.voice.base eff=adata.VOI}}
+            {{> char_v2_ability_partial name='comeliness' base=adata.abilities.comeliness.base eff=adata.CML}}
+            {{> char_v2_ability_partial name='morality' base=adata.abilities.morality.base eff=adata.MOR}}
         </ul>
         <div class="profile-params">
             <div class="flexrow profile-item">
@@ -37,7 +37,7 @@
                         type="text"
                         id="system.sunsign"
                         name="system.sunsign"
-                        value="{{ aproxy.sunsign }}"
+                        value="{{ adata.sunsign }}"
                         data-dtype="String" />
                     {{else}}
                     <select
@@ -45,7 +45,7 @@
                         id="system.sunsign"
                         name="system.sunsign"
                         data-dtype="String">
-                        {{selectOptions config.sunsigns selected=aproxy.sunsign valueAttr="key" labelAttr="key"}}
+                        {{selectOptions config.sunsigns selected=adata.sunsign valueAttr="key" labelAttr="key"}}
                     </select>
                     {{/if}}
                 </div>
@@ -60,7 +60,7 @@
                         type="text"
                         id="system.species"
                         name="system.species"
-                        value="{{ aproxy.species }}"
+                        value="{{ adata.species }}"
                         data-dtype="String" />
                 </div>
                 <div class="attribute gender flexrow">
@@ -73,7 +73,7 @@
                         class="value"
                         id="system.gender"
                         name="system.gender">
-                        {{selectOptions config.gender selected=aproxy.gender valueAttr="key" labelAttr="key"}}
+                        {{selectOptions config.gender selected=adata.gender valueAttr="key" labelAttr="key"}}
                     </select>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                         type="number"
                         id="system.height"
                         name="system.height"
-                        value="{{ aproxy.height }}"
+                        value="{{ adata.height }}"
                         data-dtype="Number" />
                 </div>
                 <div class="attribute sunsign flexrow">
@@ -106,7 +106,7 @@
                         type="number"
                         id="system.weight"
                         name="system.weight"
-                        value="{{ aproxy.weight }}"
+                        value="{{ adata.weight }}"
                         data-dtype="Number" />
                 </div>
                 <div class="attribute sunsign flexrow">
@@ -120,7 +120,7 @@
                         type="number"
                         id="system.size"
                         name="system.size"
-                        value="{{ aproxy.size }}"
+                        value="{{ adata.size }}"
                         data-dtype="Number" />
                 </div>
             </div>
@@ -184,7 +184,7 @@
                         id="system.frame"
                         name="system.frame"
                         data-dtype="String">
-                        {{selectOptions config.frames selected=aproxy.frame valueAttr="key" labelAttr="key"}}
+                        {{selectOptions config.frames selected=adata.frame valueAttr="key" labelAttr="key"}}
                     </select>
                 </div>
                 <div class="attribute sunsign flexrow">
@@ -198,7 +198,7 @@
                         id="system.culture"
                         name="system.culture"
                         data-dtype="String">
-                        {{selectOptions config.cultures selected=aproxy.culture valueAttr="key" labelAttr="key"}}
+                        {{selectOptions config.cultures selected=adata.culture valueAttr="key" labelAttr="key"}}
                     </select>
                 </div>
                 <div class="attribute sunsign flexrow">
@@ -212,7 +212,7 @@
                         id="system.socialClass"
                         name="system.socialClass"
                         data-dtype="String">
-                        {{selectOptions config.socialClasses selected=aproxy.socialClass valueAttr="key" labelAttr="key"}}
+                        {{selectOptions config.socialClasses selected=adata.socialClass valueAttr="key" labelAttr="key"}}
                     </select>
                 </div>
             </div>
@@ -245,7 +245,7 @@
                 </li>
                 <ol class="item-list trait-list">
                     {{#each items as |item|}}
-                    {{#if (and (eq type "trait") (eq subtype "Physical"))}}
+                    {{#if (and (eq type "trait") (eq system.type "Physical"))}}
                     <li
                         class="item trait trait-item flexrow"
                         data-item-id="{{ id }}"
@@ -254,9 +254,9 @@
                             <div
                                 class="item-image"
                                 style="background-image: url('{{ img }}')"></div>
-                            <h4>{{ label }}</h4>
+                            <h4>{{ system.label }}</h4>
                         </div>
-                        <div class="trait-notes">{{ notes }}</div>
+                        <div class="trait-notes">{{ system.notes }}</div>
                         <div class="item-controls">
                             <a
                                 class="item-control item-edit"
@@ -305,7 +305,7 @@
                 </li>
                 <ol class="item-list trait-list">
                     {{#each items as |item|}}
-                    {{#if (and (eq type "trait") (eq subtype "Psyche"))}}
+                    {{#if (and (eq type "trait") (eq system.type "Psyche"))}}
                     <li
                         class="item trait trait-item flexrow"
                         data-item-id="{{ id }}"
@@ -314,9 +314,9 @@
                             <div
                                 class="item-image"
                                 style="background-image: url('{{ img }}')"></div>
-                            <h4>{{ label }}</h4>
+                            <h4>{{ system.label }}</h4>
                         </div>
-                        <div class="trait-notes">{{ notes }}</div>
+                        <div class="trait-notes">{{ system.notes }}</div>
                         <div class="item-controls">
                             <a
                                 class="item-control item-edit"
@@ -351,7 +351,7 @@
                     </a>
                 </h3>
                 <div class="description">
-                    {{editor aproxy.biography target="system.biography" button=true owner=owner editable=editable}}
+                    {{editor adata.biography target="system.biography" button=true owner=owner editable=editable}}
                 </div>
             </div>
         </div>

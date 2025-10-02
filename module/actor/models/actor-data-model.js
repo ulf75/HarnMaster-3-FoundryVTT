@@ -1,6 +1,7 @@
 // @ts-check
 import {ItemType} from '../../hm3-types';
 import {truncate} from '../../utility';
+import {ActorHM3} from '../actor';
 
 // BooleanField
 // gmOnly = false
@@ -66,7 +67,7 @@ export class ActorDataModel extends foundry.abstract.TypeDataModel {
     }
 
     /**
-     * @type {Actor}
+     * @type {ActorHM3}
      */
     get actor() {
         return this.parent;
