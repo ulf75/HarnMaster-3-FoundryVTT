@@ -13,7 +13,6 @@
  */
 
 import {CurrencyTemplate} from './currency-model';
-import {ActorDataModel} from './proxies/actor-model';
 
 const {
     ArrayField,

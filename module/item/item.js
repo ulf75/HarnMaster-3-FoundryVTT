@@ -4,22 +4,6 @@ import {ActorHM3} from '../actor/actor.js';
 import {HM3} from '../config.js';
 import {ItemType, SkillType} from '../hm3-types.js';
 import * as utility from '../utility.js';
-import {ArmorProxy} from './proxies/armor-proxy.js';
-import {ArmorlocationProxy} from './proxies/armorlocation-proxy.js';
-import {CompanionProxy} from './proxies/companion-proxy.js';
-import {ConditionSkillProxy} from './proxies/condition-skill-proxy.js';
-import {ContainerProxy} from './proxies/container-proxy.js';
-import {EffectProxy} from './proxies/effect-proxy.js';
-import {InjuryProxy} from './proxies/injury-proxy.js';
-import {InvocationProxy} from './proxies/invocation-proxy.js';
-import {MiscProxy} from './proxies/misc-proxy.js';
-import {MissileProxy} from './proxies/missile-proxy.js';
-import {PsionicProxy} from './proxies/psionic-proxy.js';
-import {RidingSkillProxy} from './proxies/riding-skill-proxy.js';
-import {SkillProxy} from './proxies/skill-proxy.js';
-import {SpellProxy} from './proxies/spell-proxy.js';
-import {TraitProxy} from './proxies/trait-proxy.js';
-import {WeaponProxy} from './proxies/weapon-proxy.js';
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -27,98 +11,6 @@ import {WeaponProxy} from './proxies/weapon-proxy.js';
  */
 export class ItemHM3 extends Item {
     _impactTypeChanged = false;
-
-    /**
-     *
-     * @param {string} uuid
-     * @returns {SkillProxy}
-     */
-    static SkillProxy(uuid) {
-        const item = fromUuidSync(uuid);
-        console.assert(item, '');
-        // @ts-expect-error
-        console.assert(item?.type === ItemType.SKILL, '');
-        // @ts-expect-error
-        return item?.proxy;
-    }
-
-    /**
-     *
-     * @param {string} uuid
-     * @returns {InjuryProxy}
-     */
-    static InjuryProxy(uuid) {
-        const item = fromUuidSync(uuid);
-        console.assert(item, '');
-        // @ts-expect-error
-        console.assert(item?.type === ItemType.INJURY, '');
-        // @ts-expect-error
-        return item?.proxy;
-    }
-
-    /**
-     * @type {ActorHM3 | null}
-     * @override
-     */
-    get actor() {
-        // @ts-expect-error
-        return super.actor;
-    }
-
-    get proxy() {
-        if (!hm3.proxyCache.has(this.uuid)) {
-            let iproxy = null;
-            switch (this.type) {
-                case ItemType.ARMORGEAR:
-                    iproxy = new ArmorProxy(this);
-                    break;
-                case ItemType.ARMORLOCATION:
-                    iproxy = new ArmorlocationProxy(this);
-                    break;
-                case ItemType.COMPANION:
-                    iproxy = new CompanionProxy(this);
-                    break;
-                case ItemType.CONTAINERGEAR:
-                    iproxy = new ContainerProxy(this);
-                    break;
-                case ItemType.EFFECT:
-                    iproxy = new EffectProxy(this);
-                    break;
-                case ItemType.INJURY:
-                    iproxy = new InjuryProxy(this);
-                    break;
-                case ItemType.INVOCATION:
-                    iproxy = new InvocationProxy(this);
-                    break;
-                case ItemType.MISCGEAR:
-                    iproxy = new MiscProxy(this);
-                    break;
-                case ItemType.MISSILEGEAR:
-                    iproxy = new MissileProxy(this);
-                    break;
-                case ItemType.PSIONIC:
-                    iproxy = new PsionicProxy(this);
-                    break;
-                case ItemType.SKILL:
-                    if (this.name.includes('Condition')) iproxy = new ConditionSkillProxy(this);
-                    else if (this.name.includes('Riding')) iproxy = new RidingSkillProxy(this);
-                    else iproxy = new SkillProxy(this);
-                    break;
-                case ItemType.SPELL:
-                    iproxy = new SpellProxy(this);
-                    break;
-                case ItemType.TRAIT:
-                    iproxy = new TraitProxy(this);
-                    break;
-                case ItemType.WEAPONGEAR:
-                    iproxy = new WeaponProxy(this);
-                    break;
-            }
-            hm3.proxyCache.set(this.uuid, iproxy);
-        }
-
-        return hm3.proxyCache.get(this.uuid);
-    }
 
     /**
      * @override
@@ -132,14 +24,6 @@ export class ItemHM3 extends Item {
         }
 
         return super._preUpdate(changed, options, user);
-    }
-
-    /**
-     * If the item is a weapon, return a WeaponItem object.
-     * @returns {WeaponItem|null} WeaponItem object or null if not a weapon.
-     * */
-    asWeapon() {
-        return this.type === ItemType.WEAPONGEAR ? new WeaponItem(this) : null;
     }
 
     get isArtifact() {
@@ -198,7 +82,6 @@ export class ItemHM3 extends Item {
      */
     prepareData() {
         super.prepareData();
-        this.proxy.prepareData();
         return;
 
         // Get the Item's data

@@ -491,8 +491,6 @@ export class BaseActorSheetHM3v2 extends ActorSheet {
         // Everything below here is only needed if the sheet is editable
         if (!this.options.editable) return;
 
-        // this.actor.proxy.activateListeners(html);
-
         html.on('click', '.character-mancer', async (ev) => {
             await this.actor.unsetFlag('hm3', 'CharacterMancer');
             this.actor.sheet.render();

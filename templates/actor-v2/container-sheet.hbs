@@ -4,14 +4,14 @@
     {{!-- Sheet Header --}}
     <header class="sheet-header sheet-header-character">
         <div class="flexrow">
-            {{> char_v2_img_partial cls='profile-img' src=aproxy.img edit='img' h=100 w=100}}
+            {{> char_v2_img_partial cls='profile-img' src=actor.img edit='img' h=100 w=100}}
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
                     <h1 class="charname">
                         <input
                             name="name"
                             type="text"
-                            value="{{ aproxy.name }}"
+                            value="{{ actor.name }}"
                             placeholder="Name" />
                     </h1>
                     <div class="header-stat-block">
@@ -21,16 +21,16 @@
                                 class="capacity-value"
                                 type="number"
                                 name="system.capacity.max"
-                                value="{{ aproxy.capacity.max }}"
+                                value="{{ adata.capacity.max }}"
                                 data-dtype="Number" />
                         </div>
                         <div class="endurance flexrow">
-                            <span class="label">Contents Wt.: {{ aproxy.capacity.value }}</span>
+                            <span class="label">Contents Wt.: {{ adata.capacity.value }}</span>
                         </div>
                         <div class="endbar">
                             <span
                                 class="bar"
-                                style="width: {{ aproxy.capacity.pct }}%"></span>
+                                style="width: {{ adata.capacity.pct }}%"></span>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
             data-group="primary"
             data-tab="facade">
             <div class="flexrow">
-                {{> char_v2_img_partial cls='facade-image' src=aproxy.bioImage edit='system.bioImage' h=300 w=200}}
+                {{> char_v2_img_partial cls='facade-image' src=adata.bioImage edit='system.bioImage' h=300 w=200}}
                 <div class="facade-description">
                     {{editor descriptionHTML target="system.description" button=true engine="prosemirror" owner=owner editable=editable}}
                 </div>
@@ -87,11 +87,11 @@
                     </li>
                     <li class="weight-line flexrow">
                         <div class="weight-detail title">Weight</div>
-                        <div class="weight-detail weapon">{{ aproxy.totalWeaponWeight }}</div>
-                        <div class="weight-detail missile">{{ aproxy.totalMissileWeight }}</div>
-                        <div class="weight-detail armor">{{ aproxy.totalArmorWeight }}</div>
-                        <div class="weight-detail misc-gear">{{ aproxy.totalMiscGearWeight }}</div>
-                        <div class="total">{{ aproxy.totalGearWeight }}</div>
+                        <div class="weight-detail weapon">{{ adata.totalWeaponWeight }}</div>
+                        <div class="weight-detail missile">{{ adata.totalMissileWeight }}</div>
+                        <div class="weight-detail armor">{{ adata.totalArmorWeight }}</div>
+                        <div class="weight-detail misc-gear">{{ adata.totalMiscGearWeight }}</div>
+                        <div class="total">{{ adata.totalGearWeight }}</div>
                     </li>
                 </ol>
                 <div class="buf"></div>
@@ -106,7 +106,7 @@
                     placeholder="Filter gear by name..."
                     data-dtype="String" />
             </div>
-            {{#each aproxy.containers as |citem cid|}}
+            {{#each adata.containers as |citem cid|}}
             <ol class="items-list gear-list">
                 <li
                     class="items-header gear flexrow"

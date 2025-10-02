@@ -53,7 +53,18 @@ import {ItemHM3} from '../item';
 // textSearch = false
 // trim = true
 
-const {ArrayField, BooleanField, HTMLField, NumberField, SchemaField, StringField} = foundry.data.fields;
+const {
+    ArrayField,
+    BooleanField,
+    FilePathField,
+    HTMLField,
+    IntegerSortField,
+    NumberField,
+    ObjectField,
+    SchemaField,
+    SetField,
+    StringField
+} = foundry.data.fields;
 /**
  * @abstract
  */
@@ -73,6 +84,7 @@ export class ItemDataModel extends foundry.abstract.TypeDataModel {
      * @type {ActorHM3 | null}
      */
     get actor() {
+        // @ts-expect-error
         return this.item.actor;
     }
 

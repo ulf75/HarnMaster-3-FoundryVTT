@@ -5,7 +5,7 @@ for (let t of canvas?.tokens?.controlled) {
     const sizeDraw = await sizeTable.draw({roll: sizeRoll, recursive: true, displayChat: false});
     const size = Number(sizeDraw.results[0].text);
     const ini = t.actor.items.find((x) => x.name === 'Initiative');
-    const from = ini.proxy.ML;
+    const from = ini.system.ML;
 
     await ini.update({'system.masteryLevel': Math.round(from * size)});
 

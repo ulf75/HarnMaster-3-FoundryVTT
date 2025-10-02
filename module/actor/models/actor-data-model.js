@@ -53,7 +53,18 @@ import {ActorHM3} from '../actor';
 // textSearch = false
 // trim = true
 
-const {ArrayField, BooleanField, FilePathField, HTMLField, NumberField, SchemaField, StringField} = foundry.data.fields;
+const {
+    ArrayField,
+    BooleanField,
+    FilePathField,
+    HTMLField,
+    IntegerSortField,
+    NumberField,
+    ObjectField,
+    SchemaField,
+    SetField,
+    StringField
+} = foundry.data.fields;
 /**
  * @abstract
  */

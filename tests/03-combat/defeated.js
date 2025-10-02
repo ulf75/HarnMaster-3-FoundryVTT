@@ -24,8 +24,9 @@ export class DefeatedTestCase extends BaseTestHM3 {
 
         // not yet defeated
         console.assert(
-            alice.actor.proxy.shockIndex.value >= hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && !alice.combatant.isDefeated,
-            `HM3 ASSERT | Combatant ${alice.name} IS defeated (Shock Index: ${alice.actor.proxy.shockIndex.value}).`,
+            alice.actor.system.shockIndex.value >= hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD &&
+                !alice.combatant.isDefeated,
+            `HM3 ASSERT | Combatant ${alice.name} IS defeated (Shock Index: ${alice.actor.system.shockIndex.value}).`,
             alice.combatant
         );
 
@@ -37,8 +38,8 @@ export class DefeatedTestCase extends BaseTestHM3 {
         await bob.addCondition(Condition.DYING);
 
         console.assert(
-            alice.actor.proxy.shockIndex.value < hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && !alice.combatant.isDefeated,
-            `HM3 ASSERT | Combatant ${alice.name} IS defeated (Shock Index: ${alice.actor.proxy.shockIndex.value}).`,
+            alice.actor.system.shockIndex.value < hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && !alice.combatant.isDefeated,
+            `HM3 ASSERT | Combatant ${alice.name} IS defeated (Shock Index: ${alice.actor.system.shockIndex.value}).`,
             alice.combatant
         );
         console.assert(
@@ -54,8 +55,8 @@ export class DefeatedTestCase extends BaseTestHM3 {
         await bob.addCondition(Condition.UNCONSCIOUS);
 
         console.assert(
-            bob.actor.proxy.shockIndex.value < hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && bob.combatant.isDefeated,
-            `HM3 ASSERT | Combatant ${bob.name} is NOT defeated (Shock Index: ${bob.actor.proxy.shockIndex.value}).`,
+            bob.actor.system.shockIndex.value < hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && bob.combatant.isDefeated,
+            `HM3 ASSERT | Combatant ${bob.name} is NOT defeated (Shock Index: ${bob.actor.system.shockIndex.value}).`,
             bob.combatant
         );
 
@@ -73,8 +74,8 @@ export class DefeatedTestCase extends BaseTestHM3 {
         });
 
         console.assert(
-            bob.actor.proxy.shockIndex.value < hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && bob.combatant.isDefeated,
-            `HM3 ASSERT | Combatant ${bob.name} is NOT defeated (Shock Index: ${bob.actor.proxy.shockIndex.value}).`,
+            bob.actor.system.shockIndex.value < hm3.CONST.COMBAT.SHOCK_INDEX_THRESHOLD && bob.combatant.isDefeated,
+            `HM3 ASSERT | Combatant ${bob.name} is NOT defeated (Shock Index: ${bob.actor.system.shockIndex.value}).`,
             bob.combatant
         );
 

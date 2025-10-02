@@ -115,7 +115,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
 
     dialogResult.addlModifier += dialogResult.aim === 'Mid' ? 0 : -10;
     const effAML = hm3.macros.HM100Check(
-        dialogResult.weapon.proxy.AML + dialogResult.addlModifier + dialogResult.rangeMod
+        dialogResult.weapon.system.AML + dialogResult.addlModifier + dialogResult.rangeMod
     );
 
     // Prepare for Chat Message
@@ -151,7 +151,7 @@ export async function missileAttack(atkToken, defToken, missileItem) {
         hasEsoteric: false,
         hasIgnore: true,
         impactMod: dialogResult.impactMod,
-        origAML: missileItem.proxy.AML,
+        origAML: missileItem.system.AML,
         rangeDist: Math.round(range),
         rangeExceedsExtreme: dialogResult.rangeExceedsExtreme,
         rangeModifierAbs: Math.abs(dialogResult.rangeMod),
@@ -247,7 +247,7 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
         attackerName: atkToken.name,
         defenderName: defToken.name,
         distance,
-        maxDistance: esotericItem.proxy.ML,
+        maxDistance: esotericItem.system.ML,
         type: esotericItem.name,
         weapon: esotericItem
     };
@@ -263,7 +263,7 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
     // If user cancelled the dialog, then return immediately
     if (!dialogResult) return null;
 
-    const effAML = hm3.macros.HM100Check(esotericItem.proxy.EML + dialogResult.addlModifier);
+    const effAML = hm3.macros.HM100Check(esotericItem.system.EML + dialogResult.addlModifier);
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.hbs';
@@ -283,7 +283,7 @@ export async function esotericAttack(atkToken, defToken, esotericItem) {
         hasDodge: false,
         hasEsoteric: true,
         hasIgnore: false,
-        origAML: esotericItem.proxy.EML,
+        origAML: esotericItem.system.EML,
         visibleActorId: defToken.actor.id,
         weaponName: esotericItem.name,
         weaponType: 'esoteric'
@@ -450,7 +450,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         (dialogResult.aspect === 'Blunt' || dialogResult.aspect === 'Edged');
     dialogResult.addlModifier += atkCloseMode ? -10 : 0;
 
-    const effAML = hm3.macros.HM100Check(dialogResult.weapon.proxy.AML + dialogResult.addlModifier);
+    const effAML = hm3.macros.HM100Check(dialogResult.weapon.system.AML + dialogResult.addlModifier);
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.hbs';
@@ -507,7 +507,7 @@ export async function meleeAttack(atkToken, defToken, {weaponItem = null, unarme
         hasIgnore: true,
         impactMod: dialogResult.impactMod,
         isGrappleAtk: !!dialogResult.isGrappleAtk,
-        origAML: weaponItem.proxy.AML,
+        origAML: weaponItem.system.AML,
         title: `${weaponItem.name} ${type} Attack`,
         visibleActorId: defToken.actor.id,
         weaponName: weaponItem.name,
@@ -894,13 +894,13 @@ function defaultMeleeWeapon(token, sortMode = 'highestDmg') {
 
         case 'highestAML':
             weapons = equippedWeapons.sort((a, b) => {
-                return b.proxy.AML - a.proxy.AML;
+                return b.system.AML - a.system.AML;
             });
             break;
 
         case 'highestDML':
             weapons = equippedWeapons.sort((a, b) => {
-                return b.proxy.DML - a.proxy.DML;
+                return b.system.DML - a.system.DML;
             });
             break;
     }
@@ -1019,7 +1019,7 @@ export async function meleeCounterstrikeResume(
         type: 'atkRoll'
     });
 
-    const csEffEML = hm3.macros.HM100Check(csDialogResult.weapon.proxy.AML);
+    const csEffEML = hm3.macros.HM100Check(csDialogResult.weapon.system.AML);
 
     // Roll Counterstrike Attack
     const csRoll = await DiceHM3.rollTest({
@@ -1490,7 +1490,7 @@ export async function esotericResume(atkToken, defToken, atkWeaponName, atkEffAM
     });
 
     const esotericWpns = defaultEsotericWeapon(defToken);
-    const effDML = hm3.macros.HM100Check(esotericWpns.defaultWeapon.proxy.EML);
+    const effDML = hm3.macros.HM100Check(esotericWpns.defaultWeapon.system.EML);
 
     let defaultModifier = 0;
     // Living Entity (versus artifact): +10
@@ -1704,7 +1704,7 @@ export async function blockResume(
     let effDML;
     const defWeapon = defToken.actor.itemTypes.weapongear.find((w) => w.name === dialogResult.weapon);
     if (defWeapon) {
-        effDML = hm3.macros.HM100Check(defWeapon.proxy.DML);
+        effDML = hm3.macros.HM100Check(defWeapon.system.DML);
     } else {
         effDML = 5;
     }

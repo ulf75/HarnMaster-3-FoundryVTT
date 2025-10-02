@@ -1,88 +1,17 @@
 // @ts-check
-
-import {HM3} from '../config.js';
-import {DiceHM3} from '../hm3-dice.js';
-import {ActorType, Condition, ItemType, SkillType} from '../hm3-types.js';
+import { HM3 } from '../config.js';
+import { DiceHM3 } from '../hm3-dice.js';
+import { ActorType, Condition, ItemType, SkillType } from '../hm3-types.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
-import {ActorProxy} from './proxies/actor-proxy.js';
-import {CharacterProxy} from './proxies/character-proxy.js';
-import {ContainerProxy} from './proxies/container-proxy.js';
-import {CreatureProxy} from './proxies/creature-proxy.js';
-import {LivingProxy} from './proxies/living-proxy.js';
 
 /**
  * Extend the base Actor by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
 export class ActorHM3 extends Actor {
-    /**
-     *
-     * @param {string} uuid
-     * @returns {LivingProxy | null}
-     */
-    static LivingProxy(uuid) {
-        if (!uuid) return null;
-        const actor = fromUuidSync(uuid);
-        console.assert(actor, 'HM3 | Actor is undefined.');
-        console.assert(
-            // @ts-expect-error
-            actor?.type === ActorType.CHARACTER || actor?.type === ActorType.CREATURE,
-            'HM3 | Actor is NOT a Character or Creature.'
-        );
-        // @ts-expect-error
-        return actor?.proxy;
-    }
-    /**
-     *
-     * @param {string} uuid
-     * @returns {ContainerProxy | null}
-     */
-    static ContainerProxy(uuid) {
-        if (!uuid) return null;
-        const actor = fromUuidSync(uuid);
-        console.assert(actor, 'HM3 | Actor is undefined.');
-        // @ts-expect-error
-        console.assert(actor?.type === ActorType.CONTAINER, 'HM3 | Actor is NOT a Container.');
-        // @ts-expect-error
-        return actor?.proxy;
-    }
-
-    /**
-     * @type {ActorProxy}
-     */
-    get proxy() {
-        if (!hm3.proxyCache.has(this.uuid)) {
-            let aproxy = null;
-            switch (this.type) {
-                case ActorType.CHARACTER:
-                    aproxy = new CharacterProxy(this);
-                    break;
-                case ActorType.CONTAINER:
-                    aproxy = new ContainerProxy(this);
-                    break;
-                case ActorType.CREATURE:
-                    aproxy = new CreatureProxy(this);
-                    break;
-            }
-
-            hm3.proxyCache.set(this.uuid, aproxy);
-        }
-
-        return hm3.proxyCache.get(this.uuid);
-    }
-
-    /**
-     * @type {import('../item/proxies/item-proxy.js').ItemProxy[]}
-     */
-    get proxies() {
-        return this.items.contents.map((item) => {
-            // @ts-expect-error
-            return item.proxy;
-        });
-    }
-
     get macrolist() {
+        // @ts-expect-error
         return game.macros?.contents.filter((m) => m.getFlag('hm3', 'ownerId') === this.id) || [];
     }
 
@@ -90,6 +19,7 @@ export class ActorHM3 extends Actor {
      * @type {string | null}
      */
     get macrofolder() {
+        // @ts-expect-error
         return game.folders?.get(game.settings?.get('hm3', 'actorMacrosFolderId')) || null;
     }
 
@@ -113,6 +43,7 @@ export class ActorHM3 extends Actor {
      * @type {boolean}
      */
     get skillImprovement() {
+        // @ts-expect-error
         return !!this.player || !!this.getFlag('hm3', 'SkillImprovement');
     }
 
@@ -551,7 +482,6 @@ export class ActorHM3 extends Actor {
      * @override */
     prepareBaseData() {
         super.prepareBaseData();
-        this.proxy.prepareBaseData();
         return;
         const actorData = this.system;
         const actorItems = this.items;
@@ -560,12 +490,6 @@ export class ActorHM3 extends Actor {
         // but it is not in the data model so it will not be saved.
         if (!actorData.eph) actorData.eph = {};
         const eph = actorData.eph;
-        this.system.v2 = {};
-        this.items.forEach((i) => (i.system.v2 = {}));
-        for (const key of Object.keys(hm3.config.activeEffectKeyV2)) {
-            foundry.utils.setProperty(this, key, null);
-        }
-        this.proxy.applyWeaponActiveEffects();
 
         if (this.type === ActorType.CONTAINER) return;
 
@@ -1348,14 +1272,14 @@ export class ActorHM3 extends Actor {
                 const rider = fromUuidSync(this.system.ownerUuid);
                 if (rider) {
                     const riding = rider.items.find(
-                        (item) => item.type === hm3.ItemType.SKILL && item.name.includes('Riding')
+                        (item) => item.type === ItemType.SKILL && item.name.includes('Riding')
                     );
-                    if (item.proxy.ML >= riding.proxy.ML) {
+                    if (item.system.ML >= riding.system.ML) {
                         await hm3.GmSays({
                             text:
                                 `<h4>${this.name}: ${item.name}</h4>` +
                                 game.i18n?.localize('hm3.SDR.SteedSkills') +
-                                `<p style="font-size: smaller; font-variant: small-caps;">(${item.name} ML${item.proxy.ML} &ge; Riding ML${riding.proxy.ML})</p>`,
+                                `<p style="font-size: smaller; font-variant: small-caps;">(${item.name} ML${item.system.ML} &ge; Riding ML${riding.system.ML})</p>`,
                             source: 'Combat 20'
                         });
                         await item.update({
@@ -1372,7 +1296,7 @@ export class ActorHM3 extends Actor {
         if (result?.sdrIncr) {
             // Characters may begin selecting specialties when a skill reaches ML 40 (SKILLS 2)
             if (item.type === ItemType.SKILL && result.sdrIncr === 2) {
-                if (item.proxy.ML < 40) {
+                if (item.system.ML < 40) {
                     await hm3.GmSays({
                         text: `<h4>${this.name}: ${item.name}</h4>` + game.i18n?.localize('hm3.SDR.SkillSpecialty'),
                         source: 'SKILLS 2'
@@ -1383,7 +1307,7 @@ export class ActorHM3 extends Actor {
 
             await item.update({
                 'system.improveFlag': 0,
-                'system.masteryLevel': +item.proxy.ML + (result.sdrIncr === 2 ? 2 : 1)
+                'system.masteryLevel': item.system.ML + (result.sdrIncr === 2 ? 2 : 1)
             });
             return true;
         } else {

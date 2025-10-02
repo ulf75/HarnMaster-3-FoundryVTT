@@ -120,7 +120,6 @@ export class ItemSheetHM3v2 extends ItemSheet {
      * */
     activateListeners(html) {
         super.activateListeners(html);
-        this.item.proxy.activateListeners(html);
 
         html.find('.profile-img').on('click', this._onShowProfileImage.bind(this));
 
